@@ -1,0 +1,78 @@
+import type { PrimitiveRenderer } from '@aperi21/schema';
+
+/**
+ * `docs/06-renderer-spec.md` §2 의 기본 z-layer. 프리미티브 타입이 명시적
+ * zHint 를 갖지 않을 때 적용된다.
+ */
+export const DEFAULT_Z_LAYERS: Readonly<Record<string, number>> = {
+  // 0: 배경 장
+  vectorField: 0,
+  scalarField: 0,
+  // 10: 구조물
+  surface: 10,
+  container: 10,
+  opticalElement: 12,
+  wire: 11,
+  // 20: 궤적 · 장선
+  trajectory: 20,
+  fieldLine: 20,
+  ray: 22,
+  // 30: 파동
+  wave: 30,
+  // 40: 물체
+  body: 40,
+  charge: 40,
+  coil: 40,
+  circuitElement: 40,
+  terminal: 41,
+  particleSystem: 40,
+  // 50: 벡터 · 이벤트
+  vector: 50,
+  axis: 50,
+  event: 50,
+  // 60: 주석
+  marker: 60,
+  gauge: 60,
+  // 70: 스크린 오버레이
+  graph: 70,
+  energyLevels: 65,
+  // Emitter 는 source 자체라 벡터 레이어에 가깝게.
+  emitter: 40,
+};
+
+export class RendererRegistry {
+  private readonly renderers = new Map<string, PrimitiveRenderer>();
+  private readonly zOverrides = new Map<string, number>();
+
+  register(type: string, renderer: PrimitiveRenderer, zHint?: number): void {
+    if (this.renderers.has(type)) {
+      throw new Error(`[aperi21] renderer for primitive type '${type}' already registered`);
+    }
+    this.renderers.set(type, renderer);
+    if (typeof zHint === 'number') {
+      this.zOverrides.set(type, zHint);
+    }
+  }
+
+  unregister(type: string): void {
+    this.renderers.delete(type);
+    this.zOverrides.delete(type);
+  }
+
+  get(type: string): PrimitiveRenderer | undefined {
+    return this.renderers.get(type);
+  }
+
+  has(type: string): boolean {
+    return this.renderers.has(type);
+  }
+
+  /** 타입의 z-layer 를 돌려준다. override → default → 100 (미지정 타입 후순위). */
+  getZ(type: string): number {
+    return this.zOverrides.get(type) ?? DEFAULT_Z_LAYERS[type] ?? 100;
+  }
+
+  listTypes(): string[] {
+    return [...this.renderers.keys()];
+  }
+}

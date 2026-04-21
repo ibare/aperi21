@@ -1,0 +1,63 @@
+import type { Primitive, SceneGraph, SceneGraphRefs } from '@aperi21/schema';
+import { SceneGraphRefsImpl } from './refs';
+
+export interface PreprocessedScene {
+  refs: SceneGraphRefs;
+  orderedScene: Primitive[];
+}
+
+/**
+ * 참조(id) 의존성을 기준으로 위상 정렬한다. 지금은 FieldLine -> VectorField
+ * 한 쌍만 실제로 의미가 있지만, 동일한 로직이 Phase 2 이후에 등장할 다른
+ * 참조(ray → opticalElement 리스트 등)에도 쓰일 수 있도록 일반화해 둔다.
+ *
+ * 사이클이 감지되면 원본 순서를 유지한다(렌더러는 스킵하거나 경고만 남긴다).
+ */
+function topoSort(scene: readonly Primitive[]): Primitive[] {
+  const idToIndex = new Map<string, number>();
+  scene.forEach((p, i) => {
+    if (p.id) idToIndex.set(p.id, i);
+  });
+
+  const deps: number[][] = scene.map(() => []);
+
+  scene.forEach((p, i) => {
+    if (p.type === 'fieldLine') {
+      const targetIndex = idToIndex.get(p.follows);
+      if (targetIndex !== undefined) {
+        deps[i]!.push(targetIndex);
+      }
+    }
+  });
+
+  const order: number[] = [];
+  const visited = new Array<0 | 1 | 2>(scene.length).fill(0);
+
+  function visit(i: number): boolean {
+    if (visited[i] === 2) return true;
+    if (visited[i] === 1) return false; // 사이클
+    visited[i] = 1;
+    for (const d of deps[i]!) {
+      if (!visit(d)) return false;
+    }
+    visited[i] = 2;
+    order.push(i);
+    return true;
+  }
+
+  for (let i = 0; i < scene.length; i++) {
+    if (!visit(i)) {
+      // 사이클 감지 시 원본 순서 반환.
+      return [...scene];
+    }
+  }
+
+  return order.map((i) => scene[i]!);
+}
+
+export function preprocessScene(scene: SceneGraph): PreprocessedScene {
+  const refs = new SceneGraphRefsImpl(scene);
+  const visible = scene.filter((p) => !p.hidden);
+  const orderedScene = topoSort(visible);
+  return { refs, orderedScene };
+}
