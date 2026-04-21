@@ -1,4 +1,5 @@
 import type { Bundle } from '@aperi21/schema';
+import { projectileBundle } from '@aperi21/bundle-projectile';
 
 /**
  * Phase 1 placeholder Bundle. 실제 Scene Graph/step 로직은 Phase 2+ 의 개별
@@ -15,42 +16,8 @@ function placeholder(schema: Bundle['schema']): Bundle {
   };
 }
 
-export const mockProjectileBundle: Bundle = placeholder({
-  id: 'projectile',
-  label: { ko: '발사체', en: 'Projectile' },
-  category: 'mechanics',
-  operation: {
-    ko: '각도 다이얼 + 핀볼 런처로 발사',
-    en: 'Angle dial + pinball launcher',
-  },
-  timeModel: 'linear',
-  parameters: [
-    { id: 'angle', label: { ko: '각도', en: 'angle' }, unit: 'deg', default: 45, range: [0, 90] },
-    { id: 'power', label: { ko: '출력', en: 'power' }, unit: '0-100', default: 50, range: [0, 100] },
-  ],
-  stages: [
-    { id: 'earth', label: { ko: '지구', en: 'Earth' }, constants: { g: 9.8 } },
-    { id: 'moon', label: { ko: '달', en: 'Moon' }, constants: { g: 1.62 } },
-  ],
-  environments: [
-    {
-      id: 'vacuum',
-      label: { ko: '진공', en: 'Vacuum' },
-      availableInStages: ['earth', 'moon'],
-      effects: { drag: 0 },
-    },
-    {
-      id: 'windy',
-      label: { ko: '바람', en: 'Wind' },
-      availableInStages: ['earth'],
-      effects: { wind: 1 },
-    },
-  ],
-  views: [
-    { id: 'trajectory', label: { ko: '궤적', en: 'Trajectory' }, default: true },
-    { id: 'energy', label: { ko: '에너지', en: 'Energy' } },
-  ],
-});
+/** Phase 2: 실제 구현된 projectile bundle. */
+export const projectile: Bundle = projectileBundle as unknown as Bundle;
 
 export const mockRayTracingBundle: Bundle = placeholder({
   id: 'ray_tracing',
@@ -99,7 +66,7 @@ export const mockDcCircuitBundle: Bundle = placeholder({
 });
 
 export const MOCK_BUNDLES: Record<string, Bundle> = {
-  projectile: mockProjectileBundle,
+  projectile,
   ray_tracing: mockRayTracingBundle,
   dc_circuit: mockDcCircuitBundle,
 };

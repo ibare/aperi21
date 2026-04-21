@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@aperi21/bundle-projectile": "workspace:*",
     "@aperi21/host": "workspace:*",
     "@aperi21/react": "workspace:*",
     "@aperi21/schema": "workspace:*",

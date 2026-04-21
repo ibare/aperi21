@@ -22,7 +22,7 @@ export function countCategoryPhenomena(categoryId: CategoryId): number {
   );
 }
 
-export const IMPLEMENTED_BUNDLE_IDS = new Set<string>();
+export const IMPLEMENTED_BUNDLE_IDS = new Set<string>(['projectile']);
 
 export function isBundleImplemented(id: string): boolean {
   return IMPLEMENTED_BUNDLE_IDS.has(id);

@@ -10,6 +10,9 @@ importers:
 
   apps/catalog:
     dependencies:
+      '@aperi21/bundle-projectile':
+        specifier: workspace:*
+        version: link:../../packages/bundle-projectile
       '@aperi21/host':
         specifier: workspace:*
         version: link:../../packages/host
@@ -50,6 +53,18 @@ importers:
       vite:
         specifier: ^5.4.11
         version: 5.4.21
+
+  packages/bundle-projectile:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(jsdom@25.0.1)
 
   packages/host:
     devDependencies:
