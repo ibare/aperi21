@@ -10,8 +10,12 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@aperi21/bundle-dc-circuit": "workspace:*",
     "@aperi21/bundle-projectile": "workspace:*",
+    "@aperi21/bundle-ray-tracing": "workspace:*",
     "@aperi21/host": "workspace:*",
+    "@aperi21/plugin-circuit": "workspace:*",
+    "@aperi21/plugin-optics": "workspace:*",
     "@aperi21/react": "workspace:*",
     "@aperi21/schema": "workspace:*",
     "i18next": "^23.15.1",

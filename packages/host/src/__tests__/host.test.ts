@@ -20,6 +20,7 @@ describe('PluginManager', () => {
     const host = createHost();
     const plugin: HostPlugin = {
       id: 'test/empty',
+      version: '1.0.0',
       label: 'empty',
       primitiveTypes: [],
       renderers: {},
@@ -33,12 +34,14 @@ describe('PluginManager', () => {
     const host = createHost();
     const first: HostPlugin = {
       id: 'plugin/a',
+      version: '1.0.0',
       label: 'a',
       primitiveTypes: ['ray'],
       renderers: { ray: noopRenderer },
     };
     const second: HostPlugin = {
       id: 'plugin/b',
+      version: '1.0.0',
       label: 'b',
       primitiveTypes: ['ray'],
       renderers: { ray: noopRenderer },
@@ -53,6 +56,7 @@ describe('PluginManager', () => {
     const host = createHost();
     const plugin: HostPlugin = {
       id: 'plugin/dep',
+      version: '1.0.0',
       label: 'dep',
       primitiveTypes: [],
       renderers: {},
@@ -66,6 +70,7 @@ describe('PluginManager', () => {
     const trace = () => 42;
     host.pluginManager.register({
       id: 'plugin/util',
+      version: '1.0.0',
       label: 'util',
       primitiveTypes: [],
       renderers: {},

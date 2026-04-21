@@ -1,7 +1,12 @@
 import type { BundleState, ControllerSpec } from '@aperi21/schema';
 import type { Viewport } from '../camera';
 import { readPath, writePath } from './path';
-import type { ControllerImpl, ControllerRenderContext, PointerInput } from './types';
+import type {
+  ControllerEventContext,
+  ControllerImpl,
+  ControllerRenderContext,
+  PointerInput,
+} from './types';
 
 type AngleSpec = Extract<ControllerSpec, { type: 'angle-dial' }>;
 
@@ -121,17 +126,17 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
     ctx.restore();
   }
 
-  hitTest(input: PointerInput, viewport: Viewport): boolean {
-    return hitDial(input, computeLayout(viewport));
+  hitTest(input: PointerInput, ctx: ControllerEventContext): boolean {
+    return hitDial(input, computeLayout(ctx.viewport));
   }
 
   onPointerDown(
     input: PointerInput,
-    viewport: Viewport,
+    ctx: ControllerEventContext,
     spec: AngleSpec,
     state: BundleState,
   ): Partial<BundleState> | null {
-    const layout = computeLayout(viewport);
+    const layout = computeLayout(ctx.viewport);
     if (!hitDial(input, layout)) return null;
     this.dragging = true;
     return this.angleFromPointer(input, layout, spec, state);
@@ -139,12 +144,12 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
 
   onPointerMove(
     input: PointerInput,
-    viewport: Viewport,
+    ctx: ControllerEventContext,
     spec: AngleSpec,
     state: BundleState,
   ): Partial<BundleState> | null {
     if (!this.dragging) return null;
-    return this.angleFromPointer(input, computeLayout(viewport), spec, state);
+    return this.angleFromPointer(input, computeLayout(ctx.viewport), spec, state);
   }
 
   onPointerUp(): Partial<BundleState> | null {

@@ -9,8 +9,8 @@
     "title_line1": "물리 세상의 현상을",
     "title_line2": "직접 만지는 형태로",
     "description": "LLM이 생성한 설명문 안에 끼어드는 29개의 인터랙션 묶음. 각 묶음은 공통된 조작 언어와 시간 모델을 공유하며, 고등학교에서 대학 1학년 수준의 물리 범위를 덮는다.",
-    "stat_implemented": "{{count}}개 구현 완료",
-    "stat_planned": "{{count}}개 묶음 예정",
+    "stat_implemented": "구현 완료",
+    "stat_planned": "묶음 예정",
     "stat_embeds": "임베드 {{min}}~{{max}}개 예상"
   },
   "badges": {

@@ -9,6 +9,7 @@ import { ViewTabs } from './embed/ViewTabs';
 import { InfoPanel } from './embed/InfoPanel';
 import { CameraControls } from './embed/CameraControls';
 import { EnergyHUD } from './embed/EnergyHUD';
+import { ParamPanel } from './embed/ParamPanel';
 import { useBundleRuntime } from './embed/useBundleRuntime';
 
 export interface EmbedProps {
@@ -97,6 +98,14 @@ export function Embed({ bundle, stageId, initialView, initialEnvironments }: Emb
         />
         <InfoPanel theme={theme} i18n={i18n} derived={derived} />
         {showEnergy && <EnergyHUD theme={theme} i18n={i18n} derived={derived} />}
+        <ParamPanel
+          theme={theme}
+          i18n={i18n}
+          schema={bundle.schema}
+          values={runtime.paramValues}
+          onChange={runtime.setParam}
+          onReset={runtime.reset}
+        />
         <CameraControls
           theme={theme}
           i18n={i18n}

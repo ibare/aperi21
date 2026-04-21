@@ -9,8 +9,8 @@
     "title_line1": "Phenomena of the physical world",
     "title_line2": "reshaped into something you can touch.",
     "description": "29 interaction bundles that slot into LLM-generated prose. Each bundle shares a common manipulation language and time model, covering a high-school through freshman physics scope.",
-    "stat_implemented": "{{count}} implemented",
-    "stat_planned": "{{count}} bundles planned",
+    "stat_implemented": "implemented",
+    "stat_planned": "bundles planned",
     "stat_embeds": "≈ {{min}}–{{max}} embeds"
   },
   "badges": {

@@ -18,11 +18,18 @@ export class Camera {
   scale: number;
   userAdjusted: boolean;
 
+  /**
+   * 격자 스냅 모드. 활성화되면 snapWorld 가 월드 좌표를 gridSize 배수로 반올림한다.
+   * DC Circuit 에서 소자 배치 시 격자 정렬을 위해 사용한다.
+   */
+  gridSnap: boolean;
+  gridSize: number;
+
   private defaultX: number;
   private defaultY: number;
   private defaultScale: number;
 
-  constructor(init: { x?: number; y?: number; scale?: number } = {}) {
+  constructor(init: { x?: number; y?: number; scale?: number; gridSize?: number } = {}) {
     this.x = init.x ?? 0;
     this.y = init.y ?? 0;
     this.scale = init.scale ?? 20;
@@ -30,6 +37,20 @@ export class Camera {
     this.defaultX = this.x;
     this.defaultY = this.y;
     this.defaultScale = this.scale;
+    this.gridSnap = false;
+    this.gridSize = init.gridSize ?? 1;
+  }
+
+  setGridSnap(enabled: boolean, size?: number): void {
+    this.gridSnap = enabled;
+    if (typeof size === 'number' && size > 0) this.gridSize = size;
+  }
+
+  /** 월드 좌표에 격자 스냅을 적용한 결과를 반환. 비활성화되면 원본 그대로. */
+  snapWorld(p: Vec2): Vec2 {
+    if (!this.gridSnap) return p;
+    const g = this.gridSize;
+    return [Math.round(p[0] / g) * g, Math.round(p[1] / g) * g];
   }
 
   pan(dxWorld: number, dyWorld: number): void {
@@ -74,6 +95,7 @@ export class Camera {
     this.y = this.defaultY;
     this.scale = this.defaultScale;
     this.userAdjusted = false;
+    // gridSnap 은 Bundle 특성이므로 reset 에서 해제하지 않는다.
   }
 
   toScreen(world: Vec2, viewport: Viewport): Vec2 {

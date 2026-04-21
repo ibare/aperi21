@@ -17,6 +17,11 @@ export interface BundleRuntime<T extends BundleState = BundleState> {
   state: T;
   stateRef: React.MutableRefObject<T>;
 
+  /** 파라미터 라이브 값. */
+  paramValues: Record<string, number>;
+  /** 개별 파라미터 갱신 — 즉시 initialState 로 재초기화. */
+  setParam(id: string, value: number): void;
+
   setStageId(id: string): void;
   setViewId(id: string): void;
   toggleEnv(id: string): void;
@@ -30,12 +35,17 @@ function computeInitial<T extends BundleState>(
   bundle: Bundle<T>,
   stage: StageDef,
   environments: EnvironmentDef[],
+  values: Record<string, number>,
 ): T {
+  return bundle.initialState({ values, stage, environments });
+}
+
+function buildDefaultValues(bundle: Bundle<BundleState>): Record<string, number> {
   const values: Record<string, number> = {};
   for (const p of bundle.schema.parameters) {
     values[p.id] = p.default;
   }
-  return bundle.initialState({ values, stage, environments });
+  return values;
 }
 
 export function useBundleRuntime<T extends BundleState>(
@@ -55,6 +65,14 @@ export function useBundleRuntime<T extends BundleState>(
   );
   const [envIds, setEnvIds] = useState<string[]>(initialEnvIds ?? []);
   const [resetSignal, setResetSignal] = useState(0);
+  const [paramValues, setParamValues] = useState<Record<string, number>>(() =>
+    buildDefaultValues(bundle),
+  );
+
+  // bundle 이 바뀌면 파라미터 기본값 재적용.
+  useEffect(() => {
+    setParamValues(buildDefaultValues(bundle));
+  }, [bundle]);
 
   const stage = useMemo(
     () => bundle.schema.stages.find((s) => s.id === stageId) ?? bundle.schema.stages[0]!,
@@ -72,17 +90,19 @@ export function useBundleRuntime<T extends BundleState>(
     [bundle, envIds],
   );
 
-  const [state, setState] = useState<T>(() => computeInitial(bundle, stage, environments));
+  const [state, setState] = useState<T>(() =>
+    computeInitial(bundle, stage, environments, paramValues),
+  );
   const stateRef = useRef<T>(state);
 
-  // bundle/stage/envs 변경 또는 resetSignal 증가 시 재초기화
+  // bundle/stage/params 변경 또는 resetSignal 증가 시 재초기화
   useEffect(() => {
-    const next = computeInitial(bundle, stage, environments);
+    const next = computeInitial(bundle, stage, environments, paramValues);
     stateRef.current = next;
     setState(next);
     // environments 는 런타임 개입용이므로 여기서는 stage 변경만 재초기화 트리거로 삼는다.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bundle, stage, resetSignal]);
+  }, [bundle, stage, resetSignal, paramValues]);
 
   const toggleEnv = useCallback((id: string) => {
     setEnvIds((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]));
@@ -94,7 +114,12 @@ export function useBundleRuntime<T extends BundleState>(
   }, []);
 
   const reset = useCallback(() => {
+    setParamValues(buildDefaultValues(bundle));
     setResetSignal((n) => n + 1);
+  }, [bundle]);
+
+  const setParam = useCallback((id: string, value: number) => {
+    setParamValues((prev) => (prev[id] === value ? prev : { ...prev, [id]: value }));
   }, []);
 
   return {
@@ -106,6 +131,8 @@ export function useBundleRuntime<T extends BundleState>(
     environments,
     state,
     stateRef,
+    paramValues,
+    setParam,
     setStageId,
     setViewId,
     toggleEnv,

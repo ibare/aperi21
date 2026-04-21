@@ -1,71 +1,79 @@
 import type {
-  Plugin as SchemaPlugin,
+  HostAPI,
+  Plugin,
+  PluginLogger,
+  RenderContext,
   ScalarComputeFn,
   VectorComputeFn,
 } from '@aperi21/schema';
 import type { ComputeRegistry } from './compute/registry';
 import type { RendererRegistry } from './renderer/registry';
+import { compareSemver, matchesRange, parseRequirement } from './semver';
 
 /**
- * 호스트에서 쓰는 확장 Plugin 인터페이스. `docs/07-plugin-design.md` §2 에 따라
- * schema 의 최소 Plugin 에 수명 주기 훅·의존성·유틸리티 필드를 얹었다.
+ * 호스트에서 쓰는 Plugin 별칭. 과거 host 패키지가 별도 인터페이스를 들고
+ * 있었지만 스펙 일치를 위해 schema.Plugin 을 그대로 재사용한다.
  */
-export interface HostPlugin extends SchemaPlugin {
-  version?: string;
-  zHints?: Record<string, number>;
-  utilities?: Record<string, unknown>;
-  requires?: string[];
-  conflicts?: string[];
-  onRegister?(api: HostAPI): void;
-  onUnregister?(): void;
-}
+export type HostPlugin = Plugin;
 
-export interface Logger {
-  warn(msg: string): void;
-  info(msg: string): void;
-}
+/** Plugin 이 호스트에 남기는 로그 채널. schema 정의 재노출. */
+export type Logger = PluginLogger;
 
 /**
- * Plugin 등록 시 전달되는 호스트 조작 인터페이스. Plugin 은 onRegister 훅에서
- * 이 API 를 통해 추가 등록이나 로깅을 수행한다.
+ * 호스트 서비스 레지스트리. getService 로 노출되는 이름공간.
+ * Plugin 의 onRegister 훅이나 다른 Plugin 이 Controller/Time/Camera 등
+ * 호스트 서비스에 접근할 때 사용한다.
  */
-export interface HostAPI {
-  registerComputeMethod(kind: 'vector', name: string, fn: VectorComputeFn): void;
-  registerComputeMethod(kind: 'scalar', name: string, fn: ScalarComputeFn): void;
-  registerUtility(pluginId: string, key: string, value: unknown): void;
-  getService<T>(id: string): T | undefined;
-  logger: Logger;
+export class ServiceRegistry {
+  private readonly services = new Map<string, unknown>();
+
+  register<T>(id: string, value: T): void {
+    this.services.set(id, value);
+  }
+
+  has(id: string): boolean {
+    return this.services.has(id);
+  }
+
+  get<T = unknown>(id: string): T | undefined {
+    return this.services.get(id) as T | undefined;
+  }
+
+  unregister(id: string): void {
+    this.services.delete(id);
+  }
 }
 
 interface RegistrationRecord {
-  plugin: HostPlugin;
+  plugin: Plugin;
   rendererTypes: string[];
   vectorComputeNames: string[];
   scalarComputeNames: string[];
   utilityKeys: string[];
 }
 
-/** 호스트 입장에서 Plugin 한 개 등록을 관리하는 서브시스템. */
+/** 호스트 입장에서 Plugin 집합을 관리하는 서브시스템. */
 export class PluginManager {
-  private readonly plugins = new Map<string, HostPlugin>();
+  private readonly plugins = new Map<string, Plugin>();
   private readonly records = new Map<string, RegistrationRecord>();
   private readonly utilities = new Map<string, Map<string, unknown>>();
 
   constructor(
     private readonly rendererRegistry: RendererRegistry,
     private readonly computeRegistry: ComputeRegistry,
-    private readonly logger: Logger,
+    private readonly services: ServiceRegistry,
+    private readonly logger: PluginLogger,
   ) {}
 
   has(pluginId: string): boolean {
     return this.plugins.has(pluginId);
   }
 
-  get(pluginId: string): HostPlugin | undefined {
+  get(pluginId: string): Plugin | undefined {
     return this.plugins.get(pluginId);
   }
 
-  list(): HostPlugin[] {
+  list(): Plugin[] {
     return [...this.plugins.values()];
   }
 
@@ -73,16 +81,29 @@ export class PluginManager {
     return this.utilities.get(pluginId)?.get(key) as T | undefined;
   }
 
-  register(plugin: HostPlugin): void {
+  register(plugin: Plugin): void {
     if (this.plugins.has(plugin.id)) {
       throw new Error(`[aperi21] plugin '${plugin.id}' already registered`);
     }
 
-    // 의존성 확인
-    for (const required of plugin.requires ?? []) {
-      if (!this.plugins.has(required)) {
+    if (!plugin.version || typeof plugin.version !== 'string') {
+      throw new Error(
+        `[aperi21] plugin '${plugin.id}' has no version — Plugin.version is required`,
+      );
+    }
+
+    // 의존성·버전 호환 확인
+    for (const raw of plugin.requires ?? []) {
+      const { id, range } = parseRequirement(raw);
+      const existing = this.plugins.get(id);
+      if (!existing) {
         throw new Error(
-          `[aperi21] plugin '${plugin.id}' requires '${required}' which is not registered`,
+          `[aperi21] plugin '${plugin.id}' requires '${id}' which is not registered`,
+        );
+      }
+      if (range && !matchesRange(existing.version, range)) {
+        throw new Error(
+          `[aperi21] plugin '${plugin.id}' requires '${id}' version '${range}' but found '${existing.version}'`,
         );
       }
     }
@@ -165,14 +186,13 @@ export class PluginManager {
         this.utilities.set(plugin.id, bucket);
       }
 
-      // onRegister 훅
+      // onRegister 훅 — 에러 격리: 내부에서 throw 하면 전체 롤백
       plugin.onRegister?.(this.buildHostAPI());
 
       this.plugins.set(plugin.id, plugin);
       this.records.set(plugin.id, record);
-      this.logger.info(`[aperi21] plugin '${plugin.id}' registered`);
+      this.logger.info(`[aperi21] plugin '${plugin.id}@${plugin.version}' registered`);
     } catch (err) {
-      // 전체 롤백
       this.rollback(record);
       throw err;
     }
@@ -197,6 +217,29 @@ export class PluginManager {
     this.records.delete(pluginId);
   }
 
+  /**
+   * 프레임 루프 시작에서 호출. 각 Plugin 의 onFrame 훅에 RenderContext 를
+   * 전달한다. 한 Plugin 의 예외가 다음 Plugin 을 막지 않도록 에러 격리.
+   */
+  runFrameHooks(ctx: RenderContext): void {
+    for (const plugin of this.plugins.values()) {
+      const hook = plugin.onFrame;
+      if (!hook) continue;
+      try {
+        hook.call(plugin, ctx);
+      } catch (err) {
+        this.logger.warn(
+          `[aperi21] plugin '${plugin.id}' onFrame threw: ${
+            err instanceof Error ? err.message : String(err)
+          }`,
+        );
+      }
+    }
+  }
+
+  /** semver 비교를 외부에서 쓸 수 있도록 노출 (테스트·툴링 용도). */
+  static compareVersions = compareSemver;
+
   private rollback(record: RegistrationRecord): void {
     for (const type of record.rendererTypes) {
       this.rendererRegistry.unregister(type);
@@ -215,24 +258,28 @@ export class PluginManager {
   private buildHostAPI(): HostAPI {
     const computeRegistry = this.computeRegistry;
     const utilities = this.utilities;
+    const services = this.services;
     const logger = this.logger;
 
     return {
-      registerComputeMethod(kind: 'vector' | 'scalar', name: string, fn: unknown) {
+      registerComputeMethod(
+        kind: 'vector' | 'scalar',
+        name: string,
+        fn: VectorComputeFn | ScalarComputeFn,
+      ) {
         if (kind === 'vector') {
           computeRegistry.registerVector(name, fn as VectorComputeFn);
         } else {
           computeRegistry.registerScalar(name, fn as ScalarComputeFn);
         }
       },
-      registerUtility(pluginId: string, key: string, value: unknown) {
-        const bucket = utilities.get(pluginId) ?? new Map<string, unknown>();
+      registerUtility(namespace: string, key: string, value: unknown) {
+        const bucket = utilities.get(namespace) ?? new Map<string, unknown>();
         bucket.set(key, value);
-        utilities.set(pluginId, bucket);
+        utilities.set(namespace, bucket);
       },
-      getService<T>(_id: string): T | undefined {
-        // Phase 2 에서 Controller/Time/Camera 서비스가 추가될 때 구현.
-        return undefined;
+      getService<T>(id: string): T | undefined {
+        return services.get<T>(id);
       },
       logger,
     };

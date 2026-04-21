@@ -492,6 +492,21 @@ export type ControllerSpec =
       type: 'placement';                 // 드래그 앤 드롭으로 요소 배치
       binds: { positions: string };      // 배치된 위치 배열 경로
       placeableTypes: string[];
+    }
+  | {
+      /**
+       * 소자·프리미티브에 붙어 값을 편집하는 컨트롤러. MVP 는 DC Circuit
+       * 에서 저항값·기전력 등을 편집하는 용도로 사용.
+       */
+      type: 'value-edit';
+      /** state 상의 값 경로. */
+      binds: { value: string };
+      /** 편집 대상 프리미티브 id. 해당 프리미티브의 screen bbox 위에 UI 가 떠 있음. */
+      target: string;
+      /** 유효 범위. 정의되지 않으면 입력 검증을 하지 않음. */
+      range?: [number, number];
+      unit?: string;
+      label?: LocalizedText;
     };
 
 /** Bundle의 정적 스키마. */
@@ -578,27 +593,79 @@ export interface Bundle<TState extends BundleState = BundleState> {
 
 
 // ========================================================================
-// 14. Plugin 인터페이스
+// 14. Plugin 인터페이스 — docs/07-plugin-design.md §2 기준.
 // ========================================================================
 
-/** 도메인 플러그인이 호스트에 기여하는 것. */
-export interface Plugin {
-  id: string;
-  label: string;
+/** Plugin 이 호스트에 남기는 로그 채널. */
+export interface PluginLogger {
+  warn(msg: string): void;
+  info(msg: string): void;
+}
 
+/**
+ * Plugin 의 생명주기 훅·등록 루틴에서 쓰이는 호스트 조작 인터페이스.
+ * docs/07-plugin-design.md §2 의 HostAPI 정의를 그대로 반영한다.
+ */
+export interface HostAPI {
+  registerComputeMethod(kind: 'vector', name: string, fn: VectorComputeFn): void;
+  registerComputeMethod(kind: 'scalar', name: string, fn: ScalarComputeFn): void;
+  registerUtility(namespace: string, key: string, value: unknown): void;
+  getService<T>(id: string): T | undefined;
+  logger: PluginLogger;
+}
+
+/**
+ * 도메인 플러그인이 호스트에 기여하는 것. docs/07-plugin-design.md §2 의
+ * 전체 계약 (식별 · 코어 확장 · 선택 확장 · 생명주기 훅 · 의존 관계).
+ */
+export interface Plugin {
+  // ---- 식별 ----
+  /** 예: '@aperi21/plugin-optics'. */
+  id: string;
+  /** semver 버전. requires 에서 버전 제약을 맞추는 기준. */
+  version: string;
+  /** 사람이 읽는 이름. 다국어 허용. */
+  label: LocalizedText;
+
+  // ---- 코어 확장 ----
   /** 이 플러그인이 제공하는 프리미티브 타입들. */
   primitiveTypes: readonly string[];
 
-  /** 각 프리미티브의 렌더 함수 (호스트의 렌더 컨텍스트에 그림). */
+  /** 프리미티브 타입 → 렌더 함수 맵. */
   renderers: {
     [type: string]: PrimitiveRenderer;
   };
 
-  /** 플러그인이 추가하는 표준 계산 함수들 (선택). */
+  // ---- 선택적 확장 ----
+  /** 플러그인이 추가하는 표준 계산 함수들. */
   computeMethods?: {
     vector?: Record<string, VectorComputeFn>;
     scalar?: Record<string, ScalarComputeFn>;
   };
+
+  /** 프리미티브 타입별 z-레이어 힌트. 호스트가 최종 결정. */
+  zHints?: Record<string, number>;
+
+  /** Bundle·다른 Plugin 이 호출할 수 있는 도메인 헬퍼. */
+  utilities?: Record<string, unknown>;
+
+  // ---- 생명주기 훅 ----
+  /** 등록 시 1회 호출. HostAPI 로 추가 등록·로깅 가능. */
+  onRegister?(host: HostAPI): void;
+  /** 매 프레임 시작에서 호출. 프레임 스코프 캐시 준비 등. */
+  onFrame?(ctx: RenderContext): void;
+  /** 해제 시 호출. 자원 정리. */
+  onUnregister?(): void;
+
+  // ---- 의존 관계 ----
+  /**
+   * 필요한 다른 Plugin ID. "@aperi21/plugin-em@^1.2" 처럼 semver 제약을
+   * 포함할 수 있다. 제약이 없으면 등록 여부만 검사한다.
+   */
+  requires?: readonly string[];
+
+  /** 함께 로드될 수 없는 Plugin ID 들. */
+  conflicts?: readonly string[];
 }
 
 export type PrimitiveRenderer = (

@@ -1,5 +1,6 @@
 export * from './host';
 export * from './pluginManager';
+export * from './semver';
 export * from './renderer/registry';
 export * from './renderer/primitives';
 export * from './renderer/common';

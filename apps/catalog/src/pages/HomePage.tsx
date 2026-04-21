@@ -29,11 +29,11 @@ export function HomePage() {
         <div className={styles.stats}>
           <span className={`${styles.stat} ${styles.statAccent}`}>
             <strong>{implementedCount}</strong>
-            <span>{t('hero.stat_implemented', { count: implementedCount })}</span>
+            <span>{t('hero.stat_implemented')}</span>
           </span>
           <span className={styles.stat}>
             <strong>{plannedCount}</strong>
-            <span>{t('hero.stat_planned', { count: plannedCount })}</span>
+            <span>{t('hero.stat_planned')}</span>
           </span>
           <span className={styles.statMono}>
             <span>{t('hero.stat_embeds', { min, max })}</span>

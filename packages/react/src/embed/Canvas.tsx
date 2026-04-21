@@ -15,6 +15,8 @@ import type {
 import {
   BackgroundParticleSystem,
   preprocessScene,
+  type Camera,
+  type ControllerEventContext,
   type Host,
   type Viewport,
   type PointerInput,
@@ -121,12 +123,23 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       };
     }
 
+    function makeEventCtx(vp: Viewport): ControllerEventContext {
+      return {
+        viewport: vp,
+        toWorld: (s: Vec2) => host.camera.toWorld(s, vp),
+        toScreen: (w: Vec2) => host.camera.toScreen(w, vp),
+        snapWorld: (w: Vec2) => host.camera.snapWorld(w),
+        scale: host.camera.scale,
+      };
+    }
+
     function findControllerAt(input: PointerInput, viewport: Viewport) {
+      const ec = makeEventCtx(viewport);
       const specs = bundleRef.current.controllers({ state: stateRef.current }) as ControllerSpec[];
       for (const spec of specs) {
         const impl = host.controllerRegistry.get(spec.type);
         if (!impl) continue;
-        if (impl.hitTest(input, viewport, spec, stateRef.current as BundleState)) {
+        if (impl.hitTest(input, ec, spec, stateRef.current as BundleState)) {
           return { spec, impl };
         }
       }
@@ -148,7 +161,12 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       if (!hit?.impl) return;
       canvas!.setPointerCapture(e.pointerId);
       activeController = hit;
-      const patch = hit.impl.onPointerDown(input, vp, hit.spec, stateRef.current as BundleState);
+      const patch = hit.impl.onPointerDown(
+        input,
+        makeEventCtx(vp),
+        hit.spec,
+        stateRef.current as BundleState,
+      );
       applyPartial(patch);
     }
     function onPointerMove(e: PointerEvent) {
@@ -157,7 +175,7 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       const input = toPointerInput(e);
       const patch = activeController.impl.onPointerMove(
         input,
-        vp,
+        makeEventCtx(vp),
         activeController.spec,
         stateRef.current as BundleState,
       );
@@ -169,7 +187,7 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       const input = toPointerInput(e);
       const patch = activeController.impl.onPointerUp(
         input,
-        vp,
+        makeEventCtx(vp),
         activeController.spec,
         stateRef.current as BundleState,
       );
@@ -233,6 +251,11 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       // 배경 입자
       particles.render(ctx, theme);
 
+      // 격자 스냅 모드: 배경 위에 격자 오버레이를 그린다.
+      if (host.camera.gridSnap) {
+        drawGrid(ctx, vp, host.camera);
+      }
+
       // Scene Graph 렌더
       const sceneGraph = bundle.scene({ state: stateRef.current, view });
       const { refs, orderedScene } = preprocessScene(sceneGraph);
@@ -253,6 +276,9 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
         scene: refs,
         measure: createMeasure(ctx, theme.fontFamily),
       };
+
+      // Plugin onFrame 훅 — 렌더 직전에 호출해 Plugin 이 현재 프레임 컨텍스트를 볼 수 있게 함.
+      host.pluginManager.runFrameHooks(rc);
 
       for (const p of sortedScene as Primitive[]) {
         const renderer = host.rendererRegistry.get(p.type);
@@ -298,4 +324,44 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
     touchAction: 'none',
   };
   return <canvas ref={canvasRef} style={style} />;
+}
+
+/**
+ * Camera.gridSize (월드 단위) 배수 격자선을 스크린에 그린다.
+ * 선 밀도는 pxPerStep 이 너무 작아지면 2×, 4× 로 보폭을 키워 과도한 선을 방지.
+ */
+function drawGrid(ctx: CanvasRenderingContext2D, viewport: Viewport, camera: Camera): void {
+  const baseG = Math.max(1e-6, camera.gridSize);
+  let g = baseG;
+  let pxPerStep = g * camera.scale;
+  while (pxPerStep > 0 && pxPerStep < 14) {
+    g *= 2;
+    pxPerStep = g * camera.scale;
+  }
+
+  const topLeft = camera.toWorld([0, 0], viewport);
+  const bottomRight = camera.toWorld([viewport.width, viewport.height], viewport);
+  const xStart = Math.floor(topLeft[0] / g) * g;
+  const xEnd = Math.ceil(bottomRight[0] / g) * g;
+  const yStart = Math.floor(bottomRight[1] / g) * g;
+  const yEnd = Math.ceil(topLeft[1] / g) * g;
+
+  ctx.save();
+  ctx.strokeStyle = 'rgba(128,128,128,0.18)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  for (let x = xStart; x <= xEnd + 1e-9; x += g) {
+    const [sx, sy0] = camera.toScreen([x, yStart], viewport);
+    const [, sy1] = camera.toScreen([x, yEnd], viewport);
+    ctx.moveTo(sx, sy0);
+    ctx.lineTo(sx, sy1);
+  }
+  for (let y = yStart; y <= yEnd + 1e-9; y += g) {
+    const [sx0, sy] = camera.toScreen([xStart, y], viewport);
+    const [sx1] = camera.toScreen([xEnd, y], viewport);
+    ctx.moveTo(sx0, sy);
+    ctx.lineTo(sx1, sy);
+  }
+  ctx.stroke();
+  ctx.restore();
 }

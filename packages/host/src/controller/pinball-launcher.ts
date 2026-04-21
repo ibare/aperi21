@@ -1,7 +1,12 @@
 import type { BundleState, ControllerSpec } from '@aperi21/schema';
 import type { Viewport } from '../camera';
 import { readPath, writePath } from './path';
-import type { ControllerImpl, ControllerRenderContext, PointerInput } from './types';
+import type {
+  ControllerEventContext,
+  ControllerImpl,
+  ControllerRenderContext,
+  PointerInput,
+} from './types';
 
 type PinballSpec = Extract<ControllerSpec, { type: 'pinball-launcher' }>;
 
@@ -133,17 +138,17 @@ export class PinballLauncherController
     ctx.restore();
   }
 
-  hitTest(input: PointerInput, viewport: Viewport): boolean {
-    return inTube(input, computeLayout(viewport));
+  hitTest(input: PointerInput, ctx: ControllerEventContext): boolean {
+    return inTube(input, computeLayout(ctx.viewport));
   }
 
   onPointerDown(
     input: PointerInput,
-    viewport: Viewport,
+    ctx: ControllerEventContext,
     spec: PinballSpec,
     state: BundleState,
   ): Partial<BundleState> | null {
-    const layout = computeLayout(viewport);
+    const layout = computeLayout(ctx.viewport);
     if (!inTube(input, layout)) return null;
     const phase = readPath<string>(state, spec.binds.trigger) ?? 'idle';
     if (phase !== 'idle') {
@@ -161,11 +166,11 @@ export class PinballLauncherController
 
   onPointerMove(
     input: PointerInput,
-    viewport: Viewport,
+    ctx: ControllerEventContext,
     _spec: PinballSpec,
   ): Partial<BundleState> | null {
     if (!this.dragging) return null;
-    const layout = computeLayout(viewport);
+    const layout = computeLayout(ctx.viewport);
     const dy = input.py - this.dragStartY;
     const travel = layout.tubeH - 24;
     this.dragPower = Math.max(0, Math.min(1, dy / travel));
@@ -174,7 +179,7 @@ export class PinballLauncherController
 
   onPointerUp(
     _input: PointerInput,
-    _viewport: Viewport,
+    _ctx: ControllerEventContext,
     spec: PinballSpec,
     state: BundleState,
   ): Partial<BundleState> | null {

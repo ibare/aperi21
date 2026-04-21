@@ -32,8 +32,10 @@ export function CategorySection({
   const [open, setOpen] = useState(defaultOpen);
 
   const totalPhenomena = bundles.reduce((n, b) => n + b.phenomena.length, 0);
-  const readyPhenomena = bundles.reduce(
-    (n, b) => (isBundleImplemented(b.id) ? n + b.phenomena.length : n),
+  // 비율은 번들 단위로 계산 — 현상 수가 아닌 카테고리 내 구현 번들 / 전체 번들.
+  const totalBundles = bundles.length;
+  const readyBundles = bundles.reduce(
+    (n, b) => (isBundleImplemented(b.id) ? n + 1 : n),
     0,
   );
 
@@ -61,9 +63,9 @@ export function CategorySection({
           </span>
         </span>
         <span className={styles.ratio}>
-          <span className={styles.ratioDone}>{readyPhenomena}</span>
+          <span className={styles.ratioDone}>{readyBundles}</span>
           <span className={styles.ratioSep}>/</span>
-          <span className={styles.ratioTotal}>{totalPhenomena}</span>
+          <span className={styles.ratioTotal}>{totalBundles}</span>
         </span>
         <Caret open={open} />
       </button>

@@ -10,12 +10,24 @@ importers:
 
   apps/catalog:
     dependencies:
+      '@aperi21/bundle-dc-circuit':
+        specifier: workspace:*
+        version: link:../../packages/bundle-dc-circuit
       '@aperi21/bundle-projectile':
         specifier: workspace:*
         version: link:../../packages/bundle-projectile
+      '@aperi21/bundle-ray-tracing':
+        specifier: workspace:*
+        version: link:../../packages/bundle-ray-tracing
       '@aperi21/host':
         specifier: workspace:*
         version: link:../../packages/host
+      '@aperi21/plugin-circuit':
+        specifier: workspace:*
+        version: link:../../packages/plugin-circuit
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../packages/plugin-optics
       '@aperi21/react':
         specifier: workspace:*
         version: link:../../packages/react
@@ -54,6 +66,21 @@ importers:
         specifier: ^5.4.11
         version: 5.4.21
 
+  packages/bundle-dc-circuit:
+    devDependencies:
+      '@aperi21/plugin-circuit':
+        specifier: workspace:*
+        version: link:../plugin-circuit
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(jsdom@25.0.1)
+
   packages/bundle-projectile:
     devDependencies:
       '@aperi21/schema':
@@ -66,7 +93,46 @@ importers:
         specifier: ^2.1.9
         version: 2.1.9(jsdom@25.0.1)
 
+  packages/bundle-ray-tracing:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(jsdom@25.0.1)
+
   packages/host:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(jsdom@25.0.1)
+
+  packages/plugin-circuit:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(jsdom@25.0.1)
+
+  packages/plugin-optics:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*

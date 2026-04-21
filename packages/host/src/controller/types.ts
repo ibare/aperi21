@@ -1,4 +1,4 @@
-import type { BundleState, ControllerSpec, RenderContext } from '@aperi21/schema';
+import type { BundleState, ControllerSpec, RenderContext, Vec2 } from '@aperi21/schema';
 import type { Viewport } from '../camera';
 
 /**
@@ -22,6 +22,19 @@ export interface ControllerRenderContext extends RenderContext {
 }
 
 /**
+ * 포인터 이벤트 핸들러가 받는 컨텍스트. viewport 와 화면↔월드 변환 함수를 묶음.
+ * placement 같이 월드 좌표에 값을 저장해야 하는 컨트롤러는 toWorld 를 사용한다.
+ */
+export interface ControllerEventContext {
+  viewport: Viewport;
+  toWorld(screen: Vec2): Vec2;
+  toScreen(world: Vec2): Vec2;
+  /** 격자 스냅 적용(비활성화 시 항등). */
+  snapWorld(world: Vec2): Vec2;
+  scale: number;
+}
+
+/**
  * Controller 구현체. drag 중간 상태(예: dragStart 좌표) 는 인스턴스 내부에 저장할 수
  * 있지만 Bundle state 는 handler 반환값으로만 수정한다.
  */
@@ -32,25 +45,30 @@ export interface ControllerImpl<T extends ControllerSpec = ControllerSpec> {
   render(rc: ControllerRenderContext, spec: T, state: BundleState): void;
 
   /** 포인터가 이 컨트롤러의 히트 영역 안에 있는가. */
-  hitTest(input: PointerInput, viewport: Viewport, spec: T, state: BundleState): boolean;
+  hitTest(
+    input: PointerInput,
+    ctx: ControllerEventContext,
+    spec: T,
+    state: BundleState,
+  ): boolean;
 
   onPointerDown(
     input: PointerInput,
-    viewport: Viewport,
+    ctx: ControllerEventContext,
     spec: T,
     state: BundleState,
   ): Partial<BundleState> | null;
 
   onPointerMove(
     input: PointerInput,
-    viewport: Viewport,
+    ctx: ControllerEventContext,
     spec: T,
     state: BundleState,
   ): Partial<BundleState> | null;
 
   onPointerUp(
     input: PointerInput,
-    viewport: Viewport,
+    ctx: ControllerEventContext,
     spec: T,
     state: BundleState,
   ): Partial<BundleState> | null;
