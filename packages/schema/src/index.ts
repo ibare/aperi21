@@ -234,6 +234,13 @@ export interface Graph extends Omit<BaseMeta, 'style'> {
   showGrid?: boolean;
   horizontal?: boolean;            // bar 전용
   reference?: { value: number; label?: LocalizedText };  // 기준선
+
+  /**
+   * 배치 힌트. 'screen-hud' (기본) 는 호스트가 제공한 HUD 영역에 스크린 좌표로
+   * 렌더. 'world-inline' 은 월드 좌표 anchor 기준 (P-V 다이어그램 등).
+   * Phase 2 는 'screen-hud' 만 구현.
+   */
+  placement?: 'screen-hud' | 'world-inline';
 }
 
 export interface Gauge extends BaseMeta {
@@ -502,10 +509,31 @@ export interface BundleSchema {
   environments: EnvironmentDef[];
   views: ViewDef[];
   plugins?: string[];                    // 예: ['optics', 'em']
+
+  /**
+   * 호스트가 자동으로 생성하는 오버레이 뷰. 기본은 모두 true.
+   * - energy: view.id === 'energy' 일 때 derivedValues(ke, pe, total) 기반
+   *   에너지 바 HUD 를 호스트가 자동 렌더.
+   */
+  autoViews?: {
+    energy?: boolean;
+  };
 }
 
-/** Bundle의 런타임 상태 — Bundle마다 다름. 타입 파라미터로 받음. */
-export type BundleState = Record<string, unknown>;
+/** 월드 좌표 경계 상자 — Camera fitToBounds 에 쓰임. */
+export interface Bounds {
+  minX: number;
+  maxX: number;
+  minY: number;
+  maxY: number;
+}
+
+/**
+ * Bundle 의 런타임 상태 — 구체 타입은 Bundle 마다 다름. 타입 파라미터로 받는다.
+ * `object` 로 느슨하게 제약 — 구체 Bundle 이 자기 state 타입을 주입할 때
+ * index signature 를 강제하지 않기 위함.
+ */
+export type BundleState = object;
 
 /** Bundle이 구현하는 네 함수. */
 export interface Bundle<TState extends BundleState = BundleState> {
@@ -540,6 +568,12 @@ export interface Bundle<TState extends BundleState = BundleState> {
 
   /** 파생값 (에너지 뷰 등 프레임워크 공통 뷰용). */
   derivedValues?(state: TState, stage: StageDef): Record<string, number>;
+
+  /**
+   * Camera 자동 프레이밍 힌트. 사용자가 팬/줌 하기 전까지 호스트가 매 프레임
+   * 이 경계를 사용해 fitToBounds. 없으면 기본 경계(화면 너비 기준) 사용.
+   */
+  boundsHint?(state: TState, stage: StageDef): Bounds;
 }
 
 
@@ -585,27 +619,69 @@ export type ScalarComputeFn = (
   scene: SceneGraphRefs,
 ) => number;
 
-/** 호스트가 렌더러에 제공하는 컨텍스트. */
+/** 텍스트 측정 등 렌더러가 요청하는 보조 서비스. */
+export interface MeasureService {
+  textWidth(text: string, fontSize: number): number;
+  textBounds(text: string, fontSize: number): { width: number; height: number };
+}
+
+/** 호스트가 렌더러에 제공하는 컨텍스트 — docs/06 §3 참조. */
 export interface RenderContext {
   ctx: CanvasRenderingContext2D;
   toScreen(world: Vec2): Vec2;
   toWorld(screen: Vec2): Vec2;
   scale: number;
+  viewport: { width: number; height: number };
   theme: Theme;
   i18n: I18n;
   time: number;
+  deltaTime: number;
+  scene: SceneGraphRefs;
+  measure: MeasureService;
 }
 
 export interface Theme {
   resolveColor(role: ColorRole, emphasis?: 'strong' | 'medium' | 'subtle'): string;
-  backgroundColor: string;
-  textColor: string;
-  lineColor: string;
+  /** 배경(스테이지 기본 배경). */
+  background: string;
+  /** 일반 전경(텍스트·라인). */
+  foreground: string;
+  /** 약한 전경(주석·보조 텍스트). */
+  muted: string;
+  /** 프리미티브 외곽 라인 기본색. */
+  line: string;
+  /** 격자. */
+  grid: string;
+  /** 본문 글꼴 패밀리. */
+  fontFamily: string;
+  /** 모노 글꼴 패밀리 (숫자·라벨). */
+  fontFamilyMono: string;
+  /** 작은 모서리 반경 (px). */
+  radiusSmall: number;
+  /** 중간 모서리 반경 (px). */
+  radiusMedium: number;
+  /** 선 두께 토큰. */
+  strokeWidth: { thin: number; regular: number; thick: number };
+  /**
+   * 구형 호환. 새 코드는 background/foreground/line 을 쓸 것.
+   * @deprecated
+   */
+  backgroundColor?: string;
+  /** @deprecated */
+  textColor?: string;
+  /** @deprecated */
+  lineColor?: string;
 }
 
 export interface I18n {
-  currentLang: string;
+  /** 현재 언어 코드. */
+  lang: string;
   resolve(text: LocalizedText): string;
+  /**
+   * 구형 호환.
+   * @deprecated `lang` 을 사용.
+   */
+  currentLang?: string;
 }
 
 
