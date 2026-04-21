@@ -1,9 +1,15 @@
+import { Camera } from './camera';
 import { ComputeRegistry } from './compute/registry';
 import { gravityVectorField, uniformVectorField } from './compute/standard';
+import { ControllerRegistry } from './controller/types';
+import { AngleDialController } from './controller/angle-dial';
+import { PinballLauncherController } from './controller/pinball-launcher';
 import { I18nResolver, type Dictionary, type HostI18n } from './i18n/resolver';
 import { PluginManager, type HostPlugin, type Logger } from './pluginManager';
+import { CORE_RENDERERS } from './renderer/primitives';
 import { RendererRegistry } from './renderer/registry';
 import { getTheme, type HostTheme, type ThemeMode } from './theme';
+import { LinearTimeEngine, type TimeEngine } from './time';
 
 export interface HostConfig {
   plugins?: HostPlugin[];
@@ -26,14 +32,12 @@ export class Host {
   readonly pluginManager: PluginManager;
   readonly rendererRegistry: RendererRegistry;
   readonly computeRegistry: ComputeRegistry;
+  readonly controllerRegistry: ControllerRegistry;
+  readonly timeEngine: TimeEngine;
+  readonly camera: Camera;
 
   theme: HostTheme;
   i18n: HostI18n;
-
-  // Phase 2+ 에 추가될 서브시스템을 위한 자리.
-  // controllerRegistry?: ControllerRegistry;
-  // timeEngine?: TimeEngine;
-  // camera?: Camera;
 
   private readonly logger: Logger;
   private themeMode: ThemeMode;
@@ -48,6 +52,18 @@ export class Host {
       this.computeRegistry,
       this.logger,
     );
+    this.controllerRegistry = new ControllerRegistry();
+    this.timeEngine = new LinearTimeEngine();
+    this.camera = new Camera();
+
+    // 코어 렌더러 등록
+    for (const [type, renderer] of Object.entries(CORE_RENDERERS)) {
+      this.rendererRegistry.register(type, renderer);
+    }
+
+    // 코어 컨트롤러 등록
+    this.controllerRegistry.register(new PinballLauncherController());
+    this.controllerRegistry.register(new AngleDialController());
 
     // 코어 표준 compute 메서드 등록
     this.computeRegistry.registerVector('uniform', uniformVectorField);
