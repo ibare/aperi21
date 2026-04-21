@@ -1,0 +1,134 @@
+.bundle {
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: border-color var(--duration-fast) var(--ease);
+}
+
+.bundle:hover {
+  border-color: var(--border-strong);
+}
+
+.header {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-4) var(--space-5);
+  text-align: left;
+  transition: background-color var(--duration-fast) var(--ease);
+}
+
+.header:hover {
+  background: var(--surface-raised-hover);
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--fg-subtle);
+  opacity: 0.45;
+}
+
+.bundle[data-ready='yes'] .dot {
+  background: var(--accent);
+  opacity: 1;
+}
+
+.headline {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.label {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.count {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--fg-subtle);
+}
+
+.meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--fg-subtle);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.operation {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 32ch;
+}
+
+.sep {
+  opacity: 0.5;
+}
+
+.timeModel {
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+.caret {
+  color: var(--fg-subtle);
+  transition: transform var(--duration-normal) var(--ease);
+}
+
+.body {
+  padding: 0 var(--space-5) var(--space-5);
+  animation: slideDown var(--duration-normal) var(--ease);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .meta {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .header {
+    grid-template-columns: auto 1fr auto;
+    padding: var(--space-3) var(--space-4);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

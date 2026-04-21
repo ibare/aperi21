@@ -1,0 +1,52 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--fg-muted);
+  white-space: nowrap;
+  transition: all var(--duration-fast) var(--ease);
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.neutral {
+  /* default */
+}
+
+.mono {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--fg-subtle);
+}
+
+.accent {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.soon {
+  background: transparent;
+  color: var(--fg-subtle);
+  border-color: var(--border);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.65rem;
+}
+
+.success {
+  background: color-mix(in srgb, var(--success) 16%, transparent);
+  color: var(--success);
+  border-color: color-mix(in srgb, var(--success) 30%, transparent);
+}

@@ -1,0 +1,50 @@
+{
+  "site": {
+    "title": "aperi21",
+    "subtitle": "물리 카탈로그",
+    "tagline": "aperi21 · Physics Visualization Catalog",
+    "locale": "KO"
+  },
+  "hero": {
+    "title_line1": "물리 세상의 현상을",
+    "title_line2": "직접 만지는 형태로",
+    "description": "LLM이 생성한 설명문 안에 끼어드는 29개의 인터랙션 묶음. 각 묶음은 공통된 조작 언어와 시간 모델을 공유하며, 고등학교에서 대학 1학년 수준의 물리 범위를 덮는다.",
+    "stat_implemented": "{{count}}개 구현 완료",
+    "stat_planned": "{{count}}개 묶음 예정",
+    "stat_embeds": "임베드 {{min}}~{{max}}개 예상"
+  },
+  "badges": {
+    "soon": "SOON",
+    "implemented": "구현됨",
+    "locked": "잠김",
+    "count_bundles": "{{count}}개 묶음",
+    "count_phenomena": "{{count}}개 현상",
+    "ratio": "{{done}}/{{total}}"
+  },
+  "sections": {
+    "catalog_heading": "카탈로그 인덱스",
+    "catalog_description": "7개 카테고리로 분류된 29개 묶음. 모든 항목은 현재 SOON 상태이며, 별도 패키지로 순차 공개된다.",
+    "time_model": "시간 모델",
+    "operation": "조작 언어",
+    "phenomena": "포함 현상",
+    "parameters": "파라미터",
+    "stages": "스테이지",
+    "environments": "환경 조건"
+  },
+  "header": {
+    "toggle_theme_light": "라이트 모드로 전환",
+    "toggle_theme_dark": "다크 모드로 전환",
+    "toggle_language": "언어 전환 (향후 지원)"
+  },
+  "bundle_detail": {
+    "back": "← 카탈로그로 돌아가기",
+    "placeholder_title": "곧 공개",
+    "placeholder_body": "이 묶음의 시각화는 별도 패키지로 준비 중이다. 카탈로그 인덱스에 먼저 자리를 마련해두고, 향후 @aperi21/{{id}} 형태로 통합될 예정이다.",
+    "not_found": "해당 묶음을 찾을 수 없습니다."
+  },
+  "notfound": {
+    "title": "페이지를 찾을 수 없음",
+    "description": "요청한 경로가 존재하지 않습니다.",
+    "home_link": "홈으로 돌아가기"
+  }
+}
