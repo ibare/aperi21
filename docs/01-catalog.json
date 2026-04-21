@@ -1,0 +1,665 @@
+{
+  "version": "0.1",
+  "name": "aperi21-catalog",
+  "description": "aperi21 묶음 카탈로그. 29개 묶음, 고등학교~대학 1학년 물리 범위.",
+
+  "categories": {
+    "mechanics": "역학",
+    "waves": "파동·진동",
+    "optics": "광학",
+    "thermodynamics": "열역학",
+    "electromagnetism": "전자기",
+    "fluids": "유체",
+    "modern": "현대물리"
+  },
+
+  "timeModels": {
+    "linear": "발사-착지 같은 일회성 선형 시간",
+    "periodic": "주기적 반복, 끝이 없음",
+    "orbit": "순환 궤도 또는 열린 궤도",
+    "continuous": "연속적 변화, 평형으로 수렴",
+    "steady_state": "정상 상태 (과도 응답 포함 가능)",
+    "static": "시간 축 없음 (정적 기하)",
+    "quasistatic": "준정적 상태 변화",
+    "statistical": "통계적 누적 시간",
+    "discrete": "이산 이벤트"
+  },
+
+  "bundles": [
+    {
+      "id": "projectile",
+      "label": "발사체",
+      "category": "mechanics",
+      "operation": "각도 다이얼 + 핀볼 런처",
+      "timeModel": "linear",
+      "parameters": [
+        { "id": "v0",    "label": "초기 속도",  "unit": "m/s" },
+        { "id": "theta", "label": "발사각",    "unit": "°" }
+      ],
+      "stages": [
+        { "id": "earth",  "label": "지구", "desc": "g=9.8, 대기 有" },
+        { "id": "moon",   "label": "달",  "desc": "g=1.6, 대기 無" },
+        { "id": "vacuum", "label": "우주","desc": "g=0, 진공" }
+      ],
+      "environments": [
+        { "id": "rain",     "label": "비",     "desc": "공기저항 추가" },
+        { "id": "headwind", "label": "앞바람", "desc": "수평 반대 방향 힘" },
+        { "id": "tailwind", "label": "뒷바람", "desc": "수평 같은 방향 힘" }
+      ],
+      "phenomena": ["포물선 운동", "자유낙하", "수평 투사", "수직 투사", "경사면 발사"],
+      "embedEstimate": { "min": 20, "max": 30 },
+      "notes": "aperi21 프로토타입 묶음. v3 데모 구현됨."
+    },
+
+    {
+      "id": "oscillation",
+      "label": "주기 진동",
+      "category": "mechanics",
+      "operation": "추/질량을 드래그해서 초기 변위 설정 후 놓기",
+      "timeModel": "periodic",
+      "parameters": [
+        { "id": "L",     "label": "길이 또는 강성", "unit": "m | N/m" },
+        { "id": "m",     "label": "질량",           "unit": "kg" },
+        { "id": "x0",    "label": "초기 변위",      "unit": "m | rad" },
+        { "id": "gamma", "label": "감쇠계수",      "unit": "1/s" },
+        { "id": "fd",    "label": "외력 주파수",   "unit": "Hz" }
+      ],
+      "stages": [
+        { "id": "earth",   "label": "지구",   "desc": "g=9.8" },
+        { "id": "moon",    "label": "달",    "desc": "g=1.6" },
+        { "id": "jupiter", "label": "목성",  "desc": "g=24.8" }
+      ],
+      "environments": [
+        { "id": "air_damping",    "label": "공기저항", "desc": "진폭이 지수적으로 감쇠" },
+        { "id": "driving_force",  "label": "외력",    "desc": "주기적 강제 진동" }
+      ],
+      "phenomena": ["단진자", "용수철 진동", "물리 진자", "감쇠 진동", "강제 진동", "공명"],
+      "embedEstimate": { "min": 25, "max": 35 }
+    },
+
+    {
+      "id": "circular_motion",
+      "label": "원운동",
+      "category": "mechanics",
+      "operation": "반지름 + 각속도 슬라이더",
+      "timeModel": "periodic",
+      "parameters": [
+        { "id": "r",     "label": "반지름", "unit": "m" },
+        { "id": "omega", "label": "각속도", "unit": "rad/s" },
+        { "id": "m",     "label": "질량",   "unit": "kg" }
+      ],
+      "stages": [],
+      "environments": [],
+      "phenomena": ["등속 원운동", "구심가속도", "원뿔 진자", "회전체"],
+      "embedEstimate": { "min": 10, "max": 15 },
+      "notes": "oscillation과 병합 검토 필요 — 수학적으로 같은 sinusoidal 표현."
+    },
+
+    {
+      "id": "central_force_orbit",
+      "label": "중심력 궤도",
+      "category": "mechanics",
+      "operation": "초기 위치 배치 + 초기 속도 벡터를 2D 드래그로 그리기",
+      "timeModel": "orbit",
+      "parameters": [
+        { "id": "M",  "label": "중심 질량",     "unit": "kg" },
+        { "id": "r0", "label": "초기 위치 벡터","unit": "m" },
+        { "id": "v0", "label": "초기 속도 벡터","unit": "m/s" }
+      ],
+      "stages": [
+        { "id": "solar_system", "label": "태양계",  "desc": "단일 중심 질량" },
+        { "id": "binary",       "label": "쌍성계",  "desc": "두 중심" },
+        { "id": "blackhole",    "label": "블랙홀 근처", "desc": "극단적 중력" }
+      ],
+      "environments": [
+        { "id": "perturbation", "label": "섭동",     "desc": "다른 천체의 영향" },
+        { "id": "gas_drag",     "label": "성간 가스","desc": "궤도 감쇠" }
+      ],
+      "phenomena": ["행성 궤도", "위성 운동", "케플러 법칙", "중심력 일반", "탈출 속도", "쌍곡선 궤도"],
+      "embedEstimate": { "min": 15, "max": 20 }
+    },
+
+    {
+      "id": "collision",
+      "label": "충돌",
+      "category": "mechanics",
+      "operation": "두 물체의 초기 속도·질량 설정 후 놓기",
+      "timeModel": "linear",
+      "parameters": [
+        { "id": "m1", "label": "물체 1 질량", "unit": "kg" },
+        { "id": "m2", "label": "물체 2 질량", "unit": "kg" },
+        { "id": "v1", "label": "물체 1 속도", "unit": "m/s" },
+        { "id": "v2", "label": "물체 2 속도", "unit": "m/s" },
+        { "id": "e",  "label": "반발계수",    "unit": "-" }
+      ],
+      "stages": [],
+      "environments": [],
+      "phenomena": ["1D 충돌", "2D 충돌", "탄성 충돌", "비탄성 충돌", "완전비탄성", "운동량 보존"],
+      "embedEstimate": { "min": 10, "max": 15 }
+    },
+
+    {
+      "id": "inclined_plane",
+      "label": "경사면·마찰",
+      "category": "mechanics",
+      "operation": "경사각 + 물체 초기 위치 드래그",
+      "timeModel": "linear",
+      "parameters": [
+        { "id": "alpha", "label": "경사각",      "unit": "°" },
+        { "id": "mu_s",  "label": "정지마찰계수","unit": "-" },
+        { "id": "mu_k",  "label": "운동마찰계수","unit": "-" },
+        { "id": "m",     "label": "질량",        "unit": "kg" }
+      ],
+      "stages": [
+        { "id": "earth", "label": "지구" },
+        { "id": "moon",  "label": "달" }
+      ],
+      "environments": [],
+      "phenomena": ["경사면 미끄러짐", "마찰 한계각", "정지·운동 마찰 전환"],
+      "embedEstimate": { "min": 8, "max": 12 }
+    },
+
+    {
+      "id": "rigid_rotation",
+      "label": "강체 회전",
+      "category": "mechanics",
+      "operation": "회전축 위치 + 토크 적용",
+      "timeModel": "periodic",
+      "parameters": [
+        { "id": "I",     "label": "관성 모멘트", "unit": "kg·m²" },
+        { "id": "tau",   "label": "토크",        "unit": "N·m" },
+        { "id": "omega", "label": "각속도",      "unit": "rad/s" }
+      ],
+      "stages": [],
+      "environments": [
+        { "id": "friction", "label": "축 마찰", "desc": "회전 감쇠" }
+      ],
+      "phenomena": ["회전운동", "각운동량 보존", "회전 에너지", "지렛대", "도르래", "관성 모멘트"],
+      "embedEstimate": { "min": 10, "max": 15 }
+    },
+
+    {
+      "id": "wave_1d",
+      "label": "1D 파동",
+      "category": "waves",
+      "operation": "파장·진폭·주파수 슬라이더, 경계 조건 선택",
+      "timeModel": "continuous",
+      "parameters": [
+        { "id": "lambda", "label": "파장",     "unit": "m" },
+        { "id": "A",      "label": "진폭",     "unit": "m" },
+        { "id": "f",      "label": "주파수",   "unit": "Hz" },
+        { "id": "v",      "label": "파동 속도","unit": "m/s" }
+      ],
+      "stages": [
+        { "id": "fixed_ends",  "label": "양 끝 고정",  "desc": "현의 진동" },
+        { "id": "free_ends",   "label": "양 끝 자유",  "desc": "관의 진동" },
+        { "id": "mixed",       "label": "한쪽 고정",   "desc": "비대칭 경계" }
+      ],
+      "environments": [
+        { "id": "damping", "label": "감쇠", "desc": "매질 저항" }
+      ],
+      "phenomena": ["진행파", "정상파", "현의 기본 진동", "반사와 투과", "맥놀이"],
+      "embedEstimate": { "min": 15, "max": 20 }
+    },
+
+    {
+      "id": "wave_2d",
+      "label": "2D 파동 전파",
+      "category": "waves",
+      "operation": "파원 위치 배치 + 주파수 설정",
+      "timeModel": "continuous",
+      "parameters": [
+        { "id": "f",        "label": "주파수",    "unit": "Hz" },
+        { "id": "v_medium", "label": "매질 속도", "unit": "m/s" },
+        { "id": "n_sources","label": "파원 수",   "unit": "-" }
+      ],
+      "stages": [],
+      "environments": [
+        { "id": "moving_source", "label": "파원 이동", "desc": "도플러 효과" }
+      ],
+      "phenomena": ["수면파", "도플러 효과", "파원 이동", "호이겐스 원리"],
+      "embedEstimate": { "min": 10, "max": 15 }
+    },
+
+    {
+      "id": "interference",
+      "label": "간섭·회절",
+      "category": "waves",
+      "operation": "슬릿 간격·폭·수 조정, 파장 조정",
+      "timeModel": "steady_state",
+      "parameters": [
+        { "id": "d",       "label": "슬릿 간격", "unit": "μm" },
+        { "id": "a",       "label": "슬릿 폭",   "unit": "μm" },
+        { "id": "lambda",  "label": "파장",     "unit": "nm" },
+        { "id": "n_slits", "label": "슬릿 수",  "unit": "-" }
+      ],
+      "stages": [],
+      "environments": [],
+      "phenomena": ["이중슬릿", "단일슬릿 회절", "회절 격자", "다중 파원 간섭"],
+      "embedEstimate": { "min": 8, "max": 12 }
+    },
+
+    {
+      "id": "fourier_synthesis",
+      "label": "푸리에 합성",
+      "category": "waves",
+      "operation": "고조파 성분의 진폭·위상을 슬라이더로 조합",
+      "timeModel": "periodic",
+      "parameters": [
+        { "id": "harmonics", "label": "고조파 진폭·위상", "unit": "-" },
+        { "id": "f0",        "label": "기본 주파수",       "unit": "Hz" }
+      ],
+      "stages": [
+        { "id": "square",   "label": "구형파 목표" },
+        { "id": "triangle", "label": "삼각파 목표" },
+        { "id": "sawtooth", "label": "톱니파 목표" },
+        { "id": "free",     "label": "자유 합성" }
+      ],
+      "environments": [],
+      "phenomena": ["구형파 합성", "삼각파 합성", "톱니파 합성", "악기 배음 구조"],
+      "embedEstimate": { "min": 6, "max": 10 }
+    },
+
+    {
+      "id": "ray_tracing",
+      "label": "광선 추적",
+      "category": "optics",
+      "operation": "광원/물체 위치 드래그, 매질·렌즈·거울 배치",
+      "timeModel": "static",
+      "parameters": [
+        { "id": "object_pos","label": "물체 위치", "unit": "m" },
+        { "id": "n",         "label": "굴절률",   "unit": "-" },
+        { "id": "R",         "label": "곡률반경", "unit": "m" },
+        { "id": "f",         "label": "초점거리", "unit": "m" }
+      ],
+      "stages": [
+        { "id": "flat_mirror",    "label": "평면 거울" },
+        { "id": "concave_mirror", "label": "오목 거울" },
+        { "id": "convex_mirror",  "label": "볼록 거울" },
+        { "id": "convex_lens",    "label": "볼록 렌즈" },
+        { "id": "concave_lens",   "label": "오목 렌즈" },
+        { "id": "prism",          "label": "프리즘" }
+      ],
+      "environments": [
+        { "id": "water",  "label": "물 속",   "desc": "n=1.33" },
+        { "id": "glass",  "label": "유리 속", "desc": "n=1.5" }
+      ],
+      "phenomena": ["반사", "굴절", "전반사", "거울 결상", "렌즈 결상", "프리즘 분산"],
+      "embedEstimate": { "min": 20, "max": 30 },
+      "notes": "시간 축이 없는 유일한 구조 — 2D 에디터에 가까움. 다른 묶음과 조작 패러다임이 가장 다름."
+    },
+
+    {
+      "id": "polarization",
+      "label": "편광",
+      "category": "optics",
+      "operation": "편광자 회전, 입사광 편광 상태 설정",
+      "timeModel": "continuous",
+      "parameters": [
+        { "id": "angle",    "label": "편광자 각도",    "unit": "°" },
+        { "id": "pol_type", "label": "입사광 편광 상태","unit": "-" }
+      ],
+      "stages": [],
+      "environments": [],
+      "phenomena": ["선형 편광", "원편광", "말러스 법칙", "편광자 직렬"],
+      "embedEstimate": { "min": 5, "max": 8 }
+    },
+
+    {
+      "id": "ideal_gas",
+      "label": "기체 상태",
+      "category": "thermodynamics",
+      "operation": "부피·온도·압력 중 두 개 조작, 나머지 파생",
+      "timeModel": "quasistatic",
+      "parameters": [
+        { "id": "P", "label": "압력", "unit": "Pa" },
+        { "id": "V", "label": "부피", "unit": "L" },
+        { "id": "T", "label": "온도", "unit": "K" },
+        { "id": "n", "label": "몰 수", "unit": "mol" }
+      ],
+      "stages": [
+        { "id": "isothermal", "label": "등온 과정" },
+        { "id": "adiabatic",  "label": "단열 과정" },
+        { "id": "isobaric",   "label": "등압 과정" },
+        { "id": "isochoric",  "label": "등적 과정" }
+      ],
+      "environments": [],
+      "phenomena": ["보일 법칙", "샤를 법칙", "게이뤼삭 법칙", "이상기체 방정식", "등온 과정", "단열 과정"],
+      "embedEstimate": { "min": 10, "max": 15 }
+    },
+
+    {
+      "id": "kinetic_theory",
+      "label": "분자 운동론",
+      "category": "thermodynamics",
+      "operation": "분자 수·온도 설정, 부피 변화",
+      "timeModel": "statistical",
+      "parameters": [
+        { "id": "N", "label": "분자 수",   "unit": "-" },
+        { "id": "T", "label": "온도",     "unit": "K" },
+        { "id": "V", "label": "부피",     "unit": "L" }
+      ],
+      "stages": [],
+      "environments": [],
+      "phenomena": ["속도 분포", "온도-운동에너지", "브라운 운동", "확산"],
+      "embedEstimate": { "min": 8, "max": 12 },
+      "notes": "다체 시뮬레이션 — 프로토콜 확장 가능성 영역."
+    },
+
+    {
+      "id": "heat_transfer",
+      "label": "열전달",
+      "category": "thermodynamics",
+      "operation": "온도·재질·경계 조건 설정",
+      "timeModel": "continuous",
+      "parameters": [
+        { "id": "T_hot",   "label": "고온",       "unit": "°C" },
+        { "id": "T_cold",  "label": "저온",       "unit": "°C" },
+        { "id": "k",       "label": "열전도도",   "unit": "W/m·K" },
+        { "id": "L",       "label": "두께",       "unit": "m" }
+      ],
+      "stages": [
+        { "id": "conduction", "label": "전도" },
+        { "id": "convection", "label": "대류" },
+        { "id": "radiation",  "label": "복사" }
+      ],
+      "environments": [
+        { "id": "insulation", "label": "단열재" }
+      ],
+      "phenomena": ["열전도", "대류", "복사", "열평형 도달", "단열"],
+      "embedEstimate": { "min": 8, "max": 12 },
+      "notes": "격자 기반 연속체 시뮬레이션 — 프로토콜 확장 가능성 영역."
+    },
+
+    {
+      "id": "heat_engine",
+      "label": "열기관",
+      "category": "thermodynamics",
+      "operation": "사이클 단계별 설정",
+      "timeModel": "periodic",
+      "parameters": [
+        { "id": "T_hot",  "label": "고온원 온도", "unit": "K" },
+        { "id": "T_cold", "label": "저온원 온도", "unit": "K" }
+      ],
+      "stages": [
+        { "id": "carnot", "label": "카르노 사이클" },
+        { "id": "otto",   "label": "오토 사이클" },
+        { "id": "diesel", "label": "디젤 사이클" }
+      ],
+      "environments": [],
+      "phenomena": ["카르노 사이클", "오토 사이클", "디젤 사이클", "효율 계산", "엔트로피 변화"],
+      "embedEstimate": { "min": 6, "max": 10 }
+    },
+
+    {
+      "id": "electric_field",
+      "label": "전기장",
+      "category": "electromagnetism",
+      "operation": "전하 배치 (드래그), 크기·부호 설정",
+      "timeModel": "static",
+      "parameters": [
+        { "id": "charges", "label": "전하 배열", "unit": "C" }
+      ],
+      "stages": [
+        { "id": "vacuum",     "label": "진공" },
+        { "id": "dielectric", "label": "유전체 속" }
+      ],
+      "environments": [],
+      "phenomena": ["점전하 장", "쌍극자", "전기장선", "전위", "등전위면"],
+      "embedEstimate": { "min": 15, "max": 20 },
+      "notes": "장 시각화 — 프로토콜 확장 가능성 영역."
+    },
+
+    {
+      "id": "dc_circuit",
+      "label": "DC 회로",
+      "category": "electromagnetism",
+      "operation": "소자(저항·전지·축전기)를 배치·연결·값 조정",
+      "timeModel": "steady_state",
+      "parameters": [
+        { "id": "R", "label": "저항",     "unit": "Ω" },
+        { "id": "V", "label": "전압",     "unit": "V" },
+        { "id": "C", "label": "축전용량", "unit": "F" }
+      ],
+      "stages": [
+        { "id": "series",   "label": "직렬" },
+        { "id": "parallel", "label": "병렬" },
+        { "id": "mixed",    "label": "혼합" }
+      ],
+      "environments": [
+        { "id": "temperature", "label": "온도 변화", "desc": "저항의 온도 의존성" }
+      ],
+      "phenomena": ["옴의 법칙", "직렬·병렬", "키르히호프 법칙", "RC 충전·방전", "전력·줄열"],
+      "embedEstimate": { "min": 20, "max": 30 }
+    },
+
+    {
+      "id": "ac_circuit",
+      "label": "AC 회로",
+      "category": "electromagnetism",
+      "operation": "주파수·진폭·소자 값 조정",
+      "timeModel": "periodic",
+      "parameters": [
+        { "id": "f", "label": "주파수",   "unit": "Hz" },
+        { "id": "V", "label": "진폭",     "unit": "V" },
+        { "id": "R", "label": "저항",     "unit": "Ω" },
+        { "id": "L", "label": "인덕턴스", "unit": "H" },
+        { "id": "C", "label": "축전용량", "unit": "F" }
+      ],
+      "stages": [
+        { "id": "rl",  "label": "RL 회로" },
+        { "id": "rc",  "label": "RC 회로" },
+        { "id": "rlc", "label": "RLC 회로" }
+      ],
+      "environments": [],
+      "phenomena": ["임피던스", "위상차", "공명", "페이저", "변압기"],
+      "embedEstimate": { "min": 10, "max": 15 }
+    },
+
+    {
+      "id": "magnetic_field",
+      "label": "자기장",
+      "category": "electromagnetism",
+      "operation": "전류 배치·방향·크기, 자석 배치",
+      "timeModel": "static",
+      "parameters": [
+        { "id": "I", "label": "전류",     "unit": "A" },
+        { "id": "N", "label": "권수",     "unit": "-" },
+        { "id": "B", "label": "자기장 세기", "unit": "T" }
+      ],
+      "stages": [
+        { "id": "straight_wire", "label": "직선 전류" },
+        { "id": "circular_loop", "label": "원형 고리" },
+        { "id": "solenoid",      "label": "솔레노이드" },
+        { "id": "bar_magnet",    "label": "막대자석" }
+      ],
+      "environments": [],
+      "phenomena": ["직선 전류 자기장", "원형 전류", "솔레노이드", "자기장선"],
+      "embedEstimate": { "min": 10, "max": 15 },
+      "notes": "장 시각화 — 프로토콜 확장 가능성 영역."
+    },
+
+    {
+      "id": "em_induction",
+      "label": "전자기 유도",
+      "category": "electromagnetism",
+      "operation": "자석 또는 코일 이동, 자기장 변화",
+      "timeModel": "continuous",
+      "parameters": [
+        { "id": "B",     "label": "자기장",    "unit": "T" },
+        { "id": "v",     "label": "이동 속도", "unit": "m/s" },
+        { "id": "N",     "label": "코일 권수", "unit": "-" },
+        { "id": "A",     "label": "코일 면적", "unit": "m²" }
+      ],
+      "stages": [
+        { "id": "moving_magnet",    "label": "자석 이동" },
+        { "id": "moving_coil",      "label": "코일 이동" },
+        { "id": "changing_current", "label": "전류 변화" }
+      ],
+      "environments": [],
+      "phenomena": ["패러데이 법칙", "렌츠 법칙", "발전기", "유도 전류", "상호 유도"],
+      "embedEstimate": { "min": 10, "max": 15 }
+    },
+
+    {
+      "id": "charged_particle",
+      "label": "하전 입자 운동",
+      "category": "electromagnetism",
+      "operation": "입자 초기 속도 설정 + 외부 장(E, B) 설정",
+      "timeModel": "continuous",
+      "parameters": [
+        { "id": "q",  "label": "전하",       "unit": "C" },
+        { "id": "m",  "label": "질량",       "unit": "kg" },
+        { "id": "v0", "label": "초기 속도",  "unit": "m/s" },
+        { "id": "E",  "label": "전기장",     "unit": "V/m" },
+        { "id": "B",  "label": "자기장",     "unit": "T" }
+      ],
+      "stages": [
+        { "id": "E_only",  "label": "전기장만" },
+        { "id": "B_only",  "label": "자기장만" },
+        { "id": "crossed", "label": "E × B 직교" }
+      ],
+      "environments": [],
+      "phenomena": ["로런츠 힘", "사이클로트론", "질량 분석기", "속도 선택기"],
+      "embedEstimate": { "min": 6, "max": 10 }
+    },
+
+    {
+      "id": "hydrostatics",
+      "label": "정수역학",
+      "category": "fluids",
+      "operation": "물체 배치, 밀도·부피 조정",
+      "timeModel": "static",
+      "parameters": [
+        { "id": "rho_obj",    "label": "물체 밀도",  "unit": "kg/m³" },
+        { "id": "rho_fluid",  "label": "유체 밀도",  "unit": "kg/m³" },
+        { "id": "V",          "label": "부피",       "unit": "m³" },
+        { "id": "depth",      "label": "깊이",       "unit": "m" }
+      ],
+      "stages": [
+        { "id": "water",   "label": "물" },
+        { "id": "oil",     "label": "기름" },
+        { "id": "mercury", "label": "수은" }
+      ],
+      "environments": [],
+      "phenomena": ["부력", "아르키메데스", "파스칼 원리", "수압"],
+      "embedEstimate": { "min": 6, "max": 10 }
+    },
+
+    {
+      "id": "fluid_flow",
+      "label": "유체 흐름",
+      "category": "fluids",
+      "operation": "단면적·속도 설정, 경로 배치",
+      "timeModel": "steady_state",
+      "parameters": [
+        { "id": "A",  "label": "단면적", "unit": "m²" },
+        { "id": "v",  "label": "속도",   "unit": "m/s" },
+        { "id": "P",  "label": "압력",   "unit": "Pa" },
+        { "id": "rho","label": "밀도",   "unit": "kg/m³" }
+      ],
+      "stages": [],
+      "environments": [],
+      "phenomena": ["연속 방정식", "베르누이 원리", "벤츄리 효과", "관 속 흐름"],
+      "embedEstimate": { "min": 5, "max": 8 }
+    },
+
+    {
+      "id": "atomic_spectrum",
+      "label": "원자 스펙트럼",
+      "category": "modern",
+      "operation": "에너지 준위 간 전이 선택",
+      "timeModel": "discrete",
+      "parameters": [
+        { "id": "n_from", "label": "시작 준위", "unit": "-" },
+        { "id": "n_to",   "label": "도착 준위", "unit": "-" }
+      ],
+      "stages": [
+        { "id": "hydrogen",  "label": "수소" },
+        { "id": "helium",    "label": "헬륨" },
+        { "id": "sodium",    "label": "나트륨" }
+      ],
+      "environments": [],
+      "phenomena": ["보어 모형", "수소 스펙트럼", "라이먼 계열", "발머 계열", "파셴 계열", "흡수·방출"],
+      "embedEstimate": { "min": 5, "max": 8 }
+    },
+
+    {
+      "id": "radioactive_decay",
+      "label": "방사성 붕괴",
+      "category": "modern",
+      "operation": "초기 원자 수, 반감기 설정",
+      "timeModel": "statistical",
+      "parameters": [
+        { "id": "N0",         "label": "초기 수",   "unit": "-" },
+        { "id": "half_life",  "label": "반감기",    "unit": "s | y" }
+      ],
+      "stages": [],
+      "environments": [],
+      "phenomena": ["지수적 감소", "반감기 그래프", "붕괴 계열", "탄소 연대 측정"],
+      "embedEstimate": { "min": 4, "max": 6 }
+    },
+
+    {
+      "id": "photoelectric",
+      "label": "광전효과",
+      "category": "modern",
+      "operation": "빛의 파장·강도, 금속 선택",
+      "timeModel": "discrete",
+      "parameters": [
+        { "id": "lambda",    "label": "파장",   "unit": "nm" },
+        { "id": "intensity", "label": "강도",   "unit": "W/m²" },
+        { "id": "W",         "label": "일함수", "unit": "eV" }
+      ],
+      "stages": [
+        { "id": "cesium",   "label": "세슘" },
+        { "id": "sodium",   "label": "나트륨" },
+        { "id": "tungsten", "label": "텅스텐" }
+      ],
+      "environments": [],
+      "phenomena": ["광전효과", "컴프턴 산란", "광자 개념", "문턱 진동수"],
+      "embedEstimate": { "min": 4, "max": 6 }
+    },
+
+    {
+      "id": "wave_particle_duality",
+      "label": "파동-입자 이중성",
+      "category": "modern",
+      "operation": "입자 에너지 설정, 슬릿 배치, 누적 관찰",
+      "timeModel": "statistical",
+      "parameters": [
+        { "id": "E",      "label": "입자 에너지", "unit": "eV" },
+        { "id": "d",      "label": "슬릿 간격",   "unit": "nm" },
+        { "id": "n_hits", "label": "누적 입자 수","unit": "-" }
+      ],
+      "stages": [
+        { "id": "electron", "label": "전자" },
+        { "id": "photon",   "label": "광자" }
+      ],
+      "environments": [],
+      "phenomena": ["물질파", "드브로이 파장", "이중슬릿 입자 버전", "확률 분포"],
+      "embedEstimate": { "min": 3, "max": 5 }
+    }
+  ],
+
+  "summary": {
+    "totalBundles": 29,
+    "totalEmbedEstimate": { "min": 299, "max": 440 },
+    "byCategory": {
+      "mechanics":        { "bundles": 7, "embeds": { "min": 98,  "max": 142 } },
+      "waves":            { "bundles": 4, "embeds": { "min": 39,  "max": 57 } },
+      "optics":           { "bundles": 2, "embeds": { "min": 25,  "max": 38 } },
+      "thermodynamics":   { "bundles": 4, "embeds": { "min": 32,  "max": 49 } },
+      "electromagnetism": { "bundles": 6, "embeds": { "min": 71,  "max": 105 } },
+      "fluids":           { "bundles": 2, "embeds": { "min": 11,  "max": 18 } },
+      "modern":           { "bundles": 4, "embeds": { "min": 16,  "max": 25 } }
+    }
+  },
+
+  "openQuestions": [
+    "circular_motion을 oscillation에 병합할지 여부",
+    "dc_circuit와 ac_circuit의 통합 검토",
+    "ray_tracing은 시간 축이 없어 다른 묶음과 조작 패러다임이 가장 이질적 — 별도 프로토콜 필요 여부",
+    "kinetic_theory, heat_transfer, electric_field, magnetic_field는 장/다체 시각화로, 현재 단일물체 엔진으로 커버 가능성 검증 필요"
+  ]
+}
