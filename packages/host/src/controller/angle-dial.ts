@@ -62,14 +62,14 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    // 각도 틱 (10° 마다)
+    // 각도 틱 (10° 마다) — 0°=오른쪽, 90°=위쪽 (포물선 발사 방향)
     ctx.strokeStyle = theme.muted;
     ctx.lineWidth = 1;
     for (let a = range[0]; a <= range[1]; a += 10) {
       const rad = (a * Math.PI) / 180;
-      const x1 = layout.cx - Math.cos(rad) * (layout.r - 6);
+      const x1 = layout.cx + Math.cos(rad) * (layout.r - 6);
       const y1 = layout.cy - Math.sin(rad) * (layout.r - 6);
-      const x2 = layout.cx - Math.cos(rad) * layout.r;
+      const x2 = layout.cx + Math.cos(rad) * layout.r;
       const y2 = layout.cy - Math.sin(rad) * layout.r;
       ctx.beginPath();
       ctx.moveTo(x1, y1);
@@ -83,9 +83,9 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
       ctx.lineWidth = 2;
       for (const a of spec.tickAt) {
         const rad = (a * Math.PI) / 180;
-        const x1 = layout.cx - Math.cos(rad) * (layout.r - 12);
+        const x1 = layout.cx + Math.cos(rad) * (layout.r - 12);
         const y1 = layout.cy - Math.sin(rad) * (layout.r - 12);
-        const x2 = layout.cx - Math.cos(rad) * layout.r;
+        const x2 = layout.cx + Math.cos(rad) * layout.r;
         const y2 = layout.cy - Math.sin(rad) * layout.r;
         ctx.beginPath();
         ctx.moveTo(x1, y1);
@@ -94,9 +94,9 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
       }
     }
 
-    // 바늘
+    // 바늘 — 0°=오른쪽(+x), 90°=위쪽(+y)
     const rad = (angle * Math.PI) / 180;
-    const nx = layout.cx - Math.cos(rad) * (layout.r - 12);
+    const nx = layout.cx + Math.cos(rad) * (layout.r - 12);
     const ny = layout.cy - Math.sin(rad) * (layout.r - 12);
     ctx.strokeStyle = theme.resolveColor('primary', 'strong');
     ctx.lineWidth = 3;
@@ -165,8 +165,8 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
   ): Partial<BundleState> {
     const dx = input.px - layout.cx;
     const dy = layout.cy - input.py;
-    // 반원 위쪽만 허용. 바늘이 π~2π 에 있으므로 각도는 atan2(dy, -dx)
-    let deg = (Math.atan2(dy, -dx) * 180) / Math.PI;
+    // 반원 위쪽만 허용. 0°=오른쪽, 90°=위쪽 규약.
+    let deg = (Math.atan2(dy, dx) * 180) / Math.PI;
     const [lo, hi] = spec.range ?? [0, 90];
     deg = Math.max(lo, Math.min(hi, deg));
     return writePath(state, spec.binds.angle, Math.round(deg));

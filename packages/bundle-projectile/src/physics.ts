@@ -133,20 +133,57 @@ export function isTerminated(state: ProjectileState): boolean {
   return state.phase === 'landed';
 }
 
-export function boundsHint(
-  state: ProjectileState,
-  _stage: StageDef,
-): Bounds {
-  let maxX = Math.max(state.pos[0], state.launch.v0);
-  let maxY = Math.max(state.pos[1], state.launch.v0 * 0.5);
-  for (const [px, py] of state.history) {
-    if (px > maxX) maxX = px;
-    if (py > maxY) maxY = py;
+/**
+ * 카메라 자동 프레이밍용 바운드 — 레퍼런스(prototype) 의 autoFrame 과 동일 설계.
+ *
+ * 비행 중에는 **관찰된 trajectory 의 현재까지의 extent** 만으로 프레이밍한다.
+ * 예측·윈도·tracking 없음. 매 프레임 bounds 가 공의 진행에 맞춰 자라고 중심도
+ * 이동하므로 카메라가 자연스럽게 공을 따라가는 flow 가 생긴다.
+ *
+ *   cx     = maxX / 2
+ *   cy     = (maxY + minY) / 2
+ *   halfW  = max(maxX*0.6, 10)        // worldW = maxX*1.2 과 동등
+ *   halfH  = max((maxY-minY)*0.7, 5)
+ *
+ * idle 에는 아직 trajectory 가 시작점 하나뿐이라 예측 분석식으로만 프레임한다.
+ */
+export function boundsHint(state: ProjectileState, stage: StageDef): Bounds {
+  const g = stage.constants.g ?? 0;
+
+  if (state.phase === 'idle') {
+    const v0 = Math.max(0.1, state.launch.v0);
+    const rad = (state.launch.theta * Math.PI) / 180;
+    const estRange = g > 0 ? (v0 * v0 * Math.sin(2 * rad)) / g : v0 * Math.cos(rad) * 10;
+    const sinT = Math.sin(rad);
+    const estH = g > 0 ? (v0 * v0 * sinT * sinT) / (2 * g) : Math.max(1, v0 * sinT * 5);
+    const cx = estRange / 2;
+    const cy = estH / 2;
+    const halfW = Math.max(estRange * 0.65, 10);
+    const halfH = Math.max(estH * 1.1, 5);
+    return {
+      minX: cx - halfW,
+      maxX: cx + halfW,
+      minY: cy - halfH,
+      maxY: cy + halfH,
+    };
   }
+
+  let maxX = 0;
+  let maxY = 0;
+  let minY = 0;
+  for (const [hx, hy] of state.history) {
+    if (hx > maxX) maxX = hx;
+    if (hy > maxY) maxY = hy;
+    if (hy < minY) minY = hy;
+  }
+  const cx = maxX / 2;
+  const cy = (maxY + minY) / 2;
+  const halfW = Math.max(maxX * 0.6, 10);
+  const halfH = Math.max((maxY - minY) * 0.7, 5);
   return {
-    minX: -2,
-    maxX: Math.max(10, maxX * 1.15),
-    minY: 0,
-    maxY: Math.max(8, maxY * 1.4),
+    minX: cx - halfW,
+    maxX: cx + halfW,
+    minY: cy - halfH,
+    maxY: cy + halfH,
   };
 }

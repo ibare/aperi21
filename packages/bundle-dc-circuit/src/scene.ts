@@ -1,7 +1,19 @@
-import type { Primitive, SceneGraph, ViewDef, Marker } from '@aperi21/schema';
+import type {
+  EnvironmentDef,
+  Marker,
+  Primitive,
+  SceneGraph,
+  StageDef,
+  ViewDef,
+} from '@aperi21/schema';
 import type { DcCircuitState } from './state';
 
-export function scene(params: { state: DcCircuitState; view: ViewDef }): SceneGraph {
+export function scene(params: {
+  state: DcCircuitState;
+  view: ViewDef;
+  stage: StageDef;
+  environments: EnvironmentDef[];
+}): SceneGraph {
   const { state, view } = params;
   const nodes: Primitive[] = [];
 

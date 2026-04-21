@@ -1,8 +1,22 @@
-import type { Primitive, SceneGraph, ViewDef, Vec2, Body, Marker } from '@aperi21/schema';
+import type {
+  Body,
+  EnvironmentDef,
+  Marker,
+  Primitive,
+  SceneGraph,
+  StageDef,
+  Vec2,
+  ViewDef,
+} from '@aperi21/schema';
 import { traceRay } from '@aperi21/plugin-optics';
 import type { RayTracingState } from './state';
 
-export function scene(params: { state: RayTracingState; view: ViewDef }): SceneGraph {
+export function scene(params: {
+  state: RayTracingState;
+  view: ViewDef;
+  stage: StageDef;
+  environments: EnvironmentDef[];
+}): SceneGraph {
   const { state, view } = params;
   const nodes: Primitive[] = [];
 

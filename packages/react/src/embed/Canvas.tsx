@@ -23,6 +23,18 @@ import {
 } from '@aperi21/host';
 import { resolveBackgroundKind } from './backgroundKind';
 
+/**
+ * 컨트롤러·HUD 오버레이가 점유하는 픽셀 영역. fitToBounds 가 이 만큼을
+ * viewport 에서 제외하고 스케일을 산출하므로, 자동 프레이밍 시 궤적이
+ * 오버레이 아래로 가려지지 않는다.
+ *
+ *   top     : ViewTabs(상단 중앙 탭)
+ *   bottom  : 타임라인·InfoPanel(하단)
+ *   left    : ParamPanel(상단-좌) + angle-dial(하단-좌)
+ *   right   : pinball-launcher 튜브(하단-우)
+ */
+const HUD_MARGINS = { top: 60, bottom: 130, left: 180, right: 110 };
+
 export interface BundleCanvasProps<T extends BundleState = BundleState> {
   host: Host;
   bundle: Bundle<T>;
@@ -101,6 +113,18 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       spec: ControllerSpec;
       impl: ReturnType<typeof host.controllerRegistry.get>;
     } | null = null;
+    // 비-컨트롤러 영역을 드래그하면 카메라 팬. 의도하지 않은 클릭(미세 흔들림 포함)
+    // 이 userAdjusted 를 세팅해 auto-framing 을 영구 동결하지 않도록 5px deadzone
+    // 이후에만 pan 을 시작한다.
+    let panning: {
+      startPx: number;
+      startPy: number;
+      lastPx: number;
+      lastPy: number;
+      active: boolean;
+    } | null = null;
+    // 재발사(isTerminated true→false) 감지를 위한 직전 terminated 상태.
+    let wasTerminated = bundleRef.current.isTerminated?.(stateRef.current) ?? false;
 
     function sizeCanvas(): Viewport {
       const rect = canvas!.getBoundingClientRect();
@@ -158,52 +182,112 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       const vp = sizeCanvas();
       const input = toPointerInput(e);
       const hit = findControllerAt(input, vp);
-      if (!hit?.impl) return;
-      canvas!.setPointerCapture(e.pointerId);
-      activeController = hit;
-      const patch = hit.impl.onPointerDown(
-        input,
-        makeEventCtx(vp),
-        hit.spec,
-        stateRef.current as BundleState,
-      );
-      applyPartial(patch);
+      if (hit?.impl) {
+        canvas!.setPointerCapture(e.pointerId);
+        activeController = hit;
+        const patch = hit.impl.onPointerDown(
+          input,
+          makeEventCtx(vp),
+          hit.spec,
+          stateRef.current as BundleState,
+        );
+        applyPartial(patch);
+        return;
+      }
+      // 컨트롤러 외 영역 → 카메라 팬 후보 (왼쪽/중간 버튼). 실제 pan 은
+      // deadzone 을 넘은 뒤에만 시작 — 단순 클릭이 auto-framing 을 끄지 않도록.
+      if (e.button === 0 || e.button === 1) {
+        canvas!.setPointerCapture(e.pointerId);
+        panning = {
+          startPx: input.px,
+          startPy: input.py,
+          lastPx: input.px,
+          lastPy: input.py,
+          active: false,
+        };
+      }
     }
     function onPointerMove(e: PointerEvent) {
-      if (!activeController?.impl) return;
       const vp = sizeCanvas();
       const input = toPointerInput(e);
-      const patch = activeController.impl.onPointerMove(
-        input,
-        makeEventCtx(vp),
-        activeController.spec,
-        stateRef.current as BundleState,
-      );
-      applyPartial(patch);
+      if (activeController?.impl) {
+        const patch = activeController.impl.onPointerMove(
+          input,
+          makeEventCtx(vp),
+          activeController.spec,
+          stateRef.current as BundleState,
+        );
+        applyPartial(patch);
+        return;
+      }
+      if (panning) {
+        if (!panning.active) {
+          // Deadzone — 5px 누적 이동 전까지는 pan 을 시작하지 않는다.
+          const ddx = input.px - panning.startPx;
+          const ddy = input.py - panning.startPy;
+          if (ddx * ddx + ddy * ddy < 25) return;
+          panning.active = true;
+          panning.lastPx = input.px;
+          panning.lastPy = input.py;
+          return;
+        }
+        const dxScreen = input.px - panning.lastPx;
+        const dyScreen = input.py - panning.lastPy;
+        if (dxScreen === 0 && dyScreen === 0) return;
+        panning.lastPx = input.px;
+        panning.lastPy = input.py;
+        // 스크린 델타 → 월드 델타. Camera.pan 이 userAdjusted=true 로 전환해
+        // 이후 자동 fitToBounds 를 멈춘다(재발사 시 자동 해제).
+        const dxWorld = dxScreen / host.camera.scale;
+        const dyWorld = -dyScreen / host.camera.scale; // 스크린 y 는 아래가 +
+        host.camera.pan(dxWorld, dyWorld);
+      }
     }
     function onPointerUp(e: PointerEvent) {
-      if (!activeController?.impl) return;
       const vp = sizeCanvas();
       const input = toPointerInput(e);
-      const patch = activeController.impl.onPointerUp(
-        input,
-        makeEventCtx(vp),
-        activeController.spec,
-        stateRef.current as BundleState,
-      );
-      applyPartial(patch);
-      try {
-        canvas!.releasePointerCapture(e.pointerId);
-      } catch {
-        /* noop */
+      if (activeController?.impl) {
+        const patch = activeController.impl.onPointerUp(
+          input,
+          makeEventCtx(vp),
+          activeController.spec,
+          stateRef.current as BundleState,
+        );
+        applyPartial(patch);
+        try {
+          canvas!.releasePointerCapture(e.pointerId);
+        } catch {
+          /* noop */
+        }
+        activeController = null;
+        return;
       }
-      activeController = null;
+      if (panning) {
+        panning = null;
+        try {
+          canvas!.releasePointerCapture(e.pointerId);
+        } catch {
+          /* noop */
+        }
+      }
+    }
+    function onWheel(e: WheelEvent) {
+      e.preventDefault();
+      const vp = sizeCanvas();
+      const rect = canvas!.getBoundingClientRect();
+      const sx = e.clientX - rect.left;
+      const sy = e.clientY - rect.top;
+      const worldCenter = host.camera.toWorld([sx, sy], vp);
+      // deltaY<0 확대(휠 업), >0 축소. 한 틱당 약 10% 변화.
+      const factor = Math.exp(-e.deltaY * 0.0015);
+      host.camera.zoom(factor, worldCenter);
     }
 
     canvas.addEventListener('pointerdown', onPointerDown);
     canvas.addEventListener('pointermove', onPointerMove);
     canvas.addEventListener('pointerup', onPointerUp);
     canvas.addEventListener('pointercancel', onPointerUp);
+    canvas.addEventListener('wheel', onWheel, { passive: false });
 
     const frame = (now: number) => {
       if (disposed) return;
@@ -231,10 +315,21 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
         }
       }
 
-      // 카메라 자동 프레이밍
+      // 재발사 감지: isTerminated true→false 전이 시 사용자 수동 조정 해제.
+      const isTerm = bundle.isTerminated?.(stateRef.current) ?? false;
+      if (wasTerminated && !isTerm) host.camera.userAdjusted = false;
+      wasTerminated = isTerm;
+
+      // 카메라 자동 프레이밍 — bundle 이 제공한 bounds 로 **매 프레임 직접 스냅**.
+      // trajectory 기반 bounds 가 프레임마다 자라는 속도 자체가 camera flow.
+      // smoothing 을 얹으면 오히려 lag 이 생겨 공을 "안 따라가는" 인상을 준다.
       if (!host.camera.userAdjusted && bundle.boundsHint) {
         const bounds = bundle.boundsHint(stateRef.current, stage);
-        host.camera.fitToBounds(bounds, vp, 48);
+        host.camera.fitToBounds(bounds, vp, {
+          padding: 12,
+          screenMargins: HUD_MARGINS,
+          smooth: false,
+        });
       }
 
       // 배경 입자
@@ -251,13 +346,16 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       // 배경 입자
       particles.render(ctx, theme);
 
-      // 격자 스냅 모드: 배경 위에 격자 오버레이를 그린다.
-      if (host.camera.gridSnap) {
-        drawGrid(ctx, vp, host.camera);
-      }
+      // 거리 축 그리드(월드 m 단위). 레퍼런스 GIF 와 같이 x/y 축에 거리 라벨.
+      drawAxisGrid(ctx, vp, host.camera, theme);
 
       // Scene Graph 렌더
-      const sceneGraph = bundle.scene({ state: stateRef.current, view });
+      const sceneGraph = bundle.scene({
+        state: stateRef.current,
+        view,
+        stage,
+        environments: envs,
+      });
       const { refs, orderedScene } = preprocessScene(sceneGraph);
       const sortedScene = [...orderedScene].sort(
         (a, b) => host.rendererRegistry.getZ(a.type) - host.rendererRegistry.getZ(b.type),
@@ -312,6 +410,7 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       canvas.removeEventListener('pointermove', onPointerMove);
       canvas.removeEventListener('pointerup', onPointerUp);
       canvas.removeEventListener('pointercancel', onPointerUp);
+      canvas.removeEventListener('wheel', onWheel);
     };
   }, [host]);
 
@@ -327,41 +426,128 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
 }
 
 /**
- * Camera.gridSize (월드 단위) 배수 격자선을 스크린에 그린다.
- * 선 밀도는 pxPerStep 이 너무 작아지면 2×, 4× 로 보폭을 키워 과도한 선을 방지.
+ * 월드 좌표 m 단위 거리 축 그리드. 레퍼런스 GIF 와 동일한 스타일:
+ *   - 얇은 수평/수직선이 2·4·5·10 m 등 가독 스텝으로 깔림
+ *   - 각 세로선에는 X 거리(예: `-4m`, `8m`)를 Y=0 축 아래에 라벨
+ *   - 각 가로선에는 Y 높이(예: `2m`, `10m`)를 X=0 축 오른쪽에 라벨
+ *   - X=0, Y=0 축은 약간 더 진하게
+ *
+ * 스텝은 화면상 50~110 px 유지되는 가장 큰 "1·2·5·10" 배수를 선택한다.
  */
-function drawGrid(ctx: CanvasRenderingContext2D, viewport: Viewport, camera: Camera): void {
-  const baseG = Math.max(1e-6, camera.gridSize);
-  let g = baseG;
-  let pxPerStep = g * camera.scale;
-  while (pxPerStep > 0 && pxPerStep < 14) {
-    g *= 2;
-    pxPerStep = g * camera.scale;
-  }
+function drawAxisGrid(
+  ctx: CanvasRenderingContext2D,
+  viewport: Viewport,
+  camera: Camera,
+  theme: { foreground: string; muted: string; line: string; fontFamilyMono: string },
+): void {
+  const scale = camera.scale;
+  if (!isFinite(scale) || scale <= 0) return;
+
+  const targetPx = 70;
+  const rawStep = targetPx / scale;
+  const pow10 = Math.pow(10, Math.floor(Math.log10(Math.max(1e-6, rawStep))));
+  const norm = rawStep / pow10;
+  const nice = norm < 1.5 ? 1 : norm < 3 ? 2 : norm < 7 ? 5 : 10;
+  const step = nice * pow10;
 
   const topLeft = camera.toWorld([0, 0], viewport);
   const bottomRight = camera.toWorld([viewport.width, viewport.height], viewport);
-  const xStart = Math.floor(topLeft[0] / g) * g;
-  const xEnd = Math.ceil(bottomRight[0] / g) * g;
-  const yStart = Math.floor(bottomRight[1] / g) * g;
-  const yEnd = Math.ceil(topLeft[1] / g) * g;
+  const xMin = topLeft[0];
+  const xMax = bottomRight[0];
+  const yMin = bottomRight[1];
+  const yMax = topLeft[1];
+
+  const gridColor = withAlpha(theme.line, 0.55);
+  const axisColor = withAlpha(theme.muted, 0.75);
+  const labelColor = theme.muted;
 
   ctx.save();
-  ctx.strokeStyle = 'rgba(128,128,128,0.18)';
+
+  // 일반 그리드선
+  ctx.strokeStyle = gridColor;
   ctx.lineWidth = 1;
   ctx.beginPath();
-  for (let x = xStart; x <= xEnd + 1e-9; x += g) {
-    const [sx, sy0] = camera.toScreen([x, yStart], viewport);
-    const [, sy1] = camera.toScreen([x, yEnd], viewport);
-    ctx.moveTo(sx, sy0);
-    ctx.lineTo(sx, sy1);
+  const xStart = Math.ceil(xMin / step) * step;
+  for (let x = xStart; x <= xMax + 1e-9; x += step) {
+    const sx = camera.toScreen([x, 0], viewport)[0];
+    ctx.moveTo(sx, 0);
+    ctx.lineTo(sx, viewport.height);
   }
-  for (let y = yStart; y <= yEnd + 1e-9; y += g) {
-    const [sx0, sy] = camera.toScreen([xStart, y], viewport);
-    const [sx1] = camera.toScreen([xEnd, y], viewport);
-    ctx.moveTo(sx0, sy);
-    ctx.lineTo(sx1, sy);
+  const yStart = Math.ceil(yMin / step) * step;
+  for (let y = yStart; y <= yMax + 1e-9; y += step) {
+    const sy = camera.toScreen([0, y], viewport)[1];
+    ctx.moveTo(0, sy);
+    ctx.lineTo(viewport.width, sy);
   }
   ctx.stroke();
+
+  // X=0, Y=0 축 강조
+  if (xMin <= 0 && xMax >= 0) {
+    const [sx] = camera.toScreen([0, 0], viewport);
+    ctx.strokeStyle = axisColor;
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(sx, 0);
+    ctx.lineTo(sx, viewport.height);
+    ctx.stroke();
+  }
+  if (yMin <= 0 && yMax >= 0) {
+    const [, sy] = camera.toScreen([0, 0], viewport);
+    ctx.strokeStyle = axisColor;
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(0, sy);
+    ctx.lineTo(viewport.width, sy);
+    ctx.stroke();
+  }
+
+  // 라벨 — 스텝이 1m 미만이면 소수점 한 자리, 아니면 정수.
+  const decimals = step < 1 ? (step < 0.1 ? 2 : 1) : 0;
+  const fmt = (v: number) => `${v.toFixed(decimals)}m`;
+
+  ctx.fillStyle = labelColor;
+  ctx.font = `11px ${theme.fontFamilyMono}`;
+
+  // X 라벨: Y=0 축 바로 아래(없으면 화면 하단)에 표시
+  const yAxisScreen =
+    yMin <= 0 && yMax >= 0
+      ? camera.toScreen([0, 0], viewport)[1]
+      : viewport.height - 16;
+  const xLabelY = Math.max(14, Math.min(viewport.height - 4, yAxisScreen + 14));
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'alphabetic';
+  for (let x = xStart; x <= xMax + 1e-9; x += step) {
+    if (Math.abs(x) < step / 2) continue; // 0 라벨 생략
+    const sx = camera.toScreen([x, 0], viewport)[0];
+    if (sx < 20 || sx > viewport.width - 40) continue;
+    ctx.fillText(fmt(x), sx + 3, xLabelY);
+  }
+
+  // Y 라벨: X=0 축 바로 오른쪽(없으면 화면 좌측)에 표시
+  const xAxisScreen =
+    xMin <= 0 && xMax >= 0
+      ? camera.toScreen([0, 0], viewport)[0]
+      : 12;
+  const yLabelX = Math.max(4, Math.min(viewport.width - 40, xAxisScreen + 4));
+  ctx.textAlign = 'left';
+  for (let y = yStart; y <= yMax + 1e-9; y += step) {
+    if (Math.abs(y) < step / 2) continue;
+    const sy = camera.toScreen([0, y], viewport)[1];
+    if (sy < 12 || sy > viewport.height - 20) continue;
+    ctx.fillText(fmt(y), yLabelX, sy - 3);
+  }
+
   ctx.restore();
+}
+
+/** hex/rgb 컬러에 alpha 를 얹어 rgba 반환. 실패하면 원본. */
+function withAlpha(color: string, alpha: number): string {
+  const hex = color.replace('#', '');
+  if (hex.length === 6) {
+    const r = parseInt(hex.slice(0, 2), 16);
+    const g = parseInt(hex.slice(2, 4), 16);
+    const b = parseInt(hex.slice(4, 6), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+  return color;
 }

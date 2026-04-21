@@ -63,6 +63,17 @@ export class PinballLauncherController
     const storedPower = (storedV0 - range[0]) / Math.max(1, range[1] - range[0]);
     const power = this.dragging ? this.dragPower : phase === 'idle' ? storedPower : 0;
 
+    const ballR = 10;
+    const plungerThickness = 6;
+    const topInset = 12;
+    const bottomInset = 12;
+    const ballY = layout.tubeY + topInset + ballR + 2;
+    const plungerRest = ballY + ballR + 6;
+    const plungerFull = layout.tubeY + layout.tubeH - bottomInset - plungerThickness;
+    const travelY = plungerFull - plungerRest;
+    const plungerY = plungerRest + power * travelY;
+    const cx = layout.tubeX + layout.tubeW / 2;
+
     ctx.save();
 
     // 튜브 외곽
@@ -73,52 +84,48 @@ export class PinballLauncherController
     ctx.fill();
     ctx.stroke();
 
-    // 파워 fill (초록→노랑→빨강)
-    const fillH = power * (layout.tubeH - 24);
-    if (fillH > 0) {
-      const color = this.powerColor(rc, power);
-      ctx.fillStyle = color;
-      this.roundRect(
-        ctx,
-        layout.tubeX + 6,
-        layout.tubeY + layout.tubeH - 12 - fillH,
-        layout.tubeW - 12,
-        fillH,
-        6,
-      );
-      ctx.fill();
+    // 파워 게이지: 튜브 우측 내부 세로 바. 아래→위로 차오른다.
+    const barW = 5;
+    const barX = layout.tubeX + layout.tubeW - barW - 6;
+    const barBottom = layout.tubeY + layout.tubeH - 8;
+    const barTop = layout.tubeY + 8;
+    ctx.strokeStyle = theme.line;
+    ctx.lineWidth = 1;
+    ctx.strokeRect(barX, barTop, barW, barBottom - barTop);
+    const barH = (barBottom - barTop) * power;
+    if (barH > 1) {
+      ctx.fillStyle = this.powerColor(rc, power);
+      ctx.fillRect(barX, barBottom - barH, barW, barH);
     }
 
-    // 스프링 코일 (압축 표현) — tube 상단부
-    const coilTop = layout.tubeY + 12;
-    const plungerY = layout.tubeY + 12 + fillH;
-    const coilHeight = plungerY - coilTop;
-    if (coilHeight > 8) {
+    // 스프링 코일: 공 바로 아래 고정점 ↔ 플런저 상단. 드래그로 아래로 늘어남.
+    const coilTop = ballY + ballR + 2;
+    const coilBottom = plungerY;
+    const coilHeight = coilBottom - coilTop;
+    if (coilHeight > 4) {
       ctx.strokeStyle = theme.muted;
       ctx.lineWidth = 1.5;
-      const cx = layout.tubeX + layout.tubeW / 2;
       const coils = 6;
       ctx.beginPath();
       for (let i = 0; i <= coils; i++) {
         const t = i / coils;
         const y = coilTop + t * coilHeight;
-        const x = cx + (i % 2 === 0 ? -10 : 10);
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+        const zx = cx + (i % 2 === 0 ? -8 : 8);
+        if (i === 0) ctx.moveTo(zx, y);
+        else ctx.lineTo(zx, y);
       }
       ctx.stroke();
     }
 
-    // 플런저 상단 바
+    // 플런저 캡 — 공 아래, 드래그하면 아래로 이동.
     ctx.fillStyle = theme.foreground;
-    ctx.fillRect(layout.tubeX + 2, plungerY, layout.tubeW - 4, 6);
+    ctx.fillRect(layout.tubeX + 4, plungerY, layout.tubeW - 8 - barW - 6, plungerThickness);
 
-    // idle 상태일 때 플런저 상단에 공 표시
+    // 공: 튜브 상단(출구)에 고정. idle 일 때만 표시.
     if (phase === 'idle') {
-      const ballR = 10;
       ctx.fillStyle = theme.resolveColor('primary', 'strong');
       ctx.beginPath();
-      ctx.arc(layout.tubeX + layout.tubeW / 2, plungerY - ballR - 2, ballR, 0, Math.PI * 2);
+      ctx.arc(cx - barW / 2 - 1, ballY, ballR, 0, Math.PI * 2);
       ctx.fill();
       ctx.lineWidth = 1;
       ctx.strokeStyle = theme.line;

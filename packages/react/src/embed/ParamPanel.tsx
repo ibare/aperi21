@@ -21,8 +21,9 @@ export function ParamPanel({ theme, i18n, schema, values, onChange, onReset }: P
   if (!schema.parameters || schema.parameters.length === 0) return null;
 
   const wrap: CSSProperties = {
+    // ViewTabs 바로 아래(좌상단 영역). 하단은 angle-dial/pinball-launcher 가 점유.
     position: 'absolute',
-    bottom: 12,
+    top: 56,
     left: 12,
     minWidth: 240,
     maxWidth: 320,

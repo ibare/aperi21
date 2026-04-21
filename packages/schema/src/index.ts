@@ -569,10 +569,12 @@ export interface Bundle<TState extends BundleState = BundleState> {
     environments: EnvironmentDef[];
   }): TState;
 
-  /** 현재 상태 + 뷰로부터 Scene Graph 선언. */
+  /** 현재 상태 + 뷰 + 스테이지로부터 Scene Graph 선언. */
   scene(params: {
     state: TState;
     view: ViewDef;
+    stage: StageDef;
+    environments: EnvironmentDef[];
   }): SceneGraph;
 
   /** 조작 UI 선언. 상태 종속적일 수 있음. */
