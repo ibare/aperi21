@@ -1,7 +1,9 @@
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Embed } from '@aperi21/react';
 import { catalog, findBundle } from '../data/catalog';
 import { Badge } from '../components/Badge';
+import { MOCK_BUNDLES } from '../mocks/phase1-bundles';
 import styles from './BundleDetailPage.module.css';
 
 export function BundleDetailPage() {
@@ -51,17 +53,23 @@ export function BundleDetailPage() {
         </div>
       </header>
 
-      <section className={styles.placeholder} aria-live="polite">
-        <div className={styles.placeholderInner}>
-          <span className={styles.soonLabel}>SOON</span>
-          <h2 className={styles.placeholderTitle}>
-            {t('bundle_detail.placeholder_title')}
-          </h2>
-          <p className={styles.placeholderBody}>
-            {t('bundle_detail.placeholder_body', { id: bundle.id })}
-          </p>
-        </div>
-      </section>
+      {MOCK_BUNDLES[bundle.id] ? (
+        <section className={styles.placeholder} aria-live="polite">
+          <Embed bundle={MOCK_BUNDLES[bundle.id]} />
+        </section>
+      ) : (
+        <section className={styles.placeholder} aria-live="polite">
+          <div className={styles.placeholderInner}>
+            <span className={styles.soonLabel}>SOON</span>
+            <h2 className={styles.placeholderTitle}>
+              {t('bundle_detail.placeholder_title')}
+            </h2>
+            <p className={styles.placeholderBody}>
+              {t('bundle_detail.placeholder_body', { id: bundle.id })}
+            </p>
+          </div>
+        </section>
+      )}
 
       <div className={styles.grid}>
         <InfoBlock title={t('sections.phenomena')}>
