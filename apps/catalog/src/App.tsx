@@ -4,6 +4,7 @@ import { EngineProvider } from './engine/EngineProvider';
 import { Header } from './components/Header';
 import { HomePage } from './pages/HomePage';
 import { BundleDetailPage } from './pages/BundleDetailPage';
+import { EditorDemoPage } from './pages/EditorDemoPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -15,6 +16,7 @@ export function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/bundle/:bundleId" element={<BundleDetailPage />} />
+            <Route path="/editor-demo" element={<EditorDemoPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </HashRouter>

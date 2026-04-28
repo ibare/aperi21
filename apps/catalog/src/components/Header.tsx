@@ -38,6 +38,14 @@ export function Header() {
         </Link>
 
         <nav className={styles.actions} aria-label="사이트 도구">
+          <Link
+            to="/editor-demo"
+            className={styles.langButton}
+            style={{ textDecoration: 'none' }}
+            title="Tiptap 인라인 시뮬레이션 데모"
+          >
+            Editor
+          </Link>
           <button
             type="button"
             className={styles.iconButton}

@@ -1,0 +1,26 @@
+{
+  "name": "@aperi21/bootstrap",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@aperi21/host": "workspace:*",
+    "@aperi21/schema": "workspace:*"
+  },
+  "devDependencies": {
+    "@aperi21/bundle-dc-circuit": "workspace:*",
+    "@aperi21/bundle-projectile": "workspace:*",
+    "@aperi21/bundle-ray-tracing": "workspace:*",
+    "@aperi21/plugin-circuit": "workspace:*",
+    "@aperi21/plugin-optics": "workspace:*",
+    "typescript": "^5.6.3"
+  }
+}

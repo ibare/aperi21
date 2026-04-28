@@ -3,6 +3,7 @@ import { createHost } from '@aperi21/host';
 import { HostProvider } from '@aperi21/react';
 import { opticsPlugin } from '@aperi21/plugin-optics';
 import { circuitPlugin } from '@aperi21/plugin-circuit';
+import { registerAperi21Bundles } from '@aperi21/bootstrap';
 import { useTheme } from '../theme/ThemeProvider';
 
 /**
@@ -17,7 +18,13 @@ import { useTheme } from '../theme/ThemeProvider';
 export function EngineProvider({ children }: { children: ReactNode }) {
   const { theme } = useTheme();
   const host = useMemo(
-    () => createHost({ theme, lang: 'ko', plugins: [opticsPlugin, circuitPlugin] }),
+    () => {
+      const h = createHost({ theme, lang: 'ko', plugins: [opticsPlugin, circuitPlugin] });
+      // Tiptap NodeView 가 마운트될 때 같은 bundle 레지스트리를 통해 lazy load
+      // 하므로, 부팅 시 한 번 loader 등록해 둔다. plugin 은 이미 위에서 등록.
+      registerAperi21Bundles();
+      return h;
+    },
     [],
   );
 
