@@ -14,8 +14,8 @@
   },
   "files": ["dist"],
   "scripts": {
-    "build": "rollup -c rollup.config.mjs",
-    "build:analyze": "VISUALIZE=1 rollup -c rollup.config.mjs",
+    "build": "pnpm clean && rollup -c rollup.config.mjs",
+    "build:analyze": "pnpm clean && VISUALIZE=1 rollup -c rollup.config.mjs",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist",
     "pack": "pnpm pack",

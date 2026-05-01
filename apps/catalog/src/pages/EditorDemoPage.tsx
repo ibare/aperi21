@@ -8,13 +8,13 @@ import {
 } from '@aperi21/host-tiptap';
 
 /**
- * Phase 5 검증 페이지 — Tiptap 에디터 본문에 {bundle:<id>} 토큰을 박아
+ * Phase 5 검증 페이지 — Tiptap 에디터 본문에 {aperi21:<id>} 토큰을 박아
  * 실제 시뮬레이션이 인라인 마운트되는 것을 확인한다.
  *
  * 검증 시나리오:
  *  - 페이지 로드 시 마크다운을 HTML 로 변환 후 Tiptap content 로 주입.
  *  - BundleExtension 의 NodeView 가 placeholder span 을 검출해 runBundle 호출.
- *  - bundle:projectile / bundle:ray-tracing / bundle:dc-circuit 3종이 동시에 떠야 함.
+ *  - aperi21:projectile / aperi21:ray-tracing / aperi21:dc-circuit 3종이 동시에 떠야 함.
  */
 const DEFAULT_MARKDOWN = `# 시뮬레이션 인라인 데모
 
@@ -22,19 +22,19 @@ const DEFAULT_MARKDOWN = `# 시뮬레이션 인라인 데모
 
 각도와 초속을 조절하면서 공의 궤적을 보자.
 
-{bundle:projectile}
+{aperi21:projectile}
 
 ## 광선 추적 (Ray Tracing)
 
 거울/렌즈에 광선이 부딪히는 경로를 따라가 보자.
 
-{bundle:ray-tracing}
+{aperi21:ray-tracing}
 
 ## DC 회로 (DC Circuit)
 
 저항을 이리저리 바꾸며 분압비가 어떻게 변하는지 관찰.
 
-{bundle:dc-circuit}
+{aperi21:dc-circuit}
 `;
 
 export function EditorDemoPage() {
@@ -63,7 +63,7 @@ export function EditorDemoPage() {
       </Link>
       <h1 style={{ marginTop: 16 }}>Tiptap 인라인 시뮬레이션 데모</h1>
       <p style={{ color: '#666', lineHeight: 1.6 }}>
-        아래는 마크다운 본문에 <code>{'{bundle:<id>}'}</code> 토큰을 박은 결과.
+        아래는 마크다운 본문에 <code>{'{aperi21:<id>}'}</code> 토큰을 박은 결과.
         호스트 에디터(Tiptap) 가 토큰 위치에 시뮬레이션 캔버스를 인라인 마운트한다.
       </p>
 

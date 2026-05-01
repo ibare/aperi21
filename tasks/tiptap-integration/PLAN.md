@@ -256,6 +256,8 @@ export { bootstrapAperi21 } from '@aperi21/bootstrap';
 - 2026-04-28: Phase 4 — `@aperi21/host-tiptap-bundle` Rollup 번들 패키지 신규. `pnpm install` 로 의존성 설치 후 build 검증 권장.
 - 2026-04-28: Phase 5 — catalog 앱에 `/editor-demo` 라우트 추가, `registerAperi21Bundles()` 부팅, 마크다운 본문에 `{bundle:projectile}` 등 3종 토큰을 박은 데모 페이지 동작 가능. 전체 typecheck 통과 + `pnpm --filter @aperi21/catalog build` 성공. (실제 dev 서버 검증은 `pnpm dev` → http://localhost:5173/#/editor-demo 에서 진행)
 - vite 빌드 경고: catalog 가 `mocks/phase1-bundles.ts`/`EngineProvider.tsx` 에서 bundle/plugin 을 정적 import 하고, bootstrap 이 같은 모듈을 dynamic import 하기 때문. catalog 자기 번들 안의 lazy 분리는 효과가 없지만, **외부 호스트가 host-tiptap-bundle dist 만 소비하는 경우엔 lazy 가 유지**된다 (Phase 4 빌드 결과로 검증됨: bundles/, runtime/ 분리). 데모용 catalog 에선 무시.
+- 2026-04-30: **DSL 명칭 변경** `{bundle:<id>}` → `{aperi21:<id>}`. 본문 위쪽 설계 단락은 시점 기록으로 보존(과거 의사결정 추적용). 변경 범위: host-tiptap 의 정규식·markdown 토크나이저, bootstrap 의 레지스트리 키(`aperi21:projectile`/`aperi21:ray-tracing`/`aperi21:dc-circuit`), catalog EditorDemoPage 데모 텍스트. 외부 호스트가 옛 토큰을 저장한 본문이 있다면 단순 치환으로 마이그레이션 가능.
+- 2026-04-30: **chunk 전략 보강** (host-tiptap-bundle/rollup.config.mjs). `plugin-*` 를 runtime 에서 분리해 별도 chunk 로(`plugins/plugin-{name}-*.js`), `node_modules` 의존성도 패키지별 vendor chunk 로 분리(`vendor/vendor-{pkg}-*.js`, pnpm `.pnpm` 경로 우회). 결과: runtime 205K 단일 → runtime 90K + vendor-marked 90K + plugin-circuit 14K + plugin-optics 11K + bundle-* 별도. 호스트가 일부 bundle 만 마운트하면 해당 plugin 만 로드.
 
 ---
 

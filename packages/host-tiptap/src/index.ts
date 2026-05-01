@@ -2,7 +2,7 @@
  * @aperi21/host-tiptap — Aperi21 시뮬레이션 번들을 Tiptap 에디터에 인라인으로
  * 마운트하는 어댑터.
  *
- * DSL: {bundle:<id>} 단일 식별자.
+ * DSL: {aperi21:<id>} 단일 식별자.
  * id 는 host runtime 의 bundle 레지스트리(getBundleById) 에서 조회된다.
  *
  * 사용:
@@ -18,11 +18,11 @@ import { Node, mergeAttributes, InputRule, PasteRule } from '@tiptap/core';
 import { createBundleNodeView } from './node-view.js';
 
 // id 본문은 영문자 시작, 영숫자/하이픈/언더스코어. snake_case 와 kebab-case 모두 허용.
-const BUNDLE_PATTERN_INPUT = /\{(bundle:[a-zA-Z][a-zA-Z0-9_-]*)\}$/;
-const BUNDLE_PATTERN_GLOBAL = /\{(bundle:[a-zA-Z][a-zA-Z0-9_-]*)\}/g;
-const BUNDLE_PATTERN_FULL = /^\{(bundle:[a-zA-Z][a-zA-Z0-9_-]*)\}$/;
+const BUNDLE_PATTERN_INPUT = /\{(aperi21:[a-zA-Z][a-zA-Z0-9_-]*)\}$/;
+const BUNDLE_PATTERN_GLOBAL = /\{(aperi21:[a-zA-Z][a-zA-Z0-9_-]*)\}/g;
+const BUNDLE_PATTERN_FULL = /^\{(aperi21:[a-zA-Z][a-zA-Z0-9_-]*)\}$/;
 
-/** `{bundle:foo}` 표현에서 전체 id(`bundle:foo`) 추출. 형식이 맞지 않으면 null. */
+/** `{aperi21:foo}` 표현에서 전체 id(`aperi21:foo`) 추출. 형식이 맞지 않으면 null. */
 export function parseBundleRaw(raw: string): string | null {
   const m = BUNDLE_PATTERN_FULL.exec(raw.trim());
   return m ? m[1]! : null;

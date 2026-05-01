@@ -33,19 +33,19 @@ export function registerAperi21Bundles(): void {
   if (bundlesRegistered) return;
   bundlesRegistered = true;
 
-  registerBundleLoader('bundle:projectile', async () => {
+  registerBundleLoader('aperi21:projectile', async () => {
     const m = await import('@aperi21/bundle-projectile');
-    return registerBundle('bundle:projectile', m.projectileBundle);
+    return registerBundle('aperi21:projectile', m.projectileBundle);
   });
 
-  registerBundleLoader('bundle:ray-tracing', async () => {
+  registerBundleLoader('aperi21:ray-tracing', async () => {
     const m = await import('@aperi21/bundle-ray-tracing');
-    return registerBundle('bundle:ray-tracing', m.rayTracingBundle);
+    return registerBundle('aperi21:ray-tracing', m.rayTracingBundle);
   });
 
-  registerBundleLoader('bundle:dc-circuit', async () => {
+  registerBundleLoader('aperi21:dc-circuit', async () => {
     const m = await import('@aperi21/bundle-dc-circuit');
-    return registerBundle('bundle:dc-circuit', m.dcCircuitBundle);
+    return registerBundle('aperi21:dc-circuit', m.dcCircuitBundle);
   });
 }
 
