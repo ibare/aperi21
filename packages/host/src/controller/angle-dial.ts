@@ -26,9 +26,10 @@ function hitDial(input: PointerInput, layout: Layout): boolean {
   const dx = input.px - layout.cx;
   const dy = input.py - layout.cy;
   const d2 = dx * dx + dy * dy;
-  // 반원(위쪽) 안쪽 + 바깥 8px 여유. y 가 center 보다 아래면 제외.
+  // 반원(위쪽) 안쪽 + 바깥 4px 여유. y 가 center 보다 아래면 제외. 좌하단의
+  // 캔버스 클릭이 다이얼로 빨려가지 않도록 여유는 작게 둔다.
   if (input.py > layout.cy + 2) return false;
-  return d2 <= (layout.r + 12) * (layout.r + 12);
+  return d2 <= (layout.r + 4) * (layout.r + 4);
 }
 
 /**
@@ -135,7 +136,7 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
     ctx: ControllerEventContext,
     spec: AngleSpec,
     state: BundleState,
-  ): Partial<BundleState> | null {
+  ): BundleState | null {
     const layout = computeLayout(ctx.viewport);
     if (!hitDial(input, layout)) return null;
     this.dragging = true;
@@ -147,12 +148,12 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
     ctx: ControllerEventContext,
     spec: AngleSpec,
     state: BundleState,
-  ): Partial<BundleState> | null {
+  ): BundleState | null {
     if (!this.dragging) return null;
     return this.angleFromPointer(input, computeLayout(ctx.viewport), spec, state);
   }
 
-  onPointerUp(): Partial<BundleState> | null {
+  onPointerUp(): BundleState | null {
     this.dragging = false;
     return null;
   }
@@ -162,7 +163,7 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
     layout: Layout,
     spec: AngleSpec,
     state: BundleState,
-  ): Partial<BundleState> {
+  ): BundleState {
     const dx = input.px - layout.cx;
     const dy = layout.cy - input.py;
     // 반원 위쪽만 허용. 0°=오른쪽, 90°=위쪽 규약.

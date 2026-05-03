@@ -34,7 +34,6 @@ export class LinearTimeEngine implements TimeEngine {
 
   start(): void {
     if (this._state === 'running') return;
-    this._currentTime = 0;
     this.transition('running', 0);
   }
 

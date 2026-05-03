@@ -432,6 +432,12 @@ export interface ParamDef {
   range?: [number, number];
   default: number;
   step?: number;
+  /**
+   * 지정되면 슬라이더가 호스트의 paramValues 가 아니라 Bundle state 의 이 경로를
+   * 직접 단일 소스로 삼는다. controller 가 같은 경로에 쓰는 경우(예: 발사체의
+   * angle-dial → 'launch.theta') 슬라이더와 controller 표시값이 자동 동기화된다.
+   */
+  statePath?: string;
 }
 
 /** Stage 정의 (공간 속성). */

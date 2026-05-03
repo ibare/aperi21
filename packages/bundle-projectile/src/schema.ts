@@ -18,6 +18,7 @@ export const schema: BundleSchema = {
       range: [1, 60],
       default: 20,
       step: 0.5,
+      statePath: 'launch.v0',
     },
     {
       id: 'theta',
@@ -26,6 +27,7 @@ export const schema: BundleSchema = {
       range: [0, 90],
       default: 45,
       step: 1,
+      statePath: 'launch.theta',
     },
   ],
 

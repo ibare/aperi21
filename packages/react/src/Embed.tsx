@@ -10,6 +10,7 @@ import { InfoPanel } from './embed/InfoPanel';
 import { CameraControls } from './embed/CameraControls';
 import { EnergyHUD } from './embed/EnergyHUD';
 import { ParamPanel } from './embed/ParamPanel';
+import { StageOverlay } from './embed/StageOverlay';
 import { useBundleRuntime } from './embed/useBundleRuntime';
 
 export interface EmbedProps {
@@ -103,8 +104,15 @@ export function Embed({ bundle, stageId, initialView, initialEnvironments }: Emb
           i18n={i18n}
           schema={bundle.schema}
           values={runtime.paramValues}
+          state={runtime.state}
           onChange={runtime.setParam}
           onReset={runtime.reset}
+        />
+        <StageOverlay
+          theme={theme}
+          i18n={i18n}
+          stage={runtime.stage}
+          environments={runtime.environments}
         />
         <CameraControls
           theme={theme}

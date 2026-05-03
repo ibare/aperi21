@@ -154,7 +154,7 @@ export class PinballLauncherController
     ctx: ControllerEventContext,
     spec: PinballSpec,
     state: BundleState,
-  ): Partial<BundleState> | null {
+  ): BundleState | null {
     const layout = computeLayout(ctx.viewport);
     if (!inTube(input, layout)) return null;
     const phase = readPath<string>(state, spec.binds.trigger) ?? 'idle';
@@ -175,7 +175,7 @@ export class PinballLauncherController
     input: PointerInput,
     ctx: ControllerEventContext,
     _spec: PinballSpec,
-  ): Partial<BundleState> | null {
+  ): BundleState | null {
     if (!this.dragging) return null;
     const layout = computeLayout(ctx.viewport);
     const dy = input.py - this.dragStartY;
@@ -189,7 +189,7 @@ export class PinballLauncherController
     _ctx: ControllerEventContext,
     spec: PinballSpec,
     state: BundleState,
-  ): Partial<BundleState> | null {
+  ): BundleState | null {
     if (!this.dragging) return null;
     const power = this.dragPower;
     this.dragging = false;
@@ -206,7 +206,7 @@ export class PinballLauncherController
     return updated;
   }
 
-  private reload(spec: PinballSpec, state: BundleState): Partial<BundleState> {
+  private reload(spec: PinballSpec, state: BundleState): BundleState {
     return writePath(state, spec.binds.trigger, 'idle');
   }
 

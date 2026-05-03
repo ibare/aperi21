@@ -1,12 +1,15 @@
 import type { CSSProperties } from 'react';
-import type { BundleSchema } from '@aperi21/schema';
-import type { HostI18n, HostTheme } from '@aperi21/host';
+import type { BundleSchema, BundleState } from '@aperi21/schema';
+import { readPath, type HostI18n, type HostTheme } from '@aperi21/host';
 
 export interface ParamPanelProps {
   theme: HostTheme;
   i18n: HostI18n;
   schema: BundleSchema;
+  /** statePath 가 없는 파라미터의 라이브 값. */
   values: Record<string, number>;
+  /** statePath 가 있는 파라미터를 읽기 위한 현재 state. */
+  state: BundleState;
   onChange(id: string, value: number): void;
   onReset(): void;
 }
@@ -17,7 +20,7 @@ export interface ParamPanelProps {
  *
  * docs/08-mvp-scope §C1 요구: 파라미터 라이브 조작.
  */
-export function ParamPanel({ theme, i18n, schema, values, onChange, onReset }: ParamPanelProps) {
+export function ParamPanel({ theme, i18n, schema, values, state, onChange, onReset }: ParamPanelProps) {
   if (!schema.parameters || schema.parameters.length === 0) return null;
 
   const wrap: CSSProperties = {
@@ -97,7 +100,11 @@ export function ParamPanel({ theme, i18n, schema, values, onChange, onReset }: P
         </button>
       </div>
       {schema.parameters.map((p) => {
-        const current = values[p.id] ?? p.default;
+        const stateVal = p.statePath ? readPath<number>(state, p.statePath) : undefined;
+        const current =
+          typeof stateVal === 'number' && Number.isFinite(stateVal)
+            ? stateVal
+            : (values[p.id] ?? p.default);
         const digits = decimalsForStep(p.step);
         const valueText = `${current.toFixed(digits)}${p.unit ? ' ' + p.unit : ''}`;
         return (

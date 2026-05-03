@@ -322,13 +322,11 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
 
       // 카메라 자동 프레이밍 — bundle 이 제공한 bounds 로 **매 프레임 직접 스냅**.
       // trajectory 기반 bounds 가 프레임마다 자라는 속도 자체가 camera flow.
-      // smoothing 을 얹으면 오히려 lag 이 생겨 공을 "안 따라가는" 인상을 준다.
       if (!host.camera.userAdjusted && bundle.boundsHint) {
         const bounds = bundle.boundsHint(stateRef.current, stage);
         host.camera.fitToBounds(bounds, vp, {
           padding: 12,
           screenMargins: HUD_MARGINS,
-          smooth: false,
         });
       }
 

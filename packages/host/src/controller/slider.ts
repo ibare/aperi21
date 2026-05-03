@@ -140,7 +140,7 @@ export class SliderController implements ControllerImpl<SliderSpec> {
     ctx: ControllerEventContext,
     spec: SliderSpec,
     state: BundleState,
-  ): Partial<BundleState> | null {
+  ): BundleState | null {
     const idx = this.assignIndex(spec.binds.value);
     const layout = computeLayout(ctx.viewport, idx);
     if (!hitLayout(input, layout)) return null;
@@ -153,14 +153,14 @@ export class SliderController implements ControllerImpl<SliderSpec> {
     ctx: ControllerEventContext,
     spec: SliderSpec,
     state: BundleState,
-  ): Partial<BundleState> | null {
+  ): BundleState | null {
     if (!this.dragging) return null;
     const idx = this.assignIndex(spec.binds.value);
     const layout = computeLayout(ctx.viewport, idx);
     return this.valueFromPointer(input, layout, spec, state);
   }
 
-  onPointerUp(): Partial<BundleState> | null {
+  onPointerUp(): BundleState | null {
     this.dragging = false;
     return null;
   }
@@ -178,7 +178,7 @@ export class SliderController implements ControllerImpl<SliderSpec> {
     layout: Layout,
     spec: SliderSpec,
     state: BundleState,
-  ): Partial<BundleState> {
+  ): BundleState {
     const trackX0 = layout.x + 12;
     const trackX1 = layout.x + layout.w - 12;
     const t = clamp((input.px - trackX0) / Math.max(1, trackX1 - trackX0), 0, 1);

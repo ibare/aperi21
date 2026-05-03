@@ -320,7 +320,6 @@ export function runBundle<T extends BundleState = BundleState>(
       host.camera.fitToBounds(bounds, vp, {
         padding: 12,
         screenMargins: HUD_MARGINS,
-        smooth: false,
       });
     }
 

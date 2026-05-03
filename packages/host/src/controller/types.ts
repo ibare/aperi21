@@ -36,7 +36,8 @@ export interface ControllerEventContext {
 
 /**
  * Controller 구현체. drag 중간 상태(예: dragStart 좌표) 는 인스턴스 내부에 저장할 수
- * 있지만 Bundle state 는 handler 반환값으로만 수정한다.
+ * 있지만 Bundle state 는 handler 반환값으로만 수정한다. 반환값은 새 state 전체이며
+ * (writePath 의 결과처럼) 호스트는 stateRef 를 그대로 교체한다. 변경이 없으면 null.
  */
 export interface ControllerImpl<T extends ControllerSpec = ControllerSpec> {
   readonly type: T['type'];
@@ -57,21 +58,21 @@ export interface ControllerImpl<T extends ControllerSpec = ControllerSpec> {
     ctx: ControllerEventContext,
     spec: T,
     state: BundleState,
-  ): Partial<BundleState> | null;
+  ): BundleState | null;
 
   onPointerMove(
     input: PointerInput,
     ctx: ControllerEventContext,
     spec: T,
     state: BundleState,
-  ): Partial<BundleState> | null;
+  ): BundleState | null;
 
   onPointerUp(
     input: PointerInput,
     ctx: ControllerEventContext,
     spec: T,
     state: BundleState,
-  ): Partial<BundleState> | null;
+  ): BundleState | null;
 
   /** 드래그 중인지(pointer capture 여부). */
   isDragging(): boolean;

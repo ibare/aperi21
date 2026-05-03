@@ -23,9 +23,10 @@ export function initialState(params: {
 }
 
 /**
- * phase==='flying' 일 때만 시간 전진. Euler 적분 — dt 가 작을 때 (RAF ≈ 16ms)
- * 시각 수준 정확도는 충분. 환경 배열은 매 프레임 최신 값이 전달되므로
- * "비행 중 비 토글" 같은 라이브 개입이 자동으로 반영된다.
+ * phase==='flying' 일 때만 시간 전진. Semi-implicit (symplectic) Euler 적분 —
+ * 새 vel 로 pos 를 갱신하므로 같은 dt 에서 forward Euler 보다 에너지 보존이 훨씬
+ * 안정적이다. 환경 배열은 매 프레임 최신 값이 전달되므로 "비행 중 비 토글"
+ * 같은 라이브 개입이 자동으로 반영된다.
  */
 export function step(params: {
   state: ProjectileState;
@@ -59,6 +60,7 @@ export function step(params: {
   const ax = -drag * vx + wind;
   const ay = -g - drag * vy;
 
+  // semi-implicit Euler: vel 먼저 갱신 후 그 vel 로 pos 적분.
   const newVx = vx + ax * dt;
   const newVy = vy + ay * dt;
   const newX = workingState.pos[0] + newVx * dt;
@@ -160,11 +162,16 @@ export function boundsHint(state: ProjectileState, stage: StageDef): Bounds {
     const cy = estH / 2;
     const halfW = Math.max(estRange * 0.65, 10);
     const halfH = Math.max(estH * 1.1, 5);
+    // 중력이 있는 stage 에서는 지면(y=0) 아래로 카메라가 새지 않도록 고정.
+    // halfH 의 하한(5) 때문에 v0 가 작으면 cy-halfH < 0 이 되어 발사점이 화면
+    // 위쪽으로 밀리는 현상을 방지한다.
+    const minY = g > 0 ? 0 : cy - halfH;
+    const maxY = g > 0 ? Math.max(estH * 1.2, halfH * 2) : cy + halfH;
     return {
       minX: cx - halfW,
       maxX: cx + halfW,
-      minY: cy - halfH,
-      maxY: cy + halfH,
+      minY,
+      maxY,
     };
   }
 

@@ -149,7 +149,7 @@ export class PlacementController implements ControllerImpl<PlacementSpec> {
     input: PointerInput,
     ctx: ControllerEventContext,
     spec: PlacementSpec,
-  ): Partial<BundleState> | null {
+  ): BundleState | null {
     const hit = paletteHit(input, computePalette(spec, ctx.viewport));
     if (!hit) return null;
     this.dragging = true;
@@ -158,7 +158,7 @@ export class PlacementController implements ControllerImpl<PlacementSpec> {
     return null;
   }
 
-  onPointerMove(input: PointerInput): Partial<BundleState> | null {
+  onPointerMove(input: PointerInput): BundleState | null {
     if (!this.dragging) return null;
     this.ghostScreen = [input.px, input.py];
     return null;
@@ -169,7 +169,7 @@ export class PlacementController implements ControllerImpl<PlacementSpec> {
     ctx: ControllerEventContext,
     spec: PlacementSpec,
     state: BundleState,
-  ): Partial<BundleState> | null {
+  ): BundleState | null {
     if (!this.dragging || !this.dragType) return null;
     const type = this.dragType;
     this.dragging = false;

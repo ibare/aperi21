@@ -95,7 +95,7 @@ export class ValueEditController implements ControllerImpl<ValueEditSpec> {
     _ctx: ControllerEventContext,
     spec: ValueEditSpec,
     state: BundleState,
-  ): Partial<BundleState> | null {
+  ): BundleState | null {
     const cur = readPath<number>(state, spec.binds.value) ?? 0;
     this.dragging = true;
     this.dragStartX = input.px;
@@ -108,7 +108,7 @@ export class ValueEditController implements ControllerImpl<ValueEditSpec> {
     _ctx: ControllerEventContext,
     spec: ValueEditSpec,
     state: BundleState,
-  ): Partial<BundleState> | null {
+  ): BundleState | null {
     if (!this.dragging) return null;
     const dx = input.px - this.dragStartX;
     const [lo, hi] = spec.range ?? [this.dragStartValue - 10, this.dragStartValue + 10];
@@ -122,7 +122,7 @@ export class ValueEditController implements ControllerImpl<ValueEditSpec> {
     return writePath(state, spec.binds.value, roundTo(next, 3));
   }
 
-  onPointerUp(): Partial<BundleState> | null {
+  onPointerUp(): BundleState | null {
     this.dragging = false;
     return null;
   }
