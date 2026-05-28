@@ -11,9 +11,9 @@
   },
   "dependencies": {
     "@aperi21/bootstrap": "workspace:*",
-    "@aperi21/bundle-dc-circuit": "workspace:*",
-    "@aperi21/bundle-projectile": "workspace:*",
-    "@aperi21/bundle-ray-tracing": "workspace:*",
+    "@aperi21/sim-dc-circuit": "workspace:*",
+    "@aperi21/sim-projectile": "workspace:*",
+    "@aperi21/sim-ray-tracing": "workspace:*",
     "@aperi21/host": "workspace:*",
     "@aperi21/host-tiptap": "workspace:*",
     "@aperi21/plugin-circuit": "workspace:*",

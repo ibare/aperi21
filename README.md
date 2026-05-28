@@ -2,7 +2,7 @@
 
 aperi21의 29개 묶음 카탈로그 웹사이트와 향후 추가될 시각화 엔진 패키지를 함께 담는 **pnpm workspace 모노레포**다.
 
-LLM이 생성한 물리 설명문 안에 `{aperi21:<id>}` DSL로 끼어드는 인터랙티브 시각화의 전체 지도이며, 현재 카탈로그는 SOON 플레이스홀더로 자리만 마련되어 있다. 실제 시각화는 `packages/` 하위의 엔진 패키지들로 단계별로 추가된다.
+LLM이 생성한 물리 설명문 안에 `{aperi21:<id>}` DSL로 끼어드는 인터랙티브 시각화의 전체 지도이며, 현재 카탈로그는 SOON 플레이스홀더로 자리만 마련되어 있다. 실제 시각화는 `sims/<category>/<name>/` 하위의 sim 패키지들로 단계별로 추가된다.
 
 ## 저장소 구조
 
@@ -10,7 +10,11 @@ LLM이 생성한 물리 설명문 안에 `{aperi21:<id>}` DSL로 끼어드는 �
 aperi21/
 ├── apps/
 │   └── catalog/          # 카탈로그 인덱스 웹사이트 (@aperi21/catalog)
-├── packages/             # 엔진 패키지 (Phase 1부터 추가)
+├── sims/                 # 시각화 sim 패키지 (카테고리별 그룹)
+│   ├── physics/projectile/
+│   ├── electronics/dc-circuit/
+│   └── optics/ray-tracing/
+├── packages/             # 코어/플러그인/호스트 어댑터
 ├── docs/                 # 설계 문서 (01~08)
 ├── prompts/              # 작업 프롬프트
 ├── pnpm-workspace.yaml
@@ -18,7 +22,7 @@ aperi21/
 └── package.json          # workspace 루트 scripts
 ```
 
-앞으로 추가될 패키지 목록은 `packages/README.md` 참고.
+sim/패키지 목록은 `packages/README.md` 참고.
 
 ## 요구 사항
 

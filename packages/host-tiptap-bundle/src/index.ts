@@ -26,9 +26,9 @@
  *   });
  *
  * lazy 보존:
- *  - @aperi21/bootstrap 의 import('@aperi21/bundle-*') 가 rollup 의 dynamic
- *    import 로 살아남아 bundle 별 chunk 로 분리된다. 호스트 Vite 가 그 chunk
- *    그래프를 그대로 이어받는다.
+ *  - @aperi21/bootstrap 의 import('@aperi21/sim-*') 가 rollup 의 dynamic
+ *    import 로 살아남아 sim 별 chunk 로 분리된다 (dist/sims/<category>/<name>-[hash].js).
+ *    호스트 Vite 가 그 chunk 그래프를 그대로 이어받는다.
  */
 
 export {

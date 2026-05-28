@@ -13,15 +13,6 @@ importers:
       '@aperi21/bootstrap':
         specifier: workspace:*
         version: link:../../packages/bootstrap
-      '@aperi21/bundle-dc-circuit':
-        specifier: workspace:*
-        version: link:../../packages/bundle-dc-circuit
-      '@aperi21/bundle-projectile':
-        specifier: workspace:*
-        version: link:../../packages/bundle-projectile
-      '@aperi21/bundle-ray-tracing':
-        specifier: workspace:*
-        version: link:../../packages/bundle-ray-tracing
       '@aperi21/host':
         specifier: workspace:*
         version: link:../../packages/host
@@ -40,6 +31,15 @@ importers:
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../../packages/schema
+      '@aperi21/sim-dc-circuit':
+        specifier: workspace:*
+        version: link:../../sims/electronics/dc-circuit
+      '@aperi21/sim-projectile':
+        specifier: workspace:*
+        version: link:../../sims/physics/projectile
+      '@aperi21/sim-ray-tracing':
+        specifier: workspace:*
+        version: link:../../sims/optics/ray-tracing
       '@tiptap/core':
         specifier: ^3.22.3
         version: 3.22.5(@tiptap/pm@3.22.5)
@@ -93,66 +93,24 @@ importers:
         specifier: workspace:*
         version: link:../schema
     devDependencies:
-      '@aperi21/bundle-dc-circuit':
-        specifier: workspace:*
-        version: link:../bundle-dc-circuit
-      '@aperi21/bundle-projectile':
-        specifier: workspace:*
-        version: link:../bundle-projectile
-      '@aperi21/bundle-ray-tracing':
-        specifier: workspace:*
-        version: link:../bundle-ray-tracing
       '@aperi21/plugin-circuit':
         specifier: workspace:*
         version: link:../plugin-circuit
       '@aperi21/plugin-optics':
         specifier: workspace:*
         version: link:../plugin-optics
+      '@aperi21/sim-dc-circuit':
+        specifier: workspace:*
+        version: link:../../sims/electronics/dc-circuit
+      '@aperi21/sim-projectile':
+        specifier: workspace:*
+        version: link:../../sims/physics/projectile
+      '@aperi21/sim-ray-tracing':
+        specifier: workspace:*
+        version: link:../../sims/optics/ray-tracing
       typescript:
         specifier: ^5.6.3
         version: 5.9.3
-
-  packages/bundle-dc-circuit:
-    devDependencies:
-      '@aperi21/plugin-circuit':
-        specifier: workspace:*
-        version: link:../plugin-circuit
-      '@aperi21/schema':
-        specifier: workspace:*
-        version: link:../schema
-      typescript:
-        specifier: ^5.6.3
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.9
-        version: 2.1.9(jsdom@25.0.1)
-
-  packages/bundle-projectile:
-    devDependencies:
-      '@aperi21/schema':
-        specifier: workspace:*
-        version: link:../schema
-      typescript:
-        specifier: ^5.6.3
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.9
-        version: 2.1.9(jsdom@25.0.1)
-
-  packages/bundle-ray-tracing:
-    devDependencies:
-      '@aperi21/plugin-optics':
-        specifier: workspace:*
-        version: link:../plugin-optics
-      '@aperi21/schema':
-        specifier: workspace:*
-        version: link:../schema
-      typescript:
-        specifier: ^5.6.3
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.9
-        version: 2.1.9(jsdom@25.0.1)
 
   packages/host:
     devDependencies:
@@ -289,6 +247,48 @@ importers:
       typescript:
         specifier: ^5.6.3
         version: 5.9.3
+
+  sims/electronics/dc-circuit:
+    devDependencies:
+      '@aperi21/plugin-circuit':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-circuit
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(jsdom@25.0.1)
+
+  sims/optics/ray-tracing:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(jsdom@25.0.1)
+
+  sims/physics/projectile:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(jsdom@25.0.1)
 
 packages:
 

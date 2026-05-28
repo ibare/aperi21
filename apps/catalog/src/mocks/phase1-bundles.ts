@@ -1,7 +1,7 @@
 import type { Bundle } from '@aperi21/schema';
-import { projectileBundle } from '@aperi21/bundle-projectile';
-import { rayTracingBundle } from '@aperi21/bundle-ray-tracing';
-import { dcCircuitBundle } from '@aperi21/bundle-dc-circuit';
+import { projectileBundle } from '@aperi21/sim-projectile';
+import { rayTracingBundle } from '@aperi21/sim-ray-tracing';
+import { dcCircuitBundle } from '@aperi21/sim-dc-circuit';
 
 /**
  * Phase 2 실구현 번들 매핑. BundleDetailPage 에서 Embed 로 전달되는 값.

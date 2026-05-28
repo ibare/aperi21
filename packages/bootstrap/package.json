@@ -16,9 +16,9 @@
     "@aperi21/schema": "workspace:*"
   },
   "devDependencies": {
-    "@aperi21/bundle-dc-circuit": "workspace:*",
-    "@aperi21/bundle-projectile": "workspace:*",
-    "@aperi21/bundle-ray-tracing": "workspace:*",
+    "@aperi21/sim-dc-circuit": "workspace:*",
+    "@aperi21/sim-projectile": "workspace:*",
+    "@aperi21/sim-ray-tracing": "workspace:*",
     "@aperi21/plugin-circuit": "workspace:*",
     "@aperi21/plugin-optics": "workspace:*",
     "typescript": "^5.6.3"
