@@ -18,6 +18,7 @@ import {
   type Camera,
   type ControllerEventContext,
   type Host,
+  type TimeEngine,
   type Viewport,
   type PointerInput,
 } from '@aperi21/host';
@@ -37,6 +38,10 @@ const HUD_MARGINS = { top: 60, bottom: 130, left: 180, right: 110 };
 
 export interface BundleCanvasProps<T extends BundleState = BundleState> {
   host: Host;
+  /** 이 임베드 전용 카메라. 같은 host 를 공유하는 다른 임베드와 분리되도록 Embed 가 주입. */
+  camera: Camera;
+  /** 이 임베드 전용 시간 엔진(번들 timeModel 기반). 마찬가지로 Embed 가 주입. */
+  timeEngine: TimeEngine;
   bundle: Bundle<T>;
   stage: StageDef;
   view: ViewDef;
@@ -65,6 +70,8 @@ function createMeasure(ctx: CanvasRenderingContext2D, fontFamily: string): Measu
 export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>) {
   const {
     host,
+    camera,
+    timeEngine,
     bundle,
     stage,
     view,
@@ -92,8 +99,8 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
 
   // 카메라 리셋을 상위로 노출
   useEffect(() => {
-    registerResetCamera?.(() => host.camera.reset());
-  }, [host, registerResetCamera]);
+    registerResetCamera?.(() => camera.reset());
+  }, [camera, registerResetCamera]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -103,8 +110,8 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
 
     const dpr = Math.min(2, window.devicePixelRatio || 1);
     const particles = new BackgroundParticleSystem();
-    host.timeEngine.reset();
-    host.timeEngine.start();
+    timeEngine.reset();
+    timeEngine.start();
 
     let disposed = false;
     let rafId = 0;
@@ -150,10 +157,10 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
     function makeEventCtx(vp: Viewport): ControllerEventContext {
       return {
         viewport: vp,
-        toWorld: (s: Vec2) => host.camera.toWorld(s, vp),
-        toScreen: (w: Vec2) => host.camera.toScreen(w, vp),
-        snapWorld: (w: Vec2) => host.camera.snapWorld(w),
-        scale: host.camera.scale,
+        toWorld: (s: Vec2) => camera.toWorld(s, vp),
+        toScreen: (w: Vec2) => camera.toScreen(w, vp),
+        snapWorld: (w: Vec2) => camera.snapWorld(w),
+        scale: camera.scale,
       };
     }
 
@@ -238,9 +245,9 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
         panning.lastPy = input.py;
         // 스크린 델타 → 월드 델타. Camera.pan 이 userAdjusted=true 로 전환해
         // 이후 자동 fitToBounds 를 멈춘다(재발사 시 자동 해제).
-        const dxWorld = dxScreen / host.camera.scale;
-        const dyWorld = -dyScreen / host.camera.scale; // 스크린 y 는 아래가 +
-        host.camera.pan(dxWorld, dyWorld);
+        const dxWorld = dxScreen / camera.scale;
+        const dyWorld = -dyScreen / camera.scale; // 스크린 y 는 아래가 +
+        camera.pan(dxWorld, dyWorld);
       }
     }
     function onPointerUp(e: PointerEvent) {
@@ -277,10 +284,10 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       const rect = canvas!.getBoundingClientRect();
       const sx = e.clientX - rect.left;
       const sy = e.clientY - rect.top;
-      const worldCenter = host.camera.toWorld([sx, sy], vp);
+      const worldCenter = camera.toWorld([sx, sy], vp);
       // deltaY<0 확대(휠 업), >0 축소. 한 틱당 약 10% 변화.
       const factor = Math.exp(-e.deltaY * 0.0015);
-      host.camera.zoom(factor, worldCenter);
+      camera.zoom(factor, worldCenter);
     }
 
     canvas.addEventListener('pointerdown', onPointerDown);
@@ -303,7 +310,7 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       const envs = envRef.current;
 
       // 물리 스텝 — 종료되지 않았고 timeEngine 이 running 일 때만
-      const simDt = host.timeEngine.tick(realDt);
+      const simDt = timeEngine.tick(realDt);
       if (simDt > 0) {
         const nextState = bundle.step({ state: stateRef.current, dt: simDt, stage, environments: envs });
         if (nextState !== stateRef.current) {
@@ -311,20 +318,20 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
           onStateChangeRef.current(nextState);
         }
         if (bundle.isTerminated?.(nextState)) {
-          host.timeEngine.markTerminated();
+          timeEngine.markTerminated();
         }
       }
 
       // 재발사 감지: isTerminated true→false 전이 시 사용자 수동 조정 해제.
       const isTerm = bundle.isTerminated?.(stateRef.current) ?? false;
-      if (wasTerminated && !isTerm) host.camera.userAdjusted = false;
+      if (wasTerminated && !isTerm) camera.userAdjusted = false;
       wasTerminated = isTerm;
 
       // 카메라 자동 프레이밍 — bundle 이 제공한 bounds 로 **매 프레임 직접 스냅**.
       // trajectory 기반 bounds 가 프레임마다 자라는 속도 자체가 camera flow.
-      if (!host.camera.userAdjusted && bundle.boundsHint) {
+      if (!camera.userAdjusted && bundle.boundsHint) {
         const bounds = bundle.boundsHint(stateRef.current, stage);
-        host.camera.fitToBounds(bounds, vp, {
+        camera.fitToBounds(bounds, vp, {
           padding: 12,
           screenMargins: HUD_MARGINS,
         });
@@ -345,7 +352,7 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       particles.render(ctx, theme);
 
       // 거리 축 그리드(월드 m 단위). 레퍼런스 GIF 와 같이 x/y 축에 거리 라벨.
-      drawAxisGrid(ctx, vp, host.camera, theme);
+      drawAxisGrid(ctx, vp, camera, theme);
 
       // Scene Graph 렌더
       const sceneGraph = bundle.scene({
@@ -361,13 +368,13 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
 
       const rc: RenderContext = {
         ctx,
-        toScreen: (world: Vec2) => host.camera.toScreen(world, vp),
-        toWorld: (screen: Vec2) => host.camera.toWorld(screen, vp),
-        scale: host.camera.scale,
+        toScreen: (world: Vec2) => camera.toScreen(world, vp),
+        toWorld: (screen: Vec2) => camera.toWorld(screen, vp),
+        scale: camera.scale,
         viewport: vp,
         theme,
         i18n,
-        time: host.timeEngine.currentTime,
+        time: timeEngine.currentTime,
         deltaTime: simDt,
         scene: refs,
         measure: createMeasure(ctx, theme.fontFamily),
@@ -410,7 +417,7 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       canvas.removeEventListener('pointercancel', onPointerUp);
       canvas.removeEventListener('wheel', onWheel);
     };
-  }, [host]);
+  }, [host, camera, timeEngine]);
 
   const style: CSSProperties = {
     position: 'absolute',

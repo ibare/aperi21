@@ -24,8 +24,9 @@ import type {
 
 import { BackgroundParticleSystem } from '../particles';
 import { preprocessScene } from '../scene';
-import type { Camera, Viewport } from '../camera';
+import { Camera, type Viewport } from '../camera';
 import { Host, createHost } from '../host';
+import { createTimeEngine } from '../time';
 import type { ThemeMode } from '../theme';
 import type { ControllerEventContext, PointerInput } from '../controller/types';
 
@@ -76,6 +77,14 @@ export function runBundle<T extends BundleState = BundleState>(
     // async 인 경우엔 첫 프레임 이후 점진 반영된다.
     void Promise.resolve(options.installPlugins(host));
   }
+
+  // 카메라·시간 엔진은 이 마운트 전용 인스턴스다. host 는 renderer/compute/controller
+  // 레지스트리·theme·i18n 같은 불변 공유분만 제공하고, 패닝/줌/시간처럼 view 마다
+  // 달라야 하는 상태는 host 에 두지 않는다 — 같은 host 를 공유하는 다른 임베드와
+  // 카메라·시간이 묶이지 않도록 (한 콘텐츠에 임베드가 N 개여도 각자 독립적으로
+  // 패닝·줌·재생된다). timeModel 도 번들별로 정확히 적용된다.
+  const camera = new Camera();
+  const timeEngine = createTimeEngine(bundle.schema.timeModel ?? 'linear');
 
   // Stage / View / Environment 결정
   const stage =
@@ -129,8 +138,8 @@ export function runBundle<T extends BundleState = BundleState>(
 
   const dpr = Math.min(2, (typeof window !== 'undefined' && window.devicePixelRatio) || 1);
   const particles = new BackgroundParticleSystem();
-  host.timeEngine.reset();
-  host.timeEngine.start();
+  timeEngine.reset();
+  timeEngine.start();
 
   let disposed = false;
   let rafId = 0;
@@ -177,10 +186,10 @@ export function runBundle<T extends BundleState = BundleState>(
   function makeEventCtx(vp: Viewport): ControllerEventContext {
     return {
       viewport: vp,
-      toWorld: (s: Vec2) => host.camera.toWorld(s, vp),
-      toScreen: (w: Vec2) => host.camera.toScreen(w, vp),
-      snapWorld: (w: Vec2) => host.camera.snapWorld(w),
-      scale: host.camera.scale,
+      toWorld: (s: Vec2) => camera.toWorld(s, vp),
+      toScreen: (w: Vec2) => camera.toScreen(w, vp),
+      snapWorld: (w: Vec2) => camera.snapWorld(w),
+      scale: camera.scale,
     };
   }
 
@@ -252,9 +261,9 @@ export function runBundle<T extends BundleState = BundleState>(
       if (dxScreen === 0 && dyScreen === 0) return;
       panning.lastPx = input.px;
       panning.lastPy = input.py;
-      const dxWorld = dxScreen / host.camera.scale;
-      const dyWorld = -dyScreen / host.camera.scale;
-      host.camera.pan(dxWorld, dyWorld);
+      const dxWorld = dxScreen / camera.scale;
+      const dyWorld = -dyScreen / camera.scale;
+      camera.pan(dxWorld, dyWorld);
     }
   }
   function onPointerUp(e: PointerEvent) {
@@ -283,9 +292,9 @@ export function runBundle<T extends BundleState = BundleState>(
     const rect = canvas.getBoundingClientRect();
     const sx = e.clientX - rect.left;
     const sy = e.clientY - rect.top;
-    const worldCenter = host.camera.toWorld([sx, sy], vp);
+    const worldCenter = camera.toWorld([sx, sy], vp);
     const factor = Math.exp(-e.deltaY * 0.0015);
-    host.camera.zoom(factor, worldCenter);
+    camera.zoom(factor, worldCenter);
   }
 
   canvas.addEventListener('pointerdown', onPointerDown);
@@ -304,20 +313,20 @@ export function runBundle<T extends BundleState = BundleState>(
     const i18n = host.i18n;
     const b = refs.bundle;
 
-    const simDt = host.timeEngine.tick(realDt);
+    const simDt = timeEngine.tick(realDt);
     if (simDt > 0) {
       const next = b.step({ state: refs.state, dt: simDt, stage: refs.stage, environments: refs.envs });
       if (next !== refs.state) refs.state = next;
-      if (b.isTerminated?.(next)) host.timeEngine.markTerminated();
+      if (b.isTerminated?.(next)) timeEngine.markTerminated();
     }
 
     const isTerm = b.isTerminated?.(refs.state) ?? false;
-    if (wasTerminated && !isTerm) host.camera.userAdjusted = false;
+    if (wasTerminated && !isTerm) camera.userAdjusted = false;
     wasTerminated = isTerm;
 
-    if (!host.camera.userAdjusted && b.boundsHint) {
+    if (!camera.userAdjusted && b.boundsHint) {
       const bounds = b.boundsHint(refs.state, refs.stage);
-      host.camera.fitToBounds(bounds, vp, {
+      camera.fitToBounds(bounds, vp, {
         padding: 12,
         screenMargins: HUD_MARGINS,
       });
@@ -332,7 +341,7 @@ export function runBundle<T extends BundleState = BundleState>(
     ctx!.fillStyle = theme.background;
     ctx!.fillRect(0, 0, vp.width, vp.height);
     particles.render(ctx!, theme);
-    drawAxisGrid(ctx!, vp, host.camera, theme);
+    drawAxisGrid(ctx!, vp, camera, theme);
 
     const sceneGraph = b.scene({
       state: refs.state,
@@ -347,13 +356,13 @@ export function runBundle<T extends BundleState = BundleState>(
 
     const rc: RenderContext = {
       ctx: ctx!,
-      toScreen: (world: Vec2) => host.camera.toScreen(world, vp),
-      toWorld: (screen: Vec2) => host.camera.toWorld(screen, vp),
-      scale: host.camera.scale,
+      toScreen: (world: Vec2) => camera.toScreen(world, vp),
+      toWorld: (screen: Vec2) => camera.toWorld(screen, vp),
+      scale: camera.scale,
       viewport: vp,
       theme,
       i18n,
-      time: host.timeEngine.currentTime,
+      time: timeEngine.currentTime,
       deltaTime: simDt,
       scene: sceneRefs,
       measure: createMeasure(ctx!, theme.fontFamily),
