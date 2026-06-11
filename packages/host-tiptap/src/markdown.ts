@@ -1,6 +1,6 @@
 /**
  * 마크다운 → HTML 변환. 본문에 등장하는 `{aperi21:<id>}` 토큰을
- * `<span data-bundle="true" data-bundle-id="<id>"></span>` 로 치환한다.
+ * `<span data-aperi21="true" data-aperi21-id="<id>"></span>` 로 치환한다.
  *
  * inline-level marked extension 으로 등록하므로 `코드` 블록과 ```펜스 안의
  * 동일 패턴은 치환되지 않는다.
@@ -30,7 +30,7 @@ const bundleInlineExtension: TokenizerAndRendererExtension = {
   },
   renderer(token): string {
     const t = token as unknown as BundleToken;
-    return `<span data-bundle="true" data-bundle-id="${t.id}"></span>`;
+    return `<span data-aperi21="true" data-aperi21-id="${t.id}"></span>`;
   },
 };
 

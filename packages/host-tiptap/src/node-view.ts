@@ -49,7 +49,7 @@ export function createBundleNodeView(): NodeViewRenderer {
 
     const dom = document.createElement('span');
     dom.className = 'aperi21-bundle-node';
-    dom.setAttribute('data-bundle', 'true');
+    dom.setAttribute('data-aperi21', 'true');
     dom.contentEditable = 'false';
     dom.style.display = 'inline-block';
     dom.style.width = '100%';
@@ -78,7 +78,7 @@ export function createBundleNodeView(): NodeViewRenderer {
     const mountInstance = (id: string): void => {
       currentId = id;
       const token = ++mountToken;
-      dom.setAttribute('data-bundle-id', id);
+      dom.setAttribute('data-aperi21-id', id);
       mount.textContent = '';
 
       if (!id) {

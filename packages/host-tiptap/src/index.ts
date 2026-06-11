@@ -36,7 +36,7 @@ export type BundleExtensionOptions = {
 };
 
 export const BundleExtension = Node.create<BundleExtensionOptions>({
-  name: 'aperi21Bundle',
+  name: 'aperi21',
   group: 'inline',
   inline: true,
   atom: true,
@@ -51,10 +51,10 @@ export const BundleExtension = Node.create<BundleExtensionOptions>({
     return {
       id: {
         default: '',
-        parseHTML: (element) => element.getAttribute('data-bundle-id') ?? '',
+        parseHTML: (element) => element.getAttribute('data-aperi21-id') ?? '',
         renderHTML: (attrs) => {
           const id = typeof attrs.id === 'string' ? attrs.id : '';
-          return id ? { 'data-bundle-id': id } : {};
+          return id ? { 'data-aperi21-id': id } : {};
         },
       },
     };
@@ -63,10 +63,10 @@ export const BundleExtension = Node.create<BundleExtensionOptions>({
   parseHTML() {
     return [
       {
-        tag: 'span[data-bundle]',
+        tag: 'span[data-aperi21]',
         getAttrs: (node) => {
           if (!(node instanceof HTMLElement)) return false;
-          const id = node.getAttribute('data-bundle-id') ?? '';
+          const id = node.getAttribute('data-aperi21-id') ?? '';
           return id ? { id } : false;
         },
       },
@@ -74,7 +74,7 @@ export const BundleExtension = Node.create<BundleExtensionOptions>({
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ['span', mergeAttributes(HTMLAttributes, { 'data-bundle': 'true' }), ''];
+    return ['span', mergeAttributes(HTMLAttributes, { 'data-aperi21': 'true' }), ''];
   },
 
   addNodeView() {
