@@ -40,6 +40,14 @@ export function hasBundleLoader(id: string): boolean {
 }
 
 /**
+ * 등록된 모든 bundle loader id 목록. 모듈을 로드하지 않고 "추가 가능한 시각화"
+ * 집합을 알아야 하는 카탈로그 생성·정합성 검증에서 사용한다.
+ */
+export function listBundleLoaderIds(): string[] {
+  return [...loaders.keys()];
+}
+
+/**
  * id 의 loader 를 호출해 Bundle 을 등록·반환. loader 결과가 Bundle 자체이거나,
  * { default: Bundle } 형태이거나, 등록 함수가 호출된 뒤 registerBundle 을 통해
  * 캐시에 들어간 형태 모두를 허용한다.

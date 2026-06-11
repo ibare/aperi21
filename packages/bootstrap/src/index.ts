@@ -78,3 +78,7 @@ export function _resetBootstrapState(): void {
   bundlesRegistered = false;
   pluginsInstalledFor = new WeakSet<Host>();
 }
+
+// 카탈로그 — 호스트가 시각화 모듈을 로드하지 않고 "추가 가능한 목록" 을 그릴 수 있게.
+export { getAperi21Catalog } from './catalog.js';
+export type { Aperi21CatalogEntry } from './catalog-types.js';

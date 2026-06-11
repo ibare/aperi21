@@ -10,6 +10,12 @@
     "preview": "pnpm --filter @aperi21/catalog preview",
     "typecheck": "pnpm -r typecheck",
     "lint": "pnpm -r lint",
-    "test": "pnpm -r test"
+    "test": "pnpm -r test",
+    "catalog:gen": "tsx scripts/gen-aperi21-catalog.mts"
+  },
+  "devDependencies": {
+    "@aperi21/bootstrap": "workspace:*",
+    "@aperi21/host": "workspace:*",
+    "tsx": "^4.22.4"
   }
 }

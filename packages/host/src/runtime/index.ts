@@ -9,6 +9,7 @@ export {
   registerBundleLoader,
   getBundleById,
   hasBundleLoader,
+  listBundleLoaderIds,
   loadBundle,
   clearBundleRegistry,
   type BundleLoader,

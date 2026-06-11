@@ -74,6 +74,11 @@ export {
   installAperi21Plugins,
 } from '@aperi21/bootstrap';
 
+// 카탈로그 — methii 등 호스트가 시각화 모듈 로드 없이 "추가 가능한 시각화 목록" 을
+// 검색·삽입 UI 로 그릴 수 있게 하는 경량 메타데이터. FACET 의 getFacetCatalog 과
+// 동일한 엔트리 구조({ id, title, description?, domain }).
+export { getAperi21Catalog, type Aperi21CatalogEntry } from '@aperi21/bootstrap';
+
 export {
   createHost,
   Host,
