@@ -15,6 +15,7 @@ import {
   loadBundle,
   runBundle,
   type BundleRunHandle,
+  type Host,
 } from '@aperi21/host';
 
 const STATUS_BY_LOCALE: Record<string, { loading: string; errorPrefix: string }> = {
@@ -44,8 +45,14 @@ function renderError(mount: HTMLElement, message: string, locale?: string): void
 export function createBundleNodeView(): NodeViewRenderer {
   return (props: NodeViewRendererProps) => {
     const { node, extension } = props;
-    const opts = (extension.options ?? {}) as { locale?: string; theme?: 'light' | 'dark' };
-    const runOptions = { locale: opts.locale, theme: opts.theme };
+    const opts = (extension.options ?? {}) as {
+      locale?: string;
+      theme?: 'light' | 'dark';
+      host?: Host;
+    };
+    // host 가 주입돼 있으면 plugin 설치된 그 host 를 재사용. 없으면 runBundle 이
+    // 마운트마다 plugin 없는 host 를 만든다 (코어 렌더러 번들만 정상).
+    const runOptions = { locale: opts.locale, theme: opts.theme, host: opts.host };
 
     const dom = document.createElement('span');
     dom.className = 'aperi21-bundle-node';

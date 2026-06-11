@@ -15,6 +15,7 @@
  */
 
 import { Node, mergeAttributes, InputRule, PasteRule } from '@tiptap/core';
+import type { Host } from '@aperi21/host';
 import { createBundleNodeView } from './node-view.js';
 
 // id 본문은 영문자 시작, 영숫자/하이픈/언더스코어. snake_case 와 kebab-case 모두 허용.
@@ -33,6 +34,14 @@ export type BundleExtensionOptions = {
   locale?: string;
   /** runBundle 에 전달할 theme. */
   theme?: 'light' | 'dark';
+  /**
+   * NodeView 의 runBundle 이 사용할 Host. plugin(optics/circuit)이 설치된 host 를
+   * 넘기면 plugin 의존 번들(ray-tracing/dc-circuit)의 renderer 가 그 host 에서
+   * 조회된다. 생략하면 runBundle 이 마운트마다 plugin 없는 host 를 새로 만든다 —
+   * 코어 렌더러만 쓰는 번들(projectile)만 정상 동작.
+   * 보통은 @aperi21/host-tiptap-bundle 의 createAperi21Extension 이 주입한다.
+   */
+  host?: Host;
 };
 
 export const BundleExtension = Node.create<BundleExtensionOptions>({
@@ -44,7 +53,7 @@ export const BundleExtension = Node.create<BundleExtensionOptions>({
   draggable: false,
 
   addOptions() {
-    return { locale: undefined, theme: undefined };
+    return { locale: undefined, theme: undefined, host: undefined };
   },
 
   addAttributes() {
