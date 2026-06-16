@@ -1,25 +1,56 @@
 {
   "name": "@aperi21/host-tiptap-bundle",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
   "type": "module",
-  "description": "Self-contained ESM bundle of @aperi21/host-tiptap + sim-* + plugin-*. 외부 호스트 앱(예: 노트 에디터) 가 단일 의존으로 소비.",
+  "description": "Self-contained ESM bundle of @aperi21/host-tiptap + sim-* + plugin-*. 외부 호스트 앱(예: 노트 에디터)이 단일 의존으로 소비하는 Tiptap 확장.",
+  "license": "MIT",
+  "author": "Mintae Kim <ibare77@gmail.com>",
+  "homepage": "https://github.com/ibare/aperi21/tree/main/packages/host-tiptap-bundle#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ibare/aperi21.git",
+    "directory": "packages/host-tiptap-bundle"
+  },
+  "bugs": {
+    "url": "https://github.com/ibare/aperi21/issues"
+  },
+  "keywords": [
+    "tiptap",
+    "tiptap-extension",
+    "prosemirror",
+    "interactive",
+    "visualization",
+    "simulation",
+    "physics",
+    "aperi21",
+    "esm"
+  ],
+  "sideEffects": false,
   "main": "./dist/host-tiptap-bundle.js",
+  "module": "./dist/host-tiptap-bundle.js",
   "types": "./dist/host-tiptap-bundle.d.ts",
   "exports": {
     ".": {
       "types": "./dist/host-tiptap-bundle.d.ts",
       "import": "./dist/host-tiptap-bundle.js"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "files": ["dist"],
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "pnpm clean && rollup -c rollup.config.mjs",
     "build:analyze": "pnpm clean && VISUALIZE=1 rollup -c rollup.config.mjs",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist",
     "pack": "pnpm pack",
-    "build:pack": "pnpm clean && pnpm build && pnpm pack"
+    "build:pack": "pnpm clean && pnpm build && pnpm pack",
+    "prepack": "pnpm build"
   },
   "peerDependencies": {
     "@tiptap/core": "^3.0.0",
