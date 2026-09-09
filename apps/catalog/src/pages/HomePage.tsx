@@ -43,7 +43,12 @@ export function HomePage() {
 
         <div className={styles.categoryList}>
           {domains.map((domain, i) => (
-            <DomainSection key={domain.id} domain={domain} accentIndex={i % 7} />
+            <DomainSection
+              key={domain.id}
+              domain={domain}
+              index={i + 1}
+              defaultOpen={i === 0}
+            />
           ))}
         </div>
       </section>

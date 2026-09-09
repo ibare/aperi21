@@ -225,3 +225,16 @@
   line-height: 1.6;
   font-style: italic;
 }
+
+/* ── 임베드 ────────────────────────────────────────────────────────────── */
+
+.embed {
+  margin-bottom: var(--space-6);
+}
+
+.embedNote {
+  margin-top: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--fg-subtle);
+}

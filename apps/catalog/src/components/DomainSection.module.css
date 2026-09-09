@@ -150,57 +150,59 @@
 .topicList {
   list-style: none;
   margin: 0;
-  padding: 0 0 0.5rem;
+  padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1px;
-  background: var(--line, #d4cec2);
-}
-
-.topicItem {
-  background: var(--paper, #fbf8f0);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+  gap: var(--space-2);
 }
 
 .topicLink {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-areas: 'name badge' 'desc desc';
-  gap: 0.15rem 0.5rem;
-  padding: 0.65rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  height: 100%;
+  padding: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
   text-decoration: none;
   color: inherit;
-  min-height: 100%;
-  align-content: start;
+  transition:
+    background-color var(--duration-fast) var(--ease),
+    border-color var(--duration-fast) var(--ease);
 }
 
 .topicLink:hover,
 .topicLink:focus-visible {
-  background: var(--bg-subtle, #f5f1e8);
+  background: var(--surface-raised-hover);
+  border-color: var(--border);
+}
+
+.topicLink[data-implemented] {
+  background: var(--surface-raised);
+  border-color: var(--border);
 }
 
 .topicName {
-  grid-area: name;
-  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--fg);
+  line-height: 1.35;
+}
+
+/* 구현 표식. 배지 대신 점 하나 — 455개 목록에서 배지는 소음이 된다. */
+.topicDot {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--accent);
 }
 
 .topicDesc {
-  grid-area: desc;
   font-size: 0.78rem;
-  color: var(--muted, #6b7280);
-  line-height: 1.4;
-}
-
-.topicBadge {
-  grid-area: badge;
-  align-self: start;
-  font-family: var(--font-mono, monospace);
-  font-size: 0.62rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 0.1rem 0.35rem;
-  border: 1px solid currentColor;
-  border-radius: 2px;
-  color: var(--accent, #b8751f);
-  white-space: nowrap;
+  color: var(--fg-subtle);
+  line-height: 1.45;
 }

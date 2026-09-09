@@ -20,7 +20,7 @@ export function TopicDetailPage() {
   if (!topic) {
     return (
       <main className={`container ${styles.page}`}>
-        <p className={styles.notFound}>{t('topic_detail.not_found')}</p>
+        <p className={styles.missing}>{t('topic_detail.not_found')}</p>
         <Link to="/" className={styles.back}>
           {t('topic_detail.back')}
         </Link>
@@ -38,8 +38,13 @@ export function TopicDetailPage() {
       </Link>
 
       <header className={styles.header}>
-        <div className={styles.meta}>
-          {domain && <span className={styles.domain}>{domain.name}</span>}
+        <div className={styles.crumbs}>
+          {domain && (
+            <>
+              <span>{domain.name}</span>
+              <span className={styles.sep}>/</span>
+            </>
+          )}
           <code>{topic.id}</code>
         </div>
         <h1 className={styles.title}>{topic.name}</h1>
@@ -47,7 +52,7 @@ export function TopicDetailPage() {
       </header>
 
       {bundle ? (
-        <section className={styles.embedSection}>
+        <section className={styles.embed}>
           <Embed bundle={bundle} />
           <p className={styles.embedNote}>
             <code>{topic.simId}</code>
@@ -55,8 +60,10 @@ export function TopicDetailPage() {
         </section>
       ) : (
         <section className={styles.placeholder}>
-          <h2 className={styles.placeholderTitle}>{t('topic_detail.no_sim_title')}</h2>
-          <p className={styles.placeholderBody}>{t('topic_detail.no_sim_body')}</p>
+          <div className={styles.placeholderInner}>
+            <h2 className={styles.placeholderTitle}>{t('topic_detail.no_sim_title')}</h2>
+            <p className={styles.placeholderBody}>{t('topic_detail.no_sim_body')}</p>
+          </div>
         </section>
       )}
     </main>
