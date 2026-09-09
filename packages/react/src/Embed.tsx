@@ -50,7 +50,9 @@ export function Embed({ bundle, stageId, initialView, initialEnvironments }: Emb
   // 같은 host 를 공유하는 다른 임베드와 패닝·줌·재생이 묶이지 않는다. timeEngine 은
   // 번들 timeModel 을 따른다(setTimeMode 경로 없이도 정확).
   const cameraRef = useRef<Camera | null>(null);
-  if (!cameraRef.current) cameraRef.current = new Camera();
+  if (!cameraRef.current) {
+    cameraRef.current = new Camera({ screenYBias: bundle.schema.camera?.screenYBias });
+  }
   const camera = cameraRef.current;
   const timeEngine = useMemo(
     () => createTimeEngine(bundle.schema.timeModel ?? 'linear'),
@@ -59,10 +61,12 @@ export function Embed({ bundle, stageId, initialView, initialEnvironments }: Emb
 
   // stage 변경 시 카메라·타임엔진도 함께 리셋 (userAdjusted=false 로)
   useEffect(() => {
+    // 세로 편향은 선언이 정한다. 번들이 바뀌면 따라간다.
+    camera.screenYBias = bundle.schema.camera?.screenYBias ?? 0;
     camera.reset();
     timeEngine.reset();
     timeEngine.start();
-  }, [camera, timeEngine, runtime.resetSignal, runtime.stageId]);
+  }, [camera, timeEngine, runtime.resetSignal, runtime.stageId, bundle.schema.camera?.screenYBias]);
 
   const wrapper: CSSProperties = {
     background: theme.background,
@@ -153,12 +157,18 @@ export function Embed({ bundle, stageId, initialView, initialEnvironments }: Emb
           onChange={runtime.setParam}
           onReset={runtime.reset}
         />
-        <CameraControls
-          theme={theme}
-          i18n={i18n}
-          onReset={() => resetCameraRef.current()}
-          onResetBundle={runtime.reset}
-        />
+        {/*
+          카메라 버튼은 선언이 켜야 나온다. 프레이밍이 곧 주장인 그림에서는
+          독자가 프레임을 넓히는 것 자체가 오독의 경로다 (원칙 4, R9).
+        */}
+        {bundle.schema.chrome?.cameraControls && (
+          <CameraControls
+            theme={theme}
+            i18n={i18n}
+            onReset={() => resetCameraRef.current()}
+            onResetBundle={runtime.reset}
+          />
+        )}
       </div>
     </div>
   );

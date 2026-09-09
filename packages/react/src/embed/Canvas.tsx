@@ -25,16 +25,44 @@ import {
 import { resolveBackgroundKind } from './backgroundKind';
 
 /**
- * 컨트롤러·HUD 오버레이가 점유하는 픽셀 영역. fitToBounds 가 이 만큼을
- * viewport 에서 제외하고 스케일을 산출하므로, 자동 프레이밍 시 궤적이
- * 오버레이 아래로 가려지지 않는다.
+ * 오버레이가 점유하는 픽셀. fitToBounds 가 이만큼을 viewport 에서 빼고 스케일을
+ * 내므로, 자동 프레이밍이 오버레이 아래로 그림을 밀어 넣지 않는다.
  *
- *   top     : ViewTabs(상단 중앙 탭)
- *   bottom  : 타임라인·InfoPanel(하단)
- *   left    : ParamPanel(상단-좌) + angle-dial(하단-좌)
- *   right   : pinball-launcher 튜브(하단-우)
+ * **켜진 것만 센다.** 예전에는 `{60,130,180,110}` 한 벌이 고정이었는데, 그것은
+ * 발사체 화면(각도 다이얼 + 핀볼 런처 + 파라미터 패널)에 맞춘 값이었다. 그 화면이
+ * 아닌 조각들은 중심 아래 48px 만 남아 12~13배로 축소됐다.
+ *
+ * 각 값은 그 오버레이가 실제로 차지하는 크기다. C2 「기본값도 named 상수로 한
+ * 곳에」 — 여기가 그 한 곳이다.
  */
-const HUD_MARGINS = { top: 60, bottom: 130, left: 180, right: 110 };
+const OVERLAY_EXTENT = {
+  /** 어느 변에나 두는 최소 숨 쉴 자리. */
+  base: 24,
+  /** ViewTabs — 좌상단, top:12 + 높이 약 34. */
+  viewTabs: 36,
+  /** ParamPanel — 좌측, minWidth 240 중 그림이 양보할 만큼. */
+  paramPanel: 156,
+  /** angle-dial — 하단-좌에 그려지는 컨트롤러. */
+  angleDial: 106,
+  /** pinball-launcher — 하단-우 튜브. */
+  pinballLauncher: 86,
+} as const;
+
+/** 지금 켜져 있는 오버레이만으로 프레이밍 여백을 낸다. */
+function overlayMargins(
+  hasParamPanel: boolean,
+  controllerTypes: ReadonlySet<string>,
+): { top: number; bottom: number; left: number; right: number } {
+  const base = OVERLAY_EXTENT.base;
+  const dial = controllerTypes.has('angle-dial');
+  const pinball = controllerTypes.has('pinball-launcher');
+  return {
+    top: base + OVERLAY_EXTENT.viewTabs,
+    bottom: base + (dial || pinball ? OVERLAY_EXTENT.angleDial : 0),
+    left: base + (hasParamPanel ? OVERLAY_EXTENT.paramPanel : 0),
+    right: base + (pinball ? OVERLAY_EXTENT.pinballLauncher : 0),
+  };
+}
 
 export interface BundleCanvasProps<T extends BundleState = BundleState> {
   host: Host;
@@ -329,13 +357,21 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       if (wasTerminated && !isTerm) camera.userAdjusted = false;
       wasTerminated = isTerm;
 
+      // 이 프레임에 실제로 그려질 컨트롤러. 아래 렌더 루프와 프레이밍이 같은
+      // 목록을 봐야 여백과 그림이 어긋나지 않는다.
+      const controllerSpecs = bundle.controllers({ state: stateRef.current }) as ControllerSpec[];
+      const controllerTypes = new Set(controllerSpecs.map((c) => c.type));
+
       // 카메라 자동 프레이밍 — bundle 이 제공한 bounds 로 **매 프레임 직접 스냅**.
       // trajectory 기반 bounds 가 프레임마다 자라는 속도 자체가 camera flow.
       if (!camera.userAdjusted && bundle.boundsHint) {
         const bounds = bundle.boundsHint(stateRef.current, stage);
         camera.fitToBounds(bounds, vp, {
           padding: 12,
-          screenMargins: HUD_MARGINS,
+          screenMargins: overlayMargins(
+            (bundle.schema.parameters?.length ?? 0) > 0,
+            controllerTypes,
+          ),
         });
       }
 
@@ -353,8 +389,9 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       // 배경 입자
       particles.render(ctx, theme);
 
-      // 거리 축 그리드(월드 m 단위). 레퍼런스 GIF 와 같이 x/y 축에 거리 라벨.
-      drawAxisGrid(ctx, vp, camera, theme);
+      // 거리 축 그리드. 선언이 켜야 나온다 — 그리드는 중립적인 장식이 아니라
+      // "여기서 거리를 재라" 는 지시다 (원칙 4, R9).
+      if (bundle.schema.chrome?.grid) drawAxisGrid(ctx, vp, camera, theme);
 
       // Scene Graph 렌더
       const sceneGraph = bundle.scene({
@@ -391,8 +428,7 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
         renderer(rc, p, refs);
       }
 
-      // Controller 렌더 (스크린 오버레이)
-      const controllerSpecs = bundle.controllers({ state: stateRef.current }) as ControllerSpec[];
+      // Controller 렌더 (스크린 오버레이) — 목록은 프레이밍과 같은 것을 쓴다.
       for (const spec of controllerSpecs) {
         const impl = host.controllerRegistry.get(spec.type);
         if (!impl) continue;

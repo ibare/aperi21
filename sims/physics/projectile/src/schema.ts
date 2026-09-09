@@ -83,4 +83,16 @@ export const schema: BundleSchema = {
   ],
 
   autoViews: { energy: true },
+
+  /**
+   * 이 그림은 사거리를 재는 것이 주장의 일부다 — 각도를 바꾸면 얼마나 멀리
+   * 가는가. 그래서 거리 격자를 **켠다.** 기본값이 아니라 이 그림의 선택이다.
+   */
+  chrome: { grid: true },
+
+  /**
+   * 지면에서 위로 날아가는 그림이라 세로 쓰임이 위쪽으로 치우쳐 있다.
+   * 원점을 중앙보다 60px 내려 위쪽 공간을 넓게 쓴다.
+   */
+  camera: { screenYBias: 60 },
 };

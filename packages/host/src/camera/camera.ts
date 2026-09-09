@@ -7,10 +7,14 @@ export interface Viewport {
 
 /**
  * docs/06 §6 의 좌표 변환 규약:
- *   toScreen([wx, wy]) = [cx + (wx - cam.x) * scale, cy + 60 - (wy - cam.y) * scale]
- *   (+60 은 지면을 화면 중앙 약간 아래로 배치하는 편향)
+ *   toScreen([wx, wy]) = [cx + (wx - cam.x) * scale, cy + b - (wy - cam.y) * scale]
+ *
+ * b(세로 편향)는 **인스턴스 값이고 기본 0 이다** (`Camera.screenYBias`).
+ * 예전에는 모듈 상수 60 이었는데, 지면에서 위로 날아가는 그림 하나에 맞춘 값이
+ * 모든 그림에 걸려 있었다 — 세로 쓰임이 그렇지 않은 조각들이 화면 중심 아래
+ * 48px 만 쓰게 되어 12~13배 축소됐다. 편향이 필요한 그림은 선언이 말한다
+ * (`BundleSchema.camera.screenYBias`).
  */
-export const SCREEN_Y_BIAS = 60;
 
 /**
  * fitToBounds 호출 옵션.
@@ -45,11 +49,19 @@ export class Camera {
   gridSnap: boolean;
   gridSize: number;
 
+  /**
+   * 월드 원점을 뷰포트 중앙에서 아래로 내릴 픽셀. 기본 0.
+   * 선언(`BundleSchema.camera.screenYBias`)이 지정한다.
+   */
+  screenYBias: number;
+
   private defaultX: number;
   private defaultY: number;
   private defaultScale: number;
 
-  constructor(init: { x?: number; y?: number; scale?: number; gridSize?: number } = {}) {
+  constructor(
+    init: { x?: number; y?: number; scale?: number; gridSize?: number; screenYBias?: number } = {},
+  ) {
     this.x = init.x ?? 0;
     this.y = init.y ?? 0;
     this.scale = init.scale ?? 20;
@@ -59,6 +71,7 @@ export class Camera {
     this.defaultScale = this.scale;
     this.gridSnap = false;
     this.gridSize = init.gridSize ?? 1;
+    this.screenYBias = init.screenYBias ?? 0;
   }
 
   setGridSnap(enabled: boolean, size?: number): void {
@@ -97,7 +110,7 @@ export class Camera {
   /**
    * 뷰포트 안에 bounds 전체가 들어오도록 카메라 중심·스케일을 즉시 스냅한다.
    *
-   * SCREEN_Y_BIAS 때문에 월드 원점이 뷰포트 중앙보다 60px 아래로 찍힌다. 따라서
+   * screenYBias 가 0 이 아니면 월드 원점이 뷰포트 중앙에서 그만큼 아래로 찍힌다. 따라서
    * 가용 세로 공간은 상하가 비대칭이다. 본 메서드는 이를 반영해 네 방향(상/하/
    * 좌/우) 각각의 가용 픽셀을 분리 계산하고, 그 중 가장 타이트한 제약으로
    * 스케일을 정한다.
@@ -113,7 +126,7 @@ export class Camera {
     const mR = padding + (sm.right ?? 0);
 
     const viewCx = viewport.width / 2;
-    const viewCy = viewport.height / 2 + SCREEN_Y_BIAS;
+    const viewCy = viewport.height / 2 + this.screenYBias;
     const availL = Math.max(1, viewCx - mL);
     const availR = Math.max(1, viewport.width - viewCx - mR);
     const availU = Math.max(1, viewCy - mT);
@@ -152,13 +165,13 @@ export class Camera {
 
   toScreen(world: Vec2, viewport: Viewport): Vec2 {
     const cx = viewport.width / 2;
-    const cy = viewport.height / 2 + SCREEN_Y_BIAS;
+    const cy = viewport.height / 2 + this.screenYBias;
     return [cx + (world[0] - this.x) * this.scale, cy - (world[1] - this.y) * this.scale];
   }
 
   toWorld(screen: Vec2, viewport: Viewport): Vec2 {
     const cx = viewport.width / 2;
-    const cy = viewport.height / 2 + SCREEN_Y_BIAS;
+    const cy = viewport.height / 2 + this.screenYBias;
     return [(screen[0] - cx) / this.scale + this.x, -((screen[1] - cy) / this.scale) + this.y];
   }
 }

@@ -89,7 +89,7 @@ export function runBundle<T extends BundleState = BundleState>(
   // 달라야 하는 상태는 host 에 두지 않는다 — 같은 host 를 공유하는 다른 임베드와
   // 카메라·시간이 묶이지 않도록 (한 콘텐츠에 임베드가 N 개여도 각자 독립적으로
   // 패닝·줌·재생된다). timeModel 도 번들별로 정확히 적용된다.
-  const camera = new Camera();
+  const camera = new Camera({ screenYBias: bundle.schema.camera?.screenYBias });
   const timeEngine = createTimeEngine(bundle.schema.timeModel ?? 'linear');
 
   // Stage / View / Environment 결정
@@ -358,7 +358,8 @@ export function runBundle<T extends BundleState = BundleState>(
     ctx!.fillStyle = theme.background;
     ctx!.fillRect(0, 0, vp.width, vp.height);
     particles.render(ctx!, theme);
-    drawAxisGrid(ctx!, vp, camera, theme);
+    // 그리드는 선언이 켜야 나온다 (원칙 4, R9). react/embed/Canvas.tsx 와 같은 규약.
+    if (b.schema.chrome?.grid) drawAxisGrid(ctx!, vp, camera, theme);
 
     const sceneGraph = b.scene({
       state: refs.state,
