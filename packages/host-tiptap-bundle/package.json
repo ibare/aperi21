@@ -1,8 +1,8 @@
 {
   "name": "@aperi21/host-tiptap-bundle",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
-  "description": "Self-contained ESM bundle of @aperi21/host-tiptap + sim-* + plugin-*. 외부 호스트 앱(예: 노트 에디터)이 단일 의존으로 소비하는 Tiptap 확장.",
+  "description": "Tiptap 확장 번들 — @aperi21/host-tiptap + sim-* + plugin-* 를 담는다. 런타임(@aperi21/host)은 peer 로 두어 레지스트리를 단일 인스턴스로 공유한다.",
   "license": "MIT",
   "author": "Mintae Kim <ibare77@gmail.com>",
   "homepage": "https://github.com/ibare/aperi21/tree/main/packages/host-tiptap-bundle#readme",
@@ -36,7 +36,9 @@
     },
     "./package.json": "./package.json"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "engines": {
     "node": ">=20"
   },
@@ -53,6 +55,7 @@
     "prepack": "pnpm build"
   },
   "peerDependencies": {
+    "@aperi21/host": "workspace:^",
     "@tiptap/core": "^3.0.0",
     "@tiptap/pm": "^3.0.0"
   },

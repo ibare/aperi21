@@ -73,28 +73,69 @@ rules/
 
 ## Release (npm 배포)
 
-배포 대상은 **`@aperi21/host-tiptap-bundle` (public) 하나**다. 이 번들은 self-contained
-ESM이라 내부 `@aperi21/*` 패키지를 모두 inline하므로 나머지 패키지는 `private: true`로
-유지한다. `@tiptap/core`·`@tiptap/pm`만 peerDependencies로 외부에 남긴다.
+배포 대상은 **두 패키지**이며 **lockstep** 으로 같은 버전을 함께 올린다.
 
-변경 → 배포 절차:
+| 패키지 | 역할 | 빌드 |
+| --- | --- | --- |
+| `@aperi21/host` | 시각화 런타임 + **번들 레지스트리**. 호스트가 단일 인스턴스로 설치 | rollup (JS + dts, 의존 0) |
+| `@aperi21/host-tiptap-bundle` | Tiptap 확장 + sim/plugin 번들. host 는 peer | rollup (chunk 분리 유지) |
 
-1. `pnpm --filter @aperi21/host-tiptap-bundle typecheck`
-2. semver 결정 (patch/minor/major)
-3. `cd packages/host-tiptap-bundle && npm version <type> --no-git-tag-version`
-4. `git commit -m "chore(release): host-tiptap-bundle <ver>"`
-5. `git tag host-tiptap-bundle@<ver>` (예: `host-tiptap-bundle@0.2.0`)
-6. `pnpm --filter @aperi21/host-tiptap-bundle publish --no-git-checks`
-   — `prepack` 스크립트가 빌드를 자동 수행한다.
+나머지 패키지는 `private: true` 로 유지하고 번들에 inline 한다.
+`@aperi21/schema` 는 **타입 전용**(런타임 export 0건)이라 발행하지 않는다 — 타입은
+빌드 시 각 발행본 `.d.ts` 에 인라인된다.
+
+### 단일 registry 인스턴스 (이 구조의 이유)
+
+`@aperi21/host` 는 `registerBundle`/`loadBundle` 이 공유하는 모듈 레벨 Map 을 갖는다.
+번들이 host 를 inline 하면 사본이 둘이 되어 **bootstrap 이 등록한 sim 을 runBundle 이
+못 찾는다.** 예외도 안 나고 타입도 통과한다. 그래서 번들은 host 를 rollup `external` +
+`peerDependencies` 로 두고 호스트가 하나를 설치해 공유한다 (원칙 3, `rules/specifics/S-host.md`).
+
+### 발행 전 게이트 (순서대로 통과)
+
+1. `pnpm -r typecheck`
+2. `pnpm test`
+3. **`pnpm --filter <pkg> pack` 으로 tarball 검증** — `src` 누출 0 · `workspace:` 잔존 0 ·
+   `publishConfig` 오버라이드 적용 · **발행본 `.d.ts` 가 미발행 private 패키지를
+   참조하지 않을 것**
+4. rule-guard 감사 (S-host 의존 일방향 · lazy 보존 · 단일 인스턴스)
+
+3번이 없으면 **워크스페이스에서는 멀쩡하고 발행본에서만 죽는** 사고를 못 잡는다.
+0.1.0 이 실제로 그랬다 — `.d.ts` 가 미발행 `@aperi21/host-tiptap` / `@aperi21/bootstrap`
+을 import 해 소비자 쪽 타입이 전부 끊겨 있었다. `rollup-plugin-dts` 의
+`respectExternal: true` 로 고쳤다.
+
+### 절차
+
+1. 게이트 1~4 통과
+2. semver 결정 — 0.x 동안 minor 를 breaking 허용 구간으로 본다
+3. 두 패키지를 같은 버전으로 올린다
+   ```sh
+   cd packages/host && npm version <type> --no-git-tag-version
+   cd packages/host-tiptap-bundle && npm version <type> --no-git-tag-version
+   ```
+4. `git commit -m "chore(release): aperi21 <ver>"`
+5. `git tag v<ver>` (lockstep 이므로 단일 태그)
+6. **peer 순서대로** 발행 — `host` 를 먼저 올려야 번들의 peer range 가 해결된다
+   ```sh
+   cd packages/host && pnpm publish --no-git-checks
+   cd packages/host-tiptap-bundle && pnpm publish --no-git-checks
+   ```
+   `prepack` 이 빌드를 자동 수행한다.
 7. `git push && git push --tags`
-8. `npm view @aperi21/host-tiptap-bundle version` 으로 확인.
-   신규 publish 직후 GET(읽기) 전파는 최대 ~2분 지연될 수 있다(쓰기는 즉시 반영).
+8. `npm view @aperi21/host version` / `npm view @aperi21/host-tiptap-bundle version` 확인.
+   신규 publish 직후 GET(읽기) 전파는 최대 ~2분 지연될 수 있다(쓰기는 즉시).
    조회 404여도 `E403 (cannot publish over previously published)` 이면 배포는 성공한 것.
 
-인증·주의:
+### 인증·주의
 
-- 인증은 `~/.npmrc`의 Granular token(`@aperi21` 스코프 write)으로 OTP를 우회한다.
-  토큰은 어떤 리포에도 커밋 금지. 계정 2FA는 security key 방식이라 CLI OTP가 없다.
-- publish 대상 패키지의 `dependencies`에는 `workspace:*`를 두지 말 것
-  (번들은 inline이라 무관하나, 향후 다른 패키지 배포 시 실버전 치환 누락에 주의).
-- 향후 패키지가 늘면 GitHub Actions + npm Trusted Publishing(OIDC) 도입 검토 — 장기 토큰 불필요.
+- **`pnpm publish` 만 사용한다** (`npm publish` 금지). `workspace:^` 를 npm semver 로
+  변환하는 것은 pnpm 뿐이다. `npm publish` 는 프로토콜을 그대로 올려 깨진 의존을 발행한다.
+- **`publishConfig` 로 src↔dist 를 분리한다.** `main`/`types`/`exports` 는 `./src/*.ts` 를
+  가리켜 워크스페이스 내부는 빌드 없이 소스를 직참조하고, `publishConfig` 가 publish
+  시에만 `./dist/*` 로 오버라이드한다.
+- 인증은 `~/.npmrc` 의 Granular token(`@aperi21` 스코프 write)으로 OTP 를 우회한다.
+  토큰은 어떤 리포에도 커밋 금지. 계정 2FA 는 security key 방식이라 CLI OTP 가 없다.
+- **소비자 영향** — host 가 peer 가 되면서 번들만 설치하던 호스트는 `@aperi21/host` 를
+  함께 설치해야 한다. 0.1.0 → 0.2.0 은 그 의미에서 breaking 이다.
+- 향후 패키지가 늘면 GitHub Actions + npm Trusted Publishing(OIDC) 도입 검토.

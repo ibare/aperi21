@@ -1,31 +1,72 @@
 {
   "name": "@aperi21/host",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.2.0",
   "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    }
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    },
+    "./package.json": "./package.json"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "tsc -p .",
+    "build": "pnpm clean && rollup -c rollup.config.mjs",
     "typecheck": "tsc -p . --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "clean": "rm -rf dist"
-  },
-  "peerDependencies": {
-    "@aperi21/schema": "workspace:*"
+    "clean": "rm -rf dist",
+    "prepack": "pnpm build"
   },
   "devDependencies": {
     "@aperi21/schema": "workspace:*",
+    "@rollup/plugin-node-resolve": "^15.3.0",
+    "rollup": "^4.28.0",
+    "rollup-plugin-dts": "^6.1.1",
+    "rollup-plugin-esbuild": "^6.1.1",
     "typescript": "^5.6.3",
     "vitest": "^2.1.9"
+  },
+  "description": "aperi21 시각화 런타임 — scene/renderer/time/camera/theme + bundle registry. 외부 호스트는 이 패키지를 단일 인스턴스로 설치해 공유한다.",
+  "license": "MIT",
+  "author": "Mintae Kim <ibare77@gmail.com>",
+  "homepage": "https://github.com/ibare/aperi21/tree/main/packages/host#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ibare/aperi21.git",
+    "directory": "packages/host"
+  },
+  "bugs": {
+    "url": "https://github.com/ibare/aperi21/issues"
+  },
+  "keywords": [
+    "aperi21",
+    "visualization",
+    "simulation",
+    "physics",
+    "canvas",
+    "runtime"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public",
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      },
+      "./package.json": "./package.json"
+    }
   }
 }

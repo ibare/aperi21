@@ -5,12 +5,13 @@
  * 정책 (FACET 의 host-tiptap-bundle 설정 이식):
  *  - 단일 ESM entry (host-tiptap-bundle.js) + dynamic import 자동 chunk 추론.
  *  - inlineDynamicImports: false — sim-* 의 lazy 보존 핵심.
- *  - external: @tiptap/core, @tiptap/pm — 호스트의 단일 인스턴스 보장.
+ *  - external: @aperi21/host, @tiptap/core, @tiptap/pm — 단일 인스턴스 보장.
  *  - chunkFileNames 는 함수형 — sims/<category>/, plugins/, runtime/, vendor/ 디렉터리 분리.
  *  - manualChunks: sim 별/runtime 공용 분리.
  *  - sourcemap: true.
  *  - VISUALIZE=1 환경변수일 때만 stats.html 생성.
- *  - .d.ts 는 별도 빌드 패스 (rollup-plugin-dts) 로 단일 dist/host-tiptap-bundle.d.ts 생성.
+ *  - .d.ts 는 별도 빌드 패스 (rollup-plugin-dts, respectExternal) 로 단일 파일 생성.
+ *    private 패키지 타입은 인라인하고 external 만 import 로 남긴다.
  */
 
 import { nodeResolve } from '@rollup/plugin-node-resolve';
@@ -20,14 +21,17 @@ import { visualizer } from 'rollup-plugin-visualizer';
 
 const VISUALIZE = process.env.VISUALIZE === '1';
 
-const external = [/^@tiptap\/core/, /^@tiptap\/pm(\/.*)?$/];
+// @aperi21/host 는 레지스트리를 담고 있어 external 이다. inline 하면 호스트가 두 개의
+// 진입점을 설치했을 때 bundleRegistry 의 Map 이 갈라져, bootstrap 이 등록한 sim 을
+// runBundle 이 못 찾는다 (원칙 3, S-host 단일 registry 인스턴스).
+const external = [/^@aperi21\/host$/, /^@tiptap\/core/, /^@tiptap\/pm(\/.*)?$/];
 
 /**
  * chunk 분리 + 이름 부여.
  *
  *  - sims/<category>/<name>   → 'sim-<category>-<name>' (개별 lazy chunk, sims/<category>/)
  *  - packages/plugin-<name>   → 'plugin-<name>'         (개별 lazy chunk, plugins/)
- *  - packages/host*, schema, bootstrap → 'runtime'      (entry 와 모든 sim 공유)
+ *  - packages/host-tiptap, bootstrap → 'runtime'        (entry 와 모든 sim 공유)
  *  - node_modules/<pkg>       → 'vendor-<pkg>'          (의존성별 분리, vendor/)
  *
  * runtime 을 명시 분리하지 않으면 rollup 이 공용 코드를 임의의 한 sim
@@ -54,10 +58,10 @@ function manualChunks(id) {
   const pluginMatch = id.match(/\/packages\/plugin-([^/]+)\//);
   if (pluginMatch) return `plugin-${pluginMatch[1]}`;
 
+  // packages/host 는 external 이라 여기 오지 않는다. schema 는 타입 전용이라
+  // 런타임 코드가 없다. 남는 것은 어댑터와 bootstrap 이다.
   if (
-    id.includes('/packages/host/') ||
     id.includes('/packages/host-tiptap/') ||
-    id.includes('/packages/schema/') ||
     id.includes('/packages/bootstrap/')
   ) {
     return 'runtime';
@@ -132,7 +136,10 @@ const dtsBundle = {
     file: 'dist/host-tiptap-bundle.d.ts',
     format: 'es',
   },
-  plugins: [dts()],
+  // respectExternal: 위 external 만 남기고 나머지(@aperi21/host-tiptap, bootstrap,
+  // schema, sim-*, plugin-*)의 타입은 인라인한다. 이것이 없으면 발행본 d.ts 가
+  // 미발행 private 패키지를 import 해 소비자 쪽에서 타입이 전부 any 로 떨어진다.
+  plugins: [dts({ respectExternal: true })],
 };
 
 export default [jsBundle, dtsBundle];

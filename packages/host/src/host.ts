@@ -9,7 +9,7 @@ import { PlacementController } from './controller/placement';
 import { ValueEditController } from './controller/value-edit';
 import { SliderController } from './controller/slider';
 import { I18nResolver, type Dictionary, type HostI18n } from './i18n/resolver';
-import { PluginManager, ServiceRegistry, type HostPlugin, type Logger } from './pluginManager';
+import { PluginManager, ServiceRegistry, type HostPlugin } from './pluginManager';
 import { CORE_RENDERERS } from './renderer/primitives';
 import { RendererRegistry } from './renderer/registry';
 import { getTheme, type HostTheme, type ThemeMode } from './theme';
