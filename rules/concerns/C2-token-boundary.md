@@ -36,7 +36,6 @@ last_verified: 2026-09-09
 |---|---|---:|
 | `packages/host-tiptap/src/node-view.ts` | 배지 배경·전경 hex, `4px`·`12px` | 색 3 · 치수 4 |
 | `packages/host/src/runtime/runBundle.ts` | `360px` · `320px` · `8px` | 치수 4 |
-| `apps/catalog/src/pages/EditorDemoPage.tsx` | 데모 페이지 hex | 색 3 |
 
 `sims/**` 색 리터럴은 0건이다 (`_analysis.md` G4). 이 상태를 잠근다.
 
@@ -45,3 +44,6 @@ last_verified: 2026-09-09
 - `packages/host/src/theme/themes.ts` 는 토큰 정의 자체이므로 색 리터럴을 포함한다.
 - `apps/catalog/src/theme/tokens.css` 는 CSS 토큰 정의 파일이다.
 - 색 공간 변환 같은 **순수 함수의 수학 상수**는 색 리터럴이 아니다.
+- `apps/catalog` 은 카탈로그 사이트이며 자체 CSS 토큰 체계를 쓴다. 이 규칙은 **임베드
+  런타임**(host · plugin · host-tiptap · sims)에 적용된다. `EditorDemoPage.tsx` 의 색
+  리터럴 3건은 적용 범위 밖이다 (AUDIT-v1 예외 판정).
