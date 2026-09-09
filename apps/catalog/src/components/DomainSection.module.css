@@ -158,6 +158,8 @@
 
 .topicLink {
   display: flex;
+  width: 100%;
+  text-align: left;
   flex-direction: column;
   gap: 2px;
   height: 100%;
@@ -205,4 +207,13 @@
   font-size: 0.78rem;
   color: var(--fg-subtle);
   line-height: 1.45;
+}
+
+.topicId {
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--fg-subtle);
+  opacity: 0.75;
+  word-break: break-all;
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import type { Domain } from '../types/catalog';
+import type { Domain, Topic } from '../types/catalog';
 import { implementedCount } from '../data/catalog';
 import styles from './DomainSection.module.css';
 
@@ -10,6 +10,8 @@ interface DomainSectionProps {
   /** 1부터 시작하는 분과 번호. 화면 왼쪽의 색인. */
   index: number;
   defaultOpen?: boolean;
+  /** 구현물이 있는 주제를 눌렀을 때. 목록에서 바로 띄워 하나씩 확인한다. */
+  onOpenSim(topic: Topic): void;
 }
 
 /**
@@ -18,7 +20,12 @@ interface DomainSectionProps {
  * 분과는 **열거의 비계**지 사용법이 아니다 — 글은 도메인을 보지 않고 주제 목록
  * 전체에서 집어간다. 여기서 분과로 묶는 것은 사람이 훑기 위해서다.
  */
-export function DomainSection({ domain, index, defaultOpen = false }: DomainSectionProps) {
+export function DomainSection({
+  domain,
+  index,
+  defaultOpen = false,
+  onOpenSim,
+}: DomainSectionProps) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(defaultOpen);
 
@@ -54,13 +61,9 @@ export function DomainSection({ domain, index, defaultOpen = false }: DomainSect
       {open && (
         <div className={styles.body}>
           <ul className={styles.topicList}>
-            {domain.topics.map((topic) => (
-              <li key={topic.id}>
-                <Link
-                  to={`/topic/${topic.id}`}
-                  className={styles.topicLink}
-                  data-implemented={topic.simId ? 'true' : undefined}
-                >
+            {domain.topics.map((topic) => {
+              const inner = (
+                <>
                   <span className={styles.topicName}>
                     {topic.name}
                     {topic.simId && (
@@ -68,9 +71,31 @@ export function DomainSection({ domain, index, defaultOpen = false }: DomainSect
                     )}
                   </span>
                   <span className={styles.topicDesc}>{topic.desc}</span>
-                </Link>
-              </li>
-            ))}
+                  <code className={styles.topicId}>{topic.id}</code>
+                </>
+              );
+
+              return (
+                <li key={topic.id}>
+                  {topic.simId ? (
+                    // 구현물은 목록 자리에서 바로 띄운다 — 이동하면 하나씩 확인하는
+                    // 흐름이 뒤로 가기로 끊긴다.
+                    <button
+                      type="button"
+                      className={styles.topicLink}
+                      data-implemented="true"
+                      onClick={() => onOpenSim(topic)}
+                    >
+                      {inner}
+                    </button>
+                  ) : (
+                    <Link to={`/topic/${topic.id}`} className={styles.topicLink}>
+                      {inner}
+                    </Link>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}

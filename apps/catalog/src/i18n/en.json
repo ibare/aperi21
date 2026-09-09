@@ -26,5 +26,8 @@
     "not_found": "Topic not found.",
     "no_sim_title": "No visualization yet",
     "no_sim_body": "This topic is listed as a context to mine questions from. A visualization is made when a question emerges here that prose cannot carry without a picture."
+  },
+  "modal": {
+    "close": "Close"
   }
 }
