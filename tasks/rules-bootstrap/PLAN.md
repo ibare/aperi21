@@ -232,13 +232,13 @@ Phase 4: 초기 감사                                        93bf0a9
 
 Phase 5: 리팩토링
   [x] Track A  기계적 — node-view 색·치수                  ffe9952
-  [ ] Track A′ 명명 — id 이원화 (위반 5, Medium)   ← 영향 범위 확인 필요
+  [~] Track A′ 명명 — 보류. 재조사 결과 리포 전역 규약 결정이 선행 (163 id)
   [x] Track B  레지스트리 분리 (위반 1, Critical)          e8de66f
                + 발행본 d.ts 결함 동시 해소 (0.1.0 부터 있던 것)
   [x] Track C  선언 승격 (위반 2·3·4, High×3) + 감사 누락분 2건
   [ ] Track D  렌더 계층 신설 (위반 7, 갈래 B)
   [x] Track E  발행 게이트 + 회귀 테스트                    (아래 커밋)
-  [ ] Track F  AUDIT-v2 (Critical 0 · High 0 목표)
+  [x] Track F  AUDIT-v2 — Critical 0 · High 0 달성, 준수율 70%→93%
 
 Phase 6: Rule Guard                                       cc1b2be
   [x] .claude/agents/rule-guard.md (Phase 5 에서 쓰려고 순서를 앞당김)
