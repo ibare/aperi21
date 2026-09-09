@@ -94,9 +94,9 @@ export function ParamPanel({ theme, i18n, schema, values, state, onChange, onRes
   return (
     <div style={wrap} data-aperi21="param-panel">
       <div style={headerRow}>
-        <div style={title}>{i18n.lang === 'ko' ? '파라미터' : 'params'}</div>
+        <div style={title}>{i18n.t('ui.paramPanel.title', 'params')}</div>
         <button type="button" style={resetBtn} onClick={onReset}>
-          {i18n.lang === 'ko' ? '초기값' : 'reset'}
+          {i18n.t('ui.paramPanel.reset', 'reset')}
         </button>
       </div>
       {schema.parameters.map((p) => {

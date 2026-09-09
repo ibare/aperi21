@@ -30,6 +30,12 @@ import { createTimeEngine } from '../time';
 import type { ThemeMode } from '../theme';
 import type { ControllerEventContext, PointerInput } from '../controller/types';
 
+/**
+ * 임베드 캔버스 치수의 기본값. 선언(`BundleSchema.canvas`)이 비었을 때만 쓰인다.
+ * C2 가 요구하는 "코드에 남는 기본값은 named 상수로 한 곳에" 를 따른다.
+ */
+const CANVAS_DEFAULT = { height: 360, minHeight: 320 } as const;
+
 const HUD_MARGINS = { top: 24, bottom: 24, left: 24, right: 24 };
 
 export interface RunBundleOptions {
@@ -105,15 +111,26 @@ export function runBundle<T extends BundleState = BundleState>(
   // 초기 상태
   let state: T = bundle.initialState({ values, stage, environments: envs });
 
-  // 캔버스 컨테이너 + 캔버스
+  // 캔버스 컨테이너 + 캔버스.
+  // 치수는 선언에서 온다 (원칙 2). 코드에는 선언이 비었을 때의 기본값만 둔다.
+  // 마운트 후 이 값들은 바뀌지 않는다 — 글 안에 박힌 그림의 높이가 변하면 위아래
+  // 문단이 밀린다 (원칙 6). packages/host/src/__tests__/embed-runtime.test.ts 가 잰다.
+  // 저작자 문안(1층)을 얹은 조회기. 러너가 하나만 만들어 렌더러와 컨트롤러 양쪽에
+  // 같은 것을 넘긴다 — 각자 만들면 한 화면에서 문안 출처가 갈린다 (C1).
+  const scopedI18n = host.i18n.withMessages(bundle.schema.messages);
+
+  const canvasSpec = bundle.schema.canvas ?? {};
+  const height = canvasSpec.height ?? CANVAS_DEFAULT.height;
+  const minHeight = canvasSpec.minHeight ?? CANVAS_DEFAULT.minHeight;
+
   const wrapper = document.createElement('div');
   wrapper.className = 'aperi21-runbundle';
   wrapper.style.position = 'relative';
   wrapper.style.width = '100%';
-  wrapper.style.minHeight = '320px';
-  wrapper.style.height = '360px';
+  wrapper.style.minHeight = `${minHeight}px`;
+  wrapper.style.height = `${height}px`;
   wrapper.style.background = host.theme.background;
-  wrapper.style.borderRadius = '8px';
+  wrapper.style.borderRadius = `${host.theme.radiusMedium * 2}px`;
   wrapper.style.overflow = 'hidden';
   wrapper.style.border = `1px solid ${host.theme.line}`;
 
@@ -310,7 +327,7 @@ export function runBundle<T extends BundleState = BundleState>(
 
     const vp = sizeCanvas();
     const theme = host.theme;
-    const i18n = host.i18n;
+    const i18n = scopedI18n;
     const b = refs.bundle;
 
     const simDt = timeEngine.tick(realDt);

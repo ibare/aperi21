@@ -25,7 +25,13 @@ export interface EmbedProps {
 export function Embed({ bundle, stageId, initialView, initialEnvironments }: EmbedProps) {
   const host = useHost();
   const theme = useTheme();
-  const i18n = useI18n();
+  // 러너가 조회기를 하나만 만들어 오버레이 UI 전체에 같은 것을 넘긴다 (C1).
+  // 각자 만들면 저작자 오버라이드 적용 여부가 갈려 문안 출처가 섞인다.
+  const hostI18n = useI18n();
+  const i18n = useMemo(
+    () => hostI18n.withMessages(bundle.schema.messages),
+    [hostI18n, bundle.schema.messages],
+  );
 
   const runtime = useBundleRuntime<BundleState>(
     bundle,

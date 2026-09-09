@@ -303,8 +303,10 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
 
       const vp = sizeCanvas();
       const theme = host.theme;
-      const i18n = host.i18n;
       const bundle = bundleRef.current;
+      // 저작자 문안(1층)을 얹은 조회기. Embed 의 오버레이 UI 와 같은 것을 써야
+      // 한 화면에서 문안 출처가 갈리지 않는다 (C1).
+      const i18n = host.i18n.withMessages(bundle.schema.messages);
       const stage = stageRef.current;
       const view = viewRef.current;
       const envs = envRef.current;

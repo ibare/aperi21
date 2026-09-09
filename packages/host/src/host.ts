@@ -9,6 +9,7 @@ import { PlacementController } from './controller/placement';
 import { ValueEditController } from './controller/value-edit';
 import { SliderController } from './controller/slider';
 import { I18nResolver, type Dictionary, type HostI18n } from './i18n/resolver';
+import { FRAMEWORK_MESSAGES } from './i18n/messages';
 import { PluginManager, ServiceRegistry, type HostPlugin } from './pluginManager';
 import { CORE_RENDERERS } from './renderer/primitives';
 import { RendererRegistry } from './renderer/registry';
@@ -30,6 +31,19 @@ export interface HostConfig {
    * Bundle 이 붙으면 Embed 가 setTimeMode 로 갱신한다.
    */
   timeMode?: TimeEngineMode;
+}
+
+/**
+ * 프레임워크 문구 번들(2층) 위에 호스트가 준 사전을 얹는다. 호스트 값이 이긴다.
+ * 이것이 없으면 ko 화면의 프레임워크 문구가 전부 en 원본으로 떨어진다 (C1).
+ */
+function mergeDictionary(dictionary?: Dictionary): Dictionary {
+  if (!dictionary) return FRAMEWORK_MESSAGES;
+  const merged: Dictionary = {};
+  for (const lang of new Set([...Object.keys(FRAMEWORK_MESSAGES), ...Object.keys(dictionary)])) {
+    merged[lang] = { ...FRAMEWORK_MESSAGES[lang], ...dictionary[lang] };
+  }
+  return merged;
 }
 
 const defaultLogger: PluginLogger = {
@@ -102,7 +116,7 @@ export class Host {
 
     this.themeMode = config.theme ?? 'light';
     this.theme = getTheme(this.themeMode);
-    this.i18n = new I18nResolver(config.lang ?? 'ko', config.dictionary ?? {});
+    this.i18n = new I18nResolver(config.lang ?? 'ko', mergeDictionary(config.dictionary));
 
     // 서비스 등록 — Plugin 의 HostAPI.getService 로 조회 가능.
     this.services.register(HOST_SERVICE_IDS.renderer, this.rendererRegistry);
@@ -130,7 +144,7 @@ export class Host {
   }
 
   setLang(lang: string, dictionary?: Dictionary): void {
-    this.i18n = new I18nResolver(lang, dictionary ?? {});
+    this.i18n = new I18nResolver(lang, mergeDictionary(dictionary));
     this.services.register(HOST_SERVICE_IDS.i18n, this.i18n);
   }
 

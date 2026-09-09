@@ -7,12 +7,21 @@ export interface InfoPanelProps {
   derived: Record<string, number> | null;
 }
 
-const LABEL_MAP: Record<string, { ko: string; en: string; unit?: string; digits?: number }> = {
-  t: { ko: '시간', en: 't', unit: 's', digits: 2 },
-  speed: { ko: '속도', en: '|v|', unit: 'm/s', digits: 2 },
-  maxHeight: { ko: '최고점', en: 'y_max', unit: 'm', digits: 1 },
-  range: { ko: '비거리', en: 'x_max', unit: 'm', digits: 1 },
-  flightTime: { ko: '체공', en: 't_f', unit: 's', digits: 2 },
+/**
+ * 파생값 행의 표시 규약.
+ *
+ * `unit` 과 `digits` 는 데이터라 여기 둔다. **라벨은 문안이므로 코드에 두지 않는다** —
+ * 조회 키와 en 원본만 갖고, 실제 문자는 i18n 3층이 정한다 (C1).
+ *
+ * en 원본이 `t` · `|v|` · `y_max` 처럼 기호인 것은 그것이 **표식**이기 때문이다
+ * (C1 「표식이냐 문안이냐」 3번 — 수식·기호 표기). ko 번들이 문안을 준다.
+ */
+const ROW_SPEC: Record<string, { key: string; en: string; unit?: string; digits?: number }> = {
+  t: { key: 'ui.infoPanel.time', en: 't', unit: 's', digits: 2 },
+  speed: { key: 'ui.infoPanel.speed', en: '|v|', unit: 'm/s', digits: 2 },
+  maxHeight: { key: 'ui.infoPanel.maxHeight', en: 'y_max', unit: 'm', digits: 1 },
+  range: { key: 'ui.infoPanel.range', en: 'x_max', unit: 'm', digits: 1 },
+  flightTime: { key: 'ui.infoPanel.flightTime', en: 't_f', unit: 's', digits: 2 },
 };
 
 export function InfoPanel({ theme, i18n, derived }: InfoPanelProps) {
@@ -47,10 +56,10 @@ export function InfoPanel({ theme, i18n, derived }: InfoPanelProps) {
   const val: CSSProperties = { textAlign: 'right' };
 
   const rows = Object.entries(derived)
-    .filter(([k]) => LABEL_MAP[k])
+    .filter(([k]) => ROW_SPEC[k])
     .map(([k, v]) => {
-      const meta = LABEL_MAP[k]!;
-      const label = i18n.lang === 'ko' ? meta.ko : meta.en;
+      const meta = ROW_SPEC[k]!;
+      const label = i18n.t(meta.key, meta.en);
       const digits = meta.digits ?? 2;
       const valueText = Number.isFinite(v)
         ? `${v.toFixed(digits)}${meta.unit ? ' ' + meta.unit : ''}`

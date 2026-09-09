@@ -17,7 +17,9 @@ export function EnergyHUD({ theme, i18n, derived }: EnergyHUDProps) {
   const pe = derived.pe ?? 0;
   const lost = derived.lost ?? 0;
   const initial = derived.initialTotal ?? Math.max(1, ke + pe + lost);
-  const ko = i18n.lang === 'ko';
+  // 문안은 키로 조회한다 (C1). KE/PE 는 그 분야에서 원어로 통용되는 표식이라
+  // en 원본이 곧 표식이고, ko 번들이 문안을 준다.
+  const t = i18n.t.bind(i18n);
 
   const wrap: CSSProperties = {
     position: 'absolute',
@@ -64,12 +66,12 @@ export function EnergyHUD({ theme, i18n, derived }: EnergyHUDProps) {
 
   return (
     <div style={wrap}>
-      <div style={header}>{ko ? '에너지' : 'Energy'}</div>
-      <Row label={ko ? '운동' : 'KE'} value={ke} />
-      <Row label={ko ? '위치' : 'PE'} value={pe} role="accent" />
-      <Row label={ko ? '손실' : 'LOST'} value={lost} role="negative" />
+      <div style={header}>{t('ui.energyHud.title', 'Energy')}</div>
+      <Row label={t('ui.energyHud.kinetic', 'KE')} value={ke} />
+      <Row label={t('ui.energyHud.potential', 'PE')} value={pe} role="accent" />
+      <Row label={t('ui.energyHud.lost', 'LOST')} value={lost} role="negative" />
       <div style={{ ...row, marginTop: 4, color: theme.muted }}>
-        <span style={label}>{ko ? '초기' : 'INIT'}</span>
+        <span style={label}>{t('ui.energyHud.initial', 'INIT')}</span>
         <span style={{ flex: 1 }} />
         <span style={val}>{initial.toFixed(1)} J</span>
       </div>

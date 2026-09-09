@@ -35,9 +35,10 @@ aperi21 의 규칙 준수를 검증하는 서브에이전트. **코드를 수정
 ## 이 프로젝트에서 자주 쓰는 검사
 
 ```bash
-# C1 화면 문자열 하드코딩 (삼항식)
-grep -rn --include='*.tsx' --include='*.ts' --exclude-dir=node_modules \
-  "ko ?" packages sims | grep -E "\? *'[^']*' *: *'"
+# C1 화면 문자열 하드코딩 — 두 형태를 모두 본다.
+# AUDIT-v1 이 `ko ?` 만 보고 `i18n.lang === 'ko' ?` 형태 2건을 놓쳤다.
+grep -rn --include='*.tsx' --include='*.ts' --exclude-dir=node_modules --exclude-dir=__tests__ \
+  -E "lang === 'ko' \?|ko \?.*\? *'" packages sims | grep -E "\? *'"
 
 # C2 색 리터럴 (토큰 정의 파일 제외)
 grep -rn --include='*.ts' --include='*.tsx' --exclude-dir=node_modules \

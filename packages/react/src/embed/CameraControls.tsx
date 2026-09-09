@@ -28,14 +28,25 @@ export function CameraControls({ theme, i18n, onReset, onResetBundle }: CameraCo
     textTransform: 'uppercase',
     cursor: 'pointer',
   };
-  const ko = i18n.lang === 'ko';
+  // 문안은 키로 조회한다. en 원본은 호출부 리터럴로 남겨 추출 대상이 되게 한다 (C1).
+  const t = i18n.t.bind(i18n);
   return (
     <div style={wrap}>
-      <button type="button" style={btn} onClick={onReset} title={ko ? '카메라 리셋' : 'Camera reset'}>
-        {ko ? '카메라' : 'Camera'}
+      <button
+        type="button"
+        style={btn}
+        onClick={onReset}
+        title={t('ui.cameraControls.cameraTitle', 'Camera reset')}
+      >
+        {t('ui.cameraControls.camera', 'Camera')}
       </button>
-      <button type="button" style={btn} onClick={onResetBundle} title={ko ? '상태 초기화' : 'Reset'}>
-        {ko ? '초기화' : 'Reset'}
+      <button
+        type="button"
+        style={btn}
+        onClick={onResetBundle}
+        title={t('ui.cameraControls.resetTitle', 'Reset')}
+      >
+        {t('ui.cameraControls.reset', 'Reset')}
       </button>
     </div>
   );
