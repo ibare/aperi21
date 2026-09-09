@@ -27,10 +27,8 @@ const ROW_SPEC: Record<string, { key: string; en: string; unit?: string; digits?
 export function InfoPanel({ theme, i18n, derived }: InfoPanelProps) {
   if (!derived) return null;
 
+  // 자리는 부모(오른쪽 오버레이 열)가 정한다.
   const wrap: CSSProperties = {
-    position: 'absolute',
-    top: 12,
-    right: 12,
     minWidth: 180,
     padding: '10px 12px',
     background: theme.resolveColor('muted', 'subtle'),

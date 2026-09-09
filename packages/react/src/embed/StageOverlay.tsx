@@ -20,10 +20,9 @@ export function StageOverlay({ theme, i18n, stage, environments }: StageOverlayP
   const stageText = `${i18n.resolve(stage.label)} · g=${g.toFixed(1)} m/s²`;
 
   // InfoPanel(top:12, right:12, 약 110px 높이) 아래로 배치.
+  // 자리는 부모(오른쪽 오버레이 열)가 정한다. 예전에는 top:140 으로 InfoPanel
+  // 아래를 가정했는데, 패널 높이는 파생값 개수에 따라 달라져 큰 화면에서 겹쳤다.
   const wrap: CSSProperties = {
-    position: 'absolute',
-    top: 140,
-    right: 12,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-end',

@@ -81,6 +81,23 @@ export function Embed({ bundle, stageId, initialView, initialEnvironments }: Emb
     minHeight: 400,
     background: theme.background,
   };
+  /**
+   * 오른쪽 오버레이 열. InfoPanel 과 StageOverlay 가 여기 쌓인다.
+   *
+   * 예전에는 각자 `position: absolute` 로 자리를 잡았고 StageOverlay 가
+   * `top: 140` 이라는 매직 넘버로 InfoPanel 아래를 가정했다. 패널 높이는 파생값
+   * 개수에 따라 달라져서, 큰 화면에서 둘이 겹쳤다.
+   */
+  const rightColumn: CSSProperties = {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    gap: 8,
+    pointerEvents: 'none',
+  };
 
   const showEnergy =
     runtime.viewId === 'energy' && bundle.schema.autoViews?.energy !== false;
@@ -117,7 +134,15 @@ export function Embed({ bundle, stageId, initialView, initialEnvironments }: Emb
           viewId={runtime.viewId}
           onSelectView={runtime.setViewId}
         />
-        <InfoPanel theme={theme} i18n={i18n} derived={derived} />
+        <div style={rightColumn}>
+          <InfoPanel theme={theme} i18n={i18n} derived={derived} />
+          <StageOverlay
+            theme={theme}
+            i18n={i18n}
+            stage={runtime.stage}
+            environments={runtime.environments}
+          />
+        </div>
         {showEnergy && <EnergyHUD theme={theme} i18n={i18n} derived={derived} />}
         <ParamPanel
           theme={theme}
@@ -127,12 +152,6 @@ export function Embed({ bundle, stageId, initialView, initialEnvironments }: Emb
           state={runtime.state}
           onChange={runtime.setParam}
           onReset={runtime.reset}
-        />
-        <StageOverlay
-          theme={theme}
-          i18n={i18n}
-          stage={runtime.stage}
-          environments={runtime.environments}
         />
         <CameraControls
           theme={theme}
