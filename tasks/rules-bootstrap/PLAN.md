@@ -200,34 +200,35 @@ Phase 0: 통과 바
   [x] CI typecheck + test 게이트
   [x] CLAUDE.md 에 ESLint 미도입 결정 명문화
 
-Phase 1: 프로젝트 분석
-  [ ] 구조 파악 (사전 실측 §0 으로 갈음)
-  [ ] 패턴/안티패턴 탐색
-  [ ] rules/_analysis.md 작성
+Phase 1: 프로젝트 분석                                    afaf415
+  [x] 구조 파악 (사전 실측 §0 으로 갈음)
+  [x] 패턴/안티패턴 탐색 — 좋은 패턴 6 · 안티패턴 8
+  [x] rules/_analysis.md 작성
 
-Phase 2-3: 규칙 작성
-  [ ] principles.md (6개)
-  [ ] concerns C1~C5
-  [ ] specifics S-sim / S-host / S-render
-  [ ] INDEX.yaml 트리거 매핑
+Phase 2-3: 규칙 작성                                964e056 · 3fbf246
+  [x] principles.md (6개)
+  [x] concerns C1~C5
+  [x] specifics S-sim / S-host / S-render
+  [x] INDEX.yaml 트리거 매핑
 
-Phase 4: 초기 감사
-  [ ] AUDIT-v1 배치 1 (Principles + Concerns)
-  [ ] AUDIT-v1 배치 2 (Specifics)
-  [ ] 예외 판정 · 준수율 산출
+Phase 4: 초기 감사                                        93bf0a9
+  [x] AUDIT-v1 전수 (규모가 작아 배치 분할 불필요)
+  [x] 예외 판정 4건 · 준수율 70% (19/27)
+  [x] 감사가 C2 자체의 적용 범위 결함도 발견 → 정정
 
 Phase 5: 리팩토링
-  [ ] Track A 기계적
-  [ ] Track B 레지스트리 분리 (Critical)
-  [ ] Track C 선언 승격
-  [ ] Track D 렌더 계층 신설
-  [ ] Track E 발행 게이트 + 회귀 테스트
-  [ ] Track F AUDIT-v2
+  [x] Track A  기계적 — node-view 색·치수                  ffe9952
+  [ ] Track A′ 명명 — id 이원화 (위반 5, Medium)   ← 영향 범위 확인 필요
+  [ ] Track B  레지스트리 분리 (위반 1, Critical)   ← 배포 정책 변경, 승인 필요
+  [ ] Track C  선언 승격 (위반 2·3·4, High×3)
+  [ ] Track D  렌더 계층 신설 (위반 7, 갈래 B)
+  [ ] Track E  발행 게이트 + 회귀 테스트 3종
+  [ ] Track F  AUDIT-v2 (Critical 0 · High 0 목표)
 
-Phase 6: Rule Guard
-  [ ] .claude/agents/rule-guard.md
-  [ ] CLAUDE.md Rule Guard 지침
-  [ ] compaction 훅
+Phase 6: Rule Guard                                       cc1b2be
+  [x] .claude/agents/rule-guard.md (Phase 5 에서 쓰려고 순서를 앞당김)
+  [x] CLAUDE.md Rule Guard 지침 + rules 로딩 규약
+  [x] compaction 훅 (.claude/settings.json)
 
 Phase 7: Baden (판단 후)
   [ ] 연동 여부 결정
