@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '⚠️ 컨텍스트 컴팩션 발생. 아래 지침을 다시 숙지하고 준수할 것.' && echo '\\n=== rules/principles.md ===' && cat rules/principles.md && echo '\\n=== rules/INDEX.yaml (트리거) ===' && cat rules/INDEX.yaml"
+          }
+        ]
+      }
+    ]
+  }
+}
