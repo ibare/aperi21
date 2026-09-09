@@ -34,3 +34,9 @@ jobs:
 
       - name: Test
         run: pnpm test
+
+      # 발행본 전용 결함(src 누출 · workspace 프로토콜 잔존 · d.ts 가 미발행
+      # 패키지를 참조)은 워크스페이스에서 멀쩡해 보이므로 여기서 잡는다.
+      # 0.1.0 이 d.ts 가 끊긴 채로 발행된 적이 있다.
+      - name: Release gate
+        run: pnpm release:check

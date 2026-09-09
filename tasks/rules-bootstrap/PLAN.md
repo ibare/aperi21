@@ -237,7 +237,7 @@ Phase 5: 리팩토링
                + 발행본 d.ts 결함 동시 해소 (0.1.0 부터 있던 것)
   [ ] Track C  선언 승격 (위반 2·3·4, High×3)
   [ ] Track D  렌더 계층 신설 (위반 7, 갈래 B)
-  [ ] Track E  발행 게이트 + 회귀 테스트 3종
+  [x] Track E  발행 게이트 + 회귀 테스트                    (아래 커밋)
   [ ] Track F  AUDIT-v2 (Critical 0 · High 0 목표)
 
 Phase 6: Rule Guard                                       cc1b2be

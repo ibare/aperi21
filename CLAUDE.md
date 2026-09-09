@@ -133,9 +133,9 @@ curl -s -X POST http://localhost:3800/api/events \
 
 1. `pnpm -r typecheck`
 2. `pnpm test`
-3. **`pnpm --filter <pkg> pack` 으로 tarball 검증** — `src` 누출 0 · `workspace:` 잔존 0 ·
+3. **`pnpm release:check`** — 위 넷을 자동으로 검사한다 (`src` 누출 0 · `workspace:` 잔존 0 ·
    `publishConfig` 오버라이드 적용 · **발행본 `.d.ts` 가 미발행 private 패키지를
-   참조하지 않을 것**
+   참조하지 않을 것**). CI 가 push·PR 마다 같은 스크립트를 돌린다.
 4. rule-guard 감사 (S-host 의존 일방향 · lazy 보존 · 단일 인스턴스)
 
 3번이 없으면 **워크스페이스에서는 멀쩡하고 발행본에서만 죽는** 사고를 못 잡는다.

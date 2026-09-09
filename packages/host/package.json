@@ -26,6 +26,7 @@
   "devDependencies": {
     "@aperi21/schema": "workspace:*",
     "@rollup/plugin-node-resolve": "^15.3.0",
+    "jsdom": "^25.0.1",
     "rollup": "^4.28.0",
     "rollup-plugin-dts": "^6.1.1",
     "rollup-plugin-esbuild": "^6.1.1",

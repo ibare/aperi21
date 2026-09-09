@@ -11,7 +11,8 @@
     "typecheck": "pnpm -r typecheck",
     "lint": "pnpm -r lint",
     "test": "pnpm -r test",
-    "catalog:gen": "tsx scripts/gen-aperi21-catalog.mts"
+    "catalog:gen": "tsx scripts/gen-aperi21-catalog.mts",
+    "release:check": "tsx scripts/release-check.mts"
   },
   "devDependencies": {
     "@aperi21/bootstrap": "workspace:*",
