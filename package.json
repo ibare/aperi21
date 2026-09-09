@@ -13,7 +13,8 @@
     "test": "pnpm -r test",
     "catalog:gen": "tsx scripts/gen-aperi21-catalog.mts",
     "release:check": "tsx scripts/release-check.mts",
-    "catalog:topics": "tsx scripts/gen-topic-catalog.mts"
+    "catalog:topics": "tsx scripts/gen-topic-catalog.mts",
+    "budget": "tsx scripts/bundle-budget.mts"
   },
   "devDependencies": {
     "@aperi21/bootstrap": "workspace:*",

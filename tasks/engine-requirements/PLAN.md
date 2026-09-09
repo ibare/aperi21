@@ -29,7 +29,7 @@
 d 는 사실상 커밋해야 a 가 성립한다. e 는 남겨 두는 쪽을 권한다 — S5 이후
 "엔진 위로 옮겨 붙였을 때 430줄·607줄이 얼마로 줄었나" 를 재는 원본이다.
 
-### S0-2. 측정 도구
+### S0-2. 측정 도구 — **완료**
 
 `scripts/bundle-budget.mts` 를 만든다.
 
@@ -38,7 +38,17 @@ d 는 사실상 커밋해야 a 가 성립한다. e 는 남겨 두는 쪽을 권�
   (`pressure-isotropy` 번들에 `pinball`, `ray-tracing` 번들에 `waterVolume` …)
 - 결과를 `tasks/engine-requirements/baseline.json` 에 기록
 
-지금 값이 기준선이다 — 고정 41.5 KB, 조각 2.1~6.3 KB, **음성 검사 전항목 실패**.
+`scripts/bundle-budget.mts` + `pnpm budget`. 기준선을 `baseline.json` 에 기록했다.
+
+```
+고정 비용        43.0 KB   host 20.1 + entry·runtime 4.6 + eager 18.3
+조각             2.1 ~ 3.9 KB
+합계             45.1 ~ 46.9 KB
+음성 검사        6/6 실패 — 조각마다 6~12종의 안 쓰는 능력을 받는다
+```
+
+`ray-tracing` 은 자기 코드 2.1 KB 를 보려고 **45.1 KB** 를 받고, 표준 렌더러 8종 중
+하나도 쓰지 않으면서 8종을 전부 받는다.
 
 > 실패로 시작하는 것이 정상이다. 이 스크립트는 S2·S3 의 성과를 재는 자다.
 
@@ -82,7 +92,7 @@ pinball-launcher 를 피하려는 값이다. **하드코딩이 문제다.** 오�
 직접 그리는 데 `Plugin` 객체를 만들 필요가 없어진다.
 
 **검증** — 음성 검사: entry chunk 에 `waterVolume` · `dialScale` 없음.
-고정 비용 41.5 → **약 30 KB** (eager 11.5 KB 회수).
+고정 비용 43.0 → **약 31.6 KB** (sim 2종 11.4 KB 회수).
 
 ---
 
@@ -115,7 +125,7 @@ export const capabilities = { renderers: { body, vector, marker }, controllers: 
 `Host` 생성자의 자동 등록 15건을 걷어낸다. `runBundle` 이 생성물에서 능력을 받는다.
 
 **검증** — 음성 검사: `pressure-isotropy` 번들에 `pinball` 없음.
-고정 비용 30 → **목표 15 KB**.
+고정 비용 31.6 → **목표 15 KB**.
 
 **위험** — 여기가 가장 위험하다. 6종 전부가 생성물을 갖춰야 동작한다.
 S3-B 가 먼저 끝나 있어야 하고, S3-C 는 한 번에 넘긴다.
@@ -146,7 +156,7 @@ S3 가 끝나면 `host/src` 의 모듈들이 이미 서로 독립이다. 그때 
 붙인다.** 두 숫자가 이 설계의 점수다.
 
 - 430줄 · 607줄이 얼마로 줄었는가 (기능)
-- 조각 하나를 여는 gz 가 44.3 KB 에서 얼마로 내려갔는가 (페이로드)
+- 조각 하나를 여는 gz 가 45.7 KB 에서 얼마로 내려갔는가 (페이로드)
 
 ---
 

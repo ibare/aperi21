@@ -1,0 +1,78 @@
+{
+  "date": "2026-09-09",
+  "fixedGz": 44048,
+  "hostGz": 20542,
+  "eagerGz": 18758,
+  "pieces": {
+    "dc-circuit": 2718,
+    "pressure-isotropy": 3991,
+    "projectile": 2782,
+    "ray-tracing": 2104
+  },
+  "violations": {
+    "electronics/dc-circuit": [
+      "body",
+      "trajectory",
+      "vector",
+      "surface",
+      "graph",
+      "event",
+      "gauge",
+      "pinball-launcher",
+      "angle-dial",
+      "slider",
+      "value-edit",
+      "placement"
+    ],
+    "fluids/archimedes-principle": [
+      "trajectory",
+      "graph",
+      "event",
+      "gauge",
+      "pinball-launcher",
+      "angle-dial",
+      "value-edit",
+      "placement"
+    ],
+    "fluids/pressure-and-container-shape": [
+      "body",
+      "marker",
+      "graph",
+      "gauge",
+      "pinball-launcher",
+      "angle-dial",
+      "value-edit",
+      "placement"
+    ],
+    "fluids/pressure-isotropy": [
+      "graph",
+      "event",
+      "gauge",
+      "pinball-launcher",
+      "slider",
+      "value-edit",
+      "placement"
+    ],
+    "optics/ray-tracing": [
+      "trajectory",
+      "vector",
+      "surface",
+      "graph",
+      "event",
+      "gauge",
+      "pinball-launcher",
+      "angle-dial",
+      "slider",
+      "value-edit",
+      "placement"
+    ],
+    "physics/projectile": [
+      "marker",
+      "graph",
+      "gauge",
+      "slider",
+      "value-edit",
+      "placement"
+    ]
+  }
+}
