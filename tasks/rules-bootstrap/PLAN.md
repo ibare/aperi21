@@ -249,5 +249,8 @@ Phase 7: Baden 보고
   [x] 프로젝트 등록 확인 (bdn_HBQXRddL — 이미 등록돼 있었음)
   [x] CLAUDE.md 「Baden 보고」 절 신설 (필수 호출 6종 · projectName · 소급 금지)
   [x] 미해소 위반 5건을 baden_rule 로 등록 (High 3 · Medium 2)
-  [ ] rule-guard 의 HTTP 보고 실제 검증 (다음 호출 시)
+  [x] rules/INDEX.yaml 에 baden 블록 (projectName · ruleIdField)
+  [x] rule-guard.md 에 HTTP 보고 절 (서브에이전트는 MCP 접근 불가)
+  [x] INDEX.yaml 파싱 연동 확인 — 규칙 9종 등록됨 (MUST 항목 수 · 트리거 포함)
+  [x] HTTP 보고 경로 실증 — POST /api/events → {"ok":true}
 ```

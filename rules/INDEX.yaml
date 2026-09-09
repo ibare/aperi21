@@ -16,6 +16,15 @@
 version: 1
 project: aperi21
 
+# Baden MCP 연동: 규칙 ID (id:) 를 baden_rule 호출의 ruleId 에 그대로 쓴다.
+# 예) baden_rule(taskId=..., ruleId='C2', severity='medium',
+#                target='packages/host/src/runtime/runBundle.ts:114', action='violation_found')
+# Baden 이 이 파일을 파싱해 규칙 메타데이터를 등록하고, 규칙별 참조·위반·수정
+# 빈도를 대시보드에서 추적한다.
+baden:
+  projectName: aperi21
+  ruleIdField: id
+
 # ─────────────────────────────────────
 # Always loaded (Tier 1 — Principles)
 # ─────────────────────────────────────

@@ -86,6 +86,32 @@ grep -rc "addEventListener\|removeEventListener\|requestAnimationFrame\|cancelAn
 (전수 grep 결과)
 ```
 
+## Baden 보고
+
+**서브에이전트는 MCP 도구에 접근할 수 없다** (알려진 제약). Bash + HTTP 로 직접 보고한다.
+`taskId` 는 메인 에이전트가 호출 시 넘겨준다 — 받지 못했으면 보고를 생략하고 판정만 반환한다.
+
+감사 시작 시:
+
+```sh
+curl -s -X POST http://localhost:3800/api/events \
+  -H "Content-Type: application/json" \
+  -d '{"projectName":"aperi21","taskId":"<taskId>","action":"check_rule_compliance",
+       "reason":"<무엇을 어떤 규칙으로 검사하는지>"}'
+```
+
+위반을 찾을 때마다 (`ruleId` 는 `rules/INDEX.yaml` 의 `id` 를 그대로):
+
+```sh
+curl -s -X POST http://localhost:3800/api/events \
+  -H "Content-Type: application/json" \
+  -d '{"projectName":"aperi21","taskId":"<taskId>","action":"violation_found",
+       "ruleId":"C2","severity":"medium","target":"<파일:행>","reason":"<위반 내용>"}'
+```
+
+`severity` 는 `critical` · `high` · `medium` · `low`. 응답이 `{"ok":true}` 면 성공이다.
+서버가 죽어 있어도 **감사는 계속한다** — 보고 실패가 판정을 막지 않는다.
+
 ## 원칙
 
 - **MUST / MUST NOT 만 판정한다.** PREFER 는 판정하지 않는다.
