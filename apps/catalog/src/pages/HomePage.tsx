@@ -1,19 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import {
-  catalog,
-  bundlesByCategory,
-  IMPLEMENTED_BUNDLE_IDS,
-} from '../data/catalog';
-import { CATEGORY_ORDER } from '../types/catalog';
-import { CategorySection } from '../components/CategorySection';
+import { catalog, domains } from '../data/catalog';
+import { DomainSection } from '../components/DomainSection';
 import styles from './HomePage.module.css';
 
 export function HomePage() {
   const { t } = useTranslation();
-
-  const implementedCount = IMPLEMENTED_BUNDLE_IDS.size;
-  const plannedCount = catalog.summary.totalBundles - implementedCount;
-  const { min, max } = catalog.summary.totalEmbedEstimate;
+  const { topics, implemented } = catalog.summary;
 
   return (
     <main className={styles.page}>
@@ -28,15 +20,15 @@ export function HomePage() {
 
         <div className={styles.stats}>
           <span className={`${styles.stat} ${styles.statAccent}`}>
-            <strong>{implementedCount}</strong>
+            <strong>{implemented}</strong>
             <span>{t('hero.stat_implemented')}</span>
           </span>
           <span className={styles.stat}>
-            <strong>{plannedCount}</strong>
-            <span>{t('hero.stat_planned')}</span>
+            <strong>{topics}</strong>
+            <span>{t('hero.stat_topics')}</span>
           </span>
           <span className={styles.statMono}>
-            <span>{t('hero.stat_embeds', { min, max })}</span>
+            <span>{t('hero.stat_domains', { count: domains.length })}</span>
           </span>
         </div>
       </section>
@@ -50,13 +42,8 @@ export function HomePage() {
         </div>
 
         <div className={styles.categoryList}>
-          {CATEGORY_ORDER.map((id) => (
-            <CategorySection
-              key={id}
-              id={id}
-              label={catalog.categories[id]}
-              bundles={bundlesByCategory(id)}
-            />
+          {domains.map((domain, i) => (
+            <DomainSection key={domain.id} domain={domain} accentIndex={i % 7} />
           ))}
         </div>
       </section>

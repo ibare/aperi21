@@ -1,88 +1,35 @@
-export type CategoryId =
-  | 'mechanics'
-  | 'waves'
-  | 'optics'
-  | 'thermodynamics'
-  | 'electromagnetism'
-  | 'fluids'
-  | 'modern';
+/**
+ * 주제 카탈로그 타입.
+ *
+ * 이 카탈로그는 **만들 시각화 목록이 아니다.** 질문을 캘 맥락(주제)의 목록이며,
+ * 주제 하나가 시각화 하나가 되지 않는다. 구현된 것만 `simId` 를 단다.
+ *
+ * 원본은 `tasks/piece-catalog/PHYSICS-TOPICS.md`, 생성은 `pnpm catalog:topics`.
+ */
 
-export type TimeModelId =
-  | 'linear'
-  | 'periodic'
-  | 'orbit'
-  | 'continuous'
-  | 'steady_state'
-  | 'static'
-  | 'quasistatic'
-  | 'statistical'
-  | 'discrete';
+/** 조각·실험실 분류. 그 규범으로 만든 것에만 붙는다. */
+export type TopicKind = 'piece' | 'lab';
 
-export interface Parameter {
+export interface Topic {
   id: string;
-  label: string;
-  unit: string;
-}
-
-export interface Stage {
-  id: string;
-  label: string;
-  desc?: string;
-}
-
-export interface Environment {
-  id: string;
-  label: string;
-  desc?: string;
-}
-
-export interface EmbedEstimate {
-  min: number;
-  max: number;
-}
-
-export interface Bundle {
-  id: string;
-  label: string;
-  category: CategoryId;
-  operation: string;
-  timeModel: TimeModelId;
-  parameters: Parameter[];
-  stages: Stage[];
-  environments: Environment[];
-  phenomena: string[];
-  embedEstimate: EmbedEstimate;
-  notes?: string;
-}
-
-export interface CategorySummary {
-  bundles: number;
-  embeds: EmbedEstimate;
-}
-
-export interface CatalogSummary {
-  totalBundles: number;
-  totalEmbedEstimate: EmbedEstimate;
-  byCategory: Record<CategoryId, CategorySummary>;
-}
-
-export interface Catalog {
-  version: string;
   name: string;
-  description: string;
-  categories: Record<CategoryId, string>;
-  timeModels: Record<TimeModelId, string>;
-  bundles: Bundle[];
-  summary: CatalogSummary;
-  openQuestions?: string[];
+  desc: string;
+  kind?: TopicKind;
+  /** 이 조각을 만들게 한 주제. kind 가 있을 때만. */
+  origin?: string;
+  /** 레지스트리 id. **있으면 구현된 것이다.** */
+  simId?: string;
 }
 
-export const CATEGORY_ORDER: CategoryId[] = [
-  'mechanics',
-  'waves',
-  'optics',
-  'thermodynamics',
-  'electromagnetism',
-  'fluids',
-  'modern',
-];
+export interface Domain {
+  id: string;
+  name: string;
+  topics: Topic[];
+}
+
+export interface TopicCatalog {
+  version: string;
+  domain: string;
+  domains: Domain[];
+  summary: { topics: number; implemented: number };
+}

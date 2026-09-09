@@ -3,7 +3,7 @@ import { ThemeProvider } from './theme/ThemeProvider';
 import { EngineProvider } from './engine/EngineProvider';
 import { Header } from './components/Header';
 import { HomePage } from './pages/HomePage';
-import { BundleDetailPage } from './pages/BundleDetailPage';
+import { TopicDetailPage } from './pages/TopicDetailPage';
 import { EditorDemoPage } from './pages/EditorDemoPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
@@ -15,7 +15,7 @@ export function App() {
           <Header />
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/bundle/:bundleId" element={<BundleDetailPage />} />
+            <Route path="/topic/:topicId" element={<TopicDetailPage />} />
             <Route path="/editor-demo" element={<EditorDemoPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

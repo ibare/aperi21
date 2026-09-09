@@ -144,3 +144,63 @@
     font-size: 1.15rem;
   }
 }
+
+/* ── 주제 목록 ─────────────────────────────────────────────────────────── */
+
+.topicList {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1px;
+  background: var(--line, #d4cec2);
+}
+
+.topicItem {
+  background: var(--paper, #fbf8f0);
+}
+
+.topicLink {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: 'name badge' 'desc desc';
+  gap: 0.15rem 0.5rem;
+  padding: 0.65rem 0.9rem;
+  text-decoration: none;
+  color: inherit;
+  min-height: 100%;
+  align-content: start;
+}
+
+.topicLink:hover,
+.topicLink:focus-visible {
+  background: var(--bg-subtle, #f5f1e8);
+}
+
+.topicName {
+  grid-area: name;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.topicDesc {
+  grid-area: desc;
+  font-size: 0.78rem;
+  color: var(--muted, #6b7280);
+  line-height: 1.4;
+}
+
+.topicBadge {
+  grid-area: badge;
+  align-self: start;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.1rem 0.35rem;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  color: var(--accent, #b8751f);
+  white-space: nowrap;
+}

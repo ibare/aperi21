@@ -1,665 +1,2355 @@
 {
-  "version": "0.1",
-  "name": "aperi21-catalog",
-  "description": "aperi21 묶음 카탈로그. 29개 묶음, 고등학교~대학 1학년 물리 범위.",
-
-  "categories": {
-    "mechanics": "역학",
-    "waves": "파동·진동",
-    "optics": "광학",
-    "thermodynamics": "열역학",
-    "electromagnetism": "전자기",
-    "fluids": "유체",
-    "modern": "현대물리"
-  },
-
-  "timeModels": {
-    "linear": "발사-착지 같은 일회성 선형 시간",
-    "periodic": "주기적 반복, 끝이 없음",
-    "orbit": "순환 궤도 또는 열린 궤도",
-    "continuous": "연속적 변화, 평형으로 수렴",
-    "steady_state": "정상 상태 (과도 응답 포함 가능)",
-    "static": "시간 축 없음 (정적 기하)",
-    "quasistatic": "준정적 상태 변화",
-    "statistical": "통계적 누적 시간",
-    "discrete": "이산 이벤트"
-  },
-
-  "bundles": [
+  "$comment": "자동 생성 — 직접 편집하지 말 것. 원본은 tasks/piece-catalog/PHYSICS-TOPICS.md. 생성: pnpm catalog:topics",
+  "version": "2",
+  "domain": "physics",
+  "domains": [
     {
-      "id": "projectile",
-      "label": "발사체",
-      "category": "mechanics",
-      "operation": "각도 다이얼 + 핀볼 런처",
-      "timeModel": "linear",
-      "parameters": [
-        { "id": "v0",    "label": "초기 속도",  "unit": "m/s" },
-        { "id": "theta", "label": "발사각",    "unit": "°" }
-      ],
-      "stages": [
-        { "id": "earth",  "label": "지구", "desc": "g=9.8, 대기 有" },
-        { "id": "moon",   "label": "달",  "desc": "g=1.6, 대기 無" },
-        { "id": "vacuum", "label": "우주","desc": "g=0, 진공" }
-      ],
-      "environments": [
-        { "id": "rain",     "label": "비",     "desc": "공기저항 추가" },
-        { "id": "headwind", "label": "앞바람", "desc": "수평 반대 방향 힘" },
-        { "id": "tailwind", "label": "뒷바람", "desc": "수평 같은 방향 힘" }
-      ],
-      "phenomena": ["포물선 운동", "자유낙하", "수평 투사", "수직 투사", "경사면 발사"],
-      "embedEstimate": { "min": 20, "max": 30 },
-      "notes": "aperi21 프로토타입 묶음. v3 데모 구현됨."
+      "id": "kinematics",
+      "name": "운동학",
+      "topics": [
+        {
+          "id": "displacement-vs-distance",
+          "name": "변위와 이동 거리",
+          "desc": "방향을 가진 양과 누적된 양의 차이"
+        },
+        {
+          "id": "reference-frame",
+          "name": "기준틀",
+          "desc": "관찰자에 따라 달라지는 운동 기술"
+        },
+        {
+          "id": "coordinate-choice",
+          "name": "좌표계 선택",
+          "desc": "축을 어디에 두느냐가 식을 바꾸는 방식"
+        },
+        {
+          "id": "average-velocity",
+          "name": "평균 속도",
+          "desc": "구간 전체를 대표하는 속도"
+        },
+        {
+          "id": "instantaneous-velocity",
+          "name": "순간 속도",
+          "desc": "구간을 0으로 줄인 극한"
+        },
+        {
+          "id": "speed-vs-velocity",
+          "name": "속력과 속도",
+          "desc": "크기만인 양과 방향까지 가진 양"
+        },
+        {
+          "id": "average-acceleration",
+          "name": "평균 가속도",
+          "desc": "속도 변화의 비율"
+        },
+        {
+          "id": "instantaneous-acceleration",
+          "name": "순간 가속도",
+          "desc": "속도의 순간 변화율"
+        },
+        {
+          "id": "direction-of-acceleration",
+          "name": "가속도의 방향",
+          "desc": "속도와 같은 방향인지 반대인지가 정하는 것"
+        },
+        {
+          "id": "uniform-motion",
+          "name": "등속 운동",
+          "desc": "속도가 변하지 않는 운동"
+        },
+        {
+          "id": "uniformly-accelerated-motion",
+          "name": "등가속도 운동",
+          "desc": "가속도가 일정한 운동의 세 식"
+        },
+        {
+          "id": "position-time-graph",
+          "name": "위치-시간 그래프",
+          "desc": "기울기가 속도인 표현"
+        },
+        {
+          "id": "velocity-time-graph",
+          "name": "속도-시간 그래프",
+          "desc": "기울기가 가속도, 넓이가 변위인 표현"
+        },
+        {
+          "id": "acceleration-time-graph",
+          "name": "가속도-시간 그래프",
+          "desc": "넓이가 속도 변화인 표현"
+        },
+        {
+          "id": "free-fall",
+          "name": "자유 낙하",
+          "desc": "중력만 받는 연직 운동"
+        },
+        {
+          "id": "vertical-throw",
+          "name": "연직 투상",
+          "desc": "올라갔다 내려오는 운동의 대칭"
+        },
+        {
+          "id": "gravitational-acceleration",
+          "name": "중력 가속도",
+          "desc": "질량과 무관한 낙하 가속도"
+        },
+        {
+          "id": "fall-with-air-resistance",
+          "name": "저항이 있는 낙하",
+          "desc": "속도에 의존하는 저항과 그 결과"
+        },
+        {
+          "id": "terminal-velocity",
+          "name": "종단 속도",
+          "desc": "저항과 중력이 균형에 이르는 속도"
+        },
+        {
+          "id": "vector-decomposition",
+          "name": "벡터의 성분 분해",
+          "desc": "한 벡터를 축 방향으로 나누기"
+        },
+        {
+          "id": "vector-addition",
+          "name": "벡터의 합성",
+          "desc": "꼬리와 머리를 잇는 덧셈"
+        },
+        {
+          "id": "relative-velocity",
+          "name": "상대 속도",
+          "desc": "기준틀 사이의 속도 변환"
+        },
+        {
+          "id": "river-crossing",
+          "name": "강 건너기",
+          "desc": "두 속도의 합성이 만드는 경로"
+        },
+        {
+          "id": "projectile-motion",
+          "name": "포물선 운동",
+          "desc": "수평·연직 성분의 독립",
+          "simId": "aperi21:projectile"
+        },
+        {
+          "id": "trajectory-equation",
+          "name": "궤적 방정식",
+          "desc": "시간을 소거해 얻은 경로의 식"
+        },
+        {
+          "id": "uniform-circular-motion",
+          "name": "등속 원운동",
+          "desc": "속력이 일정한 원 궤도"
+        },
+        {
+          "id": "centripetal-acceleration",
+          "name": "구심 가속도",
+          "desc": "방향만 바뀌는 운동의 가속도"
+        },
+        {
+          "id": "period-and-frequency",
+          "name": "주기와 진동수",
+          "desc": "한 바퀴에 걸리는 시간과 그 역수"
+        },
+        {
+          "id": "angular-velocity",
+          "name": "각속도",
+          "desc": "단위 시간당 각변위"
+        },
+        {
+          "id": "angular-acceleration",
+          "name": "각가속도",
+          "desc": "각속도의 변화율"
+        },
+        {
+          "id": "tangential-normal-acceleration",
+          "name": "접선·법선 가속도",
+          "desc": "속력 변화와 방향 변화의 분리"
+        },
+        {
+          "id": "radius-of-curvature",
+          "name": "곡률 반지름",
+          "desc": "곡선이 국소적으로 닮은 원"
+        }
+      ]
     },
-
     {
-      "id": "oscillation",
-      "label": "주기 진동",
-      "category": "mechanics",
-      "operation": "추/질량을 드래그해서 초기 변위 설정 후 놓기",
-      "timeModel": "periodic",
-      "parameters": [
-        { "id": "L",     "label": "길이 또는 강성", "unit": "m | N/m" },
-        { "id": "m",     "label": "질량",           "unit": "kg" },
-        { "id": "x0",    "label": "초기 변위",      "unit": "m | rad" },
-        { "id": "gamma", "label": "감쇠계수",      "unit": "1/s" },
-        { "id": "fd",    "label": "외력 주파수",   "unit": "Hz" }
-      ],
-      "stages": [
-        { "id": "earth",   "label": "지구",   "desc": "g=9.8" },
-        { "id": "moon",    "label": "달",    "desc": "g=1.6" },
-        { "id": "jupiter", "label": "목성",  "desc": "g=24.8" }
-      ],
-      "environments": [
-        { "id": "air_damping",    "label": "공기저항", "desc": "진폭이 지수적으로 감쇠" },
-        { "id": "driving_force",  "label": "외력",    "desc": "주기적 강제 진동" }
-      ],
-      "phenomena": ["단진자", "용수철 진동", "물리 진자", "감쇠 진동", "강제 진동", "공명"],
-      "embedEstimate": { "min": 25, "max": 35 }
+      "id": "newtonian-mechanics",
+      "name": "뉴턴 역학",
+      "topics": [
+        {
+          "id": "newtons-first-law",
+          "name": "관성 법칙",
+          "desc": "알짜힘이 없을 때의 운동 상태"
+        },
+        {
+          "id": "inertia",
+          "name": "관성",
+          "desc": "운동 상태를 유지하려는 성질"
+        },
+        {
+          "id": "newtons-second-law",
+          "name": "가속도 법칙",
+          "desc": "알짜힘·질량·가속도의 관계"
+        },
+        {
+          "id": "newtons-third-law",
+          "name": "작용 반작용",
+          "desc": "힘의 쌍과 서로 다른 작용점"
+        },
+        {
+          "id": "net-force",
+          "name": "알짜힘",
+          "desc": "여러 힘의 벡터 합"
+        },
+        {
+          "id": "free-body-diagram",
+          "name": "자유물체도",
+          "desc": "한 물체에 작용하는 힘만 분리하기"
+        },
+        {
+          "id": "mass-vs-weight",
+          "name": "질량과 무게",
+          "desc": "물질의 양과 중력이 주는 힘"
+        },
+        {
+          "id": "inertial-vs-gravitational-mass",
+          "name": "관성 질량과 중력 질량",
+          "desc": "서로 다른 정의가 같은 값을 주는 것"
+        },
+        {
+          "id": "normal-force",
+          "name": "수직항력",
+          "desc": "접촉면이 수직으로 미는 힘"
+        },
+        {
+          "id": "apparent-weight",
+          "name": "겉보기 무게",
+          "desc": "가속하는 엘리베이터 안의 저울"
+        },
+        {
+          "id": "static-friction",
+          "name": "정지 마찰력",
+          "desc": "움직이기 전까지 버티는 힘"
+        },
+        {
+          "id": "kinetic-friction",
+          "name": "운동 마찰력",
+          "desc": "미끄러지는 동안의 마찰"
+        },
+        {
+          "id": "coefficient-of-friction",
+          "name": "마찰 계수",
+          "desc": "수직항력과 마찰력의 비"
+        },
+        {
+          "id": "angle-of-friction",
+          "name": "마찰각",
+          "desc": "미끄러지기 시작하는 경사"
+        },
+        {
+          "id": "inclined-plane",
+          "name": "빗면",
+          "desc": "중력을 면에 나란한 성분과 수직 성분으로"
+        },
+        {
+          "id": "tension",
+          "name": "장력",
+          "desc": "줄이 당기는 힘과 그 전달"
+        },
+        {
+          "id": "pulley-system",
+          "name": "도르래",
+          "desc": "힘의 방향과 크기를 바꾸는 장치"
+        },
+        {
+          "id": "connected-bodies",
+          "name": "연결된 물체",
+          "desc": "함께 움직이는 계의 가속도"
+        },
+        {
+          "id": "spring-force",
+          "name": "탄성력",
+          "desc": "변형에 비례하는 복원력"
+        },
+        {
+          "id": "hookes-law",
+          "name": "훅 법칙",
+          "desc": "탄성 한계 안에서의 비례 관계"
+        },
+        {
+          "id": "centripetal-force",
+          "name": "구심력",
+          "desc": "원운동을 유지시키는 힘의 정체"
+        },
+        {
+          "id": "conical-pendulum",
+          "name": "원뿔 진자",
+          "desc": "장력과 중력이 만드는 원운동"
+        },
+        {
+          "id": "banked-curve",
+          "name": "경사진 커브",
+          "desc": "마찰 없이도 도는 각도"
+        },
+        {
+          "id": "vertical-loop",
+          "name": "연직 원운동",
+          "desc": "꼭대기에서 떨어지지 않는 최소 속력"
+        },
+        {
+          "id": "drag-force",
+          "name": "공기 저항",
+          "desc": "속도의 1차·2차에 비례하는 저항"
+        },
+        {
+          "id": "buoyant-force-as-force",
+          "name": "부력(힘으로서)",
+          "desc": "유체가 위로 미는 힘"
+        },
+        {
+          "id": "non-inertial-frame",
+          "name": "비관성계",
+          "desc": "가속하는 기준틀에서의 운동"
+        },
+        {
+          "id": "fictitious-force",
+          "name": "관성력",
+          "desc": "비관성계에서 도입하는 겉보기 힘"
+        },
+        {
+          "id": "coriolis-effect",
+          "name": "코리올리 효과",
+          "desc": "회전 기준틀에서 휘는 경로"
+        },
+        {
+          "id": "impulse-force-relation",
+          "name": "힘과 충격량",
+          "desc": "짧고 큰 힘과 길고 작은 힘"
+        },
+        {
+          "id": "equilibrium-of-forces",
+          "name": "힘의 평형",
+          "desc": "알짜힘이 0인 상태"
+        },
+        {
+          "id": "atwood-machine",
+          "name": "애트우드 기계",
+          "desc": "두 추가 도르래로 연결된 계"
+        }
+      ]
     },
-
     {
-      "id": "circular_motion",
-      "label": "원운동",
-      "category": "mechanics",
-      "operation": "반지름 + 각속도 슬라이더",
-      "timeModel": "periodic",
-      "parameters": [
-        { "id": "r",     "label": "반지름", "unit": "m" },
-        { "id": "omega", "label": "각속도", "unit": "rad/s" },
-        { "id": "m",     "label": "질량",   "unit": "kg" }
-      ],
-      "stages": [],
-      "environments": [],
-      "phenomena": ["등속 원운동", "구심가속도", "원뿔 진자", "회전체"],
-      "embedEstimate": { "min": 10, "max": 15 },
-      "notes": "oscillation과 병합 검토 필요 — 수학적으로 같은 sinusoidal 표현."
+      "id": "energy-momentum",
+      "name": "일·에너지·운동량",
+      "topics": [
+        {
+          "id": "work",
+          "name": "일",
+          "desc": "힘과 변위의 내적"
+        },
+        {
+          "id": "work-by-variable-force",
+          "name": "변하는 힘이 한 일",
+          "desc": "힘-변위 그래프의 넓이"
+        },
+        {
+          "id": "kinetic-energy",
+          "name": "운동 에너지",
+          "desc": "속력이 담고 있는 에너지"
+        },
+        {
+          "id": "work-energy-theorem",
+          "name": "일-운동 에너지 정리",
+          "desc": "알짜일이 운동 에너지 변화와 같음"
+        },
+        {
+          "id": "gravitational-potential-energy",
+          "name": "중력 퍼텐셜 에너지",
+          "desc": "높이에 저장된 에너지"
+        },
+        {
+          "id": "elastic-potential-energy",
+          "name": "탄성 퍼텐셜 에너지",
+          "desc": "변형에 저장된 에너지"
+        },
+        {
+          "id": "conservative-force",
+          "name": "보존력",
+          "desc": "경로에 무관한 힘과 퍼텐셜의 존재"
+        },
+        {
+          "id": "non-conservative-force",
+          "name": "비보존력",
+          "desc": "경로에 따라 달라지는 일"
+        },
+        {
+          "id": "conservation-of-mechanical-energy",
+          "name": "역학적 에너지 보존",
+          "desc": "형태가 바뀌어도 총량이 유지됨"
+        },
+        {
+          "id": "energy-dissipation",
+          "name": "에너지 소산",
+          "desc": "마찰이 가져가는 몫과 그 행방"
+        },
+        {
+          "id": "potential-energy-curve",
+          "name": "퍼텐셜 곡선",
+          "desc": "곡선의 모양이 운동을 정하는 방식"
+        },
+        {
+          "id": "equilibrium-points",
+          "name": "평형점",
+          "desc": "안정·불안정·중립 평형"
+        },
+        {
+          "id": "power",
+          "name": "일률",
+          "desc": "단위 시간당 일"
+        },
+        {
+          "id": "efficiency",
+          "name": "효율",
+          "desc": "넣은 것과 얻은 것의 비"
+        },
+        {
+          "id": "momentum",
+          "name": "운동량",
+          "desc": "질량과 속도의 곱"
+        },
+        {
+          "id": "impulse",
+          "name": "충격량",
+          "desc": "힘의 시간 적분"
+        },
+        {
+          "id": "impulse-momentum-theorem",
+          "name": "충격량-운동량 정리",
+          "desc": "충격량이 운동량 변화와 같음"
+        },
+        {
+          "id": "conservation-of-momentum",
+          "name": "운동량 보존",
+          "desc": "외력이 없을 때의 총 운동량"
+        },
+        {
+          "id": "elastic-collision",
+          "name": "탄성 충돌",
+          "desc": "운동 에너지까지 보존되는 충돌"
+        },
+        {
+          "id": "inelastic-collision",
+          "name": "비탄성 충돌",
+          "desc": "에너지가 사라지는 충돌"
+        },
+        {
+          "id": "perfectly-inelastic-collision",
+          "name": "완전 비탄성 충돌",
+          "desc": "붙어서 함께 움직이는 경우"
+        },
+        {
+          "id": "coefficient-of-restitution",
+          "name": "반발 계수",
+          "desc": "충돌 전후 상대 속도의 비"
+        },
+        {
+          "id": "two-dimensional-collision",
+          "name": "2차원 충돌",
+          "desc": "성분마다 따로 성립하는 보존"
+        },
+        {
+          "id": "center-of-mass",
+          "name": "질량 중심",
+          "desc": "계를 대표하는 점"
+        },
+        {
+          "id": "center-of-mass-motion",
+          "name": "질량 중심의 운동",
+          "desc": "내부 힘에 영향받지 않는 운동"
+        },
+        {
+          "id": "explosion-and-recoil",
+          "name": "폭발과 반동",
+          "desc": "정지한 계가 갈라질 때"
+        },
+        {
+          "id": "variable-mass-system",
+          "name": "질량이 변하는 계",
+          "desc": "질량 유출입이 있는 운동 방정식"
+        },
+        {
+          "id": "rocket-equation",
+          "name": "로켓 방정식",
+          "desc": "연료를 버려 얻는 속도"
+        },
+        {
+          "id": "ballistic-pendulum",
+          "name": "탄동 진자",
+          "desc": "충돌과 에너지 보존을 잇는 측정"
+        },
+        {
+          "id": "energy-in-collision",
+          "name": "충돌에서의 에너지",
+          "desc": "보존되는 것과 안 되는 것의 구분"
+        }
+      ]
     },
-
     {
-      "id": "central_force_orbit",
-      "label": "중심력 궤도",
-      "category": "mechanics",
-      "operation": "초기 위치 배치 + 초기 속도 벡터를 2D 드래그로 그리기",
-      "timeModel": "orbit",
-      "parameters": [
-        { "id": "M",  "label": "중심 질량",     "unit": "kg" },
-        { "id": "r0", "label": "초기 위치 벡터","unit": "m" },
-        { "id": "v0", "label": "초기 속도 벡터","unit": "m/s" }
-      ],
-      "stages": [
-        { "id": "solar_system", "label": "태양계",  "desc": "단일 중심 질량" },
-        { "id": "binary",       "label": "쌍성계",  "desc": "두 중심" },
-        { "id": "blackhole",    "label": "블랙홀 근처", "desc": "극단적 중력" }
-      ],
-      "environments": [
-        { "id": "perturbation", "label": "섭동",     "desc": "다른 천체의 영향" },
-        { "id": "gas_drag",     "label": "성간 가스","desc": "궤도 감쇠" }
-      ],
-      "phenomena": ["행성 궤도", "위성 운동", "케플러 법칙", "중심력 일반", "탈출 속도", "쌍곡선 궤도"],
-      "embedEstimate": { "min": 15, "max": 20 }
+      "id": "rotation-oscillation",
+      "name": "회전과 진동",
+      "topics": [
+        {
+          "id": "torque",
+          "name": "돌림힘",
+          "desc": "회전을 일으키는 양과 팔 길이"
+        },
+        {
+          "id": "lever-arm",
+          "name": "힘의 팔",
+          "desc": "회전축까지의 수직 거리"
+        },
+        {
+          "id": "moment-of-inertia",
+          "name": "관성 모멘트",
+          "desc": "질량 분포가 정하는 회전 저항"
+        },
+        {
+          "id": "parallel-axis-theorem",
+          "name": "평행축 정리",
+          "desc": "축을 옮길 때의 관성 모멘트"
+        },
+        {
+          "id": "rotational-kinetic-energy",
+          "name": "회전 운동 에너지",
+          "desc": "각속도가 담은 에너지"
+        },
+        {
+          "id": "angular-momentum",
+          "name": "각운동량",
+          "desc": "회전의 운동량"
+        },
+        {
+          "id": "conservation-of-angular-momentum",
+          "name": "각운동량 보존",
+          "desc": "팔을 오므리면 빨라지는 이유"
+        },
+        {
+          "id": "rolling-without-slipping",
+          "name": "미끄러지지 않는 구름",
+          "desc": "병진과 회전의 구속 조건"
+        },
+        {
+          "id": "rolling-race",
+          "name": "구르는 물체의 경주",
+          "desc": "질량 분포가 정하는 도착 순서"
+        },
+        {
+          "id": "static-equilibrium",
+          "name": "정적 평형",
+          "desc": "힘과 돌림힘이 모두 0"
+        },
+        {
+          "id": "center-of-gravity",
+          "name": "무게 중심",
+          "desc": "넘어지는 조건을 정하는 점"
+        },
+        {
+          "id": "gyroscopic-precession",
+          "name": "세차 운동",
+          "desc": "돌림힘이 각운동량 방향을 돌리는 것"
+        },
+        {
+          "id": "angular-momentum-vector",
+          "name": "각운동량의 방향",
+          "desc": "오른손 규칙과 회전축"
+        },
+        {
+          "id": "simple-harmonic-motion",
+          "name": "단순 조화 운동",
+          "desc": "복원력이 변위에 비례하는 운동"
+        },
+        {
+          "id": "shm-energy",
+          "name": "조화 운동의 에너지",
+          "desc": "운동 에너지와 퍼텐셜의 교환"
+        },
+        {
+          "id": "phase-and-amplitude",
+          "name": "위상과 진폭",
+          "desc": "같은 진동수의 두 진동을 가르는 것"
+        },
+        {
+          "id": "mass-spring-system",
+          "name": "용수철 진자",
+          "desc": "질량과 탄성 계수가 정하는 주기"
+        },
+        {
+          "id": "simple-pendulum",
+          "name": "단진자",
+          "desc": "작은 진폭에서의 주기"
+        },
+        {
+          "id": "physical-pendulum",
+          "name": "물리 진자",
+          "desc": "크기가 있는 물체의 진동"
+        },
+        {
+          "id": "pendulum-amplitude-dependence",
+          "name": "진폭과 주기",
+          "desc": "큰 진폭에서 깨지는 등시성"
+        },
+        {
+          "id": "damped-oscillation",
+          "name": "감쇠 진동",
+          "desc": "에너지가 빠져나가는 진동"
+        },
+        {
+          "id": "damping-regimes",
+          "name": "감쇠의 세 양상",
+          "desc": "부족·임계·과도 감쇠"
+        },
+        {
+          "id": "driven-oscillation",
+          "name": "강제 진동",
+          "desc": "외부 구동에 대한 응답"
+        },
+        {
+          "id": "resonance",
+          "name": "공명",
+          "desc": "구동 진동수가 고유 진동수에 맞을 때"
+        },
+        {
+          "id": "quality-factor",
+          "name": "Q 인자",
+          "desc": "공명의 날카로움"
+        },
+        {
+          "id": "coupled-oscillators",
+          "name": "결합 진동자",
+          "desc": "에너지가 오가는 두 진동자"
+        },
+        {
+          "id": "normal-modes",
+          "name": "정규 모드",
+          "desc": "계가 가진 고유 진동 형태"
+        },
+        {
+          "id": "beats-in-oscillation",
+          "name": "진동의 맥놀이",
+          "desc": "가까운 두 진동수의 합"
+        },
+        {
+          "id": "phase-space",
+          "name": "위상 공간",
+          "desc": "위치-속도 평면에서 본 운동"
+        },
+        {
+          "id": "nonlinear-oscillation",
+          "name": "비선형 진동",
+          "desc": "복원력이 비례를 벗어날 때"
+        }
+      ]
     },
-
     {
-      "id": "collision",
-      "label": "충돌",
-      "category": "mechanics",
-      "operation": "두 물체의 초기 속도·질량 설정 후 놓기",
-      "timeModel": "linear",
-      "parameters": [
-        { "id": "m1", "label": "물체 1 질량", "unit": "kg" },
-        { "id": "m2", "label": "물체 2 질량", "unit": "kg" },
-        { "id": "v1", "label": "물체 1 속도", "unit": "m/s" },
-        { "id": "v2", "label": "물체 2 속도", "unit": "m/s" },
-        { "id": "e",  "label": "반발계수",    "unit": "-" }
-      ],
-      "stages": [],
-      "environments": [],
-      "phenomena": ["1D 충돌", "2D 충돌", "탄성 충돌", "비탄성 충돌", "완전비탄성", "운동량 보존"],
-      "embedEstimate": { "min": 10, "max": 15 }
+      "id": "gravitation",
+      "name": "중력과 천체",
+      "topics": [
+        {
+          "id": "newtons-law-of-gravitation",
+          "name": "만유인력 법칙",
+          "desc": "거리 제곱에 반비례하는 힘"
+        },
+        {
+          "id": "gravitational-constant",
+          "name": "중력 상수",
+          "desc": "캐번디시 실험과 그 측정"
+        },
+        {
+          "id": "gravitational-field",
+          "name": "중력장",
+          "desc": "공간에 분포한 중력의 세기"
+        },
+        {
+          "id": "shell-theorem",
+          "name": "껍질 정리",
+          "desc": "구 껍질 안팎에서의 중력"
+        },
+        {
+          "id": "gravity-inside-earth",
+          "name": "지구 내부의 중력",
+          "desc": "깊이에 따라 줄어드는 중력"
+        },
+        {
+          "id": "gravitational-potential-energy-general",
+          "name": "중력 퍼텐셜 에너지(일반)",
+          "desc": "무한대를 기준으로 한 음의 에너지"
+        },
+        {
+          "id": "escape-velocity",
+          "name": "탈출 속도",
+          "desc": "중력을 벗어나는 최소 속도"
+        },
+        {
+          "id": "orbital-velocity",
+          "name": "궤도 속도",
+          "desc": "원 궤도를 유지하는 속도"
+        },
+        {
+          "id": "circular-orbit",
+          "name": "원 궤도",
+          "desc": "구심력이 중력인 운동"
+        },
+        {
+          "id": "elliptical-orbit",
+          "name": "타원 궤도",
+          "desc": "초점에 놓인 중심 천체"
+        },
+        {
+          "id": "keplers-first-law",
+          "name": "케플러 제1법칙",
+          "desc": "궤도는 타원이다"
+        },
+        {
+          "id": "keplers-second-law",
+          "name": "케플러 제2법칙",
+          "desc": "같은 시간에 같은 넓이"
+        },
+        {
+          "id": "keplers-third-law",
+          "name": "케플러 제3법칙",
+          "desc": "주기와 긴반지름의 관계"
+        },
+        {
+          "id": "two-body-problem",
+          "name": "이체 문제",
+          "desc": "질량 중심 둘레를 도는 두 천체"
+        },
+        {
+          "id": "reduced-mass",
+          "name": "환산 질량",
+          "desc": "이체를 일체로 바꾸는 양"
+        },
+        {
+          "id": "tidal-force",
+          "name": "조석력",
+          "desc": "중력의 차이가 만드는 늘어남"
+        },
+        {
+          "id": "roche-limit",
+          "name": "로슈 한계",
+          "desc": "조석력이 천체를 부수는 거리"
+        },
+        {
+          "id": "weightlessness",
+          "name": "무중력",
+          "desc": "자유 낙하 중의 겉보기 무게"
+        },
+        {
+          "id": "geostationary-orbit",
+          "name": "정지 궤도",
+          "desc": "자전 주기와 같은 궤도"
+        },
+        {
+          "id": "gravitational-slingshot",
+          "name": "중력 도움",
+          "desc": "천체를 이용한 속도 변화"
+        },
+        {
+          "id": "lagrange-points",
+          "name": "라그랑주 점",
+          "desc": "두 천체 사이의 평형 위치"
+        },
+        {
+          "id": "orbital-transfer",
+          "name": "궤도 전이",
+          "desc": "호만 전이와 그 비용"
+        },
+        {
+          "id": "black-hole-horizon",
+          "name": "사건 지평선",
+          "desc": "탈출 속도가 광속이 되는 반지름"
+        }
+      ]
     },
-
     {
-      "id": "inclined_plane",
-      "label": "경사면·마찰",
-      "category": "mechanics",
-      "operation": "경사각 + 물체 초기 위치 드래그",
-      "timeModel": "linear",
-      "parameters": [
-        { "id": "alpha", "label": "경사각",      "unit": "°" },
-        { "id": "mu_s",  "label": "정지마찰계수","unit": "-" },
-        { "id": "mu_k",  "label": "운동마찰계수","unit": "-" },
-        { "id": "m",     "label": "질량",        "unit": "kg" }
-      ],
-      "stages": [
-        { "id": "earth", "label": "지구" },
-        { "id": "moon",  "label": "달" }
-      ],
-      "environments": [],
-      "phenomena": ["경사면 미끄러짐", "마찰 한계각", "정지·운동 마찰 전환"],
-      "embedEstimate": { "min": 8, "max": 12 }
+      "id": "fluids",
+      "name": "유체",
+      "topics": [
+        {
+          "id": "density",
+          "name": "밀도",
+          "desc": "단위 부피당 질량"
+        },
+        {
+          "id": "pressure",
+          "name": "압력",
+          "desc": "단위 면적당 힘"
+        },
+        {
+          "id": "pressure-isotropy",
+          "name": "압력의 등방성",
+          "desc": "방향에 무관하게 같은 크기"
+        },
+        {
+          "id": "hydrostatic-pressure",
+          "name": "정수압",
+          "desc": "깊이에 비례하는 압력"
+        },
+        {
+          "id": "pressure-and-container-shape",
+          "name": "그릇 모양과 압력",
+          "desc": "바닥 압력이 모양에 무관한 것"
+        },
+        {
+          "id": "atmospheric-pressure",
+          "name": "대기압",
+          "desc": "공기 기둥의 무게"
+        },
+        {
+          "id": "barometer",
+          "name": "기압계",
+          "desc": "수은 기둥의 높이"
+        },
+        {
+          "id": "manometer",
+          "name": "압력계",
+          "desc": "액주 차이로 재는 압력"
+        },
+        {
+          "id": "pascals-principle",
+          "name": "파스칼 원리",
+          "desc": "압력의 전달과 유압 장치"
+        },
+        {
+          "id": "buoyancy",
+          "name": "부력",
+          "desc": "밀려난 유체의 무게만큼"
+        },
+        {
+          "id": "archimedes-principle",
+          "name": "아르키메데스 원리",
+          "desc": "뜨고 가라앉는 조건"
+        },
+        {
+          "id": "floating-and-draft",
+          "name": "뜨는 깊이",
+          "desc": "잠기는 부피가 정해지는 방식"
+        },
+        {
+          "id": "stability-of-floating-body",
+          "name": "부유체의 안정",
+          "desc": "무게 중심과 부심의 관계"
+        },
+        {
+          "id": "continuity-equation",
+          "name": "연속 방정식",
+          "desc": "단면적과 유속의 반비례"
+        },
+        {
+          "id": "bernoullis-principle",
+          "name": "베르누이 원리",
+          "desc": "속도와 압력의 교환"
+        },
+        {
+          "id": "venturi-effect",
+          "name": "벤투리 효과",
+          "desc": "좁아진 곳에서 낮아지는 압력"
+        },
+        {
+          "id": "torricellis-law",
+          "name": "토리첼리 법칙",
+          "desc": "구멍에서 나오는 유속"
+        },
+        {
+          "id": "lift-force",
+          "name": "양력",
+          "desc": "날개 위아래의 흐름 차이"
+        },
+        {
+          "id": "viscosity",
+          "name": "점성",
+          "desc": "층 사이의 마찰"
+        },
+        {
+          "id": "poiseuille-flow",
+          "name": "관 속의 층류",
+          "desc": "반지름 4제곱에 비례하는 유량"
+        },
+        {
+          "id": "stokes-drag",
+          "name": "스토크스 항력",
+          "desc": "느린 흐름에서의 저항"
+        },
+        {
+          "id": "laminar-vs-turbulent",
+          "name": "층류와 난류",
+          "desc": "흐름의 두 양상"
+        },
+        {
+          "id": "reynolds-number",
+          "name": "레이놀즈 수",
+          "desc": "전이를 가르는 무차원 수"
+        },
+        {
+          "id": "boundary-layer",
+          "name": "경계층",
+          "desc": "벽 근처에서 속도가 0이 되는 층"
+        },
+        {
+          "id": "surface-tension",
+          "name": "표면 장력",
+          "desc": "표면을 줄이려는 힘"
+        },
+        {
+          "id": "laplace-pressure",
+          "name": "라플라스 압력",
+          "desc": "곡률이 만드는 안팎 압력차"
+        },
+        {
+          "id": "capillary-action",
+          "name": "모세관 현상",
+          "desc": "좁은 관에서의 상승과 하강"
+        },
+        {
+          "id": "wetting-and-contact-angle",
+          "name": "젖음과 접촉각",
+          "desc": "액체가 고체 위에 퍼지는 정도"
+        },
+        {
+          "id": "drag-in-fluid",
+          "name": "유체 속 항력",
+          "desc": "형상과 속도가 정하는 저항"
+        }
+      ]
     },
-
     {
-      "id": "rigid_rotation",
-      "label": "강체 회전",
-      "category": "mechanics",
-      "operation": "회전축 위치 + 토크 적용",
-      "timeModel": "periodic",
-      "parameters": [
-        { "id": "I",     "label": "관성 모멘트", "unit": "kg·m²" },
-        { "id": "tau",   "label": "토크",        "unit": "N·m" },
-        { "id": "omega", "label": "각속도",      "unit": "rad/s" }
-      ],
-      "stages": [],
-      "environments": [
-        { "id": "friction", "label": "축 마찰", "desc": "회전 감쇠" }
-      ],
-      "phenomena": ["회전운동", "각운동량 보존", "회전 에너지", "지렛대", "도르래", "관성 모멘트"],
-      "embedEstimate": { "min": 10, "max": 15 }
+      "id": "thermodynamics",
+      "name": "열과 통계",
+      "topics": [
+        {
+          "id": "temperature",
+          "name": "온도",
+          "desc": "열평형이 정의하는 양"
+        },
+        {
+          "id": "thermal-equilibrium",
+          "name": "열평형",
+          "desc": "접촉한 두 계가 도달하는 상태"
+        },
+        {
+          "id": "zeroth-law",
+          "name": "열역학 제0법칙",
+          "desc": "온도계가 성립하는 근거"
+        },
+        {
+          "id": "temperature-scales",
+          "name": "온도 눈금",
+          "desc": "섭씨·화씨·절대 온도"
+        },
+        {
+          "id": "absolute-zero",
+          "name": "절대 영도",
+          "desc": "도달할 수 없는 하한"
+        },
+        {
+          "id": "heat-vs-temperature",
+          "name": "열과 온도",
+          "desc": "전달되는 에너지와 상태량"
+        },
+        {
+          "id": "specific-heat",
+          "name": "비열",
+          "desc": "물질마다 다른 온도 변화"
+        },
+        {
+          "id": "heat-capacity",
+          "name": "열용량",
+          "desc": "계 전체가 받는 열과 온도 변화"
+        },
+        {
+          "id": "calorimetry",
+          "name": "열량 측정",
+          "desc": "섞었을 때의 최종 온도"
+        },
+        {
+          "id": "latent-heat",
+          "name": "잠열",
+          "desc": "상변화 중 온도가 멈추는 이유"
+        },
+        {
+          "id": "phase-diagram",
+          "name": "상평형 그림",
+          "desc": "압력과 온도가 정하는 상"
+        },
+        {
+          "id": "triple-point",
+          "name": "삼중점",
+          "desc": "세 상이 공존하는 조건"
+        },
+        {
+          "id": "thermal-conduction",
+          "name": "열전도",
+          "desc": "접촉을 통한 전달"
+        },
+        {
+          "id": "thermal-convection",
+          "name": "대류",
+          "desc": "유체의 이동이 나르는 열"
+        },
+        {
+          "id": "thermal-radiation",
+          "name": "열복사",
+          "desc": "매질 없이 전달되는 열"
+        },
+        {
+          "id": "stefan-boltzmann-law",
+          "name": "슈테판-볼츠만 법칙",
+          "desc": "온도 4제곱에 비례하는 복사"
+        },
+        {
+          "id": "thermal-expansion",
+          "name": "열팽창",
+          "desc": "온도에 따른 길이·부피 변화"
+        },
+        {
+          "id": "bimetal",
+          "name": "바이메탈",
+          "desc": "팽창률 차이가 만드는 휨"
+        },
+        {
+          "id": "ideal-gas-law",
+          "name": "이상 기체 법칙",
+          "desc": "압력·부피·온도의 관계"
+        },
+        {
+          "id": "boyles-law",
+          "name": "보일 법칙",
+          "desc": "온도가 일정할 때의 압력-부피"
+        },
+        {
+          "id": "charles-law",
+          "name": "샤를 법칙",
+          "desc": "압력이 일정할 때의 부피-온도"
+        },
+        {
+          "id": "kinetic-theory-of-gases",
+          "name": "기체 분자 운동론",
+          "desc": "거시량을 분자 운동으로 설명"
+        },
+        {
+          "id": "pressure-from-collisions",
+          "name": "충돌이 만드는 압력",
+          "desc": "벽에 부딪는 분자의 운동량"
+        },
+        {
+          "id": "equipartition-theorem",
+          "name": "등분배 정리",
+          "desc": "자유도마다 나뉘는 에너지"
+        },
+        {
+          "id": "maxwell-boltzmann-distribution",
+          "name": "맥스웰-볼츠만 분포",
+          "desc": "분자 속력의 분포"
+        },
+        {
+          "id": "mean-free-path",
+          "name": "평균 자유 행로",
+          "desc": "충돌과 충돌 사이의 거리"
+        },
+        {
+          "id": "internal-energy",
+          "name": "내부 에너지",
+          "desc": "계가 담고 있는 미시 에너지"
+        },
+        {
+          "id": "first-law-of-thermodynamics",
+          "name": "열역학 제1법칙",
+          "desc": "내부 에너지·일·열의 관계"
+        },
+        {
+          "id": "pv-diagram",
+          "name": "PV 그림",
+          "desc": "넓이가 일인 표현"
+        },
+        {
+          "id": "isothermal-process",
+          "name": "등온 과정",
+          "desc": "온도를 유지하는 변화"
+        },
+        {
+          "id": "adiabatic-process",
+          "name": "단열 과정",
+          "desc": "열 출입이 없는 변화"
+        },
+        {
+          "id": "isobaric-isochoric",
+          "name": "등압·등적 과정",
+          "desc": "압력 또는 부피를 고정한 변화"
+        },
+        {
+          "id": "cyclic-process",
+          "name": "순환 과정",
+          "desc": "제자리로 돌아오는 변화"
+        },
+        {
+          "id": "second-law-of-thermodynamics",
+          "name": "열역학 제2법칙",
+          "desc": "방향이 있는 변화"
+        },
+        {
+          "id": "entropy",
+          "name": "엔트로피",
+          "desc": "경우의 수와 무질서"
+        },
+        {
+          "id": "entropy-and-irreversibility",
+          "name": "엔트로피와 비가역성",
+          "desc": "되돌릴 수 없는 이유"
+        },
+        {
+          "id": "heat-engine",
+          "name": "열기관",
+          "desc": "열을 일로 바꾸는 순환"
+        },
+        {
+          "id": "carnot-cycle",
+          "name": "카르노 순환",
+          "desc": "이론적 최대 효율"
+        },
+        {
+          "id": "refrigerator-heat-pump",
+          "name": "냉장고와 열펌프",
+          "desc": "일을 넣어 열을 옮기는 것"
+        },
+        {
+          "id": "third-law",
+          "name": "열역학 제3법칙",
+          "desc": "절대 영도에서의 엔트로피"
+        },
+        {
+          "id": "brownian-motion",
+          "name": "브라운 운동",
+          "desc": "분자 충돌이 만드는 무작위 운동"
+        },
+        {
+          "id": "diffusion",
+          "name": "확산",
+          "desc": "농도 차이가 만드는 흐름"
+        },
+        {
+          "id": "random-walk",
+          "name": "무작위 걸음",
+          "desc": "제곱근에 비례하는 이동 거리"
+        },
+        {
+          "id": "statistical-fluctuation",
+          "name": "요동",
+          "desc": "입자 수가 적을 때 커지는 흔들림"
+        },
+        {
+          "id": "maxwells-demon",
+          "name": "맥스웰의 도깨비",
+          "desc": "정보와 엔트로피의 관계"
+        }
+      ]
     },
-
     {
-      "id": "wave_1d",
-      "label": "1D 파동",
-      "category": "waves",
-      "operation": "파장·진폭·주파수 슬라이더, 경계 조건 선택",
-      "timeModel": "continuous",
-      "parameters": [
-        { "id": "lambda", "label": "파장",     "unit": "m" },
-        { "id": "A",      "label": "진폭",     "unit": "m" },
-        { "id": "f",      "label": "주파수",   "unit": "Hz" },
-        { "id": "v",      "label": "파동 속도","unit": "m/s" }
-      ],
-      "stages": [
-        { "id": "fixed_ends",  "label": "양 끝 고정",  "desc": "현의 진동" },
-        { "id": "free_ends",   "label": "양 끝 자유",  "desc": "관의 진동" },
-        { "id": "mixed",       "label": "한쪽 고정",   "desc": "비대칭 경계" }
-      ],
-      "environments": [
-        { "id": "damping", "label": "감쇠", "desc": "매질 저항" }
-      ],
-      "phenomena": ["진행파", "정상파", "현의 기본 진동", "반사와 투과", "맥놀이"],
-      "embedEstimate": { "min": 15, "max": 20 }
+      "id": "waves-acoustics",
+      "name": "파동과 음향",
+      "topics": [
+        {
+          "id": "wave-basics",
+          "name": "파동의 기본량",
+          "desc": "파장·진동수·속력·진폭"
+        },
+        {
+          "id": "wave-vs-particle-transport",
+          "name": "파동이 나르는 것",
+          "desc": "매질은 제자리, 에너지는 이동"
+        },
+        {
+          "id": "transverse-wave",
+          "name": "횡파",
+          "desc": "진동 방향이 진행 방향과 수직"
+        },
+        {
+          "id": "longitudinal-wave",
+          "name": "종파",
+          "desc": "진동 방향이 진행 방향과 나란함"
+        },
+        {
+          "id": "wave-speed-in-medium",
+          "name": "매질과 파동 속도",
+          "desc": "장력·밀도·탄성이 정하는 속도"
+        },
+        {
+          "id": "wave-equation",
+          "name": "파동 방정식",
+          "desc": "파동을 지배하는 미분 방정식"
+        },
+        {
+          "id": "wave-function-form",
+          "name": "파동의 식",
+          "desc": "위상과 파수의 표현"
+        },
+        {
+          "id": "wavefront-and-ray",
+          "name": "파면과 광선",
+          "desc": "같은 위상의 면과 그 수직선"
+        },
+        {
+          "id": "huygens-principle",
+          "name": "하위헌스 원리",
+          "desc": "파면의 각 점이 새 파원이 되는 것"
+        },
+        {
+          "id": "superposition",
+          "name": "중첩 원리",
+          "desc": "파동이 겹칠 때의 합"
+        },
+        {
+          "id": "constructive-destructive",
+          "name": "보강과 상쇄",
+          "desc": "위상차가 정하는 합의 크기"
+        },
+        {
+          "id": "interference",
+          "name": "간섭",
+          "desc": "두 파원이 만드는 무늬"
+        },
+        {
+          "id": "path-difference",
+          "name": "경로차",
+          "desc": "무늬의 위치를 정하는 양"
+        },
+        {
+          "id": "standing-wave",
+          "name": "정상파",
+          "desc": "마디와 배가 고정되는 파동"
+        },
+        {
+          "id": "harmonics",
+          "name": "배음",
+          "desc": "경계 조건이 정하는 진동수"
+        },
+        {
+          "id": "string-vibration",
+          "name": "줄의 진동",
+          "desc": "양끝이 고정된 줄의 모드"
+        },
+        {
+          "id": "air-column-resonance",
+          "name": "기주 공명",
+          "desc": "열린 관과 닫힌 관의 차이"
+        },
+        {
+          "id": "beats",
+          "name": "맥놀이",
+          "desc": "가까운 두 진동수의 합"
+        },
+        {
+          "id": "doppler-effect",
+          "name": "도플러 효과",
+          "desc": "상대 운동에 따른 진동수 변화"
+        },
+        {
+          "id": "doppler-source-vs-observer",
+          "name": "음원과 관찰자",
+          "desc": "누가 움직이냐에 따른 비대칭"
+        },
+        {
+          "id": "shock-wave",
+          "name": "충격파",
+          "desc": "음속을 넘을 때 생기는 원뿔"
+        },
+        {
+          "id": "mach-number",
+          "name": "마하 수",
+          "desc": "음속에 대한 속도의 비"
+        },
+        {
+          "id": "sound-speed",
+          "name": "음속",
+          "desc": "매질과 온도가 정하는 속도"
+        },
+        {
+          "id": "sound-intensity",
+          "name": "음의 세기",
+          "desc": "거리 제곱에 반비례하는 감쇠"
+        },
+        {
+          "id": "decibel-scale",
+          "name": "데시벨",
+          "desc": "로그로 재는 세기"
+        },
+        {
+          "id": "pitch-loudness-timbre",
+          "name": "높이·크기·음색",
+          "desc": "물리량과 감각의 대응"
+        },
+        {
+          "id": "reflection-of-waves",
+          "name": "파동의 반사",
+          "desc": "고정단과 자유단에서의 위상"
+        },
+        {
+          "id": "refraction-of-waves",
+          "name": "파동의 굴절",
+          "desc": "속도 변화가 만드는 방향 전환"
+        },
+        {
+          "id": "diffraction",
+          "name": "회절",
+          "desc": "장애물을 돌아가는 파동"
+        },
+        {
+          "id": "slit-width-and-diffraction",
+          "name": "슬릿 폭과 회절",
+          "desc": "파장과 폭의 비가 정하는 퍼짐"
+        },
+        {
+          "id": "wave-energy",
+          "name": "파동의 에너지",
+          "desc": "진폭 제곱에 비례하는 에너지"
+        },
+        {
+          "id": "wave-attenuation",
+          "name": "파동의 감쇠",
+          "desc": "매질이 흡수하는 에너지"
+        },
+        {
+          "id": "impedance-mismatch",
+          "name": "임피던스 부정합",
+          "desc": "경계에서 반사되는 비율"
+        },
+        {
+          "id": "noise-cancellation",
+          "name": "능동 소음 제거",
+          "desc": "역위상 파동의 중첩"
+        }
+      ]
     },
-
     {
-      "id": "wave_2d",
-      "label": "2D 파동 전파",
-      "category": "waves",
-      "operation": "파원 위치 배치 + 주파수 설정",
-      "timeModel": "continuous",
-      "parameters": [
-        { "id": "f",        "label": "주파수",    "unit": "Hz" },
-        { "id": "v_medium", "label": "매질 속도", "unit": "m/s" },
-        { "id": "n_sources","label": "파원 수",   "unit": "-" }
-      ],
-      "stages": [],
-      "environments": [
-        { "id": "moving_source", "label": "파원 이동", "desc": "도플러 효과" }
-      ],
-      "phenomena": ["수면파", "도플러 효과", "파원 이동", "호이겐스 원리"],
-      "embedEstimate": { "min": 10, "max": 15 }
+      "id": "optics",
+      "name": "광학",
+      "topics": [
+        {
+          "id": "rectilinear-propagation",
+          "name": "빛의 직진",
+          "desc": "그림자와 광선 모형"
+        },
+        {
+          "id": "shadow-umbra-penumbra",
+          "name": "본그림자와 반그림자",
+          "desc": "광원의 크기가 만드는 경계"
+        },
+        {
+          "id": "pinhole-camera",
+          "name": "바늘구멍 사진기",
+          "desc": "구멍 하나가 만드는 상"
+        },
+        {
+          "id": "law-of-reflection",
+          "name": "반사 법칙",
+          "desc": "입사각과 반사각"
+        },
+        {
+          "id": "specular-diffuse-reflection",
+          "name": "정반사와 난반사",
+          "desc": "표면 거칠기가 정하는 반사"
+        },
+        {
+          "id": "plane-mirror-image",
+          "name": "평면거울의 상",
+          "desc": "허상의 위치와 좌우 반전"
+        },
+        {
+          "id": "multiple-mirror-images",
+          "name": "두 거울의 상",
+          "desc": "각도가 정하는 상의 개수"
+        },
+        {
+          "id": "concave-mirror",
+          "name": "오목거울",
+          "desc": "초점과 실상"
+        },
+        {
+          "id": "convex-mirror",
+          "name": "볼록거울",
+          "desc": "확대된 시야와 허상"
+        },
+        {
+          "id": "mirror-equation",
+          "name": "거울 공식",
+          "desc": "물체 거리·상 거리·초점 거리"
+        },
+        {
+          "id": "snells-law",
+          "name": "굴절 법칙",
+          "desc": "매질에 따른 경로 꺾임"
+        },
+        {
+          "id": "index-of-refraction",
+          "name": "굴절률",
+          "desc": "매질 속 빛의 속도"
+        },
+        {
+          "id": "apparent-depth",
+          "name": "겉보기 깊이",
+          "desc": "물속 물체가 떠 보이는 이유"
+        },
+        {
+          "id": "total-internal-reflection",
+          "name": "전반사",
+          "desc": "임계각과 그 조건"
+        },
+        {
+          "id": "optical-fiber",
+          "name": "광섬유",
+          "desc": "전반사로 가두는 빛"
+        },
+        {
+          "id": "mirage",
+          "name": "신기루",
+          "desc": "밀도 기울기가 휘게 하는 빛"
+        },
+        {
+          "id": "dispersion",
+          "name": "분산",
+          "desc": "파장에 따른 굴절률 차이"
+        },
+        {
+          "id": "prism",
+          "name": "프리즘",
+          "desc": "분산으로 나뉘는 스펙트럼"
+        },
+        {
+          "id": "rainbow",
+          "name": "무지개",
+          "desc": "물방울 속 굴절과 반사"
+        },
+        {
+          "id": "thin-lens",
+          "name": "얇은 렌즈",
+          "desc": "초점과 결상",
+          "simId": "aperi21:ray-tracing"
+        },
+        {
+          "id": "converging-diverging-lens",
+          "name": "볼록 렌즈와 오목 렌즈",
+          "desc": "모으는 렌즈와 퍼뜨리는 렌즈"
+        },
+        {
+          "id": "lens-equation",
+          "name": "렌즈 공식",
+          "desc": "물체·상·초점 거리의 관계"
+        },
+        {
+          "id": "magnification",
+          "name": "배율",
+          "desc": "상의 크기와 물체의 크기"
+        },
+        {
+          "id": "real-vs-virtual-image",
+          "name": "실상과 허상",
+          "desc": "빛이 실제로 모이는가"
+        },
+        {
+          "id": "lens-maker-equation",
+          "name": "렌즈 제작자 공식",
+          "desc": "곡률과 굴절률이 정하는 초점"
+        },
+        {
+          "id": "lens-combination",
+          "name": "렌즈의 조합",
+          "desc": "두 렌즈가 만드는 합성 초점"
+        },
+        {
+          "id": "spherical-aberration",
+          "name": "구면 수차",
+          "desc": "가장자리 광선이 다른 곳에 모임"
+        },
+        {
+          "id": "chromatic-aberration",
+          "name": "색수차",
+          "desc": "파장마다 다른 초점"
+        },
+        {
+          "id": "human-eye-accommodation",
+          "name": "눈의 조절",
+          "desc": "수정체가 초점을 맞추는 방식"
+        },
+        {
+          "id": "myopia-hyperopia",
+          "name": "근시와 원시",
+          "desc": "상이 맺히는 위치와 교정"
+        },
+        {
+          "id": "magnifying-glass",
+          "name": "돋보기",
+          "desc": "가까운 초점 안의 물체"
+        },
+        {
+          "id": "microscope",
+          "name": "현미경",
+          "desc": "대물과 접안의 배율 곱"
+        },
+        {
+          "id": "telescope",
+          "name": "망원경",
+          "desc": "초점 거리 비가 정하는 배율"
+        },
+        {
+          "id": "youngs-double-slit",
+          "name": "이중 슬릿 간섭",
+          "desc": "빛의 파동성 증거"
+        },
+        {
+          "id": "single-slit-diffraction",
+          "name": "단일 슬릿 회절",
+          "desc": "폭이 만드는 무늬"
+        },
+        {
+          "id": "diffraction-grating",
+          "name": "회절 격자",
+          "desc": "여러 슬릿이 만드는 날카로운 극대"
+        },
+        {
+          "id": "thin-film-interference",
+          "name": "박막 간섭",
+          "desc": "두께가 만드는 색"
+        },
+        {
+          "id": "newtons-rings",
+          "name": "뉴턴 링",
+          "desc": "곡면과 평면 사이의 간섭"
+        },
+        {
+          "id": "resolving-power",
+          "name": "분해능",
+          "desc": "두 점을 가르는 한계"
+        },
+        {
+          "id": "polarization",
+          "name": "편광",
+          "desc": "진동면의 선택"
+        },
+        {
+          "id": "malus-law",
+          "name": "말뤼스 법칙",
+          "desc": "편광판을 지난 세기"
+        },
+        {
+          "id": "brewster-angle",
+          "name": "브루스터 각",
+          "desc": "반사광이 완전 편광되는 각"
+        },
+        {
+          "id": "birefringence",
+          "name": "복굴절",
+          "desc": "방향에 따라 다른 굴절률"
+        },
+        {
+          "id": "scattering",
+          "name": "산란",
+          "desc": "하늘과 노을의 색"
+        },
+        {
+          "id": "rayleigh-scattering",
+          "name": "레일리 산란",
+          "desc": "파장 4제곱에 반비례하는 산란"
+        }
+      ]
     },
-
     {
-      "id": "interference",
-      "label": "간섭·회절",
-      "category": "waves",
-      "operation": "슬릿 간격·폭·수 조정, 파장 조정",
-      "timeModel": "steady_state",
-      "parameters": [
-        { "id": "d",       "label": "슬릿 간격", "unit": "μm" },
-        { "id": "a",       "label": "슬릿 폭",   "unit": "μm" },
-        { "id": "lambda",  "label": "파장",     "unit": "nm" },
-        { "id": "n_slits", "label": "슬릿 수",  "unit": "-" }
-      ],
-      "stages": [],
-      "environments": [],
-      "phenomena": ["이중슬릿", "단일슬릿 회절", "회절 격자", "다중 파원 간섭"],
-      "embedEstimate": { "min": 8, "max": 12 }
+      "id": "electromagnetism",
+      "name": "전자기",
+      "topics": [
+        {
+          "id": "electric-charge",
+          "name": "전하",
+          "desc": "두 종류의 전하와 보존"
+        },
+        {
+          "id": "charging-methods",
+          "name": "대전 방법",
+          "desc": "마찰·접촉·유도"
+        },
+        {
+          "id": "conductor-vs-insulator",
+          "name": "도체와 부도체",
+          "desc": "전하가 움직일 수 있는가"
+        },
+        {
+          "id": "coulombs-law",
+          "name": "쿨롱 법칙",
+          "desc": "전하 사이의 힘"
+        },
+        {
+          "id": "superposition-of-forces",
+          "name": "전기력의 중첩",
+          "desc": "여러 전하가 주는 힘의 합"
+        },
+        {
+          "id": "electric-field",
+          "name": "전기장",
+          "desc": "단위 전하가 받는 힘"
+        },
+        {
+          "id": "field-lines",
+          "name": "전기력선",
+          "desc": "장을 그리는 규약과 그 뜻"
+        },
+        {
+          "id": "field-of-dipole",
+          "name": "쌍극자의 전기장",
+          "desc": "가까운 두 반대 전하"
+        },
+        {
+          "id": "uniform-field",
+          "name": "균일한 전기장",
+          "desc": "평행판 사이의 장"
+        },
+        {
+          "id": "charge-in-uniform-field",
+          "name": "균일장 속 전하",
+          "desc": "포물선 운동과의 대응"
+        },
+        {
+          "id": "gausss-law",
+          "name": "가우스 법칙",
+          "desc": "닫힌 면을 지나는 전기력선속"
+        },
+        {
+          "id": "field-of-charged-sphere",
+          "name": "대전된 구의 전기장",
+          "desc": "안과 밖이 다른 이유"
+        },
+        {
+          "id": "electric-potential",
+          "name": "전위",
+          "desc": "단위 전하당 퍼텐셜 에너지"
+        },
+        {
+          "id": "potential-difference",
+          "name": "전위차",
+          "desc": "두 점 사이의 전위 차이"
+        },
+        {
+          "id": "equipotential-surface",
+          "name": "등전위면",
+          "desc": "전기장과 수직인 면"
+        },
+        {
+          "id": "potential-vs-field",
+          "name": "전위와 전기장",
+          "desc": "기울기 관계"
+        },
+        {
+          "id": "electrostatic-shielding",
+          "name": "정전기 차폐",
+          "desc": "도체 내부의 장이 0인 이유"
+        },
+        {
+          "id": "charge-on-conductor-surface",
+          "name": "도체 표면의 전하",
+          "desc": "뾰족한 곳에 몰리는 전하"
+        },
+        {
+          "id": "dielectric",
+          "name": "유전체",
+          "desc": "분극과 전기장의 약화"
+        },
+        {
+          "id": "capacitance",
+          "name": "전기 용량",
+          "desc": "전하를 저장하는 능력"
+        },
+        {
+          "id": "parallel-plate-capacitor",
+          "name": "평행판 축전기",
+          "desc": "넓이·간격이 정하는 용량"
+        },
+        {
+          "id": "capacitors-in-circuit",
+          "name": "축전기의 연결",
+          "desc": "직렬과 병렬의 합성"
+        },
+        {
+          "id": "energy-in-capacitor",
+          "name": "축전기의 에너지",
+          "desc": "전기장에 저장된 에너지"
+        },
+        {
+          "id": "electric-current",
+          "name": "전류",
+          "desc": "전하의 흐름과 방향 규약"
+        },
+        {
+          "id": "drift-velocity",
+          "name": "표류 속도",
+          "desc": "느린 전자와 빠른 신호"
+        },
+        {
+          "id": "ohms-law",
+          "name": "옴 법칙",
+          "desc": "전압·전류·저항"
+        },
+        {
+          "id": "resistivity",
+          "name": "비저항",
+          "desc": "재료가 정하는 저항"
+        },
+        {
+          "id": "resistance-and-geometry",
+          "name": "저항과 형태",
+          "desc": "길이와 단면적의 영향"
+        },
+        {
+          "id": "temperature-and-resistance",
+          "name": "온도와 저항",
+          "desc": "금속과 반도체의 반대 경향"
+        },
+        {
+          "id": "series-parallel-resistors",
+          "name": "저항의 직렬과 병렬",
+          "desc": "연결 방식에 따른 합성",
+          "simId": "aperi21:dc-circuit"
+        },
+        {
+          "id": "emf-and-internal-resistance",
+          "name": "기전력과 내부 저항",
+          "desc": "단자 전압이 낮아지는 이유"
+        },
+        {
+          "id": "kirchhoffs-current-law",
+          "name": "키르히호프 전류 법칙",
+          "desc": "마디에서의 전하 보존"
+        },
+        {
+          "id": "kirchhoffs-voltage-law",
+          "name": "키르히호프 전압 법칙",
+          "desc": "고리에서의 에너지 보존"
+        },
+        {
+          "id": "wheatstone-bridge",
+          "name": "휘트스톤 브리지",
+          "desc": "평형으로 재는 저항"
+        },
+        {
+          "id": "electric-power",
+          "name": "전력",
+          "desc": "소비되는 에너지의 비율"
+        },
+        {
+          "id": "joule-heating",
+          "name": "줄 열",
+          "desc": "저항이 만드는 열"
+        },
+        {
+          "id": "rc-circuit",
+          "name": "RC 회로",
+          "desc": "충전과 방전의 시간 상수"
+        },
+        {
+          "id": "magnetic-field",
+          "name": "자기장",
+          "desc": "자기력의 분포"
+        },
+        {
+          "id": "magnetic-field-lines",
+          "name": "자기력선",
+          "desc": "끊기지 않고 닫히는 선"
+        },
+        {
+          "id": "lorentz-force",
+          "name": "로런츠 힘",
+          "desc": "자기장 속 전하가 받는 힘"
+        },
+        {
+          "id": "charged-particle-in-magnetic-field",
+          "name": "자기장 속 전하의 원운동",
+          "desc": "속도에 수직인 힘"
+        },
+        {
+          "id": "velocity-selector",
+          "name": "속도 선택기",
+          "desc": "전기력과 자기력의 균형"
+        },
+        {
+          "id": "mass-spectrometer",
+          "name": "질량 분석기",
+          "desc": "반지름으로 가르는 질량"
+        },
+        {
+          "id": "force-on-current-wire",
+          "name": "전류가 받는 힘",
+          "desc": "도선에 작용하는 자기력"
+        },
+        {
+          "id": "biot-savart-law",
+          "name": "비오-사바르 법칙",
+          "desc": "전류 요소가 만드는 자기장"
+        },
+        {
+          "id": "field-of-straight-wire",
+          "name": "직선 전류의 자기장",
+          "desc": "거리에 반비례하는 세기"
+        },
+        {
+          "id": "field-of-loop-and-solenoid",
+          "name": "고리와 솔레노이드",
+          "desc": "축 위의 자기장"
+        },
+        {
+          "id": "amperes-law",
+          "name": "앙페르 법칙",
+          "desc": "전류와 자기장의 순환"
+        },
+        {
+          "id": "force-between-wires",
+          "name": "도선 사이의 힘",
+          "desc": "나란한 두 전류의 인력·척력"
+        },
+        {
+          "id": "magnetic-dipole",
+          "name": "자기 쌍극자",
+          "desc": "고리 전류와 자석의 동일성"
+        },
+        {
+          "id": "magnetic-materials",
+          "name": "자성체",
+          "desc": "강자성·상자성·반자성"
+        },
+        {
+          "id": "magnetic-flux",
+          "name": "자기 선속",
+          "desc": "면을 지나는 자기장의 양"
+        },
+        {
+          "id": "faradays-law",
+          "name": "패러데이 법칙",
+          "desc": "자속 변화가 만드는 기전력"
+        },
+        {
+          "id": "lenzs-law",
+          "name": "렌츠 법칙",
+          "desc": "변화를 방해하는 유도 전류"
+        },
+        {
+          "id": "motional-emf",
+          "name": "운동 기전력",
+          "desc": "도선이 움직여 생기는 전압"
+        },
+        {
+          "id": "eddy-current",
+          "name": "맴돌이 전류",
+          "desc": "덩어리 도체 속의 유도 전류"
+        },
+        {
+          "id": "self-inductance",
+          "name": "자체 인덕턴스",
+          "desc": "자기 자신의 자속 변화"
+        },
+        {
+          "id": "mutual-inductance",
+          "name": "상호 인덕턴스",
+          "desc": "이웃 회로에 유도되는 기전력"
+        },
+        {
+          "id": "energy-in-inductor",
+          "name": "인덕터의 에너지",
+          "desc": "자기장에 저장된 에너지"
+        },
+        {
+          "id": "rl-circuit",
+          "name": "RL 회로",
+          "desc": "전류가 서서히 오르는 이유"
+        },
+        {
+          "id": "lc-oscillation",
+          "name": "LC 진동",
+          "desc": "전기와 자기 에너지의 교환"
+        },
+        {
+          "id": "ac-generation",
+          "name": "교류의 발생",
+          "desc": "회전하는 코일과 사인파"
+        },
+        {
+          "id": "rms-value",
+          "name": "실효값",
+          "desc": "교류를 직류와 견주는 값"
+        },
+        {
+          "id": "reactance-and-impedance",
+          "name": "리액턴스와 임피던스",
+          "desc": "주파수에 의존하는 저항"
+        },
+        {
+          "id": "phase-in-ac-circuit",
+          "name": "교류의 위상차",
+          "desc": "전압과 전류가 어긋나는 것"
+        },
+        {
+          "id": "series-rlc-resonance",
+          "name": "RLC 공진",
+          "desc": "임피던스가 최소가 되는 주파수"
+        },
+        {
+          "id": "transformer",
+          "name": "변압기",
+          "desc": "감은 수와 전압비"
+        },
+        {
+          "id": "motor",
+          "name": "전동기",
+          "desc": "전류가 받는 힘으로 도는 것"
+        },
+        {
+          "id": "generator",
+          "name": "발전기",
+          "desc": "회전이 만드는 기전력"
+        },
+        {
+          "id": "displacement-current",
+          "name": "변위 전류",
+          "desc": "축전기 사이를 잇는 항"
+        },
+        {
+          "id": "maxwells-equations",
+          "name": "맥스웰 방정식",
+          "desc": "전자기를 묶는 네 식"
+        },
+        {
+          "id": "electromagnetic-wave",
+          "name": "전자기파",
+          "desc": "전기장과 자기장의 자기 전파"
+        },
+        {
+          "id": "speed-of-light-from-constants",
+          "name": "상수에서 나온 광속",
+          "desc": "유전율과 투자율의 조합"
+        },
+        {
+          "id": "electromagnetic-spectrum",
+          "name": "전자기 스펙트럼",
+          "desc": "파장에 따른 분류"
+        },
+        {
+          "id": "poynting-vector",
+          "name": "포인팅 벡터",
+          "desc": "전자기파가 나르는 에너지 흐름"
+        },
+        {
+          "id": "radiation-pressure",
+          "name": "복사압",
+          "desc": "빛이 미는 힘"
+        },
+        {
+          "id": "antenna-radiation",
+          "name": "안테나의 복사",
+          "desc": "가속하는 전하가 내는 파동"
+        }
+      ]
     },
-
     {
-      "id": "fourier_synthesis",
-      "label": "푸리에 합성",
-      "category": "waves",
-      "operation": "고조파 성분의 진폭·위상을 슬라이더로 조합",
-      "timeModel": "periodic",
-      "parameters": [
-        { "id": "harmonics", "label": "고조파 진폭·위상", "unit": "-" },
-        { "id": "f0",        "label": "기본 주파수",       "unit": "Hz" }
-      ],
-      "stages": [
-        { "id": "square",   "label": "구형파 목표" },
-        { "id": "triangle", "label": "삼각파 목표" },
-        { "id": "sawtooth", "label": "톱니파 목표" },
-        { "id": "free",     "label": "자유 합성" }
-      ],
-      "environments": [],
-      "phenomena": ["구형파 합성", "삼각파 합성", "톱니파 합성", "악기 배음 구조"],
-      "embedEstimate": { "min": 6, "max": 10 }
-    },
-
-    {
-      "id": "ray_tracing",
-      "label": "광선 추적",
-      "category": "optics",
-      "operation": "광원/물체 위치 드래그, 매질·렌즈·거울 배치",
-      "timeModel": "static",
-      "parameters": [
-        { "id": "object_pos","label": "물체 위치", "unit": "m" },
-        { "id": "n",         "label": "굴절률",   "unit": "-" },
-        { "id": "R",         "label": "곡률반경", "unit": "m" },
-        { "id": "f",         "label": "초점거리", "unit": "m" }
-      ],
-      "stages": [
-        { "id": "flat_mirror",    "label": "평면 거울" },
-        { "id": "concave_mirror", "label": "오목 거울" },
-        { "id": "convex_mirror",  "label": "볼록 거울" },
-        { "id": "convex_lens",    "label": "볼록 렌즈" },
-        { "id": "concave_lens",   "label": "오목 렌즈" },
-        { "id": "prism",          "label": "프리즘" }
-      ],
-      "environments": [
-        { "id": "water",  "label": "물 속",   "desc": "n=1.33" },
-        { "id": "glass",  "label": "유리 속", "desc": "n=1.5" }
-      ],
-      "phenomena": ["반사", "굴절", "전반사", "거울 결상", "렌즈 결상", "프리즘 분산"],
-      "embedEstimate": { "min": 20, "max": 30 },
-      "notes": "시간 축이 없는 유일한 구조 — 2D 에디터에 가까움. 다른 묶음과 조작 패러다임이 가장 다름."
-    },
-
-    {
-      "id": "polarization",
-      "label": "편광",
-      "category": "optics",
-      "operation": "편광자 회전, 입사광 편광 상태 설정",
-      "timeModel": "continuous",
-      "parameters": [
-        { "id": "angle",    "label": "편광자 각도",    "unit": "°" },
-        { "id": "pol_type", "label": "입사광 편광 상태","unit": "-" }
-      ],
-      "stages": [],
-      "environments": [],
-      "phenomena": ["선형 편광", "원편광", "말러스 법칙", "편광자 직렬"],
-      "embedEstimate": { "min": 5, "max": 8 }
-    },
-
-    {
-      "id": "ideal_gas",
-      "label": "기체 상태",
-      "category": "thermodynamics",
-      "operation": "부피·온도·압력 중 두 개 조작, 나머지 파생",
-      "timeModel": "quasistatic",
-      "parameters": [
-        { "id": "P", "label": "압력", "unit": "Pa" },
-        { "id": "V", "label": "부피", "unit": "L" },
-        { "id": "T", "label": "온도", "unit": "K" },
-        { "id": "n", "label": "몰 수", "unit": "mol" }
-      ],
-      "stages": [
-        { "id": "isothermal", "label": "등온 과정" },
-        { "id": "adiabatic",  "label": "단열 과정" },
-        { "id": "isobaric",   "label": "등압 과정" },
-        { "id": "isochoric",  "label": "등적 과정" }
-      ],
-      "environments": [],
-      "phenomena": ["보일 법칙", "샤를 법칙", "게이뤼삭 법칙", "이상기체 방정식", "등온 과정", "단열 과정"],
-      "embedEstimate": { "min": 10, "max": 15 }
-    },
-
-    {
-      "id": "kinetic_theory",
-      "label": "분자 운동론",
-      "category": "thermodynamics",
-      "operation": "분자 수·온도 설정, 부피 변화",
-      "timeModel": "statistical",
-      "parameters": [
-        { "id": "N", "label": "분자 수",   "unit": "-" },
-        { "id": "T", "label": "온도",     "unit": "K" },
-        { "id": "V", "label": "부피",     "unit": "L" }
-      ],
-      "stages": [],
-      "environments": [],
-      "phenomena": ["속도 분포", "온도-운동에너지", "브라운 운동", "확산"],
-      "embedEstimate": { "min": 8, "max": 12 },
-      "notes": "다체 시뮬레이션 — 프로토콜 확장 가능성 영역."
-    },
-
-    {
-      "id": "heat_transfer",
-      "label": "열전달",
-      "category": "thermodynamics",
-      "operation": "온도·재질·경계 조건 설정",
-      "timeModel": "continuous",
-      "parameters": [
-        { "id": "T_hot",   "label": "고온",       "unit": "°C" },
-        { "id": "T_cold",  "label": "저온",       "unit": "°C" },
-        { "id": "k",       "label": "열전도도",   "unit": "W/m·K" },
-        { "id": "L",       "label": "두께",       "unit": "m" }
-      ],
-      "stages": [
-        { "id": "conduction", "label": "전도" },
-        { "id": "convection", "label": "대류" },
-        { "id": "radiation",  "label": "복사" }
-      ],
-      "environments": [
-        { "id": "insulation", "label": "단열재" }
-      ],
-      "phenomena": ["열전도", "대류", "복사", "열평형 도달", "단열"],
-      "embedEstimate": { "min": 8, "max": 12 },
-      "notes": "격자 기반 연속체 시뮬레이션 — 프로토콜 확장 가능성 영역."
-    },
-
-    {
-      "id": "heat_engine",
-      "label": "열기관",
-      "category": "thermodynamics",
-      "operation": "사이클 단계별 설정",
-      "timeModel": "periodic",
-      "parameters": [
-        { "id": "T_hot",  "label": "고온원 온도", "unit": "K" },
-        { "id": "T_cold", "label": "저온원 온도", "unit": "K" }
-      ],
-      "stages": [
-        { "id": "carnot", "label": "카르노 사이클" },
-        { "id": "otto",   "label": "오토 사이클" },
-        { "id": "diesel", "label": "디젤 사이클" }
-      ],
-      "environments": [],
-      "phenomena": ["카르노 사이클", "오토 사이클", "디젤 사이클", "효율 계산", "엔트로피 변화"],
-      "embedEstimate": { "min": 6, "max": 10 }
-    },
-
-    {
-      "id": "electric_field",
-      "label": "전기장",
-      "category": "electromagnetism",
-      "operation": "전하 배치 (드래그), 크기·부호 설정",
-      "timeModel": "static",
-      "parameters": [
-        { "id": "charges", "label": "전하 배열", "unit": "C" }
-      ],
-      "stages": [
-        { "id": "vacuum",     "label": "진공" },
-        { "id": "dielectric", "label": "유전체 속" }
-      ],
-      "environments": [],
-      "phenomena": ["점전하 장", "쌍극자", "전기장선", "전위", "등전위면"],
-      "embedEstimate": { "min": 15, "max": 20 },
-      "notes": "장 시각화 — 프로토콜 확장 가능성 영역."
-    },
-
-    {
-      "id": "dc_circuit",
-      "label": "DC 회로",
-      "category": "electromagnetism",
-      "operation": "소자(저항·전지·축전기)를 배치·연결·값 조정",
-      "timeModel": "steady_state",
-      "parameters": [
-        { "id": "R", "label": "저항",     "unit": "Ω" },
-        { "id": "V", "label": "전압",     "unit": "V" },
-        { "id": "C", "label": "축전용량", "unit": "F" }
-      ],
-      "stages": [
-        { "id": "series",   "label": "직렬" },
-        { "id": "parallel", "label": "병렬" },
-        { "id": "mixed",    "label": "혼합" }
-      ],
-      "environments": [
-        { "id": "temperature", "label": "온도 변화", "desc": "저항의 온도 의존성" }
-      ],
-      "phenomena": ["옴의 법칙", "직렬·병렬", "키르히호프 법칙", "RC 충전·방전", "전력·줄열"],
-      "embedEstimate": { "min": 20, "max": 30 }
-    },
-
-    {
-      "id": "ac_circuit",
-      "label": "AC 회로",
-      "category": "electromagnetism",
-      "operation": "주파수·진폭·소자 값 조정",
-      "timeModel": "periodic",
-      "parameters": [
-        { "id": "f", "label": "주파수",   "unit": "Hz" },
-        { "id": "V", "label": "진폭",     "unit": "V" },
-        { "id": "R", "label": "저항",     "unit": "Ω" },
-        { "id": "L", "label": "인덕턴스", "unit": "H" },
-        { "id": "C", "label": "축전용량", "unit": "F" }
-      ],
-      "stages": [
-        { "id": "rl",  "label": "RL 회로" },
-        { "id": "rc",  "label": "RC 회로" },
-        { "id": "rlc", "label": "RLC 회로" }
-      ],
-      "environments": [],
-      "phenomena": ["임피던스", "위상차", "공명", "페이저", "변압기"],
-      "embedEstimate": { "min": 10, "max": 15 }
-    },
-
-    {
-      "id": "magnetic_field",
-      "label": "자기장",
-      "category": "electromagnetism",
-      "operation": "전류 배치·방향·크기, 자석 배치",
-      "timeModel": "static",
-      "parameters": [
-        { "id": "I", "label": "전류",     "unit": "A" },
-        { "id": "N", "label": "권수",     "unit": "-" },
-        { "id": "B", "label": "자기장 세기", "unit": "T" }
-      ],
-      "stages": [
-        { "id": "straight_wire", "label": "직선 전류" },
-        { "id": "circular_loop", "label": "원형 고리" },
-        { "id": "solenoid",      "label": "솔레노이드" },
-        { "id": "bar_magnet",    "label": "막대자석" }
-      ],
-      "environments": [],
-      "phenomena": ["직선 전류 자기장", "원형 전류", "솔레노이드", "자기장선"],
-      "embedEstimate": { "min": 10, "max": 15 },
-      "notes": "장 시각화 — 프로토콜 확장 가능성 영역."
-    },
-
-    {
-      "id": "em_induction",
-      "label": "전자기 유도",
-      "category": "electromagnetism",
-      "operation": "자석 또는 코일 이동, 자기장 변화",
-      "timeModel": "continuous",
-      "parameters": [
-        { "id": "B",     "label": "자기장",    "unit": "T" },
-        { "id": "v",     "label": "이동 속도", "unit": "m/s" },
-        { "id": "N",     "label": "코일 권수", "unit": "-" },
-        { "id": "A",     "label": "코일 면적", "unit": "m²" }
-      ],
-      "stages": [
-        { "id": "moving_magnet",    "label": "자석 이동" },
-        { "id": "moving_coil",      "label": "코일 이동" },
-        { "id": "changing_current", "label": "전류 변화" }
-      ],
-      "environments": [],
-      "phenomena": ["패러데이 법칙", "렌츠 법칙", "발전기", "유도 전류", "상호 유도"],
-      "embedEstimate": { "min": 10, "max": 15 }
-    },
-
-    {
-      "id": "charged_particle",
-      "label": "하전 입자 운동",
-      "category": "electromagnetism",
-      "operation": "입자 초기 속도 설정 + 외부 장(E, B) 설정",
-      "timeModel": "continuous",
-      "parameters": [
-        { "id": "q",  "label": "전하",       "unit": "C" },
-        { "id": "m",  "label": "질량",       "unit": "kg" },
-        { "id": "v0", "label": "초기 속도",  "unit": "m/s" },
-        { "id": "E",  "label": "전기장",     "unit": "V/m" },
-        { "id": "B",  "label": "자기장",     "unit": "T" }
-      ],
-      "stages": [
-        { "id": "E_only",  "label": "전기장만" },
-        { "id": "B_only",  "label": "자기장만" },
-        { "id": "crossed", "label": "E × B 직교" }
-      ],
-      "environments": [],
-      "phenomena": ["로런츠 힘", "사이클로트론", "질량 분석기", "속도 선택기"],
-      "embedEstimate": { "min": 6, "max": 10 }
-    },
-
-    {
-      "id": "hydrostatics",
-      "label": "정수역학",
-      "category": "fluids",
-      "operation": "물체 배치, 밀도·부피 조정",
-      "timeModel": "static",
-      "parameters": [
-        { "id": "rho_obj",    "label": "물체 밀도",  "unit": "kg/m³" },
-        { "id": "rho_fluid",  "label": "유체 밀도",  "unit": "kg/m³" },
-        { "id": "V",          "label": "부피",       "unit": "m³" },
-        { "id": "depth",      "label": "깊이",       "unit": "m" }
-      ],
-      "stages": [
-        { "id": "water",   "label": "물" },
-        { "id": "oil",     "label": "기름" },
-        { "id": "mercury", "label": "수은" }
-      ],
-      "environments": [],
-      "phenomena": ["부력", "아르키메데스", "파스칼 원리", "수압"],
-      "embedEstimate": { "min": 6, "max": 10 }
-    },
-
-    {
-      "id": "fluid_flow",
-      "label": "유체 흐름",
-      "category": "fluids",
-      "operation": "단면적·속도 설정, 경로 배치",
-      "timeModel": "steady_state",
-      "parameters": [
-        { "id": "A",  "label": "단면적", "unit": "m²" },
-        { "id": "v",  "label": "속도",   "unit": "m/s" },
-        { "id": "P",  "label": "압력",   "unit": "Pa" },
-        { "id": "rho","label": "밀도",   "unit": "kg/m³" }
-      ],
-      "stages": [],
-      "environments": [],
-      "phenomena": ["연속 방정식", "베르누이 원리", "벤츄리 효과", "관 속 흐름"],
-      "embedEstimate": { "min": 5, "max": 8 }
-    },
-
-    {
-      "id": "atomic_spectrum",
-      "label": "원자 스펙트럼",
-      "category": "modern",
-      "operation": "에너지 준위 간 전이 선택",
-      "timeModel": "discrete",
-      "parameters": [
-        { "id": "n_from", "label": "시작 준위", "unit": "-" },
-        { "id": "n_to",   "label": "도착 준위", "unit": "-" }
-      ],
-      "stages": [
-        { "id": "hydrogen",  "label": "수소" },
-        { "id": "helium",    "label": "헬륨" },
-        { "id": "sodium",    "label": "나트륨" }
-      ],
-      "environments": [],
-      "phenomena": ["보어 모형", "수소 스펙트럼", "라이먼 계열", "발머 계열", "파셴 계열", "흡수·방출"],
-      "embedEstimate": { "min": 5, "max": 8 }
-    },
-
-    {
-      "id": "radioactive_decay",
-      "label": "방사성 붕괴",
-      "category": "modern",
-      "operation": "초기 원자 수, 반감기 설정",
-      "timeModel": "statistical",
-      "parameters": [
-        { "id": "N0",         "label": "초기 수",   "unit": "-" },
-        { "id": "half_life",  "label": "반감기",    "unit": "s | y" }
-      ],
-      "stages": [],
-      "environments": [],
-      "phenomena": ["지수적 감소", "반감기 그래프", "붕괴 계열", "탄소 연대 측정"],
-      "embedEstimate": { "min": 4, "max": 6 }
-    },
-
-    {
-      "id": "photoelectric",
-      "label": "광전효과",
-      "category": "modern",
-      "operation": "빛의 파장·강도, 금속 선택",
-      "timeModel": "discrete",
-      "parameters": [
-        { "id": "lambda",    "label": "파장",   "unit": "nm" },
-        { "id": "intensity", "label": "강도",   "unit": "W/m²" },
-        { "id": "W",         "label": "일함수", "unit": "eV" }
-      ],
-      "stages": [
-        { "id": "cesium",   "label": "세슘" },
-        { "id": "sodium",   "label": "나트륨" },
-        { "id": "tungsten", "label": "텅스텐" }
-      ],
-      "environments": [],
-      "phenomena": ["광전효과", "컴프턴 산란", "광자 개념", "문턱 진동수"],
-      "embedEstimate": { "min": 4, "max": 6 }
-    },
-
-    {
-      "id": "wave_particle_duality",
-      "label": "파동-입자 이중성",
-      "category": "modern",
-      "operation": "입자 에너지 설정, 슬릿 배치, 누적 관찰",
-      "timeModel": "statistical",
-      "parameters": [
-        { "id": "E",      "label": "입자 에너지", "unit": "eV" },
-        { "id": "d",      "label": "슬릿 간격",   "unit": "nm" },
-        { "id": "n_hits", "label": "누적 입자 수","unit": "-" }
-      ],
-      "stages": [
-        { "id": "electron", "label": "전자" },
-        { "id": "photon",   "label": "광자" }
-      ],
-      "environments": [],
-      "phenomena": ["물질파", "드브로이 파장", "이중슬릿 입자 버전", "확률 분포"],
-      "embedEstimate": { "min": 3, "max": 5 }
+      "id": "modern-physics",
+      "name": "현대물리",
+      "topics": [
+        {
+          "id": "michelson-morley",
+          "name": "마이컬슨-몰리 실험",
+          "desc": "에테르가 없다는 증거"
+        },
+        {
+          "id": "special-relativity-postulates",
+          "name": "특수 상대성 가정",
+          "desc": "광속 불변과 상대성 원리"
+        },
+        {
+          "id": "relativity-of-simultaneity",
+          "name": "동시성의 상대성",
+          "desc": "기준틀마다 다른 '동시'"
+        },
+        {
+          "id": "time-dilation",
+          "name": "시간 지연",
+          "desc": "운동하는 시계가 느려짐"
+        },
+        {
+          "id": "light-clock",
+          "name": "빛 시계",
+          "desc": "시간 지연을 유도하는 사고 실험"
+        },
+        {
+          "id": "length-contraction",
+          "name": "길이 수축",
+          "desc": "운동 방향으로의 수축"
+        },
+        {
+          "id": "muon-decay-evidence",
+          "name": "뮤온의 도달",
+          "desc": "시간 지연의 관측 증거"
+        },
+        {
+          "id": "lorentz-transformation",
+          "name": "로런츠 변환",
+          "desc": "좌표 사이의 변환식"
+        },
+        {
+          "id": "relativistic-velocity-addition",
+          "name": "속도의 상대론적 덧셈",
+          "desc": "광속을 넘지 못하는 합성"
+        },
+        {
+          "id": "twin-paradox",
+          "name": "쌍둥이 역설",
+          "desc": "비대칭을 만드는 가속"
+        },
+        {
+          "id": "spacetime-diagram",
+          "name": "시공간 도표",
+          "desc": "세계선과 동시선"
+        },
+        {
+          "id": "light-cone",
+          "name": "광원뿔",
+          "desc": "인과가 닿는 영역"
+        },
+        {
+          "id": "invariant-interval",
+          "name": "불변 간격",
+          "desc": "모든 기준틀에서 같은 양"
+        },
+        {
+          "id": "relativistic-momentum",
+          "name": "상대론적 운동량",
+          "desc": "속도가 커질 때의 발산"
+        },
+        {
+          "id": "mass-energy-equivalence",
+          "name": "질량-에너지 등가",
+          "desc": "E=mc² 의 뜻"
+        },
+        {
+          "id": "rest-energy",
+          "name": "정지 에너지",
+          "desc": "정지한 물체가 가진 에너지"
+        },
+        {
+          "id": "relativistic-doppler",
+          "name": "상대론적 도플러",
+          "desc": "시간 지연이 더해진 진동수 변화"
+        },
+        {
+          "id": "equivalence-principle",
+          "name": "등가 원리",
+          "desc": "가속과 중력의 구별 불가"
+        },
+        {
+          "id": "gravitational-time-dilation",
+          "name": "중력 시간 지연",
+          "desc": "퍼텐셜에 따른 시계의 차이"
+        },
+        {
+          "id": "gravitational-redshift",
+          "name": "중력 적색 이동",
+          "desc": "빠져나오며 잃는 에너지"
+        },
+        {
+          "id": "light-bending-by-gravity",
+          "name": "빛의 휨",
+          "desc": "질량 근처에서 휘는 경로"
+        },
+        {
+          "id": "blackbody-radiation",
+          "name": "흑체 복사",
+          "desc": "고전 이론의 파탄"
+        },
+        {
+          "id": "wien-displacement-law",
+          "name": "빈 변위 법칙",
+          "desc": "온도와 최대 파장"
+        },
+        {
+          "id": "plancks-quantum-hypothesis",
+          "name": "플랑크의 양자 가설",
+          "desc": "에너지가 덩어리라는 가정"
+        },
+        {
+          "id": "photoelectric-effect",
+          "name": "광전 효과",
+          "desc": "빛의 입자성 증거"
+        },
+        {
+          "id": "work-function-and-threshold",
+          "name": "일함수와 문턱 진동수",
+          "desc": "세기가 아니라 진동수가 정하는 것"
+        },
+        {
+          "id": "photon-energy-momentum",
+          "name": "광자의 에너지와 운동량",
+          "desc": "질량 없는 입자의 양"
+        },
+        {
+          "id": "compton-scattering",
+          "name": "콤프턴 산란",
+          "desc": "광자가 운동량을 가진다는 증거"
+        },
+        {
+          "id": "pair-production",
+          "name": "쌍생성",
+          "desc": "에너지가 물질이 되는 것"
+        },
+        {
+          "id": "de-broglie-wavelength",
+          "name": "드브로이 파장",
+          "desc": "물질의 파동성"
+        },
+        {
+          "id": "electron-diffraction",
+          "name": "전자 회절",
+          "desc": "물질파의 관측 증거"
+        },
+        {
+          "id": "double-slit-with-electrons",
+          "name": "전자의 이중 슬릿",
+          "desc": "하나씩 보내도 생기는 무늬"
+        },
+        {
+          "id": "wave-particle-duality",
+          "name": "파동-입자 이중성",
+          "desc": "상보적인 두 기술"
+        },
+        {
+          "id": "uncertainty-principle",
+          "name": "불확정성 원리",
+          "desc": "켤레량의 동시 결정 한계"
+        },
+        {
+          "id": "energy-time-uncertainty",
+          "name": "에너지-시간 불확정성",
+          "desc": "수명과 선폭의 관계"
+        },
+        {
+          "id": "wave-function",
+          "name": "파동 함수",
+          "desc": "확률 진폭과 그 해석"
+        },
+        {
+          "id": "born-rule",
+          "name": "보른 규칙",
+          "desc": "제곱이 확률이 되는 규약"
+        },
+        {
+          "id": "superposition-quantum",
+          "name": "양자 중첩",
+          "desc": "여러 상태의 합으로 있는 것"
+        },
+        {
+          "id": "measurement-collapse",
+          "name": "측정과 붕괴",
+          "desc": "관측이 상태를 정하는 것"
+        },
+        {
+          "id": "particle-in-a-box",
+          "name": "무한 우물",
+          "desc": "경계가 만드는 에너지 양자화"
+        },
+        {
+          "id": "finite-well",
+          "name": "유한 우물",
+          "desc": "벽 바깥으로 새는 파동 함수"
+        },
+        {
+          "id": "quantum-tunneling",
+          "name": "터널 효과",
+          "desc": "장벽을 통과하는 확률"
+        },
+        {
+          "id": "scanning-tunneling-microscope",
+          "name": "주사 터널 현미경",
+          "desc": "터널 전류로 그리는 표면"
+        },
+        {
+          "id": "quantum-harmonic-oscillator",
+          "name": "양자 조화 진동자",
+          "desc": "등간격 준위와 영점 에너지"
+        },
+        {
+          "id": "hydrogen-spectrum",
+          "name": "수소 스펙트럼",
+          "desc": "불연속한 선 스펙트럼"
+        },
+        {
+          "id": "bohr-model",
+          "name": "보어 모형",
+          "desc": "궤도의 양자화"
+        },
+        {
+          "id": "atomic-orbital",
+          "name": "원자 궤도",
+          "desc": "확률 분포로서의 전자"
+        },
+        {
+          "id": "quantum-numbers",
+          "name": "양자수",
+          "desc": "상태를 지정하는 네 수"
+        },
+        {
+          "id": "pauli-exclusion",
+          "name": "파울리 배타 원리",
+          "desc": "같은 상태를 못 가짐"
+        },
+        {
+          "id": "electron-configuration",
+          "name": "전자 배치",
+          "desc": "주기율표가 나오는 방식"
+        },
+        {
+          "id": "spin",
+          "name": "스핀",
+          "desc": "고전 대응물이 없는 각운동량"
+        },
+        {
+          "id": "stern-gerlach",
+          "name": "슈테른-게를라흐 실험",
+          "desc": "갈라지는 원자 빔"
+        },
+        {
+          "id": "zeeman-effect",
+          "name": "제이만 효과",
+          "desc": "자기장이 가르는 준위"
+        },
+        {
+          "id": "laser-and-stimulated-emission",
+          "name": "레이저와 유도 방출",
+          "desc": "결이 맞는 빛의 증폭"
+        },
+        {
+          "id": "nuclear-structure",
+          "name": "원자핵의 구성",
+          "desc": "양성자와 중성자"
+        },
+        {
+          "id": "strong-force",
+          "name": "강한 상호작용",
+          "desc": "핵을 묶는 짧은 거리의 힘"
+        },
+        {
+          "id": "nuclear-binding-energy",
+          "name": "핵결합 에너지",
+          "desc": "질량 결손과 안정성"
+        },
+        {
+          "id": "binding-energy-curve",
+          "name": "결합 에너지 곡선",
+          "desc": "철에서 최대가 되는 이유"
+        },
+        {
+          "id": "radioactive-decay",
+          "name": "방사성 붕괴",
+          "desc": "반감기와 지수 감소"
+        },
+        {
+          "id": "decay-types",
+          "name": "붕괴의 종류",
+          "desc": "알파·베타·감마"
+        },
+        {
+          "id": "half-life",
+          "name": "반감기",
+          "desc": "절반이 되는 데 걸리는 시간"
+        },
+        {
+          "id": "radiometric-dating",
+          "name": "방사성 연대 측정",
+          "desc": "남은 비율로 재는 시간"
+        },
+        {
+          "id": "nuclear-fission",
+          "name": "핵분열",
+          "desc": "무거운 핵이 갈라지며 내는 에너지"
+        },
+        {
+          "id": "chain-reaction",
+          "name": "연쇄 반응",
+          "desc": "중성자가 이어가는 분열"
+        },
+        {
+          "id": "nuclear-fusion",
+          "name": "핵융합",
+          "desc": "가벼운 핵이 합쳐지며 내는 에너지"
+        },
+        {
+          "id": "standard-model-overview",
+          "name": "표준 모형",
+          "desc": "기본 입자와 상호작용의 분류"
+        },
+        {
+          "id": "antimatter",
+          "name": "반물질",
+          "desc": "부호가 반대인 짝"
+        },
+        {
+          "id": "neutrino",
+          "name": "중성미자",
+          "desc": "거의 상호작용하지 않는 입자"
+        },
+        {
+          "id": "band-theory",
+          "name": "띠 이론",
+          "desc": "도체·부도체·반도체의 구분"
+        },
+        {
+          "id": "fermi-level",
+          "name": "페르미 준위",
+          "desc": "전자가 채워진 높이"
+        },
+        {
+          "id": "semiconductor-doping",
+          "name": "도핑",
+          "desc": "불순물이 만드는 n형과 p형"
+        },
+        {
+          "id": "pn-junction",
+          "name": "pn 접합",
+          "desc": "공핍층과 정류"
+        },
+        {
+          "id": "diode-and-led",
+          "name": "다이오드와 LED",
+          "desc": "한 방향 전류와 빛의 방출"
+        },
+        {
+          "id": "transistor-principle",
+          "name": "트랜지스터",
+          "desc": "작은 신호가 큰 전류를 제어"
+        },
+        {
+          "id": "photovoltaic-effect",
+          "name": "광전지 효과",
+          "desc": "빛이 만드는 전위차"
+        },
+        {
+          "id": "superconductivity",
+          "name": "초전도",
+          "desc": "저항이 사라지는 상태"
+        },
+        {
+          "id": "meissner-effect",
+          "name": "마이스너 효과",
+          "desc": "자기장을 밀어내는 초전도체"
+        },
+        {
+          "id": "bose-einstein-condensate",
+          "name": "보스-아인슈타인 응축",
+          "desc": "같은 상태로 몰리는 저온의 입자"
+        }
+      ]
     }
   ],
-
   "summary": {
-    "totalBundles": 29,
-    "totalEmbedEstimate": { "min": 299, "max": 440 },
-    "byCategory": {
-      "mechanics":        { "bundles": 7, "embeds": { "min": 98,  "max": 142 } },
-      "waves":            { "bundles": 4, "embeds": { "min": 39,  "max": 57 } },
-      "optics":           { "bundles": 2, "embeds": { "min": 25,  "max": 38 } },
-      "thermodynamics":   { "bundles": 4, "embeds": { "min": 32,  "max": 49 } },
-      "electromagnetism": { "bundles": 6, "embeds": { "min": 71,  "max": 105 } },
-      "fluids":           { "bundles": 2, "embeds": { "min": 11,  "max": 18 } },
-      "modern":           { "bundles": 4, "embeds": { "min": 16,  "max": 25 } }
-    }
-  },
-
-  "openQuestions": [
-    "circular_motion을 oscillation에 병합할지 여부",
-    "dc_circuit와 ac_circuit의 통합 검토",
-    "ray_tracing은 시간 축이 없어 다른 묶음과 조작 패러다임이 가장 이질적 — 별도 프로토콜 필요 여부",
-    "kinetic_theory, heat_transfer, electric_field, magnetic_field는 장/다체 시각화로, 현재 단일물체 엔진으로 커버 가능성 검증 필요"
-  ]
+    "topics": 455,
+    "implemented": 3
+  }
 }
