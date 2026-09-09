@@ -71,6 +71,44 @@ rules/
 - 서브에이전트에 복합 작업을 위임하지 않는다. 작업 단위를 나눠 각각 호출한다.
 - 작업 완료 보고 전에 반드시 `pnpm -r typecheck` + `pnpm test` 를 통과시킨다.
 
+## Baden 보고
+
+이 프로젝트는 Baden 모니터링 하에서 운영된다. **모든 행동을 해당 baden MCP 도구로 보고한다.**
+
+- **Project Name**: `aperi21` (Baden 등록 id `bdn_HBQXRddL`, rules_path 는 이 리포의 `rules/`)
+
+### 필수 호출
+
+1. **사용자 지시 수신** — `baden_start_task` 로 `projectName: "aperi21"` 을 넘겨 `taskId` 를
+   발급받는다. **작업 시작 전에 호출한다.** 이후 모든 `baden_*` 호출에 같은 taskId 를 쓴다.
+2. **계획 수립** — 접근 방식을 정하거나 설계 판단을 내릴 때 `baden_plan`. 코드를 읽거나
+   고치지 않는 사고 과정도 보고 대상이다.
+3. **일반 행동** — 파일 읽기·수정·생성·검색 **실행 전에** `baden_action`.
+   `action` 은 snake_case 동사로 시작한다 (`read_*` · `modify_*` · `create_*` · `search_*`).
+4. **검증** — `pnpm -r typecheck` / `pnpm test` / 빌드 / `pnpm pack` 결과는 `baden_verify`.
+5. **규칙 사건** — rule-guard 가 위반을 찾거나 수정을 적용하면 `baden_rule`
+   (`ruleId` 는 `rules/INDEX.yaml` 의 `id` 를 그대로 — `C1`~`C5`, `S-sim`, `S-host`, `S-render`).
+6. **작업 종료** — `baden_complete_task` 에 결과를 요약해 보고한다.
+
+### 원칙
+
+- **보고 없이 행동하지 않는다.** 읽기·검색·테스트도 보고 후 수행한다.
+- **이유를 구체적으로 쓴다.** 나중에 읽었을 때 맥락이 이해되는 수준으로.
+- **소급 기록하지 않는다.** 이미 지나간 행동을 지금 올리면 발생 시각이 위조된다.
+  보고를 빠뜨렸으면 그 사실을 사용자에게 말하고, 현재 열려 있는 상태만 사실로 보고한다.
+
+### rule-guard 의 보고
+
+서브에이전트는 MCP 도구에 접근할 수 없다(알려진 제약). rule-guard 는 Bash + HTTP 로 보고한다.
+
+```sh
+curl -s -X POST http://localhost:3800/api/events \
+  -H "Content-Type: application/json" \
+  -d '{"projectName":"aperi21","action":"...","reason":"...","taskId":"..."}'
+```
+
+메인 에이전트는 rule-guard 결과를 받아 위반마다 `baden_rule` 호출을 보조한다.
+
 ## Release (npm 배포)
 
 배포 대상은 **두 패키지**이며 **lockstep** 으로 같은 버전을 함께 올린다.

@@ -38,9 +38,23 @@ CLAUDE.md 에 명시했다 (*"ESLint 미도입. strict tsc + rules + rule-guard 
 규칙 체계는 통과 바가 있어야 의미가 생긴다. 지금 CI 는 배포만 한다.
 Phase 0 에서 `typecheck + test` 를 CI 에 넣는다. 규칙 작업의 전제다.
 
-### 결정 3 — Baden 연동은 Phase 6 이후 판단
+### 결정 3 — Baden 연동 (판단 정정)
 
-지침상 "선택" 이고 11K LOC 는 필수 구간이 아니다. Phase 6 까지 끝내고 판단한다.
+처음에는 *"지침상 선택이고 11K LOC 는 필수 구간이 아니다"* 며 Phase 6 이후로 미뤘다.
+**그 판단이 틀렸다.**
+
+Phase 7 을 "나중에 붙이는 연동 작업" 으로 봤는데, 실제로는 **작업하는 동안 실시간으로
+보고하는 것**이라 사후에 붙일 수 있는 성질이 아니다. 미루는 동안의 궤적은 영영 남지
+않는다. 실제로 Phase 0~5(Track A·B) 전 구간이 Baden 에 한 건도 기록되지 않았고,
+그 사이 규칙 8종 신설 · 감사 27항목 · Critical 1건 해소 · 발행 구조 변경이 일어났다.
+
+게다가 프로젝트는 **이미 Baden 에 등록돼 있었다** (`bdn_HBQXRddL`, 2026-09-09 09:18,
+rules_path 가 이 리포의 `rules/`). 등록 시점이 이 세션 시작 무렵이라, 이 작업을
+관측하려고 준비된 상태였다.
+
+정정: **Baden 보고는 선택이 아니라 상시 규약**으로 둔다. CLAUDE.md 「Baden 보고」 절에
+필수 호출 6종과 projectName 을 명문화했다. 소급 기록은 하지 않는다 — 지나간 행동을
+지금 올리면 발생 시각이 위조된다. 대신 **현재 열려 있는 위반만** 사실로 등록했다.
 
 ---
 
@@ -231,6 +245,9 @@ Phase 6: Rule Guard                                       cc1b2be
   [x] CLAUDE.md Rule Guard 지침 + rules 로딩 규약
   [x] compaction 훅 (.claude/settings.json)
 
-Phase 7: Baden (판단 후)
-  [ ] 연동 여부 결정
+Phase 7: Baden 보고
+  [x] 프로젝트 등록 확인 (bdn_HBQXRddL — 이미 등록돼 있었음)
+  [x] CLAUDE.md 「Baden 보고」 절 신설 (필수 호출 6종 · projectName · 소급 금지)
+  [x] 미해소 위반 5건을 baden_rule 로 등록 (High 3 · Medium 2)
+  [ ] rule-guard 의 HTTP 보고 실제 검증 (다음 호출 시)
 ```
