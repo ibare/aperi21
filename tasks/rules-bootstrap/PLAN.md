@@ -219,7 +219,8 @@ Phase 4: 초기 감사                                        93bf0a9
 Phase 5: 리팩토링
   [x] Track A  기계적 — node-view 색·치수                  ffe9952
   [ ] Track A′ 명명 — id 이원화 (위반 5, Medium)   ← 영향 범위 확인 필요
-  [ ] Track B  레지스트리 분리 (위반 1, Critical)   ← 배포 정책 변경, 승인 필요
+  [x] Track B  레지스트리 분리 (위반 1, Critical)          e8de66f
+               + 발행본 d.ts 결함 동시 해소 (0.1.0 부터 있던 것)
   [ ] Track C  선언 승격 (위반 2·3·4, High×3)
   [ ] Track D  렌더 계층 신설 (위반 7, 갈래 B)
   [ ] Track E  발행 게이트 + 회귀 테스트 3종
