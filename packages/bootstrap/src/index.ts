@@ -47,6 +47,25 @@ export function registerAperi21Bundles(): void {
     const m = await import('@aperi21/sim-dc-circuit');
     return registerBundle('aperi21:dc-circuit', m.dcCircuitBundle);
   });
+
+  // 유체 조각 3종 (2026-09-09 첫 배치).
+  registerBundleLoader('aperi21:pressure-isotropy', async () => {
+    const m = await import('@aperi21/sim-pressure-isotropy');
+    return registerBundle('aperi21:pressure-isotropy', m.pressureIsotropyBundle);
+  });
+
+  registerBundleLoader('aperi21:pressure-and-container-shape', async () => {
+    const m = await import('@aperi21/sim-pressure-and-container-shape');
+    return registerBundle(
+      'aperi21:pressure-and-container-shape',
+      m.pressureAndContainerShapeBundle,
+    );
+  });
+
+  registerBundleLoader('aperi21:archimedes-principle', async () => {
+    const m = await import('@aperi21/sim-archimedes-principle');
+    return registerBundle('aperi21:archimedes-principle', m.archimedesPrincipleBundle);
+  });
 }
 
 let pluginsInstalledFor = new WeakSet<Host>();
@@ -55,12 +74,24 @@ export async function installAperi21Plugins(host: Host): Promise<void> {
   if (pluginsInstalledFor.has(host)) return;
   pluginsInstalledFor.add(host);
 
-  const [{ opticsPlugin }, { circuitPlugin }] = await Promise.all([
+  const [
+    { opticsPlugin },
+    { circuitPlugin },
+    { pressureAndContainerShapeStage },
+    { archimedesPrincipleStagePlugin },
+  ] = await Promise.all([
     import('@aperi21/plugin-optics'),
     import('@aperi21/plugin-circuit'),
+    // 조각이 자기 시각화를 직접 그리는 경우, 그 렌더러도 Plugin 계약으로 온다
+    // (원칙 4 의 탈출구). PluginManager 가 primitiveTypes·renderers·zHints 를
+    // 그대로 받으므로 호스트 API 를 넓히지 않았다.
+    import('@aperi21/sim-pressure-and-container-shape'),
+    import('@aperi21/sim-archimedes-principle'),
   ]);
   host.pluginManager.register(opticsPlugin);
   host.pluginManager.register(circuitPlugin);
+  host.pluginManager.register(pressureAndContainerShapeStage);
+  host.pluginManager.register(archimedesPrincipleStagePlugin);
 }
 
 /**

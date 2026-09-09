@@ -217,3 +217,9 @@
   opacity: 0.75;
   word-break: break-all;
 }
+
+/* 자립 HTML 조각. 엔진 번들과 성격이 달라 표식도 다르다. */
+.topicDot[data-lab] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--accent);
+}

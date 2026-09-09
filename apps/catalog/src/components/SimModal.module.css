@@ -124,3 +124,12 @@
     height: 90vh;
   }
 }
+
+.frame {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--bg);
+}

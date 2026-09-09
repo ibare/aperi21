@@ -13,12 +13,22 @@
  *
  * 사용: pnpm catalog:topics
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const SRC = resolve(ROOT, 'tasks/piece-catalog/PHYSICS-TOPICS.md');
 const OUT = resolve(ROOT, 'apps/catalog/src/data/catalog.json');
+
+/**
+ * 엔진 밖에서 만든 조각(자립 HTML). `tasks/piece-lab/<id>/index.html` 이 있으면
+ * 사이트가 iframe 으로 띄운다.
+ *
+ * **이것은 임시 다리다.** 이 조각들은 `Bundle` 이 아니라 `{aperi21:<id>}` 봉투로
+ * 쓸 수 없다. 엔진 경계를 정하기 전에 눈으로 견주려고 붙여 둔 것이다.
+ */
+const LAB_SRC = resolve(ROOT, 'tasks/piece-lab');
+const LAB_DEST = resolve(ROOT, 'apps/catalog/public/piece-lab');
 
 /** 문서의 분과 제목 → 도메인 id. 문서에는 번호와 한글 이름만 있다. */
 const DOMAIN_IDS: Record<string, string> = {
@@ -49,6 +59,12 @@ const IMPLEMENTED: Record<string, string> = {
   'projectile-motion': 'aperi21:projectile',
   'thin-lens': 'aperi21:ray-tracing',
   'series-parallel-resistors': 'aperi21:dc-circuit',
+
+  // 2026-09-09 유체 조각 첫 배치. 위 셋과 달리 **질문에서 도출됐다** —
+  // 주제 목록에서 "글이 멈추는 지점" 을 캐고 잣대 셋을 적용해 만든 것이다.
+  'pressure-isotropy': 'aperi21:pressure-isotropy',
+  'pressure-and-container-shape': 'aperi21:pressure-and-container-shape',
+  'archimedes-principle': 'aperi21:archimedes-principle',
 };
 
 interface Topic {
@@ -61,6 +77,8 @@ interface Topic {
   origin?: string;
   /** 레지스트리 id. **있으면 구현된 것이다.** */
   simId?: string;
+  /** 자립 HTML 조각의 경로. 엔진 밖에서 만든 것이라 simId 와 성격이 다르다. */
+  labUrl?: string;
 }
 
 interface Domain {
@@ -92,6 +110,9 @@ function parse(md: string): Domain[] {
     const [, id, name, desc] = row as unknown as [string, string, string, string];
     const topic: Topic = { id, name, desc };
     if (IMPLEMENTED[id]) topic.simId = IMPLEMENTED[id];
+    if (existsSync(resolve(LAB_SRC, id, 'index.html'))) {
+      topic.labUrl = `piece-lab/${id}/index.html`;
+    }
     current.topics.push(topic);
   }
   return domains;
@@ -110,11 +131,19 @@ for (const topicId of Object.keys(IMPLEMENTED)) {
   }
 }
 
+// 자립 조각을 사이트가 서빙할 수 있는 자리로 복사. 원본은 tasks/piece-lab 하나다.
+if (existsSync(LAB_SRC)) {
+  rmSync(LAB_DEST, { recursive: true, force: true });
+  mkdirSync(LAB_DEST, { recursive: true });
+  cpSync(LAB_SRC, LAB_DEST, { recursive: true });
+}
+
 const topics = domains.reduce((n, d) => n + d.topics.length, 0);
 const implemented = domains.reduce(
   (n, d) => n + d.topics.filter((t) => t.simId).length,
   0,
 );
+const labs = domains.reduce((n, d) => n + d.topics.filter((t) => t.labUrl).length, 0);
 
 const catalog = {
   $comment:
@@ -122,10 +151,10 @@ const catalog = {
   version: '2',
   domain: 'physics',
   domains,
-  summary: { topics, implemented },
+  summary: { topics, implemented, labs },
 };
 
 writeFileSync(OUT, JSON.stringify(catalog, null, 2) + '\n', 'utf8');
 process.stdout.write(
-  `[catalog] 도메인 ${domains.length} · 주제 ${topics} · 구현 ${implemented} → ${OUT.replace(ROOT + '/', '')}\n`,
+  `[catalog] 도메인 ${domains.length} · 주제 ${topics} · 구현 ${implemented} · 자립조각 ${labs} → ${OUT.replace(ROOT + '/', '')}\n`,
 );

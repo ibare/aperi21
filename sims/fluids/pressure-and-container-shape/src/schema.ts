@@ -1,0 +1,201 @@
+// ========================================================================
+// pressure-and-container-shape — 선언
+// ========================================================================
+// 질문: 담긴 물의 양이 다른데 왜 바닥이 받는 압력은 같은가.
+// 동사: 차오른다 · 나란해진다.
+//
+// 화면에 나타나는 모든 것 — 치수 · 문안 · 캔버스 높이 — 은 이 파일에 있다
+// (원칙 2). 코드에는 키와 기본값만 남는다.
+// ========================================================================
+
+import type { BaseMeta, BundleSchema, Vec2 } from '@aperi21/schema';
+
+/** 등록 키 `aperi21:pressure-and-container-shape` 와 문자 그대로 일치한다. */
+export const PRESSURE_AND_CONTAINER_SHAPE_ID = 'pressure-and-container-shape';
+
+// ------------------------------------------------------------------------
+// 자유 렌더 계층이 그리는 프리미티브 타입 이름.
+// 렌더러 등록 키와 문자 그대로 일치해야 한다 (NOTES.md 「등록」 참고).
+// ------------------------------------------------------------------------
+
+export const VESSEL_PRIMITIVE_TYPE = 'pressureVessel';
+export const READOUT_PRIMITIVE_TYPE = 'pressureReadout';
+
+// ------------------------------------------------------------------------
+// 그릇 셋의 치수 — 바닥 넓이는 같고 모양만 다르다.
+//
+// 단면 폭 w(y) 는 높이에 선형이고 깊이 d 는 일정하다. 따라서
+//   단면 넓이 A(y) = d · w(y),  바닥 넓이 A(0) = d · w0 = 0.02 m²
+//   부피 V(h)     = d · h · (w0 + w(h)) / 2
+//
+// 기준 수면 h = 0.30 m 에서
+//   벌어지는 것 w(0.30) = 0.40 m → 9.0 L
+//   곧은 것     w(0.30) = 0.20 m → 6.0 L
+//   좁아지는 것 w(0.30) = 0.04 m → 3.6 L
+// 부피는 2.5 배 차이인데 바닥 계기압은 셋 다 ρgh = 2940 Pa 이다.
+// ------------------------------------------------------------------------
+
+export type VesselId = 'flared' | 'straight' | 'tapered';
+
+export interface VesselShape {
+  id: VesselId;
+  /** 그릇 중심의 월드 x (m). */
+  centerX: number;
+  /** 바닥 폭 (m). 셋 다 같다. */
+  bottomWidth: number;
+  /** 벽 꼭대기 폭 (m). */
+  topWidth: number;
+  /** 벽 높이 (m). */
+  wallHeight: number;
+  /** 화면 뒤쪽 깊이 (m). 부피 계산용 — 셋 다 같다. */
+  depth: number;
+}
+
+export const VESSEL_SHAPES: readonly VesselShape[] = [
+  { id: 'flared', centerX: -0.42, bottomWidth: 0.2, topWidth: 0.44, wallHeight: 0.36, depth: 0.1 },
+  { id: 'straight', centerX: 0.1, bottomWidth: 0.2, topWidth: 0.2, wallHeight: 0.36, depth: 0.1 },
+  { id: 'tapered', centerX: 0.52, bottomWidth: 0.2, topWidth: 0.008, wallHeight: 0.36, depth: 0.1 },
+];
+
+/** 물의 밀도 (kg/m³) — stage.constants 가 비었을 때의 기본값. */
+export const WATER_DENSITY = 1000;
+/** 중력 가속도 (m/s²) — stage.constants 가 비었을 때의 기본값. */
+export const GRAVITY = 9.8;
+/** 세 그릇에 똑같이 붓는 유량 (m³/s). 벌어지는 그릇이 3.6 초에 찬다. */
+export const FILL_RATE = 0.0025;
+/** 기준 수면 높이 (m). */
+export const REFERENCE_LEVEL = 0.3;
+/** 조작 가능한 수면 높이 범위 (m). 슬라이더·파라미터·물리가 같은 값을 쓴다. */
+export const TARGET_LEVEL_RANGE: readonly [number, number] = [0.12, 0.32];
+
+/** 바닥 화살표를 놓는 x 오프셋 (그릇 중심 기준, m). */
+export const PRESSURE_ARROW_OFFSETS: readonly number[] = [-0.06, 0, 0.06];
+/** 바닥 압력 화살표의 길이 = 수심 × 이 비율. P ∝ h 를 길이로 옮긴다. */
+export const PRESSURE_ARROW_RATIO = 1 / 3;
+
+/** 카메라가 매 프레임 맞추는 고정 프레임. 물이 차올라도 화면이 흔들리지 않는다. */
+export const SCENE_BOUNDS = { minX: -0.74, maxX: 0.74, minY: -0.17, maxY: 0.4 } as const;
+
+/** 수면 안내선의 x 구간. */
+export const LEVEL_LINE_SPAN: readonly [number, number] = [-0.7, 0.72];
+/** 수면 높이 표시의 월드 앵커 x (오른쪽 정렬). */
+export const LEVEL_READOUT_X = 0.72;
+/** 그릇 아래 숫자 줄의 월드 앵커 y. */
+export const FOOTER_ANCHOR_Y = -0.12;
+
+// ------------------------------------------------------------------------
+// 자유 렌더 계층이 소비하는 프리미티브 선언
+// ------------------------------------------------------------------------
+
+/** 그릇 하나 — 벽 · 물 · 부피 · 바닥 압력. */
+export interface VesselPrimitive extends BaseMeta {
+  type: typeof VESSEL_PRIMITIVE_TYPE;
+  shapeId: VesselId;
+  centerX: number;
+  bottomWidth: number;
+  topWidth: number;
+  wallHeight: number;
+  /** 현재 수면 높이 (m). */
+  level: number;
+  /** 담긴 물의 부피 (m³). */
+  volume: number;
+  /** 바닥 계기압 (Pa). */
+  pressure: number;
+  /** 이 그릇이 목표 수면에 이르렀는가. */
+  atTarget: boolean;
+  /** 셋 다 이르러 수면이 나란해졌는가. */
+  leveled: boolean;
+}
+
+/** 값이 끼어드는 문안 한 줄. 문안은 messages 의 키로 조회한다 (C1). */
+export type ReadoutPrimitive = BaseMeta &
+  (
+    | {
+        type: typeof READOUT_PRIMITIVE_TYPE;
+        variant: 'level';
+        pos: Vec2;
+        height: number;
+        leveled: boolean;
+      }
+    | {
+        /**
+         * 주어진 값. 월드가 아니라 화면 좌상단에 붙는다 (Graph 의
+         * placement: 'screen-hud' 와 같은 뜻) — 그릇 위 좁은 띠에 두면 낮은
+         * 배율에서 수면 높이 표시와 겹친다.
+         */
+        type: typeof READOUT_PRIMITIVE_TYPE;
+        variant: 'givens';
+        placement: 'screen-hud';
+        rho: number;
+        gravity: number;
+        bottomArea: number;
+      }
+  );
+
+// ------------------------------------------------------------------------
+// BundleSchema
+// ------------------------------------------------------------------------
+
+export const pressureAndContainerShapeSchema: BundleSchema = {
+  id: PRESSURE_AND_CONTAINER_SHAPE_ID,
+  label: { ko: '그릇 모양과 바닥 압력', en: 'Container shape and bottom pressure' },
+  category: 'fluids',
+  operation: {
+    ko: '수면 높이를 옮겨 세 그릇을 다시 채운다',
+    en: 'Move the water level and refill all three',
+  },
+  timeModel: 'linear',
+  parameters: [
+    {
+      id: 'targetHeight',
+      label: { ko: '수면 높이', en: 'Water level' },
+      unit: 'm',
+      range: [TARGET_LEVEL_RANGE[0], TARGET_LEVEL_RANGE[1]],
+      default: REFERENCE_LEVEL,
+      step: 0.01,
+      statePath: 'targetHeight',
+    },
+  ],
+  stages: [
+    {
+      id: 'water',
+      label: { ko: '물', en: 'Water' },
+      description: {
+        ko: '밀도 1000 kg/m³ 의 물, 중력 가속도 9.8 m/s²',
+        en: 'Water at 1000 kg/m³ under gravity 9.8 m/s²',
+      },
+      constants: { rho: WATER_DENSITY, g: GRAVITY, fillRate: FILL_RATE },
+    },
+  ],
+  environments: [],
+  views: [
+    {
+      id: 'fill',
+      label: { ko: '차오름', en: 'Filling' },
+      description: {
+        ko: '같은 유량으로 세 그릇을 채우고, 수면이 나란해지는 순간을 본다',
+        en: 'Fill all three at one rate and watch the surfaces line up',
+      },
+      default: true,
+    },
+  ],
+  autoViews: { energy: false },
+  canvas: { height: 400, minHeight: 360 },
+  messages: {
+    'label.volume': { ko: '{v} L', en: '{v} L' },
+    'label.pressure': { ko: '{p} Pa', en: '{p} Pa' },
+    'label.level': { ko: 'h = {h} m', en: 'h = {h} m' },
+    'label.constants': {
+      ko: 'ρ = {rho} kg/m³ · g = {g} m/s²',
+      en: 'ρ = {rho} kg/m³ · g = {g} m/s²',
+    },
+    'label.bottomArea': {
+      ko: '바닥 넓이 A = {a} m² — 셋 다 같다',
+      en: 'bottom area A = {a} m² — all equal',
+    },
+    'label.vessel.flared': { ko: '위로 벌어지는', en: 'widening' },
+    'label.vessel.straight': { ko: '곧은', en: 'straight' },
+    'label.vessel.tapered': { ko: '위로 좁아지는', en: 'narrowing' },
+    'label.targetHeight': { ko: '수면 높이 h', en: 'Water level h' },
+  },
+};

@@ -41,9 +41,18 @@ importers:
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../../packages/schema
+      '@aperi21/sim-archimedes-principle':
+        specifier: workspace:*
+        version: link:../../sims/fluids/archimedes-principle
       '@aperi21/sim-dc-circuit':
         specifier: workspace:*
         version: link:../../sims/electronics/dc-circuit
+      '@aperi21/sim-pressure-and-container-shape':
+        specifier: workspace:*
+        version: link:../../sims/fluids/pressure-and-container-shape
+      '@aperi21/sim-pressure-isotropy':
+        specifier: workspace:*
+        version: link:../../sims/fluids/pressure-isotropy
       '@aperi21/sim-projectile':
         specifier: workspace:*
         version: link:../../sims/physics/projectile
@@ -109,9 +118,18 @@ importers:
       '@aperi21/plugin-optics':
         specifier: workspace:*
         version: link:../plugin-optics
+      '@aperi21/sim-archimedes-principle':
+        specifier: workspace:*
+        version: link:../../sims/fluids/archimedes-principle
       '@aperi21/sim-dc-circuit':
         specifier: workspace:*
         version: link:../../sims/electronics/dc-circuit
+      '@aperi21/sim-pressure-and-container-shape':
+        specifier: workspace:*
+        version: link:../../sims/fluids/pressure-and-container-shape
+      '@aperi21/sim-pressure-isotropy':
+        specifier: workspace:*
+        version: link:../../sims/fluids/pressure-isotropy
       '@aperi21/sim-projectile':
         specifier: workspace:*
         version: link:../../sims/physics/projectile
@@ -290,6 +308,36 @@ importers:
       vitest:
         specifier: ^2.1.9
         version: 2.1.9(jsdom@25.0.1)
+
+  sims/fluids/archimedes-principle:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(jsdom@25.0.1)
+
+  sims/fluids/pressure-and-container-shape:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/fluids/pressure-isotropy:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
 
   sims/optics/ray-tracing:
     devDependencies:

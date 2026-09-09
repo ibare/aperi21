@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>laminar-vs-turbulent</title>
+<style>
+  :root {
+    --paper: #f6f4ef;
+    --ink:   #23282e;
+    --muted: #8d959c;
+    --wall:  #c6ced4;
+    --water: #eaf0f2;
+    --dye:   #26418f;
+    --accent:#c8562b;
+  }
+  html, body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
+                 'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif;
+  }
+  .wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 22px 16px 26px;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 236px;
+    touch-action: none;
+  }
+</style>
+
+<div class="wrap"><canvas id="c"></canvas></div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ─────────────────────────────────────────────────────────────
+  // 물리 상수 (물 20 °C) — 화면에 나오는 모든 수는 여기서 나온다
+  // ─────────────────────────────────────────────────────────────
+  var NU   = 1.004e-6;   // 동점성 m²/s
+  var DIA  = 0.020;      // 관 안지름 m
+  var RE_C = 2300;       // 임계 레이놀즈 수
+
+  var STOPS  = [0.05, 0.10, 0.1155, 0.15, 0.20, 0.25];
+  var VLABEL = ['0.05', '0.10', '0.1155', '0.15', '0.20', '0.25'];
+  var RELIST = [996, 1992, 2300, 2988, 3984, 4980];
+
+  function reOf(v) { return v * DIA / NU; }
+
+  function fmtV(v) {
+    for (var i = 0; i < STOPS.length; i++) {
+      if (Math.abs(v - STOPS[i]) < 3e-4) return VLABEL[i];
+    }
+    return v.toFixed(3);
+  }
+  function fmtRe(re) {
+    for (var i = 0; i < RELIST.length; i++) {
+      if (Math.abs(re - RELIST[i]) < 2.5) return String(RELIST[i]);
+    }
+    return String(Math.round(re));
+  }
+
+  // 교란의 공간 성장률. Re < 2300 이면 음수(점성이 지운다),
+  // Re > 2300 이면 양수(스스로 커진다). 부호가 뒤집히는 곳이 문턱이다.
+  var K_GROW = 30.8;
+  function sigmaOf(re) { return K_GROW * (re / RE_C - 1); }
+
+  // ─────────────────────────────────────────────────────────────
+  // 화면 좌표
+  // ─────────────────────────────────────────────────────────────
+  var PIPE_TOP = 36, PIPE_BOT = 116, YC = 76, R = 40;
+  var PX0 = 30, INJ = 86;
+  var TRACK_Y = 200, TX0 = 48;
+  var CAP_Y = 158;
+  var H = 236;
+
+  var PX_PER_M = 3875 * 0.55; // 화면 속도는 실제 v 에 정비례 (전체 0.55배 감속)
+  var RE_MIN = 700, RE_MAX = 5200;
+
+  var cv  = document.getElementById('c');
+  var ctx = cv.getContext('2d');
+  var W = 780, X1 = 756, TX1 = 756, LD = 670;
+
+  function resize() {
+    var rect = cv.getBoundingClientRect();
+    W = Math.max(360, rect.width);
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width  = Math.round(W * dpr);
+    cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    X1  = W - 24;
+    TX1 = W - 24;
+    LD  = Math.max(1, X1 - INJ);
+  }
+  window.addEventListener('resize', resize);
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(cv);
+
+  // ─────────────────────────────────────────────────────────────
+  // 자동 진행 시퀀스 (아무것도 누르지 않아도 끝까지 간다)
+  // ─────────────────────────────────────────────────────────────
+  var segs = [];
+  for (var i = 0; i < STOPS.length; i++) {
+    segs.push({ a: STOPS[i], b: STOPS[i], d: (i === STOPS.length - 1 ? 3.4 : 2.2), stop: i });
+    if (i < STOPS.length - 1) segs.push({ a: STOPS[i], b: STOPS[i + 1], d: 1.5, stop: -1 });
+  }
+  segs.push({ a: STOPS[STOPS.length - 1], b: STOPS[0], d: 2.6, stop: -1 });
+
+  var TOTAL = 0;
+  for (var s = 0; s < segs.length; s++) { segs[s].t0 = TOTAL; TOTAL += segs[s].d; }
+
+  function holdStartOf(idx) {
+    for (var j = 0; j < segs.length; j++) if (segs[j].stop === idx) return segs[j].t0;
+    return 0;
+  }
+  function seqV(t) {
+    var tt = ((t % TOTAL) + TOTAL) % TOTAL;
+    for (var j = 0; j < segs.length; j++) {
+      var g = segs[j];
+      if (tt < g.t0 + g.d) {
+        if (g.a === g.b) return g.a;
+        var u = (tt - g.t0) / g.d;
+        u = u * u * (3 - 2 * u);
+        return g.a + (g.b - g.a) * u;
+      }
+    }
+    return STOPS[0];
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // 상태
+  // ─────────────────────────────────────────────────────────────
+  var seqT = 0;
+  var v = STOPS[0], vTarget = STOPS[0];
+  var manual = false, manualV = STOPS[0], lastTouch = -999, touched = false;
+
+  var parts = [];      // 염료 실 (방출 순서 = 실 위의 순서)
+  var dust  = [];      // 흐름이 보이게 하는 미세 부유물
+  var vor   = [];      // 배경 교란 (항상 있다. 문제는 커지느냐다)
+  var emitAcc = 0;
+  var DS = 2.0;
+
+  var pulseT = 0, pulseIdx = 0, needleOff = 0;
+  var PULSE_PERIOD = 1.15, PULSE_DUR = 0.13, KICK = 0.15 * R;
+  var AMB = 0.004;
+
+  var breakX = 0, breakA = 0;
+  var capText = '', capNext = '', capAlpha = 0;
+
+  for (var d0 = 0; d0 < 190; d0++) {
+    dust.push({ x: PX0 + Math.random() * 760, y: YC + (Math.random() - 0.5) * 1.84 * R, py: 0 });
+  }
+  for (var w0 = 0; w0 < 34; w0++) vor.push(newVortex(true));
+
+  // 소용돌이는 태어나 자랐다가 흩어진다. 수명이 있어야 흐름이 한쪽으로만
+  // 밀지 않고 되감긴다 — 이 되감김이 없으면 염료가 벽에 붙어 그냥 흐른다.
+  function newVortex(spread) {
+    return {
+      x: spread ? PX0 + Math.random() * 900 : PX0 - 40 + Math.random() * (900),
+      y: YC + (Math.random() - 0.5) * 2.3 * R,
+      r: R * (0.28 + Math.random() * 0.34),
+      s: (Math.random() < 0.5 ? -1 : 1) * (0.55 + Math.random() * 0.75),
+      age: spread ? Math.random() : 0,          // 0..1 로 정규화한 나이
+      life: 70 + Math.random() * 110,           // 흐름이 이만큼 흐르는 동안 산다 (px)
+      e: 0
+    };
+  }
+
+  // 소용돌이 다발이 만드는 가로/세로 교란 속도장 (단위 크기 ~1)
+  function swirlY(x, y) {
+    var t = 0;
+    for (var k = 0; k < vor.length; k++) {
+      var o = vor[k];
+      var dx = (x - o.x) / o.r, dy = (y - o.y) / o.r;
+      var q = dx * dx + dy * dy;
+      if (q < 6) t += o.s * o.e * Math.exp(-q) * dx;
+    }
+    return t * 1.6;
+  }
+  function swirlX(x, y) {
+    var t = 0;
+    for (var k = 0; k < vor.length; k++) {
+      var o = vor[k];
+      var dx = (x - o.x) / o.r, dy = (y - o.y) / o.r;
+      var q = dx * dx + dy * dy;
+      if (q < 6) t += o.s * o.e * Math.exp(-q) * (-dy);
+    }
+    return t * 1.6;
+  }
+
+  var SWIRL_GAIN = 0.36;
+
+  function ampAt(x, sig) {
+    if (x <= INJ) return AMB;
+    return Math.min(1, AMB * Math.exp(sig * (x - INJ) / LD));
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // 갱신
+  // ─────────────────────────────────────────────────────────────
+  var warming = false;
+
+  function step(dt) {
+    if (warming) {
+      vTarget = STOPS[0];
+    } else if (manual) {
+      vTarget = manualV;
+      if (performance.now() / 1000 - lastTouch > 5) {
+        manual = false;
+        var best = 0, bd = 1e9;
+        for (var i2 = 0; i2 < STOPS.length; i2++) {
+          var dd = Math.abs(STOPS[i2] - v);
+          if (dd < bd) { bd = dd; best = i2; }
+        }
+        seqT = holdStartOf(best);
+      }
+    } else {
+      seqT += dt;
+      vTarget = seqV(seqT);
+    }
+    v += (vTarget - v) * (1 - Math.exp(-dt / 0.18));
+
+    var re  = reOf(v);
+    var sig = sigmaOf(re);
+    var u   = v * PX_PER_M;
+
+    // 주사기 바늘의 주기적인 미세한 흔들림 — 늘 같은 크기로 넣는다
+    pulseT += dt;
+    if (pulseT > PULSE_PERIOD) { pulseT -= PULSE_PERIOD; pulseIdx++; }
+    var kickNow = 0;
+    if (pulseT < PULSE_DUR) {
+      var ph = pulseT / PULSE_DUR;
+      kickNow = Math.sin(Math.PI * ph) * KICK * (pulseIdx % 2 ? 1 : -1);
+    }
+    needleOff += (kickNow - needleOff) * (1 - Math.exp(-dt / 0.03));
+
+    // 소용돌이 이류
+    for (var k = 0; k < vor.length; k++) {
+      var o = vor[k];
+      o.x += u * 0.86 * dt;
+      o.age += (u * dt) / o.life;
+      if (o.age >= 1 || o.x > X1 + 90) { o = vor[k] = newVortex(false); }
+      o.e = Math.sin(Math.PI * o.age);
+    }
+
+    // 염료 방출 — 화면상 일정 간격으로 (실의 밀도를 일정하게)
+    emitAcc += u * dt;
+    var n = Math.floor(emitAcc / DS);
+    if (n > 0) {
+      emitAcc -= n * DS;
+      for (var e = 0; e < n && parts.length < 900; e++) {
+        // 이번 프레임 안에서 방출된 시각만큼만 떠내려간 위치에 놓는다
+        // (나중에 나온 알갱이가 바늘 쪽에 오도록 — 순서가 곧 실의 순서다)
+        var back = u * dt * (1 - (e + 0.5) / n);
+        parts.push({
+          x: INJ + back, off: kickNow, y: YC + kickNow,
+          amp: AMB * (1 + 2.2 * Math.abs(kickNow) / KICK),
+          rx: Math.random() - 0.5, ry: Math.random() - 0.5
+        });
+      }
+    }
+
+    // 염료 이류 + 성장/감쇠
+    var alive = [];
+    for (var p2 = 0; p2 < parts.length; p2++) {
+      var p = parts[p2];
+      var fw = Math.abs(p.off) / R;
+      var ux = u * (1 - 0.45 * fw * fw) * (1 + p.amp * 0.20 * swirlX(p.x, p.y));
+      if (ux < u * 0.15) ux = u * 0.15;
+      var x0 = p.x;
+      p.x += ux * dt;
+
+      var dn = (p.x - x0) / LD;
+      var g = Math.exp(sig * dn);
+      if (g > 40) g = 40;
+
+      p.off *= g;                                   // 넣어준 흔들림이 커지거나 사라진다
+      // 배경 교란도 같은 법칙을 따른다. 다만 밑바닥은 늘 있다 —
+      // 흐트러짐의 씨앗은 사라지지 않는다. 커지느냐 아니냐만 달라진다.
+      p.amp = Math.min(1, Math.max(AMB, p.amp * g));
+      // 벽에 가까울수록 벽 쪽으로 미는 성분만 줄어든다 (안쪽으로는 그대로)
+      var vy = u * p.amp * SWIRL_GAIN * swirlY(p.x, p.y);
+      var f = fw;
+      if (f > 0.55 && p.off * vy > 0) {
+        var tw = (f - 0.55) / 0.45;
+        if (tw > 1) tw = 1;
+        vy *= (1 - tw * tw);
+      }
+      if (f > 0.72) {
+        vy -= (p.off > 0 ? 1 : -1) * u * p.amp * 0.30 * ((f - 0.72) / 0.28);
+      }
+      p.off += vy * dt;
+
+      var lim = R * (0.34 + 0.61 * p.amp);
+      if (p.off >  lim) p.off =  lim;
+      if (p.off < -lim) p.off = -lim;
+      p.y = YC + p.off;
+
+      if (p.x <= X1 + 2) alive.push(p);
+    }
+    parts = alive;
+
+    // 부유물
+    for (var q2 = 0; q2 < dust.length; q2++) {
+      var q = dust[q2];
+      var a = ampAt(q.x, sig);
+      q.py = q.y;
+      q.x += u * (1 + a * 0.20 * swirlX(q.x, q.y)) * dt;
+      var qv = u * a * SWIRL_GAIN * swirlY(q.x, q.y);
+      var qf = Math.abs(q.y - YC) / R;
+      if (qf > 0.55 && (q.y - YC) * qv > 0) {
+        var qt = Math.min(1, (qf - 0.55) / 0.45);
+        qv *= (1 - qt * qt);
+      }
+      q.y += qv * dt;
+      if (q.y > YC + R * 0.94) q.y = YC + R * 0.94;
+      if (q.y < YC - R * 0.94) q.y = YC - R * 0.94;
+      if (q.x > X1) {
+        q.x = PX0 - Math.random() * 30;
+        q.y = YC + (Math.random() - 0.5) * 1.84 * R;
+        q.py = q.y;
+      }
+    }
+
+    // 흐트러지기 시작하는 자리
+    var bx = -1;
+    for (var b2 = parts.length - 1; b2 >= 0; b2--) {
+      if (parts[b2].amp > 0.6) { if (bx < 0 || parts[b2].x < bx) bx = parts[b2].x; }
+    }
+    if (bx > 0) {
+      if (breakA < 0.02) breakX = bx;
+      else breakX += (bx - breakX) * (1 - Math.exp(-dt / 0.25));
+      breakA = Math.min(1, breakA + dt / 0.35);
+    } else {
+      breakA = Math.max(0, breakA - dt / 0.35);
+    }
+
+    // 캡션 — 지금 화면에서 벌어지는 일만 말한다
+    var want;
+    if (re < 2250)      want = '넣어준 흔들림이 아래로 가면서 잦아든다';
+    else if (re < 2380) want = '같은 흔들림이 줄지도, 커지지도 않는다';
+    else if (re < 3500) want = '같은 흔들림이 이번엔 스스로 커진다';
+    else                want = '흐트러지는 자리가 입구 쪽으로 밀려 올라온다';
+
+    if (want !== capText && capNext !== want) capNext = want;
+    if (capNext) {
+      capAlpha -= dt / 0.22;
+      if (capAlpha <= 0) { capAlpha = 0; capText = capNext; capNext = ''; }
+    } else {
+      capAlpha = Math.min(1, capAlpha + dt / 0.30);
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // 그리기
+  // ─────────────────────────────────────────────────────────────
+  function reToX(re) {
+    return TX0 + (re - RE_MIN) / (RE_MAX - RE_MIN) * (TX1 - TX0);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // 관
+    ctx.fillStyle = '#eaf0f2';
+    ctx.fillRect(PX0, PIPE_TOP, X1 - PX0, PIPE_BOT - PIPE_TOP);
+    ctx.strokeStyle = '#c6ced4';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(PX0, PIPE_TOP + 0.75); ctx.lineTo(X1, PIPE_TOP + 0.75);
+    ctx.moveTo(PX0, PIPE_BOT - 0.75); ctx.lineTo(X1, PIPE_BOT - 0.75);
+    ctx.stroke();
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(PX0, PIPE_TOP + 1, X1 - PX0, PIPE_BOT - PIPE_TOP - 2);
+    ctx.clip();
+
+    // 부유물 — 물이 실제로 흐르고 있음을, 그리고 얼마나 빠른지를 보인다
+    ctx.strokeStyle = 'rgba(109,124,134,0.34)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    var u = v * PX_PER_M;
+    var tail = Math.min(9, u * 0.016);
+    for (var i = 0; i < dust.length; i++) {
+      var q = dust[i];
+      ctx.moveTo(q.x - tail, q.py);
+      ctx.lineTo(q.x, q.y);
+    }
+    ctx.stroke();
+
+    // 주사기 바늘 — 흔들림이 어디서 들어오는지 보인다
+    ctx.strokeStyle = '#6f7880';
+    ctx.lineWidth = 1.4;
+    ctx.beginPath();
+    ctx.moveTo(PX0 - 2, YC);
+    ctx.lineTo(INJ - 16, YC);
+    ctx.lineTo(INJ, YC + needleOff);
+    ctx.stroke();
+
+    // 흐트러지는 자리
+    if (breakA > 0.02) {
+      ctx.strokeStyle = 'rgba(200,86,43,' + (0.30 * breakA).toFixed(3) + ')';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(breakX, PIPE_TOP + 2);
+      ctx.lineTo(breakX, PIPE_BOT - 2);
+      ctx.stroke();
+    }
+
+    // 염료 실
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    for (var pass = 0; pass < 2; pass++) {
+      ctx.strokeStyle = pass ? 'rgba(38,65,143,0.38)' : 'rgba(38,65,143,0.88)';
+      ctx.lineWidth = pass ? 1.5 : 2.3;
+      ctx.beginPath();
+      var open = false, px = 0, py = 0;
+      for (var j = 0; j < parts.length; j++) {
+        var p = parts[j];
+        var mine = (p.amp > 0.30) === (pass === 1);
+        if (!mine) { open = false; continue; }
+        if (!open) { ctx.moveTo(p.x, p.y); open = true; }
+        else {
+          var ddx = p.x - px, ddy = p.y - py;
+          if (ddx * ddx + ddy * ddy > 420) ctx.moveTo(p.x, p.y);
+          else ctx.lineTo(p.x, p.y);
+        }
+        px = p.x; py = p.y;
+      }
+      ctx.stroke();
+    }
+
+    // 흩어진 염료 — 흐트러진 곳일수록 이웃한 알갱이가 서로 멀어져 번진다
+    ctx.fillStyle = 'rgba(38,65,143,0.20)';
+    ctx.beginPath();
+    for (var m = 0; m < parts.length; m++) {
+      var pp = parts[m];
+      var sp = 26 * pp.amp;
+      var rad = 0.9 + 1.3 * pp.amp;
+      var ax = pp.rx, ay = pp.ry;
+      ctx.moveTo(pp.x + ax * sp + rad, pp.y + ay * sp);
+      ctx.arc(pp.x + ax * sp, pp.y + ay * sp, rad, 0, 6.2832);
+      ctx.moveTo(pp.x + ay * sp + rad, pp.y - ax * sp);
+      ctx.arc(pp.x + ay * sp, pp.y - ax * sp, rad, 0, 6.2832);
+      var bx = (ax - ay) * 0.72, by = (ax + ay) * 0.72;
+      ctx.moveTo(pp.x + bx * sp + rad, pp.y + by * sp);
+      ctx.arc(pp.x + bx * sp, pp.y + by * sp, rad, 0, 6.2832);
+    }
+    ctx.fill();
+    ctx.restore();
+
+    if (breakA > 0.02) {
+      ctx.fillStyle = 'rgba(200,86,43,' + (0.75 * breakA).toFixed(3) + ')';
+      ctx.beginPath();
+      ctx.moveTo(breakX, PIPE_BOT + 4);
+      ctx.lineTo(breakX - 4, PIPE_BOT + 10);
+      ctx.lineTo(breakX + 4, PIPE_BOT + 10);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    // 캡션
+    if (capText) {
+      ctx.globalAlpha = capAlpha;
+      ctx.fillStyle = '#4a5158';
+      ctx.font = '14px "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(capText, PX0, CAP_Y);
+      ctx.globalAlpha = 1;
+    }
+
+    // Re 눈금 — 매끄럽게 움직이는 입력, 갑자기 반응하는 출력
+    var xc = reToX(RE_C);
+    ctx.fillStyle = 'rgba(200,86,43,0.09)';
+    ctx.fillRect(xc, TRACK_Y - 4, TX1 - xc, 8);
+
+    ctx.strokeStyle = '#cfd5da';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(TX0, TRACK_Y + 0.5);
+    ctx.lineTo(TX1, TRACK_Y + 0.5);
+    ctx.stroke();
+
+    ctx.strokeStyle = '#c2c9cf';
+    ctx.beginPath();
+    for (var t2 = 0; t2 < RELIST.length; t2++) {
+      var tx = Math.round(reToX(RELIST[t2])) + 0.5;
+      ctx.moveTo(tx, TRACK_Y + 1);
+      ctx.lineTo(tx, TRACK_Y + 5);
+    }
+    ctx.stroke();
+
+    ctx.strokeStyle = '#c8562b';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(xc, TRACK_Y - 9);
+    ctx.lineTo(xc, TRACK_Y + 6);
+    ctx.stroke();
+
+    ctx.fillStyle = '#c8562b';
+    ctx.font = '11px ui-monospace, SFMono-Regular, Menlo, monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('2300', xc, TRACK_Y + 20);
+
+    // 현재 값
+    var re = reOf(v);
+    var hx = reToX(re);
+    ctx.fillStyle = '#23282e';
+    ctx.beginPath();
+    ctx.arc(hx, TRACK_Y + 0.5, 4, 0, Math.PI * 2);
+    ctx.fill();
+
+    var label = fmtV(v) + ' m/s  ·  Re ' + fmtRe(re);
+    ctx.font = '12.5px ui-monospace, SFMono-Regular, Menlo, monospace';
+    var lw = ctx.measureText(label).width;
+    var lx = Math.min(Math.max(hx, TX0 + lw / 2), TX1 - lw / 2);
+    ctx.textAlign = 'center';
+    ctx.fillText(label, lx, TRACK_Y - 14);
+
+    if (!touched) {
+      ctx.fillStyle = 'rgba(141,149,156,0.7)';
+      ctx.font = '10px "Pretendard Variable", Pretendard, -apple-system, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText('↔ 끌어서 직접', TX1, TRACK_Y + 20);
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // 조작기 (덤. 진행에는 필요 없다)
+  // ─────────────────────────────────────────────────────────────
+  function xToV(x) {
+    var f = (x - TX0) / (TX1 - TX0);
+    f = Math.min(1, Math.max(0, f));
+    var re = RE_MIN + f * (RE_MAX - RE_MIN);
+    return re * NU / DIA;
+  }
+  function pt(ev) {
+    var r = cv.getBoundingClientRect();
+    return { x: ev.clientX - r.left, y: ev.clientY - r.top };
+  }
+  var dragging = false;
+  cv.addEventListener('pointerdown', function (ev) {
+    var q = pt(ev);
+    if (q.y < 168) return;
+    dragging = true; manual = true; touched = true;
+    manualV = xToV(q.x);
+    lastTouch = performance.now() / 1000;
+    cv.setPointerCapture(ev.pointerId);
+    ev.preventDefault();
+  });
+  cv.addEventListener('pointermove', function (ev) {
+    if (!dragging) return;
+    manualV = xToV(pt(ev).x);
+    lastTouch = performance.now() / 1000;
+  });
+  function endDrag() { dragging = false; lastTouch = performance.now() / 1000; }
+  cv.addEventListener('pointerup', endDrag);
+  cv.addEventListener('pointercancel', endDrag);
+  cv.addEventListener('pointerleave', function () { if (dragging) endDrag(); });
+  cv.addEventListener('pointermove', function (ev) {
+    if (dragging) return;
+    cv.style.cursor = pt(ev).y >= 168 ? 'ew-resize' : 'default';
+  });
+
+  // ─────────────────────────────────────────────────────────────
+  // 루프 (보이지 않으면 멈춘다)
+  // ─────────────────────────────────────────────────────────────
+  var last = 0, running = true, raf = 0;
+
+  function frame(now) {
+    raf = requestAnimationFrame(frame);
+    var dt = last ? (now - last) / 1000 : 0.016;
+    last = now;
+    if (dt > 1 / 30) dt = 1 / 30;
+    step(dt);
+    draw();
+  }
+  function start() { if (!running) { running = true; last = 0; raf = requestAnimationFrame(frame); } }
+  function stop()  { if (running) { running = false; cancelAnimationFrame(raf); } }
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) stop(); else start();
+  });
+  if (window.IntersectionObserver) {
+    new IntersectionObserver(function (es) {
+      if (es[0].isIntersecting) start(); else stop();
+    }, { threshold: 0 }).observe(cv);
+  }
+
+  resize();
+
+  // 독자가 화면에 닿는 순간 이미 물이 흐르고 있어야 한다 — 관을 미리 채운다
+  warming = true;
+  v = vTarget = STOPS[0];
+  for (var wi = 0; wi < 460; wi++) step(1 / 60);
+  warming = false;
+  capAlpha = 1;
+
+  raf = requestAnimationFrame(frame);
+})();
+</script>
+</html>

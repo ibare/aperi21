@@ -7,7 +7,8 @@ import styles from './SimModal.module.css';
 
 interface SimModalProps {
   topic: Topic;
-  bundle: Bundle;
+  /** 엔진 번들. 자립 HTML 조각이면 없다. */
+  bundle?: Bundle;
   onClose(): void;
 }
 
@@ -63,7 +64,7 @@ export function SimModal({ topic, bundle, onClose }: SimModalProps) {
             <h2 id="sim-modal-title" className={styles.title}>
               {topic.name}
             </h2>
-            <code className={styles.id}>{topic.simId}</code>
+            <code className={styles.id}>{topic.simId ?? topic.labUrl}</code>
           </div>
           <button
             ref={closeRef}
@@ -77,7 +78,17 @@ export function SimModal({ topic, bundle, onClose }: SimModalProps) {
         </header>
 
         <div className={styles.body}>
-          <Embed bundle={bundle} />
+          {bundle ? (
+            <Embed bundle={bundle} />
+          ) : (
+            // 엔진 밖에서 만든 자립 조각. 격리해 띄운다 — 이 조각들은 호스트의
+            // theme·i18n·시계를 쓰지 않고 자기 것만 쓴다.
+            <iframe
+              className={styles.frame}
+              src={`${import.meta.env.BASE_URL}${topic.labUrl}`}
+              title={topic.name}
+            />
+          )}
         </div>
       </div>
     </div>

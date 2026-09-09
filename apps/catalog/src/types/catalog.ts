@@ -19,6 +19,13 @@ export interface Topic {
   origin?: string;
   /** 레지스트리 id. **있으면 구현된 것이다.** */
   simId?: string;
+  /**
+   * 엔진 밖에서 만든 자립 HTML 조각의 경로.
+   *
+   * `simId` 와 성격이 다르다 — 이것은 `Bundle` 이 아니라 `{aperi21:<id>}` 봉투로
+   * 쓸 수 없다. 엔진 경계를 정하기 전에 눈으로 견주려고 붙여 둔 임시 다리다.
+   */
+  labUrl?: string;
 }
 
 export interface Domain {
@@ -31,5 +38,5 @@ export interface TopicCatalog {
   version: string;
   domain: string;
   domains: Domain[];
-  summary: { topics: number; implemented: number };
+  summary: { topics: number; implemented: number; labs: number };
 }

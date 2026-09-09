@@ -50,8 +50,22 @@ async function buildSchemaByLeaf(): Promise<Map<string, BundleSchema>> {
     for (const name of names) {
       const schemaFile = join(simsRoot, category, name, 'src', 'schema.ts');
       if (!existsSync(schemaFile)) continue;
-      const mod = (await import(pathToFileURL(schemaFile).href)) as { schema?: BundleSchema };
-      if (mod.schema) byLeaf.set(name, mod.schema);
+      // 이름이 아니라 **모양**으로 찾는다.
+      //
+      // S-sim 은 `<name>Schema` 를 규약으로 적었는데 초기 sim 셋은 `schema` 로
+      // 내보내고 있었다. 2026-09-09 유체 배치에서 세 조각이 각자 독립적으로 규약을
+      // 따랐고, 그제야 규칙과 코드가 어긋나 있었다는 것이 드러났다. 생성기가 한
+      // 이름에 묶여 있으면 그 어긋남이 여기서 터진다.
+      const mod = (await import(pathToFileURL(schemaFile).href)) as Record<string, unknown>;
+      const found = Object.values(mod).find(
+        (v): v is BundleSchema =>
+          typeof v === 'object' &&
+          v !== null &&
+          typeof (v as BundleSchema).id === 'string' &&
+          Array.isArray((v as BundleSchema).stages) &&
+          Array.isArray((v as BundleSchema).views),
+      );
+      if (found) byLeaf.set(name, found);
     }
   }
   return byLeaf;

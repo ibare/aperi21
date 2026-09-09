@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import type { Domain, Topic } from '../types/catalog';
-import { implementedCount } from '../data/catalog';
+import { implementedCount, isViewable } from '../data/catalog';
 import styles from './DomainSection.module.css';
 
 interface DomainSectionProps {
@@ -66,8 +66,12 @@ export function DomainSection({
                 <>
                   <span className={styles.topicName}>
                     {topic.name}
-                    {topic.simId && (
-                      <span className={styles.topicDot} aria-label={t('badges.implemented')} />
+                    {isViewable(topic) && (
+                      <span
+                        className={styles.topicDot}
+                        data-lab={topic.labUrl && !topic.simId ? 'true' : undefined}
+                        aria-label={t('badges.implemented')}
+                      />
                     )}
                   </span>
                   <span className={styles.topicDesc}>{topic.desc}</span>
@@ -77,7 +81,7 @@ export function DomainSection({
 
               return (
                 <li key={topic.id}>
-                  {topic.simId ? (
+                  {isViewable(topic) ? (
                     // 구현물은 목록 자리에서 바로 띄운다 — 이동하면 하나씩 확인하는
                     // 흐름이 뒤로 가기로 끊긴다.
                     <button

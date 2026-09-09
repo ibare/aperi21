@@ -786,7 +786,8 @@
         {
           "id": "pressure-isotropy",
           "name": "압력의 등방성",
-          "desc": "방향에 무관하게 같은 크기"
+          "desc": "방향에 무관하게 같은 크기",
+          "simId": "aperi21:pressure-isotropy"
         },
         {
           "id": "hydrostatic-pressure",
@@ -796,7 +797,8 @@
         {
           "id": "pressure-and-container-shape",
           "name": "그릇 모양과 압력",
-          "desc": "바닥 압력이 모양에 무관한 것"
+          "desc": "바닥 압력이 모양에 무관한 것",
+          "simId": "aperi21:pressure-and-container-shape"
         },
         {
           "id": "atmospheric-pressure",
@@ -826,7 +828,8 @@
         {
           "id": "archimedes-principle",
           "name": "아르키메데스 원리",
-          "desc": "뜨고 가라앉는 조건"
+          "desc": "뜨고 가라앉는 조건",
+          "simId": "aperi21:archimedes-principle"
         },
         {
           "id": "floating-and-draft",
@@ -856,7 +859,8 @@
         {
           "id": "torricellis-law",
           "name": "토리첼리 법칙",
-          "desc": "구멍에서 나오는 유속"
+          "desc": "구멍에서 나오는 유속",
+          "labUrl": "piece-lab/torricellis-law/index.html"
         },
         {
           "id": "lift-force",
@@ -881,7 +885,8 @@
         {
           "id": "laminar-vs-turbulent",
           "name": "층류와 난류",
-          "desc": "흐름의 두 양상"
+          "desc": "흐름의 두 양상",
+          "labUrl": "piece-lab/laminar-vs-turbulent/index.html"
         },
         {
           "id": "reynolds-number",
@@ -2350,6 +2355,7 @@
   ],
   "summary": {
     "topics": 455,
-    "implemented": 3
+    "implemented": 6,
+    "labs": 2
   }
 }

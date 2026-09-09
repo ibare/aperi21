@@ -61,7 +61,7 @@ export function HomePage() {
         </div>
       </section>
 
-      {openTopic && openBundle && (
+      {openTopic && (openBundle || openTopic.labUrl) && (
         <SimModal
           topic={openTopic}
           bundle={openBundle}

@@ -22,5 +22,10 @@ export function domainOf(topicId: string): Domain | undefined {
 }
 
 export function implementedCount(domain: Domain): number {
-  return domain.topics.reduce((n, t) => (t.simId ? n + 1 : n), 0);
+  return domain.topics.reduce((n, t) => (t.simId || t.labUrl ? n + 1 : n), 0);
+}
+
+/** 이 주제에 열어 볼 것이 있는가 (엔진 번들이든 자립 조각이든). */
+export function isViewable(topic: Topic): boolean {
+  return Boolean(topic.simId || topic.labUrl);
 }

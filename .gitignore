@@ -11,3 +11,6 @@ dist-ssr
 .env.local
 .pnpm-store
 .turbo
+
+# 생성물 — 원본은 tasks/piece-lab
+apps/catalog/public/piece-lab
