@@ -1,0 +1,158 @@
+# aperi21 Rule Registry
+# -------------------------------------------------------------------
+# 트리거 조건에 따라 로드할 규칙을 결정하는 인덱스.
+#
+# Trigger types:
+#   paths:    파일 경로 glob 패턴
+#   patterns: 코드에서 발견되는 문자열/정규식
+#   imports:  import 문에 포함된 모듈명
+#   events:   작업 유형 (create-file, rename-file, modify-file)
+#
+# 이 프로젝트는 ESLint 를 도입하지 않는다 (CLAUDE.md 「코드 품질 · 통과 바」).
+# tsc (strict: true) 로 커버되는 항목은 Rules 에 넣지 않는다. Rules 는 tsc 가
+# 잡을 수 없는 의미/맥락 영역에만 집중한다 — 의존 방향, 선언/런타임 경계,
+# 레지스트리 경유, 문자·색 리소스 위치, 참조 문자열 정합.
+
+version: 1
+project: aperi21
+
+# ─────────────────────────────────────
+# Always loaded (Tier 1 — Principles)
+# ─────────────────────────────────────
+always:
+  - file: principles.md
+    description: 선언→런타임 방향성 · DSL 최소성 · 레지스트리 단일 인스턴스 · 프리미티브 어휘와 탈출구 · 토큰과 키 · 임베드는 글을 흔들지 않는다
+
+# ─────────────────────────────────────
+# Concerns (Tier 2 — Cross-cutting)
+# ─────────────────────────────────────
+concerns:
+  - id: C1
+    file: concerns/C1-message-resources.md
+    description: 화면 문자열은 코드에 하드코딩하지 않는다. 선언의 문안 → locale 번들 → en 원본 3층 조회
+    triggers:
+      paths:
+        - "packages/react/src/embed/**"
+        - "packages/host/src/renderer/**"
+        - "packages/host/src/i18n/**"
+        - "sims/**/schema.ts"
+      patterns:
+        - "ko ?"
+        - "LocalizedText"
+        - "resolveLocale"
+        - "textContent"
+        - "label:"
+
+  - id: C2
+    file: concerns/C2-token-boundary.md
+    description: 색은 theme 경유, 치수는 선언 경유. hex/rgba/px 리터럴 금지
+    triggers:
+      paths:
+        - "packages/host/src/renderer/**"
+        - "packages/host/src/runtime/**"
+        - "packages/host/src/theme/**"
+        - "packages/plugin-*/src/renderers.ts"
+        - "packages/host-tiptap/src/node-view.ts"
+        - "sims/**"
+      patterns:
+        - "#[0-9a-fA-F]{6}"
+        - "rgba("
+        - "style."
+        - "getTheme"
+
+  - id: C3
+    file: concerns/C3-public-api.md
+    description: 패키지 간 import 는 루트 진입점만. 내부 구현 경로·상대경로 침범 금지
+    triggers:
+      paths:
+        - "**/*.ts"
+        - "**/*.tsx"
+      patterns:
+        - "from '@aperi21/"
+        - "from \"@aperi21/"
+      events:
+        - create-file
+
+  - id: C4
+    file: concerns/C4-reference-identifier.md
+    description: aperi21:<id> 등록 키 · sim 선언 id · primitive type 이 실제 등록명과 일치한다
+    triggers:
+      paths:
+        - "packages/bootstrap/src/**"
+        - "sims/**/schema.ts"
+        - "sims/**/scene.ts"
+        - "packages/plugin-*/src/index.ts"
+      patterns:
+        - "aperi21:"
+        - "registerBundleLoader"
+        - "registerBundle"
+        - "primitiveTypes"
+        - "{aperi21:"
+
+  - id: C5
+    file: concerns/C5-resource-lifetime.md
+    description: RAF·타이머·리스너를 destroy 에서 전부 거둔다. 인스턴스 상태를 모듈 스코프에 두지 않는다
+    triggers:
+      paths:
+        - "packages/host/src/runtime/**"
+        - "packages/react/src/embed/**"
+        - "packages/host-tiptap/src/node-view.ts"
+      patterns:
+        - "requestAnimationFrame"
+        - "addEventListener"
+        - "setTimeout"
+        - "setInterval"
+        - "ResizeObserver"
+        - "destroy"
+        - "console."
+
+# ─────────────────────────────────────
+# Specifics (Tier 3 — Domain-specific)
+# ─────────────────────────────────────
+specifics:
+  - id: S-sim
+    file: specifics/S-sim.md
+    description: sims/<category>/<name>/src 6파일 구성 (schema/state/physics/scene/controllers/index) + 도메인 헬퍼 1파일 예외
+    triggers:
+      paths:
+        - "sims/**/*.ts"
+      events:
+        - create-file
+        - rename-file
+
+  - id: S-host
+    file: specifics/S-host.md
+    description: 어댑터·bootstrap·발행 번들의 책임 분리와 의존 일방향, lazy 보존, 단일 registry 인스턴스, 발행 전 게이트 4단
+    triggers:
+      paths:
+        - "packages/host-tiptap/**"
+        - "packages/host-tiptap-bundle/**"
+        - "packages/bootstrap/**"
+      patterns:
+        - "registerBundleLoader"
+        - "external"
+        - "manualChunks"
+        - "peerDependencies"
+        - "publish"
+
+  - id: S-render
+    file: specifics/S-render.md
+    description: 표준 primitive 어휘 · plugin 확장 · 캔버스 껍데기는 러너가 만든다 · 마운트 후 세로 불변
+    triggers:
+      paths:
+        - "packages/host/src/renderer/**"
+        - "packages/host/src/runtime/runBundle.ts"
+        - "packages/plugin-*/src/renderers.ts"
+        - "packages/react/src/embed/Canvas.tsx"
+      patterns:
+        - "primitiveTypes"
+        - "registerRenderer"
+        - "viewport"
+        - "canvas."
+
+# ─────────────────────────────────────
+# 예약 — 대상이 생기면 승격한다
+# ─────────────────────────────────────
+# S-piece : 조각(piece) 규범. 첫 조각 제작 시 신설.
+#           근거는 tasks/facet-insights/ANALYSIS.md §4.
+# S-sim / S-render 의 "자유 렌더 계층" 절 : 계층 신설 후 조항 확정.
