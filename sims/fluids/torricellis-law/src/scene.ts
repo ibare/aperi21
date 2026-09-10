@@ -18,6 +18,7 @@ import type {
   StageDef,
   Stream,
   Surface,
+  TimelineFrame,
   ViewDef,
   Vec2,
 } from '@aperi21/schema';
@@ -40,8 +41,8 @@ const JET_JITTER_PX = 5;
 const RIPPLE_PX = 3;
 /** 속도 라벨이 구멍 오른쪽으로 나오는 거리(화면 px). */
 const SPEED_LABEL_OFFSET: Vec2 = [26, -12];
-/** 캡션이 아래에서 올라온 자리(화면 px). */
-const CAPTION_OFFSET: Vec2 = [0, -4];
+/** 경과 시간 글자 크기(화면 px). 느린 구간 내내 읽혀야 한다. */
+const TIMER_FONT_PX = 18;
 
 function wall(id: string, from: Vec2, to: Vec2): Surface {
   return { type: 'surface', id, geometry: { kind: 'wall', from, to }, material: 'solid' };
@@ -52,8 +53,10 @@ export function scene(params: {
   view: ViewDef;
   stage: StageDef;
   environments: EnvironmentDef[];
+  timeline?: TimelineFrame;
 }): SceneGraph {
-  const { state, stage } = params;
+  const { stage, timeline } = params;
+  if (!timeline) throw new Error('torricellis-law: schema.timeline 이 선언되어야 한다');
   const c = readConstants(stage);
   const holes = readings(c);
   const out: Primitive[] = [];
@@ -142,7 +145,7 @@ export function scene(params: {
   // 기울고, 수명에 이르면 잠시 멈춘다. 이때 표지는 각 물줄기의 선두에 놓인다.
   //
   // 색을 쓰는 곳은 여기 하나뿐이다 — 물이 아닌 것, 곧 **관찰자가 찍은 표시**.
-  const age = pulseAge(state.t);
+  const age = pulseAge(timeline);
   if (age !== null) {
     const marks: Vec2[] = holes.map((h) => [
       TANK.wall + h.speed * age,
@@ -164,20 +167,25 @@ export function scene(params: {
       };
       out.push(mark);
     });
+
+    // ---- 경과 시간 ----
+    // 표지 물방울이 떠난 뒤 흐른 물리 시간. 느린 구간에서 숫자가 천천히 올라가므로,
+    // 지금 시간이 느리게 흐른다는 것도 이것으로 안다. 표지와 같은 대상(그 물방울들이
+    // 난 시간)이라 같은 색이다. 평소 흐름에는 두지 않는다 — 셀 출발이 없다.
+    const timer: Readout = {
+      type: 'readout',
+      id: 'timer',
+      anchor: { screen: 'top-right' },
+      text: text('label.timer'),
+      vars: { t: age.toFixed(2) },
+      chip: false,
+      fontSize: TIMER_FONT_PX,
+      style: { colorRole: 'accent', emphasis: 'strong' },
+    };
+    out.push(timer);
   }
 
-  // ---- 캡션 ----
-  // 슬롯 하나. 지금 화면에서 벌어지는 일만 말한다. 법칙의 정의나 공식은 쓰지
-  // 않는다 — 그건 바로 위 문단이 할 말이다.
-  out.push({
-    type: 'readout',
-    id: 'caption',
-    anchor: { screen: 'bottom-center', offset: CAPTION_OFFSET },
-    text: age !== null ? text('caption.pulse') : text('caption.main'),
-    chip: false,
-    fontSize: 13,
-    style: { colorRole: age !== null ? 'accent' : 'muted', emphasis: 'strong' },
-  });
+  // 캡션은 선언의 캡션 슬롯이 그린다 (`schema.caption`).
 
   return out;
 }

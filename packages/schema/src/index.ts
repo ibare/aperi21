@@ -766,6 +766,21 @@ export type ControllerSpec =
       unit?: string;
     }
   | {
+      /**
+       * 눈금을 직접 끌어 값을 잡는다. 그림 속 눈금(`scale` linear)과 **같은 자리**를
+       * `track` 으로 선언한다 — 따로 뜨는 슬라이더 상자가 아니라 눈금 그 자체가 손잡이다.
+       *
+       * 누르는 동안 `binds.held` 가 true, 놓으면 false. 손을 뗀 뒤 자동 진행으로
+       * 돌아가는 일은 sim 이 한다 — 무엇으로 돌아갈지는 sim 이 안다.
+       */
+      type: 'scale-drag';
+      binds: { value: string; held: string };
+      /** 트랙. 월드 좌표. `direction` 기본 `[1, 0]`, `size` 는 월드 길이. */
+      track: { pos: Vec2; direction?: Vec2; size: number };
+      /** 트랙 양 끝의 값(`binds.value` 의 단위). */
+      range: [number, number];
+    }
+  | {
       type: 'placement';                 // 드래그 앤 드롭으로 요소 배치
       binds: { positions: string };      // 배치된 위치 배열 경로
       placeableTypes: string[];
@@ -915,6 +930,14 @@ export interface TimelinePhase {
   /** 이 단계 진행도(`progress` · `at`)의 이징. 기본 `linear`. */
   ease?: TimelineEase;
   /**
+   * 이 단계 동안의 재생 속도. 기본 1, 0 보다 크다. `0.2` 면 다섯 배 느리게 흐른다.
+   *
+   * 순식간에 지나가는 일을 **눈으로 보게** 할 때 쓴다. 시간 엔진이 통째로 느려지므로
+   * 물줄기·실·step 이 함께 느려진다. `duration` 은 조각 시계(물리 시간)로 센다 —
+   * 0.72 초 단계를 0.144 로 두면 화면에서는 5 초 동안 흐른다.
+   */
+  timeScale?: number;
+  /**
    * 이 단계에 캡션 슬롯이 말할 문안 키(`messages`). 이웃 단계가 같은 키면 한 문장이
    * 이어지는 것이라 다시 페이드하지 않는다.
    */
@@ -966,6 +989,8 @@ export interface TimelineFrame {
   readonly phase: string;
   /** 지금 단계의 진행도 0~1 (이징 적용). */
   readonly progress: number;
+  /** 지금 단계의 재생 속도. 러너가 시간 엔진에 건다. */
+  readonly timeScale: number;
   /** 지금 캡션 키. 단계가 말하지 않으면 없다. */
   readonly caption?: string;
   /** 지금 캡션이 시작된 뒤 흐른 시간(초). 페이드용. */

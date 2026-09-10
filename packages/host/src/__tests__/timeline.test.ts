@@ -86,6 +86,18 @@ describe('evaluateTimeline', () => {
     expect(() => f.at('nope')).toThrow();
   });
 
+  it('재생 속도는 지금 단계의 것이다 — 선언하지 않으면 1', () => {
+    const slow: TimelineDef = {
+      phases: [
+        { id: 'fly', duration: 0.26, timeScale: 0.144 },
+        { id: 'rest', duration: 1 },
+      ],
+    };
+    expect(evaluateTimeline(slow, 0.1).timeScale).toBe(0.144);
+    expect(evaluateTimeline(slow, 0.5).timeScale).toBe(1);
+    expect(() => evaluateTimeline({ phases: [{ id: 'a', duration: 1, timeScale: 0 }] }, 0)).toThrow();
+  });
+
   it('선언이 틀리면 던진다', () => {
     expect(() => evaluateTimeline({ phases: [] }, 0)).toThrow();
     expect(() => evaluateTimeline({ phases: [{ id: 'a', duration: 0 }] }, 0)).toThrow();

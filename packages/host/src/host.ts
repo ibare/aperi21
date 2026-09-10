@@ -14,6 +14,7 @@ import { PinballLauncherController } from './controller/pinball-launcher';
 import { PlacementController } from './controller/placement';
 import { ValueEditController } from './controller/value-edit';
 import { SliderController } from './controller/slider';
+import { ScaleDragController } from './controller/scale-drag';
 import { I18nResolver, type Dictionary, type HostI18n } from './i18n/resolver';
 import { FRAMEWORK_MESSAGES } from './i18n/messages';
 import { PluginManager, ServiceRegistry, type HostPlugin } from './pluginManager';
@@ -78,6 +79,7 @@ export function standardCapabilities(): Required<HostCapabilities> {
       new PlacementController(),
       new ValueEditController(),
       new SliderController(),
+      new ScaleDragController(),
     ],
     vectorCompute: { uniform: uniformVectorField, gravity: gravityVectorField },
   };

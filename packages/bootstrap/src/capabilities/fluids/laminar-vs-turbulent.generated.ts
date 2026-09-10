@@ -6,7 +6,7 @@
 // 여기 없는 능력은 이 조각의 번들에 실리지 않는다 (R10).
 
 import type { HostCapabilities } from '@aperi21/host';
-import { renderFilament, renderReadout, renderScale, renderStream, renderSurface, renderVortexField } from '@aperi21/host';
+import { ScaleDragController, renderFilament, renderReadout, renderScale, renderStream, renderSurface, renderVortexField } from '@aperi21/host';
 
 export const capabilities: HostCapabilities = {
   renderers: {
@@ -17,4 +17,7 @@ export const capabilities: HostCapabilities = {
     surface: renderSurface,
     vortexField: renderVortexField,
   },
+  controllers: [
+    new ScaleDragController(),
+  ],
 };

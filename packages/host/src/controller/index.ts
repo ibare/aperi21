@@ -5,3 +5,4 @@ export { AngleDialController } from './angle-dial';
 export { PlacementController } from './placement';
 export { ValueEditController } from './value-edit';
 export { SliderController } from './slider';
+export { ScaleDragController } from './scale-drag';

@@ -40,6 +40,7 @@ export const CONTROLLERS: Record<string, string> = {
   slider: 'SliderController',
   'value-edit': 'ValueEditController',
   placement: 'PlacementController',
+  'scale-drag': 'ScaleDragController',
 };
 
 export const ALL_CAPABILITIES: Record<string, string> = { ...RENDERERS, ...CONTROLLERS };

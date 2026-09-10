@@ -2,8 +2,8 @@
 // torricellis-law — 순수 물리
 // ========================================================================
 
-import type { StageDef } from '@aperi21/schema';
-import { HOLES, WATER_LEVEL, PULSE_HOLD, PULSE_PERIOD, DROPLET_LIFE } from './schema';
+import type { StageDef, TimelineFrame } from '@aperi21/schema';
+import { HOLES, WATER_LEVEL } from './schema';
 import type { TorricellisLawState } from './state';
 
 export interface TorricellisConstants {
@@ -41,19 +41,19 @@ export function readings(c: TorricellisConstants): HoleReading[] {
 }
 
 /**
- * 동시 출발 표지의 나이(초). 주기 안에서 지금 표지 물방울이 몇 초를 날았는가.
+ * 동시 출발 표지의 나이(초, 물리 시간). 표지가 없는 단계면 `null`.
  *
- * 수명(0.26 s)에 이르면 `PULSE_HOLD` 동안 그 자리에 멈춰 머문다. 이때 표지는
- * 정확히 각 물줄기의 **선두**에 놓이고, "같은 시간, 다른 거리" 라는 문장이
- * 그림 안에서 문자 그대로 일어난다.
+ * 날아가는 동안(fly) 자라고, 수명에 이르면 머무는 동안(hold) 그 값에 멈춘다. 이때
+ * 표지는 정확히 각 물줄기의 **선두**에 놓이고, "같은 시간, 다른 거리" 라는 문장이
+ * 그림 안에서 문자 그대로 일어난다. 단계의 길이는 선언(`schema.timeline`)이 정한다.
  */
-export function pulseAge(t: number): number | null {
-  const phase = t % PULSE_PERIOD;
-  if (phase > DROPLET_LIFE + PULSE_HOLD) return null;
-  return Math.min(phase, DROPLET_LIFE);
+export function pulseAge(tl: TimelineFrame): number | null {
+  if (tl.phase === 'fly') return tl.u - tl.start('fly');
+  if (tl.phase === 'hold') return tl.duration('fly');
+  return null;
 }
 
-/** 시간만 전진한다. 물줄기는 시간의 함수라 상태를 쌓지 않는다. */
-export function step(params: { state: TorricellisLawState; dt: number }): TorricellisLawState {
-  return { t: params.state.t + params.dt };
+/** 쌓는 상태가 없다 — 물줄기와 표지가 모두 시각의 함수다. */
+export function step(params: { state: TorricellisLawState }): TorricellisLawState {
+  return params.state;
 }

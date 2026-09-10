@@ -39,9 +39,6 @@ export const DROPLET_LIFE = 0.26;
 /** 초당 방출 개수. 원본의 0.006 s 간격. */
 export const DROPLET_RATE = 167;
 
-/** 동시 출발 표지의 주기와 머무는 시간(초). */
-export const PULSE_PERIOD = 2.6;
-export const PULSE_HOLD = 0.46;
 
 /**
  * 프레이밍이 곧 주장이다 — **착지 지점을 화면에 두지 않는다.** 물통은 허공에
@@ -74,6 +71,8 @@ export const torricellisLawMessages = Object.freeze({
     ko: '같은 순간에 출발한 세 물방울 — 아래 구멍 것이 가장 앞서 있다',
     en: 'Three droplets that left at the same instant — the lowest is farthest ahead',
   },
+  /** 표지 물방울이 떠난 뒤 흐른 시간. 느린 구간에서 천천히 올라간다. */
+  'label.timer': { ko: '출발 후 {t} 초', en: '{t} s after release' },
 } satisfies Record<string, LocalizedText>);
 
 export type TorricellisLawMessageKey = keyof typeof torricellisLawMessages;
@@ -81,6 +80,11 @@ export type TorricellisLawMessageKey = keyof typeof torricellisLawMessages;
 /** 선언에서 문안을 꺼낸다. 호출부에 문자열 리터럴을 두지 않기 위한 유일한 통로. */
 export function text(key: TorricellisLawMessageKey): LocalizedText {
   return torricellisLawMessages[key];
+}
+
+/** 시간표·캡션 슬롯이 부르는 문안 키. 없는 키를 쓰면 여기서 타입이 막는다. */
+function key(k: TorricellisLawMessageKey): string {
+  return k;
 }
 
 // ------------------------------------------------------------------------
@@ -116,6 +120,29 @@ export const torricellisLawSchema: BundleSchema = {
    * 작아진다.
    */
   canvas: { height: 560, minHeight: 480 },
+
+  /**
+   * 한 주기 2.6 s(물리 시간) — 세 구멍에서 같은 순간 떠난 물방울이 날고(fly), 선두에
+   * 멈춰 머물고(hold), 다시 평소 흐름(flow).
+   *
+   * - fly 는 물방울 수명과 같다 — 표지가 물줄기 선두에 닿는 순간이 끝이다.
+   * - fly · hold 0.72 s 를 **0.144 배로 느리게** 흘려 화면에서 5 s 동안 보인다.
+   *   실시간으로는 순식간에 지나가 "같은 시간, 다른 거리" 를 눈으로 볼 수 없다.
+   */
+  timeline: {
+    phases: [
+      { id: 'fly', duration: DROPLET_LIFE, timeScale: 0.144, caption: key('caption.pulse') },
+      { id: 'hold', duration: 0.46, timeScale: 0.144, caption: key('caption.pulse') },
+      { id: 'flow', duration: 1.88, caption: key('caption.main') },
+    ],
+  },
+
+  // 슬롯 하나. 지금 화면에서 벌어지는 일만 말한다.
+  caption: {
+    anchor: { screen: 'bottom-center', offset: [0, -4] },
+    fontSize: 13,
+    style: { colorRole: 'muted', emphasis: 'strong' },
+  },
 
   /**
    * 그리드도 카메라 버튼도 없다 (기본값). 그리드는 "여기서 거리를 재라" 는

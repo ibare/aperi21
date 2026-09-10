@@ -352,6 +352,13 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       const view = viewRef.current;
       const envs = envRef.current;
 
+      // 시간표 단계의 재생 속도. 시간표가 없으면 1 — 앞 번들의 느린 속도가 남지 않게.
+      timeEngine.setSpeed(
+        bundle.schema.timeline
+          ? evaluateTimeline(bundle.schema.timeline, timeEngine.currentTime).timeScale
+          : 1,
+      );
+
       // 물리 스텝 — 종료되지 않았고 timeEngine 이 running 일 때만
       const simDt = timeEngine.tick(realDt);
       if (simDt > 0) {

@@ -31,9 +31,14 @@ export const GROWTH_K = 30.8;
  * 문제가 아니라 그 수의 문제임을 보이려고.
  */
 export const SPEED_STOPS: readonly number[] = [0.05, 0.1, 0.1155, 0.15, 0.2, 0.25];
-/** 한 값에 머무는 시간과 다음 값으로 건너가는 시간(초). */
+/**
+ * 한 값에 머무는 시간과 다음 값으로 건너가는 시간(초). 선언은 스테이지 상수
+ * `stopHold` · `stopRamp` 이고 이것은 비었을 때의 기본값이다.
+ */
 export const STOP_HOLD = 3.4;
 export const STOP_RAMP = 1.1;
+/** 눈금에서 손을 뗀 뒤 자동 진행으로 돌아가기까지(초). 선언은 스테이지 상수 `resumeAfter`. */
+export const RESUME_AFTER = 5;
 
 /**
  * 화면 좌표계. **관 길이를 몇 미터라고 주장하지 않는다** — 표에 없는 값이다.
@@ -52,8 +57,11 @@ export const INJECT_X = 0.08;
  */
 export const RE_TRACK = { y: 0.05, x0: 0.04, length: 0.92 } as const;
 export const RE_RANGE: readonly [number, number] = [700, 5200];
+/** 눈금에 숫자를 붙이는 값. 끌면서 커지는지 작아지는지 읽히게. */
+export const RE_LABELS: readonly number[] = [1000, 2000, RE_CRITICAL, 3000, 4000, 5000];
 
-export const SCENE_BOUNDS = { minX: -0.02, maxX: 1.02, minY: 0.0, maxY: 0.31 } as const;
+/** 아래로 눈금 숫자와 "임계 레이놀즈 수" 이름표 자리를 더 잡는다. */
+export const SCENE_BOUNDS = { minX: -0.02, maxX: 1.02, minY: -0.04, maxY: 0.31 } as const;
 
 // ------------------------------------------------------------------------
 // 문안
@@ -83,6 +91,20 @@ export const laminarVsTurbulentMessages = Object.freeze({
     ko: '흐트러지는 자리가 입구 쪽으로 밀려 올라온다',
     en: 'The break-up point creeps toward the inlet',
   },
+  /** 눈금의 이름. 무엇의 눈금인지 모르면 2300 이 무엇인지도 모른다. */
+  'label.axis': {
+    ko: '레이놀즈 수 — 빠를수록, 관이 굵을수록 커진다',
+    en: 'Reynolds number — larger when faster or in a wider pipe',
+  },
+  /** 2300 눈금 아래 이름표. */
+  'label.critical': { ko: '임계 레이놀즈 수', en: 'Critical Reynolds number' },
+  /** 붉은 실의 정체. */
+  'label.dye': {
+    ko: '염료 — 흐름을 보이게 관 가운데로 넣은 색소',
+    en: 'Dye — injected at the center to make the flow visible',
+  },
+  /** 손잡이 옆 지금 값. 기호와 수라 번역하지 않는다 (C1 판정 3). */
+  'label.re': { ko: 'Re {re}', en: 'Re {re}' },
 } satisfies Record<string, LocalizedText>);
 
 export type LaminarMessageKey = keyof typeof laminarVsTurbulentMessages;
@@ -102,14 +124,22 @@ export const laminarVsTurbulentSchema: BundleSchema = {
   operation: text('label.operation'),
   timeModel: 'linear',
 
-  // 자동 진행이 본체다. 아무것도 누르지 않아도 화면이 할 말을 마친다.
+  // 아무것도 누르지 않아도 여섯 값을 훑으며 할 말을 마친다. 그와 별개로 눈금을 직접
+  // 끌어 값을 잡을 수 있다 (controllers.ts).
   parameters: [],
 
   stages: [
     {
       id: 'pipe',
       label: text('label.stage'),
-      constants: { nu: NU, reCritical: RE_CRITICAL, diameter: PIPE_DIAMETER },
+      constants: {
+        nu: NU,
+        reCritical: RE_CRITICAL,
+        diameter: PIPE_DIAMETER,
+        stopHold: STOP_HOLD,
+        stopRamp: STOP_RAMP,
+        resumeAfter: RESUME_AFTER,
+      },
     },
   ],
 

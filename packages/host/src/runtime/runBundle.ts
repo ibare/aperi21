@@ -336,6 +336,11 @@ export function runBundle<T extends BundleState = BundleState>(
     const i18n = scopedI18n;
     const b = refs.bundle;
 
+    // 시간표 단계의 재생 속도. 시간표가 없으면 1 — 앞 번들의 느린 속도가 남지 않게.
+    // react/embed/Canvas.tsx 와 같은 규약.
+    timeEngine.setSpeed(
+      b.schema.timeline ? evaluateTimeline(b.schema.timeline, timeEngine.currentTime).timeScale : 1,
+    );
     const simDt = timeEngine.tick(realDt);
     if (simDt > 0) {
       const next = b.step({ state: refs.state, dt: simDt, stage: refs.stage, environments: refs.envs });

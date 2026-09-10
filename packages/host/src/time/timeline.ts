@@ -43,6 +43,10 @@ export function evaluateTimeline(def: TimelineDef, elapsed: number): TimelineFra
   let period = 0;
   phases.forEach((p, i) => {
     if (!(p.duration > 0)) throw new Error(`timeline: 단계 '${p.id}' 의 길이가 0 보다 커야 한다`);
+    // 0 이면 시계가 영원히 멈추고 화면만 굳는다 — 예외도 없이.
+    if (p.timeScale !== undefined && !(p.timeScale > 0)) {
+      throw new Error(`timeline: 단계 '${p.id}' 의 재생 속도가 0 보다 커야 한다`);
+    }
     if (index.has(p.id)) throw new Error(`timeline: 단계 id '${p.id}' 가 겹친다`);
     index.set(p.id, i);
     starts.push(period);
@@ -83,6 +87,7 @@ export function evaluateTimeline(def: TimelineDef, elapsed: number): TimelineFra
     u,
     phase: phases[now]!.id,
     progress: eased(now),
+    timeScale: phases[now]!.timeScale ?? 1,
     caption,
     captionAge: u - starts[from]!,
     at: (id) => eased(find(id)),

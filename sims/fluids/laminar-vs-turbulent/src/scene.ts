@@ -28,6 +28,7 @@ import {
 import {
   INJECT_X,
   PIPE,
+  RE_LABELS,
   RE_RANGE,
   RE_TRACK,
   SCENE_BOUNDS,
@@ -45,6 +46,19 @@ const SEED_PERIOD = 1.15;
 const MOTE_LANES = 7;
 /** 캡션이 아래에서 올라온 자리(화면 px). */
 const CAPTION_OFFSET: readonly [number, number] = [0, -4];
+/** 손잡이 위 지금 값의 자리(화면 px). 손잡이(반지름 8~10)에 가리지 않게. */
+const VALUE_OFFSET: readonly [number, number] = [0, -20];
+/** 눈금 이름의 자리 — 지금 값보다 한 줄 위(화면 px). */
+const AXIS_OFFSET: readonly [number, number] = [0, -40];
+/** "임계 레이놀즈 수" 이름표 — 눈금 숫자(14px 아래)보다 한 줄 아래(화면 px). */
+const CRITICAL_OFFSET: readonly [number, number] = [0, 30];
+/** 염료 이름표 — 관 윗벽 위(화면 px). */
+const DYE_OFFSET: readonly [number, number] = [0, -12];
+
+/** 눈금 위 값의 자리(월드). 조작기의 트랙과 같은 식이다. */
+function trackX(re: number): number {
+  return RE_TRACK.x0 + ((re - RE_RANGE[0]) / (RE_RANGE[1] - RE_RANGE[0])) * RE_TRACK.length;
+}
 
 function wall(id: string, y: number): Surface {
   return {
@@ -129,10 +143,23 @@ export function scene(params: {
   };
   out.push(dye);
 
+  // 붉은 실이 무엇인지. 같은 대상이라 같은 색으로 적는다.
+  out.push({
+    type: 'readout',
+    id: 'dye-label',
+    anchor: { world: [PIPE.x0 + INJECT_X, PIPE.centerY + PIPE.halfWidth], offset: [...DYE_OFFSET] },
+    text: text('label.dye'),
+    chip: false,
+    align: 'left',
+    font: 'text',
+    fontSize: 11,
+    style: { colorRole: 'primary', emphasis: 'strong' },
+  });
+
   // ---- Re 눈금 ----
   // 좌표계가 아니라 논거다. 매끄럽게 움직이는 입력을 눈에 보이게 두어야
-  // 출력의 갑작스러움이 갑작스러워 보인다. 숫자 라벨은 2300 하나뿐이다 —
-  // 이 조각의 핵심 숫자가 하나이기 때문이다.
+  // 출력의 갑작스러움이 갑작스러워 보인다. 독자가 직접 끄는 손잡이이기도 하다
+  // (controllers.ts). 숫자를 여러 값에 붙여 끌면서 커지는지 작아지는지 읽히게 한다.
   out.push({
     type: 'scale',
     id: 're-track',
@@ -143,9 +170,49 @@ export function scene(params: {
     range: RE_RANGE,
     value: re,
     tickAt: SPEED_STOPS.map((v) => reynolds(v, c)),
-    labelAt: [c.reCritical],
+    labelAt: RE_LABELS,
     digits: 0,
     style: { colorRole: 'accent', emphasis: 'strong' },
+  });
+
+  // 눈금의 이름 — 무엇의 눈금인지 모르면 2300 이 무엇인지도 모른다.
+  out.push({
+    type: 'readout',
+    id: 're-axis',
+    anchor: { world: [RE_TRACK.x0, RE_TRACK.y], offset: [...AXIS_OFFSET] },
+    text: text('label.axis'),
+    chip: false,
+    align: 'left',
+    font: 'text',
+    fontSize: 11,
+    style: { colorRole: 'muted', emphasis: 'strong' },
+  });
+
+  // 2300 아래 이름표. 문턱 관련이라 강조색.
+  out.push({
+    type: 'readout',
+    id: 're-critical',
+    anchor: { world: [trackX(c.reCritical), RE_TRACK.y], offset: [...CRITICAL_OFFSET] },
+    text: text('label.critical'),
+    chip: false,
+    align: 'center',
+    font: 'text',
+    fontSize: 11,
+    style: { colorRole: 'accent', emphasis: 'strong' },
+  });
+
+  // 지금 값 — 손잡이 위를 따라다닌다. 정박값 포매터를 거친다 — 계산값을 그대로
+  // 반올림하면 표에 없는 수를 화면이 말하게 된다 (2300.8 → 2301).
+  out.push({
+    type: 'readout',
+    id: 're-value',
+    anchor: { world: [trackX(re), RE_TRACK.y], offset: [...VALUE_OFFSET] },
+    text: text('label.re'),
+    vars: { re: formatReynolds(re, c) },
+    chip: false,
+    align: 'center',
+    fontSize: 12,
+    style: { colorRole: 'ink', emphasis: 'strong' },
   });
 
   // ---- 캡션 ----
@@ -165,22 +232,6 @@ export function scene(params: {
             : text('caption.upstream'),
     chip: false,
     fontSize: 13,
-    style: {
-      colorRole: Math.abs(re - c.reCritical) <= 60 ? 'accent' : 'muted',
-      emphasis: 'strong',
-    },
-  });
-
-  // 지금 Re — 정박값 포매터를 거친다. 계산값을 그대로 반올림하면 표에 없는
-  // 수를 화면이 말하게 된다.
-  out.push({
-    type: 'readout',
-    id: 're-value',
-    anchor: { screen: 'top-right', offset: [0, 36] },
-    text: { ko: 'Re = {re}', en: 'Re = {re}' },
-    vars: { re: formatReynolds(re, c) },
-    chip: false,
-    fontSize: 12,
     style: {
       colorRole: Math.abs(re - c.reCritical) <= 60 ? 'accent' : 'muted',
       emphasis: 'strong',
