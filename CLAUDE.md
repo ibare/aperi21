@@ -56,8 +56,8 @@ pnpm test
 rules/
   INDEX.yaml                 ← 트리거 레지스트리 (경로·패턴·import·이벤트)
   principles.md              ← 원칙 6 (Tier 1, 항상 로드)
-  concerns/C1~C5.md          ← 관심사 5 (Tier 2)
-  specifics/S-*.md           ← 도메인 3 (Tier 3)
+  concerns/C1~C6.md          ← 관심사 6 (Tier 2)
+  specifics/S-*.md           ← 도메인 4 (Tier 3)
   _analysis.md / _audit-v*.md ← 분석·감사 기록 (규칙 아님)
 ```
 
@@ -101,7 +101,8 @@ rules/
    `action` 은 snake_case 동사로 시작한다 (`read_*` · `modify_*` · `create_*` · `search_*`).
 4. **검증** — `pnpm -r typecheck` / `pnpm test` / 빌드 / `pnpm pack` 결과는 `baden_verify`.
 5. **규칙 사건** — rule-guard 가 위반을 찾거나 수정을 적용하면 `baden_rule`
-   (`ruleId` 는 `rules/INDEX.yaml` 의 `id` 를 그대로 — `C1`~`C5`, `S-sim`, `S-host`, `S-render`).
+   (`ruleId` 는 `rules/INDEX.yaml` 의 `id` 를 그대로 — `C1`~`C6`, `S-sim`, `S-host`,
+   `S-piece`, `S-render`).
 6. **작업 종료** — `baden_complete_task` 에 결과를 요약해 보고한다.
 
 ### 원칙
