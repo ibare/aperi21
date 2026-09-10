@@ -205,7 +205,7 @@ describe('Standard compute methods', () => {
     const host = createHost();
     expect(host.computeRegistry.hasVector('uniform')).toBe(false);
     expect(host.rendererRegistry.has('body')).toBe(false);
-    expect(host.controllerRegistry.get('slider')).toBeUndefined();
+    expect(host.controllerRegistry.has('slider')).toBe(false);
   });
 
   it('표준 한 벌을 명시로 주면 등록된다', () => {
@@ -213,6 +213,6 @@ describe('Standard compute methods', () => {
     expect(host.computeRegistry.hasVector('uniform')).toBe(true);
     expect(host.computeRegistry.hasVector('gravity')).toBe(true);
     expect(host.rendererRegistry.has('body')).toBe(true);
-    expect(host.controllerRegistry.get('slider')).toBeDefined();
+    expect(host.controllerRegistry.has('slider')).toBe(true);
   });
 });

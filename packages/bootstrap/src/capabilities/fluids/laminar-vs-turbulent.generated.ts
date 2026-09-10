@@ -17,7 +17,7 @@ export const capabilities: HostCapabilities = {
     surface: renderSurface,
     vortexField: renderVortexField,
   },
-  controllers: [
-    new ScaleDragController(),
-  ],
+  controllers: {
+    'scale-drag': () => new ScaleDragController(),
+  },
 };

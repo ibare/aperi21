@@ -18,7 +18,7 @@ export const capabilities: HostCapabilities = {
     surface: renderSurface,
     vector: renderVector,
   },
-  controllers: [
-    new SliderController(),
-  ],
+  controllers: {
+    slider: () => new SliderController(),
+  },
 };

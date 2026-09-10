@@ -1,5 +1,6 @@
 import type {
   Bundle,
+  ControllerSpec,
   PluginLogger,
   Plugin,
   PrimitiveRenderer,
@@ -8,7 +9,7 @@ import type {
 import { Camera } from './camera';
 import { ComputeRegistry } from './compute/registry';
 import { gravityVectorField, uniformVectorField } from './compute/standard';
-import { ControllerRegistry, type ControllerImpl } from './controller/types';
+import { ControllerRegistry, type ControllerFactory } from './controller/types';
 import { AngleDialController } from './controller/angle-dial';
 import { PinballLauncherController } from './controller/pinball-launcher';
 import { PlacementController } from './controller/placement';
@@ -54,8 +55,11 @@ export interface HostConfig {
 export interface HostCapabilities {
   /** primitive type → 렌더러. */
   renderers?: Record<string, PrimitiveRenderer>;
-  /** 조작기 구현. 각자 자기 `type` 을 안다. */
-  controllers?: ControllerImpl[];
+  /**
+   * 조작기 type → **만드는 법.** 인스턴스가 아니다 — host 는 문서 전체가 공유하므로
+   * 인스턴스를 두면 모든 임베드가 조작기 상태를 나눠 쓴다. 러너가 임베드마다 만든다.
+   */
+  controllers?: Partial<Record<ControllerSpec['type'], ControllerFactory>>;
   /** 이름 → 벡터장 계산. */
   vectorCompute?: Record<string, VectorComputeFn>;
 }
@@ -73,16 +77,27 @@ export interface HostCapabilities {
 export function standardCapabilities(): Required<HostCapabilities> {
   return {
     renderers: CORE_RENDERERS,
-    controllers: [
-      new PinballLauncherController(),
-      new AngleDialController(),
-      new PlacementController(),
-      new ValueEditController(),
-      new SliderController(),
-      new ScaleDragController(),
-    ],
+    controllers: {
+      'pinball-launcher': () => new PinballLauncherController(),
+      'angle-dial': () => new AngleDialController(),
+      placement: () => new PlacementController(),
+      'value-edit': () => new ValueEditController(),
+      slider: () => new SliderController(),
+      'scale-drag': () => new ScaleDragController(),
+    },
     vectorCompute: { uniform: uniformVectorField, gravity: gravityVectorField },
   };
+}
+
+/** 능력 한 벌의 조작기 팩토리 목록. `Partial<Record>` 의 빈 자리는 건너뛴다. */
+function controllerEntries(
+  caps: HostCapabilities | undefined,
+): [ControllerSpec['type'], ControllerFactory][] {
+  const out: [ControllerSpec['type'], ControllerFactory][] = [];
+  for (const [type, factory] of Object.entries(caps?.controllers ?? {})) {
+    if (factory) out.push([type as ControllerSpec['type'], factory]);
+  }
+  return out;
 }
 
 /**
@@ -162,8 +177,8 @@ export class Host {
     for (const [type, renderer] of Object.entries(caps?.renderers ?? {})) {
       this.rendererRegistry.register(type, renderer);
     }
-    for (const impl of caps?.controllers ?? []) {
-      this.controllerRegistry.register(impl);
+    for (const [type, factory] of controllerEntries(caps)) {
+      this.controllerRegistry.register(type, factory);
     }
     for (const [name, fn] of Object.entries(caps?.vectorCompute ?? {})) {
       this.computeRegistry.registerVector(name, fn);
@@ -222,9 +237,11 @@ export class Host {
       }
       this.rendererRegistry.register(type, renderer, bundle.zHints?.[type]);
     }
-    for (const impl of caps?.controllers ?? []) {
-      if (this.controllerRegistry.get(impl.type)) continue;
-      this.controllerRegistry.register(impl);
+    // 이미 있는 type 은 건너뛴다. 등록부에 있는 것은 만드는 법이라, 먼저 온 조각의
+    // 것을 써도 인스턴스는 임베드마다 따로다.
+    for (const [type, factory] of controllerEntries(caps)) {
+      if (this.controllerRegistry.has(type)) continue;
+      this.controllerRegistry.register(type, factory);
     }
     const vectorCompute: Record<string, VectorComputeFn> = { ...caps?.vectorCompute };
     for (const [name, fn] of Object.entries(vectorCompute)) {

@@ -20,6 +20,7 @@ import {
   withCaption,
   type Camera,
   type ControllerEventContext,
+  type ControllerImpl,
   type Host,
   type TimeEngine,
   type Viewport,
@@ -151,6 +152,11 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
      * 여러 번 박혀도 서로 섞이지 않는다 (원칙 6).
      */
     const primitiveStore = new Map<string, unknown>();
+    /**
+     * 이 임베드 전용 조작기 묶음. host 는 문서 전체가 공유하므로 조작기 인스턴스를
+     * host 에 두면 임베드끼리 드래그 상태가 섞인다 (C5). 묶음은 자원을 갖지 않는다.
+     */
+    const controllers = host.controllerRegistry.createSet();
     timeEngine.reset();
     timeEngine.start();
 
@@ -159,7 +165,7 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
     let lastT = performance.now();
     let activeController: {
       spec: ControllerSpec;
-      impl: ReturnType<typeof host.controllerRegistry.get>;
+      impl: ControllerImpl;
     } | null = null;
     // 비-컨트롤러 영역을 드래그하면 카메라 팬. 의도하지 않은 클릭(미세 흔들림 포함)
     // 이 userAdjusted 를 세팅해 auto-framing 을 영구 동결하지 않도록 5px deadzone
@@ -209,7 +215,7 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       const ec = makeEventCtx(viewport);
       const specs = bundleRef.current.controllers({ state: stateRef.current }) as ControllerSpec[];
       for (const spec of specs) {
-        const impl = host.controllerRegistry.get(spec.type);
+        const impl = controllers.get(spec.type);
         if (!impl) continue;
         if (impl.hitTest(input, ec, spec, stateRef.current as BundleState)) {
           return { spec, impl };
@@ -465,7 +471,7 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
 
       // Controller 렌더 (스크린 오버레이) — 목록은 프레이밍과 같은 것을 쓴다.
       for (const spec of controllerSpecs) {
-        const impl = host.controllerRegistry.get(spec.type);
+        const impl = controllers.get(spec.type);
         if (!impl) continue;
         impl.render({ ...rc, viewport: vp }, spec, stateRef.current as BundleState);
       }

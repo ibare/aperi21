@@ -17,7 +17,7 @@ import type {
   SceneGraph,
   StageDef,
 } from '@aperi21/schema';
-import { runBundle } from '../index';
+import { createHost, runBundle, type ControllerImpl } from '../index';
 
 // ── fixture ────────────────────────────────────────────────────────────────
 // sim 패키지를 끌어오지 않는다 (S-sim: 다른 패키지 import 금지 / C7 경계).
@@ -208,6 +208,51 @@ describe('임베드 인스턴스 독립', () => {
     expect(rec.calls.length).toBeGreaterThan(drawnBefore);
     expect(raf.pending()).toBe(1);
 
+    hb.destroy();
+  });
+
+  it('host 를 함께 쓰는 두 임베드가 조작기를 따로 만든다 — 드래그 상태가 섞이지 않는다', () => {
+    // host 는 문서 전체가 공유한다. 조작기 인스턴스가 host 에 있으면 A 의 발사대를
+    // 당길 때 B 의 발사대도 당겨진 모습으로 그려졌다.
+    const made: ControllerImpl[] = [];
+    const host = createHost({
+      capabilities: {
+        controllers: {
+          slider: () => {
+            const impl: ControllerImpl = {
+              type: 'slider',
+              render: () => undefined,
+              hitTest: () => false,
+              onPointerDown: () => null,
+              onPointerMove: () => null,
+              onPointerUp: () => null,
+              isDragging: () => false,
+            };
+            made.push(impl);
+            return impl;
+          },
+        },
+      },
+    });
+    const bundle: Bundle<TestState> = {
+      ...makeBundle(),
+      controllers: (): ControllerSpec[] => [
+        { type: 'slider', binds: { value: 't' }, range: [0, 1], label: { en: 'T' } },
+      ],
+    };
+    const a = document.createElement('div');
+    const b = document.createElement('div');
+    document.body.append(a, b);
+
+    const ha = runBundle(bundle, a, { host });
+    const hb = runBundle(bundle, b, { host });
+    raf.tick(3);
+
+    // 임베드마다 하나, 프레임이 흘러도 더 만들지 않는다.
+    expect(made).toHaveLength(2);
+    expect(made[0]).not.toBe(made[1]);
+
+    ha.destroy();
     hb.destroy();
   });
 });

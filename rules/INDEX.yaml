@@ -106,7 +106,11 @@ concerns:
         - "packages/host/src/runtime/**"
         - "packages/react/src/embed/**"
         - "packages/host-tiptap/src/node-view.ts"
+        - "packages/host/src/host.ts"
+        - "packages/host/src/controller/**"
       patterns:
+        - "createSet"
+        - "ControllerFactory"
         - "requestAnimationFrame"
         - "addEventListener"
         - "setTimeout"

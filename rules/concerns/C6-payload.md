@@ -44,8 +44,10 @@ last_verified: 2026-09-10
 ## MUST NOT
 
 - **모듈 최상위에서 능력을 인스턴스화하지 않는다.** `export const X = { a: new AController() }`
-  는 번들러가 부수 효과로 보고 지우지 못한다. 함수로 감싼다 —
-  `standardCapabilities()` 가 그 형태다.
+  는 번들러가 부수 효과로 보고 지우지 못한다. 함수로 감싼다 — 한 벌 전체를 감싸는
+  `standardCapabilities()` 와, 항목마다 만드는 법을 두는 생성물의
+  `{ 'a': () => new AController() }` 가 그 형태다. 뒤의 것은 C5 의 요구이기도 하다 —
+  host 는 문서 전체가 공유하므로 조작기 인스턴스는 임베드마다 만들어야 한다.
 - 배럴 재수출로 남의 모듈을 끌어오지 않는다.
 - `sideEffects: false` 를 어기는 최상위 부수 효과를 두지 않는다.
 

@@ -28,7 +28,7 @@ import { Camera, type Viewport } from '../camera';
 import { Host, createHost } from '../host';
 import { createTimeEngine, evaluateTimeline, withCaption } from '../time';
 import type { ThemeMode } from '../theme';
-import type { ControllerEventContext, PointerInput } from '../controller/types';
+import type { ControllerEventContext, ControllerImpl, PointerInput } from '../controller/types';
 
 /**
  * 임베드 캔버스 치수의 기본값. 선언(`BundleSchema.canvas`)이 비었을 때만 쓰인다.
@@ -168,10 +168,13 @@ export function runBundle<T extends BundleState = BundleState>(
   let rafId = 0;
   let lastT =
     typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
+  // 이 임베드 전용 조작기 묶음. host 는 문서 전체가 공유하므로 조작기 인스턴스를
+  // host 에 두면 임베드끼리 드래그 상태가 섞인다 (C5). 묶음은 자원을 갖지 않는다.
+  const controllers = host.controllerRegistry.createSet();
   let activeController:
     | {
         spec: ControllerSpec;
-        impl: ReturnType<typeof host.controllerRegistry.get>;
+        impl: ControllerImpl;
       }
     | null = null;
   let panning: {
@@ -220,7 +223,7 @@ export function runBundle<T extends BundleState = BundleState>(
     const ec = makeEventCtx(viewport);
     const specs = refs.bundle.controllers({ state: refs.state }) as ControllerSpec[];
     for (const spec of specs) {
-      const impl = host.controllerRegistry.get(spec.type);
+      const impl = controllers.get(spec.type);
       if (!impl) continue;
       if (impl.hitTest(input, ec, spec, refs.state as BundleState)) {
         return { spec, impl };
@@ -420,7 +423,7 @@ export function runBundle<T extends BundleState = BundleState>(
 
     const controllerSpecs = b.controllers({ state: refs.state }) as ControllerSpec[];
     for (const spec of controllerSpecs) {
-      const impl = host.controllerRegistry.get(spec.type);
+      const impl = controllers.get(spec.type);
       if (!impl) continue;
       impl.render({ ...rc, viewport: vp }, spec, refs.state as BundleState);
     }

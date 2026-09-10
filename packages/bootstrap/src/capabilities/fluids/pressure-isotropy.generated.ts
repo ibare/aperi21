@@ -16,7 +16,7 @@ export const capabilities: HostCapabilities = {
     trajectory: renderTrajectory,
     vector: renderVector,
   },
-  controllers: [
-    new AngleDialController(),
-  ],
+  controllers: {
+    'angle-dial': () => new AngleDialController(),
+  },
 };

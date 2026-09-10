@@ -16,8 +16,8 @@ export const capabilities: HostCapabilities = {
     trajectory: renderTrajectory,
     vector: renderVector,
   },
-  controllers: [
-    new AngleDialController(),
-    new PinballLauncherController(),
-  ],
+  controllers: {
+    'angle-dial': () => new AngleDialController(),
+    'pinball-launcher': () => new PinballLauncherController(),
+  },
 };

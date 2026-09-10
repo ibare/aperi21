@@ -60,9 +60,11 @@ function generate(): void {
       lines.push('  },');
     }
     if (controllers.length > 0) {
-      lines.push('  controllers: [');
-      for (const t of controllers) lines.push(`    new ${CONTROLLERS[t]!}(),`);
-      lines.push('  ],');
+      // 인스턴스가 아니라 만드는 법이다. 모듈 최상위에서 `new` 하면 번들러가 지우지
+      // 못하고(C6), 한 문서의 임베드들이 그 인스턴스를 나눠 쓴다(C5).
+      lines.push('  controllers: {');
+      for (const t of controllers) lines.push(`    ${quoteKey(t)}: () => new ${CONTROLLERS[t]!}(),`);
+      lines.push('  },');
     }
     lines.push('};');
 
