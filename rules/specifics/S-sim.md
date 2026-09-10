@@ -3,7 +3,7 @@ name: S-sim
 description: sims/<category>/<name>/src 의 파일 구성과 각 파일의 책임. sim 은 선언과 순수 물리만 담는다.
 type: specific
 version: 1
-last_verified: 2026-09-09
+last_verified: 2026-09-10
 ---
 
 # S-sim. 시뮬레이션 패키지 구조
@@ -18,7 +18,7 @@ last_verified: 2026-09-09
 
 | 파일 | 역할 | export |
 |---|---|---|
-| `schema.ts` | `BundleSchema` — id · params · stages · environments · views 선언 | `<name>Schema` |
+| `schema.ts` | `BundleSchema` — id · params · stages · environments · views · timeline · caption 선언 | `<name>Schema` |
 | `state.ts` | 런타임 상태 타입과 초기 상태 | `<Name>State` · `initialState` |
 | `physics.ts` | **순수 함수.** 상태 → 다음 상태. DOM·캔버스·시간을 모른다 | `step` · `derive*` |
 | `scene.ts` | 상태 → `SceneGraph` 선언. **그리지 않는다, 선언한다** | `scene` |
@@ -40,6 +40,13 @@ last_verified: 2026-09-09
   순수 계산 함수와 타입뿐이다 (원칙 1).
 - 색 리터럴을 두지 않는다 (C2). 현재 `sims/**` 0건.
 - 6파일 외 `.ts` 를 `src/` 루트에 두지 않는다 — **도메인 헬퍼 1파일은 예외**로 허용한다.
+
+## 상태가 시계뿐인 조각
+
+모든 것이 시각의 함수이면 상태는 비어 있다(`Record<string, never>`). 시계는 엔진이
+시간표 선언에서 `scene` 에 `params.timeline` 으로 준다. 이때도 `state.ts` 와 `physics.ts`
+는 지우지 않는다 — 빈 `initialState` 와 항등 `step` 을 둔다. 누적 적분이 필요한 조각만
+`step` 이 일을 한다.
 
 ## 도메인 헬퍼 예외
 

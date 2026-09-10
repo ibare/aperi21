@@ -5,7 +5,7 @@
 //
 // 자유 렌더를 쓰지 않는다. 넓이 · 떨어지는 기둥 · 길 위 띠 · 길은 `region`,
 // 축 · 곡선 · 경계 · 말뚝 · 바늘은 `trajectory`, 지금 속도 점은 `marker`, 바퀴는
-// `body`, 축 이름과 캡션은 `readout`.
+// `body`, 축 이름은 `readout`. 캡션은 선언의 캡션 슬롯이 그린다.
 //
 // ---- 두 칸, 월드 하나 ----
 // 그래프 칸(위)과 길 칸(아래)을 **한 월드 좌표**에 위아래로 놓는다. 월드 1 = 길 1 m.
@@ -29,21 +29,13 @@ import type {
   Region,
   SceneGraph,
   StageDef,
+  TimelineFrame,
   Trajectory,
   Vec2,
   ViewDef,
 } from '@aperi21/schema';
-import {
-  TOTAL_DISTANCE as D,
-  distance,
-  ease,
-  envelope,
-  landedUntil,
-  phase,
-  stripProgress,
-  velocity,
-} from './physics';
-import { FLIGHT, KNOTS, STAGGER, SUB, T_END, V_MAX, text } from './schema';
+import { TOTAL_DISTANCE as D, distance, landedUntil, stripProgress, velocity } from './physics';
+import { KNOTS, STAGGER, SUB, T_END, V_MAX, text } from './schema';
 import type { VelocityTimeGraphState } from './state';
 
 // ------------------------------------------------------------------------
@@ -164,10 +156,15 @@ export function scene(params: {
   view: ViewDef;
   stage: StageDef;
   environments: EnvironmentDef[];
+  timeline?: TimelineFrame;
 }): SceneGraph {
-  const tau = phase(params.state.t);
+  const tl = params.timeline;
+  if (!tl) throw new Error('velocity-time-graph: schema.timeline 이 선언되어야 한다');
+  const tau = tl.u;
   const tm = Math.min(tau, T_END); // 운동 시각
-  const { fade, fadeIn } = envelope(tau);
+  const flight = tl.duration('land'); // 한 기둥의 비행 시간
+  const fade = 1 - tl.at('fade');
+  const fadeIn = tl.at('appear');
   const out: Primitive[] = [];
 
   // ---- 그래프 축 ----
@@ -232,7 +229,7 @@ export function scene(params: {
   // ---- 길 ----
   // 내려앉은 띠 아래는 비워 둔다. 반투명 파랑이 길 위에 겹치면 그래프 속 넓이와
   // 다른 파랑이 되어 "같은 것" 이라는 말이 흐려진다.
-  const edge = landedUntil(tau);
+  const edge = landedUntil(tau, flight);
   const landed = distance(edge);
   const roadL = -px(14);
   const roadR = D + px(14);
@@ -259,10 +256,11 @@ export function scene(params: {
 
   // ---- 떼어 옮기는 넓이 ----
   for (let i = 1; i <= T_END; i++) {
-    if (tau < i || tau > i + STAGGER + FLIGHT) continue;
-    const p = stripProgress(i, 0, tau);
+    if (tau < i || tau > i + STAGGER + flight) continue;
+    const p = stripProgress(i, 0, tau, flight);
     if (p <= 0 || p >= 1) continue;
-    out.push(fill(`column-${i}`, fallingColumn(i, ease(p)), AREA, AREA_FILL, fade));
+    const e = tl.span(i, i + flight, 'inOutCubic');
+    out.push(fill(`column-${i}`, fallingColumn(i, e), AREA, AREA_FILL, fade));
   }
 
   // ---- 물체 ----
@@ -297,20 +295,6 @@ export function scene(params: {
     out.push(wheel);
   }
   out.push(line('needle', [[cx, base + px(6)], [cx, BAND_H - px(5)]], 1.5, INK, cartAlpha));
-
-  // ---- 캡션 ----
-  // 슬롯 하나, 고정. 지금 화면에서 매초 반복되는 일 하나만 말한다.
-  const caption: Readout = {
-    type: 'readout',
-    id: 'caption',
-    anchor: { screen: 'bottom-left' },
-    text: text('caption.main'),
-    chip: false,
-    align: 'left',
-    fontSize: 15,
-    style: INK,
-  };
-  out.push(caption);
 
   return out;
 }

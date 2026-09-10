@@ -57,6 +57,20 @@ function walk(dir: string, out: string[] = []): string[] {
   return out;
 }
 
+/**
+ * 선언 필드가 **엔진에게 그리게 하는** 어휘. 조각의 scene 에는 그 type 이 없어도
+ * 엔진이 대신 만들어 넣으므로 능력은 실려야 한다 — 빠지면 러너가 렌더러를 못 찾고
+ * 조용히 건너뛴다.
+ *
+ * `BundleSchema.caption` 슬롯 → 엔진이 `readout` 을 만든다 (`host/src/time/timeline.ts`).
+ * `anchor:` 까지 보는 것은 지역 변수 `const caption: Readout` 와 가르기 위해서다.
+ * 슬롯 안의 한 겹 중괄호(`style: { … }` 가 앞에 오는 경우)는 건너뛴다. 놓치면 캡션이
+ * 조용히 사라지므로 `packages/bootstrap/test/declarations.test.ts` 가 생성물을 확인한다.
+ */
+const IMPLIED: readonly { pattern: RegExp; types: readonly string[] }[] = [
+  { pattern: /\bcaption:\s*\{(?:[^{}]|\{[^{}]*\})*?\banchor:/, types: ['readout'] },
+];
+
 /** 이 sim 의 `src` 가 선언한 표준 능력 type 집합. */
 export function declaredCapabilities(simSrc: string): Set<string> {
   const used = new Set<string>();
@@ -65,6 +79,9 @@ export function declaredCapabilities(simSrc: string): Set<string> {
     for (const m of text.matchAll(/type:\s*'([a-zA-Z-]+)'/g)) {
       const t = m[1]!;
       if (t in ALL_CAPABILITIES) used.add(t);
+    }
+    for (const { pattern, types } of IMPLIED) {
+      if (pattern.test(text)) for (const t of types) used.add(t);
     }
   }
   return used;

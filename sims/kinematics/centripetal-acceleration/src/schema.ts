@@ -29,27 +29,13 @@ export const BALL_RADIUS = 0.07;
 export const HEAD_SIZE = 0.11;
 
 // ------------------------------------------------------------------------
-// 시간표 — 원본 index.html 의 상수를 그대로 옮긴다.
+// 운동 — 원본 index.html 의 상수를 그대로 옮긴다. 단계의 길이는 아래 `timeline`.
 // ------------------------------------------------------------------------
 
 /** 각속도 50°/s — 한 바퀴 7.2 초. */
 export const OMEGA = 50 * DEG;
-/** 비교하는 두 순간의 각 간격 50°. 삼각형이 눈에 보일 만큼 크게 고른 값이다. */
-export const GAP = 50 * DEG;
-/** 첫 속도를 남긴 뒤 둘째 속도까지(1.0 s). */
-export const TAU = GAP / OMEGA;
-/** 꼬리 맞대기 · Δv 자라남 · 멈춤 · 호의 가운데로 옮김 · 쉼 (초). */
-export const SLIDE = 0.7;
-export const GROW = 0.5;
-export const HOLD = 0.5;
-export const MOVE = 0.8;
-export const REST = 0.95;
-/** 한 주기 4.45 s — 공은 222.5° 전진한다 (한 바퀴에서 황금각만큼 모자란 각). */
-export const PERIOD = TAU + SLIDE + GROW + HOLD + MOVE + REST;
 /** 0번 주기의 첫 순간 공의 각 100°. */
 export const THETA0 = 100 * DEG;
-/** 도착했을 때 이미 0.6 초 진행된 상태로 보인다 — 운동 시계를 이만큼 앞당겨 연다. */
-export const START_TIME = 0.6;
 /** 지난 Δv 가 흐려지는 시간 척도 11 s. */
 export const FADE = 11;
 /** 이보다 옅어진 지난 Δv 는 그리지 않는다. */
@@ -58,15 +44,6 @@ export const MIN_ALPHA = 0.12;
 export const PAST_CYCLES = 8;
 /** 남겨 둔 속도 사본의 불투명도. */
 export const KEPT_ALPHA = 0.42;
-/** 캡션이 단계가 바뀔 때 페이드 인 하는 시간(초). */
-export const CAPTION_FADE = 0.3;
-
-/** 단계 경계 — 주기 안 시각 u. */
-export const B0 = TAU;
-export const B1 = B0 + SLIDE;
-export const C1 = B1 + GROW;
-export const D1 = C1 + HOLD;
-export const E1 = D1 + MOVE;
 
 /**
  * 프레이밍 — 원본 840×280 캔버스의 세로 전체(±1.4)와, 가로는 궤도 왼쪽 끝의 속도
@@ -115,6 +92,11 @@ export function text(key: CentripetalAccelerationMessageKey): LocalizedText {
   return centripetalAccelerationMessages[key];
 }
 
+/** 시간표·캡션 슬롯이 부르는 문안 키. 없는 키를 쓰면 여기서 타입이 막는다. */
+function key(k: CentripetalAccelerationMessageKey): string {
+  return k;
+}
+
 // ------------------------------------------------------------------------
 // BundleSchema
 // ------------------------------------------------------------------------
@@ -130,8 +112,7 @@ export const centripetalAccelerationSchema: BundleSchema = {
   // 이미 보여 준다.
   parameters: [],
 
-  // 운동 시계를 앞당겨 여는 시각도 선언이다 — 저작자가 바꿀 수 있어야 한다 (원칙 2).
-  stages: [{ id: 'main', label: text('label.stage'), constants: { startAt: START_TIME } }],
+  stages: [{ id: 'main', label: text('label.stage'), constants: {} }],
   environments: [],
   views: [{ id: 'main', label: text('label.view'), default: true }],
   autoViews: { energy: false },
@@ -141,6 +122,36 @@ export const centripetalAccelerationSchema: BundleSchema = {
    * 더해 원본과 같은 배율(100 px/단위)이 되는 높이다.
    */
   canvas: { height: 352, minHeight: 320 },
+
+  /**
+   * 한 주기 — 한 순간의 속도를 남기고(keep), 조금 뒤의 속도와 꼬리를 맞대고(align),
+   * 그 차이 Δv 가 자라고(grow · hold), Δv 를 호의 가운데로 옮긴 뒤 쉰다(move · rest).
+   *
+   * - 비교하는 두 순간의 각 간격은 `keep` 의 길이에서 나온다 — 그동안 공이 도는 각이다
+   *   (1.0 s × 50°/s = 50°, 삼각형이 눈에 보일 만큼 크게).
+   * - 주기 4.45 s 동안 공은 222.5° 전진한다 (한 바퀴에서 황금각만큼 모자란 각). 비교하는
+   *   자리가 주기마다 겹치지 않는다.
+   * - 도착했을 때 이미 0.6 초 진행된 상태로 보인다.
+   */
+  timeline: {
+    startAt: 0.6,
+    phases: [
+      { id: 'keep', duration: 1.0, caption: key('caption.keep') },
+      { id: 'align', duration: 0.7, ease: 'smooth', caption: key('caption.align') },
+      { id: 'grow', duration: 0.5, ease: 'smooth', caption: key('caption.differ') },
+      { id: 'hold', duration: 0.5, caption: key('caption.differ') },
+      { id: 'move', duration: 0.8, ease: 'smooth', caption: key('caption.center') },
+      { id: 'rest', duration: 0.95, caption: key('caption.center') },
+    ],
+  },
+
+  // 원 옆에 둬 세로를 아낀다. 원본의 캡션 글자 18 px, 단계가 바뀔 때 0.3 초 페이드 인.
+  caption: {
+    anchor: { world: [CAPTION_X, 0] },
+    align: 'left',
+    fontSize: 18,
+    fade: 0.3,
+  },
 
   // 그리드도 카메라 버튼도 없다 (기본값). 각도 표시·축·격자는 특정 각이 중요한
   // 것처럼 읽히게 한다 (원본 inventory 「hidden」).

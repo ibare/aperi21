@@ -86,7 +86,8 @@ export function Embed({ bundle, stageId, initialView, initialEnvironments, inspe
 
     // 검사 시각 이동. 여기(Embed)에 두는 이유 — React 는 자식 effect 를 먼저 돌려서,
     // Canvas 에서 하면 뒤이어 도는 이 effect 의 reset() 이 시각을 0 으로 되돌린다.
-    if (inspectAt !== undefined && inspectAt > 0 && bundle.schema.timeModel !== 'static') {
+    // t=0 도 검사 시각이다 — 첫 프레임에 멈춰야 도착 순간을 원본과 비교할 수 있다.
+    if (inspectAt !== undefined && bundle.schema.timeModel !== 'static') {
       const target = Math.min(inspectAt, INSPECT_MAX_T);
       const steps = Math.round(target / INSPECT_DT);
       let state = runtime.stateRef.current;

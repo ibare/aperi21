@@ -34,7 +34,7 @@
     { "element": "원 궤도", "vocab": "trajectory (closed · width)", "status": "수정 필요",
       "note": "closed 가 선언만 있고 미구현" }
   ],
-  "outside": ["시간표 헬퍼 — sim 쪽 연출 계산. 원칙 1 허용 목록 판단 필요"]
+  "outside": ["꺾은선 속도의 정확한 적분 — sim 의 물리"]
 }
 ```
 

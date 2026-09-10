@@ -821,6 +821,24 @@ export interface BundleSchema {
   };
 
   /**
+   * 시간표. 조각이 **아무것도 누르지 않아도 할 말을 마치는** 순서를 선언한다 (S-piece).
+   *
+   * 단계의 길이·순서·이징·캡션과 시작 시각은 저작 결정이다 (원칙 2). 코드에 두면
+   * "이 단계를 0.3 초 더 길게" 를 저작자가 할 수 없다. 엔진이 시각에서 지금 단계와
+   * 진행도를 계산해 `scene` 에 `timeline` 으로 넘긴다.
+   */
+  timeline?: TimelineDef;
+
+  /**
+   * 캡션 슬롯 하나. 선언하면 엔진이 캡션을 그린다 — 지금 단계의 `caption` 키,
+   * 없으면 `text` 키의 문안. 슬롯이 하나뿐인 것은 구조다: *캡션이 둘이면 조각이
+   * 둘이다* (S-piece).
+   *
+   * 이 슬롯을 쓰는 조각은 scene 에 id `caption` 을 두지 않는다 (엔진 예약).
+   */
+  caption?: CaptionSlotDef;
+
+  /**
    * 저작자가 정한 화면 문안. 조회 3층 중 **1층**이며 언제나 이긴다 (C1).
    *
    * 키는 코드의 호출부가 쓰는 것과 같다 — 프레임워크 문구를 덮어쓰려면 그쪽 키를
@@ -831,6 +849,90 @@ export interface BundleSchema {
    * 저작 결정이므로, 문안이 코드에 있으면 저작자가 손댈 수 없다.
    */
   messages?: Record<string, LocalizedText>;
+}
+
+// ------------------------------------------------------------------------
+// 시간표 · 캡션 슬롯
+// ------------------------------------------------------------------------
+
+/** 진행도에 거는 이징. 이름만 선언한다 — 곡선은 엔진이 안다. */
+export type TimelineEase = 'linear' | 'smooth' | 'inOutCubic';
+
+export interface TimelinePhase {
+  /** 단계 이름. scene 이 `at('grow')` 처럼 부른다. 한 시간표 안에서 겹치지 않는다. */
+  id: string;
+  /** 초. 0 보다 크다. */
+  duration: number;
+  /** 이 단계 진행도(`progress` · `at`)의 이징. 기본 `linear`. */
+  ease?: TimelineEase;
+  /**
+   * 이 단계에 캡션 슬롯이 말할 문안 키(`messages`). 이웃 단계가 같은 키면 한 문장이
+   * 이어지는 것이라 다시 페이드하지 않는다.
+   */
+  caption?: string;
+}
+
+/**
+ * 한 주기의 단계 목록. **끝나면 처음으로 돌아간다** — 조각은 문단 옆에 늘 놓여 있어서
+ * 끝난 화면이 남으면 할 말을 멈춘 것이 된다.
+ */
+export interface TimelineDef {
+  /**
+   * 조각 시계를 이만큼 앞당겨 연다(초). 기본 0. *독자가 도착한 순간 이미 진행 중*
+   * 을 만드는 선언이다 (S-piece).
+   */
+  startAt?: number;
+  phases: TimelinePhase[];
+}
+
+export interface CaptionSlotDef {
+  anchor: Readout['anchor'];
+  align?: Readout['align'];
+  /** 화면 px. 생략하면 readout 기본값. */
+  fontSize?: number;
+  /** 생략하면 본문 먹색(`muted` · `strong`). */
+  style?: BaseMeta['style'];
+  /** 문안이 바뀔 때 페이드 인 하는 시간(초). 기본 0 — 바로 바뀐다. */
+  fade?: number;
+  /** 단계가 캡션을 말하지 않을 때의 문안 키. 시간표가 없는 조각은 이것만 쓴다. */
+  text?: string;
+}
+
+/**
+ * 엔진이 매 프레임 시간표를 시각에서 계산한 값. **선언이 아니라 scene 에 넘기는 인자**다.
+ *
+ * 모두 조각 시계 `t` 의 함수라 같은 시각은 언제나 같은 값이다. 없는 단계 id 를
+ * 부르면 던진다 — 빈 값으로 넘어가면 화면이 조용히 틀린다.
+ */
+export interface TimelineFrame {
+  /** 조각 시계(초) = 흐른 시간 + `startAt`. */
+  readonly t: number;
+  /** 한 주기의 길이(초) = 단계 길이의 합. */
+  readonly period: number;
+  /** 주기 번호. 0 부터. */
+  readonly cycle: number;
+  /** 주기 안 시각(초). */
+  readonly u: number;
+  /** 지금 단계 id. */
+  readonly phase: string;
+  /** 지금 단계의 진행도 0~1 (이징 적용). */
+  readonly progress: number;
+  /** 지금 캡션 키. 단계가 말하지 않으면 없다. */
+  readonly caption?: string;
+  /** 지금 캡션이 시작된 뒤 흐른 시간(초). 페이드용. */
+  readonly captionAge: number;
+  /** 이번 주기에서 그 단계의 진행도 — 전에는 0, 동안 0~1 (이징 적용), 뒤에는 1. */
+  at(id: string): number;
+  /** 그 단계가 시작하는 주기 안 시각. */
+  start(id: string): number;
+  /** 그 단계가 끝나는 주기 안 시각. */
+  end(id: string): number;
+  duration(id: string): number;
+  /**
+   * 주기 안 임의 구간 [from, to] 의 진행도. 단계로 나눌 수 없는 시차 출발(기둥 i 가
+   * i 초에 떠난다)에 쓴다.
+   */
+  span(from: number, to: number, ease?: TimelineEase): number;
 }
 
 /** 월드 좌표 경계 상자 — Camera fitToBounds 에 쓰임. */
@@ -873,6 +975,8 @@ export interface Bundle<TState extends BundleState = BundleState> {
     view: ViewDef;
     stage: StageDef;
     environments: EnvironmentDef[];
+    /** `schema.timeline` 을 선언한 조각에만 온다. */
+    timeline?: TimelineFrame;
   }): SceneGraph;
 
   /** 조작 UI 선언. 상태 종속적일 수 있음. */

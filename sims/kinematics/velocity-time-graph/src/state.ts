@@ -1,16 +1,12 @@
-import type { StageDef } from '@aperi21/schema';
-import { START_AT } from './schema';
-
-export interface VelocityTimeGraphState {
-  /** 운동 시계(초). 이 조각의 상태는 시간뿐이다 — 나머지는 전부 t 의 함수. */
-  t: number;
-}
-
 /**
- * 운동 시계를 `startAt` 만큼 앞당겨 연다. 도착한 순간 이미 첫 기둥이 떨어지는
- * 중이다 (S-piece). 원본의 `tau(t) = (t + 1.5) % 12.4` 에서 1.5 가 이것이다.
+ * 상태가 없다. 넓이 · 떨어지는 기둥 · 물체가 전부 주기 안 시각의 함수이고, 시각은
+ * 엔진이 시간표 선언(`schema.timeline`)에서 `scene` 에 넘겨 준다.
+ *
+ * 원본의 `tau(t) = (t + 1.5) % 12.4` 에서 1.5 는 `timeline.startAt`, 12.4 는 단계
+ * 길이의 합이다.
  */
-export function initialState(params: { stage: StageDef }): VelocityTimeGraphState {
-  const startAt = params.stage.constants.startAt;
-  return { t: typeof startAt === 'number' ? startAt : START_AT };
+export type VelocityTimeGraphState = Record<string, never>;
+
+export function initialState(): VelocityTimeGraphState {
+  return {};
 }

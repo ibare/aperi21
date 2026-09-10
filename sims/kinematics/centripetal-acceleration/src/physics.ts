@@ -2,13 +2,15 @@
 // centripetal-acceleration — 순수 운동학
 // ========================================================================
 // 월드 좌표(원의 중심 원점, y 위). 공은 반시계로 돈다.
+//
+// 시계와 주기 안 단계는 엔진이 시간표 선언(`schema.timeline`)에서 준다.
 // ========================================================================
 
-import type { Vec2 } from '@aperi21/schema';
-import { E1, FADE, GAP, OMEGA, PERIOD, RADIUS, SPEED_LENGTH, THETA0 } from './schema';
+import type { TimelineFrame, Vec2 } from '@aperi21/schema';
+import { FADE, OMEGA, RADIUS, SPEED_LENGTH, THETA0 } from './schema';
 import type { CentripetalAccelerationState } from './state';
 
-/** 운동 시계 s 에서 공의 각. */
+/** 조각 시계 s 에서 공의 각. */
 export function theta(s: number): number {
   return THETA0 + OMEGA * s;
 }
@@ -23,6 +25,7 @@ export function velocity(th: number): Vec2 {
   return [-SPEED_LENGTH * Math.sin(th), SPEED_LENGTH * Math.cos(th)];
 }
 
+/** 'Δv' 이름표의 나타남에 쓴다. 시간이 아니라 Δv 가 자란 정도의 함수라 시간표 밖이다. */
 export function ease(x: number): number {
   const k = Math.max(0, Math.min(1, x));
   return k * k * (3 - 2 * k);
@@ -48,14 +51,19 @@ export interface Cycle {
   mid: Vec2;
   /** Δv = v2 − v1 (속도와 같은 척도). */
   dv: Vec2;
-  /** Δv 가 호의 가운데에 자리 잡는 시각(운동 시계). */
+  /** Δv 가 호의 가운데에 자리 잡는 시각(조각 시계). */
   done: number;
 }
 
-/** k 번 주기의 비교. 주기 번호만으로 정해지므로 지난 주기도 다시 계산할 수 있다. */
-export function cycle(k: number): Cycle {
-  const th1 = theta(k * PERIOD);
-  const th2 = th1 + GAP;
+/**
+ * k 번 주기의 비교. 주기 번호와 시간표만으로 정해지므로 지난 주기도 다시 계산할 수 있다.
+ *
+ * 두 순간의 각 간격은 `keep` 단계 동안 공이 도는 각이다. 따로 두면 저작자가 그 단계를
+ * 늘렸을 때 v2 가 공이 도착하기 전에 나타난다.
+ */
+export function cycle(k: number, tl: TimelineFrame): Cycle {
+  const th1 = theta(k * tl.period);
+  const th2 = th1 + OMEGA * tl.duration('keep');
   const v1 = velocity(th1);
   const v2 = velocity(th2);
   return {
@@ -65,17 +73,11 @@ export function cycle(k: number): Cycle {
     v2,
     mid: position((th1 + th2) / 2),
     dv: [v2[0] - v1[0], v2[1] - v1[1]],
-    done: k * PERIOD + E1,
+    done: k * tl.period + tl.end('move'),
   };
 }
 
-/** 운동 시계 s 를 주기 번호 k 와 주기 안 시각 u 로 가른다. */
-export function phase(s: number): { k: number; u: number } {
-  const k = Math.floor(s / PERIOD);
-  return { k, u: s - k * PERIOD };
-}
-
-/** 시간만 전진한다. 모든 움직임이 시계의 함수라 쌓는 상태가 없다. */
-export function step(params: { state: CentripetalAccelerationState; dt: number }): CentripetalAccelerationState {
-  return { t: params.state.t + params.dt };
+/** 쌓는 상태가 없다 — 모든 움직임이 조각 시계의 함수다. */
+export function step(params: { state: CentripetalAccelerationState }): CentripetalAccelerationState {
+  return params.state;
 }

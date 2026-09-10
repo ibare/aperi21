@@ -26,7 +26,7 @@ import { BackgroundParticleSystem } from '../particles';
 import { preprocessScene } from '../scene';
 import { Camera, type Viewport } from '../camera';
 import { Host, createHost } from '../host';
-import { createTimeEngine } from '../time';
+import { createTimeEngine, evaluateTimeline, withCaption } from '../time';
 import type { ThemeMode } from '../theme';
 import type { ControllerEventContext, PointerInput } from '../controller/types';
 
@@ -367,12 +367,21 @@ export function runBundle<T extends BundleState = BundleState>(
     // 그리드는 선언이 켜야 나온다 (원칙 4, R9). react/embed/Canvas.tsx 와 같은 규약.
     if (b.schema.chrome?.grid) drawAxisGrid(ctx!, vp, camera, theme);
 
-    const sceneGraph = b.scene({
-      state: refs.state,
-      view: refs.view,
-      stage: refs.stage,
-      environments: refs.envs,
-    });
+    // 시간표와 캡션은 선언이다. react/embed/Canvas.tsx 와 같은 규약.
+    const timeline = b.schema.timeline
+      ? evaluateTimeline(b.schema.timeline, timeEngine.currentTime)
+      : undefined;
+    const sceneGraph = withCaption(
+      b.scene({
+        state: refs.state,
+        view: refs.view,
+        stage: refs.stage,
+        environments: refs.envs,
+        timeline,
+      }),
+      b.schema,
+      timeline,
+    );
     const { refs: sceneRefs, orderedScene } = preprocessScene(sceneGraph);
     const sortedScene = [...orderedScene].sort(
       (a, b) => host.rendererRegistry.getZ(a.type) - host.rendererRegistry.getZ(b.type),

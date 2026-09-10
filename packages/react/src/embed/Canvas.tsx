@@ -14,7 +14,9 @@ import type {
 } from '@aperi21/schema';
 import {
   BackgroundParticleSystem,
+  evaluateTimeline,
   preprocessScene,
+  withCaption,
   type Camera,
   type ControllerEventContext,
   type Host,
@@ -402,13 +404,22 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       // "여기서 거리를 재라" 는 지시다 (원칙 4, R9).
       if (bundle.schema.chrome?.grid) drawAxisGrid(ctx, vp, camera, theme);
 
-      // Scene Graph 렌더
-      const sceneGraph = bundle.scene({
-        state: stateRef.current,
-        view,
-        stage,
-        environments: envs,
-      });
+      // Scene Graph 렌더. 시간표와 캡션은 선언이다 — 시계는 이 임베드의 시간 엔진이라
+      // 리셋·스테이지 전환·검사 시각 이동을 그대로 따른다.
+      const timeline = bundle.schema.timeline
+        ? evaluateTimeline(bundle.schema.timeline, timeEngine.currentTime)
+        : undefined;
+      const sceneGraph = withCaption(
+        bundle.scene({
+          state: stateRef.current,
+          view,
+          stage,
+          environments: envs,
+          timeline,
+        }),
+        bundle.schema,
+        timeline,
+      );
       const { refs, orderedScene } = preprocessScene(sceneGraph);
       const sortedScene = [...orderedScene].sort(
         (a, b) => host.rendererRegistry.getZ(a.type) - host.rendererRegistry.getZ(b.type),

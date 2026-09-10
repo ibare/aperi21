@@ -36,7 +36,7 @@ export const T_END = 9;
 export const V_MAX = 6;
 
 // ------------------------------------------------------------------------
-// 연출 시간표 (τ: 운동 시계)
+// 떼어 옮기는 방식 — 단계의 길이는 아래 `timeline`
 // ------------------------------------------------------------------------
 
 /** 1초 기둥을 가는 띠 몇 개로 떼는가. */
@@ -46,22 +46,6 @@ export const SUB = 24;
  * 겹쳐 뭉친다. 0 이면 이웃 띠가 늘 맞붙어 기둥이 한 덩어리로 떨어지며 납작해진다.
  */
 export const STAGGER = 0;
-/** 기둥이 그래프에서 길까지 가는 시간(s). */
-export const FLIGHT = 0.8;
-/** 다 펴진 뒤 머무는 끝(s). */
-export const HOLD_END = 11.8;
-/** 흐려지는 시간(s). */
-export const FADE = 0.6;
-/** 주기 12.4 s — 운동 9 s + 마지막 착지 0.8 s + 멈춤 + 흐려짐 0.6 s. */
-export const PERIOD = HOLD_END + FADE;
-/** 한 바퀴 처음에 지금 점 · 물체가 나타나는 시간(s). */
-export const FADE_IN = 0.3;
-/**
- * 운동 시계를 앞당겨 여는 만큼(s). 도착한 순간 이미 첫 기둥이 떨어지는 중이다
- * (S-piece 「도착한 순간 이미 진행 중」). 시작 시점은 저작 결정이라 스테이지
- * 상수 `startAt` 으로 선언한다 (원칙 2).
- */
-export const START_AT = 1.5;
 
 // ------------------------------------------------------------------------
 // 문안
@@ -92,6 +76,11 @@ export function text(key: VelocityTimeGraphMessageKey): LocalizedText {
   return velocityTimeGraphMessages[key];
 }
 
+/** 캡션 슬롯이 부르는 문안 키. 없는 키를 쓰면 여기서 타입이 막는다. */
+function key(k: VelocityTimeGraphMessageKey): string {
+  return k;
+}
+
 // ------------------------------------------------------------------------
 // BundleSchema
 // ------------------------------------------------------------------------
@@ -106,7 +95,7 @@ export const velocityTimeGraphSchema: BundleSchema = {
   // 조작기가 없다. 운동 하나를 끝까지 보여 주면 할 말이 끝난다.
   parameters: [],
 
-  stages: [{ id: 'main', label: text('label.stage'), constants: { startAt: START_AT } }],
+  stages: [{ id: 'main', label: text('label.stage'), constants: {} }],
   environments: [],
   views: [{ id: 'main', label: text('label.view'), default: true }],
   autoViews: { energy: false },
@@ -116,6 +105,35 @@ export const velocityTimeGraphSchema: BundleSchema = {
    * 들어오고 러너가 사방에 여백을 두므로 그만큼 더 잡는다.
    */
   canvas: { height: 320, minHeight: 300 },
+
+  /**
+   * 한 바퀴 12.4 s — 운동(꺾은선의 길이) → 마지막 기둥이 내려앉음 → 다 펴진 채 머묾
+   * → 흐려짐.
+   *
+   * - 운동의 첫머리(`appear`)에 지금 점과 물체가 나타난다. `appear` + `motion` 이
+   *   꺾은선의 길이(9 s)다.
+   * - 기둥 i 는 운동 시각 i 초에 떠나 `land` 만큼 날아간다. 마지막 기둥이 떠나는 순간이
+   *   운동의 끝이라 `land` 가 곧 한 기둥의 비행 시간이다.
+   * - 도착한 순간 이미 첫 기둥이 떨어지는 중이다 (1.5 s 앞당김, S-piece).
+   */
+  timeline: {
+    startAt: 1.5,
+    phases: [
+      { id: 'appear', duration: 0.3 },
+      { id: 'motion', duration: T_END - 0.3 },
+      { id: 'land', duration: 0.8 },
+      { id: 'hold', duration: 2.0 },
+      { id: 'fade', duration: 0.6 },
+    ],
+  },
+
+  // 슬롯 하나, 고정. 지금 화면에서 매초 반복되는 일 하나만 말한다.
+  caption: {
+    anchor: { screen: 'bottom-left' },
+    align: 'left',
+    fontSize: 15,
+    text: key('caption.main'),
+  },
 
   /**
    * 그리드도 카메라 버튼도 없다 (기본값). 눈금·격자는 "숫자로 확인하라" 는 신호가
