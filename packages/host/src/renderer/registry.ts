@@ -8,6 +8,9 @@ export const DEFAULT_Z_LAYERS: Readonly<Record<string, number>> = {
   // 0: 배경 장
   vectorField: 0,
   scalarField: 0,
+  // 소용돌이 장은 **실보다 먼저 돌아야 한다** — 같은 프레임의 실이 갱신된
+  // 장을 봐야 하기 때문이다.
+  vortexField: 0,
   // 10: 구조물
   surface: 10,
   container: 10,
@@ -17,8 +20,10 @@ export const DEFAULT_Z_LAYERS: Readonly<Record<string, number>> = {
   trajectory: 20,
   fieldLine: 20,
   ray: 22,
-  // 30: 파동
+  // 30: 파동 · 실
   wave: 30,
+  // 실은 매질(45) 아래, 구조물 위 — 관 안을 흐르는 것이라 벽에 가리지 않는다.
+  filament: 34,
   // 40: 물체
   body: 40,
   charge: 40,

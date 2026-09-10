@@ -29,6 +29,8 @@ export const RENDERERS: Record<string, string> = {
   readout: 'renderReadout',
   scale: 'renderScale',
   dimension: 'renderDimension',
+  vortexField: 'renderVortexField',
+  filament: 'renderFilament',
 };
 
 /** 표준 조작기 — 선언의 controller type → 클래스 이름. */

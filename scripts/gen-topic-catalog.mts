@@ -65,6 +65,11 @@ const IMPLEMENTED: Record<string, string> = {
   'pressure-isotropy': 'aperi21:pressure-isotropy',
   'pressure-and-container-shape': 'aperi21:pressure-and-container-shape',
   'archimedes-principle': 'aperi21:archimedes-principle',
+
+  // 2026-09-10. 엔진 밖에서 손으로 짠 조각(430줄)을 어휘로 옮긴 것.
+  // 원본은 tasks/piece-lab 에 대조군으로 남아 labUrl 로도 열린다.
+  'torricellis-law': 'aperi21:torricellis-law',
+  'laminar-vs-turbulent': 'aperi21:laminar-vs-turbulent',
 };
 
 interface Topic {

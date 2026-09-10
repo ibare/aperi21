@@ -142,6 +142,11 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
 
     const dpr = Math.min(2, window.devicePixelRatio || 1);
     const particles = new BackgroundParticleSystem();
+    /**
+     * 프리미티브의 프레임 간 상태. 이 임베드 전용이라 같은 조각이 한 문서에
+     * 여러 번 박혀도 서로 섞이지 않는다 (원칙 6).
+     */
+    const primitiveStore = new Map<string, unknown>();
     timeEngine.reset();
     timeEngine.start();
 
@@ -411,6 +416,10 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
 
       const rc: RenderContext = {
         ctx,
+        store: <T,>(key: string, init: () => T): T => {
+          if (!primitiveStore.has(key)) primitiveStore.set(key, init());
+          return primitiveStore.get(key) as T;
+        },
         toScreen: (world: Vec2) => camera.toScreen(world, vp),
         toWorld: (screen: Vec2) => camera.toWorld(screen, vp),
         scale: camera.scale,
@@ -458,6 +467,9 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       canvas.removeEventListener('pointerup', onPointerUp);
       canvas.removeEventListener('pointercancel', onPointerUp);
       canvas.removeEventListener('wheel', onWheel);
+      // 프리미티브 상태도 함께 거둔다 — destroy 는 관찰 가능한 뒷일을 남기지
+      // 않는다 (원칙 6, C5).
+      primitiveStore.clear();
     };
   }, [host, camera, timeEngine]);
 

@@ -860,6 +860,7 @@
           "id": "torricellis-law",
           "name": "토리첼리 법칙",
           "desc": "구멍에서 나오는 유속",
+          "simId": "aperi21:torricellis-law",
           "labUrl": "piece-lab/torricellis-law/index.html"
         },
         {
@@ -886,6 +887,7 @@
           "id": "laminar-vs-turbulent",
           "name": "층류와 난류",
           "desc": "흐름의 두 양상",
+          "simId": "aperi21:laminar-vs-turbulent",
           "labUrl": "piece-lab/laminar-vs-turbulent/index.html"
         },
         {
@@ -2355,7 +2357,7 @@
   ],
   "summary": {
     "topics": 455,
-    "implemented": 6,
+    "implemented": 8,
     "labs": 2
   }
 }

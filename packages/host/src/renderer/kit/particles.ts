@@ -32,6 +32,10 @@ export interface EmissionOptions {
  * 배열을 들고 있지 않는다. 나이만으로 자리가 정해지므로 **매 프레임 다시 세어도
  * 같은 결과**가 나오고, 그래서 상태가 없다. 방출 간격의 하위 시간도 저절로
  * 맞는다 — 한 프레임에 여럿이 태어날 때 순서가 뒤집히는 사고가 없다.
+ *
+ * **첫 프레임부터 흐름이 차 있다.** 출생 번호가 음수인 입자, 곧 시각 0 이전에
+ * 떠난 것들을 함께 센다. 조각은 문단 옆에 놓이므로 독자가 도착한 순간 이미
+ * 진행 중이어야 하고, 빈 화면이 채워지길 기다리게 하지 않는다.
  */
 export function livingParticles(opts: EmissionOptions): { index: number; age: number }[] {
   const { time, rate, life } = opts;
@@ -41,7 +45,6 @@ export function livingParticles(opts: EmissionOptions): { index: number; age: nu
   const out: { index: number; age: number }[] = [];
   for (let k = 0; k < count; k++) {
     const index = newest - k;
-    if (index < 0) break;
     const age = time - index / rate;
     if (age >= 0 && age <= life) out.push({ index, age });
   }

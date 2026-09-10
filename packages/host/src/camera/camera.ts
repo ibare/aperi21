@@ -26,6 +26,10 @@ export interface Viewport {
  * 카메라는 항상 즉시 스냅한다. trajectory 기반 bounds 가 매 프레임 자라므로
  * 보간을 얹으면 lag 이 생겨 공이 화면 밖으로 새어 나가는 인상을 준다.
  */
+/** 배율 안전선. 폭주를 막을 뿐 월드 단위의 크기를 가정하지 않는다. */
+export const SCALE_MIN = 0.02;
+export const SCALE_MAX = 50000;
+
 export interface FitOptions {
   padding?: number;
   screenMargins?: {
@@ -147,8 +151,11 @@ export class Camera {
 
     let scale = Math.min(sxL, sxR, syU, syD);
     if (!isFinite(scale) || scale <= 0) scale = this.defaultScale;
-    // 하한은 의미 있는 최소 가독 스케일(0.25 px/m). 상한은 과한 확대 방지.
-    scale = Math.max(0.25, Math.min(400, scale));
+    // 하한·상한은 폭주를 막는 안전선일 뿐이다. **월드 단위의 크기를 가정하지
+    // 않는다** — 미터로 재는 그림도 있고, 관 길이를 1 로 두고 "몇 미터인지
+    // 주장하지 않기로" 한 그림도 있다. 상한이 400 이었을 때 후자는 화면의
+    // 3분의 1만 쓰고 잘렸다.
+    scale = Math.max(SCALE_MIN, Math.min(SCALE_MAX, scale));
 
     this.x = midX;
     this.y = midY;

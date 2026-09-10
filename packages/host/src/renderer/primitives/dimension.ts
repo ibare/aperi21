@@ -45,13 +45,14 @@ export const renderDimension: PrimitiveRenderer = (rc, p0) => {
 
   const text = resolveText(rc, p.text, p.vars);
   if (text) {
-    // ㄴ자면 세로 구간 옆에, 직선이면 가운데 위에.
-    const tx = p.elbow ? x0 + TEXT_GAP * 2 : (x0 + x1) / 2;
-    const ty = p.elbow ? (y0 + y1) / 2 : Math.min(y0, y1) - TEXT_GAP;
+    // ㄴ자면 **가로 구간 위**에 중앙으로. 세로 구간 옆에 두면 재는 대상 쪽으로
+    // 뻗어 나가 그림을 침범한다 — 치수선은 재는 것을 가리면 안 된다.
+    const tx = p.elbow ? (x0 + x1) / 2 : (x0 + x1) / 2;
+    const ty = p.elbow ? y1 - TEXT_GAP : Math.min(y0, y1) - TEXT_GAP;
     c.font = `${FONT_SIZE}px ${rc.theme.fontFamilyMono}`;
     c.fillStyle = color;
-    c.textAlign = p.elbow ? 'left' : 'center';
-    c.textBaseline = p.elbow ? 'middle' : 'bottom';
+    c.textAlign = 'center';
+    c.textBaseline = 'bottom';
     c.fillText(text, tx, ty);
   }
 

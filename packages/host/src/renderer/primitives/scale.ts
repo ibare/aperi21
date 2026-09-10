@@ -171,10 +171,16 @@ export const renderScale: PrimitiveRenderer = (rc, p0) => {
   c.lineTo(x1, y1);
   c.stroke();
 
-  const labelled = new Set(p.labelAt ?? []);
+  // 라벨은 **가까운 눈금**에 붙인다. 눈금값이 계산에서 나오면
+  // (Re = 0.1155 × 0.020 / 1.004e-6 = 2300.8) 정확히 일치하지 않는다.
+  const labelTolerance = Math.abs(span) * 0.01;
+  const labelFor = (v: number): number | undefined =>
+    (p.labelAt ?? []).find((a) => Math.abs(a - v) <= labelTolerance);
+
   for (const v of ticks) {
     const [tx, ty] = px(v);
-    const major = labelled.has(v);
+    const anchor = labelFor(v);
+    const major = anchor !== undefined;
     const size = major ? LINEAR.tickMajor : LINEAR.tickMinor;
     c.strokeStyle = major ? accent : rc.theme.muted;
     c.lineWidth = major ? rc.theme.strokeWidth.thick : rc.theme.strokeWidth.thin;
@@ -188,7 +194,13 @@ export const renderScale: PrimitiveRenderer = (rc, p0) => {
       c.fillStyle = accent;
       c.textAlign = 'center';
       c.textBaseline = 'top';
-      c.fillText(v.toFixed(digits === 0 ? 0 : digits), tx + nx * LINEAR.labelGap, ty + ny * LINEAR.labelGap);
+      // 정박값이 있으면 그 값을 쓴다 — 계산값을 반올림하면 표에 없는 수를
+      // 화면이 말하게 된다 (2300.8 → 2301).
+      c.fillText(
+        (anchor ?? v).toFixed(digits),
+        tx + nx * LINEAR.labelGap,
+        ty + ny * LINEAR.labelGap,
+      );
     }
   }
 

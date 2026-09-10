@@ -94,6 +94,8 @@ export function runBundle<T extends BundleState = BundleState>(
   // 카메라·시간이 묶이지 않도록 (한 콘텐츠에 임베드가 N 개여도 각자 독립적으로
   // 패닝·줌·재생된다). timeModel 도 번들별로 정확히 적용된다.
   const camera = new Camera({ screenYBias: bundle.schema.camera?.screenYBias });
+  /** 프리미티브의 프레임 간 상태. 이 마운트 전용이다 (원칙 6). */
+  const primitiveStore = new Map<string, unknown>();
   const timeEngine = createTimeEngine(bundle.schema.timeModel ?? 'linear');
 
   // Stage / View / Environment 결정
@@ -378,6 +380,10 @@ export function runBundle<T extends BundleState = BundleState>(
 
     const rc: RenderContext = {
       ctx: ctx!,
+      store: <T,>(key: string, init: () => T): T => {
+        if (!primitiveStore.has(key)) primitiveStore.set(key, init());
+        return primitiveStore.get(key) as T;
+      },
       toScreen: (world: Vec2) => camera.toScreen(world, vp),
       toWorld: (screen: Vec2) => camera.toWorld(screen, vp),
       scale: camera.scale,
@@ -422,6 +428,7 @@ export function runBundle<T extends BundleState = BundleState>(
       canvas.removeEventListener('pointerup', onPointerUp);
       canvas.removeEventListener('pointercancel', onPointerUp);
       canvas.removeEventListener('wheel', onWheel);
+      primitiveStore.clear();
       try { wrapper.remove(); } catch { /* noop */ }
     },
   };

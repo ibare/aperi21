@@ -87,6 +87,26 @@ export function registerAperi21Bundles(): void {
     );
   });
 
+  registerBundleLoader('aperi21:torricellis-law', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-torricellis-law'),
+      import('./capabilities/fluids/torricellis-law.generated.js'),
+    ]);
+    return registerBundle('aperi21:torricellis-law', m.torricellisLawBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:laminar-vs-turbulent', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-laminar-vs-turbulent'),
+      import('./capabilities/fluids/laminar-vs-turbulent.generated.js'),
+    ]);
+    return registerBundle(
+      'aperi21:laminar-vs-turbulent',
+      m.laminarVsTurbulentBundle,
+      caps.capabilities,
+    );
+  });
+
   registerBundleLoader('aperi21:archimedes-principle', async () => {
     const [m, caps] = await Promise.all([
       import('@aperi21/sim-archimedes-principle'),

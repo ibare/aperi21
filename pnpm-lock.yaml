@@ -124,6 +124,9 @@ importers:
       '@aperi21/sim-dc-circuit':
         specifier: workspace:*
         version: link:../../sims/electronics/dc-circuit
+      '@aperi21/sim-laminar-vs-turbulent':
+        specifier: workspace:*
+        version: link:../../sims/fluids/laminar-vs-turbulent
       '@aperi21/sim-pressure-and-container-shape':
         specifier: workspace:*
         version: link:../../sims/fluids/pressure-and-container-shape
@@ -136,6 +139,9 @@ importers:
       '@aperi21/sim-ray-tracing':
         specifier: workspace:*
         version: link:../../sims/optics/ray-tracing
+      '@aperi21/sim-torricellis-law':
+        specifier: workspace:*
+        version: link:../../sims/fluids/torricellis-law
       typescript:
         specifier: ^5.6.3
         version: 5.9.3
@@ -321,6 +327,15 @@ importers:
         specifier: ^2.1.9
         version: 2.1.9(jsdom@25.0.1)
 
+  sims/fluids/laminar-vs-turbulent:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/fluids/pressure-and-container-shape:
     devDependencies:
       '@aperi21/schema':
@@ -331,6 +346,15 @@ importers:
         version: 5.9.3
 
   sims/fluids/pressure-isotropy:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/fluids/torricellis-law:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*

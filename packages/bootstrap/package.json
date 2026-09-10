@@ -22,10 +22,12 @@
     "@aperi21/plugin-optics": "workspace:*",
     "@aperi21/sim-archimedes-principle": "workspace:*",
     "@aperi21/sim-dc-circuit": "workspace:*",
+    "@aperi21/sim-laminar-vs-turbulent": "workspace:*",
     "@aperi21/sim-pressure-and-container-shape": "workspace:*",
     "@aperi21/sim-pressure-isotropy": "workspace:*",
     "@aperi21/sim-projectile": "workspace:*",
     "@aperi21/sim-ray-tracing": "workspace:*",
+    "@aperi21/sim-torricellis-law": "workspace:*",
     "typescript": "^5.6.3",
     "vitest": "^2.1.9"
   }

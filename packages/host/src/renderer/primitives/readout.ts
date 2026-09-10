@@ -45,8 +45,13 @@ export const renderReadout: PrimitiveRenderer = (rc, p0) => {
 
   const [ox, oy] = p.anchor.offset ?? [0, 0];
   const right = p.anchor.screen.endsWith('right');
+  const center = p.anchor.screen.endsWith('center');
   const bottom = p.anchor.screen.startsWith('bottom');
-  const x = right ? rc.viewport.width - SCREEN_MARGIN + ox : SCREEN_MARGIN + ox;
+  const x = center
+    ? rc.viewport.width / 2 + ox
+    : right
+      ? rc.viewport.width - SCREEN_MARGIN + ox
+      : SCREEN_MARGIN + ox;
   const y = bottom ? rc.viewport.height - SCREEN_MARGIN + oy : SCREEN_MARGIN + oy;
 
   const available = Math.max(1, rc.viewport.width - SCREEN_MARGIN * 2 - Math.abs(ox));
@@ -54,7 +59,7 @@ export const renderReadout: PrimitiveRenderer = (rc, p0) => {
 
   c.font = `${size}px ${rc.theme.fontFamily}`;
   c.fillStyle = color;
-  c.textAlign = p.align ?? (right ? 'right' : 'left');
+  c.textAlign = p.align ?? (center ? 'center' : right ? 'right' : 'left');
   c.textBaseline = bottom ? 'bottom' : 'top';
   c.fillText(text, x, y);
 

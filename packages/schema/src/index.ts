@@ -336,7 +336,16 @@ export interface Readout extends BaseMeta {
    */
   anchor:
     | { world: Vec2; offset?: Vec2 }
-    | { screen: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'; offset?: Vec2 };
+    | {
+        screen:
+          | 'top-left'
+          | 'top-center'
+          | 'top-right'
+          | 'bottom-left'
+          | 'bottom-center'
+          | 'bottom-right';
+        offset?: Vec2;
+      };
   /** 화면에 뜨는 문안. 값은 `vars` 로 끼운다 (C1). */
   text: LocalizedText;
   /** `{name}` 자리에 들어갈 값. */
@@ -395,6 +404,77 @@ export interface Dimension extends BaseMeta {
   /** 곁들이는 문안. 값은 `vars` 로 끼운다 (C1). */
   text?: LocalizedText;
   vars?: Record<string, string | number>;
+}
+
+
+/**
+ * 수명 있는 소용돌이 다발이 만드는 속도장.
+ *
+ * 보통 **보이지 않는다.** 이것이 하는 일은 `filament` 를 감고 접는 것이고,
+ * 화면에 나타나는 것은 그 결과다.
+ *
+ * 소용돌이에 수명을 주는 것이 핵심이다. 수명이 없으면 소용돌이가 흐름과 거의
+ * 같은 속도로 함께 떠내려가 한 방향으로만 계속 밀고, 실은 벽에 붙어 직선으로
+ * 흐른다 — 난류가 아니라 큰 파도가 된다.
+ */
+export interface VortexField extends BaseMeta {
+  type: 'vortexField';
+  /** 장이 덮는 영역. */
+  bounds: { min: Vec2; max: Vec2 };
+  /** 흐름 속도(월드/초). 소용돌이가 이것을 타고 떠내려간다. */
+  drift: Vec2;
+  /** 소용돌이 세기. 0 이면 잔잔하다. */
+  gain: number;
+  /** 동시에 사는 개수. 기본 34. */
+  count?: number;
+  /** 반지름 범위(월드). */
+  radius: readonly [number, number];
+  /** 흐름이 이만큼 흐르는 동안 산다(월드 거리). */
+  span: readonly [number, number];
+  /** 보이게 그린다. 기본 false. */
+  visible?: boolean;
+}
+
+/**
+ * 흐름을 따라 흐르며 교란이 커지거나 잦아드는 실. 염료.
+ *
+ * 주입부에서 **늘 같은 크기의** 흔들림을 주기적으로 넣는다. 그 흔들림이 하류로
+ * 가면서 `growth` 의 부호에 따라 지수적으로 커지거나 사라진다. 커진 자리에서만
+ * `field` 의 속도장이 실제로 작용해 실을 감고 접고 벽까지 끌고 간다.
+ *
+ * 입력이 매끄럽게 변하는데 출력이 어느 지점에서 확 바뀌는 것 — 그 대비가
+ * 이 어휘가 존재하는 이유다.
+ */
+export interface Filament extends BaseMeta {
+  type: 'filament';
+  /** 주입 지점. */
+  from: Vec2;
+  /** 흐름 속도(월드/초). */
+  speed: number;
+  /** 흐름 방향. 기본 `[1, 0]`. */
+  direction?: Vec2;
+  /** 흐름이 지나는 총 길이(월드). 증폭은 이 길이에 대해 잰다. */
+  length: number;
+  /** 중심선에서 벗어날 수 있는 최대 거리(월드). 관의 반폭. */
+  halfWidth: number;
+  /**
+   * 교란 성장률 σ. 변위가 이동 거리에 대해 `exp(σ · Δx / length)` 를 따른다.
+   * 양수면 스스로 커지고, 0 이면 그대로 통과하고, 음수면 점성이 지운다.
+   */
+  growth: number;
+  /** 주기적으로 넣는 흔들림. 크기는 월드, 주기·지속은 초. */
+  seed: { amplitude: number; period: number; duration?: number };
+  /** 실을 감고 접는 장. `vortexField` 의 id. */
+  field?: string;
+  /** 실 굵기(화면 px). 기본 2. */
+  width?: number;
+  /**
+   * 알갱이 간격(**화면 px**). 실의 밀도. 기본 2.
+   *
+   * 월드로 잡으면 배율에 따라 밀도가 달라져, 확대했을 때 실이 성겨지고 끊긴다.
+   * 밀도는 물리량이 아니라 그림의 결이다.
+   */
+  spacing?: number;
 }
 
 
@@ -540,6 +620,7 @@ export type Primitive =
   | ParticleSystem
   | Graph | Gauge | Marker
   | Region | Stream | Readout | Scale | Dimension
+  | VortexField | Filament
   | Event_
   // 도메인
   | Ray | OpticalElement
@@ -925,6 +1006,17 @@ export interface RenderContext {
   deltaTime: number;
   scene: SceneGraphRefs;
   measure: MeasureService;
+  /**
+   * 프레임 사이에 남는 저장소. 프리미티브가 자기 id 로 키를 삼는다.
+   *
+   * 대부분의 어휘는 상태가 필요 없다 — 선언과 시각만으로 자리가 정해진다.
+   * 그러나 **누적 적분**은 그렇지 않다. 염료 실의 변위는 속도장을 따라 매
+   * 프레임 쌓이는 값이라 닫힌 형태가 없다. 그런 어휘가 여기에 상태를 둔다.
+   *
+   * 임베드 인스턴스마다 분리되고 `destroy()` 에서 사라진다 (원칙 6, C5).
+   * 없을 수도 있다 — 옛 호스트와의 호환을 위해 옵셔널이다.
+   */
+  store?<T>(key: string, init: () => T): T;
 }
 
 export interface Theme {
