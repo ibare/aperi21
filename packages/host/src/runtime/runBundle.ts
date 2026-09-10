@@ -84,6 +84,10 @@ export function runBundle<T extends BundleState = BundleState>(
     void Promise.resolve(options.installPlugins(host));
   }
 
+  // 이 조각이 자기 렌더러를 가져왔으면 지금 흡수한다. 여기가 곧 조각이 로드된
+  // 시점이라 부팅 페이로드가 조각 수에 비례해 자라지 않는다 (R10).
+  host.adoptBundleRenderers(bundle as Bundle);
+
   // 카메라·시간 엔진은 이 마운트 전용 인스턴스다. host 는 renderer/compute/controller
   // 레지스트리·theme·i18n 같은 불변 공유분만 제공하고, 패닝/줌/시간처럼 view 마다
   // 달라야 하는 상태는 host 에 두지 않는다 — 같은 host 를 공유하는 다른 임베드와

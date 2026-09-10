@@ -10,6 +10,10 @@ import { derivedValues, step } from './physics';
 import { scene } from './scene';
 import { pressureAndContainerShapeSchema, SCENE_BOUNDS } from './schema';
 import { initialState, type PressureAndContainerShapeState } from './state';
+import {
+  pressureAndContainerShapeRenderers,
+  pressureAndContainerShapeZHints,
+} from './pressure-and-container-shape-stage';
 
 export const pressureAndContainerShapeBundle: Bundle<PressureAndContainerShapeState> = {
   schema: pressureAndContainerShapeSchema,
@@ -22,6 +26,9 @@ export const pressureAndContainerShapeBundle: Bundle<PressureAndContainerShapeSt
   boundsHint(_state: PressureAndContainerShapeState, _stage: StageDef) {
     return { ...SCENE_BOUNDS };
   },
+  // 자유 렌더 계층 — 표준 8종에 "모양이 다른 그릇 안에서 차오르는 물" 이 없다.
+  renderers: pressureAndContainerShapeRenderers,
+  zHints: pressureAndContainerShapeZHints,
 };
 
 export * from './schema';

@@ -15,6 +15,8 @@ import { initialState, type ArchimedesPrincipleState } from './state';
 import { derivedValues, step } from './physics';
 import { boundsHint, scene } from './scene';
 import { controllers } from './controllers';
+import { archimedesPrincipleRenderers } from './archimedes-principle-stage';
+import { ARCHIMEDES_Z_HINTS } from './schema';
 
 export const archimedesPrincipleBundle: Bundle<ArchimedesPrincipleState> = {
   schema: archimedesPrincipleSchema,
@@ -24,6 +26,9 @@ export const archimedesPrincipleBundle: Bundle<ArchimedesPrincipleState> = {
   controllers,
   derivedValues,
   boundsHint,
+  // 자유 렌더 계층 — 이 조각이 자기 시각화를 직접 그린다 (원칙 4).
+  renderers: archimedesPrincipleRenderers,
+  zHints: ARCHIMEDES_Z_HINTS,
 };
 
 export {
@@ -57,10 +62,9 @@ export type { ArchimedesConstants, ArchimedesReadings } from './physics';
 export { ARCHIMEDES_LAYOUT, blockBottomY, boundsHint, scene } from './scene';
 export { controllers } from './controllers';
 
-// 자유 렌더 계층. 호스트가 등록한다 — NOTES.md 「등록」 참고.
+// 자유 렌더 계층. 배선은 `archimedesPrincipleBundle.renderers` 가 한다.
 export {
   archimedesPrincipleRenderers,
-  archimedesPrincipleStagePlugin,
   renderDialScale,
   renderWaterStream,
   renderWaterVolume,

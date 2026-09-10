@@ -1,4 +1,4 @@
-import type { PluginLogger, Plugin } from '@aperi21/schema';
+import type { Bundle, PluginLogger, Plugin } from '@aperi21/schema';
 import { Camera } from './camera';
 import { ComputeRegistry } from './compute/registry';
 import { gravityVectorField, uniformVectorField } from './compute/standard';
@@ -81,6 +81,8 @@ export class Host {
 
   private readonly logger: PluginLogger;
   private themeMode: ThemeMode;
+  /** 자유 렌더러를 이미 흡수한 번들. 중복 등록 방지용. */
+  private readonly adoptedBundles = new WeakSet<Bundle>();
 
   constructor(config: HostConfig = {}) {
     this.logger = config.logger ?? defaultLogger;
@@ -130,6 +132,32 @@ export class Host {
 
     for (const plugin of config.plugins ?? []) {
       this.pluginManager.register(plugin);
+    }
+  }
+
+  /**
+   * 번들이 가지고 온 자유 렌더러를 이 host 에 흡수한다 (`Bundle.renderers`).
+   *
+   * **번들을 그리기 직전에 부른다.** 그 시점이 곧 번들이 로드된 시점이라
+   * lazy 가 보존된다 — 부팅 때 미리 등록하려 들면 조각마다 그 조각을 통째로
+   * 로드해야 하고, 조각 수에 비례해 첫 페이로드가 자란다.
+   *
+   * 같은 번들을 두 번 흡수하지 않는다. 한 문서에 같은 조각이 여러 번 박혀도
+   * 등록은 한 번이다.
+   */
+  adoptBundleRenderers(bundle: Bundle): void {
+    if (this.adoptedBundles.has(bundle)) return;
+    this.adoptedBundles.add(bundle);
+    for (const [type, renderer] of Object.entries(bundle.renderers ?? {})) {
+      // 이미 있는 이름이면 건너뛴다. 표준 어휘·plugin 어휘를 조각이 덮어쓰지
+      // 않는다 (C4) — 같은 이름을 쓰려 했다면 그것이 잘못이다.
+      if (this.rendererRegistry.has(type)) {
+        this.logger.warn(
+          `[aperi21] bundle '${bundle.schema.id}' brings renderer '${type}' but that name is taken`,
+        );
+        continue;
+      }
+      this.rendererRegistry.register(type, renderer, bundle.zHints?.[type]);
     }
   }
 

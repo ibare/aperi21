@@ -655,6 +655,22 @@ export interface Bundle<TState extends BundleState = BundleState> {
    * 이 경계를 사용해 fitToBounds. 없으면 기본 경계(화면 너비 기준) 사용.
    */
   boundsHint?(state: TState, stage: StageDef): Bounds;
+
+  /**
+   * 이 조각이 자기 시각화를 직접 그릴 때 쓰는 렌더러 (원칙 4 의 탈출구).
+   *
+   * **`Plugin` 을 만들지 않는다.** plugin 은 여러 sim 이 공유하는 도메인 어휘를
+   * 위한 것이고 호스트가 미리 등록해야 하므로, 조각 하나가 쓰려고 태우면 그
+   * 조각이 부팅 시점에 통째로 로드된다. 여기 두면 렌더러가 조각과 함께 로드되고
+   * 조각과 함께 사라진다.
+   *
+   * 키는 `SceneGraph` 의 primitive `type` 이다. 표준 어휘와 같은 이름을 쓰지
+   * 않는다 (C4).
+   */
+  renderers?: Record<string, PrimitiveRenderer>;
+
+  /** 위 렌더러의 z 층. 생략하면 기본 층(`DEFAULT_Z_LAYERS`). */
+  zHints?: Record<string, number>;
 }
 
 

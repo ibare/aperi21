@@ -74,24 +74,18 @@ export async function installAperi21Plugins(host: Host): Promise<void> {
   if (pluginsInstalledFor.has(host)) return;
   pluginsInstalledFor.add(host);
 
-  const [
-    { opticsPlugin },
-    { circuitPlugin },
-    { pressureAndContainerShapeStage },
-    { archimedesPrincipleStagePlugin },
-  ] = await Promise.all([
+  // 여기 오는 것은 **여러 sim 이 공유하는 도메인 어휘**뿐이다.
+  //
+  // 조각 하나가 자기 시각화를 직접 그리는 경우는 `Bundle.renderers` 로 간다.
+  // 그것까지 여기 태우면 조각이 화면에 없어도 부팅만으로 통째로 로드되고,
+  // 첫 페이로드가 조각 수에 비례해 자란다 (R10). 실제로 sim 2개 때문에
+  // 11.4 KB(gz) 가 항상 실리고 있었다.
+  const [{ opticsPlugin }, { circuitPlugin }] = await Promise.all([
     import('@aperi21/plugin-optics'),
     import('@aperi21/plugin-circuit'),
-    // 조각이 자기 시각화를 직접 그리는 경우, 그 렌더러도 Plugin 계약으로 온다
-    // (원칙 4 의 탈출구). PluginManager 가 primitiveTypes·renderers·zHints 를
-    // 그대로 받으므로 호스트 API 를 넓히지 않았다.
-    import('@aperi21/sim-pressure-and-container-shape'),
-    import('@aperi21/sim-archimedes-principle'),
   ]);
   host.pluginManager.register(opticsPlugin);
   host.pluginManager.register(circuitPlugin);
-  host.pluginManager.register(pressureAndContainerShapeStage);
-  host.pluginManager.register(archimedesPrincipleStagePlugin);
 }
 
 /**

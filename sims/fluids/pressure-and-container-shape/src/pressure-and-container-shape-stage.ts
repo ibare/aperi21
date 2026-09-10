@@ -9,7 +9,7 @@
 // theme 경유로만 얻고(C2), 화면 문자는 키로만 조회한다(C1).
 // ========================================================================
 
-import type { I18n, Plugin, PrimitiveRenderer, RenderContext, Vec2 } from '@aperi21/schema';
+import type { I18n, PrimitiveRenderer, RenderContext, Vec2 } from '@aperi21/schema';
 import { widthAtHeight } from './physics';
 import {
   FOOTER_ANCHOR_Y,
@@ -263,26 +263,19 @@ function drawGivensLine(rc: RenderContext, baselineY: number, text: string): voi
 }
 
 // ------------------------------------------------------------------------
-// 등록 꾸러미 — 호스트가 Host.pluginManager.register() 한 번으로 배선한다.
-// 자세한 것은 NOTES.md 「등록」.
+// 렌더러 꾸러미 — `Bundle.renderers` 로 나간다.
+//
+// 예전에는 `Plugin` 객체를 만들어 호스트가 부팅 때 등록했는데, 그러면 이 조각이
+// 화면에 없어도 부팅만으로 통째로 로드된다 (R10). 지금은 조각과 함께 온다.
 // ------------------------------------------------------------------------
 
-export const pressureAndContainerShapeStage: Plugin = {
-  id: '@aperi21/sim-pressure-and-container-shape/stage',
-  version: '1.0.0',
-  label: {
-    ko: '그릇 모양과 바닥 압력 — 자유 렌더 계층',
-    en: 'Container shape and bottom pressure — own render layer',
-  },
-  primitiveTypes: [VESSEL_PRIMITIVE_TYPE, READOUT_PRIMITIVE_TYPE],
-  renderers: {
-    [VESSEL_PRIMITIVE_TYPE]: renderPressureVessel,
-    [READOUT_PRIMITIVE_TYPE]: renderPressureReadout,
-  },
-  // 그릇은 구조물(surface=10) 바로 위, 궤적(trajectory=20) 아래.
-  // 문안은 주석(marker=60) 위.
-  zHints: {
-    [VESSEL_PRIMITIVE_TYPE]: 15,
-    [READOUT_PRIMITIVE_TYPE]: 62,
-  },
+export const pressureAndContainerShapeRenderers: Record<string, PrimitiveRenderer> = {
+  [VESSEL_PRIMITIVE_TYPE]: renderPressureVessel,
+  [READOUT_PRIMITIVE_TYPE]: renderPressureReadout,
+};
+
+/** 그릇은 구조물(surface=10) 바로 위, 궤적(trajectory=20) 아래. 문안은 주석(marker=60) 위. */
+export const pressureAndContainerShapeZHints: Record<string, number> = {
+  [VESSEL_PRIMITIVE_TYPE]: 15,
+  [READOUT_PRIMITIVE_TYPE]: 62,
 };

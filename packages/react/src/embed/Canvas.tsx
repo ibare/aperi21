@@ -111,6 +111,10 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
   } = props;
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
+  // 조각이 가져온 자유 렌더러 흡수. 렌더 중에 동기로 해야 첫 프레임에 이미
+  // 등록돼 있다. 같은 번들을 두 번 흡수하지 않는 것은 host 가 보장한다.
+  host.adoptBundleRenderers(bundle as Bundle);
+
   // 최신 props 를 RAF 루프에서 읽기 위한 refs
   const bundleRef = useRef(bundle);
   const stageRef = useRef(stage);

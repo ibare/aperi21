@@ -18,12 +18,9 @@
 // 등록은 호스트가 한다 — NOTES.md 참고.
 // ========================================================================
 
-import type { ColorRole, Plugin, PrimitiveRenderer, RenderContext } from '@aperi21/schema';
+import type { ColorRole, PrimitiveRenderer, RenderContext } from '@aperi21/schema';
 
 import {
-  ARCHIMEDES_PRIMITIVE_TYPES,
-  ARCHIMEDES_Z_HINTS,
-  text,
   type DialScalePrimitive,
   type WaterStreamPrimitive,
   type WaterVolumePrimitive,
@@ -318,25 +315,15 @@ export const renderDialScale: PrimitiveRenderer = (rc, p0) => {
 };
 
 // ------------------------------------------------------------------------
-// 등록 꾸러미
+// 렌더러 꾸러미 — `Bundle.renderers` 로 나간다.
+//
+// 예전에는 `Plugin` 객체를 만들어 호스트가 부팅 때 등록했는데, 그러면 이 조각이
+// 화면에 없어도 부팅만으로 통째로 로드된다. 조각 수에 비례해 첫 페이로드가 자라는
+// 구조였다 (R10). 지금은 조각과 함께 로드되고 조각과 함께 사라진다.
 // ------------------------------------------------------------------------
 
 export const archimedesPrincipleRenderers: Record<string, PrimitiveRenderer> = {
   waterVolume: renderWaterVolume,
   waterStream: renderWaterStream,
   dialScale: renderDialScale,
-};
-
-/**
- * 호스트가 그대로 `host.pluginManager.register(...)` 에 넘길 수 있는 형태.
- * 레지스트리 경유가 유일한 통로이므로(원칙 3) 이 sim 은 렌더러를 스스로
- * 등록하지 않는다 — 꾸러미만 내놓고 배선은 호스트가 한다.
- */
-export const archimedesPrincipleStagePlugin: Plugin = {
-  id: '@aperi21/sim-archimedes-principle',
-  version: '0.1.0',
-  label: text('label.title'),
-  primitiveTypes: [...ARCHIMEDES_PRIMITIVE_TYPES],
-  renderers: archimedesPrincipleRenderers,
-  zHints: ARCHIMEDES_Z_HINTS,
 };
