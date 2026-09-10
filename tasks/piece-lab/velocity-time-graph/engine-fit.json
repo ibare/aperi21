@@ -1,0 +1,17 @@
+{
+  "analyzedAgainst": "2026-09-10 엔진 (파일럿 엔진 수정 전). '미커밋 반영' 은 이 대조에 따라 이미 들어간 수정",
+  "rows": [
+    { "element": "그래프 축 · 1초 경계 · 1초 말뚝 (1px 안내선)", "vocab": "trajectory (width)", "status": "수정 필요", "note": "굵기 2 고정이라 안내선과 곡선을 가를 수 없음 — width 미커밋 반영" },
+    { "element": "속도 곡선", "vocab": "trajectory", "status": "있음", "note": "먹색은 전경색 역할이 없어 회색으로 근사" },
+    { "element": "쌓인 넓이", "vocab": "region", "status": "있음" },
+    { "element": "떼어 옮기는 넓이 (떨어지며 납작해지는 기둥)", "vocab": "region", "status": "있음", "note": "도형 보간은 sim 이 계산" },
+    { "element": "펼친 넓이 · 길", "vocab": "region", "status": "있음", "note": "같은 파랑이 겹치면 짙어짐 — 겹침 없이 배치로 회피" },
+    { "element": "지금 속도 점", "vocab": "marker (pin)", "status": "있음" },
+    { "element": "수레", "vocab": "region + body (point)", "status": "있음", "note": "body custom 모양은 선언만 있고 미구현이라 region 다각형으로" },
+    { "element": "'속도' · '시간' 낱말, 캡션", "vocab": "readout", "status": "있음" }
+  ],
+  "outside": [
+    "시간표 헬퍼 — 구심 가속도와 같은 요구 (두 조각 공통)",
+    "두 좌표계(시간×속도, 거리) 사이 칠 넓이 보존 축척 — sim 이 월드 좌표 하나로 배치"
+  ]
+}

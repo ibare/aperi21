@@ -1,0 +1,118 @@
+{
+  "id": "velocity-time-graph",
+  "claim": "속도-시간 그래프 아래 쌓인 넓이는 그 동안 물체가 간 거리와 같다.",
+  "verb": "쌓인다 — 그래프 아래 넓이가 1초씩 쌓이고, 떼어 길에 펴면 그 1초 동안 간 거리를 꼭 채운다",
+  "probeTimes": [0, 1.9, 4.9, 9],
+  "elements": [
+    {
+      "mark": "그래프 축",
+      "what": "그래프의 세로축·가로축 선과 '속도' · '시간' 두 낱말",
+      "physical": "속도축과 시간축",
+      "drawing": "먹색 1px 선 + 12px 텍스트",
+      "motion": "static",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "속도 곡선",
+      "what": "0~9초 동안의 속도 꺾은선 전체",
+      "physical": "속도 v(t) — 빨라짐 · 일정 · 느려짐 · 일정 · 멈춤",
+      "drawing": "먹색 2px 꺾은선",
+      "motion": "static",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "쌓인 넓이",
+      "what": "곡선 아래, 0초부터 지금까지 채워진 파란 면",
+      "physical": "∫v dt — 지금까지의 변위",
+      "drawing": "파란 채움 (오른쪽 끝이 지금 시각)",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "1초 경계",
+      "what": "쌓인 넓이를 1초마다 가르는 회색 세로선",
+      "physical": "t = 1, 2, … 초의 경계",
+      "drawing": "회색 1px 선 (축에서 곡선까지)",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "지금 속도 점",
+      "what": "곡선 위 지금 시각의 점",
+      "physical": "지금 물체의 속도",
+      "drawing": "먹색 채운 원 반지름 4px",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "길",
+      "what": "그래프 아래 옅은 띠와 바닥선",
+      "physical": "물체가 가는 직선 길 (0 ~ 30.75 m)",
+      "drawing": "옅은 베이지 채움 + 회색 바닥선",
+      "motion": "static",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "펼친 넓이",
+      "what": "길 위에 내려앉아 펴진 파란 띠 (출발점부터 이어짐)",
+      "physical": "그래프에서 떼어 온 넓이 = 간 거리. 두께는 칠 넓이를 보존하도록 정했다 (평균 속도의 그래프 높이와 같다)",
+      "drawing": "파란 사각 채움",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "1초 말뚝",
+      "what": "물체가 1초마다 길에 떨군 회색 세로선",
+      "physical": "t = 0, 1, 2, … 초에 물체가 있던 위치 x(t)",
+      "drawing": "회색 1px 선 (띠 위 7px 부터 바닥까지)",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "떼어 옮기는 넓이",
+      "what": "막 끝난 1초 기둥이 가는 띠 24개로 쪼개져 그래프에서 길로 떨어지며 납작하게 펴지는 조각들",
+      "physical": "각 Δt 띠의 넓이 v·Δt. 출발할 때는 폭 Δt·높이 v, 도착할 때는 폭 v·Δt·두께 h — 칠 넓이가 같다",
+      "drawing": "파란 사각 채움 24개, 위치·폭·높이를 같은 진행도로 보간 — 이웃 띠가 맞붙어 기둥이 한 덩어리로 떨어지며 납작해진다",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "물체",
+      "what": "길 위를 달리는 작은 수레와 위치 바늘",
+      "physical": "물체와 그 위치 x(t)",
+      "drawing": "먹색 다각형 + 바퀴 두 원 + 바늘 선",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    }
+  ],
+  "controls": [],
+  "hidden": [
+    "넓이·거리의 수치(1.2 m, 3.6 m, 5.7 m …) — 맞는지를 숫자로 확인시키면 '꼭 맞는다'가 눈이 아니라 산수가 된다. 판정은 말뚝 사이를 띠가 채우는 모습으로 한다",
+    "가속도(곡선의 기울기) — 한 줄 설명의 앞 절이지만 두 번째 주장이라 이 조각에서 뺐다",
+    "눈금·격자 — 넓이와 길이의 비교는 같은 칠 넓이로 이미 성립하므로 눈금이 필요 없다",
+    "위치-시간 그래프 — 간 거리는 길 위 자체로 보인다"
+  ],
+  "timeline": [
+    { "t": 0, "what": "첫 1초 기둥(작은 삼각형)이 그래프에서 떨어져 길 첫 칸으로 펴지는 중. 물체는 이미 달리고 있다" },
+    { "t": 1.9, "what": "빨라지는 동안의 셋째 기둥이 떨어지는 중 — 기둥이 커진 만큼 길 위 칸도 길다" },
+    { "t": 4.9, "what": "속도가 반으로 줄어든 구간 — 기둥이 낮아지고 말뚝 간격이 좁아진다" },
+    { "t": 9, "what": "운동이 끝나고 넓이 전부가 길을 출발점부터 물체까지 빈틈없이 채운 채 머문다" },
+    { "t": 10.3, "what": "넓이와 띠가 옅어지고 처음부터 다시 달린다 (주기 12.4초)" }
+  ],
+  "engineWish": [
+    "시간표 — '기둥 i 가 τ=i 에 출발, 띠 j 는 시차 STAGGER·j' 같은 연출 시간표와 주기·페이드. 매번 progress/clamp/ease 를 손으로 짰다",
+    "도형 사이의 보간 — 그래프 좌표의 사각형을 길 좌표의 사각형으로 보내는 일. 두 좌표계를 오가는 변환이 한 곳에 있으면 좋겠다",
+    "꺾은선 함수와 그 정확한 적분 — v(t)·x(t) 를 매번 다시 짰다",
+    "고DPI 캔버스 크기 맞추기와 리사이즈"
+  ]
+}

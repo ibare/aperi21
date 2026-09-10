@@ -1,0 +1,205 @@
+// ========================================================================
+// centripetal-acceleration — Scene Graph 선언
+// ========================================================================
+// 그리지 않는다, 선언한다.
+//
+// 궤도(trajectory) · 중심과 공(body) · 속도와 Δv(vector) · 이름표와 캡션(readout).
+// 옅어지는 사본·잔상·캡션 페이드는 모두 `opacity` 로 선언한다.
+// ========================================================================
+
+import type {
+  Body,
+  EnvironmentDef,
+  Primitive,
+  Readout,
+  SceneGraph,
+  StageDef,
+  Trajectory,
+  Vec2,
+  Vector,
+  ViewDef,
+} from '@aperi21/schema';
+import { cycle, ease, lerp2, phase, position, spokeAlpha, theta, velocity } from './physics';
+import {
+  B0,
+  B1,
+  BALL_RADIUS,
+  CAPTION_FADE,
+  CAPTION_X,
+  D1,
+  E1,
+  GROW,
+  HEAD_SIZE,
+  KEPT_ALPHA,
+  MIN_ALPHA,
+  MOVE,
+  PAST_CYCLES,
+  SCENE_BOUNDS,
+  SLIDE,
+  text,
+  type CentripetalAccelerationMessageKey,
+} from './schema';
+import type { CentripetalAccelerationState } from './state';
+
+/** 궤도 원을 이루는 점 개수. */
+const ORBIT_SEGMENTS = 96;
+/** 궤도 윤곽선 굵기(화면 px). 원본 1.5. */
+const ORBIT_WIDTH_PX = 1.5;
+/**
+ * 궤도 윤곽선의 옅음. 원본은 배경에 가까운 옅은 회색(#d6d3cc)이라 muted 를
+ * subtle 로 쓰고도 한 번 더 흐린다.
+ */
+const ORBIT_OPACITY = 0.6;
+/** 'Δv' 이름표가 화살표에서 원 바깥쪽으로 비켜서는 거리(화면 px). 원본 15. */
+const DV_LABEL_GAP_PX = 15;
+/** 'Δv' 이름표 글자 크기. 원본 15 px. */
+const DV_LABEL_FONT = 15;
+/** Δv 가 이만큼 자란 뒤부터 이름표가 나타난다. */
+const DV_LABEL_FROM = 0.6;
+/** 캡션 글자 크기. 원본 18 px. */
+const CAPTION_FONT = 18;
+
+const VELOCITY_STYLE = { colorRole: 'secondary', emphasis: 'strong' } as const;
+const DV_STYLE = { colorRole: 'accent', emphasis: 'strong' } as const;
+
+function arrow(id: string, from: Vec2, delta: Vec2, style: Vector['style'], opacity: number): Vector {
+  return { type: 'vector', id, from, delta, headSize: HEAD_SIZE, style, opacity };
+}
+
+/** 지금 단계의 캡션과, 그 단계가 시작된 주기 안 시각. */
+function captionFor(u: number): { key: CentripetalAccelerationMessageKey; start: number } {
+  if (u < B0) return { key: 'caption.keep', start: 0 };
+  if (u < B1) return { key: 'caption.align', start: B0 };
+  if (u < D1) return { key: 'caption.differ', start: B1 };
+  return { key: 'caption.center', start: D1 };
+}
+
+export function scene(params: {
+  state: CentripetalAccelerationState;
+  view: ViewDef;
+  stage: StageDef;
+  environments: EnvironmentDef[];
+}): SceneGraph {
+  const s = params.state.t;
+  const { k, u } = phase(s);
+  const cur = cycle(k);
+  const out: Primitive[] = [];
+
+  // ---- 원 궤도 · 중심 ----
+  const orbit: Trajectory = {
+    type: 'trajectory',
+    id: 'orbit',
+    points: Array.from({ length: ORBIT_SEGMENTS }, (_, i) => position((i / ORBIT_SEGMENTS) * Math.PI * 2)),
+    closed: true,
+    width: ORBIT_WIDTH_PX,
+    opacity: ORBIT_OPACITY,
+    style: { colorRole: 'muted', emphasis: 'subtle' },
+  };
+  out.push(orbit);
+
+  // 과녁. Δv 가 "중심을 향한다" 가 성립하려면 가리키는 곳이 보여야 한다.
+  const center: Body = {
+    type: 'body',
+    id: 'center',
+    pos: [0, 0],
+    shape: 'point',
+    style: { colorRole: 'muted', emphasis: 'medium' },
+  };
+  out.push(center);
+
+  // ---- 지난 Δv ----
+  // 쌓은 상태가 아니라 주기 번호에서 다시 계산한다 — 같은 시각은 언제나 같은 화면.
+  for (let j = k - 1; j >= k - PAST_CYCLES; j--) {
+    const c = cycle(j);
+    const a = spokeAlpha(s - c.done);
+    if (a < MIN_ALPHA) break;
+    out.push(arrow(`past-dv-${j}`, c.mid, c.dv, DV_STYLE, a));
+  }
+
+  // ---- 남겨 둔 두 속도 ----
+  // Δv 가 옮겨지는 동안 **지운다**. Δv 는 남긴다 — 이 비대칭이 "남는 것은 변화" 다.
+  let kept = KEPT_ALPHA;
+  if (u >= D1) kept *= 1 - ease((u - D1) / MOVE);
+  if (kept > 0.01) {
+    // v1: 처음엔 제자리, 꼬리 맞대기 구간에서 v2 의 꼬리로 평행 이동한다.
+    const slide = u < B0 ? 0 : ease((u - B0) / SLIDE);
+    out.push(arrow('kept-v1', lerp2(cur.p1, cur.p2, slide), cur.v1, VELOCITY_STYLE, kept));
+    // v2: 공이 그 자리에 도착한 뒤부터.
+    if (u >= B0) out.push(arrow('kept-v2', cur.p2, cur.v2, VELOCITY_STYLE, kept));
+  }
+
+  // ---- 이번 주기의 Δv ----
+  // v1 끝에서 v2 끝으로 자라난 뒤, 방향 그대로 호의 가운데로 옮긴다.
+  if (u >= B1) {
+    const g = ease((u - B1) / GROW);
+    const e = u < D1 ? 0 : ease((u - D1) / MOVE);
+    const tip: Vec2 = [cur.p2[0] + cur.v1[0], cur.p2[1] + cur.v1[1]];
+    const from = lerp2(tip, cur.mid, e);
+    const a = u < E1 ? 1 : spokeAlpha(s - cur.done);
+    const delta: Vec2 = [cur.dv[0] * g, cur.dv[1] * g];
+    out.push(arrow('dv', from, delta, DV_STYLE, a));
+
+    if (g > DV_LABEL_FROM) {
+      // 화살표 옆, 중심에서 먼 쪽 법선으로 비켜선다.
+      const len = Math.hypot(cur.dv[0], cur.dv[1]);
+      let nx = -cur.dv[1] / len;
+      let ny = cur.dv[0] / len;
+      const mid: Vec2 = [from[0] + delta[0] * 0.5, from[1] + delta[1] * 0.5];
+      if (mid[0] * nx + mid[1] * ny < 0) {
+        nx = -nx;
+        ny = -ny;
+      }
+      const label: Readout = {
+        type: 'readout',
+        id: 'dv-label',
+        // offset 은 화면 픽셀 — y 가 아래로 뒤집힌다.
+        anchor: { world: mid, offset: [nx * DV_LABEL_GAP_PX, -ny * DV_LABEL_GAP_PX] },
+        text: text('label.dv'),
+        chip: false,
+        align: 'center',
+        fontSize: DV_LABEL_FONT,
+        opacity: a * ease((g - DV_LABEL_FROM) / (1 - DV_LABEL_FROM)),
+        style: DV_STYLE,
+      };
+      out.push(label);
+    }
+  }
+
+  // ---- 공과 그 속도 ----
+  const th = theta(s);
+  const p = position(th);
+  out.push(arrow('velocity', p, velocity(th), VELOCITY_STYLE, 1));
+  const ball: Body = {
+    type: 'body',
+    id: 'ball',
+    pos: p,
+    shape: 'circle',
+    size: BALL_RADIUS,
+    // strong 은 둘레에 번짐을 두른다. 원본의 공은 번짐 없는 짙은 채움 원이다.
+    style: { colorRole: 'muted', emphasis: 'medium' },
+  };
+  out.push(ball);
+
+  // ---- 캡션 ----
+  // 슬롯 하나. 원 옆에 둬 세로를 아낀다. 단계가 바뀔 때 페이드 인.
+  const cap = captionFor(u);
+  const caption: Readout = {
+    type: 'readout',
+    id: 'caption',
+    anchor: { world: [CAPTION_X, 0] },
+    text: text(cap.key),
+    chip: false,
+    align: 'left',
+    fontSize: CAPTION_FONT,
+    opacity: ease((u - cap.start) / CAPTION_FADE),
+    style: { colorRole: 'muted', emphasis: 'strong' },
+  };
+  out.push(caption);
+
+  return out;
+}
+
+export function boundsHint(): { minX: number; maxX: number; minY: number; maxY: number } {
+  // 고정 경계 — 매 프레임 같은 값이라 카메라가 흔들리지 않는다 (원칙 6).
+  return { ...SCENE_BOUNDS };
+}

@@ -17,6 +17,8 @@ export const APERI21_CATALOG: readonly Aperi21CatalogEntry[] = [
   {"id":"aperi21:pressure-and-container-shape","title":{"ko":"그릇 모양과 바닥 압력","en":"Container shape and bottom pressure"},"description":{"ko":"수면 높이를 옮겨 세 그릇을 다시 채운다","en":"Move the water level and refill all three"},"domain":"fluids"},
   {"id":"aperi21:pressure-isotropy","title":{"ko":"압력의 등방성","en":"Pressure isotropy"},"description":{"ko":"판이 저절로 반 바퀴 돌아 자취를 원으로 닫고, 그다음 독자가 다이얼로 직접 돌린다","en":"the plate turns half a revolution to close the trail into a circle, then the reader turns it by hand"},"domain":"fluids"},
   {"id":"aperi21:torricellis-law","title":{"ko":"토리첼리 법칙","en":"Torricelli's law"},"description":{"ko":"깊은 구멍일수록 더 빠르게 뿜는다","en":"The deeper the hole, the faster the jet"},"domain":"fluids"},
+  {"id":"aperi21:centripetal-acceleration","title":{"ko":"구심 가속도","en":"Centripetal acceleration"},"description":{"ko":"속도의 변화는 늘 중심 쪽으로 꺾인다","en":"The change in velocity always turns toward the center"},"domain":"kinematics"},
+  {"id":"aperi21:velocity-time-graph","title":{"ko":"속도-시간 그래프","en":"Velocity-time graph"},"description":{"ko":"그래프 아래 넓이가 간 거리다","en":"The area under the graph is the distance travelled"},"domain":"kinematics"},
   {"id":"aperi21:projectile","title":{"ko":"발사체","en":"Projectile"},"description":{"ko":"각도 다이얼 + 핀볼 런처","en":"Angle dial + pinball launcher"},"domain":"mechanics"},
   {"id":"aperi21:ray-tracing","title":{"ko":"광선 추적","en":"Ray Tracing"},"description":{"ko":"광원과 렌즈·거울을 배치해 광선 경로와 결상을 관찰.","en":"Place source and lens/mirror to watch ray paths and image formation."},"domain":"optics"},
 ];

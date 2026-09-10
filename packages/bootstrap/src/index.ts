@@ -107,6 +107,27 @@ export function registerAperi21Bundles(): void {
     );
   });
 
+  // 운동학 (2026-09-10 파일럿 배치).
+  registerBundleLoader('aperi21:centripetal-acceleration', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-centripetal-acceleration'),
+      import('./capabilities/kinematics/centripetal-acceleration.generated.js'),
+    ]);
+    return registerBundle(
+      'aperi21:centripetal-acceleration',
+      m.centripetalAccelerationBundle,
+      caps.capabilities,
+    );
+  });
+
+  registerBundleLoader('aperi21:velocity-time-graph', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-velocity-time-graph'),
+      import('./capabilities/kinematics/velocity-time-graph.generated.js'),
+    ]);
+    return registerBundle('aperi21:velocity-time-graph', m.velocityTimeGraphBundle, caps.capabilities);
+  });
+
   registerBundleLoader('aperi21:archimedes-principle', async () => {
     const [m, caps] = await Promise.all([
       import('@aperi21/sim-archimedes-principle'),

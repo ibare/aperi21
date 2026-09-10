@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>속도-시간 그래프 — 넓이가 간 거리다</title>
+<style>
+  body { margin: 0; background: #fbfaf7; color: #1f2328;
+         font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif; }
+  .piece { max-width: 860px; margin: 24px auto; padding: 0 16px; }
+  canvas { display: block; width: 100%; height: 250px; }
+  .caption { margin: 6px 0 0; font-size: 15px; line-height: 1.5; color: #3a3f45; }
+</style>
+</head>
+<body>
+<figure class="piece" style="margin-left:auto;margin-right:auto">
+  <canvas id="c"></canvas>
+  <figcaption class="caption">1초마다 그래프 아래 쌓인 넓이를 떼어 길에 펴 놓으면, 그 1초 동안 물체가 간 거리에 꼭 맞는다.</figcaption>
+</figure>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ---- 운동: 속도는 꺾은선으로 주어진다 (시각 s, 속도 m/s) ----
+  var KNOTS = [[0, 0], [2.5, 6], [4.5, 6], [5.5, 3], [6.5, 3], [9, 0]];
+  var T_END = 9;          // 운동이 끝나는 시각
+  var V_MAX = 6;
+
+  function v(t) {
+    if (t <= 0) return KNOTS[0][1];
+    for (var i = 1; i < KNOTS.length; i++) {
+      var a = KNOTS[i - 1], b = KNOTS[i];
+      if (t <= b[0]) return a[1] + (b[1] - a[1]) * (t - a[0]) / (b[0] - a[0]);
+    }
+    return KNOTS[KNOTS.length - 1][1];
+  }
+  // 간 거리: 꺾은선 아래 사다리꼴을 정확히 더한다
+  function x(t) {
+    var s = 0;
+    for (var i = 1; i < KNOTS.length; i++) {
+      var a = KNOTS[i - 1], b = KNOTS[i];
+      if (t <= a[0]) break;
+      var te = Math.min(t, b[0]);
+      s += (a[1] + v(te)) / 2 * (te - a[0]);
+    }
+    return s;
+  }
+  var D = x(T_END);       // 30.75 m
+
+  // ---- 연출 시간표 (τ: 운동 시계) ----
+  var SUB = 24;           // 1초 기둥을 가는 띠 몇 개로 떼는가
+  // 띠마다 시차를 두면 왼쪽 띠가 오른쪽으로 먼저 밀려 오른쪽 띠와 겹쳐 뭉친다.
+  // 시차 0 이면 이웃 띠가 늘 맞붙어 기둥이 한 덩어리로 떨어지며 납작해진다.
+  var STAGGER = 0;
+  var FLIGHT = 0.8;       // 기둥이 그래프에서 길까지 가는 시간
+  var HOLD_END = 11.8;    // 다 펴진 뒤 머무는 끝
+  var FADE = 0.6;
+  var PERIOD = HOLD_END + FADE;
+  var OFFSET = 1.5;       // 도착한 순간 이미 첫 기둥이 떨어지는 중
+
+  function tau(t) { return (t + OFFSET) % PERIOD; }
+
+  // ---- 색: 파랑 하나 = 넓이(=간 거리). 나머지는 먹과 회색 ----
+  var INK = '#1f2328';
+  var GREY = '#a3a8ae';
+  var AREA = '#9cc3e6';
+  var ROAD = '#eeebe4';
+
+  var cv = document.getElementById('c');
+  var ctx = cv.getContext('2d');
+  var W = 0, H = 0, L = {};
+
+  function layout() {
+    var dpr = window.devicePixelRatio || 1;
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var left = 44, right = 22;
+    var plotW = W - left - right;
+    var pxv = 16;                          // 1 m/s 가 몇 px
+    var pxs = plotW / T_END;               // 1 s 가 몇 px
+    var k = plotW / D;                     // 길에서 1 m 가 몇 px
+    L = {
+      left: left, plotW: plotW, pxv: pxv, pxs: pxs, k: k,
+      axisY: 22 + V_MAX * pxv + 6,
+      // 그래프 1 m(= 1 m/s × 1 s)의 칠 넓이 pxs·pxv 를 길 위에서도 그대로 두려면
+      // 띠 두께 h = pxs·pxv / k. 이 값은 곧 평균 속도의 그래프 높이다.
+      h: pxs * pxv / k,
+    };
+    L.bandBottom = H - 10;
+    L.bandTop = L.bandBottom - L.h;
+  }
+  layout();
+  window.addEventListener('resize', layout);
+
+  function gx(t) { return L.left + L.pxs * t; }
+  function gy(vv) { return L.axisY - L.pxv * vv; }
+  function rx(d) { return L.left + L.k * d; }
+
+  function clamp01(u) { return u < 0 ? 0 : u > 1 ? 1 : u; }
+  function ease(u) { return u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2; }
+
+  // 기둥 i(1..9)의 띠 j 가 얼마나 날아갔는가
+  function progress(i, j, T) {
+    return clamp01((T - i - STAGGER * j / (SUB - 1)) / FLIGHT);
+  }
+  // 지금까지 길에 내려앉은 끝(운동 시각으로)
+  function landedUntil(T) {
+    var edge = 0;
+    for (var i = 1; i <= T_END; i++) {
+      if (T < i) break;
+      var n = 0;
+      for (var j = 0; j < SUB; j++) { if (progress(i, j, T) >= 1) n++; else break; }
+      edge = i - 1 + n / SUB;
+      if (n < SUB) break;
+    }
+    return edge;
+  }
+
+  function draw(t) {
+    var T = tau(t);
+    var Tm = Math.min(T, T_END);                         // 운동 시각
+    var fade = T > HOLD_END ? 1 - (T - HOLD_END) / FADE : 1;
+    var fadeIn = Math.min(1, T / 0.3);
+    ctx.clearRect(0, 0, W, H);
+
+    PieceKit.mark('그래프 축', function () {
+      ctx.strokeStyle = INK; ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(L.left, gy(V_MAX) - 8); ctx.lineTo(L.left, L.axisY);
+      ctx.lineTo(L.left + L.plotW + 6, L.axisY);
+      ctx.stroke();
+      ctx.fillStyle = '#5b6168'; ctx.font = '12px sans-serif';
+      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      ctx.fillText('속도', L.left - 6, gy(V_MAX) - 4);
+      ctx.textBaseline = 'top';
+      ctx.fillText('시간', L.left + L.plotW + 6, L.axisY + 8);
+    });
+
+    PieceKit.mark('쌓인 넓이', function () {
+      if (Tm <= 0) return;
+      ctx.globalAlpha = fade;
+      ctx.fillStyle = AREA;
+      ctx.beginPath();
+      ctx.moveTo(gx(0), L.axisY);
+      for (var i = 0; i < KNOTS.length && KNOTS[i][0] < Tm; i++) ctx.lineTo(gx(KNOTS[i][0]), gy(KNOTS[i][1]));
+      ctx.lineTo(gx(Tm), gy(v(Tm)));
+      ctx.lineTo(gx(Tm), L.axisY);
+      ctx.closePath();
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('1초 경계', function () {
+      ctx.globalAlpha = fade;
+      ctx.strokeStyle = GREY; ctx.lineWidth = 1;
+      ctx.beginPath();
+      // 그래프: 지나온 1초마다 넓이를 가르는 선
+      for (var i = 1; i < T_END && i <= Tm; i++) {
+        ctx.moveTo(gx(i), L.axisY); ctx.lineTo(gx(i), gy(v(i)));
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('속도 곡선', function () {
+      ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.lineJoin = 'round';
+      ctx.beginPath();
+      for (var i = 0; i < KNOTS.length; i++) {
+        var p = [gx(KNOTS[i][0]), gy(KNOTS[i][1])];
+        if (i === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]);
+      }
+      ctx.stroke();
+    });
+
+    PieceKit.mark('지금 속도 점', function () {
+      ctx.globalAlpha = fade * fadeIn;
+      ctx.fillStyle = INK;
+      ctx.beginPath(); ctx.arc(gx(Tm), gy(v(Tm)), 4, 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('길', function () {
+      ctx.fillStyle = ROAD;
+      ctx.fillRect(L.left - 14, L.bandTop, L.plotW + 28, L.h);
+      ctx.strokeStyle = GREY; ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(L.left - 14, L.bandBottom + 0.5); ctx.lineTo(L.left + L.plotW + 14, L.bandBottom + 0.5);
+      ctx.stroke();
+    });
+
+    PieceKit.mark('펼친 넓이', function () {
+      var edge = landedUntil(T);
+      if (edge <= 0) return;
+      ctx.globalAlpha = fade;
+      ctx.fillStyle = AREA;
+      ctx.fillRect(rx(0), L.bandTop, L.k * x(edge), L.h);
+      ctx.globalAlpha = 1;
+    });
+
+    // 물체가 1초마다 길에 떨군 말뚝. 펼친 넓이 위에 긋는다 — 내려앉은 띠가
+    // 말뚝 사이를 꼭 채우는지가 이 조각의 증거다.
+    PieceKit.mark('1초 말뚝', function () {
+      ctx.globalAlpha = fade;
+      ctx.strokeStyle = GREY; ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (var m = 0; m <= T_END && m <= Tm; m++) {
+        var px = Math.round(rx(x(m))) + 0.5;
+        ctx.moveTo(px, L.bandTop - 7); ctx.lineTo(px, L.bandBottom);
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('떼어 옮기는 넓이', function () {
+      ctx.fillStyle = AREA;
+      ctx.globalAlpha = fade;
+      for (var i = 1; i <= T_END; i++) {
+        if (T < i || T > i + STAGGER + FLIGHT) continue;
+        var p = progress(i, 0, T);
+        if (p <= 0 || p >= 1) continue;
+        var e = ease(p);
+        var bb = L.axisY + (L.bandBottom - L.axisY) * e;   // 기둥의 바닥
+        // 띠 j: 출발은 그래프 아래 (폭 Δt, 높이 v), 도착은 길 위 (폭 = 그 Δt 동안
+        // 간 거리, 두께 h) — 칠 넓이는 같다. 이웃 띠가 맞붙어 있으므로 윗변을 이어
+        // 한 다각형으로 칠한다 (띠 사이 이음매가 생기지 않게).
+        ctx.beginPath();
+        for (var j = 0; j < SUB; j++) {
+          var t0 = i - 1 + j / SUB, t1 = t0 + 1 / SUB;
+          var sx = gx(t0), sw = L.pxs / SUB, sh = L.pxv * (v(t0) + v(t1)) / 2;
+          var tx = rx(x(t0)), tw = L.k * (x(t1) - x(t0));
+          var bx = sx + (tx - sx) * e;
+          var bw = sw + (tw - sw) * e;
+          var top = bb - (sh + (L.h - sh) * e);
+          if (j === 0) ctx.moveTo(bx, bb);
+          ctx.lineTo(bx, top);
+          ctx.lineTo(bx + bw, top);
+          if (j === SUB - 1) ctx.lineTo(bx + bw, bb);
+        }
+        ctx.closePath();
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('물체', function () {
+      var cx = rx(x(Tm));
+      var base = L.bandTop - 3;
+      ctx.globalAlpha = fade * fadeIn;
+      ctx.fillStyle = INK;
+      ctx.beginPath();
+      ctx.moveTo(cx - 13, base - 6);
+      ctx.lineTo(cx - 13, base - 14);
+      ctx.lineTo(cx + 9, base - 14);
+      ctx.lineTo(cx + 14, base - 8);
+      ctx.lineTo(cx + 14, base - 6);
+      ctx.closePath();
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(cx - 7, base - 4, 3, 0, Math.PI * 2);
+      ctx.arc(cx + 8, base - 4, 3, 0, Math.PI * 2);
+      ctx.fill();
+      // 위치를 가리키는 바늘: 물체의 한가운데가 길 위 어디인가
+      ctx.strokeStyle = INK; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(cx, base - 6); ctx.lineTo(cx, L.bandTop + 5); ctx.stroke();
+      ctx.globalAlpha = 1;
+    });
+  }
+
+  PieceKit.loop({
+    step: function () { /* 모든 상태는 t 의 함수 — 쌓아 둘 것이 없다 */ },
+    draw: draw,
+  });
+})();
+</script>
+</body>
+</html>

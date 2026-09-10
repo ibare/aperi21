@@ -21,6 +21,7 @@
     "@aperi21/plugin-circuit": "workspace:*",
     "@aperi21/plugin-optics": "workspace:*",
     "@aperi21/sim-archimedes-principle": "workspace:*",
+    "@aperi21/sim-centripetal-acceleration": "workspace:*",
     "@aperi21/sim-dc-circuit": "workspace:*",
     "@aperi21/sim-laminar-vs-turbulent": "workspace:*",
     "@aperi21/sim-pressure-and-container-shape": "workspace:*",
@@ -28,6 +29,7 @@
     "@aperi21/sim-projectile": "workspace:*",
     "@aperi21/sim-ray-tracing": "workspace:*",
     "@aperi21/sim-torricellis-law": "workspace:*",
+    "@aperi21/sim-velocity-time-graph": "workspace:*",
     "typescript": "^5.6.3",
     "vitest": "^2.1.9"
   }

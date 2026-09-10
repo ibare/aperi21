@@ -1,0 +1,17 @@
+{
+  "analyzedAgainst": "2026-09-10 엔진 (파일럿 엔진 수정 전). '미커밋 반영' 은 이 대조에 따라 이미 들어간 수정",
+  "rows": [
+    { "element": "원 궤도", "vocab": "trajectory (closed · width)", "status": "수정 필요", "note": "closed 가 선언만 있고 렌더러 미구현, 굵기 2 고정 — 미커밋 반영" },
+    { "element": "중심", "vocab": "body (point)", "status": "있음" },
+    { "element": "공", "vocab": "body (circle)", "status": "있음", "note": "짙은 잉크색은 전경색 역할이 없어 회색으로 근사" },
+    { "element": "공의 속도", "vocab": "vector", "status": "있음" },
+    { "element": "남겨 둔 속도 (반투명 사본)", "vocab": "vector + opacity", "status": "없음", "note": "인스턴스별 불투명도 없음 (highlight dimmed 0.3 고정뿐) — BaseMeta.opacity 미커밋 반영" },
+    { "element": "Δv + 이름표", "vocab": "vector (label)", "status": "수정 필요", "note": "짧아지면 화살촉이 줄지 않음 — 미커밋 반영. 기울임 글꼴 없음" },
+    { "element": "지난 Δv (옅어짐)", "vocab": "vector + opacity", "status": "없음", "note": "BaseMeta.opacity 미커밋 반영. 옅어지는 값은 sim 이 주기 번호로 계산" },
+    { "element": "캡션 (1~2줄, 페이드 인)", "vocab": "readout + opacity", "status": "수정 필요", "note": "여러 줄 미지원 — 미커밋 반영. 원 옆 자리는 월드 앵커로" }
+  ],
+  "outside": [
+    "시간표 헬퍼(단계 경계·진행도·이징·캡션 연동) — sim 쪽 연출 계산. sim 이 import 할 곳을 두려면 원칙 1 허용 목록 확장 결정 필요",
+    "벡터 평행 이동 · 결정적 잔상 — sim 이 시각·주기 번호로 계산"
+  ]
+}

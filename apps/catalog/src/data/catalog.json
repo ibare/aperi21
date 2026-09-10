@@ -70,7 +70,9 @@
         {
           "id": "velocity-time-graph",
           "name": "속도-시간 그래프",
-          "desc": "기울기가 가속도, 넓이가 변위인 표현"
+          "desc": "기울기가 가속도, 넓이가 변위인 표현",
+          "simId": "aperi21:velocity-time-graph",
+          "labUrl": "piece-lab/velocity-time-graph/index.html"
         },
         {
           "id": "acceleration-time-graph",
@@ -141,7 +143,9 @@
         {
           "id": "centripetal-acceleration",
           "name": "구심 가속도",
-          "desc": "방향만 바뀌는 운동의 가속도"
+          "desc": "방향만 바뀌는 운동의 가속도",
+          "simId": "aperi21:centripetal-acceleration",
+          "labUrl": "piece-lab/centripetal-acceleration/index.html"
         },
         {
           "id": "period-and-frequency",
@@ -2357,7 +2361,7 @@
   ],
   "summary": {
     "topics": 455,
-    "implemented": 8,
-    "labs": 2
+    "implemented": 10,
+    "labs": 4
   }
 }

@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>구심 가속도</title>
+<style>
+  html, body { margin: 0; background: #fbfaf7; }
+  .piece { max-width: 900px; margin: 0 auto; }
+  canvas { display: block; width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<div class="piece"><canvas id="c" aria-label="같은 빠르기로 원을 도는 공의 속도 변화가 늘 중심을 향하는 모습"></canvas></div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ---- 화면 크기 (논리 좌표) ----
+  var W = 840, H = 280;
+  var canvas = document.getElementById('c');
+  var dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+  canvas.width = Math.round(W * dpr);
+  canvas.height = Math.round(H * dpr);
+  var ctx = canvas.getContext('2d');
+
+  // ---- 색: 공 · 속도 · Δv. 강조색(주황)은 'Δv' 한 가지 뜻에만 쓴다 ----
+  var INK = '#2a2a2e';       // 공
+  var VEL = '#2f5fb3';       // 속도 (살아 있는 것도, 남겨 둔 것도 같은 색)
+  var DV = '#d9622b';        // 속도의 변화 Δv
+  var PATH = '#d6d3cc';      // 원 궤도
+  var FAINT = '#8f8b84';     // 중심점
+
+  // ---- 기하 ----
+  var CX = 250, CY = 140, R = 100;  // 궤도
+  var LV = 80;                      // 속도 화살표 길이 (속력은 일정하므로 언제나 이 길이)
+  var DEG = Math.PI / 180;
+
+  // ---- 시간표 ----
+  // 공은 초당 50° 로 돈다(한 바퀴 7.2 초). 비교하는 두 순간은 50° 떨어져 있다.
+  var OMEGA = 50 * DEG;
+  var GAP = 50 * DEG;
+  var TAU = GAP / OMEGA;            // 1.0 s — 첫 속도를 남긴 뒤 둘째 속도까지
+  var SLIDE = 0.7, GROW = 0.5, HOLD = 0.5, MOVE = 0.8, REST = 0.95;
+  var P = TAU + SLIDE + GROW + HOLD + MOVE + REST;  // 4.45 s — 한 주기에 공은 222.5° 전진
+  // 222.5° 는 한 바퀴에서 황금각(137.5°)만큼 모자란다 → 남는 Δv 들이 둘레에 고르게 흩어진다.
+  var THETA0 = 100 * DEG;           // 0번 주기의 첫 순간 공의 각
+  var S0 = 0.6;                     // 도착했을 때 이미 0.6 초 진행된 상태로 보인다
+  var FADE = 11;                    // 지난 Δv 가 흐려지는 시간 척도 (s)
+  var MIN_ALPHA = 0.12;
+
+  var B0 = TAU, B1 = B0 + SLIDE;    // 꼬리 맞대기
+  var C1 = B1 + GROW;               // Δv 자라남
+  var D1 = C1 + HOLD;               // 멈춤
+  var E1 = D1 + MOVE;               // Δv 를 호의 가운데로
+
+  function theta(s) { return THETA0 + OMEGA * s; }
+  // 수학 각 θ(반시계) → 화면 좌표 (y 아래)
+  function pos(th) { return { x: CX + R * Math.cos(th), y: CY - R * Math.sin(th) }; }
+  function vel(th) { return { x: -LV * Math.sin(th), y: -LV * Math.cos(th) }; }
+  function ease(x) { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); }
+  function lerp(a, b, k) { return a + (b - a) * k; }
+  // 자리 잡은 Δv 의 진하기 — 자리 잡은 순간 1 에서 시작해 FADE 척도로 옅어진다
+  function spokeAlpha(age) { return Math.exp(-Math.max(0, age) / FADE); }
+
+  function cycle(k) {
+    var th1 = theta(k * P), th2 = th1 + GAP;
+    var p1 = pos(th1), p2 = pos(th2), v1 = vel(th1), v2 = vel(th2);
+    var m = pos((th1 + th2) / 2);
+    return {
+      p1: p1, p2: p2, v1: v1, v2: v2, m: m,
+      dv: { x: v2.x - v1.x, y: v2.y - v1.y },
+      done: k * P + E1,              // Δv 가 호의 가운데에 자리 잡는 시각
+    };
+  }
+
+  function arrow(x0, y0, dx, dy, color, alpha, width) {
+    var len = Math.hypot(dx, dy);
+    if (len < 0.5) return;
+    var ux = dx / len, uy = dy / len;
+    var head = Math.min(11, len * 0.45);
+    var x1 = x0 + dx, y1 = y0 + dy;
+    ctx.globalAlpha = alpha;
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.lineWidth = width;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(x0, y0);
+    ctx.lineTo(x1 - ux * head * 0.8, y1 - uy * head * 0.8);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x1 - ux * head - uy * head * 0.5, y1 - uy * head + ux * head * 0.5);
+    ctx.lineTo(x1 - ux * head + uy * head * 0.5, y1 - uy * head - ux * head * 0.5);
+    ctx.closePath();
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+
+  function captionFor(u) {
+    if (u < B0) return { lines: ['공의 속도를 한 순간 남겨 둔다'], start: 0 };
+    if (u < B1) return { lines: ['조금 뒤의 속도와 꼬리를 맞댄다'], start: B0 };
+    if (u < D1) return { lines: ['길이는 그대로, 방향만 달라졌다', '그 차이가 Δv'], start: B1 };
+    return { lines: ['Δv 를 호의 가운데로 옮기면', '중심을 향한다'], start: D1 };
+  }
+
+  function draw(t) {
+    var s = t + S0;
+    var k = Math.floor(s / P);
+    var u = s - k * P;
+    var cur = cycle(k);
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+
+    PieceKit.mark('원 궤도', function () {
+      ctx.strokeStyle = PATH;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(CX, CY, R, 0, Math.PI * 2);
+      ctx.stroke();
+    });
+
+    PieceKit.mark('중심', function () {
+      ctx.fillStyle = FAINT;
+      ctx.beginPath();
+      ctx.arc(CX, CY, 3, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // 앞선 주기에서 자리 잡은 Δv 들 — 둘레 곳곳에서 모두 중심을 향한다
+    PieceKit.mark('지난 Δv', function () {
+      for (var j = k - 1; j >= k - 8; j--) {
+        var c = cycle(j);
+        var a = spokeAlpha(s - c.done);
+        if (a < MIN_ALPHA) break;
+        arrow(c.m.x, c.m.y, c.dv.x, c.dv.y, DV, a, 2.5);
+      }
+    });
+
+    // 남겨 둔 두 속도: 앞 순간(v1) 과 조금 뒤(v2)
+    PieceKit.mark('남겨 둔 속도', function () {
+      var a = 0.42;
+      if (u >= D1) a *= 1 - ease((u - D1) / MOVE);
+      if (a <= 0.01) return;
+      // v1: 처음엔 제자리, B 구간에서 v2 의 꼬리로 평행 이동
+      var b = u < B0 ? 0 : ease((u - B0) / SLIDE);
+      var tx = lerp(cur.p1.x, cur.p2.x, b), ty = lerp(cur.p1.y, cur.p2.y, b);
+      arrow(tx, ty, cur.v1.x, cur.v1.y, VEL, a, 3);
+      // v2: 공이 그 자리에 도착한 뒤부터
+      if (u >= B0) arrow(cur.p2.x, cur.p2.y, cur.v2.x, cur.v2.y, VEL, a, 3);
+    });
+
+    // 이번 주기의 Δv: v1 끝에서 v2 끝으로 자라난 뒤, 호의 가운데로 평행 이동
+    PieceKit.mark('Δv', function () {
+      if (u < B1) return;
+      var g = ease((u - B1) / GROW);
+      var e = u < D1 ? 0 : ease((u - D1) / MOVE);
+      var sx = lerp(cur.p2.x + cur.v1.x, cur.m.x, e);
+      var sy = lerp(cur.p2.y + cur.v1.y, cur.m.y, e);
+      var a = u < E1 ? 1 : spokeAlpha(s - cur.done);
+      var dx = cur.dv.x * g, dy = cur.dv.y * g;
+      arrow(sx, sy, dx, dy, DV, a, 3);
+      if (g > 0.6) {
+        // 이름표: 화살표 옆, 원 바깥쪽으로 비켜서
+        var len = Math.hypot(cur.dv.x, cur.dv.y);
+        var nx = -cur.dv.y / len, ny = cur.dv.x / len;
+        var mx = sx + dx * 0.5, my = sy + dy * 0.5;
+        // 중심에서 먼 쪽 법선을 고른다
+        if ((mx + nx - CX) * (mx + nx - CX) + (my + ny - CY) * (my + ny - CY) <
+            (mx - nx - CX) * (mx - nx - CX) + (my - ny - CY) * (my - ny - CY)) { nx = -nx; ny = -ny; }
+        ctx.globalAlpha = a * ease((g - 0.6) / 0.4);
+        ctx.fillStyle = DV;
+        ctx.font = 'italic 600 15px "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('Δv', mx + nx * 15, my + ny * 15);
+        ctx.globalAlpha = 1;
+      }
+    });
+
+    var th = theta(s);
+    var p = pos(th), v = vel(th);
+
+    PieceKit.mark('공의 속도', function () {
+      arrow(p.x, p.y, v.x, v.y, VEL, 1, 3);
+    });
+
+    PieceKit.mark('공', function () {
+      ctx.fillStyle = INK;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 7, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    PieceKit.mark('캡션', function () {
+      var c = captionFor(u);
+      ctx.globalAlpha = ease((u - c.start) / 0.3);
+      ctx.fillStyle = INK;
+      ctx.font = '18px "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'alphabetic';
+      var y0 = CY - (c.lines.length - 1) * 14 + 6;
+      for (var i = 0; i < c.lines.length; i++) ctx.fillText(c.lines[i], 470, y0 + i * 28);
+      ctx.globalAlpha = 1;
+    });
+  }
+
+  PieceKit.loop({
+    step: function () { /* 모든 움직임이 t 의 함수라 쌓는 상태가 없다 */ },
+    draw: draw,
+  });
+})();
+</script>
+</body>
+</html>

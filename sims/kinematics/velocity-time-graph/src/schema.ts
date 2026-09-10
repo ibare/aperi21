@@ -1,0 +1,127 @@
+// ========================================================================
+// velocity-time-graph — 선언
+// ========================================================================
+// 질문: 속도-시간 그래프 아래 넓이가 왜 간 거리인가.
+//
+// 그래프 아래 쌓인 넓이는 그 동안 물체가 간 거리와 같다. 1초마다 쌓인 기둥을
+// 떼어 길에 펴면 그 1초 동안 간 거리를 꼭 채운다.
+//
+// 값은 모두 원본(tasks/piece-lab/velocity-time-graph/index.html)에서 그대로 옮겼다.
+// ========================================================================
+
+import type { BundleSchema, LocalizedText } from '@aperi21/schema';
+
+/** 등록 키 `aperi21:velocity-time-graph` 와 문자 그대로 일치한다 (C4). */
+export const VELOCITY_TIME_GRAPH_ID = 'velocity-time-graph';
+
+// ------------------------------------------------------------------------
+// 운동 — 속도는 꺾은선으로 주어진다 (시각 s, 속도 m/s)
+// ------------------------------------------------------------------------
+
+/**
+ * 빨라짐 → 일정 → 느려짐 → 낮게 일정 → 멈춤. 기둥 크기가 커졌다 작아지므로
+ * 말뚝 간격이 넓어졌다 좁아지는 것이 한 번에 보인다. 간 거리는 30.75 m.
+ */
+export const KNOTS: readonly (readonly [number, number])[] = [
+  [0, 0],
+  [2.5, 6],
+  [4.5, 6],
+  [5.5, 3],
+  [6.5, 3],
+  [9, 0],
+];
+/** 운동이 끝나는 시각(s). */
+export const T_END = 9;
+/** 그래프 세로축 끝(m/s). */
+export const V_MAX = 6;
+
+// ------------------------------------------------------------------------
+// 연출 시간표 (τ: 운동 시계)
+// ------------------------------------------------------------------------
+
+/** 1초 기둥을 가는 띠 몇 개로 떼는가. */
+export const SUB = 24;
+/**
+ * 띠 사이 시차. 0 이다 — 시차를 두면 왼쪽 띠가 먼저 오른쪽으로 밀려 오른쪽 띠와
+ * 겹쳐 뭉친다. 0 이면 이웃 띠가 늘 맞붙어 기둥이 한 덩어리로 떨어지며 납작해진다.
+ */
+export const STAGGER = 0;
+/** 기둥이 그래프에서 길까지 가는 시간(s). */
+export const FLIGHT = 0.8;
+/** 다 펴진 뒤 머무는 끝(s). */
+export const HOLD_END = 11.8;
+/** 흐려지는 시간(s). */
+export const FADE = 0.6;
+/** 주기 12.4 s — 운동 9 s + 마지막 착지 0.8 s + 멈춤 + 흐려짐 0.6 s. */
+export const PERIOD = HOLD_END + FADE;
+/** 한 바퀴 처음에 지금 점 · 물체가 나타나는 시간(s). */
+export const FADE_IN = 0.3;
+/**
+ * 운동 시계를 앞당겨 여는 만큼(s). 도착한 순간 이미 첫 기둥이 떨어지는 중이다
+ * (S-piece 「도착한 순간 이미 진행 중」). 시작 시점은 저작 결정이라 스테이지
+ * 상수 `startAt` 으로 선언한다 (원칙 2).
+ */
+export const START_AT = 1.5;
+
+// ------------------------------------------------------------------------
+// 문안
+// ------------------------------------------------------------------------
+
+export const velocityTimeGraphMessages = Object.freeze({
+  'label.title': { ko: '속도-시간 그래프', en: 'Velocity-time graph' },
+  'label.operation': {
+    ko: '그래프 아래 넓이가 간 거리다',
+    en: 'The area under the graph is the distance travelled',
+  },
+  'label.stage': { ko: '직선 길', en: 'Straight road' },
+  'label.view': { ko: '넓이와 길', en: 'Area and road' },
+  /** 그래프 세로축 이름. 주제가 "속도-시간 그래프" 그 자체라 축 이름은 둔다. */
+  'label.axisV': { ko: '속도', en: 'velocity' },
+  /** 그래프 가로축 이름. */
+  'label.axisT': { ko: '시간', en: 'time' },
+  'caption.main': {
+    ko: '1초마다 그래프 아래 쌓인 넓이를 떼어 길에 펴 놓으면, 그 1초 동안 물체가 간 거리에 꼭 맞는다.',
+    en: 'Peel off the area piled up under the graph each second and lay it on the road — it exactly fills the distance travelled in that second.',
+  },
+} satisfies Record<string, LocalizedText>);
+
+export type VelocityTimeGraphMessageKey = keyof typeof velocityTimeGraphMessages;
+
+/** 선언에서 문안을 꺼낸다. 호출부에 문자열 리터럴을 두지 않기 위한 유일한 통로. */
+export function text(key: VelocityTimeGraphMessageKey): LocalizedText {
+  return velocityTimeGraphMessages[key];
+}
+
+// ------------------------------------------------------------------------
+// BundleSchema
+// ------------------------------------------------------------------------
+
+export const velocityTimeGraphSchema: BundleSchema = {
+  id: VELOCITY_TIME_GRAPH_ID,
+  label: text('label.title'),
+  category: 'kinematics',
+  operation: text('label.operation'),
+  timeModel: 'linear',
+
+  // 조작기가 없다. 운동 하나를 끝까지 보여 주면 할 말이 끝난다.
+  parameters: [],
+
+  stages: [{ id: 'main', label: text('label.stage'), constants: { startAt: START_AT } }],
+  environments: [],
+  views: [{ id: 'main', label: text('label.view'), default: true }],
+  autoViews: { energy: false },
+
+  /**
+   * 원본은 그림 250px + 캔버스 밖 캡션이었다. 캡션이 캔버스 안(화면 고정 줄)으로
+   * 들어오고 러너가 사방에 여백을 두므로 그만큼 더 잡는다.
+   */
+  canvas: { height: 320, minHeight: 300 },
+
+  /**
+   * 그리드도 카메라 버튼도 없다 (기본값). 눈금·격자는 "숫자로 확인하라" 는 신호가
+   * 되어 동사를 약하게 한다 — 같음은 칠 넓이로 이미 성립한다. 카메라를 주면 두
+   * 칸이 하나의 축척에서 서로에게서 유도된다는 약속을 독자가 흔들 수 있다.
+   */
+
+  messages: velocityTimeGraphMessages,
+};

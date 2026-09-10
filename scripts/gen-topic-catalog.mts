@@ -70,6 +70,10 @@ const IMPLEMENTED: Record<string, string> = {
   // 원본은 tasks/piece-lab 에 대조군으로 남아 labUrl 로도 열린다.
   'torricellis-law': 'aperi21:torricellis-law',
   'laminar-vs-turbulent': 'aperi21:laminar-vs-turbulent',
+
+  // 2026-09-10 파일럿 배치 — 자유 구현(격리 에이전트) → 추출 → 엔진 → 이관.
+  'centripetal-acceleration': 'aperi21:centripetal-acceleration',
+  'velocity-time-graph': 'aperi21:velocity-time-graph',
 };
 
 interface Topic {
@@ -140,7 +144,11 @@ for (const topicId of Object.keys(IMPLEMENTED)) {
 if (existsSync(LAB_SRC)) {
   rmSync(LAB_DEST, { recursive: true, force: true });
   mkdirSync(LAB_DEST, { recursive: true });
-  cpSync(LAB_SRC, LAB_DEST, { recursive: true });
+  // 보고서(스크린샷)는 사이트에 싣지 않는다. 계측 키트(_harness)는 조각이 참조하므로 싣는다.
+  cpSync(LAB_SRC, LAB_DEST, {
+    recursive: true,
+    filter: (src) => !src.includes('/_report'),
+  });
 }
 
 const topics = domains.reduce((n, d) => n + d.topics.length, 0);
