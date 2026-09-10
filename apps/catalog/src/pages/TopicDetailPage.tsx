@@ -2,7 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Embed } from '@aperi21/react';
 import { domainOf, findTopic } from '../data/catalog';
-import { MOCK_BUNDLES } from '../mocks/phase1-bundles';
+import { useSimBundle } from '../hooks/useSimBundle';
 import styles from './TopicDetailPage.module.css';
 
 /**
@@ -17,6 +17,9 @@ export function TopicDetailPage() {
   const { t } = useTranslation();
 
   const topic = topicId ? findTopic(topicId) : undefined;
+  // 훅은 early return 앞에 둔다. 조각은 레지스트리에서 온다 — 실제 소비자와 같은 경로.
+  const bundle = useSimBundle(topic?.simId);
+
   if (!topic) {
     return (
       <main className={`container ${styles.page}`}>
@@ -29,7 +32,6 @@ export function TopicDetailPage() {
   }
 
   const domain = domainOf(topic.id);
-  const bundle = topic.simId ? MOCK_BUNDLES[topic.simId] : undefined;
 
   return (
     <main className={`container ${styles.page}`}>

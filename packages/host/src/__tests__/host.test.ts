@@ -7,6 +7,7 @@ import {
   preprocessScene,
   RendererRegistry,
   SceneGraphRefsImpl,
+  standardCapabilities,
   uniformVectorField,
   type HostPlugin,
 } from '../index';
@@ -200,9 +201,18 @@ describe('Standard compute methods', () => {
     expect(Math.abs(ay)).toBeLessThan(1e-10);
   });
 
-  it('createHost 가 uniform/gravity 를 자동 등록', () => {
+  it('createHost 는 아무 능력도 모른다 — 능력은 조각이 가져온다', () => {
     const host = createHost();
+    expect(host.computeRegistry.hasVector('uniform')).toBe(false);
+    expect(host.rendererRegistry.has('body')).toBe(false);
+    expect(host.controllerRegistry.get('slider')).toBeUndefined();
+  });
+
+  it('표준 한 벌을 명시로 주면 등록된다', () => {
+    const host = createHost({ capabilities: standardCapabilities() });
     expect(host.computeRegistry.hasVector('uniform')).toBe(true);
     expect(host.computeRegistry.hasVector('gravity')).toBe(true);
+    expect(host.rendererRegistry.has('body')).toBe(true);
+    expect(host.controllerRegistry.get('slider')).toBeDefined();
   });
 });

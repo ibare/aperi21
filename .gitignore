@@ -14,3 +14,6 @@ dist-ssr
 
 # 생성물 — 원본은 tasks/piece-lab
 apps/catalog/public/piece-lab
+
+# 페이로드 측정 임시 산출물
+packages/bootstrap/.budget-tmp

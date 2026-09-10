@@ -71,6 +71,21 @@ export interface SimEntry {
   src: string;
   /** package.json 의 name. `@aperi21/sim-archimedes-principle` */
   pkg: string;
+  /** `Bundle` 을 내보내는 export 이름. */
+  bundleExport: string;
+}
+
+/**
+ * 번들 export 를 **모양으로** 찾는다. 이름 규약(`<name>Bundle`)에 묶으면 규약이
+ * 흔들릴 때 조용히 어긋난다 — 실제로 한 번 겪었다.
+ */
+function findBundleExport(src: string): string {
+  const index = readFileSync(join(src, 'index.ts'), 'utf8');
+  const typed = index.match(/export const (\w+):\s*Bundle\b/);
+  if (typed) return typed[1]!;
+  const named = index.match(/export const (\w+Bundle)\b/);
+  if (named) return named[1]!;
+  throw new Error(`[budget] ${src}/index.ts 에서 Bundle export 를 찾지 못했다`);
 }
 
 /** 워크스페이스의 sim 목록. */
@@ -86,7 +101,14 @@ export function listSims(root: string): SimEntry[] {
       const pkgJson = join(dir, 'package.json');
       if (!existsSync(src) || !existsSync(pkgJson)) continue;
       const pkg = JSON.parse(readFileSync(pkgJson, 'utf8')).name as string;
-      out.push({ id: `${category}/${name}`, category, name, src, pkg });
+      out.push({
+        id: `${category}/${name}`,
+        category,
+        name,
+        src,
+        pkg,
+        bundleExport: findBundleExport(src),
+      });
     }
   }
   return out;

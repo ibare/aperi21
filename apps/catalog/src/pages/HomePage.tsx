@@ -4,7 +4,7 @@ import { catalog, domains } from '../data/catalog';
 import type { Topic } from '../types/catalog';
 import { DomainSection } from '../components/DomainSection';
 import { SimModal } from '../components/SimModal';
-import { MOCK_BUNDLES } from '../mocks/phase1-bundles';
+import { useSimBundle } from '../hooks/useSimBundle';
 import styles from './HomePage.module.css';
 
 export function HomePage() {
@@ -12,7 +12,7 @@ export function HomePage() {
   const { topics, implemented } = catalog.summary;
   // 모달은 한 개만 둔다. 분과마다 갖고 있으면 열린 것이 둘이 될 수 있다.
   const [openTopic, setOpenTopic] = useState<Topic | null>(null);
-  const openBundle = openTopic?.simId ? MOCK_BUNDLES[openTopic.simId] : undefined;
+  const openBundle = useSimBundle(openTopic?.simId) ?? undefined;
 
   return (
     <main className={styles.page}>

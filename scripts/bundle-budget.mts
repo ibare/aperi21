@@ -19,71 +19,16 @@
 
 import { execFileSync } from 'node:child_process';
 import { gzipSync } from 'node:zlib';
-import { readFileSync, readdirSync, statSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync, writeFileSync, existsSync, rmSync } from 'node:fs';
 import { join, relative, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { ALL_CAPABILITIES, declaredCapabilities, listSims } from './lib/capabilities.mts';
+import { bundleMinimalApp } from './lib/minimal-app.mts';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const HOST_DIST = join(ROOT, 'packages/host/dist/index.js');
 const BUNDLE_DIST = join(ROOT, 'packages/host-tiptap-bundle/dist');
 const BASELINE = join(ROOT, 'tasks/engine-requirements/baseline.json');
-
-// ------------------------------------------------------------------------
-// 능력 목록 — 키는 선언에 쓰는 type, 값은 산출물에서 찾을 식별자.
-// 이 표가 늘어나는 것이 곧 엔진이 커지는 것이고, 음성 검사가 지키는 대상이다.
-// ------------------------------------------------------------------------
-
-const RENDERERS: Record<string, string> = {
-  body: 'renderBody',
-  trajectory: 'renderTrajectory',
-  vector: 'renderVector',
-  surface: 'renderSurface',
-  marker: 'renderMarker',
-  graph: 'renderGraph',
-  event: 'renderEvent',
-  gauge: 'renderGauge',
-};
-
-const CONTROLLERS: Record<string, string> = {
-  'pinball-launcher': 'PinballLauncherController',
-  'angle-dial': 'AngleDialController',
-  slider: 'SliderController',
-  'value-edit': 'ValueEditController',
-  placement: 'PlacementController',
-};
-
-const ALL: Record<string, string> = { ...RENDERERS, ...CONTROLLERS };
-
-// ------------------------------------------------------------------------
-// 조각이 선언한 능력 — src 를 훑어 `type: '<x>'` 를 모은다.
-//
-// 조건부로 반환하는 조작기(상태에 따라 [] 를 주는 경우)도 소스에는 문자열이
-// 남으므로 보수적으로 잡힌다. 놓치는 쪽보다 넘치는 쪽이 안전하다.
-// S3-B 의 생성기가 이 추출을 그대로 쓴다.
-// ------------------------------------------------------------------------
-
-function walk(dir: string, out: string[] = []): string[] {
-  for (const name of readdirSync(dir)) {
-    const p = join(dir, name);
-    if (statSync(p).isDirectory()) {
-      if (name === '__tests__' || name === 'node_modules') continue;
-      walk(p, out);
-    } else if (name.endsWith('.ts')) out.push(p);
-  }
-  return out;
-}
-
-function declaredCapabilities(simSrc: string): Set<string> {
-  const used = new Set<string>();
-  for (const file of walk(simSrc)) {
-    const text = readFileSync(file, 'utf8');
-    for (const m of text.matchAll(/type:\s*'([a-zA-Z-]+)'/g)) {
-      const t = m[1]!;
-      if (t in ALL) used.add(t);
-    }
-  }
-  return used;
-}
 
 // ------------------------------------------------------------------------
 // 산출물
@@ -204,40 +149,46 @@ function main(): void {
   }
 
   // ----------------------------------------------------------------------
-  // 음성 검사
+  // 실측 — 조각 하나만 쓰는 앱을 번들해 본다
+  //
+  // 위의 chunk 크기는 상한이다. 소비자가 실제로 받는 양은 그쪽에서 번들해 봐야
+  // 안다 (§2.4). 음성 검사도 여기서 한다 — minify 하지 않은 산출물이라 식별자가
+  // 남아 있다.
   // ----------------------------------------------------------------------
-  console.log('\n음성 검사 — 쓰지 않는 능력이 실렸는가');
-  const simDirs: { id: string; src: string; chunkKey: string }[] = [];
-  for (const category of readdirSync(join(ROOT, 'sims'))) {
-    const catDir = join(ROOT, 'sims', category);
-    if (!statSync(catDir).isDirectory()) continue;
-    for (const name of readdirSync(catDir)) {
-      const src = join(catDir, name, 'src');
-      if (existsSync(src)) simDirs.push({ id: `${category}/${name}`, src, chunkKey: name });
-    }
-  }
+  console.log('\n조각 하나를 쓰는 앱이 실제로 받는 것 (minify + gzip)');
+  console.log('  ' + '이름'.padEnd(35) + '실측'.padStart(8) + '   안 쓰는 능력');
 
-  let violations = 0;
+  const sims = listSims(ROOT);
   const report: Record<string, string[]> = {};
-  for (const sim of simDirs) {
+  const measured: Record<string, number> = {};
+  let violations = 0;
+
+  for (const sim of sims) {
     const used = declaredCapabilities(sim.src);
-    const own = chunks.find((c) => c.name.startsWith(sim.chunkKey + '.'));
-    const loaded = own ? [...fixed, own] : fixed;
-    const unusedPresent = Object.entries(ALL)
+    const app = bundleMinimalApp(ROOT, {
+      simPkg: sim.pkg,
+      bundleExport: sim.bundleExport,
+      capabilitiesPath: `../../src/capabilities/${sim.category}/${sim.name}.generated`,
+      outDir: join(ROOT, 'packages/bootstrap/.budget-tmp', sim.name),
+    });
+
+    const unusedPresent = Object.entries(ALL_CAPABILITIES)
       .filter(([type]) => !used.has(type))
-      .filter(([, marker]) => loaded.some((c) => c.text.includes(marker)))
+      .filter(([, marker]) => app.readable.includes(marker))
       .map(([type]) => type);
 
     report[sim.id] = unusedPresent;
-    if (unusedPresent.length > 0) {
-      violations++;
-      console.log(
-        `  ✗ ${sim.id.padEnd(38)} ${unusedPresent.length}종 — ${unusedPresent.join(', ')}`,
-      );
-    } else {
-      console.log(`  ✓ ${sim.id}`);
-    }
+    measured[sim.id] = app.gz;
+    if (unusedPresent.length > 0) violations++;
+
+    console.log(
+      `  ${unusedPresent.length > 0 ? '✗' : '✓'} ${sim.id.padEnd(33)}${fmt(app.gz)}   ` +
+        (unusedPresent.length > 0
+          ? `${unusedPresent.length}종 — ${unusedPresent.join(', ')}`
+          : '없음'),
+    );
   }
+  rmSync(join(ROOT, 'packages/bootstrap/.budget-tmp'), { recursive: true, force: true });
 
   const now = {
     date: new Date().toISOString().slice(0, 10),
@@ -245,6 +196,8 @@ function main(): void {
     hostGz: host.gz,
     eagerGz: eager.reduce((n, c) => n + c.gz, 0),
     pieces: Object.fromEntries(pieces.map((p) => [p.name.replace('.js', ''), p.gz])),
+    /** 조각 하나를 쓰는 앱의 실측 크기. 이것이 소비자가 받는 양이다. */
+    measured,
     violations: report,
   };
 
@@ -264,9 +217,10 @@ function main(): void {
     console.log(`위반 능력 수 ${baseV} → ${nowV}`);
   }
 
+  const vals = Object.values(measured);
   console.log(
-    `\n${violations}/${simDirs.length} 조각이 쓰지 않는 능력을 받고 있다.` +
-      (violations > 0 ? ' (S3-C 까지는 정상)' : ''),
+    `\n${violations}/${sims.length} 조각이 쓰지 않는 능력을 받고 있다.` +
+      `  실측 ${(Math.min(...vals) / 1024).toFixed(1)} ~ ${(Math.max(...vals) / 1024).toFixed(1)} KB`,
   );
 }
 

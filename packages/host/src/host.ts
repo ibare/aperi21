@@ -40,12 +40,11 @@ export interface HostConfig {
   timeMode?: TimeEngineMode;
 
   /**
-   * 이 host 가 아는 능력. 생략하면 표준 한 벌이 전부 실린다.
+   * 이 host 가 아는 능력. **주지 않으면 아무것도 모른다.**
    *
-   * **그 기본값이 트리셰이킹을 막는다** — `new Host()` 한 번이 렌더러 8종과
-   * 컨트롤러 5종을 살려 내므로, 슬라이더 하나 쓰는 조각도 핀볼 런처를 받는다
-   * (REQUIREMENTS.md §2.4 조건 1). 지금은 아무것도 깨지 않기 위해 기본값을
-   * 남겨 두고, 조각이 자기 능력을 가져오게 된 뒤(§2.4 조건 3) 걷어낸다.
+   * 조각은 이것을 직접 주지 않아도 된다 — `registerBundle` 의 세 번째 인자로
+   * 온 능력을 `adoptBundleRenderers` 가 흡수한다. 여기 주는 것은 능력을 가려
+   * 쓸 이유가 없는 소비자를 위한 길이다 (`standardCapabilities()`).
    */
   capabilities?: HostCapabilities;
 }
@@ -61,22 +60,28 @@ export interface HostCapabilities {
 }
 
 /**
- * 표준 한 벌. `capabilities` 를 주지 않은 host 가 받는 것이다.
+ * 표준 한 벌 전부. **아무도 부르지 않으면 번들에 실리지 않는다.**
  *
- * 이 표를 참조하는 것만으로 8+5+2 종이 번들에 들어온다. 그것이 지금의 상태이고
- * S3-C 에서 없앤다 — 여기 모아 둔 이유는 **없앨 자리를 한 곳으로 만들기 위해서**다.
+ * 상수가 아니라 함수인 것이 핵심이다 — 모듈 최상위에서 컨트롤러를 `new` 하면
+ * 번들러가 그것을 부수 효과로 보고 지우지 못한다. 함수 본문은 호출되지 않으면
+ * 통째로 사라진다 (§2.4 조건 1).
+ *
+ * 조각은 이것을 쓰지 않는다. 자기가 쓰는 것만 `capabilities` 로 받는다. 이 함수는
+ * 능력을 가려 쓸 이유가 없는 소비자(개발 도구·전체 미리보기)를 위한 편의다.
  */
-export const STANDARD_CAPABILITIES: Required<HostCapabilities> = {
-  renderers: CORE_RENDERERS,
-  controllers: [
-    new PinballLauncherController(),
-    new AngleDialController(),
-    new PlacementController(),
-    new ValueEditController(),
-    new SliderController(),
-  ],
-  vectorCompute: { uniform: uniformVectorField, gravity: gravityVectorField },
-};
+export function standardCapabilities(): Required<HostCapabilities> {
+  return {
+    renderers: CORE_RENDERERS,
+    controllers: [
+      new PinballLauncherController(),
+      new AngleDialController(),
+      new PlacementController(),
+      new ValueEditController(),
+      new SliderController(),
+    ],
+    vectorCompute: { uniform: uniformVectorField, gravity: gravityVectorField },
+  };
+}
 
 /**
  * 프레임워크 문구 번들(2층) 위에 호스트가 준 사전을 얹는다. 호스트 값이 이긴다.
@@ -145,19 +150,20 @@ export class Host {
     this.timeEngine = createTimeEngine(config.timeMode ?? 'linear');
     this.camera = new Camera();
 
-    // 능력 등록. 주지 않으면 표준 한 벌이 전부 온다 (HostConfig.capabilities 주석).
+    // 능력 등록. **주지 않으면 이 host 는 아무 능력도 모른다.**
+    //
+    // 예전에는 여기서 렌더러 8종·컨트롤러 5종·계산 2종을 무조건 등록했다.
+    // 그래서 `new Host()` 한 번이 엔진 전체를 살려 냈고, 슬라이더 하나 쓰는
+    // 조각도 핀볼 런처를 받았다 (§2.4 조건 1). 능력은 조각이 가져온다 —
+    // `adoptBundleRenderers` 가 흡수하고, 그 출처는 생성기다.
     const caps = config.capabilities;
-    for (const [type, renderer] of Object.entries(
-      caps?.renderers ?? STANDARD_CAPABILITIES.renderers,
-    )) {
+    for (const [type, renderer] of Object.entries(caps?.renderers ?? {})) {
       this.rendererRegistry.register(type, renderer);
     }
-    for (const impl of caps?.controllers ?? STANDARD_CAPABILITIES.controllers) {
+    for (const impl of caps?.controllers ?? []) {
       this.controllerRegistry.register(impl);
     }
-    for (const [name, fn] of Object.entries(
-      caps?.vectorCompute ?? STANDARD_CAPABILITIES.vectorCompute,
-    )) {
+    for (const [name, fn] of Object.entries(caps?.vectorCompute ?? {})) {
       this.computeRegistry.registerVector(name, fn);
     }
 
