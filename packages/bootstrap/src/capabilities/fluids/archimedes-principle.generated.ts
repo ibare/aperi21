@@ -6,12 +6,15 @@
 // 여기 없는 능력은 이 조각의 번들에 실리지 않는다 (R10).
 
 import type { HostCapabilities } from '@aperi21/host';
-import { SliderController, renderBody, renderMarker, renderSurface, renderVector } from '@aperi21/host';
+import { SliderController, renderBody, renderMarker, renderRegion, renderScale, renderStream, renderSurface, renderVector } from '@aperi21/host';
 
 export const capabilities: HostCapabilities = {
   renderers: {
     body: renderBody,
     marker: renderMarker,
+    region: renderRegion,
+    scale: renderScale,
+    stream: renderStream,
     surface: renderSurface,
     vector: renderVector,
   },

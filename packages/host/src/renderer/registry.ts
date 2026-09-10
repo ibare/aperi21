@@ -26,13 +26,24 @@ export const DEFAULT_Z_LAYERS: Readonly<Record<string, number>> = {
   circuitElement: 40,
   terminal: 41,
   particleSystem: 40,
+  // 45: 매질 · 흐름
+  //
+  // **물체(40) 위에 온다.** 반투명하게 덮여야 잠긴 것이 아래로 비쳐 보이고,
+  // 그래야 "잠겼다" 로 읽힌다. 물체 아래로 깔면 물에 들어간 것이 물 밖에 있는
+  // 것처럼 보인다.
+  region: 45,
+  stream: 46,
   // 50: 벡터 · 이벤트
   vector: 50,
   axis: 50,
   event: 50,
-  // 60: 주석
+  // 60: 주석 · 값
   marker: 60,
   gauge: 60,
+  dimension: 58,
+  scale: 61,
+  // 값은 주석 위 — 가려지면 읽을 수 없다.
+  readout: 62,
   // 70: 스크린 오버레이
   graph: 70,
   energyLevels: 65,

@@ -262,6 +262,143 @@ export interface Marker extends BaseMeta {
 
 
 // ========================================================================
+// 5-2. 코어 프리미티브 — 정찰에서 승격된 어휘
+// ========================================================================
+//
+// 자유 렌더로 만든 조각들이 손으로 그리던 것을 어휘로 올린 것이다
+// (tasks/engine-requirements/REQUIREMENTS.md §3). 조각마다 다시 그리면 조각마다
+// 다르게 그려지고, 같은 대상이 같은 모양으로 나오지 않는다.
+
+/**
+ * 자유 곡선 경계를 가진 채워진 영역. 물·매질·차오름.
+ *
+ * `body` 는 원·사각·점·막대뿐이라 "그릇 모양대로 담긴 물" 을 그리지 못하고,
+ * `surface` 는 선 하나다.
+ */
+export interface Region extends BaseMeta {
+  type: 'region';
+  /** 경계 다각형. 월드 좌표. */
+  points: readonly Vec2[];
+  /**
+   * 한 변을 일렁이게 한다. `edge` 는 `points` 의 인덱스 쌍.
+   *
+   * `amplitude` 는 **화면 픽셀**이다 — 일렁임은 물리량이 아니라 표현이라
+   * 배율을 따라가면 확대했을 때 파도가 된다.
+   */
+  ripple?: { edge: readonly [number, number]; amplitude: number };
+  /** 채움 불투명도. 기본 0.42 — 잠긴 것이 비쳐 보이는 정도. */
+  opacity?: number;
+  /** 굵게 그릴 변. `points` 의 인덱스 쌍 목록. 생략하면 경계선 없음. */
+  outline?: readonly (readonly [number, number])[];
+}
+
+/**
+ * 방출·이류·수명을 가진 입자 흐름. 물줄기·분출·떠내려가는 것.
+ *
+ * 입자 배열을 선언하지 않는다. **방출 조건만 주면 렌더러가 흐름을 만든다** —
+ * 나이만으로 자리가 정해지므로 상태를 들고 있을 필요가 없고, 흩날림은 출생
+ * 번호에서 뽑아 프레임마다 떨지 않는다.
+ */
+export interface Stream extends BaseMeta {
+  type: 'stream';
+  /** 방출 지점. 월드. */
+  from: Vec2;
+  /** 방출 속도. 월드 단위/초. */
+  velocity: Vec2;
+  /** 등가속도. 중력이면 `[0, -9.8]`. 기본 `[0, 0]`. */
+  acceleration?: Vec2;
+  /** 초당 방출 개수. */
+  rate: number;
+  /** 입자 수명(초). 이 나이가 되면 사라진다. */
+  life: number;
+  /** 획 굵기(화면 px). 나이에 따라 가늘어진다. 기본 2. */
+  width?: number;
+  /** 흩날림(화면 px). 출생 번호 기반이라 안정적이다. 기본 0. */
+  jitter?: number;
+  /** 0~1. 0 이면 그리지 않는다. 기본 1. */
+  flow?: number;
+}
+
+/**
+ * 값 하나를 읽히게 두는 것. 월드에 붙는 칩이거나 화면에 고정된 줄이거나.
+ *
+ * `marker` 는 월드 좌표에 붙는 주석이고 이것은 **값**이다. 값은 자리보다
+ * 읽히는 것이 중요해서 배경을 깔고, 넘치면 자리를 넓히는 대신 글자를 줄인다
+ * (원칙 6 — 임베드 높이는 마운트 뒤 바뀌지 않는다).
+ */
+export interface Readout extends BaseMeta {
+  type: 'readout';
+  /**
+   * 월드 좌표에 붙거나, 화면 모서리에 고정되거나.
+   *
+   * 두 경우 다 `offset` 은 **화면 픽셀**이다. 앵커에서 살짝 띄우는 거리는
+   * 물리량이 아니라 배치라, 배율을 따라가면 확대했을 때 멀리 날아간다.
+   */
+  anchor:
+    | { world: Vec2; offset?: Vec2 }
+    | { screen: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'; offset?: Vec2 };
+  /** 화면에 뜨는 문안. 값은 `vars` 로 끼운다 (C1). */
+  text: LocalizedText;
+  /** `{name}` 자리에 들어갈 값. */
+  vars?: Record<string, string | number>;
+  /** 배경 칩을 깐다. 월드 앵커는 기본 true, 화면 고정은 기본 false. */
+  chip?: boolean;
+  /** 글자 크기(화면 px). 기본 11. */
+  fontSize?: number;
+  /** 화면 고정일 때 정렬. 기본은 모서리에 맞춘다. */
+  align?: 'left' | 'center' | 'right';
+}
+
+/**
+ * 눈금. 장치에 붙는 눈금판(`dial`)과 축처럼 놓이는 눈금자(`linear`).
+ *
+ * `gauge` 는 화면 좌상단에 쌓이는 가로 막대라 장치 옆에 붙지 못한다.
+ */
+export interface Scale extends BaseMeta {
+  type: 'scale';
+  shape: 'linear' | 'dial';
+  /** `dial` 은 중심, `linear` 는 시작점. 월드. */
+  pos: Vec2;
+  /** `dial` 은 반지름, `linear` 는 길이. 월드 단위. */
+  size: number;
+  /** `linear` 의 방향. 기본 `[1, 0]`. */
+  direction?: Vec2;
+  range: readonly [number, number];
+  value: number;
+  /**
+   * 지침이 출발한 자리. 주면 여기서 `value` 까지 부채꼴(또는 띠)이 자란다.
+   * 두 눈금이 같은 범위를 쓰면 그 크기가 매 순간 견줄 수 있다.
+   */
+  origin?: number;
+  /** 눈금선을 놓을 값. 생략하면 균등 8칸. */
+  tickAt?: readonly number[];
+  /** 숫자를 붙일 값. 여기 있는 것만 붙는다 — 다 붙이면 읽을 것이 많아진다. */
+  labelAt?: readonly number[];
+  /** 지금 값 옆에 붙는 단위. 표식이라 번역 대상이 아닐 수 있다 (C1). */
+  unit?: LocalizedText;
+  /** 소수 자릿수. 기본 2. 유효숫자는 주장의 일부라 자동으로 줄이지 않는다. */
+  digits?: number;
+}
+
+/**
+ * 두 점 사이를 재는 표시. 치수선.
+ *
+ * `elbow` 를 주면 ㄴ자로 꺾어 잰다 — 수면에서 구멍까지의 깊이처럼 가로세로가
+ * 섞인 거리를 잴 때 직선으로 그으면 대각선이 되어 다른 값을 재는 것처럼 보인다.
+ */
+export interface Dimension extends BaseMeta {
+  type: 'dimension';
+  from: Vec2;
+  to: Vec2;
+  /** ㄴ자로 꺾는다. 기본 false(직선). */
+  elbow?: boolean;
+  /** 곁들이는 문안. 값은 `vars` 로 끼운다 (C1). */
+  text?: LocalizedText;
+  vars?: Record<string, string | number>;
+}
+
+
+// ========================================================================
 // 6. 코어 프리미티브 — Events
 // ========================================================================
 
@@ -402,6 +539,7 @@ export type Primitive =
   | Wave | Emitter
   | ParticleSystem
   | Graph | Gauge | Marker
+  | Region | Stream | Readout | Scale | Dimension
   | Event_
   // 도메인
   | Ray | OpticalElement

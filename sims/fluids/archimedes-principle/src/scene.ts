@@ -9,22 +9,18 @@ import type {
   EnvironmentDef,
   Marker,
   Primitive,
+  Region,
+  Scale,
   SceneGraph,
   StageDef,
+  Stream,
   Surface,
   Vec2,
   Vector,
   ViewDef,
 } from '@aperi21/schema';
 
-import {
-  asPrimitive,
-  text,
-  FORCE_UNIT,
-  type DialScalePrimitive,
-  type WaterStreamPrimitive,
-  type WaterVolumePrimitive,
-} from './schema';
+import { text, FORCE_UNIT } from './schema';
 import { clamp01, deriveCupLevel, deriveReadings, readConstants } from './physics';
 import type { ArchimedesPrincipleState } from './state';
 
@@ -87,11 +83,13 @@ const LAYOUT = {
   /** 힘 벡터 길이 배율 (m/N). 9.8 N 이 물체 한 변만큼. */
   forceScale: 0.01,
 
-  /** 물줄기 최대 굵기 (m). */
-  streamWidth: 0.018,
+  /** 물줄기 획 굵기 (화면 px). */
+  streamWidthPx: 3,
+  /** 물줄기 방출 밀도(개/초)와 물방울 수명(초)의 상한. */
+  streamRate: 90,
 
-  /** 수면 일렁임 진폭 (m). */
-  ripple: 0.004,
+  /** 수면 일렁임 진폭 (화면 px). 일렁임은 물리량이 아니라 표현이다. */
+  ripplePx: 4,
 
   /** 두 눈금판이 공유하는 눈금 범위 (N). 같아야 부채꼴이 비교된다. */
   dialRange: [0, 20] as const,
@@ -131,6 +129,7 @@ export function scene(params: {
   const bottomY = blockBottomY(state);
   const centerY = bottomY + block.size / 2;
   const cupLevel = deriveCupLevel(r.displacedVolume, cup);
+  const cupLevelHeight = Math.max(0, cupLevel - cup.bottom);
 
   // ---- 장치 골격 — 표준 어휘 (surface) 로 충분한 부분 ----
   const frame: Surface[] = [
@@ -172,65 +171,96 @@ export function scene(params: {
   };
 
   // ---- 물 — 넘친다 ----
-  const canWater: WaterVolumePrimitive = {
-    type: 'waterVolume',
+  // `region` 은 매질(45)이라 물체(40) 위에 반투명으로 덮인다. 그래야 잠긴
+  // 부분이 물빛 아래로 비쳐 "잠겼다" 로 읽힌다.
+  const canWater: Region = {
+    type: 'region',
     id: 'can-water',
-    bounds: { min: [can.left, can.bottom], max: [can.right, can.waterLevel] },
+    points: [
+      [can.left, can.bottom],
+      [can.right, can.bottom],
+      [can.right, can.waterLevel],
+      [can.left, can.waterLevel],
+    ],
     // 주둥이에 물려 있어 오르지 않는다. 들어간 만큼 그대로 넘어간다.
-    level: can.waterLevel,
-    ripple: LAYOUT.ripple,
+    ripple: { edge: [2, 3], amplitude: LAYOUT.ripplePx },
+    outline: [[2, 3]],
     style: { colorRole: 'secondary', emphasis: 'medium' },
   };
 
-  const cupWater: WaterVolumePrimitive = {
-    type: 'waterVolume',
+  const cupWater: Region = {
+    type: 'region',
     id: 'cup-water',
-    bounds: { min: [cup.left, cup.bottom], max: [cup.right, cup.top] },
-    level: cupLevel,
-    ripple: LAYOUT.ripple,
+    points: [
+      [cup.left, cup.bottom],
+      [cup.right, cup.bottom],
+      [cup.right, cup.bottom + cupLevelHeight],
+      [cup.left, cup.bottom + cupLevelHeight],
+    ],
+    // 컵은 처음에 비어 있다. 얕은 물이 바닥을 뚫고 출렁이지 않게 진폭을 묶는다.
+    ripple: { edge: [2, 3], amplitude: Math.min(LAYOUT.ripplePx, cupLevelHeight * 400) },
+    outline: [[2, 3]],
     style: { colorRole: 'secondary', emphasis: 'medium' },
+    hidden: cupLevelHeight <= 0.001,
   };
 
-  const stream: WaterStreamPrimitive = {
-    type: 'waterStream',
+  // 물줄기 — 주둥이를 떠나 컵으로 떨어진다.
+  //
+  // 수평 속도는 일정하고 낙하는 가속한다. 착수점에서 속도를 역산하는 것은
+  // sim 의 물리다 — 어휘는 "어디서 어떤 속도로 떠났는가" 만 받는다.
+  const spoutY = (can.tipHigh + can.tipLow) / 2;
+  const fallHeight = Math.max(0.001, spoutY - (cupLevel + 0.006));
+  const fallTime = Math.sqrt((2 * fallHeight) / c.g);
+  const overflow: Stream = {
+    type: 'stream',
     id: 'overflow',
-    from: [can.tipX, (can.tipHigh + can.tipLow) / 2],
-    to: [cup.landingX, cupLevel + 0.006],
+    from: [can.tipX, spoutY],
+    velocity: [(cup.landingX - can.tipX) / fallTime, 0],
+    acceleration: [0, -c.g],
+    rate: LAYOUT.streamRate,
+    life: fallTime,
+    width: LAYOUT.streamWidthPx,
     flow: Math.max(0, state.flow),
-    width: LAYOUT.streamWidth,
     style: { colorRole: 'secondary', emphasis: 'strong' },
   };
 
   // ---- 두 저울 — 마주 움직인다 ----
   // 같은 눈금 범위를 쓰므로 두 부채꼴의 각도 폭이 곧 변화량이고,
   // 그 둘은 매 순간 합동이다. 그것이 이 조각이 하는 말이다.
-  const objectScale: DialScalePrimitive = {
-    type: 'dialScale',
+  const objectScale: Scale = {
+    type: 'scale',
     id: 'scale-object',
+    shape: 'dial',
     pos: [dial.objectX, dial.y],
-    radius: dial.radius,
+    size: dial.radius,
     value: r.apparentWeight,
     origin: r.weightInAir,
     range: LAYOUT.dialRange,
     unit: FORCE_UNIT,
     label: text('label.objectScale'),
-    tether: [block.x, bottomY + block.size],
     style: { colorRole: 'negative', emphasis: 'strong' },
   };
 
-  const waterScale: DialScalePrimitive = {
-    type: 'dialScale',
+  const waterScale: Scale = {
+    type: 'scale',
     id: 'scale-water',
+    shape: 'dial',
     pos: [dial.waterX, dial.y],
-    radius: dial.radius,
+    size: dial.radius,
     value: r.spilledWeight,
     origin: 0,
     range: LAYOUT.dialRange,
     unit: FORCE_UNIT,
     label: text('label.waterScale'),
-    tether: [cup.centerX, cup.top],
     style: { colorRole: 'positive', emphasis: 'strong' },
   };
+
+  // 저울이 무엇을 들고 있는지 — 매단 줄. 선 하나면 되므로 어휘를 새로 만들지
+  // 않는다 (원칙 4 — 두 번째 사례가 나온 뒤에 만든다).
+  const tethers: Surface[] = [
+    wall('tether-object', [dial.objectX, dial.y - dial.radius], [block.x, bottomY + block.size]),
+    wall('tether-water', [dial.waterX, dial.y - dial.radius], [cup.centerX, cup.top]),
+  ];
 
   // ---- 주석 ----
   const notes: Marker[] = [
@@ -254,14 +284,15 @@ export function scene(params: {
 
   const declared: Primitive[] = [
     ...frame,
+    ...tethers,
     object,
     buoyancy,
     ...notes,
-    asPrimitive(canWater),
-    asPrimitive(cupWater),
-    asPrimitive(stream),
-    asPrimitive(objectScale),
-    asPrimitive(waterScale),
+    canWater,
+    cupWater,
+    overflow,
+    objectScale,
+    waterScale,
   ];
 
   return declared;

@@ -7,16 +7,9 @@
 //  - 화면에 뜨는 모든 문자 (`archimedesPrincipleMessages`)
 //  - 물리 상수·연출 시간 (`stages[0].constants`)
 //  - 임베드 치수 (`canvas`)
-//  - 표준 8종으로 표현되지 않는 것을 그리기 위한 자유 렌더 계층 프리미티브 선언
 // ========================================================================
 
-import type {
-  BaseMeta,
-  BundleSchema,
-  LocalizedText,
-  Primitive,
-  Vec2,
-} from '@aperi21/schema';
+import type { BundleSchema, LocalizedText } from '@aperi21/schema';
 
 /** 등록 키 `aperi21:archimedes-principle` 와 문자 그대로 일치한다 (C4). */
 export const ARCHIMEDES_PRINCIPLE_ID = 'archimedes-principle';
@@ -75,92 +68,7 @@ export function text(key: ArchimedesMessageKey): LocalizedText {
 export const FORCE_UNIT: LocalizedText = 'N';
 
 // ------------------------------------------------------------------------
-// 2. 자유 렌더 계층 프리미티브 (원칙 4)
-// ------------------------------------------------------------------------
-// 표준 8종(body·trajectory·vector·surface·marker·graph·event·gauge)으로는
-// 이 조각의 동사 — "넘친다", "두 저울이 마주 움직인다" — 가 화면에서 일어나지
-// 않는다. 아래 3종은 이 sim 이 직접 그린다. 렌더러는
-// `archimedes-principle-stage.ts` 에 있고, 등록은 호스트가 한다 (NOTES.md).
-
-/** 그릇 안에 담긴 물. `level` 이 오르내리고 수면이 일렁인다. */
-export interface WaterVolumePrimitive extends BaseMeta {
-  type: 'waterVolume';
-  /** 물이 갇히는 안쪽 영역 (월드 좌표). */
-  bounds: { min: Vec2; max: Vec2 };
-  /** 수면 높이 (월드 y). `bounds.min[1]` 이하이면 아무것도 그리지 않는다. */
-  level: number;
-  /** 수면 일렁임 진폭 (m). 0 이면 평평. */
-  ripple?: number;
-}
-
-/** 주둥이에서 쏟아져 나오는 물줄기. `flow` 가 0 이면 그리지 않는다. */
-export interface WaterStreamPrimitive extends BaseMeta {
-  type: 'waterStream';
-  /** 주둥이 끝. */
-  from: Vec2;
-  /** 떨어지는 지점 (받는 물의 수면). */
-  to: Vec2;
-  /** 0 = 멈춤, 1 = 최대. 굵기와 물방울 속도를 정한다. */
-  flow: number;
-  /** flow === 1 일 때의 물줄기 굵기 (m). */
-  width: number;
-}
-
-/**
- * 눈금판 저울. `origin` 에서 `value` 까지 부채꼴이 자란다.
- * 두 저울이 같은 매핑을 쓰므로 부채꼴의 각도 폭이 곧 변화량이고,
- * 그 둘이 매 순간 합동인 것이 이 조각의 주장이다.
- */
-export interface DialScalePrimitive extends BaseMeta {
-  type: 'dialScale';
-  /** 눈금판 중심 (월드). */
-  pos: Vec2;
-  /** 눈금판 반지름 (m). */
-  radius: number;
-  /** 지금 가리키는 값. */
-  value: number;
-  /** 담그기 전에 가리키던 값. 여기서 `value` 까지가 변화 부채꼴. */
-  origin: number;
-  /** 눈금 범위. 두 저울이 같은 값을 써야 부채꼴이 비교된다. */
-  range: readonly [number, number];
-  /** 값 옆에 붙는 단위 표식. */
-  unit?: LocalizedText;
-  /** 눈금판에서 내려가 매달린 것에 닿는 줄. 없으면 줄을 그리지 않는다. */
-  tether?: Vec2;
-}
-
-export type ArchimedesPrimitive =
-  | WaterVolumePrimitive
-  | WaterStreamPrimitive
-  | DialScalePrimitive;
-
-/** 호스트 렌더러 레지스트리에 등록될 타입 이름들. */
-export const ARCHIMEDES_PRIMITIVE_TYPES = [
-  'waterVolume',
-  'waterStream',
-  'dialScale',
-] as const;
-
-/**
- * z-레이어 힌트. 물은 물체(40)보다 위에 반투명으로 덮여야 "잠겼다" 로 읽히고,
- * 눈금판은 주석(60) 위에 온다.
- */
-export const ARCHIMEDES_Z_HINTS: Record<string, number> = {
-  waterVolume: 45,
-  waterStream: 46,
-  dialScale: 62,
-};
-
-/**
- * `SceneGraph` 는 `Primitive` 유니온의 배열이고 그 유니온은 schema 패키지에서
- * 닫혀 있다. 자유 렌더 계층의 프리미티브는 이 경계를 한 곳에서만 넘는다.
- */
-export function asPrimitive(p: ArchimedesPrimitive): Primitive {
-  return p as unknown as Primitive;
-}
-
-// ------------------------------------------------------------------------
-// 3. BundleSchema
+// 2. BundleSchema
 // ------------------------------------------------------------------------
 
 export const archimedesPrincipleSchema: BundleSchema = {

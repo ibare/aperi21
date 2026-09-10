@@ -3,36 +3,50 @@
 // ========================================================================
 // 그리지 않는다, 선언한다. 색은 role 로만 말하고 문안은 키로만 말한다.
 //
-// 표준 어휘가 닿는 곳은 표준 어휘로 쓴다 — 바닥선(surface) · 수면 안내선
-// (trajectory) · 바닥을 누르는 압력 화살표(vector) · 나란해지는 순간의
-// 섬광(event). 그릇 벽과 그 안에 차오르는 물만 자유 렌더 계층이 맡는다
-// (원칙 4, NOTES.md 참고).
+// 예전에는 그릇과 물과 값을 이 sim 이 직접 그렸다(288줄). 그때 만든 것들이
+// 코어 어휘로 올라가면서(REQUIREMENTS.md §3) 여기 남는 것은 선언뿐이다 —
+// 벽은 `surface`, 차오르는 물은 `region`, 값은 `readout`.
 // ========================================================================
 
-import type { EnvironmentDef, Primitive, SceneGraph, StageDef, ViewDef } from '@aperi21/schema';
-import { commonBottomArea, readConstants } from './physics';
+import type {
+  EnvironmentDef,
+  Primitive,
+  Readout,
+  Region,
+  SceneGraph,
+  StageDef,
+  Surface,
+  ViewDef,
+} from '@aperi21/schema';
+import { commonBottomArea, readConstants, widthAtHeight } from './physics';
 import {
   FOOTER_ANCHOR_Y,
   LEVEL_LINE_SPAN,
   LEVEL_READOUT_X,
   PRESSURE_ARROW_OFFSETS,
   PRESSURE_ARROW_RATIO,
-  READOUT_PRIMITIVE_TYPE,
-  VESSEL_PRIMITIVE_TYPE,
   VESSEL_SHAPES,
-  type ReadoutPrimitive,
-  type VesselPrimitive,
+  text,
+  vesselText,
 } from './schema';
 import type { PressureAndContainerShapeState } from './state';
 
+/** 수면 일렁임 진폭(화면 px). 일렁임은 물리량이 아니라 표현이다. */
+const RIPPLE_PX = 3;
+/** 수심(m)당 허용 진폭(px). 얕은 물이 바닥을 뚫고 출렁이지 않게. */
+const RIPPLE_DEPTH_LIMIT = 40;
+/** 그릇 아래 이름 줄이 압력 숫자에서 내려오는 거리(m). */
+const NAME_DROP = 0.05;
+/** 화면 좌상단 주어진 값 줄. 우상단 슬라이더 아래로 내려 잡는다. */
+const GIVENS_TOP = 60;
+const GIVENS_LINE_GAP = 14;
 /**
- * 자유 렌더 계층의 프리미티브는 schema 의 Primitive 유니온에 없다. 호스트는
- * 문자열 type 으로 렌더러를 찾으므로 런타임에는 문제가 없고, 선언 시점에만
- * 이 한 곳에서 좁혀 준다 (NOTES.md 「막힌 지점」).
+ * 부피 칩이 수면 아래로 내려가 붙는 거리(화면 px).
+ *
+ * 월드로 잡으면 물이 얕을 때 칩이 바닥을 뚫는다. 앵커에서 띄우는 거리는
+ * 배치라 화면 상수여야 한다.
  */
-function declare(p: VesselPrimitive | ReadoutPrimitive): Primitive {
-  return p as unknown as Primitive;
-}
+const CHIP_DROP_PX = 16;
 
 /** Bundle.scene */
 export function scene(params: {
@@ -71,49 +85,136 @@ export function scene(params: {
     },
   });
 
-  out.push(
-    declare({
-      type: READOUT_PRIMITIVE_TYPE,
-      id: 'readout-level',
-      variant: 'level',
-      pos: [LEVEL_READOUT_X, state.targetHeight],
-      height: state.targetHeight,
-      leveled,
-    }),
-  );
+  // 지금 수면 높이. 선 위에 쓴다 — 선 아래는 가장 오른쪽 그릇의 부피 칩이
+  // 지나가는 자리다.
+  out.push({
+    type: 'readout',
+    id: 'readout-level',
+    anchor: { world: [LEVEL_READOUT_X, state.targetHeight + 0.02] },
+    text: text('label.level'),
+    vars: { h: state.targetHeight.toFixed(2) },
+    chip: false,
+    align: 'right',
+    fontSize: 12,
+    style: { colorRole: leveled ? 'accent' : 'muted', emphasis: 'strong' },
+  });
 
-  out.push(
-    declare({
-      type: READOUT_PRIMITIVE_TYPE,
-      id: 'readout-givens',
-      variant: 'givens',
-      placement: 'screen-hud',
-      rho,
-      gravity: g,
-      bottomArea: commonBottomArea(),
-    }),
-  );
+  // 주어진 값 — 월드가 아니라 화면 좌상단에 붙는다. 그릇 위 좁은 띠에 두면
+  // 낮은 배율에서 수면 높이 표시와 겹친다.
+  const givens: Readout[] = [
+    {
+      type: 'readout',
+      id: 'givens-constants',
+      anchor: { screen: 'top-left', offset: [0, GIVENS_TOP] },
+      text: text('label.constants'),
+      vars: { rho: rho.toFixed(0), g: g.toFixed(1) },
+      chip: false,
+      fontSize: 10,
+      style: { colorRole: 'muted', emphasis: 'medium' },
+    },
+    {
+      type: 'readout',
+      id: 'givens-area',
+      anchor: { screen: 'top-left', offset: [0, GIVENS_TOP + GIVENS_LINE_GAP] },
+      text: text('label.bottomArea'),
+      vars: { a: commonBottomArea().toFixed(2) },
+      chip: false,
+      fontSize: 10,
+      style: { colorRole: 'muted', emphasis: 'medium' },
+    },
+  ];
+  out.push(...givens);
 
   for (const shape of VESSEL_SHAPES) {
     const vessel = state.vessels.find((v) => v.id === shape.id);
     if (!vessel) continue;
 
-    out.push(
-      declare({
-        type: VESSEL_PRIMITIVE_TYPE,
-        id: `vessel-${shape.id}`,
-        shapeId: shape.id,
-        centerX: shape.centerX,
-        bottomWidth: shape.bottomWidth,
-        topWidth: shape.topWidth,
-        wallHeight: shape.wallHeight,
-        level: vessel.level,
-        volume: vessel.volume,
-        pressure: vessel.pressure,
-        atTarget: vessel.atTarget,
-        leveled,
-      }),
-    );
+    const halfBottom = shape.bottomWidth / 2;
+    const halfTop = shape.topWidth / 2;
+    const level = Math.min(Math.max(vessel.level, 0), shape.wallHeight);
+    const halfSurface = widthAtHeight(shape, level) / 2;
+
+    // 그릇 벽 — 위가 열린 ㄷ 자. 바닥 폭은 셋 다 같고 위쪽만 다르다.
+    const walls: Surface[] = [
+      {
+        type: 'surface',
+        id: `wall-${shape.id}-left`,
+        geometry: {
+          kind: 'wall',
+          from: [shape.centerX - halfTop, shape.wallHeight],
+          to: [shape.centerX - halfBottom, 0],
+        },
+        material: 'solid',
+      },
+      {
+        type: 'surface',
+        id: `wall-${shape.id}-right`,
+        geometry: {
+          kind: 'wall',
+          from: [shape.centerX + halfBottom, 0],
+          to: [shape.centerX + halfTop, shape.wallHeight],
+        },
+        material: 'solid',
+      },
+    ];
+    out.push(...walls);
+
+    // 차오른 물 — 수면은 언제나 수평이다. 그릇 모양대로 담기므로 사다리꼴이다.
+    if (level > 0.0005) {
+      const water: Region = {
+        type: 'region',
+        id: `water-${shape.id}`,
+        points: [
+          [shape.centerX - halfBottom, 0],
+          [shape.centerX + halfBottom, 0],
+          [shape.centerX + halfSurface, level],
+          [shape.centerX - halfSurface, level],
+        ],
+        // 물이 얕으면 일렁임도 얕다. 진폭이 수심을 넘으면 물결이 바닥을 뚫는다.
+        ripple: {
+          edge: [2, 3],
+          amplitude: leveled ? 0 : Math.min(RIPPLE_PX, level * RIPPLE_DEPTH_LIMIT),
+        },
+        outline: [[2, 3]],
+        style: { colorRole: 'secondary', emphasis: 'medium' },
+      };
+      out.push(water);
+    }
+
+    // 담긴 부피 — 수면 바로 아래에 붙어 물과 함께 올라간다.
+    // 수면 위가 아니라 아래에 두는 이유: 다 차면 수면이 목표선과 겹치는데,
+    // 그 위에 두면 세 그릇을 가로지르는 목표선이 숫자를 지나간다.
+    out.push({
+      type: 'readout',
+      id: `volume-${shape.id}`,
+      anchor: { world: [shape.centerX, level], offset: [0, CHIP_DROP_PX] },
+      text: text('label.volume'),
+      vars: { v: (vessel.volume * 1000).toFixed(1) },
+      fontSize: 11,
+      style: { colorRole: vessel.atTarget ? 'primary' : 'muted', emphasis: 'strong' },
+    });
+
+    // 바닥 압력 — 압력 화살표 아래에 숫자로 못박는다.
+    out.push({
+      type: 'readout',
+      id: `pressure-${shape.id}`,
+      anchor: { world: [shape.centerX, FOOTER_ANCHOR_Y] },
+      text: text('label.pressure'),
+      vars: { p: Math.round(vessel.pressure) },
+      chip: false,
+      fontSize: 13,
+      style: { colorRole: leveled ? 'accent' : 'muted', emphasis: 'strong' },
+    });
+
+    out.push({
+      type: 'readout',
+      id: `name-${shape.id}`,
+      anchor: { world: [shape.centerX, FOOTER_ANCHOR_Y - NAME_DROP] },
+      text: vesselText(shape.id),
+      chip: false,
+      fontSize: 10,
+      style: { colorRole: 'muted', emphasis: 'medium' },
+    });
 
     // 물이 바닥을 누르는 힘. 길이는 수심에 비례한다 — 그래서 수면이
     // 나란해지는 순간 세 그릇의 화살표가 같은 길이가 된다.

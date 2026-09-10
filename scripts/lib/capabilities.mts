@@ -24,6 +24,11 @@ export const RENDERERS: Record<string, string> = {
   graph: 'renderGraph',
   event: 'renderEvent',
   gauge: 'renderGauge',
+  region: 'renderRegion',
+  stream: 'renderStream',
+  readout: 'renderReadout',
+  scale: 'renderScale',
+  dimension: 'renderDimension',
 };
 
 /** 표준 조작기 — 선언의 controller type → 클래스 이름. */

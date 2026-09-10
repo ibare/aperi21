@@ -8,7 +8,7 @@
 // (원칙 2). 코드에는 키와 기본값만 남는다.
 // ========================================================================
 
-import type { BaseMeta, BundleSchema, Vec2 } from '@aperi21/schema';
+import type { BundleSchema, LocalizedText } from '@aperi21/schema';
 
 /** 등록 키 `aperi21:pressure-and-container-shape` 와 문자 그대로 일치한다. */
 export const PRESSURE_AND_CONTAINER_SHAPE_ID = 'pressure-and-container-shape';
@@ -18,8 +18,6 @@ export const PRESSURE_AND_CONTAINER_SHAPE_ID = 'pressure-and-container-shape';
 // 렌더러 등록 키와 문자 그대로 일치해야 한다 (NOTES.md 「등록」 참고).
 // ------------------------------------------------------------------------
 
-export const VESSEL_PRIMITIVE_TYPE = 'pressureVessel';
-export const READOUT_PRIMITIVE_TYPE = 'pressureReadout';
 
 // ------------------------------------------------------------------------
 // 그릇 셋의 치수 — 바닥 넓이는 같고 모양만 다르다.
@@ -84,53 +82,39 @@ export const LEVEL_READOUT_X = 0.72;
 export const FOOTER_ANCHOR_Y = -0.12;
 
 // ------------------------------------------------------------------------
-// 자유 렌더 계층이 소비하는 프리미티브 선언
+// 문안
 // ------------------------------------------------------------------------
 
-/** 그릇 하나 — 벽 · 물 · 부피 · 바닥 압력. */
-export interface VesselPrimitive extends BaseMeta {
-  type: typeof VESSEL_PRIMITIVE_TYPE;
-  shapeId: VesselId;
-  centerX: number;
-  bottomWidth: number;
-  topWidth: number;
-  wallHeight: number;
-  /** 현재 수면 높이 (m). */
-  level: number;
-  /** 담긴 물의 부피 (m³). */
-  volume: number;
-  /** 바닥 계기압 (Pa). */
-  pressure: number;
-  /** 이 그릇이 목표 수면에 이르렀는가. */
-  atTarget: boolean;
-  /** 셋 다 이르러 수면이 나란해졌는가. */
-  leveled: boolean;
+/** 화면에 뜨는 문안. 값은 `vars` 로 끼운다 (C1). */
+export const pressureAndContainerShapeMessages = Object.freeze({
+  'label.volume': { ko: '{v} L', en: '{v} L' },
+  'label.pressure': { ko: '{p} Pa', en: '{p} Pa' },
+  'label.level': { ko: 'h = {h} m', en: 'h = {h} m' },
+  'label.constants': {
+    ko: 'ρ = {rho} kg/m³ · g = {g} m/s²',
+    en: 'ρ = {rho} kg/m³ · g = {g} m/s²',
+  },
+  'label.bottomArea': {
+    ko: '바닥 넓이 A = {a} m² — 셋 다 같다',
+    en: 'bottom area A = {a} m² — all equal',
+  },
+  'label.vessel.flared': { ko: '위로 벌어지는', en: 'widening' },
+  'label.vessel.straight': { ko: '곧은', en: 'straight' },
+  'label.vessel.tapered': { ko: '위로 좁아지는', en: 'narrowing' },
+  'label.targetHeight': { ko: '수면 높이 h', en: 'Water level h' },
+} satisfies Record<string, LocalizedText>);
+
+export type PressureMessageKey = keyof typeof pressureAndContainerShapeMessages;
+
+/** 선언에서 문안을 꺼낸다. 호출부에 문자열 리터럴을 두지 않기 위한 유일한 통로. */
+export function text(key: PressureMessageKey): LocalizedText {
+  return pressureAndContainerShapeMessages[key];
 }
 
-/** 값이 끼어드는 문안 한 줄. 문안은 messages 의 키로 조회한다 (C1). */
-export type ReadoutPrimitive = BaseMeta &
-  (
-    | {
-        type: typeof READOUT_PRIMITIVE_TYPE;
-        variant: 'level';
-        pos: Vec2;
-        height: number;
-        leveled: boolean;
-      }
-    | {
-        /**
-         * 주어진 값. 월드가 아니라 화면 좌상단에 붙는다 (Graph 의
-         * placement: 'screen-hud' 와 같은 뜻) — 그릇 위 좁은 띠에 두면 낮은
-         * 배율에서 수면 높이 표시와 겹친다.
-         */
-        type: typeof READOUT_PRIMITIVE_TYPE;
-        variant: 'givens';
-        placement: 'screen-hud';
-        rho: number;
-        gravity: number;
-        bottomArea: number;
-      }
-  );
+/** 그릇 이름 문안. */
+export function vesselText(id: VesselId): LocalizedText {
+  return text(`label.vessel.${id}` as PressureMessageKey);
+}
 
 // ------------------------------------------------------------------------
 // BundleSchema
@@ -181,21 +165,5 @@ export const pressureAndContainerShapeSchema: BundleSchema = {
   ],
   autoViews: { energy: false },
   canvas: { height: 400, minHeight: 360 },
-  messages: {
-    'label.volume': { ko: '{v} L', en: '{v} L' },
-    'label.pressure': { ko: '{p} Pa', en: '{p} Pa' },
-    'label.level': { ko: 'h = {h} m', en: 'h = {h} m' },
-    'label.constants': {
-      ko: 'ρ = {rho} kg/m³ · g = {g} m/s²',
-      en: 'ρ = {rho} kg/m³ · g = {g} m/s²',
-    },
-    'label.bottomArea': {
-      ko: '바닥 넓이 A = {a} m² — 셋 다 같다',
-      en: 'bottom area A = {a} m² — all equal',
-    },
-    'label.vessel.flared': { ko: '위로 벌어지는', en: 'widening' },
-    'label.vessel.straight': { ko: '곧은', en: 'straight' },
-    'label.vessel.tapered': { ko: '위로 좁아지는', en: 'narrowing' },
-    'label.targetHeight': { ko: '수면 높이 h', en: 'Water level h' },
-  },
+  messages: pressureAndContainerShapeMessages,
 };
