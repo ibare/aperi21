@@ -7,16 +7,17 @@
 // ========================================================================
 
 import type { ControllerSpec } from '@aperi21/schema';
-import { TARGET_LEVEL_RANGE } from './schema';
+import { TARGET_LEVEL_RANGE, text } from './schema';
 
 /** Bundle.controllers */
 export function controllers(): ControllerSpec[] {
   return [
     {
+      id: 'water-level',
       type: 'slider',
       binds: { value: 'targetHeight' },
       range: [TARGET_LEVEL_RANGE[0], TARGET_LEVEL_RANGE[1]],
-      label: { ko: '수면 높이 h', en: 'Water level h' },
+      label: text('label.targetHeight'),
       unit: 'm',
     },
   ];

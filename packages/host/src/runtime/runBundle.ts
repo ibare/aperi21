@@ -28,7 +28,7 @@ import { Camera, type Viewport } from '../camera';
 import { Host, createHost } from '../host';
 import { createTimeEngine, evaluateTimeline, withCaption } from '../time';
 import type { ThemeMode } from '../theme';
-import type { ControllerEventContext, ControllerImpl, PointerInput } from '../controller/types';
+import type { ControllerEventContext, PointerInput, ResolvedController } from '../controller/types';
 
 /**
  * 임베드 캔버스 치수의 기본값. 선언(`BundleSchema.canvas`)이 비었을 때만 쓰인다.
@@ -171,13 +171,13 @@ export function runBundle<T extends BundleState = BundleState>(
   // 이 임베드 전용 조작기 묶음. host 는 문서 전체가 공유하므로 조작기 인스턴스를
   // host 에 두면 임베드끼리 드래그 상태가 섞인다 (C5). 묶음은 자원을 갖지 않는다.
   const controllers = host.controllerRegistry.createSet();
-  let activeController:
-    | {
-        spec: ControllerSpec;
-        impl: ControllerImpl;
-      }
-    | null = null;
+  /**
+   * 손가락(포인터)마다의 드래그. 한 손가락이 한 인스턴스를 잡는다 — 두 손가락이 두
+   * 조작기를 동시에 끌 수 있고, 두 번째 손가락이 첫 번째의 드래그를 가로채지 않는다.
+   */
+  const sessions = new Map<number, ResolvedController>();
   let panning: {
+    pointerId: number;
     startPx: number;
     startPy: number;
     lastPx: number;
@@ -209,24 +209,25 @@ export function runBundle<T extends BundleState = BundleState>(
     };
   }
 
-  function makeEventCtx(vp: Viewport): ControllerEventContext {
+  function makeEventCtx(vp: Viewport, slot: number): ControllerEventContext {
     return {
       viewport: vp,
       toWorld: (s: Vec2) => camera.toWorld(s, vp),
       toScreen: (w: Vec2) => camera.toScreen(w, vp),
       snapWorld: (w: Vec2) => camera.snapWorld(w),
       scale: camera.scale,
+      slot,
     };
   }
 
-  function findControllerAt(input: PointerInput, viewport: Viewport) {
-    const ec = makeEventCtx(viewport);
+  function findControllerAt(input: PointerInput, viewport: Viewport): ResolvedController | null {
     const specs = refs.bundle.controllers({ state: refs.state }) as ControllerSpec[];
-    for (const spec of specs) {
-      const impl = controllers.get(spec.type);
-      if (!impl) continue;
-      if (impl.hitTest(input, ec, spec, refs.state as BundleState)) {
-        return { spec, impl };
+    // 다른 손가락이 잡고 있는 인스턴스는 건너뛴다 — 두 손가락이 한 조작기를 다투지 않게.
+    const held = new Set([...sessions.values()].map((s) => s.spec.id));
+    for (const r of controllers.resolve(specs)) {
+      if (held.has(r.spec.id)) continue;
+      if (r.impl.hitTest(input, makeEventCtx(viewport, r.slot), r.spec, refs.state as BundleState)) {
+        return r;
       }
     }
     return null;
@@ -241,16 +242,18 @@ export function runBundle<T extends BundleState = BundleState>(
     const vp = sizeCanvas();
     const input = toPointerInput(e);
     const hit = findControllerAt(input, vp);
-    if (hit?.impl) {
+    if (hit) {
       try { canvas.setPointerCapture(e.pointerId); } catch { /* noop */ }
-      activeController = hit;
-      const patch = hit.impl.onPointerDown(input, makeEventCtx(vp), hit.spec, refs.state as BundleState);
+      sessions.set(e.pointerId, hit);
+      const patch = hit.impl.onPointerDown(input, makeEventCtx(vp, hit.slot), hit.spec, refs.state as BundleState);
       applyPartial(patch);
       return;
     }
-    if (e.button === 0 || e.button === 1) {
+    // 카메라 팬은 조작기를 잡지 않은 손가락이 하나일 때만.
+    if (sessions.size === 0 && !panning && (e.button === 0 || e.button === 1)) {
       try { canvas.setPointerCapture(e.pointerId); } catch { /* noop */ }
       panning = {
+        pointerId: e.pointerId,
         startPx: input.px,
         startPy: input.py,
         lastPx: input.px,
@@ -262,17 +265,18 @@ export function runBundle<T extends BundleState = BundleState>(
   function onPointerMove(e: PointerEvent) {
     const vp = sizeCanvas();
     const input = toPointerInput(e);
-    if (activeController?.impl) {
-      const patch = activeController.impl.onPointerMove(
+    const session = sessions.get(e.pointerId);
+    if (session) {
+      const patch = session.impl.onPointerMove(
         input,
-        makeEventCtx(vp),
-        activeController.spec,
+        makeEventCtx(vp, session.slot),
+        session.spec,
         refs.state as BundleState,
       );
       applyPartial(patch);
       return;
     }
-    if (panning) {
+    if (panning && panning.pointerId === e.pointerId) {
       if (!panning.active) {
         const ddx = input.px - panning.startPx;
         const ddy = input.py - panning.startPy;
@@ -295,19 +299,20 @@ export function runBundle<T extends BundleState = BundleState>(
   function onPointerUp(e: PointerEvent) {
     const vp = sizeCanvas();
     const input = toPointerInput(e);
-    if (activeController?.impl) {
-      const patch = activeController.impl.onPointerUp(
+    const session = sessions.get(e.pointerId);
+    if (session) {
+      const patch = session.impl.onPointerUp(
         input,
-        makeEventCtx(vp),
-        activeController.spec,
+        makeEventCtx(vp, session.slot),
+        session.spec,
         refs.state as BundleState,
       );
       applyPartial(patch);
+      sessions.delete(e.pointerId);
       try { canvas.releasePointerCapture(e.pointerId); } catch { /* noop */ }
-      activeController = null;
       return;
     }
-    if (panning) {
+    if (panning && panning.pointerId === e.pointerId) {
       panning = null;
       try { canvas.releasePointerCapture(e.pointerId); } catch { /* noop */ }
     }
@@ -422,10 +427,8 @@ export function runBundle<T extends BundleState = BundleState>(
     }
 
     const controllerSpecs = b.controllers({ state: refs.state }) as ControllerSpec[];
-    for (const spec of controllerSpecs) {
-      const impl = controllers.get(spec.type);
-      if (!impl) continue;
-      impl.render({ ...rc, viewport: vp }, spec, refs.state as BundleState);
+    for (const r of controllers.resolve(controllerSpecs)) {
+      r.impl.render({ ...rc, viewport: vp, slot: r.slot }, r.spec, refs.state as BundleState);
     }
 
     ctx!.restore();
@@ -445,6 +448,11 @@ export function runBundle<T extends BundleState = BundleState>(
       canvas.removeEventListener('pointerup', onPointerUp);
       canvas.removeEventListener('pointercancel', onPointerUp);
       canvas.removeEventListener('wheel', onWheel);
+      // 열린 드래그를 닫는다 — 잡은 손가락의 캡처를 풀고 세션을 비운다 (C5).
+      for (const pointerId of sessions.keys()) {
+        try { canvas.releasePointerCapture(pointerId); } catch { /* noop */ }
+      }
+      sessions.clear();
       primitiveStore.clear();
       try { wrapper.remove(); } catch { /* noop */ }
     },

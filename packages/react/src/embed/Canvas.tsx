@@ -20,7 +20,8 @@ import {
   withCaption,
   type Camera,
   type ControllerEventContext,
-  type ControllerImpl,
+  type HostI18n,
+  type ResolvedController,
   type Host,
   type TimeEngine,
   type Viewport,
@@ -71,6 +72,11 @@ function overlayMargins(
 
 export interface BundleCanvasProps<T extends BundleState = BundleState> {
   host: Host;
+  /**
+   * 문안 조회기. Embed 가 **하나만** 만들어 오버레이 UI 와 캔버스(렌더러 · 조작기
+   * 이름표)에 같은 것을 넘긴다 — 각자 만들면 저작자 문안이 적용되는 곳이 갈린다 (C1).
+   */
+  i18n: HostI18n;
   /** 이 임베드 전용 카메라. 같은 host 를 공유하는 다른 임베드와 분리되도록 Embed 가 주입. */
   camera: Camera;
   /** 이 임베드 전용 시간 엔진(번들 timeModel 기반). 마찬가지로 Embed 가 주입. */
@@ -103,6 +109,7 @@ function createMeasure(ctx: CanvasRenderingContext2D, fontFamily: string): Measu
 export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>) {
   const {
     host,
+    i18n: i18nProp,
     camera,
     timeEngine,
     bundle,
@@ -127,6 +134,8 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
   const envRef = useRef(environments);
   const onStateChangeRef = useRef(onStateChange);
   const onDerivedRef = useRef(onDerived);
+  const i18nRef = useRef(i18nProp);
+  i18nRef.current = i18nProp;
   bundleRef.current = bundle;
   stageRef.current = stage;
   viewRef.current = view;
@@ -163,14 +172,16 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
     let disposed = false;
     let rafId = 0;
     let lastT = performance.now();
-    let activeController: {
-      spec: ControllerSpec;
-      impl: ControllerImpl;
-    } | null = null;
+    /**
+     * 손가락(포인터)마다의 드래그. 한 손가락이 한 인스턴스를 잡는다 — 두 손가락이 두
+     * 조작기를 동시에 끌 수 있고, 두 번째 손가락이 첫 번째의 드래그를 가로채지 않는다.
+     */
+    const sessions = new Map<number, ResolvedController>();
     // 비-컨트롤러 영역을 드래그하면 카메라 팬. 의도하지 않은 클릭(미세 흔들림 포함)
     // 이 userAdjusted 를 세팅해 auto-framing 을 영구 동결하지 않도록 5px deadzone
-    // 이후에만 pan 을 시작한다.
+    // 이후에만 pan 을 시작한다. 조작기를 잡지 않은 손가락이 하나일 때만.
     let panning: {
+      pointerId: number;
       startPx: number;
       startPy: number;
       lastPx: number;
@@ -201,24 +212,25 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       };
     }
 
-    function makeEventCtx(vp: Viewport): ControllerEventContext {
+    function makeEventCtx(vp: Viewport, slot: number): ControllerEventContext {
       return {
         viewport: vp,
         toWorld: (s: Vec2) => camera.toWorld(s, vp),
         toScreen: (w: Vec2) => camera.toScreen(w, vp),
         snapWorld: (w: Vec2) => camera.snapWorld(w),
         scale: camera.scale,
+        slot,
       };
     }
 
-    function findControllerAt(input: PointerInput, viewport: Viewport) {
-      const ec = makeEventCtx(viewport);
+    function findControllerAt(input: PointerInput, viewport: Viewport): ResolvedController | null {
       const specs = bundleRef.current.controllers({ state: stateRef.current }) as ControllerSpec[];
-      for (const spec of specs) {
-        const impl = controllers.get(spec.type);
-        if (!impl) continue;
-        if (impl.hitTest(input, ec, spec, stateRef.current as BundleState)) {
-          return { spec, impl };
+      // 다른 손가락이 잡고 있는 인스턴스는 건너뛴다 — 두 손가락이 한 조작기를 다투지 않게.
+      const held = new Set([...sessions.values()].map((s) => s.spec.id));
+      for (const r of controllers.resolve(specs)) {
+        if (held.has(r.spec.id)) continue;
+        if (r.impl.hitTest(input, makeEventCtx(viewport, r.slot), r.spec, stateRef.current as BundleState)) {
+          return r;
         }
       }
       return null;
@@ -236,12 +248,12 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       const vp = sizeCanvas();
       const input = toPointerInput(e);
       const hit = findControllerAt(input, vp);
-      if (hit?.impl) {
+      if (hit) {
         canvas!.setPointerCapture(e.pointerId);
-        activeController = hit;
+        sessions.set(e.pointerId, hit);
         const patch = hit.impl.onPointerDown(
           input,
-          makeEventCtx(vp),
+          makeEventCtx(vp, hit.slot),
           hit.spec,
           stateRef.current as BundleState,
         );
@@ -250,9 +262,10 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       }
       // 컨트롤러 외 영역 → 카메라 팬 후보 (왼쪽/중간 버튼). 실제 pan 은
       // deadzone 을 넘은 뒤에만 시작 — 단순 클릭이 auto-framing 을 끄지 않도록.
-      if (e.button === 0 || e.button === 1) {
+      if (sessions.size === 0 && !panning && (e.button === 0 || e.button === 1)) {
         canvas!.setPointerCapture(e.pointerId);
         panning = {
+          pointerId: e.pointerId,
           startPx: input.px,
           startPy: input.py,
           lastPx: input.px,
@@ -264,17 +277,18 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
     function onPointerMove(e: PointerEvent) {
       const vp = sizeCanvas();
       const input = toPointerInput(e);
-      if (activeController?.impl) {
-        const patch = activeController.impl.onPointerMove(
+      const session = sessions.get(e.pointerId);
+      if (session) {
+        const patch = session.impl.onPointerMove(
           input,
-          makeEventCtx(vp),
-          activeController.spec,
+          makeEventCtx(vp, session.slot),
+          session.spec,
           stateRef.current as BundleState,
         );
         applyPartial(patch);
         return;
       }
-      if (panning) {
+      if (panning && panning.pointerId === e.pointerId) {
         if (!panning.active) {
           // Deadzone — 5px 누적 이동 전까지는 pan 을 시작하지 않는다.
           const ddx = input.px - panning.startPx;
@@ -300,23 +314,24 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
     function onPointerUp(e: PointerEvent) {
       const vp = sizeCanvas();
       const input = toPointerInput(e);
-      if (activeController?.impl) {
-        const patch = activeController.impl.onPointerUp(
+      const session = sessions.get(e.pointerId);
+      if (session) {
+        const patch = session.impl.onPointerUp(
           input,
-          makeEventCtx(vp),
-          activeController.spec,
+          makeEventCtx(vp, session.slot),
+          session.spec,
           stateRef.current as BundleState,
         );
         applyPartial(patch);
+        sessions.delete(e.pointerId);
         try {
           canvas!.releasePointerCapture(e.pointerId);
         } catch {
           /* noop */
         }
-        activeController = null;
         return;
       }
-      if (panning) {
+      if (panning && panning.pointerId === e.pointerId) {
         panning = null;
         try {
           canvas!.releasePointerCapture(e.pointerId);
@@ -353,7 +368,7 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       const bundle = bundleRef.current;
       // 저작자 문안(1층)을 얹은 조회기. Embed 의 오버레이 UI 와 같은 것을 써야
       // 한 화면에서 문안 출처가 갈리지 않는다 (C1).
-      const i18n = host.i18n.withMessages(bundle.schema.messages);
+      const i18n = i18nRef.current;
       const stage = stageRef.current;
       const view = viewRef.current;
       const envs = envRef.current;
@@ -386,7 +401,11 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       // 이 프레임에 실제로 그려질 컨트롤러. 아래 렌더 루프와 프레이밍이 같은
       // 목록을 봐야 여백과 그림이 어긋나지 않는다.
       const controllerSpecs = bundle.controllers({ state: stateRef.current }) as ControllerSpec[];
-      const controllerTypes = new Set(controllerSpecs.map((c) => c.type));
+      // 여백은 기본 자리에 놓인 조작기만 센다 — 자리(`at`)를 선언한 것은 저작자가
+      // 그림과 겹치지 않게 놓은 것이다.
+      const controllerTypes = new Set(
+        controllerSpecs.filter((c) => !('at' in c && c.at)).map((c) => c.type),
+      );
 
       // 카메라 자동 프레이밍 — bundle 이 제공한 bounds 로 **매 프레임 직접 스냅**.
       // trajectory 기반 bounds 가 프레임마다 자라는 속도 자체가 camera flow.
@@ -470,10 +489,8 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       }
 
       // Controller 렌더 (스크린 오버레이) — 목록은 프레이밍과 같은 것을 쓴다.
-      for (const spec of controllerSpecs) {
-        const impl = controllers.get(spec.type);
-        if (!impl) continue;
-        impl.render({ ...rc, viewport: vp }, spec, stateRef.current as BundleState);
+      for (const r of controllers.resolve(controllerSpecs)) {
+        r.impl.render({ ...rc, viewport: vp, slot: r.slot }, r.spec, stateRef.current as BundleState);
       }
 
       ctx.restore();
@@ -495,6 +512,15 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       canvas.removeEventListener('pointerup', onPointerUp);
       canvas.removeEventListener('pointercancel', onPointerUp);
       canvas.removeEventListener('wheel', onWheel);
+      // 열린 드래그를 닫는다 — 잡은 손가락의 캡처를 풀고 세션을 비운다 (C5).
+      for (const pointerId of sessions.keys()) {
+        try {
+          canvas.releasePointerCapture(pointerId);
+        } catch {
+          /* noop */
+        }
+      }
+      sessions.clear();
       // 프리미티브 상태도 함께 거둔다 — destroy 는 관찰 가능한 뒷일을 남기지
       // 않는다 (원칙 6, C5).
       primitiveStore.clear();

@@ -152,6 +152,7 @@ export class ValueEditController implements ControllerImpl<ValueEditSpec> {
         toScreen: rc.toScreen,
         snapWorld: (w) => w,
         scale: rc.scale,
+        slot: rc.slot,
       },
       spec,
       state,

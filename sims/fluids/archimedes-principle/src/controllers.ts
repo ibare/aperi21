@@ -15,6 +15,7 @@ import { text } from './schema';
 export function controllers(): ControllerSpec[] {
   return [
     {
+      id: 'submersion',
       type: 'slider',
       binds: { value: 'submersion' },
       range: [0, 1],

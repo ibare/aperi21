@@ -1,6 +1,8 @@
-import type { BundleState, ControllerSpec } from '@aperi21/schema';
+import type { BundleState, ControllerSpec, Vec2 } from '@aperi21/schema';
 import type { Viewport } from '../camera';
+import { placeBox, stackedAnchor, type ScreenAnchor } from './layout';
 import { readPath, writePath } from './path';
+import { controllerText } from './text';
 import type {
   ControllerEventContext,
   ControllerImpl,
@@ -10,7 +12,7 @@ import type {
 
 type PinballSpec = Extract<ControllerSpec, { type: 'pinball-launcher' }>;
 
-/** 플런저 tube 좌하단/우하단 레이아웃(스크린 좌표 기준). */
+/** 플런저 tube 레이아웃(스크린 좌표 기준). */
 interface Layout {
   tubeX: number;
   tubeY: number;
@@ -18,13 +20,26 @@ interface Layout {
   tubeH: number;
 }
 
-function computeLayout(viewport: Viewport): Layout {
-  const tubeW = 56;
-  const tubeH = Math.min(220, viewport.height - 120);
-  const margin = 32;
-  const tubeX = viewport.width - tubeW - margin;
-  const tubeY = viewport.height - tubeH - margin;
-  return { tubeX, tubeY, tubeW, tubeH };
+const TUBE_WIDTH = 56;
+const TUBE_MAX_HEIGHT = 220;
+/** 튜브가 캔버스 세로에서 양보하는 몫 — 위쪽 이름표와 아래 여백. */
+const TUBE_HEIGHT_RESERVE = 120;
+const TUBE_MARGIN = 32;
+/** 자리를 선언하지 않은 발사대끼리의 가로 간격. */
+const TUBE_STACK_GAP = 56;
+/** 자리를 선언하지 않으면 오른쪽 아래에서 왼쪽으로 쌓인다. */
+const DEFAULT_AT: ScreenAnchor = { screen: 'bottom-right' };
+
+function computeLayout(
+  spec: PinballSpec,
+  viewport: Viewport,
+  toScreen: (w: Vec2) => Vec2,
+  slot: number,
+): Layout {
+  const tubeH = Math.min(TUBE_MAX_HEIGHT, viewport.height - TUBE_HEIGHT_RESERVE);
+  const at = spec.at ?? stackedAnchor(DEFAULT_AT, slot, [-(TUBE_WIDTH + TUBE_STACK_GAP), 0]);
+  const box = placeBox(at, TUBE_WIDTH, tubeH, viewport, toScreen, TUBE_MARGIN);
+  return { tubeX: box.x, tubeY: box.y, tubeW: box.w, tubeH: box.h };
 }
 
 function inTube(input: PointerInput, layout: Layout): boolean {
@@ -40,6 +55,9 @@ function inTube(input: PointerInput, layout: Layout): boolean {
  * 세로 튜브에서 아래로 드래그하면 플런저가 내려오고 내부 파워 fill 이 오른다.
  * 놓으면 current power(0..1) 를 powerRange 로 스케일해서 spec.binds.power 경로에
  * 쓰고, spec.binds.trigger 경로를 'flying' 으로 세팅해 발사.
+ *
+ * 선언 하나가 인스턴스 하나다 — 당긴 세기(`dragPower`)는 이 인스턴스의 것이라
+ * 다른 발사대에 비치지 않는다. 자리는 선언의 `at`.
  */
 export class PinballLauncherController
   implements ControllerImpl<PinballSpec>
@@ -56,7 +74,7 @@ export class PinballLauncherController
 
   render(rc: ControllerRenderContext, spec: PinballSpec, state: BundleState): void {
     const { ctx, theme, viewport } = rc;
-    const layout = computeLayout(viewport);
+    const layout = computeLayout(spec, viewport, rc.toScreen, rc.slot);
     const phase = readPath<string>(state, spec.binds.trigger) ?? 'idle';
     const range = spec.powerRange ?? [1, 60];
     const storedV0 = Number(readPath<number>(state, spec.binds.power) ?? range[0]);
@@ -137,7 +155,9 @@ export class PinballLauncherController
     ctx.fillStyle = theme.muted;
     ctx.textAlign = 'center';
     ctx.fillText(
-      `LAUNCHER · ${Math.round(power * 100)}%`,
+      controllerText(rc.i18n, spec.label, 'ui.pinballLauncher.label', 'LAUNCHER · {power}%', {
+        power: Math.round(power * 100),
+      }),
       layout.tubeX + layout.tubeW / 2,
       layout.tubeY - 8,
     );
@@ -145,8 +165,8 @@ export class PinballLauncherController
     ctx.restore();
   }
 
-  hitTest(input: PointerInput, ctx: ControllerEventContext): boolean {
-    return inTube(input, computeLayout(ctx.viewport));
+  hitTest(input: PointerInput, ctx: ControllerEventContext, spec: PinballSpec): boolean {
+    return inTube(input, computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot));
   }
 
   onPointerDown(
@@ -155,7 +175,7 @@ export class PinballLauncherController
     spec: PinballSpec,
     state: BundleState,
   ): BundleState | null {
-    const layout = computeLayout(ctx.viewport);
+    const layout = computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot);
     if (!inTube(input, layout)) return null;
     const phase = readPath<string>(state, spec.binds.trigger) ?? 'idle';
     if (phase !== 'idle') {
@@ -174,10 +194,10 @@ export class PinballLauncherController
   onPointerMove(
     input: PointerInput,
     ctx: ControllerEventContext,
-    _spec: PinballSpec,
+    spec: PinballSpec,
   ): BundleState | null {
     if (!this.dragging) return null;
-    const layout = computeLayout(ctx.viewport);
+    const layout = computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot);
     const dy = input.py - this.dragStartY;
     const travel = layout.tubeH - 24;
     this.dragPower = Math.max(0, Math.min(1, dy / travel));

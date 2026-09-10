@@ -19,6 +19,11 @@ export interface PointerInput {
  */
 export interface ControllerRenderContext extends RenderContext {
   viewport: Viewport;
+  /**
+   * 같은 종류 선언 가운데 몇 번째인가(0 부터). 선언에 자리(`at`)가 없을 때 기본
+   * 자리를 겹치지 않게 쌓는 데 쓴다. 러너가 선언 순서로 센다.
+   */
+  slot: number;
 }
 
 /**
@@ -32,6 +37,8 @@ export interface ControllerEventContext {
   /** 격자 스냅 적용(비활성화 시 항등). */
   snapWorld(world: Vec2): Vec2;
   scale: number;
+  /** 같은 종류 선언 가운데 몇 번째인가 — `ControllerRenderContext.slot` 과 같다. */
+  slot: number;
 }
 
 /**
@@ -116,29 +123,66 @@ export class ControllerRegistry {
   }
 }
 
+/** 선언 하나와 그 인스턴스, 그리고 같은 종류 가운데 몇 번째인가. */
+export interface ResolvedController {
+  spec: ControllerSpec;
+  impl: ControllerImpl;
+  slot: number;
+}
+
 /**
- * 임베드 하나의 조작기 묶음. type 마다 처음 부를 때 만들고, 그 임베드 안에서는
- * 같은 인스턴스를 쓴다 — 드래그가 프레임을 넘어 이어져야 하기 때문이다.
+ * 임베드 하나의 조작기 묶음. **선언 하나(`id`)에 인스턴스 하나**다 (원칙 7) — 슬라이더를
+ * 넷 선언하면 인스턴스가 넷이다. 처음 부를 때 만들고, 그 임베드 안에서는 같은 인스턴스를
+ * 쓴다 — 드래그가 프레임을 넘어 이어져야 하기 때문이다.
  *
  * 자원을 갖지 않는다 — 조작기는 리스너 · 타이머를 걸지 않고 포인터는 러너가 넘긴다.
  * 조작기가 자원을 가지게 되면 여기에 거두는 자리를 두고 러너의 destroy 가 부른다.
  */
 export class ControllerSet {
-  private readonly made = new Map<ControllerSpec['type'], ControllerImpl>();
+  private readonly made = new Map<string, ControllerImpl>();
 
   constructor(private readonly lookup: (type: ControllerSpec['type']) => ControllerFactory | undefined) {}
 
-  get(type: ControllerSpec['type']): ControllerImpl | undefined {
-    const cached = this.made.get(type);
-    if (cached) return cached;
-    const factory = this.lookup(type);
+  /**
+   * 선언 목록을 인스턴스로. 러너가 `controllers()` 를 부를 때마다 거친다.
+   *
+   * - `id` 가 겹치면 던진다. 겹친 둘이 인스턴스 하나를 조용히 나눠 쓰면, 고치려던
+   *   공유가 id 단위로 되살아난다.
+   * - 등록되지 않은 type 은 건너뛴다(늦게 로드되는 조각).
+   */
+  resolve(specs: readonly ControllerSpec[]): ResolvedController[] {
+    const seen = new Set<string>();
+    const slots = new Map<ControllerSpec['type'], number>();
+    const out: ResolvedController[] = [];
+    for (const spec of specs) {
+      if (seen.has(spec.id)) {
+        throw new Error(`[aperi21] controller id '${spec.id}' is declared twice in one piece`);
+      }
+      seen.add(spec.id);
+      const slot = slots.get(spec.type) ?? 0;
+      slots.set(spec.type, slot + 1);
+      const impl = this.instance(spec);
+      if (impl) out.push({ spec, impl, slot });
+    }
+    return out;
+  }
+
+  private instance(spec: ControllerSpec): ControllerImpl | undefined {
+    const cached = this.made.get(spec.id);
+    if (cached) {
+      if (cached.type !== spec.type) {
+        throw new Error(`[aperi21] controller '${spec.id}' changed type '${cached.type}' → '${spec.type}'`);
+      }
+      return cached;
+    }
+    const factory = this.lookup(spec.type);
     if (!factory) return undefined;
     const impl = factory();
     // 키와 구현이 어긋나면 다른 조작기가 그 선언을 받는다 — 타입도 통과하고 예외도 없다.
-    if (impl.type !== type) {
-      throw new Error(`[aperi21] controller factory for '${type}' made '${impl.type}'`);
+    if (impl.type !== spec.type) {
+      throw new Error(`[aperi21] controller factory for '${spec.type}' made '${impl.type}'`);
     }
-    this.made.set(type, impl);
+    this.made.set(spec.id, impl);
     return impl;
   }
 }

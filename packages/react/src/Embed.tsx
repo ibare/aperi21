@@ -161,8 +161,14 @@ export function Embed({ bundle, stageId, initialView, initialEnvironments, inspe
         onToggleEnv={runtime.toggleEnv}
       />
       <div style={stageArea}>
+        {/*
+          번들이 바뀌면 캔버스를 새로 붙인다 — 조작기 인스턴스 · 드래그 · 프레임 간
+          상태가 앞 번들에서 다음 번들로 넘어가지 않게 (C5).
+        */}
         <BundleCanvas
+          key={bundle.schema.id}
           host={host}
+          i18n={i18n}
           camera={camera}
           timeEngine={timeEngine}
           bundle={bundle}

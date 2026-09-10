@@ -13,6 +13,7 @@ export function controllers(): ControllerSpec[] {
   const c = { nu: NU, diameter: PIPE_DIAMETER };
   return [
     {
+      id: 're-scale',
       type: 'scale-drag',
       binds: { value: 'v', held: 'held' },
       track: { pos: [RE_TRACK.x0, RE_TRACK.y], direction: [1, 0], size: RE_TRACK.length },

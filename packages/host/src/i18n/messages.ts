@@ -34,5 +34,9 @@ export const FRAMEWORK_MESSAGES: Dictionary = {
 
     'ui.topBar.stage': '스테이지',
     'ui.topBar.env': '환경',
+
+    'ui.angleDial.label': '각도',
+    'ui.pinballLauncher.label': '발사대 · {power}%',
+    'ui.placement.label': '배치',
   },
 };

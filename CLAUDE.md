@@ -55,9 +55,9 @@ pnpm test
 ```
 rules/
   INDEX.yaml                 ← 트리거 레지스트리 (경로·패턴·import·이벤트)
-  principles.md              ← 원칙 6 (Tier 1, 항상 로드)
-  concerns/C1~C6.md          ← 관심사 6 (Tier 2)
-  specifics/S-*.md           ← 도메인 4 (Tier 3)
+  principles.md              ← 원칙 (Tier 1, 항상 로드)
+  concerns/C*.md             ← 관심사 (Tier 2)
+  specifics/S-*.md           ← 도메인 (Tier 3)
   _analysis.md / _audit-v*.md ← 분석·감사 기록 (규칙 아님)
 ```
 

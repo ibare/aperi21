@@ -237,7 +237,7 @@ describe('임베드 인스턴스 독립', () => {
     const bundle: Bundle<TestState> = {
       ...makeBundle(),
       controllers: (): ControllerSpec[] => [
-        { type: 'slider', binds: { value: 't' }, range: [0, 1], label: { en: 'T' } },
+        { id: 't', type: 'slider', binds: { value: 't' }, range: [0, 1], label: { en: 'T' } },
       ],
     };
     const a = document.createElement('div');
@@ -254,6 +254,61 @@ describe('임베드 인스턴스 독립', () => {
 
     ha.destroy();
     hb.destroy();
+  });
+
+  it('두 손가락이 두 조작기를 동시에 끈다 — 두 번째 손가락이 첫 번째를 가로채지 않는다', () => {
+    // 한 조각에 같은 종류를 둘 선언한다. 왼쪽 반(px < 100)은 a, 오른쪽 반은 b 가 잡는다.
+    const moves: string[] = [];
+    const ups: string[] = [];
+    const host = createHost({
+      capabilities: {
+        controllers: {
+          slider: (): ControllerImpl => ({
+            type: 'slider',
+            render: () => undefined,
+            hitTest: (input, _ctx, spec) => (spec.id === 'a') === input.px < 100,
+            onPointerDown: () => null,
+            onPointerMove: (_input, _ctx, spec) => {
+              moves.push(spec.id);
+              return null;
+            },
+            onPointerUp: (_input, _ctx, spec) => {
+              ups.push(spec.id);
+              return null;
+            },
+            isDragging: () => false,
+          }),
+        },
+      },
+    });
+    const bundle: Bundle<TestState> = {
+      ...makeBundle(),
+      controllers: (): ControllerSpec[] => [
+        { id: 'a', type: 'slider', binds: { value: 'a' }, range: [0, 1], label: { en: 'A' } },
+        { id: 'b', type: 'slider', binds: { value: 'b' }, range: [0, 1], label: { en: 'B' } },
+      ],
+    };
+    const mount = document.createElement('div');
+    document.body.append(mount);
+    const handle = runBundle(bundle, mount, { host });
+    const canvas = mount.querySelector('canvas')!;
+    const fire = (type: string, pointerId: number, x: number): void => {
+      const ev = new Event(type, { bubbles: true });
+      Object.assign(ev, { pointerId, clientX: x, clientY: 10, button: 0, buttons: 1 });
+      canvas.dispatchEvent(ev);
+    };
+
+    fire('pointerdown', 1, 50); // 손가락 1 → a
+    fire('pointerdown', 2, 150); // 손가락 2 → b. 예전에는 여기서 a 의 드래그를 가로챘다
+    fire('pointermove', 1, 60);
+    fire('pointermove', 2, 160);
+    fire('pointerup', 2, 160); // b 를 놓아도 a 는 계속 잡혀 있다
+    fire('pointermove', 1, 70);
+
+    expect(moves).toEqual(['a', 'b', 'a']);
+    expect(ups).toEqual(['b']);
+
+    handle.destroy();
   });
 });
 

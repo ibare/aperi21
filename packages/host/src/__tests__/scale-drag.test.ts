@@ -8,6 +8,7 @@ import { ScaleDragController, type ControllerEventContext, type PointerInput } f
 type Spec = Extract<ControllerSpec, { type: 'scale-drag' }>;
 
 const SPEC: Spec = {
+  id: 'scale',
   type: 'scale-drag',
   binds: { value: 'v', held: 'held' },
   track: { pos: [0, 0], size: 1 },
@@ -22,6 +23,7 @@ const CTX: ControllerEventContext = {
   toWorld: (s: Vec2): Vec2 => [s[0] / 100, (100 - s[1]) / 100],
   snapWorld: (w: Vec2) => w,
   scale: 100,
+  slot: 0,
 };
 const at = (px: number, py: number): PointerInput => ({ px, py, button: 0, buttons: 1 });
 

@@ -48,6 +48,19 @@ describe('선언 참조 정합', () => {
     }
   });
 
+  it('조작기 선언의 id 가 조각 안에서 겹치지 않는다 — 선언 하나가 인스턴스 하나다 (원칙 7)', async () => {
+    for (const id of listBundleLoaderIds()) {
+      const bundle = (await loadBundle(id))!;
+      const { schema } = bundle;
+      const values = Object.fromEntries(schema.parameters.map((p) => [p.id, p.default]));
+      const state = bundle.initialState({ values, stage: schema.stages[0]!, environments: [] });
+      // 초기 상태에서 돌려주는 선언만 본다. 상태에 따라 조건부로 돌려주는 선언은
+      // 러너(ControllerSet.resolve)가 매번 검사한다.
+      const ids = bundle.controllers({ state }).map((c) => c.id);
+      expect(new Set(ids).size, id).toBe(ids.length);
+    }
+  });
+
   it('시간표가 풀린다 — 단계 id 가 겹치지 않고 길이가 양수다', async () => {
     for (const id of listBundleLoaderIds()) {
       const bundle = await loadBundle(id);

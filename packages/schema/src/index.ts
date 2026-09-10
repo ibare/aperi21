@@ -363,6 +363,26 @@ export interface Stream extends BaseMeta {
 }
 
 /**
+ * 화면 위의 자리. 월드 좌표에 붙거나, 화면 모서리에 고정되거나.
+ *
+ * 두 경우 다 `offset` 은 **화면 픽셀**이다. 앵커에서 살짝 띄우는 거리는 물리량이
+ * 아니라 배치라, 배율을 따라가면 확대했을 때 멀리 날아간다. readout · 캡션 슬롯 ·
+ * 조작기가 같은 모양을 쓴다.
+ */
+export type Anchor =
+  | { world: Vec2; offset?: Vec2 }
+  | {
+      screen:
+        | 'top-left'
+        | 'top-center'
+        | 'top-right'
+        | 'bottom-left'
+        | 'bottom-center'
+        | 'bottom-right';
+      offset?: Vec2;
+    };
+
+/**
  * 값 하나를 읽히게 두는 것. 월드에 붙는 칩이거나 화면에 고정된 줄이거나.
  *
  * `marker` 는 월드 좌표에 붙는 주석이고 이것은 **값**이다. 값은 자리보다
@@ -377,18 +397,7 @@ export interface Readout extends BaseMeta {
    * 두 경우 다 `offset` 은 **화면 픽셀**이다. 앵커에서 살짝 띄우는 거리는
    * 물리량이 아니라 배치라, 배율을 따라가면 확대했을 때 멀리 날아간다.
    */
-  anchor:
-    | { world: Vec2; offset?: Vec2 }
-    | {
-        screen:
-          | 'top-left'
-          | 'top-center'
-          | 'top-right'
-          | 'bottom-left'
-          | 'bottom-center'
-          | 'bottom-right';
-        offset?: Vec2;
-      };
+  anchor: Anchor;
   /** 화면에 뜨는 문안. 값은 `vars` 로 끼운다 (C1). */
   text: LocalizedText;
   /** `{name}` 자리에 들어갈 값. */
@@ -737,26 +746,39 @@ export interface ViewDef {
 }
 
 /** Controller 선언 — Bundle이 어떤 조작 UI를 요구하는지. */
-export type ControllerSpec =
+export type ControllerSpec = ControllerInstance & ControllerKind;
+
+/**
+ * 조작기 선언은 **인스턴스**다 (원칙 7). 코어의 조작기는 클래스이고, 조각은 그것을
+ * 몇 개든 선언한다. 같은 종류를 둘 쓰려고 종류 이름을 따로 만들지 않는다.
+ */
+export interface ControllerInstance {
+  /**
+   * 조각 안에서 유일한 이름. 러너가 이것으로 인스턴스를 만들고 드래그를 잇는다.
+   * 에디터가 인스턴스를 가리키는 이름이기도 하다 — 바뀌지 않게 둔다.
+   */
+  id: string;
+}
+
+export type ControllerKind =
   | {
       type: 'pinball-launcher';
       binds: { power: string; trigger: string };  // state 필드 경로 매핑
       powerRange?: [number, number];
+      /** 자리. 생략하면 오른쪽 아래에서 선언 순서대로 왼쪽으로 쌓인다. */
+      at?: Anchor;
+      /** 이름표. `{power}` 자리에 당긴 세기(%)가 들어간다. 생략하면 프레임워크 문구. */
+      label?: LocalizedText;
     }
   | {
       type: 'angle-dial';
       binds: { angle: string };
       range?: [number, number];       // degrees
       tickAt?: number[];
-    }
-  | {
-      type: 'drag-bob';
-      binds: { displacement: string };
-      constraints?: { shape: 'line' | 'arc' | 'plane'; extent: number };
-    }
-  | {
-      type: 'vector-drag';
-      binds: { origin: string; vector: string };
+      /** 자리. 생략하면 왼쪽 아래에서 선언 순서대로 오른쪽으로 쌓인다. */
+      at?: Anchor;
+      /** 이름표. 생략하면 프레임워크 문구. */
+      label?: LocalizedText;
     }
   | {
       type: 'slider';
@@ -764,6 +786,8 @@ export type ControllerSpec =
       range: [number, number];
       label: LocalizedText;
       unit?: string;
+      /** 자리. 생략하면 오른쪽 위에서 선언 순서대로 아래로 쌓인다. */
+      at?: Anchor;
     }
   | {
       /**
@@ -784,6 +808,10 @@ export type ControllerSpec =
       type: 'placement';                 // 드래그 앤 드롭으로 요소 배치
       binds: { positions: string };      // 배치된 위치 배열 경로
       placeableTypes: string[];
+      /** 팔레트 자리. 생략하면 왼쪽 위에서 선언 순서대로 아래로 쌓인다. */
+      at?: Anchor;
+      /** 팔레트 이름표. 생략하면 프레임워크 문구. */
+      label?: LocalizedText;
     }
   | {
       /**
@@ -1249,6 +1277,11 @@ export interface I18n {
   /** 현재 언어 코드. */
   lang: string;
   resolve(text: LocalizedText): string;
+  /**
+   * 키로 문안을 찾는다 — 저작자 선언(1층) → locale 번들(2층) → 호출부 en 원본(3층).
+   * 값은 `{name}` 자리에 끼운다 (C1).
+   */
+  t(key: string, en: string, vars?: Record<string, string | number>): string;
   /**
    * 구형 호환.
    * @deprecated `lang` 을 사용.

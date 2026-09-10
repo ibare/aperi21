@@ -16,6 +16,7 @@ export function controllers(params?: { state: PressureIsotropyState }): Controll
   if (!params || !isSweepComplete(params.state)) return [];
   return [
     {
+      id: 'plate-angle',
       type: 'angle-dial',
       binds: { angle: 'plate.thetaDeg' },
       range: [0, SWEEP_END_DEG],

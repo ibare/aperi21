@@ -1,5 +1,6 @@
-import type { BundleState, ControllerSpec } from '@aperi21/schema';
+import type { BundleState, ControllerSpec, Vec2 } from '@aperi21/schema';
 import type { Viewport } from '../camera';
+import { placeBox, stackedAnchor, type ScreenAnchor } from './layout';
 import { readPath, writePath } from './path';
 import type {
   ControllerEventContext,
@@ -22,19 +23,20 @@ interface Layout {
 const SLIDER_MARGIN = 24;
 const SLIDER_WIDTH = 220;
 const SLIDER_HEIGHT = 44;
+/** 자리를 선언하지 않은 슬라이더끼리의 세로 간격. */
+const SLIDER_STACK_GAP = 12;
+/** 자리를 선언하지 않으면 오른쪽 위에서 아래로 쌓인다. */
+const DEFAULT_AT: ScreenAnchor = { screen: 'top-right' };
 
-function computeLayout(viewport: Viewport, index = 0): Layout {
-  // 우측 상단 기둥에 세로로 쌓인다 (index 가 늘수록 아래로).
-  const x = viewport.width - SLIDER_WIDTH - SLIDER_MARGIN;
-  const y = SLIDER_MARGIN + index * (SLIDER_HEIGHT + 12);
-  return {
-    x,
-    y,
-    w: SLIDER_WIDTH,
-    h: SLIDER_HEIGHT,
-    trackY: y + SLIDER_HEIGHT / 2 + 6,
-    handleR: 8,
-  };
+function computeLayout(
+  spec: SliderSpec,
+  viewport: Viewport,
+  toScreen: (w: Vec2) => Vec2,
+  slot: number,
+): Layout {
+  const at = spec.at ?? stackedAnchor(DEFAULT_AT, slot, [0, SLIDER_HEIGHT + SLIDER_STACK_GAP]);
+  const box = placeBox(at, SLIDER_WIDTH, SLIDER_HEIGHT, viewport, toScreen, SLIDER_MARGIN);
+  return { ...box, trackY: box.y + box.h / 2 + 6, handleR: 8 };
 }
 
 function hitLayout(input: PointerInput, layout: Layout): boolean {
@@ -52,15 +54,12 @@ function clamp(v: number, lo: number, hi: number): number {
 
 /**
  * 수평 슬라이더 — binds.value (state 경로) 를 range [lo, hi] 에 매핑해 편집.
- * 여러 slider 가 동시에 존재하면 `__index` 인스턴스 상태로 순서를 구분하여
- * 우측 상단에 세로로 쌓인다. (현재 MVP 는 id 필드가 없으므로 binds.value 경로로
- * index 를 결정 — 같은 spec 인 경우 처음 것이 0 번.)
+ * 선언 하나가 인스턴스 하나다. 자리는 선언의 `at`, 없으면 선언 순서대로 쌓인다.
  */
 export class SliderController implements ControllerImpl<SliderSpec> {
   readonly type = 'slider' as const;
 
   private dragging = false;
-  private layoutIndexByPath = new Map<string, number>();
 
   isDragging(): boolean {
     return this.dragging;
@@ -68,8 +67,7 @@ export class SliderController implements ControllerImpl<SliderSpec> {
 
   render(rc: ControllerRenderContext, spec: SliderSpec, state: BundleState): void {
     const { ctx, theme, viewport, i18n } = rc;
-    const idx = this.assignIndex(spec.binds.value);
-    const layout = computeLayout(viewport, idx);
+    const layout = computeLayout(spec, viewport, rc.toScreen, rc.slot);
     const [lo, hi] = spec.range;
     const raw = readPath<number>(state, spec.binds.value);
     const value = typeof raw === 'number' ? raw : lo;
@@ -131,8 +129,7 @@ export class SliderController implements ControllerImpl<SliderSpec> {
   }
 
   hitTest(input: PointerInput, ctx: ControllerEventContext, spec: SliderSpec): boolean {
-    const idx = this.assignIndex(spec.binds.value);
-    return hitLayout(input, computeLayout(ctx.viewport, idx));
+    return hitLayout(input, computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot));
   }
 
   onPointerDown(
@@ -141,8 +138,7 @@ export class SliderController implements ControllerImpl<SliderSpec> {
     spec: SliderSpec,
     state: BundleState,
   ): BundleState | null {
-    const idx = this.assignIndex(spec.binds.value);
-    const layout = computeLayout(ctx.viewport, idx);
+    const layout = computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot);
     if (!hitLayout(input, layout)) return null;
     this.dragging = true;
     return this.valueFromPointer(input, layout, spec, state);
@@ -155,22 +151,13 @@ export class SliderController implements ControllerImpl<SliderSpec> {
     state: BundleState,
   ): BundleState | null {
     if (!this.dragging) return null;
-    const idx = this.assignIndex(spec.binds.value);
-    const layout = computeLayout(ctx.viewport, idx);
+    const layout = computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot);
     return this.valueFromPointer(input, layout, spec, state);
   }
 
   onPointerUp(): BundleState | null {
     this.dragging = false;
     return null;
-  }
-
-  private assignIndex(path: string): number {
-    const existing = this.layoutIndexByPath.get(path);
-    if (existing !== undefined) return existing;
-    const idx = this.layoutIndexByPath.size;
-    this.layoutIndexByPath.set(path, idx);
-    return idx;
   }
 
   private valueFromPointer(

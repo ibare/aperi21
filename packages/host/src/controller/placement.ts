@@ -1,6 +1,8 @@
 import type { BundleState, ControllerSpec, Vec2 } from '@aperi21/schema';
 import type { Viewport } from '../camera';
+import { placeBox, stackedAnchor, type ScreenAnchor } from './layout';
 import { readPath, writePath } from './path';
+import { controllerText } from './text';
 import type {
   ControllerEventContext,
   ControllerImpl,
@@ -30,16 +32,36 @@ interface PaletteRect {
   h: number;
 }
 
-function computePalette(spec: PlacementSpec, viewport: Viewport): PaletteRect[] {
-  const top = PALETTE_MARGIN;
+/** 자리를 선언하지 않은 팔레트끼리의 세로 간격(이름표 한 줄 포함). */
+const PALETTE_STACK_GAP = 24;
+/** 자리를 선언하지 않으면 왼쪽 위에서 아래로 쌓인다. */
+const DEFAULT_AT: ScreenAnchor = { screen: 'top-left' };
+
+interface Palette {
+  /** 팔레트 상자의 좌상단 — 이름표가 그 위에 붙는다. */
+  x: number;
+  y: number;
+  rects: PaletteRect[];
+}
+
+function computePalette(
+  spec: PlacementSpec,
+  viewport: Viewport,
+  toScreen: (w: Vec2) => Vec2,
+  slot: number,
+): Palette {
+  const n = spec.placeableTypes.length;
+  const width = Math.max(PALETTE_SWATCH, n * (PALETTE_SWATCH + PALETTE_GAP) - PALETTE_GAP);
+  const at = spec.at ?? stackedAnchor(DEFAULT_AT, slot, [0, PALETTE_SWATCH + PALETTE_STACK_GAP]);
+  const box = placeBox(at, width, PALETTE_SWATCH, viewport, toScreen, PALETTE_MARGIN);
   const rects: PaletteRect[] = [];
-  for (let i = 0; i < spec.placeableTypes.length; i++) {
+  for (let i = 0; i < n; i++) {
     const type = spec.placeableTypes[i]!;
-    const x = PALETTE_MARGIN + i * (PALETTE_SWATCH + PALETTE_GAP);
+    const x = box.x + i * (PALETTE_SWATCH + PALETTE_GAP);
     if (x + PALETTE_SWATCH > viewport.width - PALETTE_MARGIN) break;
-    rects.push({ index: i, type, x, y: top, w: PALETTE_SWATCH, h: PALETTE_SWATCH });
+    rects.push({ index: i, type, x, y: box.y, w: PALETTE_SWATCH, h: PALETTE_SWATCH });
   }
-  return rects;
+  return { x: box.x, y: box.y, rects };
 }
 
 function paletteHit(input: PointerInput, rects: PaletteRect[]): PaletteRect | null {
@@ -91,7 +113,8 @@ export class PlacementController implements ControllerImpl<PlacementSpec> {
 
   render(rc: ControllerRenderContext, spec: PlacementSpec, _state: BundleState): void {
     const { ctx, theme, viewport } = rc;
-    const rects = computePalette(spec, viewport);
+    const palette = computePalette(spec, viewport, rc.toScreen, rc.slot);
+    const rects = palette.rects;
 
     ctx.save();
     ctx.font = `10px ${theme.fontFamilyMono}`;
@@ -101,7 +124,11 @@ export class PlacementController implements ControllerImpl<PlacementSpec> {
     // 헤더
     ctx.fillStyle = theme.muted;
     ctx.textAlign = 'left';
-    ctx.fillText('PLACE', PALETTE_MARGIN, PALETTE_MARGIN - 6);
+    ctx.fillText(
+      controllerText(rc.i18n, spec.label, 'ui.placement.label', 'PLACE'),
+      palette.x,
+      palette.y - 6,
+    );
     ctx.textAlign = 'center';
 
     for (const r of rects) {
@@ -142,7 +169,7 @@ export class PlacementController implements ControllerImpl<PlacementSpec> {
 
   hitTest(input: PointerInput, ctx: ControllerEventContext, spec: PlacementSpec): boolean {
     if (this.dragging) return true;
-    return paletteHit(input, computePalette(spec, ctx.viewport)) !== null;
+    return paletteHit(input, computePalette(spec, ctx.viewport, ctx.toScreen, ctx.slot).rects) !== null;
   }
 
   onPointerDown(
@@ -150,7 +177,7 @@ export class PlacementController implements ControllerImpl<PlacementSpec> {
     ctx: ControllerEventContext,
     spec: PlacementSpec,
   ): BundleState | null {
-    const hit = paletteHit(input, computePalette(spec, ctx.viewport));
+    const hit = paletteHit(input, computePalette(spec, ctx.viewport, ctx.toScreen, ctx.slot).rects);
     if (!hit) return null;
     this.dragging = true;
     this.dragType = hit.type;
@@ -177,7 +204,7 @@ export class PlacementController implements ControllerImpl<PlacementSpec> {
     this.ghostScreen = null;
 
     // 팔레트 위에서 놓으면 취소
-    if (paletteHit(input, computePalette(spec, ctx.viewport))) return null;
+    if (paletteHit(input, computePalette(spec, ctx.viewport, ctx.toScreen, ctx.slot).rects)) return null;
 
     const world = ctx.toWorld([input.px, input.py]);
     const snapped = ctx.snapWorld(world);
