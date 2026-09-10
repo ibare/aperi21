@@ -1,0 +1,6 @@
+{
+  "name": "00-pilot-kinematics",
+  "title": "파일럿 — 운동학 2",
+  "record": "tasks/engine-requirements/batches/00-pilot-kinematics.md",
+  "pieces": ["centripetal-acceleration", "velocity-time-graph"]
+}
