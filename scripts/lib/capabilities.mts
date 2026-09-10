@@ -1,0 +1,93 @@
+/**
+ * 조각이 선언한 능력을 소스에서 뽑는다.
+ *
+ * `SceneGraph` 는 `{ type: 'body' }` 라는 **데이터**여서 번들러가 무엇이 쓰이는지
+ * 알 수 없다. 선언 우선(원칙 2)과 정적 분석이 정면으로 충돌하는 지점이고, 그
+ * 사이를 잇는 것이 이 추출기다 (REQUIREMENTS.md §2.4 조건 3).
+ *
+ * 조건부로 반환하는 조작기(상태에 따라 [] 를 주는 경우)도 소스에는 문자열이
+ * 남으므로 보수적으로 잡힌다. 놓치는 쪽보다 넘치는 쪽이 안전하다.
+ *
+ * `pnpm gen:capabilities` 와 `pnpm budget` 이 같은 표를 본다.
+ */
+
+import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
+import { join } from 'node:path';
+
+/** 표준 렌더러 — 선언의 primitive type → `@aperi21/host` 의 export 이름. */
+export const RENDERERS: Record<string, string> = {
+  body: 'renderBody',
+  trajectory: 'renderTrajectory',
+  vector: 'renderVector',
+  surface: 'renderSurface',
+  marker: 'renderMarker',
+  graph: 'renderGraph',
+  event: 'renderEvent',
+  gauge: 'renderGauge',
+};
+
+/** 표준 조작기 — 선언의 controller type → 클래스 이름. */
+export const CONTROLLERS: Record<string, string> = {
+  'pinball-launcher': 'PinballLauncherController',
+  'angle-dial': 'AngleDialController',
+  slider: 'SliderController',
+  'value-edit': 'ValueEditController',
+  placement: 'PlacementController',
+};
+
+export const ALL_CAPABILITIES: Record<string, string> = { ...RENDERERS, ...CONTROLLERS };
+
+function walk(dir: string, out: string[] = []): string[] {
+  for (const name of readdirSync(dir)) {
+    const p = join(dir, name);
+    if (statSync(p).isDirectory()) {
+      if (name === '__tests__' || name === 'node_modules') continue;
+      walk(p, out);
+    } else if (name.endsWith('.ts') && !name.endsWith('.generated.ts')) {
+      out.push(p);
+    }
+  }
+  return out;
+}
+
+/** 이 sim 의 `src` 가 선언한 표준 능력 type 집합. */
+export function declaredCapabilities(simSrc: string): Set<string> {
+  const used = new Set<string>();
+  for (const file of walk(simSrc)) {
+    const text = readFileSync(file, 'utf8');
+    for (const m of text.matchAll(/type:\s*'([a-zA-Z-]+)'/g)) {
+      const t = m[1]!;
+      if (t in ALL_CAPABILITIES) used.add(t);
+    }
+  }
+  return used;
+}
+
+export interface SimEntry {
+  /** `fluids/archimedes-principle` */
+  id: string;
+  category: string;
+  name: string;
+  src: string;
+  /** package.json 의 name. `@aperi21/sim-archimedes-principle` */
+  pkg: string;
+}
+
+/** 워크스페이스의 sim 목록. */
+export function listSims(root: string): SimEntry[] {
+  const out: SimEntry[] = [];
+  const simsDir = join(root, 'sims');
+  for (const category of readdirSync(simsDir)) {
+    const catDir = join(simsDir, category);
+    if (!statSync(catDir).isDirectory()) continue;
+    for (const name of readdirSync(catDir)) {
+      const dir = join(catDir, name);
+      const src = join(dir, 'src');
+      const pkgJson = join(dir, 'package.json');
+      if (!existsSync(src) || !existsSync(pkgJson)) continue;
+      const pkg = JSON.parse(readFileSync(pkgJson, 'utf8')).name as string;
+      out.push({ id: `${category}/${name}`, category, name, src, pkg });
+    }
+  }
+  return out;
+}

@@ -55,6 +55,14 @@ function manualChunks(id) {
   const simMatch = id.match(/\/sims\/([^/]+)\/([^/]+)\/src\//);
   if (simMatch) return `sim-${simMatch[1]}-${simMatch[2]}`;
 
+  // bootstrap/src/capabilities/<category>/<name>.generated.ts
+  //
+  // 생성기가 뽑은 "이 조각이 쓰는 능력" 이다. **조각과 같은 chunk 에 넣는다** —
+  // bootstrap 규칙(아래)에 먼저 걸리면 runtime 으로 가서 모든 조각이 받게 되고,
+  // 조각 수에 비례해 첫 페이로드가 자란다 (R10).
+  const capMatch = id.match(/\/packages\/bootstrap\/src\/capabilities\/([^/]+)\/([^/]+)\.generated\./);
+  if (capMatch) return `sim-${capMatch[1]}-${capMatch[2]}`;
+
   const pluginMatch = id.match(/\/packages\/plugin-([^/]+)\//);
   if (pluginMatch) return `plugin-${pluginMatch[1]}`;
 

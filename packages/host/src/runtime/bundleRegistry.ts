@@ -12,6 +12,7 @@
  */
 
 import type { Bundle } from '@aperi21/schema';
+import type { HostCapabilities } from '../host';
 
 export type BundleLoader = () => Promise<unknown>;
 
@@ -19,10 +20,28 @@ const bundles = new Map<string, Bundle>();
 const loaders = new Map<string, BundleLoader>();
 const inflight = new Map<string, Promise<Bundle | null>>();
 
-/** 이미 import 된 Bundle 을 id 와 함께 등록. 같은 id 가 이미 있으면 덮어쓴다. */
-export function registerBundle(id: string, bundle: Bundle): Bundle {
+/**
+ * 번들이 함께 들고 온 능력. 생성기(`pnpm gen:capabilities`)가 만든 것을 loader 가
+ * 넘긴다. Bundle 인터페이스에 넣지 않는 이유는 이것이 **선언이 아니라 배선**이라
+ * sim 이 알 필요가 없기 때문이다 (원칙 1).
+ */
+const capabilities = new WeakMap<Bundle, HostCapabilities>();
+
+/**
+ * 이미 import 된 Bundle 을 id 와 함께 등록. 같은 id 가 이미 있으면 덮어쓴다.
+ *
+ * `caps` 는 이 번들이 쓰는 표준 능력이다 — 렌더러·조작기. host 가 전부를 미리
+ * 알고 있지 않아도 되게 하는 것이 목적이므로(R10), 번들과 함께 온다.
+ */
+export function registerBundle(id: string, bundle: Bundle, caps?: HostCapabilities): Bundle {
   bundles.set(id, bundle);
+  if (caps) capabilities.set(bundle, caps);
   return bundle;
+}
+
+/** 번들이 들고 온 능력. 없으면 undefined. */
+export function getBundleCapabilities(bundle: Bundle): HostCapabilities | undefined {
+  return capabilities.get(bundle);
 }
 
 /** 등록된 Bundle 을 id 로 조회. */

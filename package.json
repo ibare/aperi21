@@ -14,7 +14,8 @@
     "catalog:gen": "tsx scripts/gen-aperi21-catalog.mts",
     "release:check": "tsx scripts/release-check.mts",
     "catalog:topics": "tsx scripts/gen-topic-catalog.mts",
-    "budget": "tsx scripts/bundle-budget.mts"
+    "budget": "tsx scripts/bundle-budget.mts",
+    "gen:capabilities": "tsx scripts/gen-capabilities.mts"
   },
   "devDependencies": {
     "@aperi21/bootstrap": "workspace:*",

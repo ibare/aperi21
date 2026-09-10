@@ -33,38 +33,70 @@ export function registerAperi21Bundles(): void {
   if (bundlesRegistered) return;
   bundlesRegistered = true;
 
+  // 각 loader 는 조각과 **그 조각이 쓰는 능력**을 함께 가져온다.
+  //
+  // 능력 파일은 `pnpm gen:capabilities` 가 선언에서 뽑아 만든다. sim 이 아니라
+  // 여기 있는 이유는 sim 이 `@aperi21/host` 를 알면 의존 방향이 뒤집히기
+  // 때문이다 (원칙 1). 배선은 bootstrap 의 일이다.
+  //
+  // 둘 다 dynamic import 라 번들러가 조각 chunk 로 가른다 — 조각을 열지 않은
+  // 독자는 그 조각의 능력도 받지 않는다 (R10).
+
   registerBundleLoader('aperi21:projectile', async () => {
-    const m = await import('@aperi21/sim-projectile');
-    return registerBundle('aperi21:projectile', m.projectileBundle);
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-projectile'),
+      import('./capabilities/physics/projectile.generated.js'),
+    ]);
+    return registerBundle('aperi21:projectile', m.projectileBundle, caps.capabilities);
   });
 
   registerBundleLoader('aperi21:ray-tracing', async () => {
-    const m = await import('@aperi21/sim-ray-tracing');
-    return registerBundle('aperi21:ray-tracing', m.rayTracingBundle);
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-ray-tracing'),
+      import('./capabilities/optics/ray-tracing.generated.js'),
+    ]);
+    return registerBundle('aperi21:ray-tracing', m.rayTracingBundle, caps.capabilities);
   });
 
   registerBundleLoader('aperi21:dc-circuit', async () => {
-    const m = await import('@aperi21/sim-dc-circuit');
-    return registerBundle('aperi21:dc-circuit', m.dcCircuitBundle);
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-dc-circuit'),
+      import('./capabilities/electronics/dc-circuit.generated.js'),
+    ]);
+    return registerBundle('aperi21:dc-circuit', m.dcCircuitBundle, caps.capabilities);
   });
 
   // 유체 조각 3종 (2026-09-09 첫 배치).
   registerBundleLoader('aperi21:pressure-isotropy', async () => {
-    const m = await import('@aperi21/sim-pressure-isotropy');
-    return registerBundle('aperi21:pressure-isotropy', m.pressureIsotropyBundle);
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-pressure-isotropy'),
+      import('./capabilities/fluids/pressure-isotropy.generated.js'),
+    ]);
+    return registerBundle('aperi21:pressure-isotropy', m.pressureIsotropyBundle, caps.capabilities);
   });
 
   registerBundleLoader('aperi21:pressure-and-container-shape', async () => {
-    const m = await import('@aperi21/sim-pressure-and-container-shape');
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-pressure-and-container-shape'),
+      import('./capabilities/fluids/pressure-and-container-shape.generated.js'),
+    ]);
     return registerBundle(
       'aperi21:pressure-and-container-shape',
       m.pressureAndContainerShapeBundle,
+      caps.capabilities,
     );
   });
 
   registerBundleLoader('aperi21:archimedes-principle', async () => {
-    const m = await import('@aperi21/sim-archimedes-principle');
-    return registerBundle('aperi21:archimedes-principle', m.archimedesPrincipleBundle);
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-archimedes-principle'),
+      import('./capabilities/fluids/archimedes-principle.generated.js'),
+    ]);
+    return registerBundle(
+      'aperi21:archimedes-principle',
+      m.archimedesPrincipleBundle,
+      caps.capabilities,
+    );
   });
 }
 

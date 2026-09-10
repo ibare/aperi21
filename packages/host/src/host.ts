@@ -1,8 +1,14 @@
-import type { Bundle, PluginLogger, Plugin } from '@aperi21/schema';
+import type {
+  Bundle,
+  PluginLogger,
+  Plugin,
+  PrimitiveRenderer,
+  VectorComputeFn,
+} from '@aperi21/schema';
 import { Camera } from './camera';
 import { ComputeRegistry } from './compute/registry';
 import { gravityVectorField, uniformVectorField } from './compute/standard';
-import { ControllerRegistry } from './controller/types';
+import { ControllerRegistry, type ControllerImpl } from './controller/types';
 import { AngleDialController } from './controller/angle-dial';
 import { PinballLauncherController } from './controller/pinball-launcher';
 import { PlacementController } from './controller/placement';
@@ -13,6 +19,7 @@ import { FRAMEWORK_MESSAGES } from './i18n/messages';
 import { PluginManager, ServiceRegistry, type HostPlugin } from './pluginManager';
 import { CORE_RENDERERS } from './renderer/primitives';
 import { RendererRegistry } from './renderer/registry';
+import { getBundleCapabilities } from './runtime/bundleRegistry';
 import { getTheme, type HostTheme, type ThemeMode } from './theme';
 import {
   createTimeEngine,
@@ -31,7 +38,45 @@ export interface HostConfig {
    * Bundle 이 붙으면 Embed 가 setTimeMode 로 갱신한다.
    */
   timeMode?: TimeEngineMode;
+
+  /**
+   * 이 host 가 아는 능력. 생략하면 표준 한 벌이 전부 실린다.
+   *
+   * **그 기본값이 트리셰이킹을 막는다** — `new Host()` 한 번이 렌더러 8종과
+   * 컨트롤러 5종을 살려 내므로, 슬라이더 하나 쓰는 조각도 핀볼 런처를 받는다
+   * (REQUIREMENTS.md §2.4 조건 1). 지금은 아무것도 깨지 않기 위해 기본값을
+   * 남겨 두고, 조각이 자기 능력을 가져오게 된 뒤(§2.4 조건 3) 걷어낸다.
+   */
+  capabilities?: HostCapabilities;
 }
+
+/** 호스트에 주입하는 능력 한 벌. 여기 없는 것은 이 host 가 모른다. */
+export interface HostCapabilities {
+  /** primitive type → 렌더러. */
+  renderers?: Record<string, PrimitiveRenderer>;
+  /** 조작기 구현. 각자 자기 `type` 을 안다. */
+  controllers?: ControllerImpl[];
+  /** 이름 → 벡터장 계산. */
+  vectorCompute?: Record<string, VectorComputeFn>;
+}
+
+/**
+ * 표준 한 벌. `capabilities` 를 주지 않은 host 가 받는 것이다.
+ *
+ * 이 표를 참조하는 것만으로 8+5+2 종이 번들에 들어온다. 그것이 지금의 상태이고
+ * S3-C 에서 없앤다 — 여기 모아 둔 이유는 **없앨 자리를 한 곳으로 만들기 위해서**다.
+ */
+export const STANDARD_CAPABILITIES: Required<HostCapabilities> = {
+  renderers: CORE_RENDERERS,
+  controllers: [
+    new PinballLauncherController(),
+    new AngleDialController(),
+    new PlacementController(),
+    new ValueEditController(),
+    new SliderController(),
+  ],
+  vectorCompute: { uniform: uniformVectorField, gravity: gravityVectorField },
+};
 
 /**
  * 프레임워크 문구 번들(2층) 위에 호스트가 준 사전을 얹는다. 호스트 값이 이긴다.
@@ -100,21 +145,21 @@ export class Host {
     this.timeEngine = createTimeEngine(config.timeMode ?? 'linear');
     this.camera = new Camera();
 
-    // 코어 렌더러 등록
-    for (const [type, renderer] of Object.entries(CORE_RENDERERS)) {
+    // 능력 등록. 주지 않으면 표준 한 벌이 전부 온다 (HostConfig.capabilities 주석).
+    const caps = config.capabilities;
+    for (const [type, renderer] of Object.entries(
+      caps?.renderers ?? STANDARD_CAPABILITIES.renderers,
+    )) {
       this.rendererRegistry.register(type, renderer);
     }
-
-    // 코어 컨트롤러 등록 (5종 전부)
-    this.controllerRegistry.register(new PinballLauncherController());
-    this.controllerRegistry.register(new AngleDialController());
-    this.controllerRegistry.register(new PlacementController());
-    this.controllerRegistry.register(new ValueEditController());
-    this.controllerRegistry.register(new SliderController());
-
-    // 코어 표준 compute 메서드 등록
-    this.computeRegistry.registerVector('uniform', uniformVectorField);
-    this.computeRegistry.registerVector('gravity', gravityVectorField);
+    for (const impl of caps?.controllers ?? STANDARD_CAPABILITIES.controllers) {
+      this.controllerRegistry.register(impl);
+    }
+    for (const [name, fn] of Object.entries(
+      caps?.vectorCompute ?? STANDARD_CAPABILITIES.vectorCompute,
+    )) {
+      this.computeRegistry.registerVector(name, fn);
+    }
 
     this.themeMode = config.theme ?? 'light';
     this.theme = getTheme(this.themeMode);
@@ -136,7 +181,11 @@ export class Host {
   }
 
   /**
-   * 번들이 가지고 온 자유 렌더러를 이 host 에 흡수한다 (`Bundle.renderers`).
+   * 번들이 가지고 온 능력을 이 host 에 흡수한다.
+   *
+   * 두 갈래가 같은 문으로 들어온다.
+   *   - `Bundle.renderers` — 조각이 자기 시각화를 직접 그리는 것 (원칙 4 의 탈출구)
+   *   - 생성기가 뽑은 표준 어휘·조작기 — `registerBundle` 의 세 번째 인자
    *
    * **번들을 그리기 직전에 부른다.** 그 시점이 곧 번들이 로드된 시점이라
    * lazy 가 보존된다 — 부팅 때 미리 등록하려 들면 조각마다 그 조각을 통째로
@@ -148,7 +197,13 @@ export class Host {
   adoptBundleRenderers(bundle: Bundle): void {
     if (this.adoptedBundles.has(bundle)) return;
     this.adoptedBundles.add(bundle);
-    for (const [type, renderer] of Object.entries(bundle.renderers ?? {})) {
+
+    const caps = getBundleCapabilities(bundle);
+    const renderers: Record<string, PrimitiveRenderer> = {
+      ...caps?.renderers,
+      ...bundle.renderers,
+    };
+    for (const [type, renderer] of Object.entries(renderers)) {
       // 이미 있는 이름이면 건너뛴다. 표준 어휘·plugin 어휘를 조각이 덮어쓰지
       // 않는다 (C4) — 같은 이름을 쓰려 했다면 그것이 잘못이다.
       if (this.rendererRegistry.has(type)) {
@@ -158,6 +213,14 @@ export class Host {
         continue;
       }
       this.rendererRegistry.register(type, renderer, bundle.zHints?.[type]);
+    }
+    for (const impl of caps?.controllers ?? []) {
+      if (this.controllerRegistry.get(impl.type)) continue;
+      this.controllerRegistry.register(impl);
+    }
+    const vectorCompute: Record<string, VectorComputeFn> = { ...caps?.vectorCompute };
+    for (const [name, fn] of Object.entries(vectorCompute)) {
+      this.computeRegistry.registerVector(name, fn);
     }
   }
 
