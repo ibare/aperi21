@@ -17,26 +17,22 @@ last_verified: 2026-09-09
 
 ## 프리미티브 어휘
 
-표준 **15종**.
+**목록과 z 층의 기준은 코드다** — `CORE_RENDERERS`(`renderer/primitives/index.ts`)와
+`DEFAULT_Z_LAYERS`(`renderer/registry.ts`). 어휘는 계속 늘어나므로 이 문서에 개수나
+목록을 옮겨 적지 않는다. 옮겨 적으면 어휘가 늘 때마다 낡는다.
 
-| 층(z) | 어휘 |
-|---|---|
-| 구조물 (10) | `surface` |
-| 궤적 (20) | `trajectory` |
-| 실 (34) | `filament` |
-| 물체 (40) | `body` |
-| 매질·흐름 (45·46) | `region` · `stream` |
-| 벡터·이벤트 (50) | `vector` · `event` |
-| 주석·값 (58~62) | `dimension` · `marker` · `gauge` · `scale` · `readout` |
-| 배경 장 (0) | `vortexField` |
-| 오버레이 (70) | `graph` |
+층 순서에서 지켜야 할 관계는 값이 아니라 **이유**다.
+
+- 매질(`region`)은 물체 **위**에 반투명으로 덮인다 — 잠긴 것이 비쳐 보여야 "잠겼다" 로 읽힌다
+- 속도장(`vortexField`)은 그것을 참조하는 실(`filament`)보다 **먼저** 돈다
+- 값(`readout`)은 주석 위에 온다 — 가려지면 읽을 수 없다
 
 plugin 이 `primitiveTypes` 로 더 확장한다 — optics `['ray','opticalElement']`,
 circuit `['circuitElement','wire','terminal']`.
 
-뒤의 일곱(`region` · `stream` · `readout` · `scale` · `dimension` · `vortexField` ·
-`filament`)은 2026-09-10 에 자유 렌더 정찰에서 승격된 것이다
-(`tasks/engine-requirements/REQUIREMENTS.md` §3).
+> 2026-09-10 에 자유 렌더 정찰에서 일곱이 승격됐다 — `region` · `stream` · `readout` ·
+> `scale` · `dimension` · `vortexField` · `filament`
+> (`tasks/engine-requirements/REQUIREMENTS.md` §3).
 
 ## MUST
 

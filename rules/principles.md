@@ -67,9 +67,8 @@ last_verified: 2026-09-09
 ## 4. 프리미티브는 어휘, 탈출구는 대기실
 
 - 표준 primitive 를 **어휘로 우선 쓴다.** 같은 대상을 같은 모양으로 그리는 것은
-  복제가 아니라 정확성이다. 현재 15종 —
-  `body` · `vector` · `surface` · `trajectory` · `marker` · `gauge` · `graph` · `event` ·
-  `region` · `stream` · `readout` · `scale` · `dimension` · `vortexField` · `filament`.
+  복제가 아니라 정확성이다. 어휘 목록의 기준은 코드다 —
+  `packages/host/src/renderer/primitives/index.ts` 의 `CORE_RENDERERS`.
 - 그러나 **어휘로 표현할 수 없는 것을 억지로 조합하지 않는다.** 판정 기준은
   **"이 시각화가 답하는 질문의 동사가 무엇이고, 그것이 화면에서 어떻게 일어나는가"** 다.
   프리미티브 조합으로 그 동사가 나오지 않으면 sim 이 자기 시각화를 직접 그린다.
