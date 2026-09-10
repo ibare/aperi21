@@ -46,6 +46,13 @@ export interface BaseMeta {
     emphasis?: 'strong' | 'medium' | 'subtle';
   };
   tags?: readonly string[];
+  /**
+   * 인스턴스 전체 불투명도 0~1. 기본 1.
+   *
+   * 옅어지는 잔상 · 페이드 인 하는 캡션처럼 **같은 어휘를 흐리게** 그릴 때 쓴다.
+   * 강조 상태(`highlight`)의 알파와 곱해진다.
+   */
+  opacity?: number;
 }
 
 
@@ -71,6 +78,11 @@ export interface Trajectory extends BaseMeta {
     fade?: 'none' | 'tail' | 'head';  // 시간 흐름 표현
   };
   closed?: boolean;               // 닫힌 궤적 (궤도)
+  /**
+   * 선 굵기(화면 px). 기본 2 — 곡선·궤적의 굵기다. 축·경계·말뚝 같은 안내선은
+   * 1 로 가늘게 준다. 굵기는 물리량이 아니라 위계라 배율을 따라가지 않는다.
+   */
+  width?: number;
 }
 
 export interface Vector extends BaseMeta {
@@ -286,8 +298,11 @@ export interface Region extends BaseMeta {
    * 배율을 따라가면 확대했을 때 파도가 된다.
    */
   ripple?: { edge: readonly [number, number]; amplitude: number };
-  /** 채움 불투명도. 기본 0.42 — 잠긴 것이 비쳐 보이는 정도. */
-  opacity?: number;
+  /**
+   * 채움 불투명도. 기본 0.42 — 잠긴 것이 비쳐 보이는 정도.
+   * 인스턴스 전체 알파(`opacity`)와는 다르다 — 이것은 면만, 그것은 전체를 흐린다.
+   */
+  fillOpacity?: number;
   /** 굵게 그릴 변. `points` 의 인덱스 쌍 목록. 생략하면 경계선 없음. */
   outline?: readonly (readonly [number, number])[];
 }

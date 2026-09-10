@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Embed } from '@aperi21/react';
 import { domainOf, findTopic } from '../data/catalog';
@@ -19,6 +19,10 @@ export function TopicDetailPage() {
   const topic = topicId ? findTopic(topicId) : undefined;
   // 훅은 early return 앞에 둔다. 조각은 레지스트리에서 온다 — 실제 소비자와 같은 경로.
   const bundle = useSimBundle(topic?.simId);
+  // 검사 전용 — `#/topic/<id>?t=3` 으로 열면 그 시각에서 멈춘다 (scripts/piece-report.mts --sims).
+  const [search] = useSearchParams();
+  const tParam = search.get('t');
+  const inspectAt = tParam !== null && Number.isFinite(Number(tParam)) ? Number(tParam) : undefined;
 
   if (!topic) {
     return (
@@ -55,7 +59,7 @@ export function TopicDetailPage() {
 
       {bundle ? (
         <section className={styles.embed}>
-          <Embed bundle={bundle} />
+          <Embed bundle={bundle} inspectAt={inspectAt} />
           <p className={styles.embedNote}>
             <code>{topic.simId}</code>
           </p>

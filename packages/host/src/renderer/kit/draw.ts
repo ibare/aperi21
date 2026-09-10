@@ -5,15 +5,22 @@
  */
 
 import type { RenderContext, Vec2 } from '@aperi21/schema';
+import { setAlpha } from '../common';
 
 /** 값 칩의 치수. 코드에 남는 기본값은 named 상수로 한 곳에 둔다 (C2). */
 export const CHIP = {
   paddingX: 6,
-  height: 17,
+  paddingY: 3,
   backgroundAlpha: 0.85,
 } as const;
 
-/** 배경을 깐 값 칩. 그림 위에서도 읽힌다. */
+/** 여러 줄 글의 줄 높이 — 글자 크기의 배수. */
+export const LINE_HEIGHT = 1.4;
+
+/**
+ * 배경을 깐 값 칩. 그림 위에서도 읽힌다. `text` 에 줄바꿈이 있으면 여러 줄로 쌓고
+ * 칩은 가장 긴 줄에 맞춘다. 가운데(centerX, centerY)를 기준으로 위아래로 벌어진다.
+ */
 export function drawChip(
   rc: RenderContext,
   centerX: number,
@@ -23,15 +30,18 @@ export function drawChip(
   color: string,
 ): { width: number; height: number } {
   const c = rc.ctx;
-  const width = rc.measure.textWidth(text, fontSize) + CHIP.paddingX * 2;
-  const height = CHIP.height;
+  const lines = text.split('\n');
+  const lineH = fontSize * LINE_HEIGHT;
+  const textW = Math.max(...lines.map((l) => rc.measure.textWidth(l, fontSize)));
+  const width = textW + CHIP.paddingX * 2;
+  const height = lineH * lines.length + CHIP.paddingY * 2;
   const x = centerX - width / 2;
   const y = centerY - height / 2;
 
-  c.globalAlpha = CHIP.backgroundAlpha;
+  setAlpha(c, CHIP.backgroundAlpha);
   c.fillStyle = rc.theme.background;
   c.fillRect(x, y, width, height);
-  c.globalAlpha = 1;
+  setAlpha(c, 1);
   c.strokeStyle = rc.theme.line;
   c.lineWidth = rc.theme.strokeWidth.regular;
   c.strokeRect(x, y, width, height);
@@ -40,7 +50,9 @@ export function drawChip(
   c.fillStyle = color;
   c.textAlign = 'center';
   c.textBaseline = 'middle';
-  c.fillText(text, centerX, centerY);
+  lines.forEach((line, i) => {
+    c.fillText(line, centerX, y + CHIP.paddingY + lineH * (i + 0.5));
+  });
 
   return { width, height };
 }
@@ -74,7 +86,7 @@ export function streak(
   const c = rc.ctx;
   const [x0, y0] = rc.toScreen(from);
   const [x1, y1] = rc.toScreen(to);
-  c.globalAlpha = alpha;
+  setAlpha(c, alpha);
   c.strokeStyle = color;
   c.lineWidth = Math.max(0.5, width);
   c.lineCap = 'round';
@@ -82,5 +94,5 @@ export function streak(
   c.moveTo(x0, y0);
   c.lineTo(x1, y1);
   c.stroke();
-  c.globalAlpha = 1;
+  setAlpha(c, 1);
 }

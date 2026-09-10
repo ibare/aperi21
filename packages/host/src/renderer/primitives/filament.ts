@@ -1,5 +1,5 @@
 import type { Filament, PrimitiveRenderer } from '@aperi21/schema';
-import { applyBaseMeta, finalizeBaseMeta, primitiveColor } from '../common';
+import { applyBaseMeta, finalizeBaseMeta, primitiveColor, setAlpha } from '../common';
 import { sampleVortices } from '../kit/vortex';
 import { stableRandom } from '../kit/particles';
 import { emptyVortexState, vortexStoreKey, type VortexBagState } from './vortex-field';
@@ -223,7 +223,7 @@ export const renderFilament: PrimitiveRenderer = (rc, p0) => {
   c.lineJoin = 'round';
   c.lineCap = 'round';
   for (let pass = 0; pass < 2; pass++) {
-    c.globalAlpha = pass ? 0.38 : 0.88;
+    setAlpha(c, pass ? 0.38 : 0.88);
     c.lineWidth = pass ? width * 0.65 : width;
     c.strokeStyle = color;
     c.beginPath();
@@ -248,12 +248,12 @@ export const renderFilament: PrimitiveRenderer = (rc, p0) => {
     }
     c.stroke();
   }
-  c.globalAlpha = 1;
+  setAlpha(c, 1);
 
   // 번짐 — 선 하나로는 "휘저어진 물" 이 되지 않는다. 흐트러진 곳일수록 이웃한
   // 알갱이가 서로 멀어져 번진다. 알갱이마다 **고정된** 방향 셋으로 벌어지는
   // 흐린 점을 얹는다. 방향이 매 프레임 바뀌면 구름이 끓는다.
-  c.globalAlpha = 0.2;
+  setAlpha(c, 0.2);
   c.fillStyle = color;
   c.beginPath();
   for (let i = 0; i < state.parts.length; i++) {
@@ -273,7 +273,7 @@ export const renderFilament: PrimitiveRenderer = (rc, p0) => {
     c.arc(x + bx * spread, y + by * spread, radius, 0, Math.PI * 2);
   }
   c.fill();
-  c.globalAlpha = 1;
+  setAlpha(c, 1);
 
   finalizeBaseMeta(rc, p);
 };

@@ -1,5 +1,5 @@
 import type { Graph, PrimitiveRenderer } from '@aperi21/schema';
-import { applyBaseMeta, finalizeBaseMeta } from '../common';
+import { applyBaseMeta, finalizeBaseMeta, setAlpha } from '../common';
 
 /**
  * Graph 렌더러. Phase 2 MVP 는 style==='bar' + placement==='screen-hud' 만.
@@ -22,9 +22,9 @@ export const renderGraph: PrimitiveRenderer = (rc, p0) => {
 
   // 배경 카드
   c.fillStyle = rc.theme.background;
-  c.globalAlpha = 0.8;
+  setAlpha(c, 0.8);
   c.fillRect(x, y, w, h);
-  c.globalAlpha = 1;
+  setAlpha(c, 1);
   c.strokeStyle = rc.theme.line;
   c.lineWidth = 1;
   c.strokeRect(x, y, w, h);

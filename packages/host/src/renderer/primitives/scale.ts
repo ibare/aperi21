@@ -1,5 +1,5 @@
 import type { PrimitiveRenderer, Scale } from '@aperi21/schema';
-import { applyBaseMeta, finalizeBaseMeta, primitiveColor } from '../common';
+import { applyBaseMeta, finalizeBaseMeta, primitiveColor, setAlpha } from '../common';
 import { resolveText } from '../kit/text';
 
 /** 눈금판 0 의 각도(캔버스 좌표계, 왼쪽 아래)와 시계 방향 총 각도. */
@@ -73,10 +73,10 @@ export const renderScale: PrimitiveRenderer = (rc, p0) => {
         c.moveTo(cx, cy);
         c.arc(cx, cy, R * DIAL.sector, a0, a1, a1 < a0);
         c.closePath();
-        c.globalAlpha = 0.3;
+        setAlpha(c, 0.3);
         c.fillStyle = accent;
         c.fill();
-        c.globalAlpha = 1;
+        setAlpha(c, 1);
         c.beginPath();
         c.arc(cx, cy, R * DIAL.sector, a0, a1, a1 < a0);
         c.strokeStyle = accent;

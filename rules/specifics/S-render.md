@@ -45,6 +45,11 @@ circuit `['circuitElement','wire','terminal']`.
   뒤집힌다. 실제로 `vortexField` 를 빠뜨려 `filament` 가 먼저 돌았고, 장을 못 찾은
   `undefined` 가 저장소에 캐시되어 **영원히 소용돌이가 0** 이었다 — 화면은 그려지고
   타입도 통과하고 예외도 안 났다.
+- **알파는 `setAlpha(c, a)` 로만 넣는다.** `globalAlpha` 에 직접 대입하면 `applyBaseMeta` 가
+  붙인 기준 알파(강조 상태 × `opacity`)가 지워진다 — 잔상이 옅어지지 않는데 예외도 없고
+  타입도 통과한다. 한계: plugin 렌더러는 host 에 의존하지 않아 이 헬퍼를 쓸 수 없고
+  `applyBaseMeta` 도 부르지 않는다. 그래서 plugin 프리미티브(`ray` 등)는 `opacity` ·
+  `highlight` 를 따르지 않는다.
 - **`rc.store` 를 쓰는 어휘는 순서에 기대지 않는다.** 서로 참조하는 어휘는 어느
   쪽이 먼저 돌아도 되도록 **빈 상태를 만들 수 있어야** 한다.
 - **캔버스 껍데기는 러너가 만든다.** 렌더러가 컨테이너를 만들거나 비우지 않는다.

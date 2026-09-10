@@ -1,5 +1,5 @@
 import type { Marker, PrimitiveRenderer } from '@aperi21/schema';
-import { applyBaseMeta, finalizeBaseMeta, primitiveColor } from '../common';
+import { applyBaseMeta, finalizeBaseMeta, primitiveColor, setAlpha } from '../common';
 
 /**
  * Marker 렌더러. Phase 2 는 kind === 'label' 을 중심으로 처리. 다른 kind 는
@@ -20,9 +20,9 @@ export const renderMarker: PrimitiveRenderer = (rc, p0) => {
     const w = tw + pad * 2;
     const h = 18;
     c.fillStyle = rc.theme.background;
-    c.globalAlpha = 0.85;
+    setAlpha(c, 0.85);
     c.fillRect(sx - w / 2, sy - h - 4, w, h);
-    c.globalAlpha = 1;
+    setAlpha(c, 1);
     c.strokeStyle = rc.theme.line;
     c.lineWidth = 1;
     c.strokeRect(sx - w / 2, sy - h - 4, w, h);

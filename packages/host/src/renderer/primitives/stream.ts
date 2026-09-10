@@ -1,5 +1,5 @@
 import type { PrimitiveRenderer, Stream, Vec2 } from '@aperi21/schema';
-import { applyBaseMeta, finalizeBaseMeta, primitiveColor } from '../common';
+import { applyBaseMeta, finalizeBaseMeta, primitiveColor, setAlpha } from '../common';
 import { streak } from '../kit/draw';
 import { livingParticles, stableRandom } from '../kit/particles';
 
@@ -49,7 +49,7 @@ export const renderStream: PrimitiveRenderer = (rc, p0) => {
       const [sx, sy] = rc.toScreen(now);
       const [bx, by] = rc.toScreen(before);
       const c = rc.ctx;
-      c.globalAlpha = 1 - (age / p.life) * 0.5;
+      setAlpha(c, 1 - (age / p.life) * 0.5);
       c.strokeStyle = color;
       c.lineWidth = Math.max(0.5, baseWidth * (1 - THINNING * (age / p.life)));
       c.lineCap = 'round';
@@ -57,7 +57,7 @@ export const renderStream: PrimitiveRenderer = (rc, p0) => {
       c.moveTo(bx + dx, by + dy);
       c.lineTo(sx + dx, sy + dy);
       c.stroke();
-      c.globalAlpha = 1;
+      setAlpha(c, 1);
     } else {
       streak(
         rc,

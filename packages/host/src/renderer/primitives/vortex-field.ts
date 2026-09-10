@@ -1,5 +1,5 @@
 import type { PrimitiveRenderer, VortexField } from '@aperi21/schema';
-import { applyBaseMeta, finalizeBaseMeta, primitiveColor } from '../common';
+import { applyBaseMeta, finalizeBaseMeta, primitiveColor, setAlpha } from '../common';
 import { advanceVortices, createVortexBag, type Vortex, type VortexBagOptions } from '../kit/vortex';
 
 /** 이 장의 상태를 담는 저장소 키. `filament` 가 같은 키로 읽는다. */
@@ -71,10 +71,10 @@ export const renderVortexField: PrimitiveRenderer = (rc, p0) => {
     const [x, y] = rc.toScreen([v.x, v.y]);
     c.beginPath();
     c.arc(x, y, Math.max(1, v.r * rc.scale), 0, Math.PI * 2);
-    c.globalAlpha = 0.12 * v.e;
+    setAlpha(c, 0.12 * v.e);
     c.fillStyle = color;
     c.fill();
-    c.globalAlpha = 1;
+    setAlpha(c, 1);
   }
   finalizeBaseMeta(rc, p);
 };

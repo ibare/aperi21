@@ -1,5 +1,5 @@
 import type { PrimitiveRenderer, Region, RenderContext, Vec2 } from '@aperi21/schema';
-import { applyBaseMeta, finalizeBaseMeta, primitiveColor } from '../common';
+import { applyBaseMeta, finalizeBaseMeta, primitiveColor, setAlpha } from '../common';
 
 /** 물결의 마디 수. 한 변을 이만큼 잘라 그린다. */
 const RIPPLE_STEPS = 28;
@@ -73,10 +73,10 @@ export const renderRegion: PrimitiveRenderer = (rc, p0) => {
   c.beginPath();
   for (let i = 0; i < p.points.length; i++) traceEdge(i, i === 0);
   c.closePath();
-  c.globalAlpha = (p.opacity ?? DEFAULT_OPACITY) * (c.globalAlpha || 1);
+  setAlpha(c, p.fillOpacity ?? DEFAULT_OPACITY);
   c.fillStyle = color;
   c.fill();
-  c.globalAlpha = 1;
+  setAlpha(c, 1);
 
   // 굵게 그릴 변만 따로 긋는다. 수면처럼 한 변만 또렷해야 하는 경우가 흔하다.
   for (const [i, j] of p.outline ?? []) {

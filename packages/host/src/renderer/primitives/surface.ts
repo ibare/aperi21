@@ -1,5 +1,5 @@
 import type { PrimitiveRenderer, Surface } from '@aperi21/schema';
-import { applyBaseMeta, finalizeBaseMeta } from '../common';
+import { applyBaseMeta, finalizeBaseMeta, setAlpha } from '../common';
 
 /**
  * Surface 렌더러. Phase 2 는 ground / incline 만 지원.
@@ -26,9 +26,9 @@ export const renderSurface: PrimitiveRenderer = (rc, p0) => {
     c.stroke();
 
     c.fillStyle = fill;
-    c.globalAlpha = 0.15;
+    setAlpha(c, 0.15);
     c.fillRect(0, ys, rc.viewport.width, rc.viewport.height - ys);
-    c.globalAlpha = 1;
+    setAlpha(c, 1);
   } else if (g.kind === 'incline') {
     const [ox, oy] = rc.toScreen(g.origin);
     const length = typeof g.length === 'number' ? g.length : 4;
@@ -37,14 +37,14 @@ export const renderSurface: PrimitiveRenderer = (rc, p0) => {
     const ty = oy - Math.sin(-g.angle) * length * rc.scale;
     // 삼각형 채움
     c.fillStyle = fill;
-    c.globalAlpha = 0.2;
+    setAlpha(c, 0.2);
     c.beginPath();
     c.moveTo(ox, oy);
     c.lineTo(tx, ty);
     c.lineTo(tx, oy);
     c.closePath();
     c.fill();
-    c.globalAlpha = 1;
+    setAlpha(c, 1);
     c.strokeStyle = line;
     c.lineWidth = 1.5;
     c.beginPath();

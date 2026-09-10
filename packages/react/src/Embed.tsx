@@ -20,9 +20,26 @@ export interface EmbedProps {
   initialValues?: Record<string, number>;
   initialView?: string;
   initialEnvironments?: string[];
+  /**
+   * **검사 전용.** 이 시각(초)까지 고정 dt 로 미리 돌린 뒤 시간을 멈춘다.
+   *
+   * 자유 구현본과 같은 시각에 스크린샷을 찍어 나란히 비교하기 위한 것이다
+   * (`scripts/piece-report.mts --sims`). **S-piece 의 프리롤이 아니다** — "도착한 순간
+   * 이미 진행 중" 은 저작 결정이라 선언에 둬야 하고(원칙 2), 호스트 옵션으로 흉내 내면
+   * 저작자가 손댈 수 없는 시작 시점이 된다.
+   *
+   * 한계: 렌더러 안에서 적분하는 어휘(`filament` · `vortexField`)는 이것으로 전진하지
+   * 않는다. 그 상태는 `bundle.step` 이 아니라 `rc.store` 에 있다.
+   */
+  inspectAt?: number;
 }
 
-export function Embed({ bundle, stageId, initialView, initialEnvironments }: EmbedProps) {
+/** 검사 시각 이동의 고정 dt. `tasks/piece-lab/_harness/piece-kit.js` 의 DT 와 같아야 비교가 성립한다. */
+const INSPECT_DT = 1 / 60;
+/** 동기 루프가 메인 스레드를 막으므로 상한을 둔다(초). */
+const INSPECT_MAX_T = 60;
+
+export function Embed({ bundle, stageId, initialView, initialEnvironments, inspectAt }: EmbedProps) {
   const host = useHost();
   const theme = useTheme();
   // 러너가 조회기를 하나만 만들어 오버레이 UI 전체에 같은 것을 넘긴다 (C1).
@@ -66,7 +83,32 @@ export function Embed({ bundle, stageId, initialView, initialEnvironments }: Emb
     camera.reset();
     timeEngine.reset();
     timeEngine.start();
-  }, [camera, timeEngine, runtime.resetSignal, runtime.stageId, bundle.schema.camera?.screenYBias]);
+
+    // 검사 시각 이동. 여기(Embed)에 두는 이유 — React 는 자식 effect 를 먼저 돌려서,
+    // Canvas 에서 하면 뒤이어 도는 이 effect 의 reset() 이 시각을 0 으로 되돌린다.
+    if (inspectAt !== undefined && inspectAt > 0 && bundle.schema.timeModel !== 'static') {
+      const target = Math.min(inspectAt, INSPECT_MAX_T);
+      const steps = Math.round(target / INSPECT_DT);
+      let state = runtime.stateRef.current;
+      for (let i = 0; i < steps; i++) {
+        if (bundle.isTerminated?.(state)) {
+          timeEngine.markTerminated();
+          break;
+        }
+        state = bundle.step({
+          state,
+          dt: INSPECT_DT,
+          stage: runtime.stage,
+          environments: runtime.environments,
+        });
+      }
+      runtime.replaceState(state);
+      timeEngine.seek(target);
+      timeEngine.pause();
+    }
+    // runtime 의 stage·environments·stateRef 는 stageId·resetSignal 과 함께 바뀐다.
+    // eslint 는 쓰지 않지만 의도를 남긴다 — 이 effect 는 리셋 시점에만 돈다.
+  }, [camera, timeEngine, runtime.resetSignal, runtime.stageId, bundle, inspectAt]);
 
   const wrapper: CSSProperties = {
     background: theme.background,

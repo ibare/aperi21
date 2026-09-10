@@ -1,5 +1,5 @@
 import type { Event_, PrimitiveRenderer } from '@aperi21/schema';
-import { applyBaseMeta, finalizeBaseMeta, primitiveColor } from '../common';
+import { applyBaseMeta, finalizeBaseMeta, primitiveColor, setAlpha } from '../common';
 
 /**
  * Event 렌더러. 시간 의존: progress = (time - startedAt)/duration, 0..1.
@@ -17,17 +17,17 @@ export const renderEvent: PrimitiveRenderer = (rc, p0) => {
 
   if (p.kind === 'flash' || p.kind === 'pulse') {
     const radius = (10 + progress * 40) * intensity;
-    c.globalAlpha = Math.max(0, 1 - progress);
+    setAlpha(c, Math.max(0, 1 - progress));
     c.fillStyle = color;
     c.beginPath();
     c.arc(sx, sy, radius, 0, Math.PI * 2);
     c.fill();
-    c.globalAlpha = 1;
+    setAlpha(c, 1);
   } else if (p.kind === 'burst') {
     const spokes = 8;
     const r1 = 8 + progress * 28;
     const r0 = progress * 12;
-    c.globalAlpha = Math.max(0, 1 - progress);
+    setAlpha(c, Math.max(0, 1 - progress));
     c.strokeStyle = color;
     c.lineWidth = 2;
     for (let i = 0; i < spokes; i++) {
@@ -39,7 +39,7 @@ export const renderEvent: PrimitiveRenderer = (rc, p0) => {
       c.lineTo(sx + cos * r1, sy + sin * r1);
       c.stroke();
     }
-    c.globalAlpha = 1;
+    setAlpha(c, 1);
   }
 
   finalizeBaseMeta(rc, p);

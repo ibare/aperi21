@@ -81,6 +81,12 @@ function mergeValues(
   return out;
 }
 
+function sameValues(a: Record<string, number>, b: Record<string, number>): boolean {
+  const ka = Object.keys(a);
+  if (ka.length !== Object.keys(b).length) return false;
+  return ka.every((k) => a[k] === b[k]);
+}
+
 function isEnvAvailable(env: EnvironmentDef, stageId: string): boolean {
   return !env.availableInStages || env.availableInStages.includes(stageId);
 }
@@ -109,8 +115,14 @@ export function useBundleRuntime<T extends BundleState>(
   );
 
   // bundle 이 바뀌면 파라미터 기본값 재적용.
+  //
+  // **값이 같으면 이전 객체를 그대로 둔다.** paramValues 는 아래 재초기화 effect 의
+  // 의존이라, 같은 값의 새 객체를 넣으면 그 effect 가 한 번 더 돌아 상태를 처음으로
+  // 되돌린다. 마운트마다 상태를 두 번 초기화하고 있었고, 그 사이에 넣은 상태
+  // (검사 시각 이동 `inspectAt` 등)가 조용히 지워졌다.
   useEffect(() => {
-    setParamValues(buildScalarDefaults(bundle));
+    const next = buildScalarDefaults(bundle);
+    setParamValues((prev) => (sameValues(prev, next) ? prev : next));
   }, [bundle]);
 
   const stage = useMemo(

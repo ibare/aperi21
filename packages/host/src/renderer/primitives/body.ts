@@ -1,5 +1,5 @@
 import type { Body, PrimitiveRenderer } from '@aperi21/schema';
-import { applyBaseMeta, finalizeBaseMeta, primitiveColor } from '../common';
+import { applyBaseMeta, finalizeBaseMeta, primitiveColor, setAlpha } from '../common';
 
 /**
  * Body 렌더러. Phase 2 MVP 는 circle / point / rect / rod 만 지원.
@@ -40,7 +40,7 @@ export const renderBody: PrimitiveRenderer = (rc, p0) => {
       glow.addColorStop(0, color);
       glow.addColorStop(1, 'transparent');
       c.save();
-      c.globalAlpha = 0.35;
+      setAlpha(c, 0.35);
       c.fillStyle = glow;
       c.beginPath();
       c.arc(sx, sy, radius * 3, 0, Math.PI * 2);
