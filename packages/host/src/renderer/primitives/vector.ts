@@ -40,8 +40,8 @@ export const renderVector: PrimitiveRenderer = (rc, p0) => {
 
   c.strokeStyle = color;
   c.fillStyle = color;
-  // 기존 굵기(2px)를 유지한다. strokeWidth.regular 는 1 이라 모든 벡터가 가늘어진다.
-  c.lineWidth = rc.theme.strokeWidth.thick;
+  // 기본은 굵은 선(2px). strokeWidth.regular 는 1 이라 모든 벡터가 가늘어진다.
+  c.lineWidth = p.width ?? rc.theme.strokeWidth.thick;
   c.lineCap = 'round';
   c.beginPath();
   c.moveTo(sx0, sy0);

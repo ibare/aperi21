@@ -11,6 +11,10 @@ export interface ViewTabsProps {
 }
 
 export function ViewTabs({ schema, theme, i18n, viewId, onSelectView }: ViewTabsProps) {
+  // 뷰가 하나면 고를 것이 없다. 탭 하나는 조작기가 아니라 크롬이다 (S-piece).
+  // Canvas 의 프레이밍 여백도 같은 조건으로 이 자리를 뺀다.
+  if (schema.views.length <= 1) return null;
+
   const wrap: CSSProperties = {
     position: 'absolute',
     top: 12,

@@ -11,6 +11,8 @@ const lightPalette: ColorPalette = {
   muted: '#6B7280',
   positive: '#2A7A5A',
   negative: '#8B2A2A',
+  // 먹 — 테마 전경색과 같은 값이다 (아래 lightTheme.foreground).
+  ink: '#1A2332',
 };
 
 const darkPalette: ColorPalette = {
@@ -20,6 +22,7 @@ const darkPalette: ColorPalette = {
   muted: '#7C8699',
   positive: '#6BB88A',
   negative: '#D46A66',
+  ink: '#F5F1E8',
 };
 
 const baseTypography = {

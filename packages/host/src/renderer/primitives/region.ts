@@ -73,6 +73,13 @@ export const renderRegion: PrimitiveRenderer = (rc, p0) => {
   c.beginPath();
   for (let i = 0; i < p.points.length; i++) traceEdge(i, i === 0);
   c.closePath();
+  if (p.opaque) {
+    // 바탕을 먼저 불투명하게 깐다. 그 위의 옅은 색은 겹쳐도 짙어지지 않는다 —
+    // 두 번째 도형도 바탕부터 다시 깔기 때문이다.
+    setAlpha(c, 1);
+    c.fillStyle = rc.theme.background;
+    c.fill();
+  }
   setAlpha(c, p.fillOpacity ?? DEFAULT_OPACITY);
   c.fillStyle = color;
   c.fill();

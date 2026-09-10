@@ -15,6 +15,7 @@ import type {
 import {
   BackgroundParticleSystem,
   evaluateTimeline,
+  orderForDrawing,
   preprocessScene,
   withCaption,
   type Camera,
@@ -52,6 +53,7 @@ const OVERLAY_EXTENT = {
 
 /** 지금 켜져 있는 오버레이만으로 프레이밍 여백을 낸다. */
 function overlayMargins(
+  hasViewTabs: boolean,
   hasParamPanel: boolean,
   controllerTypes: ReadonlySet<string>,
 ): { top: number; bottom: number; left: number; right: number } {
@@ -59,7 +61,7 @@ function overlayMargins(
   const dial = controllerTypes.has('angle-dial');
   const pinball = controllerTypes.has('pinball-launcher');
   return {
-    top: base + OVERLAY_EXTENT.viewTabs,
+    top: base + (hasViewTabs ? OVERLAY_EXTENT.viewTabs : 0),
     bottom: base + (dial || pinball ? OVERLAY_EXTENT.angleDial : 0),
     left: base + (hasParamPanel ? OVERLAY_EXTENT.paramPanel : 0),
     right: base + (pinball ? OVERLAY_EXTENT.pinballLauncher : 0),
@@ -380,6 +382,8 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
         camera.fitToBounds(bounds, vp, {
           padding: 12,
           screenMargins: overlayMargins(
+            // ViewTabs 는 고를 뷰가 있을 때만 뜬다 (embed/ViewTabs.tsx).
+            bundle.schema.views.length > 1,
             (bundle.schema.parameters?.length ?? 0) > 0,
             controllerTypes,
           ),
@@ -421,8 +425,8 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
         timeline,
       );
       const { refs, orderedScene } = preprocessScene(sceneGraph);
-      const sortedScene = [...orderedScene].sort(
-        (a, b) => host.rendererRegistry.getZ(a.type) - host.rendererRegistry.getZ(b.type),
+      const sortedScene = orderForDrawing(orderedScene, bundle.schema.drawOrder, (t) =>
+        host.rendererRegistry.getZ(t),
       );
 
       const rc: RenderContext = {

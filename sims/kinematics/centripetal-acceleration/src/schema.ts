@@ -145,6 +145,9 @@ export const centripetalAccelerationSchema: BundleSchema = {
     ],
   },
 
+  // 원본이 그린 순서 그대로 겹친다 — 공이 제 속도 화살표의 꼬리를 덮는다.
+  drawOrder: 'scene',
+
   // 원 옆에 둬 세로를 아낀다. 원본의 캡션 글자 18 px, 단계가 바뀔 때 0.3 초 페이드 인.
   caption: {
     anchor: { world: [CAPTION_X, 0] },

@@ -4,8 +4,8 @@
 // 그리지 않는다, 선언한다.
 //
 // 자유 렌더를 쓰지 않는다. 넓이 · 떨어지는 기둥 · 길 위 띠 · 길은 `region`,
-// 축 · 곡선 · 경계 · 말뚝 · 바늘은 `trajectory`, 지금 속도 점은 `marker`, 바퀴는
-// `body`, 축 이름은 `readout`. 캡션은 선언의 캡션 슬롯이 그린다.
+// 축 · 곡선 · 경계 · 말뚝 · 바늘은 `trajectory`, 지금 속도 점은 `marker`, 수레와
+// 바퀴는 `body`, 축 이름은 `readout`. 캡션은 선언의 캡션 슬롯이 그린다.
 //
 // ---- 두 칸, 월드 하나 ----
 // 그래프 칸(위)과 길 칸(아래)을 **한 월드 좌표**에 위아래로 놓는다. 월드 1 = 길 1 m.
@@ -74,14 +74,31 @@ const AXIS_Y = px(REF.bandBottom - REF.axisY);
 const gx = (t: number): number => t * TIME_X;
 const gy = (v: number): number => AXIS_Y + v * VY;
 
+/** 수레 차체 — 원본 px 좌표(물체 바닥 기준, y 위). `body` custom 의 외형이 된다. */
+const CART_OUTLINE: readonly (readonly [number, number])[] = [
+  [-13, 6],
+  [-13, 14],
+  [9, 14],
+  [14, 8],
+  [14, 6],
+];
+const CART_PATH =
+  CART_OUTLINE.map(([x, y], i) => `${i === 0 ? 'M' : 'L'} ${px(x)} ${px(y)}`).join(' ') + ' Z';
+/** 바퀴 반지름. 원본 3 px — 월드로 둬 차체와 함께 배율을 따라간다. */
+const WHEEL_RADIUS = px(3);
+
 // ------------------------------------------------------------------------
 // 색 — 파랑 하나 = 넓이(= 간 거리). 나머지는 먹과 회색
 // ------------------------------------------------------------------------
 // 그래프 속 넓이, 떨어지는 기둥, 길 위 띠가 모두 같은 파랑이다 — 같은 대상이기
 // 때문이다. 1초 경계(그래프의 가름선)와 말뚝(길)도 같은 것이라 같은 회색이다.
 
-const INK = { colorRole: 'muted', emphasis: 'strong' } as const;
+const INK = { colorRole: 'ink', emphasis: 'strong' } as const;
 const GUIDE = { colorRole: 'muted', emphasis: 'subtle' } as const;
+/** 축 이름. 원본은 먹보다 한 톤 옅은 회색(#5b6168). */
+const LABEL = { colorRole: 'muted', emphasis: 'strong' } as const;
+/** 길 바닥. 원본의 옅은 베이지 — 회색을 배경 위에 옅게. */
+const GROUND = { colorRole: 'muted', emphasis: 'strong' } as const;
 const AREA = { colorRole: 'secondary', emphasis: 'strong' } as const;
 /** 파랑의 채움 세기. 원본의 옅은 파랑(#9cc3e6)에 가깝게. */
 const AREA_FILL = 0.45;
@@ -111,6 +128,10 @@ function rect(x0: number, x1: number, y0: number, y1: number): Vec2[] {
   ];
 }
 
+/**
+ * 면. **전부 불투명 칠이다** — 원본은 옅은 색을 불투명하게 깔았다. 반투명이면 떨어지는
+ * 기둥이 쌓인 넓이와 겹친 곳이 짙어져 "같은 것" 이 다른 것처럼 보인다.
+ */
 function fill(
   id: string,
   points: readonly Vec2[],
@@ -118,7 +139,7 @@ function fill(
   fillOpacity: number,
   opacity = 1,
 ): Region {
-  return { type: 'region', id, points, style, fillOpacity, opacity };
+  return { type: 'region', id, points, style, fillOpacity, opacity, opaque: true };
 }
 
 /**
@@ -181,7 +202,8 @@ export function scene(params: {
     chip: false,
     align: 'right',
     fontSize: 12,
-    style: INK,
+    font: 'text',
+    style: LABEL,
   };
   const axisT: Readout = {
     type: 'readout',
@@ -191,7 +213,8 @@ export function scene(params: {
     chip: false,
     align: 'right',
     fontSize: 12,
-    style: INK,
+    font: 'text',
+    style: LABEL,
   };
   out.push(axisV, axisT);
 
@@ -227,18 +250,13 @@ export function scene(params: {
   out.push(now);
 
   // ---- 길 ----
-  // 내려앉은 띠 아래는 비워 둔다. 반투명 파랑이 길 위에 겹치면 그래프 속 넓이와
-  // 다른 파랑이 되어 "같은 것" 이라는 말이 흐려진다.
+  // 한 장으로 깐다. 펼친 넓이가 불투명하게 덮으므로 길 위의 파랑도 그래프 속 파랑과
+  // 같은 색이다.
   const edge = landedUntil(tau, flight);
   const landed = distance(edge);
   const roadL = -px(14);
   const roadR = D + px(14);
-  if (landed > 0) {
-    out.push(fill('road-head', rect(roadL, 0, 0, BAND_H), INK, ROAD_FILL));
-    out.push(fill('road-tail', rect(landed, roadR, 0, BAND_H), INK, ROAD_FILL));
-  } else {
-    out.push(fill('road', rect(roadL, roadR, 0, BAND_H), INK, ROAD_FILL));
-  }
+  out.push(fill('road', rect(roadL, roadR, 0, BAND_H), GROUND, ROAD_FILL));
   out.push(line('road-floor', [[roadL, -px(0.5)], [roadR, -px(0.5)]], 1, GUIDE));
 
   // ---- 펼친 넓이 ----
@@ -268,28 +286,25 @@ export function scene(params: {
   const cx = distance(tm);
   const base = BAND_H + px(3);
   const cartAlpha = fade * fadeIn;
-  out.push(
-    fill(
-      'cart',
-      [
-        [cx - px(13), base + px(6)],
-        [cx - px(13), base + px(14)],
-        [cx + px(9), base + px(14)],
-        [cx + px(14), base + px(8)],
-        [cx + px(14), base + px(6)],
-      ],
-      INK,
-      1,
-      cartAlpha,
-    ),
-  );
+  const cart: Body = {
+    type: 'body',
+    id: 'cart',
+    shape: 'custom',
+    pos: [cx, base],
+    customPath: CART_PATH,
+    style: INK,
+    opacity: cartAlpha,
+  };
+  out.push(cart);
   for (const [id, dx] of [['wheel-rear', -7], ['wheel-front', 8]] as const) {
     const wheel: Body = {
       type: 'body',
       id,
-      shape: 'point',
+      shape: 'circle',
+      size: WHEEL_RADIUS,
       pos: [cx + px(dx), base + px(4)],
       style: INK,
+      glow: false,
       opacity: cartAlpha,
     };
     out.push(wheel);

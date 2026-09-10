@@ -1,4 +1,6 @@
-import type { Primitive, RenderContext } from '@aperi21/schema';
+import type { ColorRole, Primitive, RenderContext } from '@aperi21/schema';
+
+type Emphasis = 'strong' | 'medium' | 'subtle';
 
 /** 흐리게(`highlight: 'dimmed'`) 그릴 때의 알파. */
 const DIMMED_ALPHA = 0.3;
@@ -62,9 +64,9 @@ export function finalizeBaseMeta(rc: RenderContext, _p: Primitive): void {
 export function primitiveColor(
   rc: RenderContext,
   p: Primitive,
-  defaults: { role?: 'primary' | 'secondary' | 'accent' | 'muted' | 'positive' | 'negative'; emphasis?: 'strong' | 'medium' | 'subtle' } = {},
+  defaults: { role?: ColorRole; emphasis?: Emphasis } = {},
 ): string {
-  const style = (p as { style?: { colorRole?: 'primary' | 'secondary' | 'accent' | 'muted' | 'positive' | 'negative'; emphasis?: 'strong' | 'medium' | 'subtle' } }).style;
+  const style = (p as { style?: { colorRole?: ColorRole; emphasis?: Emphasis } }).style;
   const role = style?.colorRole ?? defaults.role ?? 'primary';
   const emphasis = style?.emphasis ?? defaults.emphasis ?? 'medium';
   return rc.theme.resolveColor(role, emphasis);

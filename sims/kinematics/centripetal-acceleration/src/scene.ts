@@ -48,12 +48,22 @@ const DV_LABEL_GAP_PX = 15;
 const DV_LABEL_FONT = 15;
 /** Δv 가 이만큼 자란 뒤부터 이름표가 나타난다. */
 const DV_LABEL_FROM = 0.6;
+/** 화살표 굵기(화면 px). 원본 — 살아 있는 속도 · 남긴 속도 · 이번 Δv 3, 지난 Δv 2.5. */
+const ARROW_WIDTH_PX = 3;
+const PAST_ARROW_WIDTH_PX = 2.5;
 
 const VELOCITY_STYLE = { colorRole: 'secondary', emphasis: 'strong' } as const;
 const DV_STYLE = { colorRole: 'accent', emphasis: 'strong' } as const;
 
-function arrow(id: string, from: Vec2, delta: Vec2, style: Vector['style'], opacity: number): Vector {
-  return { type: 'vector', id, from, delta, headSize: HEAD_SIZE, style, opacity };
+function arrow(
+  id: string,
+  from: Vec2,
+  delta: Vec2,
+  style: Vector['style'],
+  opacity: number,
+  width = ARROW_WIDTH_PX,
+): Vector {
+  return { type: 'vector', id, from, delta, headSize: HEAD_SIZE, style, opacity, width };
 }
 
 export function scene(params: {
@@ -98,7 +108,7 @@ export function scene(params: {
     const c = cycle(j, tl);
     const a = spokeAlpha(s - c.done);
     if (a < MIN_ALPHA) break;
-    out.push(arrow(`past-dv-${j}`, c.mid, c.dv, DV_STYLE, a));
+    out.push(arrow(`past-dv-${j}`, c.mid, c.dv, DV_STYLE, a, PAST_ARROW_WIDTH_PX));
   }
 
   // ---- 남겨 둔 두 속도 ----
@@ -139,6 +149,10 @@ export function scene(params: {
         text: text('label.dv'),
         chip: false,
         align: 'center',
+        // 원본 — 기울임 굵은 15 px. 기호라 수식 글자로 읽혀야 한다.
+        font: 'text',
+        italic: true,
+        weight: 'bold',
         fontSize: DV_LABEL_FONT,
         opacity: a * ease((g - DV_LABEL_FROM) / (1 - DV_LABEL_FROM)),
         style: DV_STYLE,
@@ -157,8 +171,9 @@ export function scene(params: {
     pos: p,
     shape: 'circle',
     size: BALL_RADIUS,
-    // strong 은 둘레에 번짐을 두른다. 원본의 공은 번짐 없는 짙은 채움 원이다.
-    style: { colorRole: 'muted', emphasis: 'medium' },
+    // 원본의 공은 번짐 없는 먹색 채움 원이다.
+    style: { colorRole: 'ink', emphasis: 'strong' },
+    glow: false,
   };
   out.push(ball);
 

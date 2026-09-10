@@ -2,8 +2,9 @@ import type { Body, PrimitiveRenderer } from '@aperi21/schema';
 import { applyBaseMeta, finalizeBaseMeta, primitiveColor, setAlpha } from '../common';
 
 /**
- * Body 렌더러. Phase 2 MVP 는 circle / point / rect / rod 만 지원.
- * emphasis === 'strong' 은 radial glow 추가.
+ * Body 렌더러. circle / point / rect / rod / custom.
+ *
+ * circle 의 둘레 번짐은 `glow` 가 정한다. 생략하면 `emphasis: 'strong'` 일 때 켜진다.
  */
 export const renderBody: PrimitiveRenderer = (rc, p0) => {
   const p = p0 as Body;
@@ -19,6 +20,18 @@ export const renderBody: PrimitiveRenderer = (rc, p0) => {
     c.beginPath();
     c.arc(sx, sy, 3, 0, Math.PI * 2);
     c.fill();
+  } else if (p.shape === 'custom') {
+    // 외형은 pos 기준 월드 단위, y 위. 화면으로는 배율을 곱하고 y 를 뒤집는다.
+    // Path2D 는 매 프레임 새로 만든다 — 모듈에 캐시하면 인스턴스끼리 섞인다 (C5).
+    if (p.customPath) {
+      c.save();
+      c.translate(sx, sy);
+      if (p.orientation) c.rotate(-p.orientation);
+      c.scale(rc.scale, -rc.scale);
+      c.fillStyle = color;
+      c.fill(new Path2D(p.customPath));
+      c.restore();
+    }
   } else if (p.shape === 'rect' || p.shape === 'rod') {
     const w =
       Array.isArray(p.size) ? p.size[0]! * rc.scale : radius * 2;
@@ -35,7 +48,7 @@ export const renderBody: PrimitiveRenderer = (rc, p0) => {
     c.restore();
   } else {
     // circle / disc / default
-    if (((p as Body).style?.emphasis ?? 'strong') === 'strong') {
+    if (p.glow ?? (p.style?.emphasis ?? 'strong') === 'strong') {
       const glow = c.createRadialGradient(sx, sy, radius * 0.3, sx, sy, radius * 3);
       glow.addColorStop(0, color);
       glow.addColorStop(1, 'transparent');

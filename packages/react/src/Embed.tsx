@@ -183,12 +183,15 @@ export function Embed({ bundle, stageId, initialView, initialEnvironments, inspe
         />
         <div style={rightColumn}>
           <InfoPanel theme={theme} i18n={i18n} derived={derived} />
-          <StageOverlay
-            theme={theme}
-            i18n={i18n}
-            stage={runtime.stage}
-            environments={runtime.environments}
-          />
+          {/* 스테이지·중력 배지도 크롬이다. 중력이 주장의 일부인 그림만 켠다 (S-piece). */}
+          {bundle.schema.chrome?.stageBadge && (
+            <StageOverlay
+              theme={theme}
+              i18n={i18n}
+              stage={runtime.stage}
+              environments={runtime.environments}
+            />
+          )}
         </div>
         {showEnergy && <EnergyHUD theme={theme} i18n={i18n} derived={derived} />}
         <ParamPanel

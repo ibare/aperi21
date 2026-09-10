@@ -23,7 +23,7 @@ import type {
 } from '@aperi21/schema';
 
 import { BackgroundParticleSystem } from '../particles';
-import { preprocessScene } from '../scene';
+import { orderForDrawing, preprocessScene } from '../scene';
 import { Camera, type Viewport } from '../camera';
 import { Host, createHost } from '../host';
 import { createTimeEngine, evaluateTimeline, withCaption } from '../time';
@@ -383,8 +383,8 @@ export function runBundle<T extends BundleState = BundleState>(
       timeline,
     );
     const { refs: sceneRefs, orderedScene } = preprocessScene(sceneGraph);
-    const sortedScene = [...orderedScene].sort(
-      (a, b) => host.rendererRegistry.getZ(a.type) - host.rendererRegistry.getZ(b.type),
+    const sortedScene = orderForDrawing(orderedScene, b.schema.drawOrder, (t) =>
+      host.rendererRegistry.getZ(t),
     );
 
     const rc: RenderContext = {

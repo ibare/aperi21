@@ -3,7 +3,7 @@ name: S-render
 description: renderer/primitives · plugin 렌더러 · theme 계약 · 캔버스 치수. 프리미티브 어휘의 확장과 sim 자유 렌더 경로.
 type: specific
 version: 1
-last_verified: 2026-09-09
+last_verified: 2026-09-10
 ---
 
 # S-render. 렌더러 규율
@@ -26,6 +26,12 @@ last_verified: 2026-09-09
 - 매질(`region`)은 물체 **위**에 반투명으로 덮인다 — 잠긴 것이 비쳐 보여야 "잠겼다" 로 읽힌다
 - 속도장(`vortexField`)은 그것을 참조하는 실(`filament`)보다 **먼저** 돈다
 - 값(`readout`)은 주석 위에 온다 — 가려지면 읽을 수 없다
+
+**조각이 순서를 고를 수 있다.** `BundleSchema.drawOrder: 'scene'` 이면 층 대신 scene 에
+쓴 순서대로 그린다(먼저 쓴 것이 아래). "말뚝을 띠 위에 긋는다" 처럼 겹침이 판정
+장치인 그림이 고른다. 그때 위 세 관계를 지키는 책임은 저작자에게 넘어가고 `zHints`
+도 무시된다. 엔진이 보장하는 것은 둘뿐이다 — 참조 의존(위상 정렬)과 캡션 슬롯이
+맨 위라는 것. 두 러너는 `orderForDrawing` 하나로 정렬한다.
 
 plugin 이 `primitiveTypes` 로 더 확장한다 — optics `['ray','opticalElement']`,
 circuit `['circuitElement','wire','terminal']`.
@@ -59,11 +65,15 @@ circuit `['circuitElement','wire','terminal']`.
   자리를 미리 잡고 넘치면 간격을 줄여 담는다. 마운트 시점에 한 번 정하는 것은 무방하다.
 - plugin 이 primitive 를 추가하면 `primitiveTypes` 선언과 `renderers` 구현을 **같은
   커밋에서** 맞춘다 (C4).
+- **선언에 둔 필드는 렌더러가 구현한다.** 선언만 있고 구현이 없는 필드는 저작자에게
+  거짓말을 한다 — 쓴 대로 그려지지 않는데 예외도 없다. `trajectory.lineStyle` · `closed`
+  와 `body` 의 `custom` 이 그랬다. 구현하지 않을 필드는 선언에서 지운다.
 
 ## MUST NOT
 
 - 렌더러가 다른 렌더러를 import 하지 않는다. 조합은 `SceneGraph` 선언의 일이다.
-- **쓰임이 없는 프리미티브를 미리 만들지 않는다** (원칙 4). 두 번째 사례가 나온 뒤에 만든다.
+- **쓰임이 없는 프리미티브를 미리 만들지 않는다** (원칙 4). 금지되는 것은 쓰임 없이
+  미리 만드는 일이다 — 정찰이 실제로 필요로 한 것은 사례가 하나여도 만든다.
 - 렌더러가 화면 문자열을 리터럴로 그리지 않는다 (C1).
 
 ## 자유 렌더 계층 — 정찰이지 목적지가 아니다

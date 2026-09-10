@@ -1,4 +1,4 @@
-import type { PrimitiveRenderer, Readout } from '@aperi21/schema';
+import type { PrimitiveRenderer, Readout, RenderContext } from '@aperi21/schema';
 import { applyBaseMeta, finalizeBaseMeta, primitiveColor } from '../common';
 import { LINE_HEIGHT, drawChip } from '../kit/draw';
 import { fitFontSize, resolveText } from '../kit/text';
@@ -7,12 +7,30 @@ import { fitFontSize, resolveText } from '../kit/text';
 const SCREEN_MARGIN = 24;
 const DEFAULT_FONT_SIZE = 11;
 const MIN_FONT_SIZE = 8;
+/** `weight: 'bold'` 의 실제 굵기. 700 은 작은 글자에서 뭉친다. */
+const BOLD_WEIGHT = 600;
+
+/** 선언의 글꼴 · 기울임 · 굵기를 캔버스 font 문자열로. */
+function fontOf(rc: RenderContext, p: Readout, fallback: 'text' | 'mono', size: number): string {
+  const family = (p.font ?? fallback) === 'mono' ? rc.theme.fontFamilyMono : rc.theme.fontFamily;
+  const style = p.italic ? 'italic ' : '';
+  const weight = p.weight === 'bold' ? `${BOLD_WEIGHT} ` : '';
+  return `${style}${weight}${size}px ${family}`;
+}
+
+/** 여러 줄 중 가장 긴 줄. 글자 크기는 이 줄에 맞춘다. */
+function longestLine(rc: RenderContext, lines: readonly string[], size: number): string {
+  return lines.reduce(
+    (a, b) => (rc.measure.textWidth(b, size) > rc.measure.textWidth(a, size) ? b : a),
+    '',
+  );
+}
 
 /**
  * 값 하나를 읽히게 두는 것.
  *
- * 월드에 붙는 것은 칩을 깔아 그림 위에서도 읽히게 하고, 화면에 고정된 것은
- * 넘칠 때 **자리를 넓히는 대신 글자를 줄인다** — 임베드 높이는 마운트 뒤
+ * 월드에 붙는 것은 칩을 깔아 그림 위에서도 읽히게 하고, 칩 없는 글과 화면에 고정된
+ * 것은 넘칠 때 **자리를 넓히는 대신 글자를 줄인다** — 임베드 높이는 마운트 뒤
  * 바뀌지 않으므로 줄바꿈으로 밀어낼 수 없다 (원칙 6).
  *
  * 문안에 줄바꿈(`\n`)이 있으면 여러 줄로 쌓는다. 글자 크기는 **가장 긴 줄**에 맞추고,
@@ -35,12 +53,21 @@ export const renderReadout: PrimitiveRenderer = (rc, p0) => {
     const x = wx + dx;
     const y = wy + dy;
     if (p.chip ?? true) {
-      drawChip(rc, x, y, text, fontSize, color);
+      drawChip(rc, x, y, text, fontSize, color, fontOf(rc, p, 'mono', fontSize));
     } else {
-      const lineH = fontSize * LINE_HEIGHT;
-      c.font = `${fontSize}px ${rc.theme.fontFamilyMono}`;
+      const align = p.align ?? 'center';
+      // 정렬에 따라 뷰포트 안에 남은 폭. 원 옆 캡션처럼 긴 문장이 캔버스 밖으로 새지 않게.
+      const room =
+        align === 'left'
+          ? rc.viewport.width - SCREEN_MARGIN - x
+          : align === 'right'
+            ? x - SCREEN_MARGIN
+            : 2 * Math.min(x - SCREEN_MARGIN, rc.viewport.width - SCREEN_MARGIN - x);
+      const size = fitFontSize(rc, longestLine(rc, lines, fontSize), Math.max(1, room), fontSize, MIN_FONT_SIZE);
+      const lineH = size * LINE_HEIGHT;
+      c.font = fontOf(rc, p, 'mono', size);
       c.fillStyle = color;
-      c.textAlign = p.align ?? 'center';
+      c.textAlign = align;
       c.textBaseline = 'middle';
       // 가운데 정렬 — 여러 줄이면 앵커를 중심으로 위아래로 벌어진다.
       const top = y - (lineH * (lines.length - 1)) / 2;
@@ -61,16 +88,11 @@ export const renderReadout: PrimitiveRenderer = (rc, p0) => {
       : SCREEN_MARGIN + ox;
   const y = bottom ? rc.viewport.height - SCREEN_MARGIN + oy : SCREEN_MARGIN + oy;
 
-  // 가장 긴 줄로 맞춘다.
   const available = Math.max(1, rc.viewport.width - SCREEN_MARGIN * 2 - Math.abs(ox));
-  const longest = lines.reduce(
-    (a, b) => (rc.measure.textWidth(b, fontSize) > rc.measure.textWidth(a, fontSize) ? b : a),
-    '',
-  );
-  const size = fitFontSize(rc, longest, available, fontSize, MIN_FONT_SIZE);
+  const size = fitFontSize(rc, longestLine(rc, lines, fontSize), available, fontSize, MIN_FONT_SIZE);
   const lineH = size * LINE_HEIGHT;
 
-  c.font = `${size}px ${rc.theme.fontFamily}`;
+  c.font = fontOf(rc, p, 'text', size);
   c.fillStyle = color;
   c.textAlign = p.align ?? (center ? 'center' : right ? 'right' : 'left');
   c.textBaseline = bottom ? 'bottom' : 'top';

@@ -1,4 +1,4 @@
-import type { Primitive, SceneGraph, SceneGraphRefs } from '@aperi21/schema';
+import type { BundleSchema, Primitive, SceneGraph, SceneGraphRefs } from '@aperi21/schema';
 import { SceneGraphRefsImpl } from './refs';
 
 export interface PreprocessedScene {
@@ -53,6 +53,23 @@ function topoSort(scene: readonly Primitive[]): Primitive[] {
   }
 
   return order.map((i) => scene[i]!);
+}
+
+/**
+ * 그리는 순서. 기본(`layer`)은 어휘별 z 층, `scene` 은 scene 에 쓴 순서 그대로
+ * (먼저 쓴 것이 아래). 두 러너(`runBundle` · react `Canvas`)가 이것 하나를 부른다.
+ *
+ * **`preprocessScene` 의 `orderedScene` 을 받는다.** 원래 scene 을 받으면 참조
+ * 의존(fieldLine → vectorField)이 풀리기 전 순서로 그린다. 정렬은 안정 정렬이라
+ * 같은 층 안에서는 위상 정렬 순서가 남는다.
+ */
+export function orderForDrawing(
+  ordered: readonly Primitive[],
+  drawOrder: BundleSchema['drawOrder'],
+  getZ: (type: string) => number,
+): Primitive[] {
+  if (drawOrder === 'scene') return [...ordered];
+  return [...ordered].sort((a, b) => getZ(a.type) - getZ(b.type));
 }
 
 export function preprocessScene(scene: SceneGraph): PreprocessedScene {

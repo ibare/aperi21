@@ -20,6 +20,8 @@ export const LINE_HEIGHT = 1.4;
 /**
  * 배경을 깐 값 칩. 그림 위에서도 읽힌다. `text` 에 줄바꿈이 있으면 여러 줄로 쌓고
  * 칩은 가장 긴 줄에 맞춘다. 가운데(centerX, centerY)를 기준으로 위아래로 벌어진다.
+ *
+ * `font` 는 캔버스 font 문자열 전체다. 생략하면 그 크기의 모노 글꼴 — 값 칩의 기본.
  */
 export function drawChip(
   rc: RenderContext,
@@ -28,6 +30,7 @@ export function drawChip(
   text: string,
   fontSize: number,
   color: string,
+  font: string = `${fontSize}px ${rc.theme.fontFamilyMono}`,
 ): { width: number; height: number } {
   const c = rc.ctx;
   const lines = text.split('\n');
@@ -46,7 +49,7 @@ export function drawChip(
   c.lineWidth = rc.theme.strokeWidth.regular;
   c.strokeRect(x, y, width, height);
 
-  c.font = `${fontSize}px ${rc.theme.fontFamilyMono}`;
+  c.font = font;
   c.fillStyle = color;
   c.textAlign = 'center';
   c.textBaseline = 'middle';

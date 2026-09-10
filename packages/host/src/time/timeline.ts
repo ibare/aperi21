@@ -100,7 +100,7 @@ export function evaluateTimeline(def: TimelineDef, elapsed: number): TimelineFra
 export const CAPTION_ID = 'caption';
 
 /** 선언이 색을 말하지 않을 때의 캡션 — 본문 먹색. */
-const CAPTION_STYLE: NonNullable<Readout['style']> = { colorRole: 'muted', emphasis: 'strong' };
+const CAPTION_STYLE: NonNullable<Readout['style']> = { colorRole: 'ink', emphasis: 'strong' };
 
 /**
  * 캡션 슬롯의 readout 선언. 슬롯이 없거나 말할 문안이 없으면 `null`.
@@ -125,6 +125,8 @@ export function captionPrimitive(schema: BundleSchema, frame?: TimelineFrame): R
     anchor: slot.anchor,
     text,
     chip: false,
+    // 캡션은 문장이다 — 월드 앵커에 붙어도 값 칩의 모노 글꼴을 쓰지 않는다.
+    font: 'text',
     align: slot.align,
     fontSize: slot.fontSize,
     style: slot.style ?? CAPTION_STYLE,

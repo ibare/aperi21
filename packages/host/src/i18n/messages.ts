@@ -31,5 +31,8 @@ export const FRAMEWORK_MESSAGES: Dictionary = {
     'ui.infoPanel.maxHeight': '최고점',
     'ui.infoPanel.range': '비거리',
     'ui.infoPanel.flightTime': '체공',
+
+    'ui.topBar.stage': '스테이지',
+    'ui.topBar.env': '환경',
   },
 };

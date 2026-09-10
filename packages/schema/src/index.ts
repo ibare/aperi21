@@ -23,7 +23,12 @@ export type ColorRole =
   | 'accent'     // 강조 (중요 벡터, 결과값)
   | 'muted'      // 배경 정보
   | 'positive'   // 에너지 증가, 인력
-  | 'negative';  // 에너지 손실, 척력
+  | 'negative'   // 에너지 손실, 척력
+  /**
+   * 먹 — 곡선·글자·무채색 주 대상처럼 **짙게** 그려야 하는 것. 테마의 전경색이다.
+   * `muted` 는 배경 정보라 가장 짙게(strong) 써도 회색이다.
+   */
+  | 'ink';
 
 /** 강조 상태. 글의 포커스에 맞춰 번들이 설정. */
 export type HighlightState = 'normal' | 'focused' | 'dimmed' | 'warning';
@@ -67,7 +72,17 @@ export interface Body extends BaseMeta {
   size?: Scalar | Vec2;          // circle/disc: 반지름, rect: [w, h]
   orientation?: number;           // 라디안
   mass?: Scalar;                  // 정보용 (시각에만 반영될 수 있음)
-  customPath?: string;            // shape='custom'일 때 SVG path
+  /**
+   * `shape: 'custom'` 의 외형. SVG path 문법이고 **좌표는 `pos` 기준 월드 단위, y 는 위**다.
+   * 채움만 하고 윤곽선은 긋지 않는다. `orientation` 만큼 돈다.
+   */
+  customPath?: string;
+  /**
+   * 둘레의 번짐. **`circle`(과 `disc`) 에만 있다** — 다른 모양에서는 무시된다.
+   * 기본은 `emphasis: 'strong'` 일 때 켜진다. 짙게 칠하되 후광은 없어야 하는 물체
+   * (먹색 공)는 `false` 로 끈다.
+   */
+  glow?: boolean;
 }
 
 export interface Trajectory extends BaseMeta {
@@ -91,6 +106,11 @@ export interface Vector extends BaseMeta {
   delta: Vec2;                    // 끝점 = from + delta
   showMagnitude?: boolean;
   headSize?: Scalar;
+  /**
+   * 선 굵기(화면 px). 기본은 테마의 굵은 선. 굵기는 물리량이 아니라 위계라 배율을
+   * 따라가지 않는다 — 살아 있는 화살표와 지난 잔상을 굵기로 가른다.
+   */
+  width?: number;
 }
 
 export interface Constraint extends BaseMeta {
@@ -303,6 +323,14 @@ export interface Region extends BaseMeta {
    * 인스턴스 전체 알파(`opacity`)와는 다르다 — 이것은 면만, 그것은 전체를 흐린다.
    */
   fillOpacity?: number;
+  /**
+   * 옅은 색을 **불투명하게** 깐다 — 배경색 위에 `fillOpacity` 만큼 올린 색으로 덮는다.
+   *
+   * 반투명(기본)은 같은 색 도형 둘이 겹치면 겹친 곳이 짙어져 **다른 것처럼 보인다.**
+   * "같은 대상 = 같은 색" 을 지키려면 겹쳐도 같은 색이어야 한다. 대신 아래 것은 가린다 —
+   * 잠긴 것이 비쳐 보여야 하는 매질에는 쓰지 않는다.
+   */
+  opaque?: boolean;
   /** 굵게 그릴 변. `points` 의 인덱스 쌍 목록. 생략하면 경계선 없음. */
   outline?: readonly (readonly [number, number])[];
 }
@@ -371,6 +399,15 @@ export interface Readout extends BaseMeta {
   fontSize?: number;
   /** 화면 고정일 때 정렬. 기본은 모서리에 맞춘다. */
   align?: 'left' | 'center' | 'right';
+  /**
+   * 글꼴. `mono` 는 숫자·값, `text` 는 문장. 기본은 월드 앵커 `mono`(값 칩), 화면 고정
+   * `text`. 월드에 붙는 문장(원 옆 캡션)은 `text` 로 준다.
+   */
+  font?: 'text' | 'mono';
+  /** 기울임. 물리 기호(`Δv`)처럼 수식 글자로 읽혀야 할 때. */
+  italic?: boolean;
+  /** 굵기. 기본 `normal`. */
+  weight?: 'normal' | 'bold';
 }
 
 /**
@@ -805,7 +842,19 @@ export interface BundleSchema {
     grid?: boolean;
     /** 카메라 팬·줌·리셋 버튼. 기본 false. */
     cameraControls?: boolean;
+    /** 스테이지 이름과 중력(`g`) 배지. 기본 false — 중력이 주장의 일부인 그림만 켠다. */
+    stageBadge?: boolean;
   };
+
+  /**
+   * 그리는 순서. 기본 `layer` — 어휘별 층(`DEFAULT_Z_LAYERS`)을 따른다.
+   *
+   * `scene` 이면 **scene 에 쓴 순서대로** 그린다(먼저 쓴 것이 아래). "이 선은 이 면 위"
+   * 처럼 겹침이 판정 장치인 그림이 고른다. 그때 층이 지켜 주던 관계(매질은 물체 위,
+   * 값은 주석 위)를 지키는 책임은 저작자에게 넘어가고, `zHints` 도 무시된다. 캡션
+   * 슬롯만 엔진이 맨 위에 둔다.
+   */
+  drawOrder?: 'layer' | 'scene';
 
   /**
    * 카메라 프레이밍. 생략하면 월드 원점이 뷰포트 중앙에 온다.

@@ -88,7 +88,8 @@ export const schema: BundleSchema = {
    * 이 그림은 사거리를 재는 것이 주장의 일부다 — 각도를 바꾸면 얼마나 멀리
    * 가는가. 그래서 거리 격자를 **켠다.** 기본값이 아니라 이 그림의 선택이다.
    */
-  chrome: { grid: true },
+  // 지구·달을 바꿔 보는 그림이라 스테이지와 중력 배지도 켠다.
+  chrome: { grid: true, stageBadge: true },
 
   /**
    * 지면에서 위로 날아가는 그림이라 세로 쓰임이 위쪽으로 치우쳐 있다.

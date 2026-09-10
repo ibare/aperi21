@@ -13,6 +13,11 @@ export interface TopBarProps {
 }
 
 export function TopBar({ schema, theme, i18n, stageId, envIds, onSelectStage, onToggleEnv }: TopBarProps) {
+  // 고를 것이 없으면 줄째로 없다. 스테이지 하나만 뜬 탭은 조작기가 아니라 크롬이다
+  // (S-piece). **선언만 보고** 정한다 — 스테이지에 따라 환경 목록이 달라지므로
+  // 런타임 값으로 정하면 스테이지를 바꿀 때 높이가 바뀐다 (원칙 6).
+  if (schema.stages.length <= 1 && schema.environments.length === 0) return null;
+
   const wrap: CSSProperties = {
     display: 'flex',
     flexWrap: 'wrap',
@@ -39,8 +44,9 @@ export function TopBar({ schema, theme, i18n, stageId, envIds, onSelectStage, on
 
   return (
     <div style={wrap}>
+      {schema.stages.length > 1 && (
       <div style={group}>
-        <span style={label}>stage</span>
+        <span style={label}>{i18n.t('ui.topBar.stage', 'stage')}</span>
         {schema.stages.map((s) => (
           <Tab
             key={s.id}
@@ -52,9 +58,10 @@ export function TopBar({ schema, theme, i18n, stageId, envIds, onSelectStage, on
           </Tab>
         ))}
       </div>
+      )}
       {availableEnvs.length > 0 && (
         <div style={group}>
-          <span style={label}>env</span>
+          <span style={label}>{i18n.t('ui.topBar.env', 'env')}</span>
           {availableEnvs.map((e) => (
             <Tab
               key={e.id}

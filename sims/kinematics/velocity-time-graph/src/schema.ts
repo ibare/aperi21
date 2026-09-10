@@ -127,6 +127,10 @@ export const velocityTimeGraphSchema: BundleSchema = {
     ],
   },
 
+  // 원본이 그린 순서 그대로 겹친다 — 말뚝은 펼친 넓이 **위에** 긋는다. 띠가 말뚝
+  // 사이를 꼭 채우는지가 이 조각의 증거라, 선이 면 아래로 가면 판정 장치가 흐려진다.
+  drawOrder: 'scene',
+
   // 슬롯 하나, 고정. 지금 화면에서 매초 반복되는 일 하나만 말한다.
   caption: {
     anchor: { screen: 'bottom-left' },
