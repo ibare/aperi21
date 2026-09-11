@@ -1,4 +1,5 @@
 import type { BundleState, ControllerSpec } from '@aperi21/schema';
+import { placeBox } from './layout';
 import { readPath, writePath } from './path';
 import type {
   ControllerEventContext,
@@ -8,6 +9,13 @@ import type {
 } from './types';
 
 type ValueEditSpec = Extract<ControllerSpec, { type: 'value-edit' }>;
+
+/** 선언에 `size` 가 없을 때의 패널 크기. 코어는 기본값만 준다 (원칙 7 ③). */
+const DEFAULT_PANEL_W = 120;
+const DEFAULT_PANEL_H = 32;
+/** 대상 프리미티브 위로 띄우는 높이. */
+const PANEL_LIFT = 18;
+const PANEL_MARGIN = 8;
 
 /**
  * target 프리미티브의 scene 참조에 저장된 위치 근처에 작은 값 편집 패널을 표시.
@@ -31,16 +39,22 @@ export class ValueEditController implements ControllerImpl<ValueEditSpec> {
   }
 
   render(rc: ControllerRenderContext, spec: ValueEditSpec, state: BundleState): void {
-    const { ctx, theme, viewport, i18n } = rc;
+    const { ctx, theme, i18n } = rc;
     const raw = readPath<number>(state, spec.binds.value);
     const value = typeof raw === 'number' ? raw : 0;
-    const bounds = this.findTargetScreen(rc, spec, state);
-
-    const [sx, sy] = bounds;
-    const panelW = 120;
-    const panelH = 32;
-    const px = Math.max(8, Math.min(viewport.width - panelW - 8, sx - panelW / 2));
-    const py = Math.max(8, Math.min(viewport.height - panelH - 8, sy - panelH - 18));
+    // hitTest 와 같은 함수로 자리를 낸다.
+    const { x: px, y: py, w: panelW, h: panelH } = this.panelRect(
+      {
+        viewport: rc.viewport,
+        toWorld: rc.toWorld,
+        toScreen: rc.toScreen,
+        snapWorld: (w) => w,
+        scale: rc.scale,
+        slot: rc.slot,
+      },
+      spec,
+      state,
+    );
 
     ctx.save();
     ctx.fillStyle = theme.resolveColor('muted', 'subtle');
@@ -51,22 +65,29 @@ export class ValueEditController implements ControllerImpl<ValueEditSpec> {
     ctx.fill();
     ctx.stroke();
 
+    // 글자와 안쪽 여백은 선언한 크기를 따른다 — 고정하면 작은 패널을 선언했을 때
+    // 글자가 상자를 벗어난다.
+    const k = panelH / DEFAULT_PANEL_H;
+    const labelFont = Math.max(8, Math.round(10 * k));
+    const valueFont = Math.max(10, Math.round(14 * k));
+    const pad = Math.max(4, Math.round(8 * k));
+
     // 라벨
     ctx.textBaseline = 'middle';
     ctx.textAlign = 'left';
-    ctx.font = `10px ${theme.fontFamilyMono}`;
+    ctx.font = `${labelFont}px ${theme.fontFamilyMono}`;
     ctx.fillStyle = theme.muted;
     const label = spec.label ? i18n.resolve(spec.label) : spec.target;
-    ctx.fillText(label, px + 8, py + panelH / 2 - 8);
+    ctx.fillText(label, px + pad, py + panelH / 2 - labelFont * 0.8);
 
     // 값 + 단위
     ctx.textAlign = 'right';
-    ctx.font = `600 14px ${theme.fontFamilyMono}`;
+    ctx.font = `600 ${valueFont}px ${theme.fontFamilyMono}`;
     ctx.fillStyle = theme.foreground;
     const txt = `${Number.isFinite(value) ? value.toFixed(2) : '?'}${
       spec.unit ? ' ' + spec.unit : ''
     }`;
-    ctx.fillText(txt, px + panelW - 8, py + panelH / 2 + 4);
+    ctx.fillText(txt, px + panelW - pad, py + panelH / 2 + valueFont * 0.3);
 
     // 드래그 포인터 힌트
     if (this.dragging) {
@@ -113,8 +134,9 @@ export class ValueEditController implements ControllerImpl<ValueEditSpec> {
     const dx = input.px - this.dragStartX;
     const [lo, hi] = spec.range ?? [this.dragStartValue - 10, this.dragStartValue + 10];
     const span = Math.max(1e-6, hi - lo);
-    // 패널 폭(120px) 을 전체 range 에 맵핑 — 드래그 거리/120 만큼 이동.
-    const delta = (dx / 120) * span;
+    // 패널 폭을 전체 range 에 맵핑 — 폭이 선언으로 바뀌면 감도도 그것을 따른다.
+    const panelW = spec.size?.[0] ?? DEFAULT_PANEL_W;
+    const delta = (dx / panelW) * span;
     let next = this.dragStartValue + delta;
     if (spec.range) {
       next = Math.max(lo, Math.min(hi, next));
@@ -127,36 +149,30 @@ export class ValueEditController implements ControllerImpl<ValueEditSpec> {
     return null;
   }
 
+  /**
+   * 패널의 크기와 자리. **선언이 먼저다** (원칙 7 ③) — `size` 가 크기를, `at` 이
+   * 자리를 정하고, `at` 이 없을 때만 대상 프리미티브를 따라간다. 그것도 못 찾으면
+   * 기본 자리로 떨어진다.
+   *
+   * render · hitTest 가 같은 함수로 자리를 낸다 — 한쪽만 바꾸면 보이는 자리와
+   * 잡히는 자리가 어긋나는데 예외는 나지 않는다.
+   */
   private panelRect(
     ctx: ControllerEventContext,
     spec: ValueEditSpec,
     state: BundleState,
   ): { x: number; y: number; w: number; h: number } {
+    const [w, h] = spec.size ?? [DEFAULT_PANEL_W, DEFAULT_PANEL_H];
+    if (spec.at) {
+      return placeBox(spec.at, w, h, ctx.viewport, ctx.toScreen, PANEL_MARGIN);
+    }
     const [sx, sy] = this.findTargetScreenFromState(ctx, spec, state);
-    const panelW = 120;
-    const panelH = 32;
-    const x = Math.max(8, Math.min(ctx.viewport.width - panelW - 8, sx - panelW / 2));
-    const y = Math.max(8, Math.min(ctx.viewport.height - panelH - 8, sy - panelH - 18));
-    return { x, y, w: panelW, h: panelH };
-  }
-
-  private findTargetScreen(
-    rc: ControllerRenderContext,
-    spec: ValueEditSpec,
-    state: BundleState,
-  ): [number, number] {
-    return this.findTargetScreenFromState(
-      {
-        viewport: rc.viewport,
-        toWorld: rc.toWorld,
-        toScreen: rc.toScreen,
-        snapWorld: (w) => w,
-        scale: rc.scale,
-        slot: rc.slot,
-      },
-      spec,
-      state,
+    const x = Math.max(PANEL_MARGIN, Math.min(ctx.viewport.width - w - PANEL_MARGIN, sx - w / 2));
+    const y = Math.max(
+      PANEL_MARGIN,
+      Math.min(ctx.viewport.height - h - PANEL_MARGIN, sy - h - PANEL_LIFT),
     );
+    return { x, y, w, h };
   }
 
   private findTargetScreenFromState(

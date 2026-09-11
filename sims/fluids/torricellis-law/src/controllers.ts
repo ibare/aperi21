@@ -7,6 +7,4 @@ import type { ControllerSpec } from '@aperi21/schema';
  * 누르지 않아도 할 말을 마쳐야 한다 — 눌러야 하는 것이 되는 순간 문단 옆에
  * 놓이지 못한다.
  */
-export function controllers(): ControllerSpec[] {
-  return [];
-}
+export const controllers: readonly ControllerSpec[] = [];

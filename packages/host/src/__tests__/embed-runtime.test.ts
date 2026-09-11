@@ -48,7 +48,7 @@ function makeBundle(): Bundle<TestState> {
     scene: ({ state }): SceneGraph => [
       { type: 'body', id: 'b', pos: [state.t, 0], shape: 'circle', size: 1 },
     ] as unknown as SceneGraph,
-    controllers: (): ControllerSpec[] => [],
+    controllers: [] as readonly ControllerSpec[],
   };
 }
 
@@ -236,9 +236,9 @@ describe('임베드 인스턴스 독립', () => {
     });
     const bundle: Bundle<TestState> = {
       ...makeBundle(),
-      controllers: (): ControllerSpec[] => [
+      controllers: [
         { id: 't', type: 'slider', binds: { value: 't' }, range: [0, 1], label: { en: 'T' } },
-      ],
+      ] as readonly ControllerSpec[],
     };
     const a = document.createElement('div');
     const b = document.createElement('div');
@@ -283,10 +283,10 @@ describe('임베드 인스턴스 독립', () => {
     });
     const bundle: Bundle<TestState> = {
       ...makeBundle(),
-      controllers: (): ControllerSpec[] => [
+      controllers: [
         { id: 'a', type: 'slider', binds: { value: 'a' }, range: [0, 1], label: { en: 'A' } },
         { id: 'b', type: 'slider', binds: { value: 'b' }, range: [0, 1], label: { en: 'B' } },
-      ],
+      ] as readonly ControllerSpec[],
     };
     const mount = document.createElement('div');
     document.body.append(mount);

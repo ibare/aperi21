@@ -53,10 +53,10 @@ describe('선언 참조 정합', () => {
       const bundle = (await loadBundle(id))!;
       const { schema } = bundle;
       const values = Object.fromEntries(schema.parameters.map((p) => [p.id, p.default]));
-      const state = bundle.initialState({ values, stage: schema.stages[0]!, environments: [] });
-      // 초기 상태에서 돌려주는 선언만 본다. 상태에 따라 조건부로 돌려주는 선언은
-      // 러너(ControllerSet.resolve)가 매번 검사한다.
-      const ids = bundle.controllers({ state }).map((c) => c.id);
+      bundle.initialState({ values, stage: schema.stages[0]!, environments: [] });
+      // 선언은 데이터라 상태와 무관하게 전부 보인다 (원칙 7 ④). 지금 화면에
+      // 뜨는지는 `visibleWhen` 이 정하고 러너가 매 프레임 검사한다.
+      const ids = bundle.controllers.map((c) => c.id);
       expect(new Set(ids).size, id).toBe(ids.length);
     }
   });

@@ -758,6 +758,16 @@ export interface ControllerInstance {
    * 에디터가 인스턴스를 가리키는 이름이기도 하다 — 바뀌지 않게 둔다.
    */
   id: string;
+
+  /**
+   * 이 인스턴스가 보이는 조건 — state 의 **boolean 한 곳**을 가리키는 경로.
+   * 생략하면 언제나 보인다.
+   *
+   * 값도 식도 아닌 **이름**이다. 부정(`!x`) · 비교(`a > 2300`) · 논리 결합을
+   * 넣지 않는다 — 그 순간 선언이 로직을 담게 된다 (원칙 2). 조건을 계산하는
+   * 것은 조각의 physics 이고, 선언은 그 결과가 놓인 자리만 가리킨다.
+   */
+  visibleWhen?: string;
 }
 
 export type ControllerKind =
@@ -767,6 +777,12 @@ export type ControllerKind =
       powerRange?: [number, number];
       /** 자리. 생략하면 오른쪽 아래에서 선언 순서대로 왼쪽으로 쌓인다. */
       at?: Anchor;
+      /**
+       * 튜브 크기 `[너비, 높이]`(화면 px). 생략하면 기본값.
+       * 높이는 뷰포트에 맞춰 줄어들 수 있다 — 글 한복판의 임베드는 높이가
+       * 바뀌지 않아야 하므로 넘치면 담는 쪽을 택한다 (원칙 6).
+       */
+      size?: Vec2;
       /** 이름표. `{power}` 자리에 당긴 세기(%)가 들어간다. 생략하면 프레임워크 문구. */
       label?: LocalizedText;
     }
@@ -777,6 +793,11 @@ export type ControllerKind =
       tickAt?: number[];
       /** 자리. 생략하면 왼쪽 아래에서 선언 순서대로 오른쪽으로 쌓인다. */
       at?: Anchor;
+      /**
+       * 반지름(화면 px). 생략하면 기본값. 반원 다이얼의 상자는 `2r × r` 이라
+       * 자유도가 하나뿐이므로 `size` 가 아니라 반지름이다.
+       */
+      radius?: number;
       /** 이름표. 생략하면 프레임워크 문구. */
       label?: LocalizedText;
     }
@@ -788,6 +809,8 @@ export type ControllerKind =
       unit?: string;
       /** 자리. 생략하면 오른쪽 위에서 선언 순서대로 아래로 쌓인다. */
       at?: Anchor;
+      /** 크기 `[너비, 높이]`(화면 px). 생략하면 기본값. */
+      size?: Vec2;
     }
   | {
       /**
@@ -810,6 +833,8 @@ export type ControllerKind =
       placeableTypes: string[];
       /** 팔레트 자리. 생략하면 왼쪽 위에서 선언 순서대로 아래로 쌓인다. */
       at?: Anchor;
+      /** 견본 한 칸의 크기 `[너비, 높이]`(화면 px). 생략하면 기본값. */
+      size?: Vec2;
       /** 팔레트 이름표. 생략하면 프레임워크 문구. */
       label?: LocalizedText;
     }
@@ -823,6 +848,13 @@ export type ControllerKind =
       binds: { value: string };
       /** 편집 대상 프리미티브 id. 해당 프리미티브의 screen bbox 위에 UI 가 떠 있음. */
       target: string;
+      /**
+       * 자리. 생략하면 `target` 프리미티브를 따라간다 — 그것도 못 찾으면 기본 자리.
+       * 코어가 자리를 고정하지 않는다 (원칙 7 ③).
+       */
+      at?: Anchor;
+      /** 패널 크기 `[너비, 높이]`(화면 px). 생략하면 기본값. */
+      size?: Vec2;
       /** 유효 범위. 정의되지 않으면 입력 검증을 하지 않음. */
       range?: [number, number];
       unit?: string;
@@ -1081,8 +1113,15 @@ export interface Bundle<TState extends BundleState = BundleState> {
     timeline?: TimelineFrame;
   }): SceneGraph;
 
-  /** 조작 UI 선언. 상태 종속적일 수 있음. */
-  controllers(params?: { state: TState }): ControllerSpec[];
+  /**
+   * 조작 UI 선언 — **데이터다** (원칙 7 ④). 에디터가 인스턴스를 추가 · 이동 ·
+   * 삭제하려면 목록이 정적으로 읽혀야 하므로 함수가 아니다.
+   *
+   * 상태에 따라 달라지는 것은 선언이 **상태 경로를 가리켜** 표현한다
+   * (`visibleWhen`). 조건 계산은 조각의 physics 에 그대로 남는다 — 선언은
+   * "어디를 보라" 만 말하고 식을 담지 않는다 (원칙 2).
+   */
+  readonly controllers: readonly ControllerSpec[];
 
   /** 종료 판정 (linear·discrete 타임 모델에서). */
   isTerminated?(state: TState): boolean;

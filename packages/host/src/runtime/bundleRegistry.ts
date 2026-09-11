@@ -129,6 +129,8 @@ function looksLikeBundle(v: Record<string, unknown> | null | undefined): boolean
     typeof v.initialState === 'function' &&
     typeof v.step === 'function' &&
     typeof v.scene === 'function' &&
-    typeof v.controllers === 'function'
+    // 조작기 선언은 데이터다 (원칙 7 ④). 함수를 받던 시절의 검사를 남겨 두면
+    // 배열을 든 조각이 전부 "등록 안 됨" 으로 조용히 떨어진다.
+    Array.isArray(v.controllers)
   );
 }

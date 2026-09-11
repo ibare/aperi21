@@ -144,23 +144,24 @@ export class ControllerSet {
   constructor(private readonly lookup: (type: ControllerSpec['type']) => ControllerFactory | undefined) {}
 
   /**
-   * 선언 목록을 인스턴스로. 러너가 `controllers()` 를 부를 때마다 거친다.
+   * 보이는 선언과 그 `slot` 을 인스턴스로. 러너가 매 프레임 거친다.
+   *
+   * **slot 은 받아 쓴다** — 여기서 다시 세지 않는다. `visibleWhen` 으로 걸러진
+   * 목록을 다시 세면 숨었다 나타난 조작기가 앞의 빈자리로 미끄러지므로, 세는
+   * 일은 거르기 전에 `visibleControllers` 가 한다.
    *
    * - `id` 가 겹치면 던진다. 겹친 둘이 인스턴스 하나를 조용히 나눠 쓰면, 고치려던
    *   공유가 id 단위로 되살아난다.
    * - 등록되지 않은 type 은 건너뛴다(늦게 로드되는 조각).
    */
-  resolve(specs: readonly ControllerSpec[]): ResolvedController[] {
+  resolve(entries: readonly { spec: ControllerSpec; slot: number }[]): ResolvedController[] {
     const seen = new Set<string>();
-    const slots = new Map<ControllerSpec['type'], number>();
     const out: ResolvedController[] = [];
-    for (const spec of specs) {
+    for (const { spec, slot } of entries) {
       if (seen.has(spec.id)) {
         throw new Error(`[aperi21] controller id '${spec.id}' is declared twice in one piece`);
       }
       seen.add(spec.id);
-      const slot = slots.get(spec.type) ?? 0;
-      slots.set(spec.type, slot + 1);
       const impl = this.instance(spec);
       if (impl) out.push({ spec, impl, slot });
     }

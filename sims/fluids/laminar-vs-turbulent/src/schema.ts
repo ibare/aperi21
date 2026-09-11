@@ -57,6 +57,16 @@ export const INJECT_X = 0.08;
  */
 export const RE_TRACK = { y: 0.05, x0: 0.04, length: 0.92 } as const;
 export const RE_RANGE: readonly [number, number] = [700, 5200];
+/**
+ * 눈금 양 끝의 유속(m/s) — `Re · ν / D` 를 미리 푼 값이다.
+ *
+ * 조작기 선언이 이 자리를 그대로 읽는다. 선언이 물리 함수를 불러 범위를 만들면
+ * 저작자가 눈금을 편집할 자리가 코드로 내려간다 (원칙 2 · 7 ④).
+ */
+export const SPEED_RANGE: readonly [number, number] = [
+  (RE_RANGE[0] * NU) / PIPE_DIAMETER,
+  (RE_RANGE[1] * NU) / PIPE_DIAMETER,
+];
 /** 눈금에 숫자를 붙이는 값. 끌면서 커지는지 작아지는지 읽히게. */
 export const RE_LABELS: readonly number[] = [1000, 2000, RE_CRITICAL, 3000, 4000, 5000];
 

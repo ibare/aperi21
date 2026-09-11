@@ -10,15 +10,13 @@ import type { ControllerSpec } from '@aperi21/schema';
 import { TARGET_LEVEL_RANGE, text } from './schema';
 
 /** Bundle.controllers */
-export function controllers(): ControllerSpec[] {
-  return [
-    {
-      id: 'water-level',
-      type: 'slider',
-      binds: { value: 'targetHeight' },
-      range: [TARGET_LEVEL_RANGE[0], TARGET_LEVEL_RANGE[1]],
-      label: text('label.targetHeight'),
-      unit: 'm',
-    },
-  ];
-}
+export const controllers: readonly ControllerSpec[] = [
+  {
+    id: 'water-level',
+    type: 'slider',
+    binds: { value: 'targetHeight' },
+    range: [TARGET_LEVEL_RANGE[0], TARGET_LEVEL_RANGE[1]],
+    label: text('label.targetHeight'),
+    unit: 'm',
+  },
+];

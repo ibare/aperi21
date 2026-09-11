@@ -3,7 +3,6 @@ import type { CSSProperties } from 'react';
 import type {
   Bundle,
   BundleState,
-  ControllerSpec,
   EnvironmentDef,
   MeasureService,
   Primitive,
@@ -26,6 +25,7 @@ import {
   type TimeEngine,
   type Viewport,
   type PointerInput,
+  visibleControllers,
 } from '@aperi21/host';
 import { resolveBackgroundKind } from './backgroundKind';
 
@@ -224,10 +224,13 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
     }
 
     function findControllerAt(input: PointerInput, viewport: Viewport): ResolvedController | null {
-      const specs = bundleRef.current.controllers({ state: stateRef.current }) as ControllerSpec[];
+      const visible = visibleControllers(
+        bundleRef.current.controllers,
+        stateRef.current as BundleState,
+      );
       // 다른 손가락이 잡고 있는 인스턴스는 건너뛴다 — 두 손가락이 한 조작기를 다투지 않게.
       const held = new Set([...sessions.values()].map((s) => s.spec.id));
-      for (const r of controllers.resolve(specs)) {
+      for (const r of controllers.resolve(visible)) {
         if (held.has(r.spec.id)) continue;
         if (r.impl.hitTest(input, makeEventCtx(viewport, r.slot), r.spec, stateRef.current as BundleState)) {
           return r;
@@ -400,11 +403,13 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
 
       // 이 프레임에 실제로 그려질 컨트롤러. 아래 렌더 루프와 프레이밍이 같은
       // 목록을 봐야 여백과 그림이 어긋나지 않는다.
-      const controllerSpecs = bundle.controllers({ state: stateRef.current }) as ControllerSpec[];
+      const visibleCtrls = visibleControllers(bundle.controllers, stateRef.current as BundleState);
       // 여백은 기본 자리에 놓인 조작기만 센다 — 자리(`at`)를 선언한 것은 저작자가
       // 그림과 겹치지 않게 놓은 것이다.
       const controllerTypes = new Set(
-        controllerSpecs.filter((c) => !('at' in c && c.at)).map((c) => c.type),
+        visibleCtrls
+          .filter(({ spec }) => !('at' in spec && spec.at))
+          .map(({ spec }) => spec.type),
       );
 
       // 카메라 자동 프레이밍 — bundle 이 제공한 bounds 로 **매 프레임 직접 스냅**.
@@ -489,7 +494,7 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       }
 
       // Controller 렌더 (스크린 오버레이) — 목록은 프레이밍과 같은 것을 쓴다.
-      for (const r of controllers.resolve(controllerSpecs)) {
+      for (const r of controllers.resolve(visibleCtrls)) {
         r.impl.render({ ...rc, viewport: vp, slot: r.slot }, r.spec, stateRef.current as BundleState);
       }
 

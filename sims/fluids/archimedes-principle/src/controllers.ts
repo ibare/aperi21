@@ -12,14 +12,12 @@
 import type { ControllerSpec } from '@aperi21/schema';
 import { text } from './schema';
 
-export function controllers(): ControllerSpec[] {
-  return [
-    {
-      id: 'submersion',
-      type: 'slider',
-      binds: { value: 'submersion' },
-      range: [0, 1],
-      label: text('control.submersion'),
-    },
-  ];
-}
+export const controllers: readonly ControllerSpec[] = [
+  {
+    id: 'submersion',
+    type: 'slider',
+    binds: { value: 'submersion' },
+    range: [0, 1],
+    label: text('control.submersion'),
+  },
+];

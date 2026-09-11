@@ -23,6 +23,12 @@ export interface PressureIsotropyState {
   /** 자동 회전이 지금까지 쓸고 지나간 각(도). 자취의 길이이기도 하다. */
   sweptDeg: number;
 
+  /**
+   * 자동 회전이 끝났는가. 다이얼 선언이 `visibleWhen` 으로 이 자리를 가리킨다 —
+   * 조건을 세는 것은 physics 이고, 선언은 어디를 보라고만 말한다 (원칙 2 · 7 ④).
+   */
+  sweepComplete: boolean;
+
   setup: PlateSetup;
 }
 
@@ -51,6 +57,7 @@ export function initialState(params: {
   return {
     plate: { thetaDeg: 0 },
     sweptDeg: 0,
+    sweepComplete: false,
     setup: readSetup(params.stage),
   };
 }

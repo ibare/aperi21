@@ -1,5 +1,6 @@
 export * from './types';
 export * from './path';
+export { visibleControllers } from './visibility';
 export { PinballLauncherController } from './pinball-launcher';
 export { AngleDialController } from './angle-dial';
 export { PlacementController } from './placement';

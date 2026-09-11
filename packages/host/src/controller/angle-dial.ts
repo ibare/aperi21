@@ -19,7 +19,8 @@ interface Layout {
 }
 
 const DIAL_MARGIN = 32;
-const DIAL_RADIUS = 72;
+/** 선언에 `radius` 가 없을 때의 반지름. 코어는 기본값만 준다 (원칙 7 ③). */
+const DEFAULT_DIAL_RADIUS = 72;
 /** 자리를 선언하지 않은 다이얼끼리의 가로 간격. */
 const DIAL_STACK_GAP = 24;
 /** 자리를 선언하지 않으면 왼쪽 아래에서 오른쪽으로 쌓인다. */
@@ -32,7 +33,8 @@ function computeLayout(
   toScreen: (w: Vec2) => Vec2,
   slot: number,
 ): Layout {
-  const r = DIAL_RADIUS;
+  const r = spec.radius ?? DEFAULT_DIAL_RADIUS;
+  // 쌓는 간격도 선언한 반지름을 따른다 — 기본값으로 세면 큰 다이얼끼리 겹친다.
   const at = spec.at ?? stackedAnchor(DEFAULT_AT, slot, [2 * r + DIAL_STACK_GAP, 0]);
   const box = placeBox(at, 2 * r, r, viewport, toScreen, DIAL_MARGIN);
   return { cx: box.x + r, cy: box.y + r, r };
@@ -123,25 +125,31 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
     ctx.lineTo(nx, ny);
     ctx.stroke();
 
+    // 글자와 중심점은 선언한 반지름을 따른다 — 기본 크기에 맞춰 고정하면 작은
+    // 다이얼을 선언했을 때 글자가 상자를 벗어난다.
+    const k = layout.r / DEFAULT_DIAL_RADIUS;
+    const valueFont = Math.max(10, Math.round(18 * k));
+    const labelFont = Math.max(8, Math.round(10 * k));
+
     // 중심 point
     ctx.fillStyle = theme.foreground;
     ctx.beginPath();
-    ctx.arc(layout.cx, layout.cy, 4, 0, Math.PI * 2);
+    ctx.arc(layout.cx, layout.cy, Math.max(2, 4 * k), 0, Math.PI * 2);
     ctx.fill();
 
     // 큰 각도 숫자
-    ctx.font = `600 18px ${theme.fontFamilyMono}`;
+    ctx.font = `600 ${valueFont}px ${theme.fontFamilyMono}`;
     ctx.fillStyle = theme.foreground;
     ctx.textAlign = 'center';
-    ctx.fillText(`${Math.round(angle)}°`, layout.cx, layout.cy + 24);
+    ctx.fillText(`${Math.round(angle)}°`, layout.cx, layout.cy + valueFont + 6);
 
     // 이름표 — 선언의 label, 없으면 프레임워크 문구
-    ctx.font = `10px ${theme.fontFamilyMono}`;
+    ctx.font = `${labelFont}px ${theme.fontFamilyMono}`;
     ctx.fillStyle = theme.muted;
     ctx.fillText(
       controllerText(rc.i18n, spec.label, 'ui.angleDial.label', 'ANGLE'),
       layout.cx,
-      layout.cy + 40,
+      layout.cy + valueFont + labelFont + 12,
     );
 
     ctx.restore();

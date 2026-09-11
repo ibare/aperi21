@@ -28,7 +28,7 @@ function bundleOf(schema: Partial<BundleSchema>): Bundle {
     initialState: () => ({}),
     step: ({ state }) => state,
     scene: () => [],
-    controllers: () => [],
+    controllers: [],
   };
 }
 

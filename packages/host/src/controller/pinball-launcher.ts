@@ -20,8 +20,9 @@ interface Layout {
   tubeH: number;
 }
 
-const TUBE_WIDTH = 56;
-const TUBE_MAX_HEIGHT = 220;
+/** 선언에 `size` 가 없을 때의 크기. 코어는 기본값만 준다 (원칙 7 ③). */
+const DEFAULT_TUBE_WIDTH = 56;
+const DEFAULT_TUBE_HEIGHT = 220;
 /** 튜브가 캔버스 세로에서 양보하는 몫 — 위쪽 이름표와 아래 여백. */
 const TUBE_HEIGHT_RESERVE = 120;
 const TUBE_MARGIN = 32;
@@ -36,9 +37,12 @@ function computeLayout(
   toScreen: (w: Vec2) => Vec2,
   slot: number,
 ): Layout {
-  const tubeH = Math.min(TUBE_MAX_HEIGHT, viewport.height - TUBE_HEIGHT_RESERVE);
-  const at = spec.at ?? stackedAnchor(DEFAULT_AT, slot, [-(TUBE_WIDTH + TUBE_STACK_GAP), 0]);
-  const box = placeBox(at, TUBE_WIDTH, tubeH, viewport, toScreen, TUBE_MARGIN);
+  const [declW, declH] = spec.size ?? [DEFAULT_TUBE_WIDTH, DEFAULT_TUBE_HEIGHT];
+  // 뷰포트 clamp 는 선언보다 뒤에 온다 — 임베드 높이는 마운트 뒤 바뀌지 않으므로
+  // 넘치는 튜브는 자리를 넓히는 대신 담는다 (원칙 6).
+  const tubeH = Math.min(declH, viewport.height - TUBE_HEIGHT_RESERVE);
+  const at = spec.at ?? stackedAnchor(DEFAULT_AT, slot, [-(declW + TUBE_STACK_GAP), 0]);
+  const box = placeBox(at, declW, tubeH, viewport, toScreen, TUBE_MARGIN);
   return { tubeX: box.x, tubeY: box.y, tubeW: box.w, tubeH: box.h };
 }
 

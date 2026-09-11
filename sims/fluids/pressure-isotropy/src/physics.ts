@@ -89,5 +89,10 @@ export function step(params: { state: PressureIsotropyState; dt: number }): Pres
 
   const remaining = SWEEP_END_DEG - state.sweptDeg;
   const sweptDeg = state.sweptDeg + Math.min(SWEEP_RATE_DEG_PER_S * dt, remaining);
-  return { ...state, sweptDeg, plate: { thetaDeg: sweptDeg } };
+  return {
+    ...state,
+    sweptDeg,
+    sweepComplete: sweptDeg >= SWEEP_END_DEG,
+    plate: { thetaDeg: sweptDeg },
+  };
 }

@@ -21,8 +21,9 @@ interface Layout {
 }
 
 const SLIDER_MARGIN = 24;
-const SLIDER_WIDTH = 220;
-const SLIDER_HEIGHT = 44;
+/** 선언에 `size` 가 없을 때의 크기. 코어는 기본값만 준다 (원칙 7 ③). */
+const DEFAULT_SLIDER_WIDTH = 220;
+const DEFAULT_SLIDER_HEIGHT = 44;
 /** 자리를 선언하지 않은 슬라이더끼리의 세로 간격. */
 const SLIDER_STACK_GAP = 12;
 /** 자리를 선언하지 않으면 오른쪽 위에서 아래로 쌓인다. */
@@ -34,9 +35,11 @@ function computeLayout(
   toScreen: (w: Vec2) => Vec2,
   slot: number,
 ): Layout {
-  const at = spec.at ?? stackedAnchor(DEFAULT_AT, slot, [0, SLIDER_HEIGHT + SLIDER_STACK_GAP]);
-  const box = placeBox(at, SLIDER_WIDTH, SLIDER_HEIGHT, viewport, toScreen, SLIDER_MARGIN);
-  return { ...box, trackY: box.y + box.h / 2 + 6, handleR: 8 };
+  const [w, h] = spec.size ?? [DEFAULT_SLIDER_WIDTH, DEFAULT_SLIDER_HEIGHT];
+  const at = spec.at ?? stackedAnchor(DEFAULT_AT, slot, [0, h + SLIDER_STACK_GAP]);
+  const box = placeBox(at, w, h, viewport, toScreen, SLIDER_MARGIN);
+  // 안쪽 치수는 크기를 따라간다 — 고정하면 큰 슬라이더에서 비율이 깨진다.
+  return { ...box, trackY: box.y + box.h / 2 + 6, handleR: Math.max(5, h * 0.18) };
 }
 
 function hitLayout(input: PointerInput, layout: Layout): boolean {

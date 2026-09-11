@@ -12,7 +12,6 @@
 import type {
   Bundle,
   BundleState,
-  ControllerSpec,
   EnvironmentDef,
   MeasureService,
   Primitive,
@@ -29,6 +28,7 @@ import { Host, createHost } from '../host';
 import { createTimeEngine, evaluateTimeline, withCaption } from '../time';
 import type { ThemeMode } from '../theme';
 import type { ControllerEventContext, PointerInput, ResolvedController } from '../controller/types';
+import { visibleControllers } from '../controller/visibility';
 
 /**
  * 임베드 캔버스 치수의 기본값. 선언(`BundleSchema.canvas`)이 비었을 때만 쓰인다.
@@ -221,10 +221,10 @@ export function runBundle<T extends BundleState = BundleState>(
   }
 
   function findControllerAt(input: PointerInput, viewport: Viewport): ResolvedController | null {
-    const specs = refs.bundle.controllers({ state: refs.state }) as ControllerSpec[];
+    const visible = visibleControllers(refs.bundle.controllers, refs.state as BundleState);
     // 다른 손가락이 잡고 있는 인스턴스는 건너뛴다 — 두 손가락이 한 조작기를 다투지 않게.
     const held = new Set([...sessions.values()].map((s) => s.spec.id));
-    for (const r of controllers.resolve(specs)) {
+    for (const r of controllers.resolve(visible)) {
       if (held.has(r.spec.id)) continue;
       if (r.impl.hitTest(input, makeEventCtx(viewport, r.slot), r.spec, refs.state as BundleState)) {
         return r;
@@ -426,8 +426,8 @@ export function runBundle<T extends BundleState = BundleState>(
       renderer(rc, p, sceneRefs);
     }
 
-    const controllerSpecs = b.controllers({ state: refs.state }) as ControllerSpec[];
-    for (const r of controllers.resolve(controllerSpecs)) {
+    const visible = visibleControllers(b.controllers, refs.state as BundleState);
+    for (const r of controllers.resolve(visible)) {
       r.impl.render({ ...rc, viewport: vp, slot: r.slot }, r.spec, refs.state as BundleState);
     }
 

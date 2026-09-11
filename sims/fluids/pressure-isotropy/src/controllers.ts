@@ -1,6 +1,5 @@
 import type { ControllerSpec } from '@aperi21/schema';
-import { isSweepComplete } from './physics';
-import { SWEEP_END_DEG, type PressureIsotropyState } from './state';
+import { SWEEP_END_DEG } from './state';
 
 /**
  * 조각이므로 조작기는 하나다. 그마저도 **자동 회전이 끝난 뒤에야** 나온다.
@@ -12,15 +11,15 @@ import { SWEEP_END_DEG, type PressureIsotropyState } from './state';
  * 다이얼의 0..180° 는 임의로 자른 범위가 아니다. 판은 두께 없는 면이라 방향이
  * 180° 주기이고, 그래서 이 반원이 판이 가질 수 있는 방향 전부다.
  */
-export function controllers(params?: { state: PressureIsotropyState }): ControllerSpec[] {
-  if (!params || !isSweepComplete(params.state)) return [];
-  return [
-    {
-      id: 'plate-angle',
-      type: 'angle-dial',
-      binds: { angle: 'plate.thetaDeg' },
-      range: [0, SWEEP_END_DEG],
-      tickAt: [0, 45, 90, 135, SWEEP_END_DEG],
-    },
-  ];
-}
+export const controllers: readonly ControllerSpec[] = [
+  {
+    id: 'plate-angle',
+    type: 'angle-dial',
+    binds: { angle: 'plate.thetaDeg' },
+    // 자동 회전이 끝난 뒤에야 나온다. 조건을 세는 것은 physics 이고 선언은 그
+    // 결과가 놓인 자리를 가리킨다.
+    visibleWhen: 'sweepComplete',
+    range: [0, SWEEP_END_DEG],
+    tickAt: [0, 45, 90, 135, SWEEP_END_DEG],
+  },
+];

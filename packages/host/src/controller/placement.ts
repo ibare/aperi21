@@ -20,7 +20,9 @@ interface PlacedItem {
 }
 
 const PALETTE_MARGIN = 24;
-const PALETTE_SWATCH = 56;
+/** 선언에 `size` 가 없을 때의 견본 한 칸 크기. 코어는 기본값만 준다 (원칙 7 ③). */
+const DEFAULT_SWATCH_W = 56;
+const DEFAULT_SWATCH_H = 56;
 const PALETTE_GAP = 10;
 
 interface PaletteRect {
@@ -51,15 +53,16 @@ function computePalette(
   slot: number,
 ): Palette {
   const n = spec.placeableTypes.length;
-  const width = Math.max(PALETTE_SWATCH, n * (PALETTE_SWATCH + PALETTE_GAP) - PALETTE_GAP);
-  const at = spec.at ?? stackedAnchor(DEFAULT_AT, slot, [0, PALETTE_SWATCH + PALETTE_STACK_GAP]);
-  const box = placeBox(at, width, PALETTE_SWATCH, viewport, toScreen, PALETTE_MARGIN);
+  const [sw, sh] = spec.size ?? [DEFAULT_SWATCH_W, DEFAULT_SWATCH_H];
+  const width = Math.max(sw, n * (sw + PALETTE_GAP) - PALETTE_GAP);
+  const at = spec.at ?? stackedAnchor(DEFAULT_AT, slot, [0, sh + PALETTE_STACK_GAP]);
+  const box = placeBox(at, width, sh, viewport, toScreen, PALETTE_MARGIN);
   const rects: PaletteRect[] = [];
   for (let i = 0; i < n; i++) {
     const type = spec.placeableTypes[i]!;
-    const x = box.x + i * (PALETTE_SWATCH + PALETTE_GAP);
-    if (x + PALETTE_SWATCH > viewport.width - PALETTE_MARGIN) break;
-    rects.push({ index: i, type, x, y: box.y, w: PALETTE_SWATCH, h: PALETTE_SWATCH });
+    const x = box.x + i * (sw + PALETTE_GAP);
+    if (x + sw > viewport.width - PALETTE_MARGIN) break;
+    rects.push({ index: i, type, x, y: box.y, w: sw, h: sh });
   }
   return { x: box.x, y: box.y, rects };
 }
