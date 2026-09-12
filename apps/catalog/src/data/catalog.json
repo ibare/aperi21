@@ -510,6 +510,16 @@
           "id": "energy-in-collision",
           "name": "충돌에서의 에너지",
           "desc": "보존되는 것과 안 되는 것의 구분"
+        },
+        {
+          "id": "energy-flow-diagram",
+          "name": "에너지 흐름도",
+          "desc": "갈래의 굵기로 나타낸 에너지의 행방"
+        },
+        {
+          "id": "fuel-energy-density",
+          "name": "연료의 에너지 밀도",
+          "desc": "단위 질량·부피가 내는 에너지"
         }
       ]
     },
@@ -855,6 +865,26 @@
           "id": "expanding-universe",
           "name": "우주의 팽창",
           "desc": "모든 방향으로 멀어지는 은하들"
+        },
+        {
+          "id": "stellar-luminosity",
+          "name": "광도",
+          "desc": "별이 실제로 내는 빛의 양"
+        },
+        {
+          "id": "hr-diagram",
+          "name": "HR 도",
+          "desc": "온도와 광도로 별을 늘어놓은 그림"
+        },
+        {
+          "id": "star-radiation-gravity-balance",
+          "name": "복사압과 중력의 평형",
+          "desc": "별이 무너지지도 흩어지지도 않는 이유"
+        },
+        {
+          "id": "orbital-decay",
+          "name": "궤도 감쇠",
+          "desc": "옅은 대기가 끄는 궤도"
         }
       ]
     },
@@ -1251,6 +1281,21 @@
           "id": "insulation",
           "name": "보온과 단열",
           "desc": "열의 이동을 늦추는 것"
+        },
+        {
+          "id": "albedo",
+          "name": "반사율",
+          "desc": "되돌아가는 빛의 몫"
+        },
+        {
+          "id": "radiative-equilibrium",
+          "name": "복사 평형",
+          "desc": "들어온 만큼 내보낼 때 정해지는 온도"
+        },
+        {
+          "id": "greenhouse-effect",
+          "name": "온실 효과",
+          "desc": "적외선을 되돌리는 층이 지표를 덥히는 것"
         }
       ]
     },
@@ -2102,6 +2147,26 @@
           "id": "electromagnet",
           "name": "전자석",
           "desc": "전류가 흐를 때만 자석이 되는 것"
+        },
+        {
+          "id": "iv-characteristic",
+          "name": "I-V 특성 곡선",
+          "desc": "전압과 전류의 관계가 직선이 아닌 소자"
+        },
+        {
+          "id": "thermistor-and-ldr",
+          "name": "써미스터와 광저항",
+          "desc": "온도와 빛에 따라 변하는 저항"
+        },
+        {
+          "id": "potential-divider",
+          "name": "분압기",
+          "desc": "저항으로 전압을 나누어 쓰는 것"
+        },
+        {
+          "id": "millikan-experiment",
+          "name": "밀리컨 실험",
+          "desc": "전하가 띄엄띄엄하다는 증거"
         }
       ]
     },
@@ -2503,12 +2568,17 @@
           "id": "scale-of-universe",
           "name": "우주의 규모",
           "desc": "원자에서 우주까지 10의 거듭제곱으로 잇는 크기"
+        },
+        {
+          "id": "rutherford-scattering",
+          "name": "러더퍼드 산란",
+          "desc": "대부분 지나가고 일부가 튕겨 나온 실험"
         }
       ]
     }
   ],
   "summary": {
-    "topics": 482,
+    "topics": 496,
     "implemented": 20,
     "labs": 7
   }
