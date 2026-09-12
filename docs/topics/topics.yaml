@@ -39,7 +39,7 @@ topics:
     desc: 방향을 가진 양과 누적된 양의 차이
     domain: kinematics
     level: lower
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: reference-frame
     name: 기준틀
@@ -60,35 +60,35 @@ topics:
     desc: 구간 전체를 대표하는 속도
     domain: kinematics
     level: primary
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: instantaneous-velocity
     name: 순간 속도
     desc: 구간을 0으로 줄인 극한
     domain: kinematics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: speed-vs-velocity
     name: 속력과 속도
     desc: 크기만인 양과 방향까지 가진 양
     domain: kinematics
     level: primary
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: average-acceleration
     name: 평균 가속도
     desc: 속도 변화의 비율
     domain: kinematics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: instantaneous-acceleration
     name: 순간 가속도
     desc: 속도의 순간 변화율
     domain: kinematics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: direction-of-acceleration
     name: 가속도의 방향
@@ -101,29 +101,29 @@ topics:
     name: 등속 운동
     desc: 속도가 변하지 않는 운동
     domain: kinematics
-    level: null
-    curricula: []
+    level: primary
+    curricula: [ngss]
     visual: "unsure"
   - id: uniformly-accelerated-motion
     name: 등가속도 운동
     desc: 가속도가 일정한 운동의 세 식
     domain: kinematics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: position-time-graph
     name: 위치-시간 그래프
     desc: 기울기가 속도인 표현
     domain: kinematics
     level: primary
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: velocity-time-graph
     name: 속도-시간 그래프
     desc: 기울기가 가속도, 넓이가 변위인 표현
     domain: kinematics
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "yes"
     sim: aperi21:velocity-time-graph
     batch: 00-pilot-kinematics
@@ -132,14 +132,14 @@ topics:
     desc: 넓이가 속도 변화인 표현
     domain: kinematics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: free-fall
     name: 자유 낙하
     desc: 중력만 받는 연직 운동
     domain: kinematics
-    level: lower
-    curricula: [kr, ib]
+    level: primary
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: vertical-throw
     name: 연직 투상
@@ -167,28 +167,28 @@ topics:
     desc: 저항과 중력이 균형에 이르는 속도
     domain: kinematics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: vector-decomposition
     name: 벡터의 성분 분해
     desc: 한 벡터를 축 방향으로 나누기
     domain: kinematics
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: vector-addition
     name: 벡터의 합성
     desc: 꼬리와 머리를 잇는 덧셈
     domain: kinematics
     level: upper
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: relative-velocity
     name: 상대 속도
     desc: 기준틀 사이의 속도 변환
     domain: kinematics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: river-crossing
     name: 강 건너기
@@ -202,7 +202,7 @@ topics:
     desc: 수평·연직 성분의 독립
     domain: kinematics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "yes"
     sim: aperi21:projectile
   - id: trajectory-equation
@@ -210,21 +210,21 @@ topics:
     desc: 시간을 소거해 얻은 경로의 식
     domain: kinematics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: uniform-circular-motion
     name: 등속 원운동
     desc: 속력이 일정한 원 궤도
     domain: kinematics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: centripetal-acceleration
     name: 구심 가속도
     desc: 방향만 바뀌는 운동의 가속도
     domain: kinematics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "yes"
     sim: aperi21:centripetal-acceleration
     batch: 00-pilot-kinematics
@@ -233,21 +233,21 @@ topics:
     desc: 한 바퀴에 걸리는 시간과 그 역수
     domain: kinematics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: angular-velocity
     name: 각속도
     desc: 단위 시간당 각변위
     domain: kinematics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: angular-acceleration
     name: 각가속도
     desc: 각속도의 변화율
     domain: kinematics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: tangential-normal-acceleration
     name: 접선·법선 가속도
@@ -269,7 +269,7 @@ topics:
     desc: 알짜힘이 없을 때의 운동 상태
     domain: newtonian-mechanics
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "yes"
     sim: aperi21:inertial-frame
     batch: 01-broad
@@ -285,35 +285,35 @@ topics:
     desc: 알짜힘·질량·가속도의 관계
     domain: newtonian-mechanics
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: newtons-third-law
     name: 작용 반작용
     desc: 힘의 쌍과 서로 다른 작용점
     domain: newtonian-mechanics
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: net-force
     name: 알짜힘
     desc: 여러 힘의 벡터 합
     domain: newtonian-mechanics
-    level: lower
-    curricula: [kr, ib]
+    level: primary
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: free-body-diagram
     name: 자유물체도
     desc: 한 물체에 작용하는 힘만 분리하기
     domain: newtonian-mechanics
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: mass-vs-weight
     name: 질량과 무게
     desc: 물질의 양과 중력이 주는 힘
     domain: newtonian-mechanics
     level: primary
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss]
     visual: "unsure"
   - id: inertial-vs-gravitational-mass
     name: 관성 질량과 중력 질량
@@ -327,7 +327,7 @@ topics:
     desc: 접촉면이 수직으로 미는 힘
     domain: newtonian-mechanics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: apparent-weight
     name: 겉보기 무게
@@ -341,21 +341,21 @@ topics:
     desc: 움직이기 전까지 버티는 힘
     domain: newtonian-mechanics
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: kinetic-friction
     name: 운동 마찰력
     desc: 미끄러지는 동안의 마찰
     domain: newtonian-mechanics
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: coefficient-of-friction
     name: 마찰 계수
     desc: 수직항력과 마찰력의 비
     domain: newtonian-mechanics
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: angle-of-friction
     name: 마찰각
@@ -369,49 +369,49 @@ topics:
     desc: 중력을 면에 나란한 성분과 수직 성분으로
     domain: newtonian-mechanics
     level: primary
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: tension
     name: 장력
     desc: 줄이 당기는 힘과 그 전달
     domain: newtonian-mechanics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: pulley-system
     name: 도르래
     desc: 힘의 방향과 크기를 바꾸는 장치
     domain: newtonian-mechanics
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: connected-bodies
     name: 연결된 물체
     desc: 함께 움직이는 계의 가속도
     domain: newtonian-mechanics
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: spring-force
     name: 탄성력
     desc: 변형에 비례하는 복원력
     domain: newtonian-mechanics
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: hookes-law
     name: 훅 법칙
     desc: 탄성 한계 안에서의 비례 관계
     domain: newtonian-mechanics
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: centripetal-force
     name: 구심력
     desc: 원운동을 유지시키는 힘의 정체
     domain: newtonian-mechanics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: conical-pendulum
     name: 원뿔 진자
@@ -439,7 +439,7 @@ topics:
     desc: 속도의 1차·2차에 비례하는 저항
     domain: newtonian-mechanics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: buoyant-force-as-force
     name: 부력(힘으로서)
@@ -473,22 +473,22 @@ topics:
     name: 힘과 충격량
     desc: 짧고 큰 힘과 길고 작은 힘
     domain: newtonian-mechanics
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ngss]
     visual: "unsure"
   - id: equilibrium-of-forces
     name: 힘의 평형
     desc: 알짜힘이 0인 상태
     domain: newtonian-mechanics
-    level: lower
-    curricula: [kr, ib]
+    level: primary
+    curricula: [kr, ib, ngss]
     visual: "unsure"
   - id: atwood-machine
     name: 애트우드 기계
     desc: 두 추가 도르래로 연결된 계
     domain: newtonian-mechanics
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: balance-scale
     name: 수평잡기
@@ -511,7 +511,7 @@ topics:
     desc: 힘이 물체의 움직임과 모양을 바꾸는 것
     domain: newtonian-mechanics
     level: primary
-    curricula: [kr]
+    curricula: [kr, ngss]
     visual: "no"
     visualNote: 힘이 있다는 사실 자체는 글이 이미 잘한다. 화면에서 일어날 동사가 따로 없다
   # ── 일·에너지·운동량
@@ -520,63 +520,63 @@ topics:
     desc: 힘과 변위의 내적
     domain: energy-momentum
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: work-by-variable-force
     name: 변하는 힘이 한 일
     desc: 힘-변위 그래프의 넓이
     domain: energy-momentum
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: kinetic-energy
     name: 운동 에너지
     desc: 속력이 담고 있는 에너지
     domain: energy-momentum
-    level: lower
-    curricula: [kr, ib]
+    level: primary
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: work-energy-theorem
     name: 일-운동 에너지 정리
     desc: 알짜일이 운동 에너지 변화와 같음
     domain: energy-momentum
-    level: upper
-    curricula: [kr, ib]
+    level: lower
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: gravitational-potential-energy
     name: 중력 퍼텐셜 에너지
     desc: 높이에 저장된 에너지
     domain: energy-momentum
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: elastic-potential-energy
     name: 탄성 퍼텐셜 에너지
     desc: 변형에 저장된 에너지
     domain: energy-momentum
-    level: upper
-    curricula: [kr, ib]
+    level: lower
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: conservative-force
     name: 보존력
     desc: 경로에 무관한 힘과 퍼텐셜의 존재
     domain: energy-momentum
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: non-conservative-force
     name: 비보존력
     desc: 경로에 따라 달라지는 일
     domain: energy-momentum
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: conservation-of-mechanical-energy
     name: 역학적 에너지 보존
     desc: 형태가 바뀌어도 총량이 유지됨
     domain: energy-momentum
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "yes"
     sim: aperi21:ramp-energy
     batch: 01-broad
@@ -585,14 +585,14 @@ topics:
     desc: 마찰이 가져가는 몫과 그 행방
     domain: energy-momentum
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: potential-energy-curve
     name: 퍼텐셜 곡선
     desc: 곡선의 모양이 운동을 정하는 방식
     domain: energy-momentum
-    level: null
-    curricula: []
+    level: lower
+    curricula: [ngss]
     visual: "unsure"
   - id: equilibrium-points
     name: 평형점
@@ -606,63 +606,63 @@ topics:
     desc: 단위 시간당 일
     domain: energy-momentum
     level: lower
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: efficiency
     name: 효율
     desc: 넣은 것과 얻은 것의 비
     domain: energy-momentum
-    level: lower
-    curricula: [kr, ib]
+    level: primary
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: momentum
     name: 운동량
     desc: 질량과 속도의 곱
     domain: energy-momentum
     level: lower
-    curricula: [ib]
+    curricula: [ib, ngss, ap]
     visual: "unsure"
   - id: impulse
     name: 충격량
     desc: 힘의 시간 적분
     domain: energy-momentum
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: impulse-momentum-theorem
     name: 충격량-운동량 정리
     desc: 충격량이 운동량 변화와 같음
     domain: energy-momentum
-    level: upper
-    curricula: [kr, ib]
+    level: lower
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: conservation-of-momentum
     name: 운동량 보존
     desc: 외력이 없을 때의 총 운동량
     domain: energy-momentum
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: elastic-collision
     name: 탄성 충돌
     desc: 운동 에너지까지 보존되는 충돌
     domain: energy-momentum
-    level: upper
-    curricula: [ib]
+    level: lower
+    curricula: [ib, ngss, ap]
     visual: "unsure"
   - id: inelastic-collision
     name: 비탄성 충돌
     desc: 에너지가 사라지는 충돌
     domain: energy-momentum
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: perfectly-inelastic-collision
     name: 완전 비탄성 충돌
     desc: 붙어서 함께 움직이는 경우
     domain: energy-momentum
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: coefficient-of-restitution
     name: 반발 계수
@@ -676,28 +676,28 @@ topics:
     desc: 성분마다 따로 성립하는 보존
     domain: energy-momentum
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: center-of-mass
     name: 질량 중심
     desc: 계를 대표하는 점
     domain: energy-momentum
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: center-of-mass-motion
     name: 질량 중심의 운동
     desc: 내부 힘에 영향받지 않는 운동
     domain: energy-momentum
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: explosion-and-recoil
     name: 폭발과 반동
     desc: 정지한 계가 갈라질 때
     domain: energy-momentum
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: variable-mass-system
     name: 질량이 변하는 계
@@ -724,15 +724,15 @@ topics:
     name: 충돌에서의 에너지
     desc: 보존되는 것과 안 되는 것의 구분
     domain: energy-momentum
-    level: null
-    curricula: []
+    level: primary
+    curricula: [ngss]
     visual: "unsure"
   - id: energy-flow-diagram
     name: 에너지 흐름도
     desc: 갈래의 굵기로 나타낸 에너지의 행방
     domain: energy-momentum
     level: upper
-    curricula: [ib]
+    curricula: [ib, ngss]
     visual: "yes"
     visualNote: 갈래가 갈릴 때 어디서 새는지 굵기로 보인다
   - id: fuel-energy-density
@@ -749,84 +749,84 @@ topics:
     desc: 회전을 일으키는 양과 팔 길이
     domain: rotation-oscillation
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: lever-arm
     name: 힘의 팔
     desc: 회전축까지의 수직 거리
     domain: rotation-oscillation
     level: primary
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: moment-of-inertia
     name: 관성 모멘트
     desc: 질량 분포가 정하는 회전 저항
     domain: rotation-oscillation
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: parallel-axis-theorem
     name: 평행축 정리
     desc: 축을 옮길 때의 관성 모멘트
     domain: rotation-oscillation
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: rotational-kinetic-energy
     name: 회전 운동 에너지
     desc: 각속도가 담은 에너지
     domain: rotation-oscillation
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: angular-momentum
     name: 각운동량
     desc: 회전의 운동량
     domain: rotation-oscillation
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: conservation-of-angular-momentum
     name: 각운동량 보존
     desc: 팔을 오므리면 빨라지는 이유
     domain: rotation-oscillation
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: rolling-without-slipping
     name: 미끄러지지 않는 구름
     desc: 병진과 회전의 구속 조건
     domain: rotation-oscillation
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: rolling-race
     name: 구르는 물체의 경주
     desc: 질량 분포가 정하는 도착 순서
     domain: rotation-oscillation
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: static-equilibrium
     name: 정적 평형
     desc: 힘과 돌림힘이 모두 0
     domain: rotation-oscillation
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: center-of-gravity
     name: 무게 중심
     desc: 넘어지는 조건을 정하는 점
     domain: rotation-oscillation
     level: upper
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: gyroscopic-precession
     name: 세차 운동
     desc: 돌림힘이 각운동량 방향을 돌리는 것
     domain: rotation-oscillation
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: angular-momentum-vector
     name: 각운동량의 방향
@@ -840,42 +840,42 @@ topics:
     desc: 복원력이 변위에 비례하는 운동
     domain: rotation-oscillation
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: shm-energy
     name: 조화 운동의 에너지
     desc: 운동 에너지와 퍼텐셜의 교환
     domain: rotation-oscillation
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: phase-and-amplitude
     name: 위상과 진폭
     desc: 같은 진동수의 두 진동을 가르는 것
     domain: rotation-oscillation
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: mass-spring-system
     name: 용수철 진자
     desc: 질량과 탄성 계수가 정하는 주기
     domain: rotation-oscillation
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: simple-pendulum
     name: 단진자
     desc: 작은 진폭에서의 주기
     domain: rotation-oscillation
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: physical-pendulum
     name: 물리 진자
     desc: 크기가 있는 물체의 진동
     domain: rotation-oscillation
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: pendulum-amplitude-dependence
     name: 진폭과 주기
@@ -961,8 +961,8 @@ topics:
     name: 만유인력 법칙
     desc: 거리 제곱에 반비례하는 힘
     domain: gravitation
-    level: upper
-    curricula: [kr, ib]
+    level: lower
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: gravitational-constant
     name: 중력 상수
@@ -975,8 +975,8 @@ topics:
     name: 중력장
     desc: 공간에 분포한 중력의 세기
     domain: gravitation
-    level: upper
-    curricula: [kr, ib]
+    level: lower
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: shell-theorem
     name: 껍질 정리
@@ -1011,42 +1011,42 @@ topics:
     desc: 원 궤도를 유지하는 속도
     domain: gravitation
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss]
     visual: "unsure"
   - id: circular-orbit
     name: 원 궤도
     desc: 구심력이 중력인 운동
     domain: gravitation
-    level: upper
-    curricula: [kr, ib]
+    level: lower
+    curricula: [kr, ib, ngss]
     visual: "unsure"
   - id: elliptical-orbit
     name: 타원 궤도
     desc: 초점에 놓인 중심 천체
     domain: gravitation
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ngss]
     visual: "unsure"
   - id: keplers-first-law
     name: 케플러 제1법칙
     desc: 궤도는 타원이다
     domain: gravitation
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss]
     visual: "unsure"
   - id: keplers-second-law
     name: 케플러 제2법칙
     desc: 같은 시간에 같은 넓이
     domain: gravitation
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss]
     visual: "unsure"
   - id: keplers-third-law
     name: 케플러 제3법칙
     desc: 주기와 긴반지름의 관계
     domain: gravitation
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss]
     visual: "unsure"
   - id: two-body-problem
     name: 이체 문제
@@ -1155,7 +1155,7 @@ topics:
     desc: 남중 고도와 낮 길이가 함께 달라지는 것
     domain: gravitation
     level: primary
-    curricula: [kr]
+    curricula: [kr, ngss]
     visual: "yes"
     visualNote: 계절을 옮기면 태양이 지나는 길과 낮 길이가 같이 달라진다
   - id: axial-tilt-seasons
@@ -1163,7 +1163,7 @@ topics:
     desc: 기울어진 채 도는 것이 만드는 계절
     domain: gravitation
     level: primary
-    curricula: [kr]
+    curricula: [kr, ngss]
     visual: "yes"
     visualNote: 기울기를 0으로 두면 계절이 사라진다
   - id: moon-phases
@@ -1171,7 +1171,7 @@ topics:
     desc: 햇빛을 받는 달의 어느 쪽을 보는가
     domain: gravitation
     level: lower
-    curricula: [kr]
+    curricula: [kr, ngss]
     visual: "yes"
     visualNote: 공전 위치를 옮기면 보이는 밝은 쪽이 달라진다
   - id: eclipse
@@ -1179,7 +1179,7 @@ topics:
     desc: 해와 지구와 달이 한 줄에 설 때
     domain: gravitation
     level: lower
-    curricula: [kr]
+    curricula: [kr, ngss]
     visual: "yes"
     visualNote: 세 천체가 한 줄에 설 때만 일어난다
   - id: stellar-parallax
@@ -1221,7 +1221,7 @@ topics:
     desc: 모든 방향으로 멀어지는 은하들
     domain: gravitation
     level: lower
-    curricula: [kr]
+    curricula: [kr, ngss]
     visual: "yes"
     visualNote: 격자를 늘리면 모든 점이 서로 멀어진다
   - id: stellar-luminosity
@@ -1229,7 +1229,7 @@ topics:
     desc: 별이 실제로 내는 빛의 양
     domain: gravitation
     level: upper
-    curricula: [ib]
+    curricula: [ib, ngss]
     visual: "yes"
     visualNote: 겉보기 밝기와 거리에서 실제 밝기를 되짚는다
   - id: hr-diagram
@@ -1245,7 +1245,7 @@ topics:
     desc: 별이 무너지지도 흩어지지도 않는 이유
     domain: gravitation
     level: upper
-    curricula: [ib]
+    curricula: [ib, ngss]
     visual: "yes"
     visualNote: 한쪽을 키우면 별이 부풀거나 무너진다
   - id: orbital-decay
@@ -1256,20 +1256,36 @@ topics:
     curricula: [ib]
     visual: "yes"
     visualNote: 항력을 주면 궤도가 조금씩 내려앉는다
+  - id: inverse-square-law
+    name: 역제곱 법칙
+    desc: 퍼지는 만큼 옅어지는 것
+    domain: gravitation
+    level: upper
+    curricula: [ngss]
+    visual: "yes"
+    visualNote: 거리를 두 배로 하면 넷으로 나뉜다 — 퍼지는 면적으로 보인다
+  - id: stellar-nucleosynthesis
+    name: 별의 원소 합성
+    desc: 무거운 원소가 별에서 만들어지는 것
+    domain: gravitation
+    level: upper
+    curricula: [ngss]
+    visual: "yes"
+    visualNote: 별의 일생을 따라가면 무거운 원소가 차례로 쌓인다
   # ── 유체
   - id: density
     name: 밀도
     desc: 단위 부피당 질량
     domain: fluids
     level: lower
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: pressure
     name: 압력
     desc: 단위 면적당 힘
     domain: fluids
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: pressure-isotropy
     name: 압력의 등방성
@@ -1283,8 +1299,8 @@ topics:
     name: 정수압
     desc: 깊이에 비례하는 압력
     domain: fluids
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: pressure-and-container-shape
     name: 그릇 모양과 압력
@@ -1298,8 +1314,8 @@ topics:
     name: 대기압
     desc: 공기 기둥의 무게
     domain: fluids
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: barometer
     name: 기압계
@@ -1319,30 +1335,30 @@ topics:
     name: 파스칼 원리
     desc: 압력의 전달과 유압 장치
     domain: fluids
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: buoyancy
     name: 부력
     desc: 밀려난 유체의 무게만큼
     domain: fluids
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: archimedes-principle
     name: 아르키메데스 원리
     desc: 뜨고 가라앉는 조건
     domain: fluids
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "yes"
     sim: aperi21:archimedes-principle
   - id: floating-and-draft
     name: 뜨는 깊이
     desc: 잠기는 부피가 정해지는 방식
     domain: fluids
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: stability-of-floating-body
     name: 부유체의 안정
@@ -1355,29 +1371,29 @@ topics:
     name: 연속 방정식
     desc: 단면적과 유속의 반비례
     domain: fluids
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: bernoullis-principle
     name: 베르누이 원리
     desc: 속도와 압력의 교환
     domain: fluids
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: venturi-effect
     name: 벤투리 효과
     desc: 좁아진 곳에서 낮아지는 압력
     domain: fluids
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: torricellis-law
     name: 토리첼리 법칙
     desc: 구멍에서 나오는 유속
     domain: fluids
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "yes"
     sim: aperi21:torricellis-law
   - id: lift-force
@@ -1471,14 +1487,14 @@ topics:
     desc: 열평형이 정의하는 양
     domain: thermodynamics
     level: primary
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: thermal-equilibrium
     name: 열평형
     desc: 접촉한 두 계가 도달하는 상태
     domain: thermodynamics
     level: primary
-    curricula: [kr]
+    curricula: [kr, ngss, ap]
     visual: "unsure"
   - id: zeroth-law
     name: 열역학 제0법칙
@@ -1513,28 +1529,28 @@ topics:
     desc: 물질마다 다른 온도 변화
     domain: thermodynamics
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: heat-capacity
     name: 열용량
     desc: 계 전체가 받는 열과 온도 변화
     domain: thermodynamics
-    level: upper
-    curricula: [ib]
+    level: lower
+    curricula: [ib, ngss]
     visual: "unsure"
   - id: calorimetry
     name: 열량 측정
     desc: 섞었을 때의 최종 온도
     domain: thermodynamics
-    level: null
-    curricula: []
+    level: lower
+    curricula: [ngss]
     visual: "unsure"
   - id: latent-heat
     name: 잠열
     desc: 상변화 중 온도가 멈추는 이유
     domain: thermodynamics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: phase-diagram
     name: 상평형 그림
@@ -1555,7 +1571,7 @@ topics:
     desc: 접촉을 통한 전달
     domain: thermodynamics
     level: primary
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "yes"
     sim: aperi21:heat-conduction
     batch: 01-broad
@@ -1564,14 +1580,14 @@ topics:
     desc: 유체의 이동이 나르는 열
     domain: thermodynamics
     level: primary
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: thermal-radiation
     name: 열복사
     desc: 매질 없이 전달되는 열
     domain: thermodynamics
     level: primary
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: stefan-boltzmann-law
     name: 슈테판-볼츠만 법칙
@@ -1599,28 +1615,28 @@ topics:
     desc: 압력·부피·온도의 관계
     domain: thermodynamics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: boyles-law
     name: 보일 법칙
     desc: 온도가 일정할 때의 압력-부피
     domain: thermodynamics
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: charles-law
     name: 샤를 법칙
     desc: 압력이 일정할 때의 부피-온도
     domain: thermodynamics
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: kinetic-theory-of-gases
     name: 기체 분자 운동론
     desc: 거시량을 분자 운동으로 설명
     domain: thermodynamics
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "yes"
     sim: aperi21:gas-pressure
     batch: 01-broad
@@ -1657,42 +1673,42 @@ topics:
     desc: 계가 담고 있는 미시 에너지
     domain: thermodynamics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: first-law-of-thermodynamics
     name: 열역학 제1법칙
     desc: 내부 에너지·일·열의 관계
     domain: thermodynamics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: pv-diagram
     name: PV 그림
     desc: 넓이가 일인 표현
     domain: thermodynamics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: isothermal-process
     name: 등온 과정
     desc: 온도를 유지하는 변화
     domain: thermodynamics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: adiabatic-process
     name: 단열 과정
     desc: 열 출입이 없는 변화
     domain: thermodynamics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: isobaric-isochoric
     name: 등압·등적 과정
     desc: 압력 또는 부피를 고정한 변화
     domain: thermodynamics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: cyclic-process
     name: 순환 과정
@@ -1706,42 +1722,42 @@ topics:
     desc: 방향이 있는 변화
     domain: thermodynamics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: entropy
     name: 엔트로피
     desc: 경우의 수와 무질서
     domain: thermodynamics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: entropy-and-irreversibility
     name: 엔트로피와 비가역성
     desc: 되돌릴 수 없는 이유
     domain: thermodynamics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss]
     visual: "unsure"
   - id: heat-engine
     name: 열기관
     desc: 열을 일로 바꾸는 순환
     domain: thermodynamics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: carnot-cycle
     name: 카르노 순환
     desc: 이론적 최대 효율
     domain: thermodynamics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: refrigerator-heat-pump
     name: 냉장고와 열펌프
     desc: 일을 넣어 열을 옮기는 것
     domain: thermodynamics
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: third-law
     name: 열역학 제3법칙
@@ -1790,7 +1806,7 @@ topics:
     desc: 열의 이동을 늦추는 것
     domain: thermodynamics
     level: primary
-    curricula: [kr]
+    curricula: [kr, ngss]
     visual: "yes"
     visualNote: 같은 시간이 지났을 때 식는 정도가 재료마다 다르다
   - id: albedo
@@ -1822,8 +1838,8 @@ topics:
     name: 파동의 기본량
     desc: 파장·진동수·속력·진폭
     domain: waves-acoustics
-    level: lower
-    curricula: [kr, ib]
+    level: primary
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: wave-vs-particle-transport
     name: 파동이 나르는 것
@@ -1837,28 +1853,28 @@ topics:
     desc: 진동 방향이 진행 방향과 수직
     domain: waves-acoustics
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: longitudinal-wave
     name: 종파
     desc: 진동 방향이 진행 방향과 나란함
     domain: waves-acoustics
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: wave-speed-in-medium
     name: 매질과 파동 속도
     desc: 장력·밀도·탄성이 정하는 속도
     domain: waves-acoustics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ngss, ap]
     visual: "unsure"
   - id: wave-equation
     name: 파동 방정식
     desc: 파동을 지배하는 미분 방정식
     domain: waves-acoustics
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ngss]
     visual: "unsure"
   - id: wave-function-form
     name: 파동의 식
@@ -1900,7 +1916,7 @@ topics:
     desc: 두 파원이 만드는 무늬
     domain: waves-acoustics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: path-difference
     name: 경로차
@@ -1914,35 +1930,35 @@ topics:
     desc: 마디와 배가 고정되는 파동
     domain: waves-acoustics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: harmonics
     name: 배음
     desc: 경계 조건이 정하는 진동수
     domain: waves-acoustics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: string-vibration
     name: 줄의 진동
     desc: 양끝이 고정된 줄의 모드
     domain: waves-acoustics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: air-column-resonance
     name: 기주 공명
     desc: 열린 관과 닫힌 관의 차이
     domain: waves-acoustics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: beats
     name: 맥놀이
     desc: 가까운 두 진동수의 합
     domain: waves-acoustics
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "yes"
     sim: aperi21:beats
     batch: 01-broad
@@ -1951,7 +1967,7 @@ topics:
     desc: 상대 운동에 따른 진동수 변화
     domain: waves-acoustics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "yes"
     sim: aperi21:doppler-effect
     batch: 01-broad
@@ -1981,14 +1997,14 @@ topics:
     desc: 매질과 온도가 정하는 속도
     domain: waves-acoustics
     level: lower
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: sound-intensity
     name: 음의 세기
     desc: 거리 제곱에 반비례하는 감쇠
     domain: waves-acoustics
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: decibel-scale
     name: 데시벨
@@ -2009,14 +2025,14 @@ topics:
     desc: 고정단과 자유단에서의 위상
     domain: waves-acoustics
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss]
     visual: "unsure"
   - id: refraction-of-waves
     name: 파동의 굴절
     desc: 속도 변화가 만드는 방향 전환
     domain: waves-acoustics
     level: lower
-    curricula: [ib]
+    curricula: [ib, ngss]
     visual: "unsure"
   - id: diffraction
     name: 회절
@@ -2036,22 +2052,22 @@ topics:
     name: 파동의 에너지
     desc: 진폭 제곱에 비례하는 에너지
     domain: waves-acoustics
-    level: null
-    curricula: []
+    level: lower
+    curricula: [ngss]
     visual: "unsure"
   - id: wave-attenuation
     name: 파동의 감쇠
     desc: 매질이 흡수하는 에너지
     domain: waves-acoustics
-    level: null
-    curricula: []
+    level: lower
+    curricula: [ngss]
     visual: "unsure"
   - id: impedance-mismatch
     name: 임피던스 부정합
     desc: 경계에서 반사되는 비율
     domain: waves-acoustics
-    level: upper
-    curricula: [kr]
+    level: lower
+    curricula: [kr, ngss]
     visual: "unsure"
   - id: noise-cancellation
     name: 능동 소음 제거
@@ -2065,7 +2081,7 @@ topics:
     desc: 소리 나는 물체는 떨리고, 떨림이 멎으면 소리도 멎는다
     domain: waves-acoustics
     level: primary
-    curricula: [kr]
+    curricula: [kr, ngss]
     visual: "yes"
     visualNote: 떨림을 멈추면 소리도 멎는다
   - id: sound-through-materials
@@ -2073,16 +2089,24 @@ topics:
     desc: 매질에 따라 달라지는 소리의 전달
     domain: waves-acoustics
     level: primary
-    curricula: [kr]
+    curricula: [kr, ngss]
     visual: "yes"
     visualNote: 매질을 바꾸면 전달되는 정도가 달라진다
+  - id: digital-vs-analog-signal
+    name: 디지털 신호와 아날로그
+    desc: 잡음을 견디는 방식의 차이
+    domain: waves-acoustics
+    level: lower
+    curricula: [ngss]
+    visual: "yes"
+    visualNote: 잡음을 섞으면 아날로그는 뭉개지고 디지털은 원래대로 되살아난다
   # ── 광학
   - id: rectilinear-propagation
     name: 빛의 직진
     desc: 그림자와 광선 모형
     domain: optics
     level: primary
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: shadow-umbra-penumbra
     name: 본그림자와 반그림자
@@ -2103,7 +2127,7 @@ topics:
     desc: 입사각과 반사각
     domain: optics
     level: primary
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: specular-diffuse-reflection
     name: 정반사와 난반사
@@ -2117,7 +2141,7 @@ topics:
     desc: 허상의 위치와 좌우 반전
     domain: optics
     level: primary
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: multiple-mirror-images
     name: 두 거울의 상
@@ -2131,35 +2155,35 @@ topics:
     desc: 초점과 실상
     domain: optics
     level: lower
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: convex-mirror
     name: 볼록거울
     desc: 확대된 시야와 허상
     domain: optics
     level: lower
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: mirror-equation
     name: 거울 공식
     desc: 물체 거리·상 거리·초점 거리
     domain: optics
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: snells-law
     name: 굴절 법칙
     desc: 매질에 따른 경로 꺾임
     domain: optics
-    level: primary
-    curricula: [kr, ib]
+    level: lower
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: index-of-refraction
     name: 굴절률
     desc: 매질 속 빛의 속도
     domain: optics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: apparent-depth
     name: 겉보기 깊이
@@ -2173,14 +2197,14 @@ topics:
     desc: 임계각과 그 조건
     domain: optics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: optical-fiber
     name: 광섬유
     desc: 전반사로 가두는 빛
     domain: optics
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ngss]
     visual: "unsure"
   - id: mirage
     name: 신기루
@@ -2215,7 +2239,7 @@ topics:
     desc: 초점과 결상
     domain: optics
     level: upper
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "yes"
     sim: aperi21:ray-tracing
   - id: converging-diverging-lens
@@ -2223,28 +2247,28 @@ topics:
     desc: 모으는 렌즈와 퍼뜨리는 렌즈
     domain: optics
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: lens-equation
     name: 렌즈 공식
     desc: 물체·상·초점 거리의 관계
     domain: optics
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: magnification
     name: 배율
     desc: 상의 크기와 물체의 크기
     domain: optics
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: real-vs-virtual-image
     name: 실상과 허상
     desc: 빛이 실제로 모이는가
     domain: optics
     level: upper
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: lens-maker-equation
     name: 렌즈 제작자 공식
@@ -2314,28 +2338,28 @@ topics:
     desc: 빛의 파동성 증거
     domain: optics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: single-slit-diffraction
     name: 단일 슬릿 회절
     desc: 폭이 만드는 무늬
     domain: optics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: diffraction-grating
     name: 회절 격자
     desc: 여러 슬릿이 만드는 날카로운 극대
     domain: optics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: thin-film-interference
     name: 박막 간섭
     desc: 두께가 만드는 색
     domain: optics
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: newtons-rings
     name: 뉴턴 링
@@ -2356,7 +2380,7 @@ topics:
     desc: 진동면의 선택
     domain: optics
     level: upper
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: malus-law
     name: 말뤼스 법칙
@@ -2398,7 +2422,7 @@ topics:
     desc: 빛이 없으면 물체가 보이지 않는다
     domain: optics
     level: primary
-    curricula: [kr]
+    curricula: [kr, ngss]
     visual: "yes"
     visualNote: 빛을 끄면 물체가 보이지 않는다
   - id: color-addition
@@ -2413,24 +2437,32 @@ topics:
     name: 물체의 색
     desc: 물체가 되쏘는 빛이 정하는 색
     domain: optics
-    level: lower
-    curricula: [kr]
+    level: primary
+    curricula: [kr, ngss]
     visual: "yes"
     visualNote: 같은 물체가 비추는 빛에 따라 다른 색으로 보인다
+  - id: light-through-materials
+    name: 빛과 재료
+    desc: 재료에 따라 갈리는 빛의 통과
+    domain: optics
+    level: primary
+    curricula: [ngss]
+    visual: "yes"
+    visualNote: 같은 빛을 두고 재료를 바꾸면 통과·차단·흐림이 갈린다
   # ── 전자기
   - id: electric-charge
     name: 전하
     desc: 두 종류의 전하와 보존
     domain: electromagnetism
-    level: lower
-    curricula: [kr, ib]
+    level: primary
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: charging-methods
     name: 대전 방법
     desc: 마찰·접촉·유도
     domain: electromagnetism
-    level: lower
-    curricula: [kr, ib]
+    level: primary
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: conductor-vs-insulator
     name: 도체와 부도체
@@ -2443,8 +2475,8 @@ topics:
     name: 쿨롱 법칙
     desc: 전하 사이의 힘
     domain: electromagnetism
-    level: upper
-    curricula: [kr, ib]
+    level: lower
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: superposition-of-forces
     name: 전기력의 중첩
@@ -2457,15 +2489,15 @@ topics:
     name: 전기장
     desc: 단위 전하가 받는 힘
     domain: electromagnetism
-    level: upper
-    curricula: [kr, ib]
+    level: lower
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: field-lines
     name: 전기력선
     desc: 장을 그리는 규약과 그 뜻
     domain: electromagnetism
-    level: upper
-    curricula: [kr, ib]
+    level: lower
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: field-of-dipole
     name: 쌍극자의 전기장
@@ -2479,7 +2511,7 @@ topics:
     desc: 평행판 사이의 장
     domain: electromagnetism
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: charge-in-uniform-field
     name: 균일장 속 전하
@@ -2492,43 +2524,43 @@ topics:
     name: 가우스 법칙
     desc: 닫힌 면을 지나는 전기력선속
     domain: electromagnetism
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: field-of-charged-sphere
     name: 대전된 구의 전기장
     desc: 안과 밖이 다른 이유
     domain: electromagnetism
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: electric-potential
     name: 전위
     desc: 단위 전하당 퍼텐셜 에너지
     domain: electromagnetism
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: potential-difference
     name: 전위차
     desc: 두 점 사이의 전위 차이
     domain: electromagnetism
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: equipotential-surface
     name: 등전위면
     desc: 전기장과 수직인 면
     domain: electromagnetism
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: potential-vs-field
     name: 전위와 전기장
     desc: 기울기 관계
     domain: electromagnetism
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: electrostatic-shielding
     name: 정전기 차폐
@@ -2549,70 +2581,70 @@ topics:
     desc: 분극과 전기장의 약화
     domain: electromagnetism
     level: upper
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: capacitance
     name: 전기 용량
     desc: 전하를 저장하는 능력
     domain: electromagnetism
     level: upper
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: parallel-plate-capacitor
     name: 평행판 축전기
     desc: 넓이·간격이 정하는 용량
     domain: electromagnetism
     level: upper
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: capacitors-in-circuit
     name: 축전기의 연결
     desc: 직렬과 병렬의 합성
     domain: electromagnetism
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: energy-in-capacitor
     name: 축전기의 에너지
     desc: 전기장에 저장된 에너지
     domain: electromagnetism
     level: upper
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: electric-current
     name: 전류
     desc: 전하의 흐름과 방향 규약
     domain: electromagnetism
-    level: lower
-    curricula: [kr, ib]
+    level: primary
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: drift-velocity
     name: 표류 속도
     desc: 느린 전자와 빠른 신호
     domain: electromagnetism
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: ohms-law
     name: 옴 법칙
     desc: 전압·전류·저항
     domain: electromagnetism
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: resistivity
     name: 비저항
     desc: 재료가 정하는 저항
     domain: electromagnetism
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: resistance-and-geometry
     name: 저항과 형태
     desc: 길이와 단면적의 영향
     domain: electromagnetism
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: temperature-and-resistance
     name: 온도와 저항
@@ -2626,7 +2658,7 @@ topics:
     desc: 연결 방식에 따른 합성
     domain: electromagnetism
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "yes"
     sim: aperi21:dc-circuit
   - id: emf-and-internal-resistance
@@ -2634,21 +2666,21 @@ topics:
     desc: 단자 전압이 낮아지는 이유
     domain: electromagnetism
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: kirchhoffs-current-law
     name: 키르히호프 전류 법칙
     desc: 마디에서의 전하 보존
     domain: electromagnetism
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: kirchhoffs-voltage-law
     name: 키르히호프 전압 법칙
     desc: 고리에서의 에너지 보존
     domain: electromagnetism
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: wheatstone-bridge
     name: 휘트스톤 브리지
@@ -2662,49 +2694,49 @@ topics:
     desc: 소비되는 에너지의 비율
     domain: electromagnetism
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: joule-heating
     name: 줄 열
     desc: 저항이 만드는 열
     domain: electromagnetism
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: rc-circuit
     name: RC 회로
     desc: 충전과 방전의 시간 상수
     domain: electromagnetism
     level: upper
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: magnetic-field
     name: 자기장
     desc: 자기력의 분포
     domain: electromagnetism
     level: lower
-    curricula: [ib]
+    curricula: [ib, ngss, ap]
     visual: "unsure"
   - id: magnetic-field-lines
     name: 자기력선
     desc: 끊기지 않고 닫히는 선
     domain: electromagnetism
-    level: upper
-    curricula: [kr, ib]
+    level: lower
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: lorentz-force
     name: 로런츠 힘
     desc: 자기장 속 전하가 받는 힘
     domain: electromagnetism
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: charged-particle-in-magnetic-field
     name: 자기장 속 전하의 원운동
     desc: 속도에 수직인 힘
     domain: electromagnetism
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: velocity-selector
     name: 속도 선택기
@@ -2725,21 +2757,21 @@ topics:
     desc: 도선에 작용하는 자기력
     domain: electromagnetism
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: biot-savart-law
     name: 비오-사바르 법칙
     desc: 전류 요소가 만드는 자기장
     domain: electromagnetism
     level: upper
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: field-of-straight-wire
     name: 직선 전류의 자기장
     desc: 거리에 반비례하는 세기
     domain: electromagnetism
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "yes"
     sim: aperi21:current-magnetic-field
     batch: 01-broad
@@ -2748,21 +2780,21 @@ topics:
     desc: 축 위의 자기장
     domain: electromagnetism
     level: primary
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: amperes-law
     name: 앙페르 법칙
     desc: 전류와 자기장의 순환
     domain: electromagnetism
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: force-between-wires
     name: 도선 사이의 힘
     desc: 나란한 두 전류의 인력·척력
     domain: electromagnetism
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: magnetic-dipole
     name: 자기 쌍극자
@@ -2783,21 +2815,21 @@ topics:
     desc: 면을 지나는 자기장의 양
     domain: electromagnetism
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: faradays-law
     name: 패러데이 법칙
     desc: 자속 변화가 만드는 기전력
     domain: electromagnetism
     level: lower
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: lenzs-law
     name: 렌츠 법칙
     desc: 변화를 방해하는 유도 전류
     domain: electromagnetism
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "yes"
     sim: aperi21:lenz-law
     batch: 01-broad
@@ -2806,49 +2838,49 @@ topics:
     desc: 도선이 움직여 생기는 전압
     domain: electromagnetism
     level: upper
-    curricula: [ib]
+    curricula: [ib, ngss, ap]
     visual: "unsure"
   - id: eddy-current
     name: 맴돌이 전류
     desc: 덩어리 도체 속의 유도 전류
     domain: electromagnetism
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: self-inductance
     name: 자체 인덕턴스
     desc: 자기 자신의 자속 변화
     domain: electromagnetism
     level: upper
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: mutual-inductance
     name: 상호 인덕턴스
     desc: 이웃 회로에 유도되는 기전력
     domain: electromagnetism
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: energy-in-inductor
     name: 인덕터의 에너지
     desc: 자기장에 저장된 에너지
     domain: electromagnetism
     level: upper
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: rl-circuit
     name: RL 회로
     desc: 전류가 서서히 오르는 이유
     domain: electromagnetism
     level: upper
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: lc-oscillation
     name: LC 진동
     desc: 전기와 자기 에너지의 교환
     domain: electromagnetism
     level: upper
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: ac-generation
     name: 교류의 발생
@@ -2890,35 +2922,35 @@ topics:
     desc: 감은 수와 전압비
     domain: electromagnetism
     level: upper
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: motor
     name: 전동기
     desc: 전류가 받는 힘으로 도는 것
     domain: electromagnetism
     level: lower
-    curricula: [kr]
+    curricula: [kr, ap]
     visual: "unsure"
   - id: generator
     name: 발전기
     desc: 회전이 만드는 기전력
     domain: electromagnetism
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: displacement-current
     name: 변위 전류
     desc: 축전기 사이를 잇는 항
     domain: electromagnetism
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: maxwells-equations
     name: 맥스웰 방정식
     desc: 전자기를 묶는 네 식
     domain: electromagnetism
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ap]
     visual: "unsure"
   - id: electromagnetic-wave
     name: 전자기파
@@ -2939,7 +2971,7 @@ topics:
     desc: 파장에 따른 분류
     domain: electromagnetism
     level: lower
-    curricula: [ib]
+    curricula: [ib, ngss]
     visual: "unsure"
   - id: poynting-vector
     name: 포인팅 벡터
@@ -2959,15 +2991,15 @@ topics:
     name: 안테나의 복사
     desc: 가속하는 전하가 내는 파동
     domain: electromagnetism
-    level: null
-    curricula: []
+    level: upper
+    curricula: [ngss]
     visual: "unsure"
   - id: magnet-attraction
     name: 자석에 붙는 것
     desc: 자석이 당기는 물체와 당기지 않는 물체
     domain: electromagnetism
     level: primary
-    curricula: [kr]
+    curricula: [kr, ngss]
     visual: "yes"
     visualNote: 가까이 대면 당겨지는 것과 그대로인 것이 갈린다
   - id: magnetic-poles
@@ -2975,7 +3007,7 @@ topics:
     desc: 같은 극은 밀고 다른 극은 당긴다
     domain: electromagnetism
     level: primary
-    curricula: [kr]
+    curricula: [kr, ngss]
     visual: "yes"
     visualNote: 돌려서 마주 대면 밀고 당기는 것이 뒤바뀐다
   - id: simple-circuit
@@ -3130,7 +3162,7 @@ topics:
     desc: E=mc² 의 뜻
     domain: modern-physics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: rest-energy
     name: 정지 에너지
@@ -3200,7 +3232,7 @@ topics:
     desc: 빛의 입자성 증거
     domain: modern-physics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: work-function-and-threshold
     name: 일함수와 문턱 진동수
@@ -3214,7 +3246,7 @@ topics:
     desc: 질량 없는 입자의 양
     domain: modern-physics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ngss, ap]
     visual: "unsure"
   - id: compton-scattering
     name: 콤프턴 산란
@@ -3235,7 +3267,7 @@ topics:
     desc: 물질의 파동성
     domain: modern-physics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: electron-diffraction
     name: 전자 회절
@@ -3256,7 +3288,7 @@ topics:
     desc: 상보적인 두 기술
     domain: modern-physics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: uncertainty-principle
     name: 불확정성 원리
@@ -3340,14 +3372,14 @@ topics:
     desc: 불연속한 선 스펙트럼
     domain: modern-physics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: bohr-model
     name: 보어 모형
     desc: 궤도의 양자화
     domain: modern-physics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ap]
     visual: "unsure"
   - id: atomic-orbital
     name: 원자 궤도
@@ -3424,35 +3456,35 @@ topics:
     desc: 질량 결손과 안정성
     domain: modern-physics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: binding-energy-curve
     name: 결합 에너지 곡선
     desc: 철에서 최대가 되는 이유
     domain: modern-physics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ngss]
     visual: "unsure"
   - id: radioactive-decay
     name: 방사성 붕괴
     desc: 반감기와 지수 감소
     domain: modern-physics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: decay-types
     name: 붕괴의 종류
     desc: 알파·베타·감마
     domain: modern-physics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: half-life
     name: 반감기
     desc: 절반이 되는 데 걸리는 시간
     domain: modern-physics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: radiometric-dating
     name: 방사성 연대 측정
@@ -3466,7 +3498,7 @@ topics:
     desc: 무거운 핵이 갈라지며 내는 에너지
     domain: modern-physics
     level: upper
-    curricula: [ib]
+    curricula: [ib, ap]
     visual: "unsure"
   - id: chain-reaction
     name: 연쇄 반응
@@ -3480,7 +3512,7 @@ topics:
     desc: 가벼운 핵이 합쳐지며 내는 에너지
     domain: modern-physics
     level: upper
-    curricula: [kr, ib]
+    curricula: [kr, ib, ngss, ap]
     visual: "unsure"
   - id: standard-model-overview
     name: 표준 모형
@@ -3550,7 +3582,7 @@ topics:
     desc: 빛이 만드는 전위차
     domain: modern-physics
     level: upper
-    curricula: [kr]
+    curricula: [kr, ngss]
     visual: "unsure"
   - id: superconductivity
     name: 초전도
@@ -3577,8 +3609,8 @@ topics:
     name: 우주의 규모
     desc: 원자에서 우주까지 10의 거듭제곱으로 잇는 크기
     domain: modern-physics
-    level: upper
-    curricula: [kr]
+    level: lower
+    curricula: [kr, ngss]
     visual: "yes"
     visualNote: 배율을 바꾸며 원자에서 우주까지 잇는다
 
@@ -3590,3 +3622,12 @@ topics:
     curricula: [ib]
     visual: "yes"
     visualNote: 알파 입자 대부분이 지나가는데 드물게 크게 꺾인다
+
+  - id: ionizing-radiation
+    name: 이온화 복사
+    desc: 결합을 끊을 만큼 큰 광자 에너지
+    domain: modern-physics
+    level: upper
+    curricula: [ngss]
+    visual: "yes"
+    visualNote: 광자 에너지가 문턱을 넘는 순간 결합이 끊어진다

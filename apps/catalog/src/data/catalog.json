@@ -885,6 +885,16 @@
           "id": "orbital-decay",
           "name": "궤도 감쇠",
           "desc": "옅은 대기가 끄는 궤도"
+        },
+        {
+          "id": "inverse-square-law",
+          "name": "역제곱 법칙",
+          "desc": "퍼지는 만큼 옅어지는 것"
+        },
+        {
+          "id": "stellar-nucleosynthesis",
+          "name": "별의 원소 합성",
+          "desc": "무거운 원소가 별에서 만들어지는 것"
         }
       ]
     },
@@ -1486,6 +1496,11 @@
           "id": "sound-through-materials",
           "name": "물질을 통한 소리 전달",
           "desc": "매질에 따라 달라지는 소리의 전달"
+        },
+        {
+          "id": "digital-vs-analog-signal",
+          "name": "디지털 신호와 아날로그",
+          "desc": "잡음을 견디는 방식의 차이"
         }
       ]
     },
@@ -1733,6 +1748,11 @@
           "id": "object-color",
           "name": "물체의 색",
           "desc": "물체가 되쏘는 빛이 정하는 색"
+        },
+        {
+          "id": "light-through-materials",
+          "name": "빛과 재료",
+          "desc": "재료에 따라 갈리는 빛의 통과"
         }
       ]
     },
@@ -2573,12 +2593,17 @@
           "id": "rutherford-scattering",
           "name": "러더퍼드 산란",
           "desc": "대부분 지나가고 일부가 튕겨 나온 실험"
+        },
+        {
+          "id": "ionizing-radiation",
+          "name": "이온화 복사",
+          "desc": "결합을 끊을 만큼 큰 광자 에너지"
         }
       ]
     }
   ],
   "summary": {
-    "topics": 496,
+    "topics": 501,
     "implemented": 20,
     "labs": 7
   }
