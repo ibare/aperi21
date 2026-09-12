@@ -1,0 +1,3261 @@
+# 주제 SSOT — 무엇을 만들 수 있는 주제인가의 단일 원본.
+#
+# **생성물이 아니다. 사람이 고치는 원본이다.**
+# 규약(모집단 · 수준 축 · 판정 기준 · 이 스키마)은 docs/topics/README.md.
+# 사이트가 읽는 apps/catalog/src/data/catalog.json 은 여기서 생성된다 (pnpm catalog:topics).
+#
+# level 과 curricula 가 비어 있는 것은 아직 교육과정과 대조하지 않았다는 뜻이다.
+# visual 의 "unsure" 는 판정을 미룬 상태이지 중립이 아니다 — 구현 대상 집계에서 빠진다.
+
+# 분과는 열거의 비계다. 소속이 아니라 출처를 뜻한다 (README 3절).
+domains:
+  - id: kinematics
+    name: 운동학
+  - id: newtonian-mechanics
+    name: 뉴턴 역학
+  - id: energy-momentum
+    name: 일·에너지·운동량
+  - id: rotation-oscillation
+    name: 회전과 진동
+  - id: gravitation
+    name: 중력과 천체
+  - id: fluids
+    name: 유체
+  - id: thermodynamics
+    name: 열과 통계
+  - id: waves-acoustics
+    name: 파동과 음향
+  - id: optics
+    name: 광학
+  - id: electromagnetism
+    name: 전자기
+  - id: modern-physics
+    name: 현대물리
+
+topics:
+  # ── 운동학
+  - id: displacement-vs-distance
+    name: 변위와 이동 거리
+    desc: 방향을 가진 양과 누적된 양의 차이
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: reference-frame
+    name: 기준틀
+    desc: 관찰자에 따라 달라지는 운동 기술
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: coordinate-choice
+    name: 좌표계 선택
+    desc: 축을 어디에 두느냐가 식을 바꾸는 방식
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: average-velocity
+    name: 평균 속도
+    desc: 구간 전체를 대표하는 속도
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: instantaneous-velocity
+    name: 순간 속도
+    desc: 구간을 0으로 줄인 극한
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: speed-vs-velocity
+    name: 속력과 속도
+    desc: 크기만인 양과 방향까지 가진 양
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: average-acceleration
+    name: 평균 가속도
+    desc: 속도 변화의 비율
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: instantaneous-acceleration
+    name: 순간 가속도
+    desc: 속도의 순간 변화율
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: direction-of-acceleration
+    name: 가속도의 방향
+    desc: 속도와 같은 방향인지 반대인지가 정하는 것
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: uniform-motion
+    name: 등속 운동
+    desc: 속도가 변하지 않는 운동
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: uniformly-accelerated-motion
+    name: 등가속도 운동
+    desc: 가속도가 일정한 운동의 세 식
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: position-time-graph
+    name: 위치-시간 그래프
+    desc: 기울기가 속도인 표현
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: velocity-time-graph
+    name: 속도-시간 그래프
+    desc: 기울기가 가속도, 넓이가 변위인 표현
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "yes"
+    sim: aperi21:velocity-time-graph
+    batch: 00-pilot-kinematics
+  - id: acceleration-time-graph
+    name: 가속도-시간 그래프
+    desc: 넓이가 속도 변화인 표현
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: free-fall
+    name: 자유 낙하
+    desc: 중력만 받는 연직 운동
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: vertical-throw
+    name: 연직 투상
+    desc: 올라갔다 내려오는 운동의 대칭
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: gravitational-acceleration
+    name: 중력 가속도
+    desc: 질량과 무관한 낙하 가속도
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: fall-with-air-resistance
+    name: 저항이 있는 낙하
+    desc: 속도에 의존하는 저항과 그 결과
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: terminal-velocity
+    name: 종단 속도
+    desc: 저항과 중력이 균형에 이르는 속도
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: vector-decomposition
+    name: 벡터의 성분 분해
+    desc: 한 벡터를 축 방향으로 나누기
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: vector-addition
+    name: 벡터의 합성
+    desc: 꼬리와 머리를 잇는 덧셈
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: relative-velocity
+    name: 상대 속도
+    desc: 기준틀 사이의 속도 변환
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: river-crossing
+    name: 강 건너기
+    desc: 두 속도의 합성이 만드는 경로
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: projectile-motion
+    name: 포물선 운동
+    desc: 수평·연직 성분의 독립
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "yes"
+    sim: aperi21:projectile
+  - id: trajectory-equation
+    name: 궤적 방정식
+    desc: 시간을 소거해 얻은 경로의 식
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: uniform-circular-motion
+    name: 등속 원운동
+    desc: 속력이 일정한 원 궤도
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: centripetal-acceleration
+    name: 구심 가속도
+    desc: 방향만 바뀌는 운동의 가속도
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "yes"
+    sim: aperi21:centripetal-acceleration
+    batch: 00-pilot-kinematics
+  - id: period-and-frequency
+    name: 주기와 진동수
+    desc: 한 바퀴에 걸리는 시간과 그 역수
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: angular-velocity
+    name: 각속도
+    desc: 단위 시간당 각변위
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: angular-acceleration
+    name: 각가속도
+    desc: 각속도의 변화율
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: tangential-normal-acceleration
+    name: 접선·법선 가속도
+    desc: 속력 변화와 방향 변화의 분리
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: radius-of-curvature
+    name: 곡률 반지름
+    desc: 곡선이 국소적으로 닮은 원
+    domain: kinematics
+    level: null
+    curricula: []
+    visual: "unsure"
+  # ── 뉴턴 역학
+  - id: newtons-first-law
+    name: 관성 법칙
+    desc: 알짜힘이 없을 때의 운동 상태
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "yes"
+    sim: aperi21:inertial-frame
+    batch: 01-broad
+  - id: inertia
+    name: 관성
+    desc: 운동 상태를 유지하려는 성질
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: newtons-second-law
+    name: 가속도 법칙
+    desc: 알짜힘·질량·가속도의 관계
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: newtons-third-law
+    name: 작용 반작용
+    desc: 힘의 쌍과 서로 다른 작용점
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: net-force
+    name: 알짜힘
+    desc: 여러 힘의 벡터 합
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: free-body-diagram
+    name: 자유물체도
+    desc: 한 물체에 작용하는 힘만 분리하기
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: mass-vs-weight
+    name: 질량과 무게
+    desc: 물질의 양과 중력이 주는 힘
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: inertial-vs-gravitational-mass
+    name: 관성 질량과 중력 질량
+    desc: 서로 다른 정의가 같은 값을 주는 것
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: normal-force
+    name: 수직항력
+    desc: 접촉면이 수직으로 미는 힘
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: apparent-weight
+    name: 겉보기 무게
+    desc: 가속하는 엘리베이터 안의 저울
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: static-friction
+    name: 정지 마찰력
+    desc: 움직이기 전까지 버티는 힘
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: kinetic-friction
+    name: 운동 마찰력
+    desc: 미끄러지는 동안의 마찰
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: coefficient-of-friction
+    name: 마찰 계수
+    desc: 수직항력과 마찰력의 비
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: angle-of-friction
+    name: 마찰각
+    desc: 미끄러지기 시작하는 경사
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: inclined-plane
+    name: 빗면
+    desc: 중력을 면에 나란한 성분과 수직 성분으로
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: tension
+    name: 장력
+    desc: 줄이 당기는 힘과 그 전달
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: pulley-system
+    name: 도르래
+    desc: 힘의 방향과 크기를 바꾸는 장치
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: connected-bodies
+    name: 연결된 물체
+    desc: 함께 움직이는 계의 가속도
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: spring-force
+    name: 탄성력
+    desc: 변형에 비례하는 복원력
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: hookes-law
+    name: 훅 법칙
+    desc: 탄성 한계 안에서의 비례 관계
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: centripetal-force
+    name: 구심력
+    desc: 원운동을 유지시키는 힘의 정체
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: conical-pendulum
+    name: 원뿔 진자
+    desc: 장력과 중력이 만드는 원운동
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: banked-curve
+    name: 경사진 커브
+    desc: 마찰 없이도 도는 각도
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: vertical-loop
+    name: 연직 원운동
+    desc: 꼭대기에서 떨어지지 않는 최소 속력
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: drag-force
+    name: 공기 저항
+    desc: 속도의 1차·2차에 비례하는 저항
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: buoyant-force-as-force
+    name: 부력(힘으로서)
+    desc: 유체가 위로 미는 힘
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: non-inertial-frame
+    name: 비관성계
+    desc: 가속하는 기준틀에서의 운동
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: fictitious-force
+    name: 관성력
+    desc: 비관성계에서 도입하는 겉보기 힘
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: coriolis-effect
+    name: 코리올리 효과
+    desc: 회전 기준틀에서 휘는 경로
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: impulse-force-relation
+    name: 힘과 충격량
+    desc: 짧고 큰 힘과 길고 작은 힘
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: equilibrium-of-forces
+    name: 힘의 평형
+    desc: 알짜힘이 0인 상태
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: atwood-machine
+    name: 애트우드 기계
+    desc: 두 추가 도르래로 연결된 계
+    domain: newtonian-mechanics
+    level: null
+    curricula: []
+    visual: "unsure"
+  # ── 일·에너지·운동량
+  - id: work
+    name: 일
+    desc: 힘과 변위의 내적
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: work-by-variable-force
+    name: 변하는 힘이 한 일
+    desc: 힘-변위 그래프의 넓이
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: kinetic-energy
+    name: 운동 에너지
+    desc: 속력이 담고 있는 에너지
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: work-energy-theorem
+    name: 일-운동 에너지 정리
+    desc: 알짜일이 운동 에너지 변화와 같음
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: gravitational-potential-energy
+    name: 중력 퍼텐셜 에너지
+    desc: 높이에 저장된 에너지
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: elastic-potential-energy
+    name: 탄성 퍼텐셜 에너지
+    desc: 변형에 저장된 에너지
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: conservative-force
+    name: 보존력
+    desc: 경로에 무관한 힘과 퍼텐셜의 존재
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: non-conservative-force
+    name: 비보존력
+    desc: 경로에 따라 달라지는 일
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: conservation-of-mechanical-energy
+    name: 역학적 에너지 보존
+    desc: 형태가 바뀌어도 총량이 유지됨
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "yes"
+    sim: aperi21:ramp-energy
+    batch: 01-broad
+  - id: energy-dissipation
+    name: 에너지 소산
+    desc: 마찰이 가져가는 몫과 그 행방
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: potential-energy-curve
+    name: 퍼텐셜 곡선
+    desc: 곡선의 모양이 운동을 정하는 방식
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: equilibrium-points
+    name: 평형점
+    desc: 안정·불안정·중립 평형
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: power
+    name: 일률
+    desc: 단위 시간당 일
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: efficiency
+    name: 효율
+    desc: 넣은 것과 얻은 것의 비
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: momentum
+    name: 운동량
+    desc: 질량과 속도의 곱
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: impulse
+    name: 충격량
+    desc: 힘의 시간 적분
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: impulse-momentum-theorem
+    name: 충격량-운동량 정리
+    desc: 충격량이 운동량 변화와 같음
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: conservation-of-momentum
+    name: 운동량 보존
+    desc: 외력이 없을 때의 총 운동량
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: elastic-collision
+    name: 탄성 충돌
+    desc: 운동 에너지까지 보존되는 충돌
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: inelastic-collision
+    name: 비탄성 충돌
+    desc: 에너지가 사라지는 충돌
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: perfectly-inelastic-collision
+    name: 완전 비탄성 충돌
+    desc: 붙어서 함께 움직이는 경우
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: coefficient-of-restitution
+    name: 반발 계수
+    desc: 충돌 전후 상대 속도의 비
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: two-dimensional-collision
+    name: 2차원 충돌
+    desc: 성분마다 따로 성립하는 보존
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: center-of-mass
+    name: 질량 중심
+    desc: 계를 대표하는 점
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: center-of-mass-motion
+    name: 질량 중심의 운동
+    desc: 내부 힘에 영향받지 않는 운동
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: explosion-and-recoil
+    name: 폭발과 반동
+    desc: 정지한 계가 갈라질 때
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: variable-mass-system
+    name: 질량이 변하는 계
+    desc: 질량 유출입이 있는 운동 방정식
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: rocket-equation
+    name: 로켓 방정식
+    desc: 연료를 버려 얻는 속도
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: ballistic-pendulum
+    name: 탄동 진자
+    desc: 충돌과 에너지 보존을 잇는 측정
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: energy-in-collision
+    name: 충돌에서의 에너지
+    desc: 보존되는 것과 안 되는 것의 구분
+    domain: energy-momentum
+    level: null
+    curricula: []
+    visual: "unsure"
+  # ── 회전과 진동
+  - id: torque
+    name: 돌림힘
+    desc: 회전을 일으키는 양과 팔 길이
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: lever-arm
+    name: 힘의 팔
+    desc: 회전축까지의 수직 거리
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: moment-of-inertia
+    name: 관성 모멘트
+    desc: 질량 분포가 정하는 회전 저항
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: parallel-axis-theorem
+    name: 평행축 정리
+    desc: 축을 옮길 때의 관성 모멘트
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: rotational-kinetic-energy
+    name: 회전 운동 에너지
+    desc: 각속도가 담은 에너지
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: angular-momentum
+    name: 각운동량
+    desc: 회전의 운동량
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: conservation-of-angular-momentum
+    name: 각운동량 보존
+    desc: 팔을 오므리면 빨라지는 이유
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: rolling-without-slipping
+    name: 미끄러지지 않는 구름
+    desc: 병진과 회전의 구속 조건
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: rolling-race
+    name: 구르는 물체의 경주
+    desc: 질량 분포가 정하는 도착 순서
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: static-equilibrium
+    name: 정적 평형
+    desc: 힘과 돌림힘이 모두 0
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: center-of-gravity
+    name: 무게 중심
+    desc: 넘어지는 조건을 정하는 점
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: gyroscopic-precession
+    name: 세차 운동
+    desc: 돌림힘이 각운동량 방향을 돌리는 것
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: angular-momentum-vector
+    name: 각운동량의 방향
+    desc: 오른손 규칙과 회전축
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: simple-harmonic-motion
+    name: 단순 조화 운동
+    desc: 복원력이 변위에 비례하는 운동
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: shm-energy
+    name: 조화 운동의 에너지
+    desc: 운동 에너지와 퍼텐셜의 교환
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: phase-and-amplitude
+    name: 위상과 진폭
+    desc: 같은 진동수의 두 진동을 가르는 것
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: mass-spring-system
+    name: 용수철 진자
+    desc: 질량과 탄성 계수가 정하는 주기
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: simple-pendulum
+    name: 단진자
+    desc: 작은 진폭에서의 주기
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: physical-pendulum
+    name: 물리 진자
+    desc: 크기가 있는 물체의 진동
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: pendulum-amplitude-dependence
+    name: 진폭과 주기
+    desc: 큰 진폭에서 깨지는 등시성
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "yes"
+    sim: aperi21:pendulum-isochronism
+    batch: 01-broad
+  - id: damped-oscillation
+    name: 감쇠 진동
+    desc: 에너지가 빠져나가는 진동
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: damping-regimes
+    name: 감쇠의 세 양상
+    desc: 부족·임계·과도 감쇠
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: driven-oscillation
+    name: 강제 진동
+    desc: 외부 구동에 대한 응답
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: resonance
+    name: 공명
+    desc: 구동 진동수가 고유 진동수에 맞을 때
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: quality-factor
+    name: Q 인자
+    desc: 공명의 날카로움
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: coupled-oscillators
+    name: 결합 진동자
+    desc: 에너지가 오가는 두 진동자
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: normal-modes
+    name: 정규 모드
+    desc: 계가 가진 고유 진동 형태
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: beats-in-oscillation
+    name: 진동의 맥놀이
+    desc: 가까운 두 진동수의 합
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: phase-space
+    name: 위상 공간
+    desc: 위치-속도 평면에서 본 운동
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: nonlinear-oscillation
+    name: 비선형 진동
+    desc: 복원력이 비례를 벗어날 때
+    domain: rotation-oscillation
+    level: null
+    curricula: []
+    visual: "unsure"
+  # ── 중력과 천체
+  - id: newtons-law-of-gravitation
+    name: 만유인력 법칙
+    desc: 거리 제곱에 반비례하는 힘
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: gravitational-constant
+    name: 중력 상수
+    desc: 캐번디시 실험과 그 측정
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: gravitational-field
+    name: 중력장
+    desc: 공간에 분포한 중력의 세기
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: shell-theorem
+    name: 껍질 정리
+    desc: 구 껍질 안팎에서의 중력
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: gravity-inside-earth
+    name: 지구 내부의 중력
+    desc: 깊이에 따라 줄어드는 중력
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: gravitational-potential-energy-general
+    name: 중력 퍼텐셜 에너지(일반)
+    desc: 무한대를 기준으로 한 음의 에너지
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: escape-velocity
+    name: 탈출 속도
+    desc: 중력을 벗어나는 최소 속도
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: orbital-velocity
+    name: 궤도 속도
+    desc: 원 궤도를 유지하는 속도
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: circular-orbit
+    name: 원 궤도
+    desc: 구심력이 중력인 운동
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: elliptical-orbit
+    name: 타원 궤도
+    desc: 초점에 놓인 중심 천체
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: keplers-first-law
+    name: 케플러 제1법칙
+    desc: 궤도는 타원이다
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: keplers-second-law
+    name: 케플러 제2법칙
+    desc: 같은 시간에 같은 넓이
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: keplers-third-law
+    name: 케플러 제3법칙
+    desc: 주기와 긴반지름의 관계
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: two-body-problem
+    name: 이체 문제
+    desc: 질량 중심 둘레를 도는 두 천체
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: reduced-mass
+    name: 환산 질량
+    desc: 이체를 일체로 바꾸는 양
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: tidal-force
+    name: 조석력
+    desc: 중력의 차이가 만드는 늘어남
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: roche-limit
+    name: 로슈 한계
+    desc: 조석력이 천체를 부수는 거리
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: weightlessness
+    name: 무중력
+    desc: 자유 낙하 중의 겉보기 무게
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: geostationary-orbit
+    name: 정지 궤도
+    desc: 자전 주기와 같은 궤도
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: gravitational-slingshot
+    name: 중력 도움
+    desc: 천체를 이용한 속도 변화
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: lagrange-points
+    name: 라그랑주 점
+    desc: 두 천체 사이의 평형 위치
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: orbital-transfer
+    name: 궤도 전이
+    desc: 호만 전이와 그 비용
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: black-hole-horizon
+    name: 사건 지평선
+    desc: 탈출 속도가 광속이 되는 반지름
+    domain: gravitation
+    level: null
+    curricula: []
+    visual: "unsure"
+  # ── 유체
+  - id: density
+    name: 밀도
+    desc: 단위 부피당 질량
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: pressure
+    name: 압력
+    desc: 단위 면적당 힘
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: pressure-isotropy
+    name: 압력의 등방성
+    desc: 방향에 무관하게 같은 크기
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "yes"
+    sim: aperi21:pressure-isotropy
+  - id: hydrostatic-pressure
+    name: 정수압
+    desc: 깊이에 비례하는 압력
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: pressure-and-container-shape
+    name: 그릇 모양과 압력
+    desc: 바닥 압력이 모양에 무관한 것
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "yes"
+    sim: aperi21:pressure-and-container-shape
+  - id: atmospheric-pressure
+    name: 대기압
+    desc: 공기 기둥의 무게
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: barometer
+    name: 기압계
+    desc: 수은 기둥의 높이
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: manometer
+    name: 압력계
+    desc: 액주 차이로 재는 압력
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: pascals-principle
+    name: 파스칼 원리
+    desc: 압력의 전달과 유압 장치
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: buoyancy
+    name: 부력
+    desc: 밀려난 유체의 무게만큼
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: archimedes-principle
+    name: 아르키메데스 원리
+    desc: 뜨고 가라앉는 조건
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "yes"
+    sim: aperi21:archimedes-principle
+  - id: floating-and-draft
+    name: 뜨는 깊이
+    desc: 잠기는 부피가 정해지는 방식
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: stability-of-floating-body
+    name: 부유체의 안정
+    desc: 무게 중심과 부심의 관계
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: continuity-equation
+    name: 연속 방정식
+    desc: 단면적과 유속의 반비례
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: bernoullis-principle
+    name: 베르누이 원리
+    desc: 속도와 압력의 교환
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: venturi-effect
+    name: 벤투리 효과
+    desc: 좁아진 곳에서 낮아지는 압력
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: torricellis-law
+    name: 토리첼리 법칙
+    desc: 구멍에서 나오는 유속
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "yes"
+    sim: aperi21:torricellis-law
+  - id: lift-force
+    name: 양력
+    desc: 날개 위아래의 흐름 차이
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: viscosity
+    name: 점성
+    desc: 층 사이의 마찰
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: poiseuille-flow
+    name: 관 속의 층류
+    desc: 반지름 4제곱에 비례하는 유량
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: stokes-drag
+    name: 스토크스 항력
+    desc: 느린 흐름에서의 저항
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: laminar-vs-turbulent
+    name: 층류와 난류
+    desc: 흐름의 두 양상
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "yes"
+    sim: aperi21:laminar-vs-turbulent
+  - id: reynolds-number
+    name: 레이놀즈 수
+    desc: 전이를 가르는 무차원 수
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: boundary-layer
+    name: 경계층
+    desc: 벽 근처에서 속도가 0이 되는 층
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: surface-tension
+    name: 표면 장력
+    desc: 표면을 줄이려는 힘
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: laplace-pressure
+    name: 라플라스 압력
+    desc: 곡률이 만드는 안팎 압력차
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: capillary-action
+    name: 모세관 현상
+    desc: 좁은 관에서의 상승과 하강
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: wetting-and-contact-angle
+    name: 젖음과 접촉각
+    desc: 액체가 고체 위에 퍼지는 정도
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: drag-in-fluid
+    name: 유체 속 항력
+    desc: 형상과 속도가 정하는 저항
+    domain: fluids
+    level: null
+    curricula: []
+    visual: "unsure"
+  # ── 열과 통계
+  - id: temperature
+    name: 온도
+    desc: 열평형이 정의하는 양
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: thermal-equilibrium
+    name: 열평형
+    desc: 접촉한 두 계가 도달하는 상태
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: zeroth-law
+    name: 열역학 제0법칙
+    desc: 온도계가 성립하는 근거
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: temperature-scales
+    name: 온도 눈금
+    desc: 섭씨·화씨·절대 온도
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: absolute-zero
+    name: 절대 영도
+    desc: 도달할 수 없는 하한
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: heat-vs-temperature
+    name: 열과 온도
+    desc: 전달되는 에너지와 상태량
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: specific-heat
+    name: 비열
+    desc: 물질마다 다른 온도 변화
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: heat-capacity
+    name: 열용량
+    desc: 계 전체가 받는 열과 온도 변화
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: calorimetry
+    name: 열량 측정
+    desc: 섞었을 때의 최종 온도
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: latent-heat
+    name: 잠열
+    desc: 상변화 중 온도가 멈추는 이유
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: phase-diagram
+    name: 상평형 그림
+    desc: 압력과 온도가 정하는 상
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: triple-point
+    name: 삼중점
+    desc: 세 상이 공존하는 조건
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: thermal-conduction
+    name: 열전도
+    desc: 접촉을 통한 전달
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "yes"
+    sim: aperi21:heat-conduction
+    batch: 01-broad
+  - id: thermal-convection
+    name: 대류
+    desc: 유체의 이동이 나르는 열
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: thermal-radiation
+    name: 열복사
+    desc: 매질 없이 전달되는 열
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: stefan-boltzmann-law
+    name: 슈테판-볼츠만 법칙
+    desc: 온도 4제곱에 비례하는 복사
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: thermal-expansion
+    name: 열팽창
+    desc: 온도에 따른 길이·부피 변화
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: bimetal
+    name: 바이메탈
+    desc: 팽창률 차이가 만드는 휨
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: ideal-gas-law
+    name: 이상 기체 법칙
+    desc: 압력·부피·온도의 관계
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: boyles-law
+    name: 보일 법칙
+    desc: 온도가 일정할 때의 압력-부피
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: charles-law
+    name: 샤를 법칙
+    desc: 압력이 일정할 때의 부피-온도
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: kinetic-theory-of-gases
+    name: 기체 분자 운동론
+    desc: 거시량을 분자 운동으로 설명
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "yes"
+    sim: aperi21:gas-pressure
+    batch: 01-broad
+  - id: pressure-from-collisions
+    name: 충돌이 만드는 압력
+    desc: 벽에 부딪는 분자의 운동량
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: equipartition-theorem
+    name: 등분배 정리
+    desc: 자유도마다 나뉘는 에너지
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: maxwell-boltzmann-distribution
+    name: 맥스웰-볼츠만 분포
+    desc: 분자 속력의 분포
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: mean-free-path
+    name: 평균 자유 행로
+    desc: 충돌과 충돌 사이의 거리
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: internal-energy
+    name: 내부 에너지
+    desc: 계가 담고 있는 미시 에너지
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: first-law-of-thermodynamics
+    name: 열역학 제1법칙
+    desc: 내부 에너지·일·열의 관계
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: pv-diagram
+    name: PV 그림
+    desc: 넓이가 일인 표현
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: isothermal-process
+    name: 등온 과정
+    desc: 온도를 유지하는 변화
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: adiabatic-process
+    name: 단열 과정
+    desc: 열 출입이 없는 변화
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: isobaric-isochoric
+    name: 등압·등적 과정
+    desc: 압력 또는 부피를 고정한 변화
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: cyclic-process
+    name: 순환 과정
+    desc: 제자리로 돌아오는 변화
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: second-law-of-thermodynamics
+    name: 열역학 제2법칙
+    desc: 방향이 있는 변화
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: entropy
+    name: 엔트로피
+    desc: 경우의 수와 무질서
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: entropy-and-irreversibility
+    name: 엔트로피와 비가역성
+    desc: 되돌릴 수 없는 이유
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: heat-engine
+    name: 열기관
+    desc: 열을 일로 바꾸는 순환
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: carnot-cycle
+    name: 카르노 순환
+    desc: 이론적 최대 효율
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: refrigerator-heat-pump
+    name: 냉장고와 열펌프
+    desc: 일을 넣어 열을 옮기는 것
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: third-law
+    name: 열역학 제3법칙
+    desc: 절대 영도에서의 엔트로피
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: brownian-motion
+    name: 브라운 운동
+    desc: 분자 충돌이 만드는 무작위 운동
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: diffusion
+    name: 확산
+    desc: 농도 차이가 만드는 흐름
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: random-walk
+    name: 무작위 걸음
+    desc: 제곱근에 비례하는 이동 거리
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: statistical-fluctuation
+    name: 요동
+    desc: 입자 수가 적을 때 커지는 흔들림
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: maxwells-demon
+    name: 맥스웰의 도깨비
+    desc: 정보와 엔트로피의 관계
+    domain: thermodynamics
+    level: null
+    curricula: []
+    visual: "unsure"
+  # ── 파동과 음향
+  - id: wave-basics
+    name: 파동의 기본량
+    desc: 파장·진동수·속력·진폭
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: wave-vs-particle-transport
+    name: 파동이 나르는 것
+    desc: 매질은 제자리, 에너지는 이동
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: transverse-wave
+    name: 횡파
+    desc: 진동 방향이 진행 방향과 수직
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: longitudinal-wave
+    name: 종파
+    desc: 진동 방향이 진행 방향과 나란함
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: wave-speed-in-medium
+    name: 매질과 파동 속도
+    desc: 장력·밀도·탄성이 정하는 속도
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: wave-equation
+    name: 파동 방정식
+    desc: 파동을 지배하는 미분 방정식
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: wave-function-form
+    name: 파동의 식
+    desc: 위상과 파수의 표현
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: wavefront-and-ray
+    name: 파면과 광선
+    desc: 같은 위상의 면과 그 수직선
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: huygens-principle
+    name: 하위헌스 원리
+    desc: 파면의 각 점이 새 파원이 되는 것
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: superposition
+    name: 중첩 원리
+    desc: 파동이 겹칠 때의 합
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: constructive-destructive
+    name: 보강과 상쇄
+    desc: 위상차가 정하는 합의 크기
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: interference
+    name: 간섭
+    desc: 두 파원이 만드는 무늬
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: path-difference
+    name: 경로차
+    desc: 무늬의 위치를 정하는 양
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: standing-wave
+    name: 정상파
+    desc: 마디와 배가 고정되는 파동
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: harmonics
+    name: 배음
+    desc: 경계 조건이 정하는 진동수
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: string-vibration
+    name: 줄의 진동
+    desc: 양끝이 고정된 줄의 모드
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: air-column-resonance
+    name: 기주 공명
+    desc: 열린 관과 닫힌 관의 차이
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: beats
+    name: 맥놀이
+    desc: 가까운 두 진동수의 합
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "yes"
+    sim: aperi21:beats
+    batch: 01-broad
+  - id: doppler-effect
+    name: 도플러 효과
+    desc: 상대 운동에 따른 진동수 변화
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "yes"
+    sim: aperi21:doppler-effect
+    batch: 01-broad
+  - id: doppler-source-vs-observer
+    name: 음원과 관찰자
+    desc: 누가 움직이냐에 따른 비대칭
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: shock-wave
+    name: 충격파
+    desc: 음속을 넘을 때 생기는 원뿔
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: mach-number
+    name: 마하 수
+    desc: 음속에 대한 속도의 비
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: sound-speed
+    name: 음속
+    desc: 매질과 온도가 정하는 속도
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: sound-intensity
+    name: 음의 세기
+    desc: 거리 제곱에 반비례하는 감쇠
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: decibel-scale
+    name: 데시벨
+    desc: 로그로 재는 세기
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: pitch-loudness-timbre
+    name: 높이·크기·음색
+    desc: 물리량과 감각의 대응
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: reflection-of-waves
+    name: 파동의 반사
+    desc: 고정단과 자유단에서의 위상
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: refraction-of-waves
+    name: 파동의 굴절
+    desc: 속도 변화가 만드는 방향 전환
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: diffraction
+    name: 회절
+    desc: 장애물을 돌아가는 파동
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: slit-width-and-diffraction
+    name: 슬릿 폭과 회절
+    desc: 파장과 폭의 비가 정하는 퍼짐
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: wave-energy
+    name: 파동의 에너지
+    desc: 진폭 제곱에 비례하는 에너지
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: wave-attenuation
+    name: 파동의 감쇠
+    desc: 매질이 흡수하는 에너지
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: impedance-mismatch
+    name: 임피던스 부정합
+    desc: 경계에서 반사되는 비율
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: noise-cancellation
+    name: 능동 소음 제거
+    desc: 역위상 파동의 중첩
+    domain: waves-acoustics
+    level: null
+    curricula: []
+    visual: "unsure"
+  # ── 광학
+  - id: rectilinear-propagation
+    name: 빛의 직진
+    desc: 그림자와 광선 모형
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: shadow-umbra-penumbra
+    name: 본그림자와 반그림자
+    desc: 광원의 크기가 만드는 경계
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: pinhole-camera
+    name: 바늘구멍 사진기
+    desc: 구멍 하나가 만드는 상
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: law-of-reflection
+    name: 반사 법칙
+    desc: 입사각과 반사각
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: specular-diffuse-reflection
+    name: 정반사와 난반사
+    desc: 표면 거칠기가 정하는 반사
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: plane-mirror-image
+    name: 평면거울의 상
+    desc: 허상의 위치와 좌우 반전
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: multiple-mirror-images
+    name: 두 거울의 상
+    desc: 각도가 정하는 상의 개수
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: concave-mirror
+    name: 오목거울
+    desc: 초점과 실상
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: convex-mirror
+    name: 볼록거울
+    desc: 확대된 시야와 허상
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: mirror-equation
+    name: 거울 공식
+    desc: 물체 거리·상 거리·초점 거리
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: snells-law
+    name: 굴절 법칙
+    desc: 매질에 따른 경로 꺾임
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: index-of-refraction
+    name: 굴절률
+    desc: 매질 속 빛의 속도
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: apparent-depth
+    name: 겉보기 깊이
+    desc: 물속 물체가 떠 보이는 이유
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: total-internal-reflection
+    name: 전반사
+    desc: 임계각과 그 조건
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: optical-fiber
+    name: 광섬유
+    desc: 전반사로 가두는 빛
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: mirage
+    name: 신기루
+    desc: 밀도 기울기가 휘게 하는 빛
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: dispersion
+    name: 분산
+    desc: 파장에 따른 굴절률 차이
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: prism
+    name: 프리즘
+    desc: 분산으로 나뉘는 스펙트럼
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: rainbow
+    name: 무지개
+    desc: 물방울 속 굴절과 반사
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: thin-lens
+    name: 얇은 렌즈
+    desc: 초점과 결상
+    domain: optics
+    level: null
+    curricula: []
+    visual: "yes"
+    sim: aperi21:ray-tracing
+  - id: converging-diverging-lens
+    name: 볼록 렌즈와 오목 렌즈
+    desc: 모으는 렌즈와 퍼뜨리는 렌즈
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: lens-equation
+    name: 렌즈 공식
+    desc: 물체·상·초점 거리의 관계
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: magnification
+    name: 배율
+    desc: 상의 크기와 물체의 크기
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: real-vs-virtual-image
+    name: 실상과 허상
+    desc: 빛이 실제로 모이는가
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: lens-maker-equation
+    name: 렌즈 제작자 공식
+    desc: 곡률과 굴절률이 정하는 초점
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: lens-combination
+    name: 렌즈의 조합
+    desc: 두 렌즈가 만드는 합성 초점
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: spherical-aberration
+    name: 구면 수차
+    desc: 가장자리 광선이 다른 곳에 모임
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: chromatic-aberration
+    name: 색수차
+    desc: 파장마다 다른 초점
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: human-eye-accommodation
+    name: 눈의 조절
+    desc: 수정체가 초점을 맞추는 방식
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: myopia-hyperopia
+    name: 근시와 원시
+    desc: 상이 맺히는 위치와 교정
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: magnifying-glass
+    name: 돋보기
+    desc: 가까운 초점 안의 물체
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: microscope
+    name: 현미경
+    desc: 대물과 접안의 배율 곱
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: telescope
+    name: 망원경
+    desc: 초점 거리 비가 정하는 배율
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: youngs-double-slit
+    name: 이중 슬릿 간섭
+    desc: 빛의 파동성 증거
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: single-slit-diffraction
+    name: 단일 슬릿 회절
+    desc: 폭이 만드는 무늬
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: diffraction-grating
+    name: 회절 격자
+    desc: 여러 슬릿이 만드는 날카로운 극대
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: thin-film-interference
+    name: 박막 간섭
+    desc: 두께가 만드는 색
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: newtons-rings
+    name: 뉴턴 링
+    desc: 곡면과 평면 사이의 간섭
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: resolving-power
+    name: 분해능
+    desc: 두 점을 가르는 한계
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: polarization
+    name: 편광
+    desc: 진동면의 선택
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: malus-law
+    name: 말뤼스 법칙
+    desc: 편광판을 지난 세기
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: brewster-angle
+    name: 브루스터 각
+    desc: 반사광이 완전 편광되는 각
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: birefringence
+    name: 복굴절
+    desc: 방향에 따라 다른 굴절률
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: scattering
+    name: 산란
+    desc: 하늘과 노을의 색
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: rayleigh-scattering
+    name: 레일리 산란
+    desc: 파장 4제곱에 반비례하는 산란
+    domain: optics
+    level: null
+    curricula: []
+    visual: "unsure"
+  # ── 전자기
+  - id: electric-charge
+    name: 전하
+    desc: 두 종류의 전하와 보존
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: charging-methods
+    name: 대전 방법
+    desc: 마찰·접촉·유도
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: conductor-vs-insulator
+    name: 도체와 부도체
+    desc: 전하가 움직일 수 있는가
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: coulombs-law
+    name: 쿨롱 법칙
+    desc: 전하 사이의 힘
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: superposition-of-forces
+    name: 전기력의 중첩
+    desc: 여러 전하가 주는 힘의 합
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: electric-field
+    name: 전기장
+    desc: 단위 전하가 받는 힘
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: field-lines
+    name: 전기력선
+    desc: 장을 그리는 규약과 그 뜻
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: field-of-dipole
+    name: 쌍극자의 전기장
+    desc: 가까운 두 반대 전하
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: uniform-field
+    name: 균일한 전기장
+    desc: 평행판 사이의 장
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: charge-in-uniform-field
+    name: 균일장 속 전하
+    desc: 포물선 운동과의 대응
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: gausss-law
+    name: 가우스 법칙
+    desc: 닫힌 면을 지나는 전기력선속
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: field-of-charged-sphere
+    name: 대전된 구의 전기장
+    desc: 안과 밖이 다른 이유
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: electric-potential
+    name: 전위
+    desc: 단위 전하당 퍼텐셜 에너지
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: potential-difference
+    name: 전위차
+    desc: 두 점 사이의 전위 차이
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: equipotential-surface
+    name: 등전위면
+    desc: 전기장과 수직인 면
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: potential-vs-field
+    name: 전위와 전기장
+    desc: 기울기 관계
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: electrostatic-shielding
+    name: 정전기 차폐
+    desc: 도체 내부의 장이 0인 이유
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: charge-on-conductor-surface
+    name: 도체 표면의 전하
+    desc: 뾰족한 곳에 몰리는 전하
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: dielectric
+    name: 유전체
+    desc: 분극과 전기장의 약화
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: capacitance
+    name: 전기 용량
+    desc: 전하를 저장하는 능력
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: parallel-plate-capacitor
+    name: 평행판 축전기
+    desc: 넓이·간격이 정하는 용량
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: capacitors-in-circuit
+    name: 축전기의 연결
+    desc: 직렬과 병렬의 합성
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: energy-in-capacitor
+    name: 축전기의 에너지
+    desc: 전기장에 저장된 에너지
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: electric-current
+    name: 전류
+    desc: 전하의 흐름과 방향 규약
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: drift-velocity
+    name: 표류 속도
+    desc: 느린 전자와 빠른 신호
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: ohms-law
+    name: 옴 법칙
+    desc: 전압·전류·저항
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: resistivity
+    name: 비저항
+    desc: 재료가 정하는 저항
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: resistance-and-geometry
+    name: 저항과 형태
+    desc: 길이와 단면적의 영향
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: temperature-and-resistance
+    name: 온도와 저항
+    desc: 금속과 반도체의 반대 경향
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: series-parallel-resistors
+    name: 저항의 직렬과 병렬
+    desc: 연결 방식에 따른 합성
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "yes"
+    sim: aperi21:dc-circuit
+  - id: emf-and-internal-resistance
+    name: 기전력과 내부 저항
+    desc: 단자 전압이 낮아지는 이유
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: kirchhoffs-current-law
+    name: 키르히호프 전류 법칙
+    desc: 마디에서의 전하 보존
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: kirchhoffs-voltage-law
+    name: 키르히호프 전압 법칙
+    desc: 고리에서의 에너지 보존
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: wheatstone-bridge
+    name: 휘트스톤 브리지
+    desc: 평형으로 재는 저항
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: electric-power
+    name: 전력
+    desc: 소비되는 에너지의 비율
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: joule-heating
+    name: 줄 열
+    desc: 저항이 만드는 열
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: rc-circuit
+    name: RC 회로
+    desc: 충전과 방전의 시간 상수
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: magnetic-field
+    name: 자기장
+    desc: 자기력의 분포
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: magnetic-field-lines
+    name: 자기력선
+    desc: 끊기지 않고 닫히는 선
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: lorentz-force
+    name: 로런츠 힘
+    desc: 자기장 속 전하가 받는 힘
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: charged-particle-in-magnetic-field
+    name: 자기장 속 전하의 원운동
+    desc: 속도에 수직인 힘
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: velocity-selector
+    name: 속도 선택기
+    desc: 전기력과 자기력의 균형
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: mass-spectrometer
+    name: 질량 분석기
+    desc: 반지름으로 가르는 질량
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: force-on-current-wire
+    name: 전류가 받는 힘
+    desc: 도선에 작용하는 자기력
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: biot-savart-law
+    name: 비오-사바르 법칙
+    desc: 전류 요소가 만드는 자기장
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: field-of-straight-wire
+    name: 직선 전류의 자기장
+    desc: 거리에 반비례하는 세기
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "yes"
+    sim: aperi21:current-magnetic-field
+    batch: 01-broad
+  - id: field-of-loop-and-solenoid
+    name: 고리와 솔레노이드
+    desc: 축 위의 자기장
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: amperes-law
+    name: 앙페르 법칙
+    desc: 전류와 자기장의 순환
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: force-between-wires
+    name: 도선 사이의 힘
+    desc: 나란한 두 전류의 인력·척력
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: magnetic-dipole
+    name: 자기 쌍극자
+    desc: 고리 전류와 자석의 동일성
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: magnetic-materials
+    name: 자성체
+    desc: 강자성·상자성·반자성
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: magnetic-flux
+    name: 자기 선속
+    desc: 면을 지나는 자기장의 양
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: faradays-law
+    name: 패러데이 법칙
+    desc: 자속 변화가 만드는 기전력
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: lenzs-law
+    name: 렌츠 법칙
+    desc: 변화를 방해하는 유도 전류
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "yes"
+    sim: aperi21:lenz-law
+    batch: 01-broad
+  - id: motional-emf
+    name: 운동 기전력
+    desc: 도선이 움직여 생기는 전압
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: eddy-current
+    name: 맴돌이 전류
+    desc: 덩어리 도체 속의 유도 전류
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: self-inductance
+    name: 자체 인덕턴스
+    desc: 자기 자신의 자속 변화
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: mutual-inductance
+    name: 상호 인덕턴스
+    desc: 이웃 회로에 유도되는 기전력
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: energy-in-inductor
+    name: 인덕터의 에너지
+    desc: 자기장에 저장된 에너지
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: rl-circuit
+    name: RL 회로
+    desc: 전류가 서서히 오르는 이유
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: lc-oscillation
+    name: LC 진동
+    desc: 전기와 자기 에너지의 교환
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: ac-generation
+    name: 교류의 발생
+    desc: 회전하는 코일과 사인파
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: rms-value
+    name: 실효값
+    desc: 교류를 직류와 견주는 값
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: reactance-and-impedance
+    name: 리액턴스와 임피던스
+    desc: 주파수에 의존하는 저항
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: phase-in-ac-circuit
+    name: 교류의 위상차
+    desc: 전압과 전류가 어긋나는 것
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: series-rlc-resonance
+    name: RLC 공진
+    desc: 임피던스가 최소가 되는 주파수
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: transformer
+    name: 변압기
+    desc: 감은 수와 전압비
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: motor
+    name: 전동기
+    desc: 전류가 받는 힘으로 도는 것
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: generator
+    name: 발전기
+    desc: 회전이 만드는 기전력
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: displacement-current
+    name: 변위 전류
+    desc: 축전기 사이를 잇는 항
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: maxwells-equations
+    name: 맥스웰 방정식
+    desc: 전자기를 묶는 네 식
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: electromagnetic-wave
+    name: 전자기파
+    desc: 전기장과 자기장의 자기 전파
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: speed-of-light-from-constants
+    name: 상수에서 나온 광속
+    desc: 유전율과 투자율의 조합
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: electromagnetic-spectrum
+    name: 전자기 스펙트럼
+    desc: 파장에 따른 분류
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: poynting-vector
+    name: 포인팅 벡터
+    desc: 전자기파가 나르는 에너지 흐름
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: radiation-pressure
+    name: 복사압
+    desc: 빛이 미는 힘
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: antenna-radiation
+    name: 안테나의 복사
+    desc: 가속하는 전하가 내는 파동
+    domain: electromagnetism
+    level: null
+    curricula: []
+    visual: "unsure"
+  # ── 현대물리
+  - id: michelson-morley
+    name: 마이컬슨-몰리 실험
+    desc: 에테르가 없다는 증거
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: special-relativity-postulates
+    name: 특수 상대성 가정
+    desc: 광속 불변과 상대성 원리
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: relativity-of-simultaneity
+    name: 동시성의 상대성
+    desc: 기준틀마다 다른 '동시'
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: time-dilation
+    name: 시간 지연
+    desc: 운동하는 시계가 느려짐
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: light-clock
+    name: 빛 시계
+    desc: 시간 지연을 유도하는 사고 실험
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: length-contraction
+    name: 길이 수축
+    desc: 운동 방향으로의 수축
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: muon-decay-evidence
+    name: 뮤온의 도달
+    desc: 시간 지연의 관측 증거
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: lorentz-transformation
+    name: 로런츠 변환
+    desc: 좌표 사이의 변환식
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: relativistic-velocity-addition
+    name: 속도의 상대론적 덧셈
+    desc: 광속을 넘지 못하는 합성
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: twin-paradox
+    name: 쌍둥이 역설
+    desc: 비대칭을 만드는 가속
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: spacetime-diagram
+    name: 시공간 도표
+    desc: 세계선과 동시선
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: light-cone
+    name: 광원뿔
+    desc: 인과가 닿는 영역
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: invariant-interval
+    name: 불변 간격
+    desc: 모든 기준틀에서 같은 양
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: relativistic-momentum
+    name: 상대론적 운동량
+    desc: 속도가 커질 때의 발산
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: mass-energy-equivalence
+    name: 질량-에너지 등가
+    desc: E=mc² 의 뜻
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: rest-energy
+    name: 정지 에너지
+    desc: 정지한 물체가 가진 에너지
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: relativistic-doppler
+    name: 상대론적 도플러
+    desc: 시간 지연이 더해진 진동수 변화
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: equivalence-principle
+    name: 등가 원리
+    desc: 가속과 중력의 구별 불가
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: gravitational-time-dilation
+    name: 중력 시간 지연
+    desc: 퍼텐셜에 따른 시계의 차이
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: gravitational-redshift
+    name: 중력 적색 이동
+    desc: 빠져나오며 잃는 에너지
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: light-bending-by-gravity
+    name: 빛의 휨
+    desc: 질량 근처에서 휘는 경로
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: blackbody-radiation
+    name: 흑체 복사
+    desc: 고전 이론의 파탄
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: wien-displacement-law
+    name: 빈 변위 법칙
+    desc: 온도와 최대 파장
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: plancks-quantum-hypothesis
+    name: 플랑크의 양자 가설
+    desc: 에너지가 덩어리라는 가정
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: photoelectric-effect
+    name: 광전 효과
+    desc: 빛의 입자성 증거
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: work-function-and-threshold
+    name: 일함수와 문턱 진동수
+    desc: 세기가 아니라 진동수가 정하는 것
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: photon-energy-momentum
+    name: 광자의 에너지와 운동량
+    desc: 질량 없는 입자의 양
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: compton-scattering
+    name: 콤프턴 산란
+    desc: 광자가 운동량을 가진다는 증거
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: pair-production
+    name: 쌍생성
+    desc: 에너지가 물질이 되는 것
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: de-broglie-wavelength
+    name: 드브로이 파장
+    desc: 물질의 파동성
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: electron-diffraction
+    name: 전자 회절
+    desc: 물질파의 관측 증거
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: double-slit-with-electrons
+    name: 전자의 이중 슬릿
+    desc: 하나씩 보내도 생기는 무늬
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: wave-particle-duality
+    name: 파동-입자 이중성
+    desc: 상보적인 두 기술
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: uncertainty-principle
+    name: 불확정성 원리
+    desc: 켤레량의 동시 결정 한계
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: energy-time-uncertainty
+    name: 에너지-시간 불확정성
+    desc: 수명과 선폭의 관계
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: wave-function
+    name: 파동 함수
+    desc: 확률 진폭과 그 해석
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: born-rule
+    name: 보른 규칙
+    desc: 제곱이 확률이 되는 규약
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: superposition-quantum
+    name: 양자 중첩
+    desc: 여러 상태의 합으로 있는 것
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: measurement-collapse
+    name: 측정과 붕괴
+    desc: 관측이 상태를 정하는 것
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: particle-in-a-box
+    name: 무한 우물
+    desc: 경계가 만드는 에너지 양자화
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: finite-well
+    name: 유한 우물
+    desc: 벽 바깥으로 새는 파동 함수
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: quantum-tunneling
+    name: 터널 효과
+    desc: 장벽을 통과하는 확률
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: scanning-tunneling-microscope
+    name: 주사 터널 현미경
+    desc: 터널 전류로 그리는 표면
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: quantum-harmonic-oscillator
+    name: 양자 조화 진동자
+    desc: 등간격 준위와 영점 에너지
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: hydrogen-spectrum
+    name: 수소 스펙트럼
+    desc: 불연속한 선 스펙트럼
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: bohr-model
+    name: 보어 모형
+    desc: 궤도의 양자화
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: atomic-orbital
+    name: 원자 궤도
+    desc: 확률 분포로서의 전자
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: quantum-numbers
+    name: 양자수
+    desc: 상태를 지정하는 네 수
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: pauli-exclusion
+    name: 파울리 배타 원리
+    desc: 같은 상태를 못 가짐
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: electron-configuration
+    name: 전자 배치
+    desc: 주기율표가 나오는 방식
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: spin
+    name: 스핀
+    desc: 고전 대응물이 없는 각운동량
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: stern-gerlach
+    name: 슈테른-게를라흐 실험
+    desc: 갈라지는 원자 빔
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: zeeman-effect
+    name: 제이만 효과
+    desc: 자기장이 가르는 준위
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: laser-and-stimulated-emission
+    name: 레이저와 유도 방출
+    desc: 결이 맞는 빛의 증폭
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: nuclear-structure
+    name: 원자핵의 구성
+    desc: 양성자와 중성자
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: strong-force
+    name: 강한 상호작용
+    desc: 핵을 묶는 짧은 거리의 힘
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: nuclear-binding-energy
+    name: 핵결합 에너지
+    desc: 질량 결손과 안정성
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: binding-energy-curve
+    name: 결합 에너지 곡선
+    desc: 철에서 최대가 되는 이유
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: radioactive-decay
+    name: 방사성 붕괴
+    desc: 반감기와 지수 감소
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: decay-types
+    name: 붕괴의 종류
+    desc: 알파·베타·감마
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: half-life
+    name: 반감기
+    desc: 절반이 되는 데 걸리는 시간
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: radiometric-dating
+    name: 방사성 연대 측정
+    desc: 남은 비율로 재는 시간
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: nuclear-fission
+    name: 핵분열
+    desc: 무거운 핵이 갈라지며 내는 에너지
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: chain-reaction
+    name: 연쇄 반응
+    desc: 중성자가 이어가는 분열
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: nuclear-fusion
+    name: 핵융합
+    desc: 가벼운 핵이 합쳐지며 내는 에너지
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: standard-model-overview
+    name: 표준 모형
+    desc: 기본 입자와 상호작용의 분류
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: antimatter
+    name: 반물질
+    desc: 부호가 반대인 짝
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: neutrino
+    name: 중성미자
+    desc: 거의 상호작용하지 않는 입자
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: band-theory
+    name: 띠 이론
+    desc: 도체·부도체·반도체의 구분
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: fermi-level
+    name: 페르미 준위
+    desc: 전자가 채워진 높이
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: semiconductor-doping
+    name: 도핑
+    desc: 불순물이 만드는 n형과 p형
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: pn-junction
+    name: pn 접합
+    desc: 공핍층과 정류
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: diode-and-led
+    name: 다이오드와 LED
+    desc: 한 방향 전류와 빛의 방출
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: transistor-principle
+    name: 트랜지스터
+    desc: 작은 신호가 큰 전류를 제어
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: photovoltaic-effect
+    name: 광전지 효과
+    desc: 빛이 만드는 전위차
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: superconductivity
+    name: 초전도
+    desc: 저항이 사라지는 상태
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: meissner-effect
+    name: 마이스너 효과
+    desc: 자기장을 밀어내는 초전도체
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"
+  - id: bose-einstein-condensate
+    name: 보스-아인슈타인 응축
+    desc: 같은 상태로 몰리는 저온의 입자
+    domain: modern-physics
+    level: null
+    curricula: []
+    visual: "unsure"

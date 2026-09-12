@@ -1,5 +1,5 @@
 {
-  "$comment": "자동 생성 — 직접 편집하지 말 것. 원본은 tasks/piece-catalog/PHYSICS-TOPICS.md. 생성: pnpm catalog:topics",
+  "$comment": "자동 생성 — 직접 편집하지 말 것. 원본은 docs/topics/topics.yaml. 생성: pnpm catalog:topics",
   "version": "2",
   "domain": "physics",
   "domains": [

@@ -1,92 +1,64 @@
 /**
  * 주제 카탈로그 생성기.
  *
- * 원본은 `tasks/piece-catalog/PHYSICS-TOPICS.md` 하나다. 사람이 그 문서만 고치고
- * 사이트가 읽는 JSON 은 여기서 만든다 — 두 곳에 적으면 반드시 어긋난다.
+ * 원본은 `docs/topics/topics.yaml` 하나다. 사람이 그 파일만 고치고 사이트가 읽는
+ * JSON 은 여기서 만든다 — 두 곳에 적으면 반드시 어긋난다.
+ *
+ * 모집단(글로벌 초·중·고 물리)과 판정 기준, 스키마는 `docs/topics/README.md` 가 정한다.
  *
  * 구조는 FACET `apps/playground/src/catalog.json` 을 따른다: **주제와 구현물이 한
  * 트리에 살고, 구현된 것만 레지스트리 id 를 단다.** FACET 은 835개 항목 중 137개만
  * `facetId` 를 갖는다. 우리는 `simId` 를 쓴다.
  *
- * 이 목록은 **만들 시각화 목록이 아니다.** 질문을 캘 맥락이며, 주제 하나가 조각
- * 하나가 되지 않는다. 사이트도 그렇게 렌더해야 한다.
+ * 이 목록은 **만들 시각화 목록이 아니다.** 주제 하나가 조각 하나가 되지 않으며,
+ * 무엇을 만들지는 원본의 `visual` 판정이 가른다. 사이트도 그렇게 렌더해야 한다.
  *
  * 사용: pnpm catalog:topics
  */
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { parse } from 'yaml';
 
 const ROOT = resolve(import.meta.dirname, '..');
-const SRC = resolve(ROOT, 'tasks/piece-catalog/PHYSICS-TOPICS.md');
+const SRC = resolve(ROOT, 'docs/topics/topics.yaml');
 const OUT = resolve(ROOT, 'apps/catalog/src/data/catalog.json');
 
 /**
- * 엔진 밖에서 만든 조각(자립 HTML). `tasks/piece-lab/<id>/index.html` 이 있으면
+ * 엔진 밖에서 만든 조각(자립 HTML). `tasks/piece-lab/<주제 id>/index.html` 이 있으면
  * 사이트가 iframe 으로 띄운다.
  *
  * **이것은 임시 다리다.** 이 조각들은 `Bundle` 이 아니라 `{aperi21:<id>}` 봉투로
  * 쓸 수 없다. 엔진 경계를 정하기 전에 눈으로 견주려고 붙여 둔 것이다.
+ *
+ * 디렉터리 이름이 **조각 id** 인 것은 여기 걸리지 않는다 — 주제 id 와 조각 id 는
+ * 다를 수 있기 때문이다(`newtons-first-law` ↔ `inertial-frame`). 원본에 적힌 사실이
+ * 아니라 파일이 있느냐로 정해지는 파생값이라 여기서 판정한다.
  */
 const LAB_SRC = resolve(ROOT, 'tasks/piece-lab');
 const LAB_DEST = resolve(ROOT, 'apps/catalog/public/piece-lab');
 
-/** 문서의 분과 제목 → 도메인 id. 문서에는 번호와 한글 이름만 있다. */
-const DOMAIN_IDS: Record<string, string> = {
-  '운동학': 'kinematics',
-  '뉴턴 역학': 'newtonian-mechanics',
-  '일·에너지·운동량': 'energy-momentum',
-  '회전과 진동': 'rotation-oscillation',
-  '중력과 천체': 'gravitation',
-  '유체': 'fluids',
-  '열과 통계': 'thermodynamics',
-  '파동과 음향': 'waves-acoustics',
-  '광학': 'optics',
-  '전자기': 'electromagnetism',
-  '현대물리': 'modern-physics',
-};
+/** `docs/topics/topics.yaml` 의 항목. 스키마 설명은 `docs/topics/README.md` 5절. */
+interface SourceTopic {
+  id: string;
+  name: string;
+  desc: string;
+  domain: string;
+  /** 'primary' | 'lower' | 'upper'. 교육과정 대조 전에는 null */
+  level: string | null;
+  /** 근거가 된 계열. 대조 전에는 빈 배열 */
+  curricula: string[];
+  /** 'yes' | 'no' | 'unsure'. 구현 대상을 가르는 판정 */
+  visual: string;
+  /** 레지스트리 등록 키 **전체**. 있으면 구현된 것이다 */
+  sim?: string;
+  /** 어느 배치에서 구현됐나. 배치 기록이 있는 것만 */
+  batch?: string;
+}
 
-/**
- * 구현된 sim ↔ 주제 대응. **잠정이다.**
- *
- * 이 셋은 주제 목록보다 먼저, 질문 없이 만들어졌다 (`tasks/facet-insights/ANALYSIS.md`
- * §4). 실험실 자격 기준으로 재보면 셋 다 미달이거나 조건부다. 여기 적은 것은
- * "이 주제 자리에 마운트 가능한 것이 하나 있다" 는 사실일 뿐, 그 주제를 제대로
- * 답한다는 뜻이 아니다.
- *
- * `kind` 를 달지 않는 것도 그래서다. 조각·실험실 분류는 그 규범으로 만든 것에만 붙인다.
- */
-const IMPLEMENTED: Record<string, string> = {
-  'projectile-motion': 'aperi21:projectile',
-  'thin-lens': 'aperi21:ray-tracing',
-  'series-parallel-resistors': 'aperi21:dc-circuit',
-
-  // 2026-09-09 유체 조각 첫 배치. 위 셋과 달리 **질문에서 도출됐다** —
-  // 주제 목록에서 "글이 멈추는 지점" 을 캐고 잣대 셋을 적용해 만든 것이다.
-  'pressure-isotropy': 'aperi21:pressure-isotropy',
-  'pressure-and-container-shape': 'aperi21:pressure-and-container-shape',
-  'archimedes-principle': 'aperi21:archimedes-principle',
-
-  // 2026-09-10. 엔진 밖에서 손으로 짠 조각(430줄)을 어휘로 옮긴 것.
-  // 원본은 tasks/piece-lab 에 대조군으로 남아 labUrl 로도 열린다.
-  'torricellis-law': 'aperi21:torricellis-law',
-  'laminar-vs-turbulent': 'aperi21:laminar-vs-turbulent',
-
-  // 2026-09-10 파일럿 배치 — 자유 구현(격리 에이전트) → 추출 → 엔진 → 이관.
-  'centripetal-acceleration': 'aperi21:centripetal-acceleration',
-  'velocity-time-graph': 'aperi21:velocity-time-graph',
-
-  // 2026-09-12 01-broad 배치 — 유체에 몰려 있던 분과를 넓혔다.
-  // 역학 2 · 진동 1 · 파동 2 · 전자기 2 · 열 2 (+ 천체 1 은 주제 미정).
-  'newtons-first-law': 'aperi21:inertial-frame',
-  'conservation-of-mechanical-energy': 'aperi21:ramp-energy',
-  'pendulum-amplitude-dependence': 'aperi21:pendulum-isochronism',
-  'beats': 'aperi21:beats',
-  'doppler-effect': 'aperi21:doppler-effect',
-  'field-of-straight-wire': 'aperi21:current-magnetic-field',
-  'lenzs-law': 'aperi21:lenz-law',
-  'thermal-conduction': 'aperi21:heat-conduction',
-  'kinetic-theory-of-gases': 'aperi21:gas-pressure',
-};
+interface Source {
+  domains: { id: string; name: string }[];
+  topics: SourceTopic[];
+}
 
 interface Topic {
   id: string;
@@ -108,49 +80,38 @@ interface Domain {
   topics: Topic[];
 }
 
-function parse(md: string): Domain[] {
-  const domains: Domain[] = [];
-  let current: Domain | null = null;
+const source = parse(readFileSync(SRC, 'utf8')) as Source;
 
-  for (const line of md.split('\n')) {
-    const heading = line.match(/^## \d+\.\s+(.+?)\s*$/);
-    if (heading) {
-      const name = heading[1]!;
-      const id = DOMAIN_IDS[name];
-      if (!id) throw new Error(`분과 '${name}' 의 도메인 id 가 DOMAIN_IDS 에 없다`);
-      current = { id, name, topics: [] };
-      domains.push(current);
-      continue;
-    }
-    // `## 집계` 같은 다른 h2 를 만나면 분과 구간이 끝난다.
-    if (line.startsWith('## ')) current = null;
-    if (!current) continue;
-
-    const row = line.match(/^\|\s*`([a-z0-9-]+)`\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*$/);
-    if (!row) continue;
-    const [, id, name, desc] = row as unknown as [string, string, string, string];
-    const topic: Topic = { id, name, desc };
-    if (IMPLEMENTED[id]) topic.simId = IMPLEMENTED[id];
-    if (existsSync(resolve(LAB_SRC, id, 'index.html'))) {
-      topic.labUrl = `piece-lab/${id}/index.html`;
-    }
-    current.topics.push(topic);
+// 정합 검사 — 원본이 바뀌어 어긋나도 조용히 지나가지 않게.
+const domainIds = new Set(source.domains.map((d) => d.id));
+const seen = new Set<string>();
+for (const t of source.topics) {
+  if (seen.has(t.id)) throw new Error(`주제 id 가 중복된다: ${t.id}`);
+  seen.add(t.id);
+  if (!domainIds.has(t.domain)) {
+    throw new Error(`주제 '${t.id}' 의 분과 '${t.domain}' 가 domains 에 없다`);
   }
-  return domains;
-}
-
-const domains = parse(readFileSync(SRC, 'utf8'));
-
-// 정합 검사 — 문서가 바뀌어 매핑이 떠도 조용히 지나가지 않게.
-const allIds = new Set(domains.flatMap((d) => d.topics.map((t) => t.id)));
-if (allIds.size !== domains.reduce((n, d) => n + d.topics.length, 0)) {
-  throw new Error('주제 id 가 중복된다');
-}
-for (const topicId of Object.keys(IMPLEMENTED)) {
-  if (!allIds.has(topicId)) {
-    throw new Error(`IMPLEMENTED 의 '${topicId}' 가 주제 목록에 없다 — 문서가 바뀌었는지 확인`);
+  // C4 — 등록 키는 원본에 전체가 적혀 있어야 한다. 여기서 조립하지 않는다.
+  if (t.sim && !t.sim.startsWith('aperi21:')) {
+    throw new Error(`주제 '${t.id}' 의 sim '${t.sim}' 이 등록 키 형태가 아니다`);
   }
 }
+
+const byDomain = new Map<string, Topic[]>(source.domains.map((d) => [d.id, []]));
+for (const t of source.topics) {
+  const topic: Topic = { id: t.id, name: t.name, desc: t.desc };
+  if (t.sim) topic.simId = t.sim;
+  if (existsSync(resolve(LAB_SRC, t.id, 'index.html'))) {
+    topic.labUrl = `piece-lab/${t.id}/index.html`;
+  }
+  byDomain.get(t.domain)!.push(topic);
+}
+
+const domains: Domain[] = source.domains.map((d) => ({
+  id: d.id,
+  name: d.name,
+  topics: byDomain.get(d.id)!,
+}));
 
 // 자립 조각을 사이트가 서빙할 수 있는 자리로 복사. 원본은 tasks/piece-lab 하나다.
 if (existsSync(LAB_SRC)) {
@@ -164,15 +125,12 @@ if (existsSync(LAB_SRC)) {
 }
 
 const topics = domains.reduce((n, d) => n + d.topics.length, 0);
-const implemented = domains.reduce(
-  (n, d) => n + d.topics.filter((t) => t.simId).length,
-  0,
-);
+const implemented = domains.reduce((n, d) => n + d.topics.filter((t) => t.simId).length, 0);
 const labs = domains.reduce((n, d) => n + d.topics.filter((t) => t.labUrl).length, 0);
 
 const catalog = {
   $comment:
-    '자동 생성 — 직접 편집하지 말 것. 원본은 tasks/piece-catalog/PHYSICS-TOPICS.md. 생성: pnpm catalog:topics',
+    '자동 생성 — 직접 편집하지 말 것. 원본은 docs/topics/topics.yaml. 생성: pnpm catalog:topics',
   version: '2',
   domain: 'physics',
   domains,
@@ -180,6 +138,17 @@ const catalog = {
 };
 
 writeFileSync(OUT, JSON.stringify(catalog, null, 2) + '\n', 'utf8');
+
+// 판정 현황은 생성물에 싣지 않고 여기서만 알린다 — 사이트가 아직 쓰지 않는 값이다.
+const visual = source.topics.reduce<Record<string, number>>((acc, t) => {
+  acc[t.visual] = (acc[t.visual] ?? 0) + 1;
+  return acc;
+}, {});
+const leveled = source.topics.filter((t) => t.level).length;
+
 process.stdout.write(
-  `[catalog] 도메인 ${domains.length} · 주제 ${topics} · 구현 ${implemented} · 자립조각 ${labs} → ${OUT.replace(ROOT + '/', '')}\n`,
+  `[catalog] 도메인 ${domains.length} · 주제 ${topics} · 구현 ${implemented} · 자립조각 ${labs} → ${OUT.replace(ROOT + '/', '')}\n` +
+    `[판정] visual ${Object.entries(visual)
+      .map(([k, v]) => `${k} ${v}`)
+      .join(' · ')} · level 채움 ${leveled}/${topics}\n`,
 );

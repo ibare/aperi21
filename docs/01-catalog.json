@@ -1,5 +1,5 @@
 {
-  "$deprecated": "이 파일은 프로젝트 가능성을 실험할 때 만든 상상 카탈로그다 (2026-04). 만들 시각화 29개를 미리 적고 parameters/stages/embedEstimate 까지 지어냈다. 2026-09-09 폐기 — 사이트는 tasks/piece-catalog/PHYSICS-TOPICS.md 에서 생성한 apps/catalog/src/data/catalog.json 을 읽는다. 기록으로만 남긴다.",
+  "$deprecated": "이 파일은 프로젝트 가능성을 실험할 때 만든 상상 카탈로그다 (2026-04). 만들 시각화 29개를 미리 적고 parameters/stages/embedEstimate 까지 지어냈다. 2026-09-09 폐기 — 사이트는 tasks/piece-catalog/PHYSICS-TOPICS.md 에서 생성한 apps/catalog/src/data/catalog.json 을 읽는다. 기록으로만 남긴다. (2026-09-12 후기: 그 원본도 docs/topics/topics.yaml 로 옮겨지고 삭제됐다. 현재 원본은 docs/topics/topics.yaml, 규약은 docs/topics/README.md.)",
   "version": "0.1",
   "name": "aperi21-catalog",
   "description": "aperi21 묶음 카탈로그. 29개 묶음, 고등학교~대학 1학년 물리 범위.",

@@ -21,6 +21,7 @@
   "devDependencies": {
     "@aperi21/bootstrap": "workspace:*",
     "@aperi21/host": "workspace:*",
-    "tsx": "^4.22.4"
+    "tsx": "^4.22.4",
+    "yaml": "^2.9.1"
   }
 }

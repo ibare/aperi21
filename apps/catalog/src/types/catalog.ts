@@ -4,7 +4,11 @@
  * 이 카탈로그는 **만들 시각화 목록이 아니다.** 질문을 캘 맥락(주제)의 목록이며,
  * 주제 하나가 시각화 하나가 되지 않는다. 구현된 것만 `simId` 를 단다.
  *
- * 원본은 `tasks/piece-catalog/PHYSICS-TOPICS.md`, 생성은 `pnpm catalog:topics`.
+ * 원본은 `docs/topics/topics.yaml`, 생성은 `pnpm catalog:topics`.
+ * 모집단과 판정 기준은 `docs/topics/README.md`.
+ *
+ * 원본에는 `level` · `curricula` · `visual` 이 더 있으나 여기 싣지 않는다 —
+ * 사이트가 아직 쓰지 않는 값이다. 쓸 일이 생기면 그때 추가한다.
  */
 
 /** 조각·실험실 분류. 그 규범으로 만든 것에만 붙는다. */
