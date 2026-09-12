@@ -90,7 +90,50 @@ CED(Course and Exam Description) PDF 가 6.7MB인데 텍스트 추출이 1만자
 `maxwells-equations` · `poynting-vector` · `carnot-cycle` 까지 담고 있어 그 위를 덮는다.
 세부 학습 목표를 못 본 것이 등급 B 의 이유지만, 단원 골격만으로도 판정에 모자람이 없었다.
 
-## `uk` — 아직 안 함
+## `uk` — 영국 · **등급 B** (KS3 는 결손)
+
+**GCSE 와 A-level 은 AQA specification 에서 확보했다.** 절 번호·제목과 범위 한정 표시까지
+읽혔다.
+
+- GCSE Physics(8463): 8개 주제 **99절** — 에너지 · 전기 · 입자모형 · 원자구조 · 힘 ·
+  파동 · 자기와 전자기 · 우주물리(physics only)
+- A-level Physics(7408): 9개 절 **96절** — 측정과 오차 · 입자와 복사 · 파동 · 역학과 재료 ·
+  전기 · 심화역학과 열물리 · 장 · 핵물리 · **천체물리**(선택). 선택 절은 이 밖에 의학물리 ·
+  공학물리 · 물리학의 전환점 · 전자공학이 더 있다
+- 범위 한정: GCSE 는 `(HT only)` 41건 · `(physics only)` 28건, A-level 은 `A-level only`
+
+**등급이 B 인 이유.** DfE 의 공식 subject content PDF 세 건(GCSE · GCE AS/A level · KS3)이
+모두 CID 폰트라 자체 파싱과 WebFetch 양쪽에서 읽히지 않았다. AQA 는 시험위원회 문서지만
+DfE subject content 가 모든 위원회의 최소 요건이고 AQA 는 그것을 절 단위로 펼친 판이라,
+내용의 신뢰도는 높고 해상도는 오히려 낫다.
+
+### KS3 는 구하지 못했다 — 결손으로 남긴다
+
+세 경로가 모두 막혔다.
+
+| 경로 | 결과 |
+|---|---|
+| DfE 국가교육과정 PDF | 자체 파싱 비ASCII 53%, WebFetch 도 "바이너리" |
+| AQA KS3 syllabus PDF | 텍스트 추출 **0자** |
+| 지방 교육청 사본 | **404** |
+
+**지어내지 않고 비워 둔다.** DfE PDF 를 WebFetch 에 넘겼을 때 「일반적인 영국 KS3 커리큘럼
+구조에 따르면」이라며 문서에 없는 내용을 채워 준 적이 있는데, 그것을 근거로 쓰면 이 목록
+전체의 신뢰가 무너진다.
+
+**영향은 작다.** KS3(11~14세)는 GCSE 의 하위 단계라 GCSE 에 없는 주제가 나올 여지가 작고,
+`lower` 수준은 한국 중학 · IB MYP · NGSS MS 로 이미 덮여 있다. 다만 **영국만의 `lower`
+주제가 있다면 놓쳤을 수 있다.** 나중에 원문을 구하면 그 축만 다시 보면 된다.
+
+## 등급 한눈에
+
+| 계열 | 등급 | 근거 |
+|---|---|---|
+| `kr` | **A** | 교육부 고시 [별책9] HWP 원문 직접 파싱 |
+| `ngss` | **A** | nextgenscience.org 학년군×주제 페이지 원문 |
+| `ib` | B | 공식 subject brief 차단·403 → 2차 자료 2곳 교차 |
+| `ap` | B | CED PDF 추출 실패 → AP Central 과목 페이지(단원 골격) |
+| `uk` | B | DfE PDF 3건 판독 불가 → AQA specification. **KS3 결손** |
 
 ---
 

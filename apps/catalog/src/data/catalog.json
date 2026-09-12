@@ -171,6 +171,11 @@
           "id": "radius-of-curvature",
           "name": "곡률 반지름",
           "desc": "곡선이 국소적으로 닮은 원"
+        },
+        {
+          "id": "stopping-distance",
+          "name": "정지 거리",
+          "desc": "반응 거리와 제동 거리의 합"
         }
       ]
     },
@@ -353,6 +358,16 @@
           "id": "push-and-pull",
           "name": "밀기와 당기기",
           "desc": "힘이 물체의 움직임과 모양을 바꾸는 것"
+        },
+        {
+          "id": "youngs-modulus",
+          "name": "영률",
+          "desc": "재료가 늘어나는 정도를 정하는 값"
+        },
+        {
+          "id": "stress-strain-curve",
+          "name": "응력-변형률 곡선",
+          "desc": "당길수록 달라지는 재료의 반응"
         }
       ]
     },
@@ -677,6 +692,11 @@
           "id": "nonlinear-oscillation",
           "name": "비선형 진동",
           "desc": "복원력이 비례를 벗어날 때"
+        },
+        {
+          "id": "gears",
+          "name": "기어",
+          "desc": "톱니 수가 바꾸는 회전과 힘"
         }
       ]
     },
@@ -895,6 +915,26 @@
           "id": "stellar-nucleosynthesis",
           "name": "별의 원소 합성",
           "desc": "무거운 원소가 별에서 만들어지는 것"
+        },
+        {
+          "id": "star-life-cycle",
+          "name": "별의 일생",
+          "desc": "질량이 가르는 별의 경로"
+        },
+        {
+          "id": "stellar-spectral-class",
+          "name": "별의 스펙트럼 분류",
+          "desc": "온도가 정하는 흡수선 무늬"
+        },
+        {
+          "id": "supernova-and-neutron-star",
+          "name": "초신성과 중성자별",
+          "desc": "무너지고 튕겨 나가는 최후"
+        },
+        {
+          "id": "exoplanet-detection",
+          "name": "외계행성 탐지",
+          "desc": "행성이 남기는 흔적"
         }
       ]
     },
@@ -1501,6 +1541,11 @@
           "id": "digital-vs-analog-signal",
           "name": "디지털 신호와 아날로그",
           "desc": "잡음을 견디는 방식의 차이"
+        },
+        {
+          "id": "seismic-waves",
+          "name": "지진파",
+          "desc": "지구 속을 지나는 P파와 S파"
         }
       ]
     },
@@ -2187,6 +2232,16 @@
           "id": "millikan-experiment",
           "name": "밀리컨 실험",
           "desc": "전하가 띄엄띄엄하다는 증거"
+        },
+        {
+          "id": "power-transmission",
+          "name": "송전",
+          "desc": "전압을 올려 손실을 줄이는 것"
+        },
+        {
+          "id": "loudspeaker-and-microphone",
+          "name": "스피커와 마이크",
+          "desc": "전류와 진동을 오가는 변환"
         }
       ]
     },
@@ -2598,12 +2653,17 @@
           "id": "ionizing-radiation",
           "name": "이온화 복사",
           "desc": "결합을 끊을 만큼 큰 광자 에너지"
+        },
+        {
+          "id": "exchange-particles",
+          "name": "교환 입자",
+          "desc": "힘을 주고받는 입자"
         }
       ]
     }
   ],
   "summary": {
-    "topics": 501,
+    "topics": 513,
     "implemented": 20,
     "labs": 7
   }
