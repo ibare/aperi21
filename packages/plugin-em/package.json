@@ -1,0 +1,27 @@
+{
+  "name": "@aperi21/plugin-em",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc -p . --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "peerDependencies": {
+    "@aperi21/schema": "workspace:*"
+  },
+  "devDependencies": {
+    "@aperi21/schema": "workspace:*",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.9"
+  }
+}

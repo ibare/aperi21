@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>같은 높이, 다른 길</title>
+<style>
+  html, body { margin: 0; background: #efece6; }
+  #wrap { width: 880px; margin: 0 auto; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<div id="wrap"><canvas id="c"></canvas></div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+  var K = window.PieceKit;
+
+  // ---- 무대 ----
+  var W = 880, HC = 316;
+  var cv = document.getElementById('c');
+  var ctx = cv.getContext('2d');
+  var DPR = Math.min(2, window.devicePixelRatio || 1);
+  cv.width = Math.round(W * DPR);
+  cv.height = Math.round(HC * DPR);
+  cv.style.width = W + 'px';
+  cv.style.height = HC + 'px';
+  ctx.scale(DPR, DPR);
+
+  var X0 = 56;            // 세 길이 공유하는 경사 시작 x
+  var X1 = 226;           // 세 길이 공유하는 경사 끝 x
+  var XEND = W;           // 활주로 끝
+  var DX = X1 - X0;
+  var BASE = [76, 166, 256];   // 레인별 바닥(활주로) y
+  var G = 320;            // px/s^2
+  var STROBE = 0.15;      // 발자국을 남기는 시간 간격 (초)
+  var U0 = 1e-5;          // 정지 평형에서 공을 떼어 내는 최소 진행
+  var R_BALL = 6.5;
+  var H_MIN = 30, H_MAX = 62;
+  var fallH = 56;         // 낙차 — 세 레인이 공유한다
+
+  var C_BG = '#efece6';
+  var C_TRACK = '#cdc7be';
+  var C_RULE = '#9c948a';   // 낙차 점선 — 세 길이 같은 높이에서 시작한다고 말하는 유일한 장치
+  var C_GRIP = '#7a746b';
+  var C_BALL = '#2b2a28';
+  var C_DOT = '#a49d93';
+  var C_LINK = '#c8562b';   // 강조색 — 오직 "세 공이 벌어진 정도"에만 쓴다
+  var C_TEXT = '#4f4b45';
+
+  // ---- 세 갈래 길 ----
+  // 두 끝점이 같고 낙차가 같다. 다른 것은 중간에 높이를 언제 내주는가뿐이다.
+  function cycloidTheta(R) {          // (t - sin t) / (1 - cos t) = R 을 푼다
+    var lo = 0.05, hi = 6.2, m, f;
+    for (var i = 0; i < 64; i++) {
+      m = (lo + hi) / 2;
+      f = (m - Math.sin(m)) / (1 - Math.cos(m));
+      if (f < R) lo = m; else hi = m;
+    }
+    return (lo + hi) / 2;
+  }
+
+  var PATHS = [
+    {                                  // 먼저 뚝 떨어지고 나중에 완만 — 사이클로이드
+      te: 4, kx: 1, ky: 1,
+      prep: function (R) {
+        this.te = cycloidTheta(R);
+        this.kx = this.te - Math.sin(this.te);
+        this.ky = 1 - Math.cos(this.te);
+      },
+      fx:  function (u) { var p = this.te * u; return (p - Math.sin(p)) / this.kx; },
+      fy:  function (u) { var p = this.te * u; return (1 - Math.cos(p)) / this.ky; },
+      dfx: function (u) { var p = this.te * u; return this.te * (1 - Math.cos(p)) / this.kx; },
+      dfy: function (u) { var p = this.te * u; return this.te * Math.sin(p) / this.ky; }
+    },
+    {                                  // 곧은 비탈
+      prep: function () {},
+      fx:  function (u) { return u; },
+      fy:  function (u) { return u; },
+      dfx: function () { return 1; },
+      dfy: function () { return 1; }
+    },
+    {                                  // 처음엔 완만하고 끝에서 떨어진다
+      prep: function () {},
+      fx:  function (u) { return u; },
+      fy:  function (u) { return 0.30 * u + 0.70 * u * u; },
+      dfx: function () { return 1; },
+      dfy: function (u) { return 0.30 + 1.40 * u; }
+    }
+  ];
+
+  var VF = 0;                          // 바닥에 닿는 속력 — 세 길이 같은 값을 쓴다
+  function reshape() {
+    PATHS[0].prep(DX / fallH);
+    VF = Math.sqrt(2 * G * fallH);
+  }
+  function px(i, u) { return X0 + DX * PATHS[i].fx(u); }
+  function py(i, u) { return BASE[i] - fallH + fallH * PATHS[i].fy(u); }
+
+  // ---- 공 ----
+  // 속력은 오직 얼마나 내려왔는지에서 나온다: v = sqrt(2 g dy).
+  // 길의 모양은 그 높이를 언제 내주느냐만 정하지, 다 내준 뒤의 속력은 못 건드린다.
+  var balls;
+  function reset() {
+    balls = [0, 1, 2].map(function (i) {
+      return { lane: i, u: U0, x: px(i, U0), y: py(i, U0), floor: false, dots: [], acc: 0 };
+    });
+  }
+
+  function duDt(i, u) {
+    if (u > 1) u = 1;
+    var p = PATHS[i];
+    var v = Math.sqrt(2 * G * fallH * Math.max(0, p.fy(u)));
+    var ex = DX * p.dfx(u), ey = fallH * p.dfy(u);
+    return v / Math.sqrt(ex * ex + ey * ey);
+  }
+
+  function advance(b, dt) {
+    if (b.floor) { b.x += VF * dt; return; }
+    var k1 = duDt(b.lane, b.u);
+    var k2 = duDt(b.lane, b.u + dt * k1 / 2);
+    var k3 = duDt(b.lane, b.u + dt * k2 / 2);
+    var k4 = duDt(b.lane, b.u + dt * k3);
+    var du = dt * (k1 + 2 * k2 + 2 * k3 + k4) / 6;
+    b.u += du;
+    if (b.u >= 1) {
+      var over = du > 0 ? (b.u - 1) / du : 0;   // 이 스텝에서 바닥 몫으로 남은 시간
+      b.u = 1;
+      b.floor = true;
+      b.y = BASE[b.lane];
+      b.x = X1 + VF * dt * over;
+    } else {
+      b.x = px(b.lane, b.u);
+      b.y = py(b.lane, b.u);
+    }
+  }
+
+  var dragging = false, dragLane = 0;
+
+  function step(dt) {
+    if (dragging) return;              // 높이를 다시 정하는 동안은 출발선에 세워 둔다
+    var allOut = true;
+    for (var i = 0; i < 3; i++) {
+      var b = balls[i];
+      advance(b, dt);
+      b.acc += dt;
+      while (b.acc >= STROBE) { b.acc -= STROBE; b.dots.push({ x: b.x, y: b.y }); }
+      if (b.x <= XEND + 14) allOut = false;
+    }
+    if (allOut) reset();               // 셋 다 화면을 벗어나면 다시 굴린다
+  }
+
+  // ---- 그리기 ----
+  function draw() {
+    K.mark('바탕', function () {
+      ctx.fillStyle = C_BG;
+      ctx.fillRect(0, 0, W, HC);
+    });
+
+    K.mark('길', function () {
+      ctx.strokeStyle = C_TRACK;
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      for (var i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.moveTo(18, BASE[i] - fallH);
+        ctx.lineTo(X0, BASE[i] - fallH);
+        for (var n = 1; n <= 72; n++) {
+          var u = n / 72;
+          ctx.lineTo(px(i, u), py(i, u));
+        }
+        ctx.lineTo(XEND, BASE[i]);
+        ctx.stroke();
+      }
+    });
+
+    K.mark('출발 높이', function () {
+      ctx.strokeStyle = C_RULE;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 4]);
+      for (var i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.moveTo(30, BASE[i] - fallH);
+        ctx.lineTo(30, BASE[i]);
+        ctx.stroke();
+      }
+      ctx.setLineDash([]);
+      ctx.fillStyle = C_GRIP;
+      for (var j = 0; j < 3; j++) {
+        ctx.beginPath();
+        ctx.arc(30, BASE[j] - fallH, dragging ? 5 : 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    });
+
+    K.mark('지나온 자리', function () {
+      ctx.fillStyle = C_DOT;
+      for (var i = 0; i < 3; i++) {
+        var d = balls[i].dots;
+        for (var n = 0; n < d.length; n++) {
+          if (d[n].x > W + 4) continue;
+          ctx.beginPath();
+          ctx.arc(d[n].x, d[n].y, 1.9, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    });
+
+    K.mark('벌어진 간격', function () {
+      ctx.strokeStyle = C_LINK;
+      ctx.lineWidth = 1.6;
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+      ctx.moveTo(balls[0].x, balls[0].y);
+      ctx.lineTo(balls[1].x, balls[1].y);
+      ctx.lineTo(balls[2].x, balls[2].y);
+      ctx.stroke();
+    });
+
+    K.mark('공', function () {
+      ctx.fillStyle = C_BALL;
+      for (var i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.arc(balls[i].x, balls[i].y, R_BALL, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    });
+
+    K.mark('캡션', function () {
+      var s;
+      if (dragging) {
+        s = '출발 높이를 다시 정하는 중 — 놓으면 셋이 같은 높이에서 함께 출발한다';
+      } else if (balls[0].floor && balls[1].floor && balls[2].floor) {
+        s = '셋 다 바닥에 내려섰다 — 벌어진 간격이 더는 변하지 않는다';
+      } else {
+        s = '같은 높이에서 출발한 공 셋이 서로 다른 길로 내려간다';
+      }
+      ctx.fillStyle = C_TEXT;
+      ctx.font = '14px "Apple SD Gothic Neo", -apple-system, "Malgun Gothic", sans-serif';
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillText(s, 30, 301);
+    });
+  }
+
+  // ---- 출발 높이 손잡이 ----
+  if (!K.frozen) {
+    cv.style.touchAction = 'none';
+    var pick = function (ev) {
+      var r = cv.getBoundingClientRect();
+      var mx = (ev.clientX - r.left) * (W / r.width);
+      var my = (ev.clientY - r.top) * (HC / r.height);
+      if (mx > 56) return -1;
+      for (var i = 0; i < 3; i++) {
+        if (Math.abs(my - (BASE[i] - fallH)) < 13) return i;
+      }
+      return -1;
+    };
+    cv.addEventListener('pointerdown', function (ev) {
+      var i = pick(ev);
+      if (i < 0) return;
+      dragging = true;
+      dragLane = i;
+      cv.setPointerCapture(ev.pointerId);
+      reset();
+      ev.preventDefault();
+    });
+    cv.addEventListener('pointermove', function (ev) {
+      if (!dragging) {
+        cv.style.cursor = pick(ev) >= 0 ? 'ns-resize' : 'default';
+        return;
+      }
+      var r = cv.getBoundingClientRect();
+      var my = (ev.clientY - r.top) * (HC / r.height);
+      var h = BASE[dragLane] - my;
+      fallH = Math.max(H_MIN, Math.min(H_MAX, h));
+      reshape();
+      reset();
+    });
+    var release = function () {
+      if (!dragging) return;
+      dragging = false;
+      reshape();
+      reset();
+    };
+    cv.addEventListener('pointerup', release);
+    cv.addEventListener('pointercancel', release);
+  }
+
+  // ---- 출발 ----
+  reshape();
+  reset();
+  for (var warm = 0; warm < 66; warm++) step(K.DT);   // 도착한 순간 이미 굴러가고 있도록
+
+  K.loop({
+    step: function (dt) { step(dt); },
+    draw: draw
+  });
+})();
+</script>
+</body>
+</html>

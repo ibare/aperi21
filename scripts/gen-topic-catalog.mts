@@ -74,6 +74,18 @@ const IMPLEMENTED: Record<string, string> = {
   // 2026-09-10 파일럿 배치 — 자유 구현(격리 에이전트) → 추출 → 엔진 → 이관.
   'centripetal-acceleration': 'aperi21:centripetal-acceleration',
   'velocity-time-graph': 'aperi21:velocity-time-graph',
+
+  // 2026-09-12 01-broad 배치 — 유체에 몰려 있던 분과를 넓혔다.
+  // 역학 2 · 진동 1 · 파동 2 · 전자기 2 · 열 2 (+ 천체 1 은 주제 미정).
+  'newtons-first-law': 'aperi21:inertial-frame',
+  'conservation-of-mechanical-energy': 'aperi21:ramp-energy',
+  'pendulum-amplitude-dependence': 'aperi21:pendulum-isochronism',
+  'beats': 'aperi21:beats',
+  'doppler-effect': 'aperi21:doppler-effect',
+  'field-of-straight-wire': 'aperi21:current-magnetic-field',
+  'lenzs-law': 'aperi21:lenz-law',
+  'thermal-conduction': 'aperi21:heat-conduction',
+  'kinetic-theory-of-gases': 'aperi21:gas-pressure',
 };
 
 interface Topic {

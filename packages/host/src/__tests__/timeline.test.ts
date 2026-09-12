@@ -8,8 +8,9 @@ import { describe, expect, it } from 'vitest';
 import type { BundleSchema, TimelineDef } from '@aperi21/schema';
 import { CAPTION_ID, captionPrimitive, evaluateTimeline, withCaption } from '../index';
 
+// 시계를 앞당기는 `startAt` 은 `BundleSchema` 로 올라갔다 — 시간표 없는 조각도
+// 앞당겨야 하기 때문이다. 여기 오는 `elapsed` 는 이미 앞당겨진 값이다.
 const DEF: TimelineDef = {
-  startAt: 0.5,
   phases: [
     { id: 'a', duration: 1, caption: 'c.one' },
     { id: 'b', duration: 2, ease: 'smooth', caption: 'c.two' },
@@ -37,8 +38,8 @@ const SCHEMA: BundleSchema = {
 };
 
 describe('evaluateTimeline', () => {
-  it('흐른 시간에 startAt 을 더하고 주기로 나눈다', () => {
-    const f = evaluateTimeline(DEF, 4);
+  it('흐른 시간을 주기로 나눈다', () => {
+    const f = evaluateTimeline(DEF, 4.5);
     expect(f.t).toBe(4.5);
     expect(f.period).toBe(4);
     expect(f.cycle).toBe(1);
@@ -47,13 +48,13 @@ describe('evaluateTimeline', () => {
   });
 
   it('경계에 선 순간은 다음 단계의 시작이다', () => {
-    const f = evaluateTimeline(DEF, 0.5); // u = 1
+    const f = evaluateTimeline(DEF, 1); // u = 1
     expect(f.phase).toBe('b');
     expect(f.progress).toBe(0);
   });
 
   it('at 은 전에 0, 뒤에 1, 동안은 선언한 이징을 건다', () => {
-    const f = evaluateTimeline(DEF, 1); // u = 1.5, b 의 1/4
+    const f = evaluateTimeline(DEF, 1.5); // u = 1.5, b 의 1/4
     expect(f.at('a')).toBe(1);
     expect(f.at('c')).toBe(0);
     expect(f.at('b')).toBeCloseTo(0.15625); // smoothstep(0.25)
@@ -68,14 +69,14 @@ describe('evaluateTimeline', () => {
   });
 
   it('span 은 주기 안 임의 구간의 진행도다', () => {
-    const f = evaluateTimeline(DEF, 1.5); // u = 2
+    const f = evaluateTimeline(DEF, 2); // u = 2
     expect(f.span(1, 3)).toBe(0.5);
     expect(f.span(3, 4)).toBe(0);
     expect(f.span(0, 1)).toBe(1);
   });
 
   it('같은 캡션이 이어지는 단계는 한 문장이다 — 나이는 그 첫 단계부터', () => {
-    const f = evaluateTimeline(DEF, 3); // u = 3.5, 단계 c
+    const f = evaluateTimeline(DEF, 3.5); // u = 3.5, 단계 c
     expect(f.phase).toBe('c');
     expect(f.caption).toBe('c.two');
     expect(f.captionAge).toBe(2.5);
@@ -109,10 +110,10 @@ describe('evaluateTimeline', () => {
 
 describe('캡션 슬롯', () => {
   it('지금 단계의 캡션을 LocalizedText 로 싣고, 문장이 바뀐 순간부터 페이드 인 한다', () => {
-    const start = captionPrimitive(SCHEMA, evaluateTimeline(DEF, 0.5)); // b 시작
+    const start = captionPrimitive(SCHEMA, evaluateTimeline(DEF, 1)); // b 시작
     expect(start?.text).toEqual({ en: 'two' });
     expect(start?.opacity).toBe(0);
-    const later = captionPrimitive(SCHEMA, evaluateTimeline(DEF, 2.5)); // c 안, 같은 문장
+    const later = captionPrimitive(SCHEMA, evaluateTimeline(DEF, 3)); // c 안, 같은 문장
     expect(later?.opacity).toBe(1);
   });
 

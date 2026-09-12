@@ -5,9 +5,10 @@ import type { Body, Primitive, SceneGraphRefs, Vec2, VectorComputeFn } from '@ap
  * - `uniform` : 방향과 크기가 위치 독립적인 상수 벡터장 (중력 균일장 등)
  * - `gravity` : 점 중력원의 중첩. args.sources 는 Body 프리미티브 ID 배열.
  *
- * `custom` 은 레지스트리를 거치지 않고 compute 실행부에서 특별 처리되므로 여기
- * 등록하지 않는다. `coulomb`, `biot-savart`, `dipole` 은 Phase 3 EM Plugin 이
- * 등록한다 (코어에 놓지 않음).
+ * **어휘가 아니라 Host 서비스다.** plugin 이 `compute` 로 계산 메서드를 등록하고
+ * (`PluginManager`), 그것을 부르는 것은 그 plugin 의 렌더러나 sim 이다. 장(field)
+ * 프리미티브를 2026-09-12 에 선언에서 지운 것과는 다른 축이라 여기는 남는다 —
+ * `gravity` 는 `Body` 를 읽으므로 지금도 유효하다.
  */
 
 interface UniformArgs {

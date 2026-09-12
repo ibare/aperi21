@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Bundle, BundleState, EnvironmentDef, StageDef, ViewDef } from '@aperi21/schema';
-import { readPath, writePath } from '@aperi21/host';
+import { prerollState, readPath, writePath } from '@aperi21/host';
 
 /**
  * Embed 내 bundle runtime 상태.
@@ -38,7 +38,9 @@ function computeInitial<T extends BundleState>(
   environments: EnvironmentDef[],
   values: Record<string, number>,
 ): T {
-  return bundle.initialState({ values, stage, environments });
+  // 선언이 `preroll` 을 주면 마운트 전에 그만큼 미리 굴린다 — runBundle 과 같은
+  // 규약이라야 같은 조각이 카탈로그와 외부 호스트에서 같은 화면으로 열린다.
+  return prerollState(bundle, bundle.initialState({ values, stage, environments }), stage, environments);
 }
 
 /** 모든 파라미터 default 를 모은 dict — initialState 의 values 인자용. */

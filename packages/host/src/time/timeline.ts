@@ -11,12 +11,14 @@
 
 import type {
   BundleSchema,
+  BundleState,
   Readout,
   SceneGraph,
   TimelineDef,
   TimelineEase,
   TimelineFrame,
 } from '@aperi21/schema';
+import { readPath } from '../controller/path';
 
 const EASES: Record<TimelineEase, (x: number) => number> = {
   linear: (x) => x,
@@ -53,7 +55,10 @@ export function evaluateTimeline(def: TimelineDef, elapsed: number): TimelineFra
     period += p.duration;
   });
 
-  const t = elapsed + (def.startAt ?? 0);
+  // 시계를 앞당기는 것은 `BundleSchema.startAt` 이고 러너가 시간 엔진에 적용한다.
+  // 여기 오는 `elapsed` 는 이미 앞당겨진 값이다 — 시간표 없는 조각도 앞당길 수
+  // 있어야 해서 선언을 한 층 위로 올렸다.
+  const t = elapsed;
   const cycle = Math.floor(t / period);
   const u = t - cycle * period;
 
@@ -113,16 +118,40 @@ const CAPTION_STYLE: NonNullable<Readout['style']> = { colorRole: 'ink', emphasi
  * 문안은 **LocalizedText 까지만** 싣는다 — 언어를 고르는 것은 렌더러가 러너의
  * 조회기로 한다. 여기서 조회기를 만들면 문안 출처가 둘로 갈린다 (C1).
  */
-export function captionPrimitive(schema: BundleSchema, frame?: TimelineFrame): Readout | null {
+export function captionPrimitive(
+  schema: BundleSchema,
+  frame?: TimelineFrame,
+  state?: BundleState,
+): Readout | null {
   const slot = schema.caption;
   if (!slot) return null;
-  const key = frame?.caption ?? slot.text;
+
+  // 상태로 고르는 문안이 먼저다. 시간표 단계로 나눌 수 없는 캡션을 위한 것이라
+  // (진자가 근사의 경계를 넘었을 때, 세 공이 모두 바닥에 내려섰을 때) 단계보다
+  // 지금 상태가 우선한다. 위에서부터 훑어 **참인 첫 항목**을 쓴다.
+  //
+  // `when` 은 상태 경로 **이름**이다. 선언은 어디를 보라고만 말하고 조건을 세는
+  // 것은 조각의 physics 다 (원칙 2 · `visibleWhen` 과 같은 규약).
+  let matched: string | undefined;
+  if (slot.cases && state) {
+    for (const c of slot.cases) {
+      if (readPath<boolean>(state, c.when)) {
+        matched = c.text;
+        break;
+      }
+    }
+  }
+
+  const key = matched ?? frame?.caption ?? slot.text;
   if (!key) return null;
   const text = schema.messages?.[key];
   if (!text) throw new Error(`caption: messages 에 없는 키 '${key}'`);
 
+  // 상태로 고른 문안은 페이드하지 않는다 — 조건이 참이 된 순간이 곧 그 문장의
+  // 시작이고, 시간표의 단계 나이로는 그 순간을 알 수 없다.
   const fade = slot.fade ?? 0;
-  const opacity = frame?.caption && fade > 0 ? EASES.smooth(clamp01(frame.captionAge / fade)) : 1;
+  const opacity =
+    !matched && frame?.caption && fade > 0 ? EASES.smooth(clamp01(frame.captionAge / fade)) : 1;
 
   return {
     type: 'readout',
@@ -147,8 +176,9 @@ export function withCaption(
   scene: SceneGraph,
   schema: BundleSchema,
   frame?: TimelineFrame,
+  state?: BundleState,
 ): SceneGraph {
-  const caption = captionPrimitive(schema, frame);
+  const caption = captionPrimitive(schema, frame, state);
   if (!caption) return scene;
   if (scene.some((p) => p.id === CAPTION_ID)) {
     throw new Error(`caption: 캡션 슬롯을 선언한 조각은 scene 에 id '${CAPTION_ID}' 를 두지 않는다`);

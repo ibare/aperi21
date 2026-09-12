@@ -1,0 +1,252 @@
+<meta charset="utf-8" />
+<title>도플러 효과 — 파면은 그대로, 방출점이 밀린다</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  .piece {
+    max-width: 880px;
+    margin: 0 auto;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+      "Noto Sans KR", "Malgun Gothic", sans-serif;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 880 / 330;
+  }
+  .ctl {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 10px 10px;
+    font-size: 13px;
+    color: #5a6270;
+  }
+  .ctl input[type="range"] {
+    flex: 0 1 280px;
+    accent-color: #d9531f;
+    margin: 0;
+  }
+  .ctl .val {
+    font-variant-numeric: tabular-nums;
+    color: #3a424f;
+  }
+</style>
+
+<div class="piece">
+  <canvas id="scene"></canvas>
+  <div class="ctl">
+    <label for="vslider">원천 속도</label>
+    <input id="vslider" type="range" min="0" max="0.85" step="0.01" value="0" />
+    <span class="val" id="vreadout">v/c = 0.00</span>
+  </div>
+</div>
+
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var K = window.PieceKit;
+
+  /* ---- 논리 좌표계 (컨테이너 폭에 맞춰 통째로 스케일한다) ---- */
+  var W = 880;          // 논리 가로
+  var H = 330;          // 논리 세로 (장면 + 캡션 띠)
+  var SCENE_H = 292;    // 파면이 그려지는 장면 높이
+  var AXIS_Y = 146;     // 구급차가 달리는 높이
+
+  /* ---- 물리 상수 ---- */
+  var C = 116;          // 파면이 퍼지는 속력 (px/s) — 모든 파면에 똑같이 적용된다
+  var V = 70;           // 자동 진행의 등속 구간 원천 속력 (px/s) → v/c = 0.60
+  var T_EMIT = 0.45;    // 방출 주기 (s)
+  var R_MAX = 400;      // 이 반지름에서 파면이 사라진다 (수명 3.45s)
+  var R_FADE = 0.55;    // 이 비율을 넘기면 옅어지기 시작한다
+
+  /* ---- 자동 진행 시간표 ---- */
+  var A_END = 3.0;      // 정지 구간 끝
+  var B_END = 3.8;      // 가속 구간 끝
+  var CYCLE = 13.4;     // 한 바퀴 — 이 시각에 구급차는 화면 오른쪽 밖(x=910)에 있다
+  var X0 = 210;         // 출발 자리
+  var X_OUT = 930;      // 여기를 넘으면 왼쪽 밖에서 다시 들어온다 (수동 조작 때만 쓰인다)
+  var X_IN = -50;
+
+  /* ---- 색: 파면·방출점은 같은 잉크, 강조색은 원천 하나에만 ---- */
+  var INK = '29,36,48';
+  var ACCENT = '#d9531f';
+  var BG = '#f6f4ef';
+  var FONT = '14px -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+
+  var canvas = document.getElementById('scene');
+  var ctx = canvas.getContext('2d');
+  var slider = document.getElementById('vslider');
+  var readout = document.getElementById('vreadout');
+
+  /* ---- 상태 ---- */
+  var st = {
+    tau: 0,            // 자동 진행 시간표 위치
+    x: X0,             // 원천 위치
+    v: 0,              // 원천 속력
+    emitAcc: T_EMIT,   // 방출 누산기 (첫 프레임에 바로 하나 낳는다)
+    fronts: [],        // { x: 방출점, t0: 방출 시각 }
+    manual: false,     // 독자가 슬라이더를 만졌는가
+    mv: 0,             // 독자가 고른 v/c
+  };
+
+  // 도착한 순간 이미 진행 중이도록, 멈춰 있던 3.15초치 파면을 미리 채워 둔다.
+  for (var k = 7; k >= 1; k--) st.fronts.push({ x: X0, t0: -T_EMIT * k });
+
+  function clamp01(u) { return u < 0 ? 0 : u > 1 ? 1 : u; }
+  function smoothstep(u) { u = clamp01(u); return u * u * (3 - 2 * u); }
+
+  function autoSpeed(tau) {
+    if (tau < A_END) return 0;
+    if (tau < B_END) return V * smoothstep((tau - A_END) / (B_END - A_END));
+    return V;
+  }
+
+  /* ---- 한 걸음: 원천을 옮기고, 파면을 낳고, 수명이 다한 것을 버린다 ---- */
+  function step(dt, t) {
+    if (st.manual) {
+      st.v = st.mv * C;
+    } else {
+      st.tau += dt;
+      if (st.tau >= CYCLE) { st.tau -= CYCLE; st.x = X0; }
+      st.v = autoSpeed(st.tau);
+    }
+
+    st.x += st.v * dt;
+    if (st.x > X_OUT) st.x = X_IN;
+
+    st.emitAcc += dt;
+    while (st.emitAcc >= T_EMIT) {
+      st.emitAcc -= T_EMIT;
+      st.fronts.push({ x: st.x, t0: t });
+    }
+
+    var alive = [];
+    for (var i = 0; i < st.fronts.length; i++) {
+      if (C * (t - st.fronts[i].t0) < R_MAX) alive.push(st.fronts[i]);
+    }
+    st.fronts = alive;
+  }
+
+  /* ---- 나이에 따른 옅어짐: 파면과 그 방출점은 똑같이 늙는다 ---- */
+  function fade(r) {
+    if (r >= R_MAX) return 0;
+    var u = r / R_MAX;
+    return u < R_FADE ? 1 : 1 - (u - R_FADE) / (1 - R_FADE);
+  }
+
+  function roundRect(x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+  }
+
+  function caption() {
+    if (!st.manual) {
+      if (st.tau < A_END) return '구급차가 멈춰 있다 — 파면이 사방으로 같은 간격으로 퍼진다.';
+      if (st.tau < B_END + 1.6) return '구급차가 출발한다 — 새로 나가는 파면이 앞쪽에서 서로 가까워진다.';
+      return '앞쪽은 촘촘하고 뒤쪽은 성기다 — 파면은 그대로 퍼지고, 방출점만 앞으로 밀렸다.';
+    }
+    if (st.v / C < 0.02) return '구급차가 멈춰 있다 — 파면이 사방으로 같은 간격으로 퍼진다.';
+    return '앞쪽은 촘촘하고 뒤쪽은 성기다 — 파면은 그대로 퍼지고, 방출점만 앞으로 밀렸다.';
+  }
+
+  /* ---- 그리기 ---- */
+  function draw(t) {
+    var cw = canvas.clientWidth || W;
+    var dpr = window.devicePixelRatio || 1;
+    var bw = Math.max(1, Math.round(cw * dpr));
+    var bh = Math.max(1, Math.round(bw * H / W));
+    if (canvas.width !== bw || canvas.height !== bh) {
+      canvas.width = bw;
+      canvas.height = bh;
+    }
+    var s = bw / W;
+    ctx.setTransform(s, 0, 0, s, 0, 0);
+
+    K.mark('바탕', function () {
+      ctx.fillStyle = BG;
+      ctx.fillRect(0, 0, W, H);
+    });
+
+    K.mark('파면', function () {
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, 0, W, SCENE_H);
+      ctx.clip();
+      ctx.lineWidth = 1.2;
+      for (var i = 0; i < st.fronts.length; i++) {
+        var f = st.fronts[i];
+        var r = C * (t - f.t0);
+        if (r <= 0.6) continue;
+        var a = fade(r) * 0.62;
+        if (a <= 0.004) continue;
+        ctx.strokeStyle = 'rgba(' + INK + ',' + a.toFixed(3) + ')';
+        ctx.beginPath();
+        ctx.arc(f.x, AXIS_Y, r, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      ctx.restore();
+    });
+
+    K.mark('방출점', function () {
+      for (var i = 0; i < st.fronts.length; i++) {
+        var f = st.fronts[i];
+        var r = C * (t - f.t0);
+        if (r < 0) continue;
+        var a = fade(r) * 0.8;
+        if (a <= 0.004) continue;
+        ctx.fillStyle = 'rgba(' + INK + ',' + a.toFixed(3) + ')';
+        ctx.beginPath();
+        ctx.arc(f.x, AXIS_Y, 1.9, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    });
+
+    K.mark('구급차', function () {
+      ctx.save();
+      ctx.translate(st.x, AXIS_Y);
+      ctx.fillStyle = ACCENT;
+      roundRect(-13, -7, 26, 13, 3);
+      ctx.fill();
+      roundRect(-5, -10, 6, 3, 1.2);
+      ctx.fill();
+      ctx.fillStyle = BG;
+      roundRect(2.5, -4.5, 7, 5, 1.4);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    K.mark('캡션', function () {
+      ctx.fillStyle = 'rgba(' + INK + ',0.74)';
+      ctx.font = FONT;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillText(caption(), 10, 318);
+    });
+
+    // 조작기는 자동 진행을 따라 읽다가, 손대는 순간 넘겨받는다.
+    var vc = st.manual ? st.mv : st.v / C;
+    if (!st.manual) slider.value = String(vc.toFixed(2));
+    readout.textContent = 'v/c = ' + vc.toFixed(2);
+  }
+
+  if (!K.frozen) {
+    slider.addEventListener('input', function () {
+      st.manual = true;
+      st.mv = parseFloat(slider.value) || 0;
+    });
+  }
+
+  K.loop({ step: step, draw: draw });
+})();
+</script>

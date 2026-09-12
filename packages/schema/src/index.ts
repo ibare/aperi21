@@ -58,6 +58,18 @@ export interface BaseMeta {
    * 강조 상태(`highlight`)의 알파와 곱해진다.
    */
   opacity?: number;
+
+  /**
+   * **빛의 양** 0~1. 밝기 자체가 주장인 그림에 쓴다. 기본은 없음(`opacity` 만 적용).
+   *
+   * `opacity` 와 다르다. 알파는 화면값을 섞으므로 감마 때문에 실제 나오는 빛의
+   * 비가 선언한 값과 어긋난다 — 1/4 로 칠한 것이 눈에는 1/2 쯤으로 보인다.
+   * 이 필드는 배경과 색을 **선형광으로 되돌려 섞고 다시 인코딩**한다. 그래서
+   * "네 배 옅다" 가 말이 아니라 빛의 양으로 참이 된다.
+   *
+   * 조각마다 다시 짜면 언젠가 누군가는 알파로 대충 칠하고 그 조각은 거짓말을 한다.
+   */
+  luminance?: number;
 }
 
 
@@ -118,9 +130,12 @@ export interface Constraint extends BaseMeta {
   subtype: 'rigid_rod' | 'string' | 'spring' | 'rail';
   from: Vec2 | string;            // 좌표 또는 Body ID
   to: Vec2 | string;
-  naturalLength?: Scalar;          // spring 전용
-  stiffness?: Scalar;              // spring 전용 (정보용)
   coils?: number;                  // spring 시각 표현용
+  //
+  // `naturalLength`·`stiffness` 는 2026-09-12 에 지웠다. "정보용" 이라 적혀
+  // 있었고 렌더러가 읽지 않아 그림이 달라지지 않았다 — 선언만 있고 구현이 없는
+  // 필드는 저작자에게 거짓말을 한다 (S-render). 용수철의 늘어남이 주장인 조각이
+  // 나오면 그때 그 조각이 요구하는 모양으로 올린다.
 }
 
 export interface Surface extends BaseMeta {
@@ -133,106 +148,31 @@ export interface Surface extends BaseMeta {
   material?: 'solid' | 'rough' | 'smooth' | 'transparent';
 }
 
-export interface Axis extends BaseMeta {
-  type: 'axis';
-  origin: Vec2;
-  direction: Vec2;                 // 정규화 벡터
-  length?: Scalar;
-  showArrow?: boolean;
-}
-
-
 // ========================================================================
-// 2. 코어 프리미티브 — Fields
+// 2. 코어 프리미티브 — Collective
 // ========================================================================
-
-/** 벡터장의 계산 방식. 표준 방법 + 커스텀 탈출구. */
-export type FieldCompute =
-  | { method: 'coulomb'; sources: string[] }           // 전하 ID 배열
-  | { method: 'biot-savart'; sources: string[] }        // 전류 요소 ID 배열
-  | { method: 'dipole'; source: string }
-  | { method: 'gravity'; sources: string[] }            // 점 중력원
-  | { method: 'uniform'; vector: Vec2 }
-  | { method: 'superposition'; components: FieldCompute[] }
-  | { method: 'custom'; fn: (x: number, y: number, scene: SceneGraphRefs) => Vec2 };
-
-export interface VectorField extends BaseMeta {
-  type: 'vectorField';
-  compute: FieldCompute;
-  density?: number;                // 격자 밀도 (기본값은 호스트)
-  arrowStyle?: 'uniform' | 'magnitude-scaled';
-  colorByMagnitude?: boolean;
-}
-
-/** 스칼라장 계산 방식. */
-export type ScalarCompute =
-  | { method: 'potential-coulomb'; sources: string[] }
-  | { method: 'gaussian'; center: Vec2; sigma: number; amplitude: number }
-  | { method: 'grid'; data: number[][]; origin: Vec2; cellSize: number }
-  | { method: 'custom'; fn: (x: number, y: number, scene: SceneGraphRefs) => number };
-
-export interface ScalarField extends BaseMeta {
-  type: 'scalarField';
-  compute: ScalarCompute;
-  colormap?: 'diverging' | 'sequential' | 'thermal' | 'probability';
-  range?: [number, number];
-  contours?: boolean;              // 등고선 표시
-}
-
-export interface FieldLine extends BaseMeta {
-  type: 'fieldLine';
-  seed: Vec2;
-  follows: string;                 // VectorField ID
-  length?: number;                 // 추적 길이
-  direction?: 'forward' | 'backward' | 'both';
-  step?: number;                   // 적분 스텝
-}
-
-
-// ========================================================================
-// 3. 코어 프리미티브 — Waves
-// ========================================================================
-
-export interface WaveSource {
-  pos: Vec2;
-  frequency: number;
-  phase?: number;
-  amplitude?: number;
-  polarization?: { axis: Vec2; kind: 'linear' | 'circular-lh' | 'circular-rh' };
-}
-
-export interface Wave extends BaseMeta {
-  type: 'wave';
-  dimension: '1d' | '2d';
-  sources: readonly WaveSource[];
-  speed: number;
-  time: number;                    // 현재 시간
-  boundary?: 'absorbing' | 'reflecting' | 'periodic';
-  range?: { x?: [number, number]; y?: [number, number] };  // 렌더 범위
-  colormap?: ScalarField['colormap'];
-}
-
-export interface Emitter extends BaseMeta {
-  type: 'emitter';
-  pos: Vec2;
-  frequency: number;
-  kind?: 'isotropic' | 'directional';
-  direction?: Vec2;                // directional 전용
-}
-
-
-// ========================================================================
-// 4. 코어 프리미티브 — Collective
-// ========================================================================
+//
+// 장(field) · 파동(wave) 어휘는 2026-09-12 에 **선언에서 지웠다.** 렌더러가 없어
+// 저작자에게 거짓말을 하고 있었고(S-render), 01-broad 배치의 조각들이 그 자리를
+// 밟았을 때 원한 것은 기성품 장이 아니었다 — "엔진이 '파동=동심원' 같은 기성품을
+// 주면 이 조각의 핵심이 사라진다"(doppler-effect), "장선을 깔아 주는 도구였다면
+// 이 조각은 만들 수 없었다"(current-magnetic-field). 필요해지면 그때 정찰이
+// 발견한 모양으로 올린다 (원칙 4).
 
 export interface ParticleSystem extends BaseMeta {
   type: 'particleSystem';
   positions: readonly Vec2[];
+  /** 자취를 그릴 때의 속도. `trail` 이 참일 때만 쓴다. */
   velocities?: readonly Vec2[];
   sizes?: readonly number[] | number;
-  colorBy?: 'uniform' | 'speed' | 'index' | 'tag';
-  tags?: readonly string[];        // colorBy='tag'
-  trail?: boolean;                 // 개별 입자의 자취
+  /** 개별 입자의 자취. 속도 반대 방향의 짧은 획이라 속력이 길이로 읽힌다. */
+  trail?: boolean;
+  //
+  // `colorBy`(`'speed'` 등)와 `tags` 는 2026-09-12 에 지웠다. 렌더러가 읽지
+  // 않아 저작자에게 거짓말을 하고 있었고(S-render), 쓸 조각도 없었다 —
+  // `gas-pressure` 는 "온도에 따라 분자 색을 바꾸지 않는다, 색으로 설명하지
+  // 않는다"(S-piece)가 결정이었고 `apparent-brightness` 도 알갱이를 한 색으로
+  // 둔다. 색이 물리량을 말해야 하는 조각이 나오면 그때 올린다 (원칙 4).
 }
 
 
@@ -543,10 +483,58 @@ export interface Filament extends BaseMeta {
 // 6. 코어 프리미티브 — Events
 // ========================================================================
 
+/**
+ * 지나간 자국의 목록. **조각이 자리를 주고, 엔진이 나이 들여 지운다.**
+ *
+ * 01-broad 배치에서 여섯 조각이 각자 짠 것이다 — 파면이 태어난 자리(doppler),
+ * 벽을 때린 자국과 압력 누적(gas-pressure), 바닥을 지난 박자(pendulum), 울렁임의
+ * 마디(beats), 0.3 초마다 찍은 위치(inertial-frame · ramp-energy). 균일 간격이냐
+ * 불규칙한 사건이냐만 다를 뿐 전부 `{자리 · 나이 · 세기}` 목록이라 하나로 둔다
+ * (C4 — 같은 대상에 두 이름을 두지 않는다).
+ *
+ * `stream` 과 다르다. `stream` 은 `from`·`velocity`·`acceleration` 으로 **선언이
+ * 궤적을 정하는** 등가속 분사다. 이것은 조각이 임의의 시각·자리를 주고 엔진은
+ * 그리기만 한다.
+ *
+ * **사건을 감지하는 것은 조각의 physics 다.** 프레임 사이 영점 교차를 보간해
+ * 잡는 일은 sim 이 하고 배열을 상태에 쌓아 선언으로 넘긴다 — 렌더러는 선언과
+ * theme 만 읽는다 (S-render).
+ */
+export interface Trace extends BaseMeta {
+  type: 'trace';
+  /** 자국들. 조각이 만든 순서 그대로 그린다. */
+  marks: readonly {
+    /** 월드 좌표. */
+    pos: Vec2;
+    /**
+     * 이 자국의 나이(초). `life` 에 대한 비율로 옅어진다. 생략하면 늙지 않는다 —
+     * 스트로보처럼 지나온 자리를 지우지 않고 남기는 경우다.
+     */
+    age?: number;
+    /** 0~1. 이 자국의 세기. 크기와 진하기에 함께 걸린다. 기본 1. */
+    strength?: number;
+  }[];
+  /** 자국이 사라지기까지(초). `age` 를 준 자국에만 쓴다. */
+  life?: number;
+  /** 자국 하나의 모양. 기본 `dot`. */
+  shape?: 'dot' | 'ring' | 'tick';
+  /** 자국 크기(화면 px). `dot`·`ring` 은 반지름, `tick` 은 길이. 기본 2. */
+  size?: number;
+  /**
+   * `ring` 이 나이와 함께 퍼지는 끝 반지름(화면 px). 주면 `size` 에서 이 값까지
+   * 자란다 — 사건이 일어난 순간의 짧은 강조(통과 섬광 · 도착 표시)가 이 꼴이다.
+   */
+  spreadTo?: number;
+  /** `tick` 의 방향(월드). 기본 세로. */
+  direction?: Vec2;
+  /** 획 굵기(화면 px). `ring`·`tick` 에만. 기본 1.5. */
+  width?: number;
+}
+
 export interface Event_ extends BaseMeta {
   type: 'event';
   pos: Vec2;
-  kind: 'flash' | 'burst' | 'pulse' | 'decay' | 'emission';
+  kind: 'flash' | 'burst' | 'pulse';
   duration: number;                 // 초
   startedAt: number;               // 시뮬레이션 시간
   intensity?: number;
@@ -611,84 +599,26 @@ export interface Terminal extends BaseMeta {
 
 
 // ========================================================================
-// 9. 도메인 플러그인 — EM
+// 9. Scene Graph 합치기
 // ========================================================================
-
-export interface Charge extends BaseMeta {
-  type: 'charge';
-  pos: Vec2;
-  value: number;                   // Coulombs. 양수/음수로 부호 표시
-  visualSize?: Scalar;
-}
-
-export interface Coil extends BaseMeta {
-  type: 'coil';
-  axis: { from: Vec2; to: Vec2 };
-  turns: number;
-  radius: number;
-  current?: number;                // 방향성 시각화
-}
-
-
-// ========================================================================
-// 10. 도메인 플러그인 — Thermodynamics
-// ========================================================================
-
-export interface Container extends BaseMeta {
-  type: 'container';
-  bounds: { min: Vec2; max: Vec2 };
-  piston?: { axis: 'x' | 'y'; position: number };  // 피스톤 위치
-  walls?: ('top' | 'right' | 'bottom' | 'left')[];
-  showInsulation?: boolean;
-}
-
-
-// ========================================================================
-// 11. 도메인 플러그인 — Modern
-// ========================================================================
-
-export interface EnergyLevel {
-  n: number;                       // 양자수
-  energy: number;                  // eV
-  label?: LocalizedText;
-  occupancy?: number;              // 전자 수
-}
-
-export interface EnergyLevels extends BaseMeta {
-  type: 'energyLevels';
-  pos: Vec2;                       // 다이어그램 좌상단
-  levels: readonly EnergyLevel[];
-  transitions?: readonly {
-    from: number;                  // n_from
-    to: number;                    // n_to
-    active?: boolean;              // 현재 하이라이트
-    wavelength?: number;           // nm
-  }[];
-  size?: Vec2;
-}
-
-
-// ========================================================================
-// 12. Scene Graph 합치기
-// ========================================================================
+//
+// 전자기(charge · coil) · 열(container) · 현대물리(energyLevels) 어휘도 2026-09-12 에
+// 지웠다. 같은 이유다 — 선언만 있고 렌더러가 없었고, `sims/**` 사용처가 0건이었다.
+// 쓰임 없이 미리 만든 어휘는 FACET 이 빌트인 view 15종으로 실패한 모양 그대로다
+// (원칙 4, REQUIREMENTS.md §3.1).
 
 /** 모든 프리미티브의 discriminated union. */
 export type Primitive =
   // 코어
-  | Body | Trajectory | Vector | Constraint | Surface | Axis
-  | VectorField | ScalarField | FieldLine
-  | Wave | Emitter
+  | Body | Trajectory | Vector | Constraint | Surface
   | ParticleSystem
   | Graph | Gauge | Marker
   | Region | Stream | Readout | Scale | Dimension
-  | VortexField | Filament
+  | VortexField | Filament | Trace
   | Event_
   // 도메인
   | Ray | OpticalElement
-  | CircuitElement | Wire | Terminal
-  | Charge | Coil
-  | Container
-  | EnergyLevels;
+  | CircuitElement | Wire | Terminal;
 
 /** Scene Graph = 프리미티브 배열. */
 export type SceneGraph = readonly Primitive[];
@@ -768,6 +698,22 @@ export interface ControllerInstance {
    * 것은 조각의 physics 이고, 선언은 그 결과가 놓인 자리만 가리킨다.
    */
   visibleWhen?: string;
+
+  /**
+   * 독자가 이 조작기를 **잡고 있는 동안** true 가 되는 state 의 boolean 경로.
+   *
+   * 자동 진행과 조작기가 같은 값을 밀 때 필요하다 — 손대기 전에는 조각이
+   * 자동으로 값을 정하고, 잡는 순간 자동이 양보하며, 놓으면 조각이 정한 방식으로
+   * 돌아간다. **무엇으로 돌아갈지는 조각이 안다**(`laminar-vs-turbulent` 는 가장
+   * 가까운 정박값으로, `lenz-law` 는 놓는 순간의 속도로). 러너는 잡혔다는
+   * 사실만 적고, 그 뒤는 조각의 `step` 이 한다.
+   *
+   * `scale-drag` 는 `binds.held` 로 이미 같은 일을 했다. 한 조각이 아니라 여섯이
+   * 각자 이 규약을 손으로 짰으므로 인스턴스 공통으로 올린다 (01-broad).
+   *
+   * `visibleWhen` 과 같이 **경로 이름**이다. 식을 넣지 않는다.
+   */
+  heldPath?: string;
 }
 
 export type ControllerKind =
@@ -945,9 +891,32 @@ export interface BundleSchema {
   };
 
   /**
+   * 조각 시계를 이만큼 앞당겨 연다(초). 기본 0.
+   *
+   * *독자가 도착한 순간 이미 진행 중* 을 만드는 선언이다 (S-piece MUST). 시간표
+   * 안에 있던 것을 여기로 올렸다 — 시간표 없는 조각도 시계를 앞당겨야 한다.
+   */
+  startAt?: number;
+
+  /**
+   * 마운트 전에 `step` 을 이만큼 미리 굴린다(초). 기본 0.
+   *
+   * `startAt` 과 다른 일을 한다. `startAt` 은 **시계**를 앞당기므로 모든 것이
+   * 시각의 함수인 조각에는 그것으로 충분하지만, 상태를 **누적**하는 조각은
+   * 시계만 옮겨도 화면이 비어 있다 — 분자가 아직 제자리에 있고, 공이 아직
+   * 출발선에 있다. 그런 조각은 초기 상태에서 실제로 여러 걸음을 걸어야 한다.
+   *
+   * 01-broad 에서 조각 아홉이 이것을 손으로 짰다(`for` 루프 540회 · 분자 2초분).
+   * 규범이 요구하는 일이면 규범을 지키는 장치도 함께 있어야 한다.
+   *
+   * 고정 걸음으로 굴리므로 같은 선언은 언제나 같은 초기 화면을 만든다.
+   */
+  preroll?: number;
+
+  /**
    * 시간표. 조각이 **아무것도 누르지 않아도 할 말을 마치는** 순서를 선언한다 (S-piece).
    *
-   * 단계의 길이·순서·이징·캡션과 시작 시각은 저작 결정이다 (원칙 2). 코드에 두면
+   * 단계의 길이·순서·이징·캡션은 저작 결정이다 (원칙 2). 코드에 두면
    * "이 단계를 0.3 초 더 길게" 를 저작자가 할 수 없다. 엔진이 시각에서 지금 단계와
    * 진행도를 계산해 `scene` 에 `timeline` 으로 넘긴다.
    */
@@ -1009,11 +978,6 @@ export interface TimelinePhase {
  * 끝난 화면이 남으면 할 말을 멈춘 것이 된다.
  */
 export interface TimelineDef {
-  /**
-   * 조각 시계를 이만큼 앞당겨 연다(초). 기본 0. *독자가 도착한 순간 이미 진행 중*
-   * 을 만드는 선언이다 (S-piece).
-   */
-  startAt?: number;
   phases: TimelinePhase[];
 }
 
@@ -1028,6 +992,20 @@ export interface CaptionSlotDef {
   fade?: number;
   /** 단계가 캡션을 말하지 않을 때의 문안 키. 시간표가 없는 조각은 이것만 쓴다. */
   text?: string;
+
+  /**
+   * **상태**로 문안을 고른다. 시간표 단계로 나눌 수 없는 캡션을 위한 것이다 —
+   * 진자가 근사의 경계를 넘었을 때, 세 공이 모두 바닥에 내려섰을 때처럼 문장이
+   * 갈리는 시점이 시각이 아니라 상태에 달린 경우다 (01-broad 3조각).
+   *
+   * 위에서부터 훑어 **참인 첫 항목**의 문안을 쓴다. 아무것도 참이 아니면 단계의
+   * 캡션, 그것도 없으면 `text`. 슬롯은 여전히 하나다 (S-piece).
+   *
+   * `when` 은 state 의 boolean 경로 **이름**이다. 비교식(`ball.y < 0.01`)을 넣지
+   * 않는다 — 조건을 계산하는 것은 조각의 physics 이고 선언은 그 결과를 가리킨다
+   * (원칙 2, `visibleWhen` 과 같은 규약).
+   */
+  cases?: readonly { when: string; text: string }[];
 }
 
 /**

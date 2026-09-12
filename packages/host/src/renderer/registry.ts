@@ -6,28 +6,28 @@ import type { PrimitiveRenderer } from '@aperi21/schema';
  */
 export const DEFAULT_Z_LAYERS: Readonly<Record<string, number>> = {
   // 0: 배경 장
-  vectorField: 0,
-  scalarField: 0,
+  //
   // 소용돌이 장은 **실보다 먼저 돌아야 한다** — 같은 프레임의 실이 갱신된
   // 장을 봐야 하기 때문이다.
   vortexField: 0,
   // 10: 구조물
   surface: 10,
-  container: 10,
   opticalElement: 12,
   wire: 11,
-  // 20: 궤적 · 장선
+  // 15: 잡아 두는 것 — 물체(40) 아래로 깔려 추에 가린다.
+  constraint: 15,
+  // 20: 궤적 · 자국
   trajectory: 20,
-  fieldLine: 20,
+  // 자국은 궤적과 같은 층이되 **아래**다. 지나간 자리가 지금 그리는 선을
+  // 덮지 않는다.
+  trace: 19,
   ray: 22,
-  // 30: 파동 · 실
-  wave: 30,
+  // 30: 실
+  //
   // 실은 매질(45) 아래, 구조물 위 — 관 안을 흐르는 것이라 벽에 가리지 않는다.
   filament: 34,
   // 40: 물체
   body: 40,
-  charge: 40,
-  coil: 40,
   circuitElement: 40,
   terminal: 41,
   particleSystem: 40,
@@ -40,7 +40,6 @@ export const DEFAULT_Z_LAYERS: Readonly<Record<string, number>> = {
   stream: 46,
   // 50: 벡터 · 이벤트
   vector: 50,
-  axis: 50,
   event: 50,
   // 60: 주석 · 값
   marker: 60,
@@ -51,9 +50,6 @@ export const DEFAULT_Z_LAYERS: Readonly<Record<string, number>> = {
   readout: 62,
   // 70: 스크린 오버레이
   graph: 70,
-  energyLevels: 65,
-  // Emitter 는 source 자체라 벡터 레이어에 가깝게.
-  emitter: 40,
 };
 
 export class RendererRegistry {

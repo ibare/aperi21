@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>단진자의 등시성</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    color: #22252b;
+    font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+          "Noto Sans KR", "Malgun Gothic", sans-serif;
+  }
+  .piece { width: 100%; max-width: 900px; margin: 0 auto; padding: 8px 0 12px; }
+  canvas { display: block; margin: 0 auto; }
+  .ctl {
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px; margin-top: 8px; font-size: 12px; color: #6b6f77;
+  }
+  .ctl input[type=range] { width: 240px; accent-color: #e8590c; }
+  .ctl b { font-weight: 600; color: #22252b; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="stage"></canvas>
+  <div class="ctl">
+    <label for="amp">흔들림 크기</label>
+    <input id="amp" type="range" min="6" max="60" step="1" value="20">
+    <b id="ampv">20°</b>
+  </div>
+</div>
+
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+  var K = window.PieceKit;
+
+  // ---- 논리 좌표계 (컨테이너 폭에 맞춰 통째로 스케일한다) ----
+  var W = 860, H = 372;
+  var PIVX = 430, PIVY = 26, LEN = 208;          // 피벗과 줄 길이(px)
+  var FLOOR = PIVY + LEN;                        // 최하점 y
+  var BX0 = 64, BX1 = 820, BY0 = 272, BY1 = 344; // 박자 기록띠
+  var WINDOW = 8.4;                              // 띠가 담는 시간(초)
+  var PPS = (BX1 - BX0) / WINDOW;                // 초당 픽셀
+  var ROWH = (BY1 - BY0) / 5;
+
+  var INK = '#22252b';
+  var ACCENT = '#e8590c';                        // 뜻 하나 — "바닥을 지나는 순간"
+  var PAPER = '#fbfaf8';
+
+  // ---- 물리 ----
+  // 길이 1 m 단진자. 소진폭 근사를 쓰지 않고 θ'' = -(g/L) sinθ 를 그대로 적분한다.
+  var G_OVER_L = 9.80665;
+  var RATIO = [1, 0.8, 0.6, 0.4, 0.2];           // 같은 길이, 진폭만 다섯 배 차이
+  var TRAIL = 13;                                // 잔상에 담는 프레임 수
+  var WARM_STEPS = 512;                          // 8.533초 — 띠가 처음부터 차 있도록
+  var LAG_LIMIT = 0.14;                          // 캡션이 말을 바꾸는 지연(초)
+
+  var P = {
+    time: 0,
+    ampDeg: 20,
+    amp: 20 * Math.PI / 180,
+    bobs: [],
+    lag: 0
+  };
+
+  function build() {
+    P.bobs = RATIO.map(function (r) {
+      return { th: P.amp * r, om: 0, hist: [], cross: [], n: 0 };
+    });
+  }
+
+  function advance(dt) {
+    for (var i = 0; i < P.bobs.length; i++) {
+      var q = P.bobs[i];
+      var prev = q.th;
+      // velocity Verlet — 진폭이 시들지 않아야 등시성을 오래 볼 수 있다
+      var a0 = -G_OVER_L * Math.sin(q.th);
+      var omh = q.om + 0.5 * a0 * dt;
+      q.th = q.th + omh * dt;
+      var a1 = -G_OVER_L * Math.sin(q.th);
+      q.om = omh + 0.5 * a1 * dt;
+
+      if ((prev > 0 && q.th <= 0) || (prev < 0 && q.th >= 0)) {
+        // 프레임 사이 어디서 바닥을 지났는지 선형 보간 — 띠의 정렬은 서브프레임 정밀도로 읽힌다
+        var frac = (prev === q.th) ? 0 : prev / (prev - q.th);
+        q.cross.push(P.time + dt * frac);
+        q.n++;
+      }
+      q.hist.push(q.th);
+      if (q.hist.length > TRAIL) q.hist.shift();
+      while (q.cross.length > 2 && q.cross[0] < P.time - WINDOW - 0.5) q.cross.shift();
+    }
+    P.time += dt;
+
+    var big = P.bobs[0], small = P.bobs[P.bobs.length - 1];
+    if (big.n === small.n && big.n > 0) {
+      P.lag = big.cross[big.cross.length - 1] - small.cross[small.cross.length - 1];
+    }
+  }
+
+  function setAmp(deg) {
+    var next = deg * Math.PI / 180;
+    var k = next / P.amp;
+    P.ampDeg = deg;
+    P.amp = next;
+    // 위상은 그대로 두고 크기만 늘린다 — 슬라이더를 끌어도 박자가 튀지 않는다
+    for (var i = 0; i < P.bobs.length; i++) {
+      var q = P.bobs[i];
+      q.th *= k;
+      q.om *= k;
+      for (var j = 0; j < q.hist.length; j++) q.hist[j] *= k;
+    }
+  }
+
+  function bobX(th) { return PIVX + Math.sin(th) * LEN; }
+  function bobY(th) { return PIVY + Math.cos(th) * LEN; }
+
+  // ---- 캔버스 ----
+  var canvas = document.getElementById('stage');
+  var ctx = canvas.getContext('2d');
+
+  function resize() {
+    var host = canvas.parentNode;
+    var cssW = Math.max(320, Math.min(900, host.clientWidth || 860));
+    var s = cssW / W;
+    var dpr = window.devicePixelRatio || 1;
+    canvas.style.width = cssW + 'px';
+    canvas.style.height = (H * s) + 'px';
+    canvas.width = Math.round(cssW * dpr);
+    canvas.height = Math.round(H * s * dpr);
+    ctx.setTransform(dpr * s, 0, 0, dpr * s, 0, 0);
+  }
+
+  function caption() {
+    var lag = Math.abs(P.lag);
+    var hi = P.ampDeg.toFixed(1);
+    var lo = (P.ampDeg * RATIO[RATIO.length - 1]).toFixed(1);
+    if (lag < LAG_LIMIT) {
+      return '진폭이 ' + hi + '°에서 ' + lo + '°까지 다섯 배 차이 나는데도, 다섯이 같은 순간 바닥을 지난다.';
+    }
+    return '크게 흔들리는 것이 ' + lag.toFixed(2) + '초 뒤처졌다 — 등시성은 작은 흔들림에서만 성립한다.';
+  }
+
+  function draw() {
+    K.mark('바탕', function () {
+      ctx.fillStyle = PAPER;
+      ctx.fillRect(0, 0, W, H);
+    });
+
+    K.mark('최하점 기준선', function () {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(34,37,43,0.18)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 4]);
+      ctx.beginPath();
+      ctx.moveTo(PIVX + 0.5, FLOOR - 46);
+      ctx.lineTo(PIVX + 0.5, FLOOR + 18);
+      ctx.stroke();
+      ctx.restore();
+    });
+
+    K.mark('속도 잔상', function () {
+      ctx.save();
+      ctx.lineCap = 'round';
+      for (var i = 0; i < P.bobs.length; i++) {
+        var h = P.bobs[i].hist;
+        for (var j = 1; j < h.length; j++) {
+          var w = j / h.length;
+          ctx.beginPath();
+          ctx.moveTo(bobX(h[j - 1]), bobY(h[j - 1]));
+          ctx.lineTo(bobX(h[j]), bobY(h[j]));
+          ctx.strokeStyle = 'rgba(34,37,43,' + (0.30 * w).toFixed(3) + ')';
+          ctx.lineWidth = 1 + 5.5 * w;
+          ctx.stroke();
+        }
+      }
+      ctx.restore();
+    });
+
+    K.mark('진자 다발', function () {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(34,37,43,0.30)';
+      ctx.lineWidth = 1;
+      for (var i = 0; i < P.bobs.length; i++) {
+        var th = P.bobs[i].th;
+        ctx.beginPath();
+        ctx.moveTo(PIVX, PIVY);
+        ctx.lineTo(bobX(th), bobY(th));
+        ctx.stroke();
+      }
+      ctx.fillStyle = INK;
+      for (var k = 0; k < P.bobs.length; k++) {
+        var t2 = P.bobs[k].th;
+        ctx.beginPath();
+        ctx.arc(bobX(t2), bobY(t2), 6.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.beginPath();
+      ctx.arc(PIVX, PIVY, 3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    K.mark('바닥 통과 섬광', function () {
+      ctx.save();
+      ctx.lineWidth = 1.5;
+      for (var i = 0; i < P.bobs.length; i++) {
+        var c = P.bobs[i].cross;
+        if (!c.length) continue;
+        var age = P.time - c[c.length - 1];
+        if (age < 0 || age > 0.28) continue;
+        var u = age / 0.28;
+        ctx.strokeStyle = 'rgba(232,89,12,' + (0.85 * (1 - u)).toFixed(3) + ')';
+        ctx.beginPath();
+        ctx.arc(PIVX, FLOOR, 8 + 26 * u, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      ctx.restore();
+    });
+
+    K.mark('박자 기록띠', function () {
+      ctx.save();
+      ctx.fillStyle = ACCENT;
+      for (var i = 0; i < P.bobs.length; i++) {
+        var yc = BY0 + ROWH * (i + 0.5);
+        var c = P.bobs[i].cross;
+        for (var j = 0; j < c.length; j++) {
+          var x = BX1 - (P.time - c[j]) * PPS;
+          if (x < BX0 || x > BX1) continue;
+          ctx.globalAlpha = 0.88;
+          ctx.fillRect(x - 1, yc - 5, 2, 10);
+        }
+      }
+      ctx.globalAlpha = 1;
+      ctx.restore();
+    });
+
+    K.mark('진폭 이름표', function () {
+      ctx.save();
+      ctx.fillStyle = '#8b8f97';
+      ctx.font = '11px -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      for (var i = 0; i < RATIO.length; i++) {
+        ctx.fillText((P.ampDeg * RATIO[i]).toFixed(1) + '°', BX0 - 9, BY0 + ROWH * (i + 0.5));
+      }
+      ctx.restore();
+    });
+
+    K.mark('캡션', function () {
+      ctx.save();
+      ctx.fillStyle = '#4a4e56';
+      ctx.font = '13px -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillText(caption(), W / 2, 362);
+      ctx.restore();
+    });
+  }
+
+  // ---- 조작기 ----
+  var slider = document.getElementById('amp');
+  var readout = document.getElementById('ampv');
+  if (!K.frozen) {
+    slider.addEventListener('input', function () {
+      var deg = parseInt(slider.value, 10) || 20;
+      setAmp(deg);
+      readout.textContent = deg + '°';
+    });
+  } else {
+    slider.value = String(P.ampDeg);
+    readout.textContent = P.ampDeg + '°';
+  }
+
+  // ---- 시작 ----
+  resize();
+  window.addEventListener('resize', resize);
+  build();
+  // 도착한 순간 이미 한창이도록 띠 하나 분량을 미리 돌려 둔다. 고정 dt 라 결과는 언제나 같다.
+  for (var i = 0; i < WARM_STEPS; i++) advance(K.DT);
+
+  K.loop({
+    step: function (dt) { advance(dt); },
+    draw: function () { draw(); }
+  });
+})();
+</script>
+</body>
+</html>

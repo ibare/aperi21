@@ -32,6 +32,9 @@ export const RENDERERS: Record<string, string> = {
   dimension: 'renderDimension',
   vortexField: 'renderVortexField',
   filament: 'renderFilament',
+  constraint: 'renderConstraint',
+  particleSystem: 'renderParticleSystem',
+  trace: 'renderTrace',
 };
 
 /** 표준 조작기 — 선언의 controller type → 클래스 이름. */

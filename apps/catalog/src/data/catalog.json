@@ -181,7 +181,8 @@
         {
           "id": "newtons-first-law",
           "name": "관성 법칙",
-          "desc": "알짜힘이 없을 때의 운동 상태"
+          "desc": "알짜힘이 없을 때의 운동 상태",
+          "simId": "aperi21:inertial-frame"
         },
         {
           "id": "inertia",
@@ -387,7 +388,8 @@
         {
           "id": "conservation-of-mechanical-energy",
           "name": "역학적 에너지 보존",
-          "desc": "형태가 바뀌어도 총량이 유지됨"
+          "desc": "형태가 바뀌어도 총량이 유지됨",
+          "simId": "aperi21:ramp-energy"
         },
         {
           "id": "energy-dissipation",
@@ -598,7 +600,8 @@
         {
           "id": "pendulum-amplitude-dependence",
           "name": "진폭과 주기",
-          "desc": "큰 진폭에서 깨지는 등시성"
+          "desc": "큰 진폭에서 깨지는 등시성",
+          "simId": "aperi21:pendulum-isochronism"
         },
         {
           "id": "damped-oscillation",
@@ -998,7 +1001,8 @@
         {
           "id": "thermal-conduction",
           "name": "열전도",
-          "desc": "접촉을 통한 전달"
+          "desc": "접촉을 통한 전달",
+          "simId": "aperi21:heat-conduction"
         },
         {
           "id": "thermal-convection",
@@ -1043,7 +1047,8 @@
         {
           "id": "kinetic-theory-of-gases",
           "name": "기체 분자 운동론",
-          "desc": "거시량을 분자 운동으로 설명"
+          "desc": "거시량을 분자 운동으로 설명",
+          "simId": "aperi21:gas-pressure"
         },
         {
           "id": "pressure-from-collisions",
@@ -1254,12 +1259,16 @@
         {
           "id": "beats",
           "name": "맥놀이",
-          "desc": "가까운 두 진동수의 합"
+          "desc": "가까운 두 진동수의 합",
+          "simId": "aperi21:beats",
+          "labUrl": "piece-lab/beats/index.html"
         },
         {
           "id": "doppler-effect",
           "name": "도플러 효과",
-          "desc": "상대 운동에 따른 진동수 변화"
+          "desc": "상대 운동에 따른 진동수 변화",
+          "simId": "aperi21:doppler-effect",
+          "labUrl": "piece-lab/doppler-effect/index.html"
         },
         {
           "id": "doppler-source-vs-observer",
@@ -1803,7 +1812,8 @@
         {
           "id": "field-of-straight-wire",
           "name": "직선 전류의 자기장",
-          "desc": "거리에 반비례하는 세기"
+          "desc": "거리에 반비례하는 세기",
+          "simId": "aperi21:current-magnetic-field"
         },
         {
           "id": "field-of-loop-and-solenoid",
@@ -1843,7 +1853,8 @@
         {
           "id": "lenzs-law",
           "name": "렌츠 법칙",
-          "desc": "변화를 방해하는 유도 전류"
+          "desc": "변화를 방해하는 유도 전류",
+          "simId": "aperi21:lenz-law"
         },
         {
           "id": "motional-emf",
@@ -2361,7 +2372,7 @@
   ],
   "summary": {
     "topics": 455,
-    "implemented": 10,
-    "labs": 4
+    "implemented": 19,
+    "labs": 6
   }
 }

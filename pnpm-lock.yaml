@@ -41,12 +41,39 @@ importers:
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../../packages/schema
+      '@aperi21/sim-apparent-brightness':
+        specifier: workspace:*
+        version: link:../../sims/astro/apparent-brightness
       '@aperi21/sim-archimedes-principle':
         specifier: workspace:*
         version: link:../../sims/fluids/archimedes-principle
+      '@aperi21/sim-beats':
+        specifier: workspace:*
+        version: link:../../sims/waves/beats
+      '@aperi21/sim-current-magnetic-field':
+        specifier: workspace:*
+        version: link:../../sims/em/current-magnetic-field
       '@aperi21/sim-dc-circuit':
         specifier: workspace:*
         version: link:../../sims/electronics/dc-circuit
+      '@aperi21/sim-doppler-effect':
+        specifier: workspace:*
+        version: link:../../sims/waves/doppler-effect
+      '@aperi21/sim-gas-pressure':
+        specifier: workspace:*
+        version: link:../../sims/thermal/gas-pressure
+      '@aperi21/sim-heat-conduction':
+        specifier: workspace:*
+        version: link:../../sims/thermal/heat-conduction
+      '@aperi21/sim-inertial-frame':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/inertial-frame
+      '@aperi21/sim-lenz-law':
+        specifier: workspace:*
+        version: link:../../sims/em/lenz-law
+      '@aperi21/sim-pendulum-isochronism':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/pendulum-isochronism
       '@aperi21/sim-pressure-and-container-shape':
         specifier: workspace:*
         version: link:../../sims/fluids/pressure-and-container-shape
@@ -56,6 +83,9 @@ importers:
       '@aperi21/sim-projectile':
         specifier: workspace:*
         version: link:../../sims/physics/projectile
+      '@aperi21/sim-ramp-energy':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/ramp-energy
       '@aperi21/sim-ray-tracing':
         specifier: workspace:*
         version: link:../../sims/optics/ray-tracing
@@ -111,6 +141,36 @@ importers:
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../schema
+      '@aperi21/sim-apparent-brightness':
+        specifier: workspace:*
+        version: link:../../sims/astro/apparent-brightness
+      '@aperi21/sim-beats':
+        specifier: workspace:*
+        version: link:../../sims/waves/beats
+      '@aperi21/sim-current-magnetic-field':
+        specifier: workspace:*
+        version: link:../../sims/em/current-magnetic-field
+      '@aperi21/sim-doppler-effect':
+        specifier: workspace:*
+        version: link:../../sims/waves/doppler-effect
+      '@aperi21/sim-gas-pressure':
+        specifier: workspace:*
+        version: link:../../sims/thermal/gas-pressure
+      '@aperi21/sim-heat-conduction':
+        specifier: workspace:*
+        version: link:../../sims/thermal/heat-conduction
+      '@aperi21/sim-inertial-frame':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/inertial-frame
+      '@aperi21/sim-lenz-law':
+        specifier: workspace:*
+        version: link:../../sims/em/lenz-law
+      '@aperi21/sim-pendulum-isochronism':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/pendulum-isochronism
+      '@aperi21/sim-ramp-energy':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/ramp-energy
     devDependencies:
       '@aperi21/plugin-circuit':
         specifier: workspace:*
@@ -255,6 +315,30 @@ importers:
         specifier: ^2.1.9
         version: 2.1.9(jsdom@25.0.1)
 
+  packages/plugin-em:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(jsdom@25.0.1)
+
+  packages/plugin-mechanics:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(jsdom@25.0.1)
+
   packages/plugin-optics:
     devDependencies:
       '@aperi21/schema':
@@ -306,6 +390,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/astro/apparent-brightness:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/electronics/dc-circuit:
     devDependencies:
       '@aperi21/plugin-circuit':
@@ -320,6 +413,27 @@ importers:
       vitest:
         specifier: ^2.1.9
         version: 2.1.9(jsdom@25.0.1)
+
+  sims/em/current-magnetic-field:
+    devDependencies:
+      '@aperi21/plugin-em':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-em
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/lenz-law:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
 
   sims/fluids/archimedes-principle:
     devDependencies:
@@ -387,6 +501,27 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/inertial-frame:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/ramp-energy:
+    devDependencies:
+      '@aperi21/plugin-mechanics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-mechanics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/optics/ray-tracing:
     devDependencies:
       '@aperi21/plugin-optics':
@@ -402,6 +537,15 @@ importers:
         specifier: ^2.1.9
         version: 2.1.9(jsdom@25.0.1)
 
+  sims/oscillation/pendulum-isochronism:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/physics/projectile:
     devDependencies:
       '@aperi21/schema':
@@ -413,6 +557,42 @@ importers:
       vitest:
         specifier: ^2.1.9
         version: 2.1.9(jsdom@25.0.1)
+
+  sims/thermal/gas-pressure:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/heat-conduction:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/waves/beats:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/waves/doppler-effect:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
 
 packages:
 

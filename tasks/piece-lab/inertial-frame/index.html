@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>관성 기준계 — 급정거</title>
+<style>
+  :root {
+    --bg: #f6f4f0;
+    --ink: #2c2a27;
+    --muted: #6f6a63;
+    --bus: #46586a;
+    --rider: #de5b1b;
+  }
+  html, body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard",
+                 "Malgun Gothic", system-ui, sans-serif;
+  }
+  #piece {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 8px 0 4px;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  #knobs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 2px 4px 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  #knobs label { white-space: nowrap; }
+  #friction {
+    flex: 1 1 auto;
+    max-width: 260px;
+    accent-color: var(--rider);
+  }
+  #knobs .ends { font-size: 12px; }
+</style>
+</head>
+<body>
+<div id="piece">
+  <canvas id="c"></canvas>
+  <div id="knobs">
+    <label for="friction">승객의 신발과 바닥 사이 마찰</label>
+    <span class="ends">없음</span>
+    <input id="friction" type="range" min="0" max="100" step="1" value="0" />
+    <span class="ends">많이</span>
+  </div>
+</div>
+
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ---- 화면 좌표 (CSS px, 내부 고정 좌표계) ----
+  var W = 860, H = 280;
+  var GY = 212;               // 도로 윗면 = 바퀴가 닿는 선
+  var ROAD_H = 18;
+
+  var BUS_LEN = 280;          // 버스 바디 길이
+  var BUS_TOP = 82, BUS_BOT = 186;
+  var WHEEL_Y = 196, WHEEL_R = 16;
+  var MARK_DX = 64;           // 버스 지붕 표식 — 버스 뒤끝에서 이만큼 앞
+  var WALL_DX = 234;          // 앞칸 칸막이 — 버스 뒤끝에서 이만큼 앞
+  var RIDER_HALF = 11;        // 승객 몸통 반폭
+  var RIDER_FOOT = 182;       // 승객 발이 닿는 버스 안 바닥
+
+  var TRAIL_BUS_Y = 64;       // 버스 자취 줄
+  var TRAIL_RIDER_Y = 112;    // 승객 자취 줄
+  var CAP_Y = 258;            // 캡션 baseline
+
+  // ---- 물리 ----
+  var V0 = 140;               // px/s — 등속 주행 속도
+  var A_BRAKE = 120;          // px/s^2 — 버스에 걸린 제동 가속도 (버스에만 걸린다)
+  var FRIC_MAX = 200;         // px/s^2 — 마찰 슬라이더 최대
+  var BRAKE_T = 2.0;          // s — 급정거 시각
+  var CYCLE = 8.0;            // s — 한 사이클
+  var SAMPLE_DT = 0.3;        // s — 자취를 찍는 간격
+  var FADE_T = 7.4;           // s — 사이클 끝 잦아듦 시작
+
+  var BG = '#f6f4f0', INK = '#2c2a27', MUTED = '#6f6a63';
+  var ROAD = '#d8d3cb', LANE = '#f6f4f0';
+  var BUS = '#46586a', RIDER = '#de5b1b';
+
+  var cv = document.getElementById('c');
+  var ctx = cv.getContext('2d');
+  var slider = document.getElementById('friction');
+  var dpr = Math.min(2, window.devicePixelRatio || 1);
+  cv.width = Math.round(W * dpr);
+  cv.height = Math.round(H * dpr);
+  cv.style.aspectRatio = W + ' / ' + H;
+
+  // ?t= 로 찍는 중에는 조작기를 만지지 않은 상태로 그린다.
+  function frictionA() {
+    if (PieceKit.frozen) return 0;
+    var v = parseFloat(slider.value) || 0;
+    return (v / 100) * FRIC_MAX;
+  }
+
+  // ---- 상태 ----
+  var st;
+  function reset() {
+    var bx = 40;
+    st = {
+      e: 0,                  // 사이클 안의 경과 시각
+      bx: bx,                // 버스 뒤끝
+      vb: V0,
+      px: bx + MARK_DX,      // 승객 중심 — 처음엔 지붕 표식과 같은 x
+      vp: V0,
+      wheel: 0,
+      samples: [],
+      nextSample: SAMPLE_DT,
+      hit: -1,               // 앞칸에 닿은 시각 (사이클 안), -1 이면 아직
+    };
+    // 도착한 순간 이미 달려온 것처럼 — 지나온 자취를 미리 깔아 둔다.
+    for (var k = 3; k >= 1; k--) {
+      var d = V0 * SAMPLE_DT * k;
+      st.samples.push({ gx: bx + MARK_DX - d, px: bx + MARK_DX - d });
+    }
+  }
+  reset();
+
+  function step(dt) {
+    st.e += dt;
+    if (st.e >= CYCLE) { reset(); return; }
+
+    // 버스 — 제동은 버스에만 걸린다.
+    var ab = 0;
+    if (st.e >= BRAKE_T && st.vb > 0) ab = -A_BRAKE;
+    st.vb += ab * dt;
+    if (st.vb < 0) { st.vb = 0; ab = 0; }
+    st.bx += st.vb * dt;
+    st.wheel += (st.vb * dt) / WHEEL_R;
+
+    // 승객 — 바닥과의 마찰만이 승객에게 걸리는 유일한 수평힘이다.
+    var f = frictionA();
+    var rel = st.vp - st.vb;
+    if (Math.abs(rel) > 0.5) {
+      st.vp += (rel > 0 ? -f : f) * dt;
+    } else {
+      // 미끄러지지 않는 동안 — 마찰이 감당할 수 있는 만큼만 버스를 따라 선다.
+      st.vp = st.vb;
+      st.vp += (Math.abs(ab) <= f ? ab : -f) * dt;
+    }
+    if (st.vp < 0) st.vp = 0;
+    st.px += st.vp * dt;
+
+    // 앞칸 — 여기 닿고서야 승객에게 처음으로 힘이 걸린다.
+    var wall = st.bx + WALL_DX;
+    if (st.px + RIDER_HALF >= wall) {
+      st.px = wall - RIDER_HALF;
+      st.vp = st.vb;
+      if (st.hit < 0) st.hit = st.e;
+    }
+
+    if (st.e >= st.nextSample) {
+      var last = st.samples[st.samples.length - 1];
+      var gx = st.bx + MARK_DX;
+      var moved = !last || Math.abs(gx - last.gx) > 1 || Math.abs(st.px - last.px) > 1;
+      if (moved) st.samples.push({ gx: gx, px: st.px });
+      st.nextSample += SAMPLE_DT;
+    }
+  }
+
+  // ---- 그리기 ----
+  function roundRect(x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+  }
+
+  function drawRoad() {
+    ctx.fillStyle = ROAD;
+    ctx.fillRect(0, GY, W, ROAD_H);
+    ctx.strokeStyle = LANE;
+    ctx.lineWidth = 2;
+    ctx.setLineDash([18, 16]);
+    ctx.beginPath();
+    ctx.moveTo(0, GY + ROAD_H / 2);
+    ctx.lineTo(W, GY + ROAD_H / 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  function drawBus() {
+    var bx = st.bx;
+    ctx.lineWidth = 2.5;
+    ctx.strokeStyle = BUS;
+    ctx.fillStyle = 'rgba(70,88,106,0.07)';
+    roundRect(bx, BUS_TOP, BUS_LEN, BUS_BOT - BUS_TOP, 12);
+    ctx.fill();
+    ctx.stroke();
+
+    // 뒷문 — 차체가 버스로 읽히게 하는 최소한. 지붕 아래 가로선은 승객 자취 줄과
+    // 나란히 놓여 잡음이 되므로 두지 않는다.
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(70,88,106,0.35)';
+    ctx.beginPath();
+    ctx.moveTo(bx + 26, BUS_TOP + 20); ctx.lineTo(bx + 26, BUS_BOT);
+    ctx.moveTo(bx + 48, BUS_TOP + 20); ctx.lineTo(bx + 48, BUS_BOT);
+    ctx.stroke();
+
+    // 앞칸 칸막이 — 승객이 닿을 벽
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = BUS;
+    ctx.beginPath();
+    ctx.moveTo(bx + WALL_DX, BUS_TOP + 8);
+    ctx.lineTo(bx + WALL_DX, BUS_BOT);
+    ctx.stroke();
+
+    // 바닥
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(70,88,106,0.5)';
+    ctx.beginPath();
+    ctx.moveTo(bx + 6, RIDER_FOOT); ctx.lineTo(bx + WALL_DX, RIDER_FOOT);
+    ctx.stroke();
+
+    // 바퀴 — 굴러가다 서는 것이 보이게 살 하나를 넣는다
+    [bx + 58, bx + BUS_LEN - 58].forEach(function (wx) {
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = BUS;
+      ctx.fillStyle = BG;
+      ctx.beginPath();
+      ctx.arc(wx, WHEEL_Y, WHEEL_R, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.save();
+      ctx.translate(wx, WHEEL_Y);
+      ctx.rotate(st.wheel);
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = 'rgba(70,88,106,0.55)';
+      ctx.beginPath();
+      ctx.moveTo(-WHEEL_R + 3, 0);
+      ctx.lineTo(WHEEL_R - 3, 0);
+      ctx.stroke();
+      ctx.restore();
+    });
+
+    // 지붕 표식 — 자취를 찍는 기준점
+    ctx.fillStyle = BUS;
+    ctx.beginPath();
+    ctx.arc(bx + MARK_DX, BUS_TOP, 4, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function drawLinks() {
+    // 같은 순간의 버스 점과 승객 점을 잇는다. 등속에서는 수직, 버스만 느려지면 기운다.
+    ctx.strokeStyle = 'rgba(44,42,39,0.20)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (var i = 0; i < st.samples.length; i++) {
+      var s = st.samples[i];
+      if (s.gx < 4 && s.px < 4) continue;
+      ctx.moveTo(s.gx, TRAIL_BUS_Y + 6);
+      ctx.lineTo(s.px, TRAIL_RIDER_Y - 6);
+    }
+    ctx.moveTo(st.bx + MARK_DX, TRAIL_BUS_Y + 6);
+    ctx.lineTo(st.px, TRAIL_RIDER_Y - 6);
+    ctx.stroke();
+  }
+
+  function drawTrail(key, y, color, nowX, label) {
+    ctx.fillStyle = color;
+    for (var i = 0; i < st.samples.length; i++) {
+      var x = st.samples[i][key];
+      if (x < 4) continue;
+      ctx.beginPath();
+      ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.beginPath();
+    ctx.arc(nowX, y, 5, 0, Math.PI * 2);
+    ctx.fill();
+    // 이름은 지금 점 바로 옆, 진행 방향 앞쪽 빈자리에 — 차체 선·자취와 겹치지 않는다
+    ctx.font = '12px -apple-system, system-ui, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(label, nowX + 11, y);
+    ctx.textBaseline = 'alphabetic';
+  }
+
+  function drawBusTrail() {
+    drawTrail('gx', TRAIL_BUS_Y, 'rgba(70,88,106,0.62)', st.bx + MARK_DX, '버스');
+  }
+  function drawRiderTrail() {
+    drawTrail('px', TRAIL_RIDER_Y, 'rgba(222,91,27,0.62)', st.px, '승객');
+  }
+
+  function drawRider() {
+    ctx.fillStyle = RIDER;
+    ctx.beginPath();
+    ctx.arc(st.px, RIDER_FOOT - 49, 9, 0, Math.PI * 2);
+    ctx.fill();
+    roundRect(st.px - RIDER_HALF, RIDER_FOOT - 40, RIDER_HALF * 2, 40, 8);
+    ctx.fill();
+  }
+
+  function drawImpact() {
+    if (st.hit < 0) return;
+    var age = st.e - st.hit;
+    if (age > 0.45) return;
+    var k = 1 - age / 0.45;
+    var x = st.bx + WALL_DX;
+    ctx.save();
+    ctx.globalAlpha = ctx.globalAlpha * k;
+    ctx.strokeStyle = RIDER;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    // 닿은 자리는 버스 안 칸막이다 — 표시가 차체 밖으로 나가지 않게 가둔다
+    [-22, 0, 22].forEach(function (dy) {
+      ctx.moveTo(x + 4, RIDER_FOOT - 26 + dy);
+      ctx.lineTo(x + 14 + 8 * k, RIDER_FOOT - 26 + dy * 1.15);
+    });
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function captionText() {
+    var f = frictionA();
+    if (st.e < BRAKE_T) return '버스와 승객이 같은 속도로 간다.';
+    if (st.hit >= 0) return '앞칸에 닿고서야 승객에게 처음으로 힘이 걸린다. 그 전까지 승객은 원래 속도로 그냥 가고 있었다.';
+    if (f > 0 && st.vb <= 0.5 && Math.abs(st.vp - st.vb) <= 0.5) return '발이 바닥을 붙잡은 만큼 승객도 느려져, 버스와 함께 섰다.';
+    if (f > 0) return '발이 바닥을 붙잡은 만큼만 승객이 느려진다 — 그만큼 자취 간격도 좁아진다.';
+    return '버스만 느려진다. 승객의 자취 간격은 그대로다 — 승객을 민 것은 아무것도 없다.';
+  }
+
+  function drawCaption() {
+    ctx.fillStyle = INK;
+    ctx.font = '14px -apple-system, system-ui, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(captionText(), 4, CAP_Y);
+  }
+
+  function draw() {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    PieceKit.mark('바탕', function () {
+      ctx.fillStyle = BG;
+      ctx.fillRect(0, 0, W, H);
+    });
+    var a = st.e >= FADE_T ? Math.max(0, 1 - (st.e - FADE_T) / (CYCLE - FADE_T)) : 1;
+    ctx.save();
+    ctx.globalAlpha = a;
+    PieceKit.mark('도로', drawRoad);
+    PieceKit.mark('버스', drawBus);
+    PieceKit.mark('같은 순간 잇기', drawLinks);
+    PieceKit.mark('버스 자취', drawBusTrail);
+    PieceKit.mark('승객 자취', drawRiderTrail);
+    PieceKit.mark('승객', drawRider);
+    PieceKit.mark('앞칸 부딪힘', drawImpact);
+    PieceKit.mark('캡션', drawCaption);
+    ctx.restore();
+  }
+
+  PieceKit.loop({ step: step, draw: draw });
+})();
+</script>
+</body>
+</html>

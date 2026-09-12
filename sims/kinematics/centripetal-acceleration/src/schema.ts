@@ -133,8 +133,8 @@ export const centripetalAccelerationSchema: BundleSchema = {
    *   자리가 주기마다 겹치지 않는다.
    * - 도착했을 때 이미 0.6 초 진행된 상태로 보인다.
    */
+  startAt: 0.6,
   timeline: {
-    startAt: 0.6,
     phases: [
       { id: 'keep', duration: 1.0, caption: key('caption.keep') },
       { id: 'align', duration: 0.7, ease: 'smooth', caption: key('caption.align') },

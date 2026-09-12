@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>렌츠 법칙</title>
+<style>
+  html, body { margin: 0; background: #ffffff; }
+  .piece { max-width: 860px; margin: 0 auto; }
+  canvas { display: block; width: 100%; max-width: 860px; height: auto; }
+</style>
+</head>
+<body>
+<div class="piece"><canvas id="c"></canvas></div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ---------------------------------------------------------------- 화면 상수
+  var W = 860, H = 250;          // 논리 좌표. CSS 로 줄어들어도 내부 좌표는 고정이다.
+  var CX = 430, CY = 118;        // 코일 중심 = 자석이 지나가는 축
+  var SCALE = 100;               // u(코일 반경 단위) → px
+  var RY = 62, RX = 15;          // 옆에서 본 고리의 세로·가로 반지름
+  var RING_X = [-48, -24, 0, 24, 48];
+  var MW = 84, MH = 30;          // 자석 폭·높이
+  var Y_MOVE = 42, Y_FORCE = 202, Y_CAP = 232;
+
+  var INK = '#262523';           // 자석 N · 글자 · 움직임
+  var PALE = '#d2cfc8';          // 자석 S
+  var COPPER = '#a9906c';        // 코일선
+  var CURRENT = '#2f6b8f';       // 유도 전류
+  var ACCENT = '#e0572a';        // 강조색 — 오직 '코일이 자석에 주는 힘'
+  var BG = '#faf9f6';
+  var FONT = '-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+
+  // ---------------------------------------------------------------- 물리 상수
+  var V0 = 1.6;                  // 자동 진행 속도 (u/s)
+  var U_END = 2.4;               // 왕복하는 양 끝
+  var PAUSE = 0.55;              // 끝에서 멈추는 시간
+  // 코일 축 위 자기다발 Φ(u) = (1+u²)^(-3/2), 그 기울기
+  function gp(u) { return -3 * u / Math.pow(1 + u * u, 2.5); }
+  var GP_MAX = 3 * 0.5 / Math.pow(1.25, 2.5);   // |gp| 최대 (u = ±0.5)
+  var I_MAX = GP_MAX * V0;
+  var F_MAX = GP_MAX * GP_MAX * V0;
+
+  // ---------------------------------------------------------------- 상태
+  var st = {
+    u: -1.2, dir: 1, mode: 'move', timer: 0,
+    v: V0, I: 0, F: 0, phase: 0,
+    dragU: 0, grab: 0, hover: false,
+  };
+  function recompute() {
+    var g = gp(st.u);
+    st.I = -g * st.v / I_MAX;            // 유도 전류 (정규화, 부호 = 도는 방향)
+    st.F = -(g * g) * st.v / F_MAX;      // 자석이 받는 힘 — gp² 이라 언제나 v 의 반대
+  }
+  recompute();
+
+  // ---------------------------------------------------------------- 캔버스
+  var canvas = document.getElementById('c');
+  var dpr = Math.min(3, window.devicePixelRatio || 1);
+  canvas.width = Math.round(W * dpr);
+  canvas.height = Math.round(H * dpr);
+  var ctx = canvas.getContext('2d');
+
+  function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+  function magnetX() { return CX + st.u * SCALE; }
+
+  // ---------------------------------------------------------------- 조작기
+  if (!PieceKit.frozen) {
+    var toLogical = function (e) {
+      var r = canvas.getBoundingClientRect();
+      var k = W / r.width;
+      return { x: (e.clientX - r.left) * k, y: (e.clientY - r.top) * k };
+    };
+    var onMagnet = function (p) {
+      return Math.abs(p.x - magnetX()) <= MW / 2 + 6 && Math.abs(p.y - CY) <= MH / 2 + 8;
+    };
+    canvas.addEventListener('pointerdown', function (e) {
+      var p = toLogical(e);
+      if (!onMagnet(p)) return;
+      st.mode = 'drag';
+      st.grab = p.x - magnetX();
+      st.dragU = st.u;
+      canvas.setPointerCapture(e.pointerId);
+      e.preventDefault();
+    });
+    canvas.addEventListener('pointermove', function (e) {
+      var p = toLogical(e);
+      if (st.mode === 'drag') {
+        st.dragU = clamp((p.x - st.grab - CX) / SCALE, -U_END, U_END);
+        st.hover = true;
+      } else {
+        st.hover = onMagnet(p);
+      }
+      canvas.style.cursor = st.hover ? (st.mode === 'drag' ? 'grabbing' : 'grab') : 'default';
+    });
+    var release = function () {
+      if (st.mode !== 'drag') return;
+      st.mode = 'move';
+      st.dir = Math.abs(st.v) > 0.08 ? (st.v > 0 ? 1 : -1) : (st.u > 0 ? -1 : 1);
+      canvas.style.cursor = st.hover ? 'grab' : 'default';
+    };
+    canvas.addEventListener('pointerup', release);
+    canvas.addEventListener('pointercancel', release);
+    canvas.addEventListener('pointerleave', function () { st.hover = false; });
+    canvas.style.touchAction = 'none';
+  }
+
+  // ---------------------------------------------------------------- 그리기 도구
+  function arrow(x, y, s, len, color, lw, hs) {
+    ctx.strokeStyle = color; ctx.lineWidth = lw; ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + s * (len - hs), y);
+    ctx.stroke();
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(x + s * len, y);
+    ctx.lineTo(x + s * (len - hs), y - hs * 0.6);
+    ctx.lineTo(x + s * (len - hs), y + hs * 0.6);
+    ctx.fill();
+  }
+  function tri(x, y, s, size) {
+    ctx.beginPath();
+    ctx.moveTo(x + s * size, y);
+    ctx.lineTo(x - s * size * 0.45, y - size * 0.72);
+    ctx.lineTo(x - s * size * 0.45, y + size * 0.72);
+    ctx.fill();
+  }
+
+  // ---------------------------------------------------------------- 한 걸음
+  function step(dt) {
+    var prev = st.u;
+    if (st.mode === 'drag') {
+      st.u += (st.dragU - st.u) * 0.35;
+    } else if (st.mode === 'pause') {
+      st.timer -= dt;
+      if (st.timer <= 0) { st.mode = 'move'; st.dir = -st.dir; }
+    } else {
+      st.u += st.dir * V0 * dt;
+      if (st.u >= U_END) { st.u = U_END; st.mode = 'pause'; st.timer = PAUSE; }
+      if (st.u <= -U_END) { st.u = -U_END; st.mode = 'pause'; st.timer = PAUSE; }
+    }
+    st.v = (st.u - prev) / dt;
+    recompute();
+    st.phase += st.I * 3.4 * dt;   // 전류가 고리를 도는 위상. 프레임 사이에 쌓인다.
+  }
+
+  // ---------------------------------------------------------------- 한 프레임
+  function draw() {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    PieceKit.mark('바탕', function () {
+      ctx.fillStyle = BG;
+      ctx.fillRect(0, 0, W, H);
+    });
+
+    PieceKit.mark('코일', function () {
+      ctx.strokeStyle = COPPER;
+      ctx.lineWidth = 2.4;
+      for (var i = 0; i < RING_X.length; i++) {
+        ctx.beginPath();
+        ctx.ellipse(CX + RING_X[i], CY, RX, RY, 0, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    });
+
+    PieceKit.mark('유도 전류', function () {
+      var mag = Math.min(1, Math.abs(st.I));
+      var s = st.I >= 0 ? 1 : -1;
+      // 고리를 따라 흐르는 전하 — 알파와 흐르는 속도가 전류의 세기다.
+      ctx.fillStyle = CURRENT;
+      ctx.globalAlpha = 0.12 + 0.78 * mag;
+      for (var i = 0; i < RING_X.length; i++) {
+        var x0 = CX + RING_X[i];
+        for (var k = 0; k < 8; k++) {
+          var a = st.phase + k * Math.PI / 4;
+          ctx.beginPath();
+          ctx.arc(x0 + RX * Math.cos(a), CY + RY * Math.sin(a), 2.3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      ctx.globalAlpha = 1;
+      // 도는 방향 — 정지 화면에서도 방향이 읽히도록 고리의 위·아래에 화살촉을 둔다.
+      if (Math.abs(st.I) > 0.035) {
+        var size = 4 + 7 * mag;
+        for (var j = 0; j < RING_X.length; j++) {
+          var xc = CX + RING_X[j];
+          tri(xc, CY - RY, s, size);        // 위쪽: 전류가 +방향이면 오른쪽
+          tri(xc, CY + RY, -s, size);       // 아래쪽: 반대
+        }
+      }
+    });
+
+    PieceKit.mark('자석', function () {
+      var x = magnetX();
+      ctx.fillStyle = INK;
+      ctx.fillRect(x - MW / 2, CY - MH / 2, MW / 2, MH);
+      ctx.fillStyle = PALE;
+      ctx.fillRect(x, CY - MH / 2, MW / 2, MH);
+      ctx.strokeStyle = INK;
+      ctx.lineWidth = st.hover ? 2.6 : 1.2;
+      ctx.strokeRect(x - MW / 2, CY - MH / 2, MW, MH);
+      ctx.font = '600 14px ' + FONT;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = BG;
+      ctx.fillText('N', x - MW / 4, CY + 0.5);
+      ctx.fillStyle = INK;
+      ctx.fillText('S', x + MW / 4, CY + 0.5);
+    });
+
+    PieceKit.mark('자석의 움직임', function () {
+      if (Math.abs(st.v) < 0.06) return;
+      var x = magnetX();
+      var s = st.v > 0 ? 1 : -1;
+      var len = 30 + 50 * Math.min(1.3, Math.abs(st.v) / V0);
+      arrow(x, Y_MOVE, s, len, INK, 2.4, 10);
+      ctx.font = '12px ' + FONT;
+      ctx.textAlign = s > 0 ? 'right' : 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = INK;
+      ctx.fillText('자석의 움직임', x - s * 10, Y_MOVE);
+    });
+
+    PieceKit.mark('코일이 주는 힘', function () {
+      if (Math.abs(st.F) < 0.035) return;
+      var x = magnetX();
+      var s = st.F > 0 ? 1 : -1;
+      var len = 18 + 74 * Math.min(1.2, Math.abs(st.F));
+      arrow(x, Y_FORCE, s, len, ACCENT, 3.2, 11);
+      ctx.font = '12px ' + FONT;
+      ctx.textAlign = s > 0 ? 'right' : 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = ACCENT;
+      ctx.fillText('코일이 주는 힘', x - s * 10, Y_FORCE);
+    });
+
+    PieceKit.mark('캡션', function () {
+      var text;
+      if (Math.abs(st.v) < 0.06) text = '자석이 멈춰 있다 — 전류도 없다';
+      else if (Math.abs(st.I) < 0.06) text = '자석이 코일 한가운데 — 지금 전류가 방향을 바꾼다';
+      else if (st.u * st.v < 0) text = '자석이 다가온다 — 코일이 되민다';
+      else text = '자석이 멀어진다 — 코일이 붙잡는다';
+      ctx.font = '15px ' + FONT;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillStyle = INK;
+      ctx.fillText(text, CX, Y_CAP);
+    });
+  }
+
+  PieceKit.loop({ step: step, draw: draw });
+})();
+</script>
+</body>
+</html>

@@ -12,6 +12,7 @@
 import type {
   Bundle,
   BundleState,
+  ControllerSpec,
   EnvironmentDef,
   MeasureService,
   Primitive,
@@ -29,6 +30,7 @@ import { createTimeEngine, evaluateTimeline, withCaption } from '../time';
 import type { ThemeMode } from '../theme';
 import type { ControllerEventContext, PointerInput, ResolvedController } from '../controller/types';
 import { visibleControllers } from '../controller/visibility';
+import { writePath } from '../controller/path';
 
 /**
  * 임베드 캔버스 치수의 기본값. 선언(`BundleSchema.canvas`)이 비었을 때만 쓰인다.
@@ -37,6 +39,54 @@ import { visibleControllers } from '../controller/visibility';
 const CANVAS_DEFAULT = { height: 360, minHeight: 320 } as const;
 
 const HUD_MARGINS = { top: 24, bottom: 24, left: 24, right: 24 };
+
+/**
+ * 프리롤의 걸음(초). 60fps 한 프레임이다.
+ *
+ * 실시간 dt 가 아니라 고정 걸음으로 굴린다 — 같은 선언이 기기마다 다른 초기
+ * 화면을 만들면 `?t=` 로 찍은 것과 실제로 본 것이 갈린다.
+ */
+const PREROLL_STEP = 1 / 60;
+/** 프리롤 상한(걸음). 선언이 터무니없이 크면 마운트가 멈춘다. */
+const PREROLL_MAX_STEPS = 20_000;
+
+/**
+ * 조작기를 잡고 있다는 사실을 선언한 자리에 적는다.
+ *
+ * 러너가 하는 일은 여기까지다 — 자동 진행이 어떻게 양보하고 놓은 뒤 무엇으로
+ * 돌아갈지는 조각마다 다르다. `laminar-vs-turbulent` 는 가장 가까운 정박값으로
+ * 돌아가고 `lenz-law` 는 놓는 순간의 속도로 이어 간다.
+ */
+export function markHeld(
+  refs: { state: BundleState },
+  spec: ControllerSpec,
+  held: boolean,
+): void {
+  if (!spec.heldPath) return;
+  refs.state = writePath(refs.state, spec.heldPath, held);
+}
+
+/**
+ * 마운트 전에 `step` 을 `schema.preroll` 만큼 미리 굴린다.
+ *
+ * 두 러너가 같은 규약을 써야 한다 — 한쪽만 굴리면 같은 조각이 카탈로그와 외부
+ * 호스트에서 다른 화면으로 열린다.
+ */
+export function prerollState<T extends BundleState>(
+  bundle: Bundle<T>,
+  initial: T,
+  stage: StageDef,
+  environments: EnvironmentDef[],
+): T {
+  const seconds = bundle.schema.preroll ?? 0;
+  if (!(seconds > 0)) return initial;
+  const steps = Math.min(Math.round(seconds / PREROLL_STEP), PREROLL_MAX_STEPS);
+  let s = initial;
+  for (let i = 0; i < steps; i++) {
+    s = bundle.step({ state: s, dt: PREROLL_STEP, stage, environments });
+  }
+  return s;
+}
 
 export interface RunBundleOptions {
   locale?: string;
@@ -114,8 +164,11 @@ export function runBundle<T extends BundleState = BundleState>(
   for (const p of bundle.schema.parameters) values[p.id] = p.default;
   if (options.values) Object.assign(values, options.values);
 
-  // 초기 상태
+  // 초기 상태. 선언이 `preroll` 을 주면 마운트 전에 그만큼 미리 굴린다 —
+  // 상태를 누적하는 조각은 시계만 앞당겨도 화면이 비어 있다 (S-piece: 독자가
+  // 도착한 순간 이미 진행 중). 고정 걸음이라 같은 선언은 같은 초기 화면을 만든다.
   let state: T = bundle.initialState({ values, stage, environments: envs });
+  state = prerollState(bundle, state, stage, envs);
 
   // 캔버스 컨테이너 + 캔버스.
   // 치수는 선언에서 온다 (원칙 2). 코드에는 선언이 비었을 때의 기본값만 둔다.
@@ -162,6 +215,9 @@ export function runBundle<T extends BundleState = BundleState>(
   const dpr = Math.min(2, (typeof window !== 'undefined' && window.devicePixelRatio) || 1);
   const particles = new BackgroundParticleSystem();
   timeEngine.reset();
+  // 시계를 선언만큼 앞당겨 연다 (S-piece). 시간표 안이 아니라 BundleSchema 에
+  // 있어서 시간표 없는 조각도 앞당길 수 있다.
+  if (bundle.schema.startAt) timeEngine.seek(bundle.schema.startAt);
   timeEngine.start();
 
   let disposed = false;
@@ -245,6 +301,9 @@ export function runBundle<T extends BundleState = BundleState>(
     if (hit) {
       try { canvas.setPointerCapture(e.pointerId); } catch { /* noop */ }
       sessions.set(e.pointerId, hit);
+      // 잡혔다는 사실만 적는다. 자동 진행을 어떻게 양보하고 놓은 뒤 무엇으로
+      // 돌아갈지는 조각의 step 이 안다 (원칙 7 ④ · ControllerInstance.heldPath).
+      markHeld(refs, hit.spec, true);
       const patch = hit.impl.onPointerDown(input, makeEventCtx(vp, hit.slot), hit.spec, refs.state as BundleState);
       applyPartial(patch);
       return;
@@ -308,6 +367,7 @@ export function runBundle<T extends BundleState = BundleState>(
         refs.state as BundleState,
       );
       applyPartial(patch);
+      markHeld(refs, session.spec, false);
       sessions.delete(e.pointerId);
       try { canvas.releasePointerCapture(e.pointerId); } catch { /* noop */ }
       return;
@@ -394,6 +454,7 @@ export function runBundle<T extends BundleState = BundleState>(
       }),
       b.schema,
       timeline,
+      refs.state as BundleState,
     );
     const { refs: sceneRefs, orderedScene } = preprocessScene(sceneGraph);
     const sortedScene = orderForDrawing(orderedScene, b.schema.drawOrder, (t) =>

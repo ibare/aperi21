@@ -1,0 +1,17 @@
+{
+  "name": "01-broad",
+  "title": "넓게 — 역학·진동·파동·전자기·열·천체 10",
+  "record": "tasks/engine-requirements/batches/01-broad.md",
+  "pieces": [
+    "inertial-frame",
+    "ramp-energy",
+    "pendulum-isochronism",
+    "beats",
+    "doppler-effect",
+    "current-magnetic-field",
+    "lenz-law",
+    "heat-conduction",
+    "gas-pressure",
+    "apparent-brightness"
+  ]
+}

@@ -116,8 +116,8 @@ export const velocityTimeGraphSchema: BundleSchema = {
    *   운동의 끝이라 `land` 가 곧 한 기둥의 비행 시간이다.
    * - 도착한 순간 이미 첫 기둥이 떨어지는 중이다 (1.5 s 앞당김, S-piece).
    */
+  startAt: 1.5,
   timeline: {
-    startAt: 1.5,
     phases: [
       { id: 'appear', duration: 0.3 },
       { id: 'motion', duration: T_END - 0.3 },

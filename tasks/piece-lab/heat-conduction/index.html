@@ -1,0 +1,303 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>열전도 — 쇠와 나무</title>
+<style>
+  html, body { margin: 0; background: #ffffff; }
+  .piece {
+    max-width: 860px;
+    margin: 0 auto;
+    font: 400 15px/1.5 system-ui, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    color: #23201c;
+  }
+  .piece canvas { display: block; width: 100%; height: auto; }
+</style>
+
+<div class="piece"><canvas id="c"></canvas></div>
+
+<script src="../_harness/piece-kit.js"></script>
+<script>
+'use strict';
+
+/* ───────────── 물리 상수 ─────────────
+ * 길이는 mm, 시간은 초, 온도는 ℃.
+ * 열확산계수 α = k / (ρ·c).  연강 1.2e-5 m²/s, 소나무(결 방향) 1.5e-7 m²/s.
+ * 화면에서는 mm²/s 로 쓴다 — 1 m²/s = 1e6 mm²/s.
+ */
+var ROD_MM      = 150;      // 막대 길이 150 mm
+var A_STEEL     = 12;       // 쇠   α = 12 mm²/s   (= 1.2e-5 m²/s)
+var A_WOOD      = 0.15;     // 나무 α = 0.15 mm²/s (= 1.5e-7 m²/s)
+var T_AMB       = 20;       // 주변 20 ℃
+var T_HOT       = 250;      // 버너에 닿은 끝 250 ℃ 로 유지
+var T_MELT      = 60;       // 밀랍 녹는점 60 ℃
+var THETA_MELT  = (T_MELT - T_AMB) / (T_HOT - T_AMB);   // 무차원 온도 0.173913…
+
+var SEC_PER_SEC = 40;       // 화면 1 초 = 물리 40 초
+var PREROLL_S   = 30;       // 초기조건: 도착했을 때 이미 30 초 데운 상태
+
+var N   = 120;              // 격자 노드 0..N
+var DX  = ROD_MM / N;       // 1.25 mm
+var SUB = 12;               // 프레임당 서브스텝 — 안정조건 α·dt/dx² = 0.427 ≤ 0.5
+
+/* ───────────── 화면 좌표 ───────────── */
+var W = 860, H = 276;
+var X0 = 120, ROD_PX = 640;          // 막대는 x 120 → 760
+var PPMM = ROD_PX / ROD_MM;          // 4.2667 px/mm
+var ROD_H = 28;
+var STEEL_Y = 34, WOOD_Y = 150;      // 막대 윗면
+var BEAD_DROP = 7;                   // 막대 밑면에서 구슬 중심까지
+var FLOOR = 40;                      // 구슬이 굴러 멈추는 깊이 (막대 밑면 기준)
+var G = 700;                         // 낙하 가속도 px/s² (화면 시간 기준)
+
+var INK = '#23201c';
+var SOFT = '#5d5751';
+var HOT = '#e0501e';                 // 강조색 — 오직 '뜨거움' 한 가지 뜻
+
+var canvas = document.getElementById('c');
+var ctx = canvas.getContext('2d');
+(function fit() {
+  var dpr = Math.min(2, window.devicePixelRatio || 1);
+  canvas.width = Math.round(W * dpr);
+  canvas.height = Math.round(H * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+})();
+
+/* ───────────── 막대 만들기 ───────────── */
+function makeRod(name, alpha, topY, cold, grain) {
+  var rod = {
+    name: name, alpha: alpha, topY: topY, cold: cold, grain: grain,
+    T: new Float64Array(N + 1),      // 무차원 온도 θ = (T-20)/(250-20)
+    B: new Float64Array(N + 1),
+    front: 0,
+    beads: [],
+  };
+  rod.T[0] = 1;                      // 데운 끝은 θ=1 (250 ℃) 로 고정
+  for (var j = 1; j <= 10; j++) {
+    rod.beads.push({
+      xmm: j * 15,                   // 15 mm 간격으로 열 개
+      released: false,
+      y: 0, vy: 0,
+      rot: 0, vrot: (PieceKit.random() - 0.5) * 9,
+      slide: (PieceKit.random() - 0.5) * 8,
+      r: 5.4 + PieceKit.random() * 1.2,
+    });
+  }
+  return rod;
+}
+
+var rods = [
+  makeRod('쇠', A_STEEL, STEEL_Y, '#9aa0a6', '#7f868c'),
+  makeRod('나무', A_WOOD, WOOD_Y, '#c69b6d', '#a87f52'),
+];
+
+/* ───────────── 확산 적분 ───────────── */
+function diffuse(rod, dtPhys) {
+  var dts = dtPhys / SUB;
+  var r = rod.alpha * dts / (DX * DX);
+  var T = rod.T, B = rod.B;
+  for (var s = 0; s < SUB; s++) {
+    B[0] = 1;                                        // 데운 끝: 고정 온도
+    for (var i = 1; i < N; i++) {
+      B[i] = T[i] + r * (T[i + 1] - 2 * T[i] + T[i - 1]);
+    }
+    B[N] = T[N] + r * 2 * (T[N - 1] - T[N]);         // 반대쪽 끝: 단열
+    var tmp = rod.T; rod.T = B; rod.B = tmp;
+    T = rod.T; B = rod.B;
+  }
+}
+
+function thetaAt(T, xmm) {
+  var p = xmm / DX;
+  var i = Math.min(N - 1, Math.floor(p));
+  var f = p - i;
+  return T[i] * (1 - f) + T[i + 1] * f;
+}
+
+/** 60 ℃ 가 닿은 가장 먼 지점 (mm). */
+function frontMm(T) {
+  for (var i = 1; i <= N; i++) {
+    if (T[i] < THETA_MELT) {
+      var f = (T[i - 1] - THETA_MELT) / (T[i - 1] - T[i]);
+      return (i - 1 + f) * DX;
+    }
+  }
+  return ROD_MM;
+}
+
+/* ───────────── 한 프레임 전진 ───────────── */
+function advance(dt) {
+  var dtPhys = dt * SEC_PER_SEC;
+  for (var k = 0; k < rods.length; k++) {
+    var rod = rods[k];
+    diffuse(rod, dtPhys);
+    rod.front = frontMm(rod.T);
+    for (var b = 0; b < rod.beads.length; b++) {
+      var bead = rod.beads[b];
+      if (!bead.released && thetaAt(rod.T, bead.xmm) >= THETA_MELT) bead.released = true;
+      if (bead.released && bead.y < FLOOR) {
+        bead.vy += G * dt;
+        bead.y += bead.vy * dt;
+        bead.rot += bead.vrot * dt;
+        if (bead.y >= FLOOR) { bead.y = FLOOR; bead.vy = 0; bead.vrot = 0; }
+      }
+    }
+  }
+}
+
+/* 초기조건 — 이미 30 초 데워져 있고, 그때까지 떨어진 구슬은 바닥에 놓여 있다. */
+(function preroll() {
+  var frames = Math.round(PREROLL_S / SEC_PER_SEC / PieceKit.DT);
+  for (var i = 0; i < frames; i++) advance(PieceKit.DT);
+  for (var k = 0; k < rods.length; k++) {
+    var bs = rods[k].beads;
+    for (var b = 0; b < bs.length; b++) if (bs[b].released) { bs[b].y = FLOOR; bs[b].vy = 0; }
+  }
+})();
+
+/* ───────────── 그리기 ───────────── */
+function heatAlpha(th) {
+  var v = th < 0 ? 0 : th > 1 ? 1 : th;
+  return Math.pow(v, 0.7) * 0.95;
+}
+
+function drawRod(rod) {
+  var y = rod.topY, T = rod.T;
+  ctx.fillStyle = rod.cold;
+  ctx.fillRect(X0, y, ROD_PX, ROD_H);
+  // 나뭇결 / 금속 결 — 재질을 색 말고도 읽히게 하는 가는 선
+  ctx.strokeStyle = rod.grain;
+  ctx.lineWidth = 1;
+  for (var g = 1; g <= 3; g++) {
+    var gy = y + ROD_H * g / 4;
+    ctx.beginPath(); ctx.moveTo(X0, gy); ctx.lineTo(X0 + ROD_PX, gy); ctx.stroke();
+  }
+  // 달아오름 — 격자 한 칸이 세로 띠 하나
+  for (var i = 0; i < N; i++) {
+    var th = (T[i] + T[i + 1]) / 2;
+    if (th < 0.012) continue;
+    ctx.globalAlpha = heatAlpha(th);
+    ctx.fillStyle = HOT;
+    ctx.fillRect(X0 + i * DX * PPMM, y, DX * PPMM + 1, ROD_H);
+  }
+  ctx.globalAlpha = 1;
+  ctx.strokeStyle = 'rgba(35,32,28,0.35)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(X0 + 0.5, y + 0.5, ROD_PX - 1, ROD_H - 1);
+}
+
+function drawBeads(rod) {
+  var base = rod.topY + ROD_H + BEAD_DROP;
+  for (var b = 0; b < rod.beads.length; b++) {
+    var bead = rod.beads[b];
+    var x = X0 + bead.xmm * PPMM;
+    var landed = bead.y >= FLOOR;
+    var prog = bead.y / FLOOR;
+    ctx.save();
+    ctx.translate(x + bead.slide * prog, base + bead.y);
+    if (!landed) ctx.rotate(bead.rot);
+    ctx.fillStyle = '#f3e7cd';
+    ctx.strokeStyle = 'rgba(35,32,28,0.32)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    if (landed) ctx.ellipse(0, 0, bead.r * 1.15, bead.r * 0.82, 0, 0, Math.PI * 2);
+    else ctx.arc(0, 0, bead.r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    if (!bead.released) {          // 아직 붙어 있는 것은 밀랍 목이 보인다
+      ctx.beginPath();
+      ctx.moveTo(-2, -bead.r);
+      ctx.lineTo(0, -bead.r - BEAD_DROP);
+      ctx.lineTo(2, -bead.r);
+      ctx.fillStyle = '#f3e7cd';
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+}
+
+function drawFlame(rod, t) {
+  var cx = X0 + 10, base = rod.topY + ROD_H;
+  var sway = Math.sin(t * 7.3 + rod.topY) * 2.2 + Math.sin(t * 11.9) * 1.1;
+  var puff = 1 + 0.08 * Math.sin(t * 9.1 + rod.topY * 0.3);
+  ctx.fillStyle = 'rgba(224,80,30,0.55)';
+  ctx.beginPath();
+  ctx.moveTo(cx - 15, base + 30);
+  ctx.quadraticCurveTo(cx - 17, base + 6, cx + sway, base - 1);
+  ctx.quadraticCurveTo(cx + 17, base + 6, cx + 15, base + 30);
+  ctx.fill();
+  ctx.fillStyle = 'rgba(224,80,30,0.9)';
+  ctx.beginPath();
+  ctx.moveTo(cx - 7, base + 30);
+  ctx.quadraticCurveTo(cx - 8, base + 12, cx + sway * 0.6, base + 3 - 3 * puff);
+  ctx.quadraticCurveTo(cx + 8, base + 12, cx + 7, base + 30);
+  ctx.fill();
+  ctx.fillStyle = '#6f6a64';                 // 버너 주둥이
+  ctx.fillRect(cx - 11, base + 30, 22, 7);
+}
+
+function drawFront(rod) {
+  if (rod.front <= 0.3) return;
+  var x = X0 + Math.min(ROD_MM, rod.front) * PPMM;
+  ctx.strokeStyle = INK;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(x, rod.topY - 7);
+  ctx.lineTo(x, rod.topY + ROD_H + 3);
+  ctx.stroke();
+  ctx.fillStyle = INK;                       // 진행 방향을 가리키는 작은 쐐기
+  ctx.beginPath();
+  ctx.moveTo(x, rod.topY - 7);
+  ctx.lineTo(x + 7, rod.topY - 11);
+  ctx.lineTo(x, rod.topY - 15);
+  ctx.fill();
+}
+
+function drawLabels() {
+  ctx.fillStyle = SOFT;
+  ctx.font = '600 15px system-ui, "Apple SD Gothic Neo", sans-serif';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  for (var k = 0; k < rods.length; k++) {
+    ctx.fillText(rods[k].name, X0 + ROD_PX + 18, rods[k].topY + ROD_H / 2);
+  }
+}
+
+function caption(t) {
+  var phys = PREROLL_S + t * SEC_PER_SEC;
+  var m = Math.floor(phys / 60), s = Math.floor(phys % 60);
+  var when = m > 0 ? m + '분 ' + s + '초' : s + '초';
+  var steel = rods[0].front, wood = rods[1].front;
+  var a = steel >= ROD_MM - 0.05
+    ? '쇠는 15.0 cm 끝까지 60 ℃ 를 넘었고'
+    : '쇠에서는 60 ℃ 가 ' + (steel / 10).toFixed(1) + ' cm 까지 번졌고';
+  var b = '나무에서는 ' + (wood / 10).toFixed(1) + ' cm 에 머문다';
+  return when + ' — ' + a + ', ' + b;
+}
+
+PieceKit.loop({
+  step: function (dt) { advance(dt); },
+  draw: function (t) {
+    PieceKit.mark('종이 바탕', function () {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, W, H);
+    });
+    PieceKit.mark('버너 불꽃', function () {
+      for (var k = 0; k < rods.length; k++) drawFlame(rods[k], t);
+    });
+    PieceKit.mark('쇠막대', function () { drawRod(rods[0]); });
+    PieceKit.mark('나무막대', function () { drawRod(rods[1]); });
+    PieceKit.mark('60 ℃ 앞머리', function () {
+      for (var k = 0; k < rods.length; k++) drawFront(rods[k]);
+    });
+    PieceKit.mark('쇠막대 밀랍 구슬', function () { drawBeads(rods[0]); });
+    PieceKit.mark('나무막대 밀랍 구슬', function () { drawBeads(rods[1]); });
+    PieceKit.mark('재질 이름표', drawLabels);
+    PieceKit.mark('캡션', function () {
+      ctx.fillStyle = SOFT;
+      ctx.font = '400 15px system-ui, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillText(caption(t), X0, 258);
+    });
+  },
+});
+</script>

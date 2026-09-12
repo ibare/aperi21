@@ -139,6 +139,103 @@ export function registerAperi21Bundles(): void {
       caps.capabilities,
     );
   });
+
+  // ── 01-broad 배치 (2026-09-12). 역학 · 진동 · 파동 · 전자기 · 열 · 천체 10 ──
+  //
+  // 기존 조각이 유체에 몰려 있어(5/10) 같은 분과를 더 고르면 이미 있는 어휘를
+  // 다시 확인할 뿐이라, 손대지 않은 분과를 열었다.
+
+  registerBundleLoader('aperi21:inertial-frame', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-inertial-frame'),
+      import('./capabilities/mechanics/inertial-frame.generated.js'),
+    ]);
+    return registerBundle('aperi21:inertial-frame', m.inertialFrameBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:ramp-energy', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-ramp-energy'),
+      import('./capabilities/mechanics/ramp-energy.generated.js'),
+    ]);
+    return registerBundle('aperi21:ramp-energy', m.rampEnergyBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:pendulum-isochronism', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-pendulum-isochronism'),
+      import('./capabilities/oscillation/pendulum-isochronism.generated.js'),
+    ]);
+    return registerBundle(
+      'aperi21:pendulum-isochronism',
+      m.pendulumIsochronismBundle,
+      caps.capabilities,
+    );
+  });
+
+  registerBundleLoader('aperi21:beats', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-beats'),
+      import('./capabilities/waves/beats.generated.js'),
+    ]);
+    return registerBundle('aperi21:beats', m.beatsBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:doppler-effect', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-doppler-effect'),
+      import('./capabilities/waves/doppler-effect.generated.js'),
+    ]);
+    return registerBundle('aperi21:doppler-effect', m.dopplerEffectBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:current-magnetic-field', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-current-magnetic-field'),
+      import('./capabilities/em/current-magnetic-field.generated.js'),
+    ]);
+    return registerBundle(
+      'aperi21:current-magnetic-field',
+      m.currentMagneticFieldBundle,
+      caps.capabilities,
+    );
+  });
+
+  registerBundleLoader('aperi21:lenz-law', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-lenz-law'),
+      import('./capabilities/em/lenz-law.generated.js'),
+    ]);
+    return registerBundle('aperi21:lenz-law', m.lenzLawBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:heat-conduction', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-heat-conduction'),
+      import('./capabilities/thermal/heat-conduction.generated.js'),
+    ]);
+    return registerBundle('aperi21:heat-conduction', m.heatConductionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:gas-pressure', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-gas-pressure'),
+      import('./capabilities/thermal/gas-pressure.generated.js'),
+    ]);
+    return registerBundle('aperi21:gas-pressure', m.gasPressureBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:apparent-brightness', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-apparent-brightness'),
+      import('./capabilities/astro/apparent-brightness.generated.js'),
+    ]);
+    return registerBundle(
+      'aperi21:apparent-brightness',
+      m.apparentBrightnessBundle,
+      caps.capabilities,
+    );
+  });
 }
 
 let pluginsInstalledFor = new WeakSet<Host>();

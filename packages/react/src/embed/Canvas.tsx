@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react';
 import type {
   Bundle,
   BundleState,
+  ControllerSpec,
   EnvironmentDef,
   MeasureService,
   Primitive,
@@ -26,6 +27,7 @@ import {
   type Viewport,
   type PointerInput,
   visibleControllers,
+  writePath,
 } from '@aperi21/host';
 import { resolveBackgroundKind } from './backgroundKind';
 
@@ -167,6 +169,9 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
      */
     const controllers = host.controllerRegistry.createSet();
     timeEngine.reset();
+    // 시계를 선언만큼 앞당겨 연다 (S-piece). runBundle 과 같은 규약이라야 같은
+    // 조각이 카탈로그와 외부 호스트에서 같은 화면으로 열린다.
+    if (bundleRef.current.schema.startAt) timeEngine.seek(bundleRef.current.schema.startAt);
     timeEngine.start();
 
     let disposed = false;
@@ -247,6 +252,17 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       onStateChangeRef.current(next);
     }
 
+    /**
+     * 조작기를 잡고 있다는 사실을 선언한 자리에 적는다.
+     *
+     * 러너가 하는 일은 여기까지다 — 자동 진행이 어떻게 양보하고 놓은 뒤 무엇으로
+     * 돌아갈지는 조각의 `step` 이 안다 (`ControllerInstance.heldPath`).
+     */
+    function setHeld(spec: ControllerSpec, held: boolean) {
+      if (!spec.heldPath) return;
+      applyPartial(writePath(stateRef.current as BundleState, spec.heldPath, held));
+    }
+
     function onPointerDown(e: PointerEvent) {
       const vp = sizeCanvas();
       const input = toPointerInput(e);
@@ -254,6 +270,8 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
       if (hit) {
         canvas!.setPointerCapture(e.pointerId);
         sessions.set(e.pointerId, hit);
+        // 잡혔다는 사실만 적는다 — runBundle 과 같은 규약 (ControllerInstance.heldPath).
+        setHeld(hit.spec, true);
         const patch = hit.impl.onPointerDown(
           input,
           makeEventCtx(vp, hit.slot),
@@ -326,6 +344,7 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
           stateRef.current as BundleState,
         );
         applyPartial(patch);
+        setHeld(session.spec, false);
         sessions.delete(e.pointerId);
         try {
           canvas!.releasePointerCapture(e.pointerId);
@@ -460,6 +479,7 @@ export function BundleCanvas<T extends BundleState>(props: BundleCanvasProps<T>)
         }),
         bundle.schema,
         timeline,
+        stateRef.current as BundleState,
       );
       const { refs, orderedScene } = preprocessScene(sceneGraph);
       const sortedScene = orderForDrawing(orderedScene, bundle.schema.drawOrder, (t) =>

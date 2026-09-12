@@ -11,7 +11,10 @@
 import type { Aperi21CatalogEntry } from './catalog-types.js';
 
 export const APERI21_CATALOG: readonly Aperi21CatalogEntry[] = [
+  {"id":"aperi21:apparent-brightness","title":{"ko":"겉보기 밝기","en":"Apparent brightness"},"description":{"ko":"같은 빛이 넓은 면에 나뉜다","en":"The same light divides over a wider area"},"domain":"astro"},
   {"id":"aperi21:dc-circuit","title":{"ko":"DC 회로","en":"DC Circuit"},"description":{"ko":"배터리·저항으로 단순·직렬·병렬 회로를 구성해 전압·전류를 확인.","en":"Build simple/series/parallel DC circuits with batteries and resistors; inspect V/I."},"domain":"electromagnetism"},
+  {"id":"aperi21:current-magnetic-field","title":{"ko":"전류가 만드는 자기장","en":"The field a current makes"},"description":{"ko":"전선을 감아 도는 쪽으로 돌아서고, 멀수록 덜 돌아선다","en":"Needles turn along the loop, and less so farther out"},"domain":"em"},
+  {"id":"aperi21:lenz-law","title":{"ko":"렌츠 법칙","en":"Lenz's law"},"description":{"ko":"전류는 뒤집혀도 힘은 늘 움직임을 거스른다","en":"The current flips, the force never does"},"domain":"em"},
   {"id":"aperi21:archimedes-principle","title":{"ko":"아르키메데스 원리 — 부력의 크기","en":"Archimedes principle — the size of the buoyant force"},"description":{"ko":"2.0 kg · 1.0 L 물체를 주둥이까지 가득 찬 물에 천천히 담근다. 밀려난 물이 주둥이로 넘쳐 컵에 모이고, 물체 쪽 저울이 줄어드는 만큼 넘친 물 쪽 저울이 늘어난다.","en":"A 2.0 kg, 1.0 L object is lowered into a can filled to its spout. The displaced water pours into the cup, and the scale holding the water gains exactly what the scale holding the object loses."},"domain":"fluids"},
   {"id":"aperi21:laminar-vs-turbulent","title":{"ko":"층류와 난류","en":"Laminar and turbulent flow"},"description":{"ko":"흐름이 갑자기 흐트러지는 지점","en":"Where flow suddenly breaks up"},"domain":"fluids"},
   {"id":"aperi21:pressure-and-container-shape","title":{"ko":"그릇 모양과 바닥 압력","en":"Container shape and bottom pressure"},"description":{"ko":"수면 높이를 옮겨 세 그릇을 다시 채운다","en":"Move the water level and refill all three"},"domain":"fluids"},
@@ -19,6 +22,13 @@ export const APERI21_CATALOG: readonly Aperi21CatalogEntry[] = [
   {"id":"aperi21:torricellis-law","title":{"ko":"토리첼리 법칙","en":"Torricelli's law"},"description":{"ko":"깊은 구멍일수록 더 빠르게 뿜는다","en":"The deeper the hole, the faster the jet"},"domain":"fluids"},
   {"id":"aperi21:centripetal-acceleration","title":{"ko":"구심 가속도","en":"Centripetal acceleration"},"description":{"ko":"속도의 변화는 늘 중심 쪽으로 꺾인다","en":"The change in velocity always turns toward the center"},"domain":"kinematics"},
   {"id":"aperi21:velocity-time-graph","title":{"ko":"속도-시간 그래프","en":"Velocity-time graph"},"description":{"ko":"그래프 아래 넓이가 간 거리다","en":"The area under the graph is the distance travelled"},"domain":"kinematics"},
+  {"id":"aperi21:inertial-frame","title":{"ko":"관성 기준계","en":"Inertial frame"},"description":{"ko":"버스만 느려지고 승객은 그대로 간다","en":"Only the bus slows; the passenger keeps going"},"domain":"mechanics"},
   {"id":"aperi21:projectile","title":{"ko":"발사체","en":"Projectile"},"description":{"ko":"각도 다이얼 + 핀볼 런처","en":"Angle dial + pinball launcher"},"domain":"mechanics"},
+  {"id":"aperi21:ramp-energy","title":{"ko":"경사면과 에너지","en":"Ramps and energy"},"description":{"ko":"길이 달라도 바닥에서의 속력은 같다","en":"Different paths, same speed at the bottom"},"domain":"mechanics"},
   {"id":"aperi21:ray-tracing","title":{"ko":"광선 추적","en":"Ray Tracing"},"description":{"ko":"광원과 렌즈·거울을 배치해 광선 경로와 결상을 관찰.","en":"Place source and lens/mirror to watch ray paths and image formation."},"domain":"optics"},
+  {"id":"aperi21:pendulum-isochronism","title":{"ko":"진자의 등시성","en":"Isochronism of the pendulum"},"description":{"ko":"폭이 달라도 같은 박자로 돌아온다","en":"Different amplitudes, same beat"},"domain":"oscillation"},
+  {"id":"aperi21:gas-pressure","title":{"ko":"기체 분자와 압력","en":"Molecules and pressure"},"description":{"ko":"두드림이 쌓여 압력이 된다","en":"Pressure is the sum of the knocks"},"domain":"thermal"},
+  {"id":"aperi21:heat-conduction","title":{"ko":"열전도","en":"Heat conduction"},"description":{"ko":"쇠에서는 번져 나가고 나무에서는 머문다","en":"It spreads in steel and stays in wood"},"domain":"thermal"},
+  {"id":"aperi21:beats","title":{"ko":"맥놀이","en":"Beats"},"description":{"ko":"두 음이 어긋나는 만큼 합이 지워진다","en":"The sum cancels as the two drift apart"},"domain":"waves"},
+  {"id":"aperi21:doppler-effect","title":{"ko":"도플러 효과","en":"Doppler effect"},"description":{"ko":"원천이 방출점을 밀고 가 앞쪽 간격이 좁아진다","en":"The source drags its emission points, crowding the front"},"domain":"waves"},
 ];

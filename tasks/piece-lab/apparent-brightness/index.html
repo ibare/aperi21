@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>별의 겉보기 밝기</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  #wrap { width: 860px; max-width: 100%; margin: 0 auto; }
+  canvas { display: block; width: 100%; }
+</style>
+</head>
+<body>
+<div id="wrap"><canvas id="c"></canvas></div>
+
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ─────────────────────────────────────────────────────────────
+  // 장면
+  //   별 하나에서 빛 알갱이 36개가 한 묶음으로 정사각뿔을 그리며 퍼진다.
+  //   1·2·3배 거리에 같은 물리 크기의 칸이 놓여 있다. 퍼진 빛이 덮는 넓이는
+  //   거리의 제곱이라, 칸은 1개 · 4개 · 9개가 되고 알갱이는 36 → 9 → 4 로 나뉜다.
+  // ─────────────────────────────────────────────────────────────
+
+  var W = 860, H = 304;            // 그리기 좌표계 (컨테이너 폭에 맞춰 통째로 축척)
+  var TAU = Math.PI * 2;
+  var FONT = "system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif";
+
+  // 화면에 놓기 — 빛이 나아가는 방향은 가로, 단면은 (u, v).
+  // u 는 화면 안쪽으로 비스듬히 뉘어 그린다(오블리크 투영). 카메라는 없다.
+  var X0 = 62, Y0 = 124;           // 별의 자리
+  var SX = 210;                    // 거리 1당 가로 픽셀 (세 번째 칸을 지난 빛이 머물 자리를 남긴다)
+  var KV = 48;                     // 칸 한 변의 세로 픽셀
+  var KUX = 21, KUY = 18;          // 칸 한 변이 안쪽으로 뉘는 양
+
+  function sx(d, u) { return X0 + d * SX + u * KUX; }
+  function sy(d, u, v) { return Y0 - v * KV + u * KUY; }
+
+  // 빛 묶음 — 6×6 갈래. 2×2 로 나누면 갈래가 3×3=9, 3×3 으로 나누면 2×2=4.
+  // 나눗셈이 정수로 떨어지는 격자라서 이름표의 숫자와 화면의 알갱이 수가 어긋나지 않는다.
+  var NRAY = 6, QUANTA = NRAY * NRAY;    // 36
+  var DIRS = [];
+  for (var i = 0; i < NRAY; i++) {
+    for (var j = 0; j < NRAY; j++) {
+      DIRS.push({ u: (i + 0.5) / NRAY - 0.5, v: (j + 0.5) / NRAY - 0.5 });
+    }
+  }
+
+  var PERIOD = 3.2;    // 묶음이 떠나는 간격(초)
+  var OFFSET = 1.4;    // 처음 보는 순간 이미 진행 중이도록 t=0 에 묶음이 거리 1.4 에 있게
+  var DMAX = 3.5;      // 세 번째 칸을 지난 빛이 화면을 벗어나기 전에 다 스러지는 거리
+  var FADE_FROM = 3.05;
+
+  var FRAMES = [
+    { d: 1, n: 1, per: 36, name: '기준 거리',
+      caption: '기준 거리 — 36개가 모두 한 칸으로 들어왔다' },
+    { d: 2, n: 2, per: 9, name: '두 배 멀리',
+      caption: '두 배 멀리 — 같은 36개가 네 칸에 나뉜다. 한 칸에 9개, 네 배 옅다' },
+    { d: 3, n: 3, per: 4, name: '세 배 멀리',
+      caption: '세 배 멀리 — 아홉 칸에 나뉜다. 한 칸에 4개, 아홉 배 옅다' }
+  ];
+
+  // ── 빛의 양은 선형광에서 다룬다 ──────────────────────────────
+  // 1/4 · 1/9 을 알파로 그냥 칠하면 sRGB 감마 때문에 실제 빛의 비가 어긋난다.
+  // 선형광에서 섞은 뒤 인코딩해야 "네 배 옅다"가 화면에서도 참이 된다.
+  function toLinear(x) { return x <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); }
+  function toSrgb(x) {
+    x = x < 0 ? 0 : (x > 1 ? 1 : x);
+    return x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055;
+  }
+  var BG_RGB = [0x0b, 0x0f, 0x18];
+  var LIT_RGB = [0xff, 0xe9, 0xb8];
+  var BG_LIN = BG_RGB.map(function (v) { return toLinear(v / 255); });
+  var LIT_LIN = LIT_RGB.map(function (v) { return toLinear(v / 255); });
+
+  function lightColor(level) {
+    var out = BG_LIN.map(function (b, k) { return b + level * (LIT_LIN[k] - b); });
+    return 'rgb(' + out.map(function (v) { return Math.round(toSrgb(v) * 255); }).join(',') + ')';
+  }
+
+  // ── 시각의 함수들 (쌓이는 상태 없음) ─────────────────────────
+  // EPS: 통과 사건이 t 와 정확히 겹칠 때의 여유. PieceKit 은 t 를 1/60 씩 더해 오므로
+  // t=1.6 이 1.5999999999999992 로 도착한다. 여유가 없으면 빛이 칸에 닿은 바로 그 화면에서
+  // 캡션과 섬광이 한 박자 뒤처진다.
+  var EPS = 1e-6;
+  function emitTime(k) { return k * PERIOD - OFFSET; }
+  function newestIndex(t) { return Math.floor((t + OFFSET) / PERIOD + EPS); }
+
+  function liveShells(t) {
+    var out = [], k = newestIndex(t) + 1;
+    for (var m = 0; m < 4; m++, k--) {
+      var d = t - emitTime(k);
+      if (d < 0 && d > -1e-4) d = 0;
+      if (d >= 0 && d <= DMAX) out.push({ k: k, d: d });
+    }
+    return out;
+  }
+
+  // 어떤 칸을 빛이 가장 최근에 통과한 시각
+  function lastCross(t, D) {
+    return emitTime(Math.floor((t + OFFSET - D) / PERIOD + EPS)) + D;
+  }
+
+  // 칸에 빛이 닿은 직후의 짧은 테두리 섬광
+  function arrivalGlow(t, D) {
+    return Math.exp(-Math.max(0, t - lastCross(t, D)) / 0.28);
+  }
+
+  function departGlow(t) {
+    return Math.exp(-Math.max(0, t - emitTime(newestIndex(t))) / 0.22);
+  }
+
+  function fade(d) {
+    var inn = d / 0.10; if (inn > 1) inn = 1;
+    var out = (DMAX - d) / (DMAX - FADE_FROM); if (out > 1) out = 1; if (out < 0) out = 0;
+    return inn * out;
+  }
+
+  // 캡션은 빛이 가장 최근에 통과한 자리를 말하고, 다음 자리를 통과할 때까지 그대로 있다.
+  // 통과한 칸은 화면에 계속 켜져 있으므로 캡션이 가리키는 증거가 사라지지 않는다.
+  function captionOf(t) {
+    var best = FRAMES[0], when = -Infinity;
+    for (var i = 0; i < FRAMES.length; i++) {
+      var w = lastCross(t, FRAMES[i].d);
+      if (w > when) { when = w; best = FRAMES[i]; }
+    }
+    return best.caption;
+  }
+
+  // ── 캔버스 ───────────────────────────────────────────────────
+  var cv = document.getElementById('c');
+  var ctx = cv.getContext('2d');
+  var cssW = 0, dpr = 0;
+
+  function fit() {
+    var w = cv.parentNode.clientWidth || W;
+    var d = window.devicePixelRatio || 1;
+    if (w === cssW && d === dpr) return;
+    cssW = w; dpr = d;
+    var s = w / W;
+    cv.style.height = (H * s) + 'px';
+    cv.width = Math.round(w * d);
+    cv.height = Math.round(H * s * d);
+  }
+
+  function frameBottom(F) { return Y0 + (F.n / 2) * KV + (F.n / 2) * KUY; }
+
+  function drawFrame(t, F) {
+    var D = F.d, n = F.n, h = n / 2;
+
+    // 칸 채우기 — 한 칸이 받는 빛의 양은 1/거리²
+    ctx.fillStyle = lightColor(1 / (D * D));
+    for (var i = 0; i < n; i++) {
+      for (var j = 0; j < n; j++) {
+        var u = -h + i, v = -h + j;
+        ctx.beginPath();
+        ctx.moveTo(sx(D, u), sy(D, u, v));
+        ctx.lineTo(sx(D, u + 1), sy(D, u + 1, v));
+        ctx.lineTo(sx(D, u + 1), sy(D, u + 1, v + 1));
+        ctx.lineTo(sx(D, u), sy(D, u, v + 1));
+        ctx.closePath();
+        ctx.fill();
+      }
+    }
+
+    // 칸막이
+    if (n > 1) {
+      ctx.strokeStyle = 'rgba(11,15,24,0.62)';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      for (var m = 1; m < n; m++) {
+        var a = -h + m;
+        ctx.moveTo(sx(D, a), sy(D, a, -h));
+        ctx.lineTo(sx(D, a), sy(D, a, h));
+        ctx.moveTo(sx(D, -h), sy(D, -h, a));
+        ctx.lineTo(sx(D, h), sy(D, h, a));
+      }
+      ctx.stroke();
+    }
+
+    // 바깥 테두리 — 빛이 막 닿은 순간 잠깐 밝아진다
+    var g = arrivalGlow(t, D);
+    ctx.strokeStyle = 'rgba(214,226,240,' + (0.34 + 0.5 * g).toFixed(3) + ')';
+    ctx.lineWidth = 1 + 0.9 * g;
+    ctx.beginPath();
+    ctx.moveTo(sx(D, -h), sy(D, -h, -h));
+    ctx.lineTo(sx(D, h), sy(D, h, -h));
+    ctx.lineTo(sx(D, h), sy(D, h, h));
+    ctx.lineTo(sx(D, -h), sy(D, -h, h));
+    ctx.closePath();
+    ctx.stroke();
+  }
+
+  function draw(t) {
+    fit();
+    var s = cssW / W;
+    ctx.setTransform(dpr * s, 0, 0, dpr * s, 0, 0);
+
+    PieceKit.mark('밤하늘', function () {
+      ctx.fillStyle = '#0b0f18';
+      ctx.fillRect(0, 0, W, H);
+    });
+
+    PieceKit.mark('빛의 테두리', function () {
+      var corners = [[-0.5, -0.5], [0.5, -0.5], [0.5, 0.5], [-0.5, 0.5]];
+      var far = 3;    // 뿔의 모서리가 세 번째 칸의 모서리에 정확히 닿는 데까지
+      ctx.strokeStyle = 'rgba(255,233,184,0.16)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (var i = 0; i < corners.length; i++) {
+        ctx.moveTo(sx(0, 0), sy(0, 0, 0));
+        ctx.lineTo(sx(far, corners[i][0] * far), sy(far, corners[i][0] * far, corners[i][1] * far));
+      }
+      ctx.stroke();
+    });
+
+    PieceKit.mark('세 배 멀리 칸', function () { drawFrame(t, FRAMES[2]); });
+    PieceKit.mark('두 배 멀리 칸', function () { drawFrame(t, FRAMES[1]); });
+    PieceKit.mark('기준 거리 칸', function () { drawFrame(t, FRAMES[0]); });
+
+    PieceKit.mark('별', function () {
+      var R = 30 + 5 * departGlow(t);
+      var g = ctx.createRadialGradient(X0, Y0, 0, X0, Y0, R);
+      g.addColorStop(0, 'rgba(255,246,225,0.95)');
+      g.addColorStop(0.18, 'rgba(255,233,184,0.52)');
+      g.addColorStop(1, 'rgba(255,233,184,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.moveTo(X0 + R, Y0);
+      ctx.arc(X0, Y0, R, 0, TAU);
+      ctx.fill();
+      ctx.fillStyle = '#fff6e1';
+      ctx.beginPath();
+      ctx.moveTo(X0 + 4.6, Y0);
+      ctx.arc(X0, Y0, 4.6, 0, TAU);
+      ctx.fill();
+    });
+
+    PieceKit.mark('빛 알갱이', function () {
+      var shells = liveShells(t);
+      for (var i = 0; i < shells.length; i++) {
+        var d = shells[i].d;
+        var a = fade(d);
+        if (a <= 0.01) continue;
+
+        var pts = [];
+        for (var q = 0; q < DIRS.length; q++) {
+          var u = DIRS[q].u * d, v = DIRS[q].v * d;
+          pts.push([sx(d, u), sy(d, u, v)]);
+        }
+
+        ctx.globalAlpha = a * 0.20;
+        ctx.fillStyle = '#ffe9b8';
+        ctx.beginPath();
+        for (var p = 0; p < pts.length; p++) {
+          ctx.moveTo(pts[p][0] + 5.6, pts[p][1]);
+          ctx.arc(pts[p][0], pts[p][1], 5.6, 0, TAU);
+        }
+        ctx.fill();
+
+        ctx.globalAlpha = a;
+        ctx.beginPath();
+        for (var r = 0; r < pts.length; r++) {
+          ctx.moveTo(pts[r][0] + 2.6, pts[r][1]);
+          ctx.arc(pts[r][0], pts[r][1], 2.6, 0, TAU);
+        }
+        ctx.fill();
+        // 밝은 칸 위에서도 알갱이가 하나씩 세어지도록 어두운 테를 두른다
+        ctx.strokeStyle = 'rgba(11,15,24,0.75)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('자리 이름표', function () {
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'alphabetic';
+      for (var i = 0; i < FRAMES.length; i++) {
+        var F = FRAMES[i];
+        var cx = X0 + F.d * SX;
+        var by = frameBottom(F);
+        ctx.fillStyle = '#93a3b8';
+        ctx.font = '12px ' + FONT;
+        ctx.fillText(F.name, cx, by + 19);
+        ctx.fillStyle = '#c9d6e6';
+        ctx.font = '13px ' + FONT;
+        ctx.fillText('한 칸에 ' + F.per + '개', cx, by + 36);
+      }
+    });
+
+    PieceKit.mark('캡션', function () {
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#dbe5f0';
+      ctx.font = '15px ' + FONT;
+      ctx.fillText(captionOf(t), 28, 286);
+    });
+  }
+
+  PieceKit.loop({
+    step: function () {
+      // 프레임 사이에 쌓는 상태가 없다. 묶음의 자리 · 칸의 밝기 · 캡션이 모두
+      // t 의 순수 함수라서, ?t=6.5 로 연 화면과 6.5 초 지켜본 화면이 같다.
+    },
+    draw: draw
+  });
+})();
+</script>
+</body>
+</html>

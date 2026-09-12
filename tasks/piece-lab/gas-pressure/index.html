@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>기체 분자와 압력</title>
+<style>
+  :root {
+    --bg:    #f6f6f4;  /* 바탕 */
+    --ink:   #2b2f36;  /* 상자 벽 · 본문 글자 */
+    --gas:   #5b6470;  /* 분자 — 이 조각에서 분자는 언제나 이 색 */
+    --hit:   #e2622a;  /* 강조색. 오직 '벽을 때린 두드림' 한 뜻에만 쓴다 */
+    --mute:  #6b7078;  /* 이름표 */
+  }
+  html, body { background: var(--bg); }
+  body {
+    margin: 0;
+    font: 14px/1.5 system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    color: var(--ink);
+  }
+  .piece { max-width: 892px; margin: 0 auto; padding: 16px; }
+  canvas { display: block; width: 100%; max-width: 860px; }
+  .ctl {
+    display: flex; align-items: center; gap: 10px;
+    margin: 6px 0 0 22px; max-width: 420px;
+  }
+  .ctl label { color: var(--mute); flex: none; }
+  .ctl input { flex: 1; min-width: 120px; accent-color: var(--gas); }
+  .ctl output { flex: none; font-variant-numeric: tabular-nums; color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="stage"></canvas>
+  <div class="ctl">
+    <label for="temp">온도</label>
+    <input id="temp" type="range" min="180" max="720" step="1" value="180">
+    <output id="tempOut" for="temp">180 K</output>
+  </div>
+</div>
+
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ── 무대 (논리 좌표. 실제 픽셀은 fit() 이 DPR·컨테이너 폭에 맞춰 스케일한다) ──
+  const W = 860, H = 356;
+  const BX0 = 22, BY0 = 22, BX1 = 690, BY1 = 300;   // 상자. BX1 이 압력을 재는 벽
+  const R = 3;                                       // 분자 반지름
+  const BARX0 = 758, BARX1 = 818, BARMAX = 230;      // 압력 막대
+
+  // ── 기체 ──
+  const N = 280;
+  const TCOLD = 180, THOT = 720;     // 자동 진행이 오가는 온도 (K)
+  const TMAX = 750, VMAX = 300;      // v(T) = VMAX·√(T/TMAX)  [논리px/s]
+  const LX = (BX1 - R) - (BX0 + R);  // 분자 중심이 오갈 수 있는 가로 길이
+
+  // ── 두드림을 모아 두는 창 ──
+  const WINDOW = 0.9;     // 압력 = 이 시간창에 벽이 받은 충격량의 합 / 창
+  const HITFADE = 0.7;    // 벽 자국이 사라지기까지
+  const TRAIL = 0.085;    // 잔상이 나타내는 시간
+
+  // 뜨거울 때의 평균 압력이 BARMAX 가 되도록 맞춘 눈금.
+  // 단위시간당 벽 충격량 = N·⟨v²⟩ / (2·LX)   (2차원, ⟨vx²⟩ = ⟨v²⟩/2)
+  const PREF = N * (VMAX * VMAX * THOT / TMAX) / (2 * LX);
+  const PSCALE = BARMAX / PREF;
+
+  // ── 자동 진행 시간표 (주기 16초) ──
+  const PERIOD = 16;
+  const smooth = (x) => x * x * (3 - 2 * x);
+  function tempAt(t) {
+    const u = ((t % PERIOD) + PERIOD) % PERIOD;
+    if (u < 3.5)  return TCOLD;                                        // 차가운 채로
+    if (u < 8)    return TCOLD + (THOT - TCOLD) * smooth((u - 3.5) / 4.5);  // 올린다
+    if (u < 11.5) return THOT;                                         // 뜨거운 채로
+    return THOT + (TCOLD - THOT) * smooth((u - 11.5) / 4.5);           // 내린다
+  }
+  function captionAt(t, T, manual) {
+    if (manual) {
+      if (T < 330) return '차가운 기체 — 분자가 느리고, 벽을 드문드문 때린다';
+      if (T > 570) return '뜨거운 기체 — 같은 벽을 더 자주, 더 세게 때린다';
+      return '온도를 바꾸면 두드림의 빈도와 세기가 함께 바뀐다';
+    }
+    const u = ((t % PERIOD) + PERIOD) % PERIOD;
+    if (u < 3.5)  return '차가운 기체 — 분자가 느리고, 벽을 드문드문 때린다';
+    if (u < 8)    return '온도를 올린다 — 분자가 빨라진다';
+    if (u < 11.5) return '뜨거운 기체 — 같은 벽을 더 자주, 더 세게 때린다';
+    return '온도를 내린다 — 두드림이 잦아들고 압력이 내려간다';
+  }
+
+  // ── 조작기 ──
+  const slider = document.getElementById('temp');
+  const tempOut = document.getElementById('tempOut');
+  let manual = false;
+  if (!PieceKit.frozen) {
+    slider.addEventListener('input', () => { manual = true; });
+  }
+  function temperature(t) {
+    return manual ? parseFloat(slider.value) : tempAt(t);
+  }
+
+  // ── 분자 ──
+  // 방향(단위벡터)과 속력계수 c 를 따로 들고, 속력은 c·v(T) 로 매 프레임 정한다.
+  // 그래서 온도를 바꾸면 분자가 그 자리에서 즉시 빨라지거나 느려진다.
+  function gauss() {
+    const u1 = Math.max(1e-9, PieceKit.random());
+    const u2 = PieceKit.random();
+    return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+  }
+  const mols = [];
+  for (let i = 0; i < N; i++) {
+    const th = 2 * Math.PI * PieceKit.random();
+    const g1 = gauss(), g2 = gauss();
+    mols.push({
+      x: BX0 + R + 1 + PieceKit.random() * (LX - 2),
+      y: BY0 + R + 1 + PieceKit.random() * ((BY1 - R) - (BY0 + R) - 2),
+      dx: Math.cos(th), dy: Math.sin(th),
+      c: Math.sqrt(g1 * g1 + g2 * g2) / Math.SQRT2,  // ⟨c²⟩ = 1 이 되도록 정규화
+    });
+  }
+
+  // ── 벽이 받은 두드림. {t, y, mag} 를 시간창만큼만 들고 있는다 ──
+  const hits = [];
+
+  function stepSim(dt, tNow) {
+    const v = VMAX * Math.sqrt(temperature(tNow) / TMAX);
+    for (let i = 0; i < N; i++) {
+      const m = mols[i];
+      const sp = m.c * v;
+      m.x += m.dx * sp * dt;
+      m.y += m.dy * sp * dt;
+      if (m.x < BX0 + R) { m.x = BX0 + R; m.dx = -m.dx; }
+      if (m.y < BY0 + R) { m.y = BY0 + R; m.dy = -m.dy; }
+      if (m.y > BY1 - R) { m.y = BY1 - R; m.dy = -m.dy; }
+      if (m.x > BX1 - R) {
+        m.x = BX1 - R;
+        // 벽이 받은 충격량. 되튀므로 2m|vx|, 질량은 1로 둔다.
+        hits.push({ t: tNow, y: m.y, mag: 2 * Math.abs(m.dx) * sp });
+        m.dx = -m.dx;
+      }
+    }
+    while (hits.length && tNow - hits[0].t > WINDOW) hits.shift();
+  }
+
+  // 도착한 순간 이미 진행 중이어야 한다 — t=0 에 벽은 이미 맞고 있고 막대도 서 있다.
+  // 시간표는 주기 함수라 음수 시각도 그대로 정의된다.
+  const PREROLL = 2.0;
+  for (let i = 0, n = Math.round(PREROLL / PieceKit.DT); i < n; i++) {
+    stepSim(PieceKit.DT, -PREROLL + i * PieceKit.DT);
+  }
+
+  // ── 그리기 ──
+  const cv = document.getElementById('stage');
+  const ctx = cv.getContext('2d');
+  function fit() {
+    const cssW = cv.clientWidth || W;
+    const k = cssW / W;
+    const dpr = window.devicePixelRatio || 1;
+    const bw = Math.round(cssW * dpr), bh = Math.round(H * k * dpr);
+    if (cv.width !== bw || cv.height !== bh) { cv.width = bw; cv.height = bh; }
+    cv.style.height = (H * k) + 'px';
+    ctx.setTransform(dpr * k, 0, 0, dpr * k, 0, 0);
+  }
+  const css = getComputedStyle(document.documentElement);
+  const C = {
+    bg:   css.getPropertyValue('--bg').trim()   || '#f6f6f4',
+    ink:  css.getPropertyValue('--ink').trim()  || '#2b2f36',
+    gas:  css.getPropertyValue('--gas').trim()  || '#5b6470',
+    hit:  css.getPropertyValue('--hit').trim()  || '#e2622a',
+    mute: css.getPropertyValue('--mute').trim() || '#6b7078',
+  };
+  const MAGREF = 2 * VMAX;  // c=1 인 분자가 가장 뜨거울 때 정면으로 때린 세기
+
+  function draw(t) {
+    fit();
+    const T = temperature(t);
+    const v = VMAX * Math.sqrt(T / TMAX);
+
+    PieceKit.mark('바탕', () => {
+      ctx.fillStyle = C.bg;
+      ctx.fillRect(0, 0, W, H);
+    });
+
+    PieceKit.mark('상자', () => {
+      ctx.strokeStyle = C.ink;
+      ctx.lineCap = 'square';
+      // 왼쪽·위·아래 벽 — 그냥 가두는 벽
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(BX1, BY0); ctx.lineTo(BX0, BY0);
+      ctx.lineTo(BX0, BY1); ctx.lineTo(BX1, BY1);
+      ctx.stroke();
+      // 오른쪽 벽 — 두드림을 재는 벽이라 두껍게
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.moveTo(BX1, BY0 - 1); ctx.lineTo(BX1, BY1 + 1);
+      ctx.stroke();
+    });
+
+    // 정지 화면에서도 속력이 읽히도록, 지나온 자리를 속도 방향으로 짧게 남긴다.
+    PieceKit.mark('분자 자취', () => {
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(BX0, BY0, BX1 - BX0, BY1 - BY0);
+      ctx.clip();
+      ctx.strokeStyle = C.gas;
+      ctx.globalAlpha = 0.3;
+      ctx.lineWidth = 1.6;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      for (let i = 0; i < N; i++) {
+        const m = mols[i];
+        const len = m.c * v * TRAIL;
+        ctx.moveTo(m.x, m.y);
+        ctx.lineTo(m.x - m.dx * len, m.y - m.dy * len);
+      }
+      ctx.stroke();
+      ctx.restore();
+    });
+
+    PieceKit.mark('분자', () => {
+      ctx.fillStyle = C.gas;
+      ctx.beginPath();
+      for (let i = 0; i < N; i++) {
+        const m = mols[i];
+        ctx.moveTo(m.x + R, m.y);
+        ctx.arc(m.x, m.y, R, 0, 2 * Math.PI);
+      }
+      ctx.fill();
+    });
+
+    // 벽이 방금 어디를 몇 번 맞았는지. 세기가 클수록 길고 진하다.
+    PieceKit.mark('벽 두드림', () => {
+      ctx.strokeStyle = C.hit;
+      ctx.lineWidth = 3;
+      ctx.lineCap = 'round';
+      for (let i = 0; i < hits.length; i++) {
+        const h = hits[i];
+        const age = t - h.t;
+        if (age < 0 || age > HITFADE) continue;
+        const a = 1 - age / HITFADE;
+        const len = 7 + 22 * Math.min(1, h.mag / MAGREF);
+        ctx.globalAlpha = a;
+        ctx.beginPath();
+        ctx.moveTo(BX1 + 3, h.y);
+        ctx.lineTo(BX1 + 3 + len * a, h.y);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    });
+
+    // 압력 = 시간창 안 두드림의 합. 하나가 도착하면 막대가 그만큼 툭 올라가고,
+    // 창 밖으로 밀려나면 그만큼 내려간다.
+    PieceKit.mark('압력 막대', () => {
+      let sum = 0;
+      for (let i = 0; i < hits.length; i++) {
+        const age = t - hits[i].t;
+        if (age >= 0 && age <= WINDOW) sum += hits[i].mag;
+      }
+      const h = Math.min(BY1 - BY0, (sum / WINDOW) * PSCALE);
+      ctx.fillStyle = C.hit;
+      ctx.globalAlpha = 0.22;
+      ctx.fillRect(BARX0, BY1 - h, BARX1 - BARX0, h);
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = C.hit;
+      ctx.lineWidth = 3;
+      ctx.lineCap = 'butt';
+      ctx.beginPath();
+      ctx.moveTo(BARX0, BY1 - h);
+      ctx.lineTo(BARX1, BY1 - h);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(BARX0, BY1);
+      ctx.lineTo(BARX1, BY1);
+      ctx.stroke();
+    });
+
+    PieceKit.mark('압력 이름표', () => {
+      ctx.fillStyle = C.mute;
+      ctx.font = '13px system-ui, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillText('압력', (BARX0 + BARX1) / 2, BY1 + 18);
+    });
+
+    PieceKit.mark('캡션', () => {
+      ctx.fillStyle = C.ink;
+      ctx.font = '15px system-ui, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(captionAt(t, T, manual), BX0, H - 14);
+    });
+
+    // 조작기는 자동 진행을 따라간다 — 독자가 잡기 전까지는 온도가 스스로 움직인다.
+    const shown = Math.round(T);
+    if (!manual) slider.value = String(shown);
+    const label = shown + ' K';
+    if (tempOut.textContent !== label) tempOut.textContent = label;
+  }
+
+  PieceKit.loop({ step: stepSim, draw: draw });
+})();
+</script>
+</body>
+</html>

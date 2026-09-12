@@ -1,0 +1,65 @@
+{
+  "analyzedAgainst": "2026-09-12 엔진 (커밋 16b55f1). 선언과 렌더러 구현을 둘 다 읽고 판정했다 — CORE_RENDERERS 15종 등록분과 plugin 2종(optics·circuit)을 기준으로 하며, 선언만 있고 렌더러가 없는 17종은 '있음' 으로 세지 않았다.",
+  "rows": [
+    {
+      "element": "바탕 (무늬 없는 단색 매질)",
+      "vocab": "— (캔버스 배경)",
+      "status": "있음",
+      "note": "러너가 theme.background 로 칠한다. 조각이 선언할 것이 없다."
+    },
+    {
+      "element": "파면 (같은 속력으로 퍼지는 여러 개의 얇은 원)",
+      "vocab": "wave / emitter",
+      "status": "없음",
+      "note": "wave·emitter 는 선언이 있으나 **렌더러가 없다**(CORE_RENDERERS 미등록, primitives/ 에 파일 없음). 선언만 보고 '있음' 으로 읽으면 저작자에게 거짓말하는 필드다. 다만 이 조각이 원하는 것은 wave 의 장(field) 렌더가 아니다 — 방출 시각이 제각각인 **원 여러 개**이고, wave.sources 는 정지한 원천의 정상파를 전제한다."
+    },
+    {
+      "element": "파면 — 대안 경로",
+      "vocab": "trajectory (closed) + opacity",
+      "status": "수정 필요",
+      "note": "원 하나는 trajectory(closed) 로 점을 돌려 그릴 수 있고 closed·lineStyle·fade 는 구현돼 있다. 인스턴스별 옅어짐도 BaseMeta.opacity 로 된다(common.ts:22 에서 highlight 와 곱해짐). 모자란 것 둘 — (1) 원을 점열로 근사하는 일을 조각이 매번 짜야 한다(중심·반지름으로 그리는 어휘가 없다), (2) 장면 경계로 잘라내는 클리핑이 없다. 이 조각은 원이 화면 위아래로 넘칠 때 잘라 '계속 퍼지는 중' 으로 읽히게 한다."
+    },
+    {
+      "element": "방출점 (파면 중심에 남는 점의 줄)",
+      "vocab": "marker (kind: 'pin') + opacity",
+      "status": "수정 필요",
+      "note": "marker.pin 이 반지름 4px 원을 채운다(marker.ts). 되는 것은 '점 하나'이고, 모자란 것은 **크기**다 — 이 조각은 1.9px 를 쓰고 pin 은 4 고정이다. 점 여럿을 한 선언으로 두는 것도 없다(marker 는 pos 하나). particleSystem 이 그 자리인데 렌더러가 없다."
+    },
+    {
+      "element": "구급차 (움직이는 원천)",
+      "vocab": "body (shape: 'custom' · customPath)",
+      "status": "있음",
+      "note": "customPath 로 차체 윤곽을 준다. 후광이 필요 없으면 glow: false. 강조색은 style.colorRole 로."
+    },
+    {
+      "element": "캡션 (세 문장 중 하나)",
+      "vocab": "BundleSchema.caption + timeline",
+      "status": "있음",
+      "note": "캡션 슬롯과 시간표는 선언 계약으로 이미 올라와 있다(fe5adba). 단계마다 캡션을 고르는 것이 timeline 의 일이다."
+    },
+    {
+      "element": "방출 이력 (나이 들며 옅어지다 수명에 버려지는 목록)",
+      "vocab": "stream",
+      "status": "수정 필요",
+      "note": "stream 이 rate·life·width·jitter 로 '쌓이고 늙고 사라지는' 뼈대를 이미 갖고 있다. 그러나 stream 은 from 에서 velocity·acceleration 으로 날아가는 **입자**를 그린다 — 제자리에서 반지름만 커지는 파면이 아니다. 이 조각의 engineWish 1번이자 NOTES (d) 1번으로 가장 강하게 요구된 항목이다."
+    },
+    {
+      "element": "자동 진행 시간표 (정지 3.0s → 가속 0.8s smoothstep → 등속 → 되돌림)",
+      "vocab": "BundleSchema.timeline",
+      "status": "있음",
+      "note": "단계 길이·순서·이징·시작 시각이 선언으로 올라와 있다. 조각이 if 세 줄로 흩어 둔 것을 그대로 대체한다."
+    },
+    {
+      "element": "원천 속도 슬라이더 (자동 값을 따라 읽다 손대면 넘겨받음)",
+      "vocab": "controllers: slider + visibleWhen",
+      "status": "수정 필요",
+      "note": "slider 로 값은 잡는다. 없는 것은 **인계 규약** — 손대기 전에는 자동 진행 값을 따라 읽고, 손대는 순간 자동이 양보하는 한 쌍이다. laminar-vs-turbulent 가 scale-drag 의 held + resumeAfter 로 같은 것을 손으로 짰다(그 NOTES 「시퀀스를 엔진 시간표로 두지 않는 이유」). 두 조각이 같은 것을 따로 짠 셈이라 승격 후보다."
+    }
+  ],
+  "outside": [
+    "논리 좌표계를 컨테이너 폭에 맞춰 스케일하고 DPR 을 맞추는 캔버스 셋업 — 러너가 이미 한다. 조각이 짤 일이 아니다(engineWish 4번은 엔진에서 이미 해결된 항목).",
+    "파면을 원으로 그릴지 띠로 그릴지, 방출점을 남길지 — 조각의 저작 결정이다. NOTES (d) 가 '엔진이 파동=동심원 기성품을 주면 이 조각의 핵심이 사라진다' 고 못박았다. 어휘는 그리는 방식을 고정하지 않는 선에서 올려야 한다.",
+    "강조색을 무엇에 붙일지 — 선언의 colorRole 이 정한다. 엔진이 '선택된 것' 에 자동으로 붙이면 안 된다는 요구는 이미 지켜지고 있다.",
+    "v ≥ c 충격파를 뺀 것 · 관측자를 뺀 것 — 주장의 범위를 자른 저작 결정."
+  ]
+}

@@ -1,0 +1,193 @@
+<meta charset="utf-8">
+<title>전류가 만드는 자기장</title>
+<style>
+  html, body { margin: 0; background: #ffffff; }
+  .piece { width: 100%; max-width: 860px; margin: 0 auto; }
+  canvas { display: block; width: 100%; height: auto; }
+</style>
+
+<div class="piece"><canvas id="c"></canvas></div>
+
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ---- 화면 ----
+  var W = 860, H = 420;          // 논리 좌표
+  var CAP_H = 34;                // 캡션이 쓰는 아래쪽 띠
+  var CX = 430, CY = 193;        // 전선이 화면을 뚫고 나오는 자리
+  var TAU = Math.PI * 2;
+
+  var PAPER = '#fbfaf7';
+  var INK = '#2f2b28';
+  var ACCENT = '#c2521f';        // 강조색은 전선(전류의 근원) 한 가지 뜻에만 쓴다
+  var CAP_INK = '#6f6862';
+  var FONT = "15px 'Pretendard', system-ui, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif";
+
+  var canvas = document.getElementById('c');
+  var dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.round(W * dpr);
+  canvas.height = Math.round(H * dpr);
+  canvas.style.width = W + 'px';
+  var ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  // ---- 물리 ----
+  // 자기장 단위를 지구 자기장 = 1 로 잡는다.
+  //   지구장  B_e = (0, 1)            — 화면 위쪽이 북
+  //   전선장  B_w = I * (RC / r) * t̂  — 전선을 감아 도는 접선, 크기는 1/r
+  // RC 는 둘의 크기가 같아지는 반지름. 링 네 개가 RC 를 사이에 두고 놓이도록 골랐다.
+  var RC = 130;
+  // 바늘은 관성 없이 알짜 자기장 방향을 따라간다(과감쇠 1차):
+  //   θ' = OMEGA * |B| * sin(θ_B − θ)
+  // 회전이 |B| 에 비례하므로 먼 바늘일수록 느리게 돈다 — 감쇠를 따로 넣지 않아도 거리가 속도를 정한다.
+  var OMEGA = 1.0;
+
+  // 전류 시간표: 켜짐 3.0s → 끊김 2.2s → 거꾸로 3.0s → 끊김 2.2s, 전환은 0.25s
+  var T = 11.4;
+  var OFFSET = 0.55;             // t=0 이 "켠 지 0.55초" 가 되도록 위상을 민다
+
+  function smoothstep(u) { return u * u * (3 - 2 * u); }
+
+  function currentAt(t) {
+    var p = ((t + OFFSET) % T + T) % T;
+    if (p < 0.25) return smoothstep(p / 0.25);
+    if (p < 3.25) return 1;
+    if (p < 3.50) return 1 - smoothstep((p - 3.25) / 0.25);
+    if (p < 5.70) return 0;
+    if (p < 5.95) return -smoothstep((p - 5.70) / 0.25);
+    if (p < 8.95) return -1;
+    if (p < 9.20) return -1 + smoothstep((p - 8.95) / 0.25);
+    return 0;
+  }
+
+  // ---- 나침반 배치 ----
+  // 동심 링. 같은 링의 바늘이 같은 거리를 공유해야 "거리마다 다르다" 를 눈이 곧바로 짝지을 수 있다.
+  var RINGS = [
+    { r: 40,  n: 5,  off: 0.31 },
+    { r: 86,  n: 10, off: 0.17 },
+    { r: 160, n: 18, off: 0.42 },
+    { r: 270, n: 30, off: 0.09 },
+  ];
+
+  var MARGIN = 20;
+  var compasses = [];
+  for (var ri = 0; ri < RINGS.length; ri++) {
+    var ring = RINGS[ri];
+    for (var k = 0; k < ring.n; k++) {
+      var phi = ring.off + k * TAU / ring.n;
+      var co = Math.cos(phi), si = Math.sin(phi);
+      var x = CX + ring.r * co;
+      var y = CY - ring.r * si;
+      // 화면 밖으로 나가는 자리는 놓지 않는다 — 잘린 바늘은 방향을 거짓말한다
+      if (x < MARGIN || x > W - MARGIN) continue;
+      if (y < MARGIN || y > H - CAP_H - 6) continue;
+      compasses.push({ x: x, y: y, r: ring.r, cos: co, sin: si, th: Math.PI / 2 });
+    }
+  }
+
+  function step(dt, t) {
+    var I = currentAt(t);
+    for (var i = 0; i < compasses.length; i++) {
+      var c = compasses[i];
+      var bw = I * (RC / c.r);
+      var bx = -bw * c.sin;        // 반시계 접선 (전류가 화면 밖으로 나올 때)
+      var by = bw * c.cos + 1;     // + 지구장
+      var mag = Math.sqrt(bx * bx + by * by);
+      var thB = Math.atan2(by, bx);
+      c.th += OMEGA * mag * Math.sin(thB - c.th) * dt;
+      if (c.th > Math.PI) c.th -= TAU;
+      else if (c.th < -Math.PI) c.th += TAU;
+    }
+  }
+
+  // 도착한 순간 이미 진행 중이게 — 시계가 0 이 되기 전 1 초를 미리 돌려 둔다.
+  // 고정 dt 로만 돌리므로 ?t= 로 연 화면과 실시간 화면이 어긋나지 않는다.
+  var pre = -1.0;
+  for (var w = 0; w < 60; w++) { step(PieceKit.DT, pre); pre += PieceKit.DT; }
+
+  // ---- 그리기 ----
+  var NEEDLE = 13;   // 바늘 반길이
+  var HALFW = 3.2;   // 바늘 허리 반폭
+
+  function drawNeedle(c) {
+    var ux = Math.cos(c.th), uy = -Math.sin(c.th);
+    var px = -uy * HALFW, py = ux * HALFW;
+    // N극 — 채운 삼각
+    ctx.beginPath();
+    ctx.moveTo(c.x + ux * NEEDLE, c.y + uy * NEEDLE);
+    ctx.lineTo(c.x + px, c.y + py);
+    ctx.lineTo(c.x - px, c.y - py);
+    ctx.fill();
+    // S극 — 같은 삼각의 윤곽만. 색이 아니라 채움 여부로 극을 가른다
+    ctx.beginPath();
+    ctx.moveTo(c.x - ux * NEEDLE, c.y - uy * NEEDLE);
+    ctx.lineTo(c.x + px, c.y + py);
+    ctx.lineTo(c.x - px, c.y - py);
+    ctx.closePath();
+    ctx.stroke();
+    // 축
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, 1.5, 0, TAU);
+    ctx.fill();
+  }
+
+  function caption(I) {
+    if (I > 0.5) return '전류가 흐르는 동안 — 바늘은 전선을 감아 도는 고리 쪽으로 돌아선다, 멀수록 덜';
+    if (I < -0.5) return '전류를 거꾸로 흘리면 — 바늘도 거꾸로 돌아선다, 고리가 뒤집힌다';
+    return '전류를 끊으면 — 바늘은 모두 북쪽으로 되돌아간다';
+  }
+
+  function draw(t) {
+    var I = currentAt(t);
+
+    PieceKit.mark('바탕', function () {
+      ctx.fillStyle = PAPER;
+      ctx.fillRect(0, 0, W, H);
+    });
+
+    PieceKit.mark('나침반', function () {
+      ctx.fillStyle = INK;
+      ctx.strokeStyle = INK;
+      ctx.lineWidth = 1;
+      ctx.lineJoin = 'miter';
+      for (var i = 0; i < compasses.length; i++) drawNeedle(compasses[i]);
+    });
+
+    PieceKit.mark('전선', function () {
+      var a = 0.3 + 0.7 * Math.abs(I);
+      ctx.globalAlpha = a;
+      ctx.strokeStyle = ACCENT;
+      ctx.fillStyle = ACCENT;
+      ctx.lineWidth = 2.4;
+      ctx.beginPath();
+      ctx.arc(CX, CY, 12, 0, TAU);
+      ctx.stroke();
+      if (I > 0.02) {                    // ⊙ 전류가 화면 밖으로
+        ctx.beginPath();
+        ctx.arc(CX, CY, 3.6, 0, TAU);
+        ctx.fill();
+      } else if (I < -0.02) {            // ⊗ 전류가 화면 안으로
+        var d = 6.4;
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.moveTo(CX - d, CY - d); ctx.lineTo(CX + d, CY + d);
+        ctx.moveTo(CX + d, CY - d); ctx.lineTo(CX - d, CY + d);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('캡션', function () {
+      ctx.fillStyle = CAP_INK;
+      ctx.font = FONT;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillText(caption(I), 24, H - 13);
+    });
+  }
+
+  PieceKit.loop({ step: step, draw: draw });
+})();
+</script>

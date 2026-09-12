@@ -7,7 +7,7 @@ export interface PreprocessedScene {
 }
 
 /**
- * 참조(id) 의존성을 기준으로 위상 정렬한다. 지금은 FieldLine -> VectorField
+ * 참조(id) 의존성을 기준으로 위상 정렬한다. 참조를 가진 어휘가 지금은 없다
  * 한 쌍만 실제로 의미가 있지만, 동일한 로직이 Phase 2 이후에 등장할 다른
  * 참조(ray → opticalElement 리스트 등)에도 쓰일 수 있도록 일반화해 둔다.
  *
@@ -19,16 +19,11 @@ function topoSort(scene: readonly Primitive[]): Primitive[] {
     if (p.id) idToIndex.set(p.id, i);
   });
 
+  // 참조 의존을 가진 어휘가 지금은 없다. `fieldLine` 이 `vectorField` 를 따르던
+  // 분기가 있었으나 두 어휘를 2026-09-12 에 선언에서 지웠다 — 렌더러가 없어
+  // 저작자에게 거짓말을 하고 있었다 (S-render). 위상 정렬 자체는 남겨 둔다:
+  // 다음에 참조를 가진 어휘가 오면 여기에 의존을 채운다.
   const deps: number[][] = scene.map(() => []);
-
-  scene.forEach((p, i) => {
-    if (p.type === 'fieldLine') {
-      const targetIndex = idToIndex.get(p.follows);
-      if (targetIndex !== undefined) {
-        deps[i]!.push(targetIndex);
-      }
-    }
-  });
 
   const order: number[] = [];
   const visited = new Array<0 | 1 | 2>(scene.length).fill(0);

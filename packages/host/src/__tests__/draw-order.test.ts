@@ -28,9 +28,12 @@ describe('orderForDrawing', () => {
     expect(ids(orderForDrawing(scene, 'scene', getZ))).toEqual(['band', 'stake', 'column']);
   });
 
-  it("'scene' 이어도 참조 의존은 지킨다 — 위상 정렬 결과를 받기 때문", () => {
-    const refScene = [prim('fieldLine', 'line', { follows: 'field' }), prim('vectorField', 'field')];
+  it("'scene' 이어도 전처리를 거친 순서를 받는다", () => {
+    // 참조 의존을 가진 어휘가 지금은 없다(`fieldLine` 과 함께 지웠다). 전처리를
+    // 지나도 쓴 순서가 보존되는 것만 잰다 — 다음에 참조 어휘가 오면 여기에
+    // 의존 사례를 되살린다.
+    const refScene = [prim('trace', 'marks'), prim('body', 'ball')];
     const { orderedScene } = preprocessScene(refScene);
-    expect(ids(orderForDrawing(orderedScene, 'scene', getZ))).toEqual(['field', 'line']);
+    expect(ids(orderForDrawing(orderedScene, 'scene', getZ))).toEqual(['marks', 'ball']);
   });
 });

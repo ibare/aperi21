@@ -14,6 +14,9 @@ import { renderScale } from './scale';
 import { renderDimension } from './dimension';
 import { renderVortexField } from './vortex-field';
 import { renderFilament } from './filament';
+import { renderConstraint } from './constraint';
+import { renderParticleSystem } from './particle-system';
+import { renderTrace } from './trace';
 
 export {
   renderBody,
@@ -31,6 +34,9 @@ export {
   renderDimension,
   renderVortexField,
   renderFilament,
+  renderConstraint,
+  renderParticleSystem,
+  renderTrace,
 };
 
 export const CORE_RENDERERS: Record<string, PrimitiveRenderer> = {
@@ -49,4 +55,7 @@ export const CORE_RENDERERS: Record<string, PrimitiveRenderer> = {
   dimension: renderDimension,
   vortexField: renderVortexField,
   filament: renderFilament,
+  constraint: renderConstraint,
+  particleSystem: renderParticleSystem,
+  trace: renderTrace,
 };

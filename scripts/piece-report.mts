@@ -108,9 +108,16 @@ function chromeArgs(extra: string[], url: string): string[] {
   ];
 }
 
-function probeSims(chrome: string, base: string, id: string, t: number): string | undefined {
+function probeSims(
+  chrome: string,
+  base: string,
+  id: string,
+  topicId: string,
+  t: number,
+): string | undefined {
   const shot = join(SHOTS, `${fileId(id)}@${t}.sims.png`);
-  const url = `${base.replace(/\/?$/, '/')}#/topic/${id}?t=${t}`;
+  // 주소는 **주제** id 다. 조각 id 와 다를 수 있다 (topicIdOf 주석).
+  const url = `${base.replace(/\/?$/, '/')}#/topic/${topicId}?t=${t}`;
   try {
     execFileSync(
       chrome,
@@ -151,15 +158,26 @@ function fileId(id: string): string {
   return id.replace(/[\/]/g, '__');
 }
 
-/** 카탈로그에서 이 주제의 simId. 조각 id 와 주제 id 는 같게 둔다. */
-function simIdOf(id: string): string | undefined {
+/**
+ * 이 조각을 마운트하는 **주제의 id**. 카탈로그에서 `simId` 로 거슬러 찾는다.
+ *
+ * 조각 id 와 주제 id 가 같다고 가정하지 않는다. 01-broad 배치가 그 가정을 깼다 —
+ * `lenz-law` 의 주제는 `lenzs-law`, `heat-conduction` 은 `thermal-conduction`,
+ * `inertial-frame` 은 `newtons-first-law` 다. 주제 이름은 물리 개념의 이름이고
+ * 조각 id 는 그 개념의 한 시각화라, 둘이 달라지는 것이 정상이다.
+ *
+ * 거꾸로 찾으면 언제나 맞는다 — 등록 키 `aperi21:<조각 id>` 는 C4 가 조각 id 와
+ * 문자 그대로 같기를 강제하고, 카탈로그의 `simId` 가 그 키다.
+ */
+function topicIdOf(id: string): string | undefined {
   const catalog = JSON.parse(readFileSync(join(ROOT, 'apps/catalog/src/data/catalog.json'), 'utf8'));
+  const want = `aperi21:${id}`;
   let found: string | undefined;
   const walk = (o: unknown): void => {
     if (found || !o || typeof o !== 'object') return;
     if (Array.isArray(o)) return o.forEach(walk);
     const rec = o as Record<string, unknown>;
-    if (rec.id === id && typeof rec.simId === 'string') found = rec.simId;
+    if (rec.simId === want && typeof rec.id === 'string') found = rec.id;
     Object.values(rec).forEach(walk);
   };
   walk(catalog);
@@ -276,8 +294,9 @@ function main(): void {
     const inv: Inventory = existsSync(invPath) ? JSON.parse(readFileSync(invPath, 'utf8')) : {};
     const times = inv.probeTimes?.length ? inv.probeTimes : DEFAULT_PROBES;
     const probes = times.map((t) => probe(chrome, id, t));
-    if (simsBase && simIdOf(id)) {
-      for (const p of probes) p.simsShot = probeSims(chrome, simsBase, id, p.t);
+    const topicId = simsBase ? topicIdOf(id) : undefined;
+    if (simsBase && topicId) {
+      for (const p of probes) p.simsShot = probeSims(chrome, simsBase, id, topicId, p.t);
     }
     const fitPath = join(LAB, id, 'engine-fit.json');
     const fit: EngineFit | null = existsSync(fitPath) ? JSON.parse(readFileSync(fitPath, 'utf8')) : null;

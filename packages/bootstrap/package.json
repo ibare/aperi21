@@ -15,7 +15,17 @@
   },
   "dependencies": {
     "@aperi21/host": "workspace:*",
-    "@aperi21/schema": "workspace:*"
+    "@aperi21/schema": "workspace:*",
+    "@aperi21/sim-apparent-brightness": "workspace:*",
+    "@aperi21/sim-beats": "workspace:*",
+    "@aperi21/sim-current-magnetic-field": "workspace:*",
+    "@aperi21/sim-doppler-effect": "workspace:*",
+    "@aperi21/sim-gas-pressure": "workspace:*",
+    "@aperi21/sim-heat-conduction": "workspace:*",
+    "@aperi21/sim-inertial-frame": "workspace:*",
+    "@aperi21/sim-lenz-law": "workspace:*",
+    "@aperi21/sim-pendulum-isochronism": "workspace:*",
+    "@aperi21/sim-ramp-energy": "workspace:*"
   },
   "devDependencies": {
     "@aperi21/plugin-circuit": "workspace:*",

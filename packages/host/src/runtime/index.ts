@@ -16,6 +16,10 @@ export {
 } from './bundleRegistry';
 export {
   runBundle,
+  // 두 러너가 같은 규약을 쓰도록 react 쪽(`useBundleRuntime`)도 이것을 가져간다 —
+  // 한쪽만 굴리면 같은 조각이 카탈로그와 외부 호스트에서 다른 화면으로 열린다.
+  prerollState,
+  markHeld,
   type RunBundleOptions,
   type BundleRunHandle,
 } from './runBundle';
