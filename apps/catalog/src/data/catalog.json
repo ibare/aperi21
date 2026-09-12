@@ -338,6 +338,21 @@
           "id": "atwood-machine",
           "name": "애트우드 기계",
           "desc": "두 추가 도르래로 연결된 계"
+        },
+        {
+          "id": "balance-scale",
+          "name": "수평잡기",
+          "desc": "양팔의 길이와 무게가 함께 정하는 균형"
+        },
+        {
+          "id": "mechanical-advantage",
+          "name": "힘의 이득",
+          "desc": "지레와 빗면이 드는 힘을 줄이는 방식"
+        },
+        {
+          "id": "push-and-pull",
+          "name": "밀기와 당기기",
+          "desc": "힘이 물체의 움직임과 모양을 바꾸는 것"
         }
       ]
     },
@@ -773,6 +788,73 @@
           "id": "black-hole-horizon",
           "name": "사건 지평선",
           "desc": "탈출 속도가 광속이 되는 반지름"
+        },
+        {
+          "id": "diurnal-motion",
+          "name": "일주 운동",
+          "desc": "하루 동안 태양과 별이 하늘을 가로지르는 길"
+        },
+        {
+          "id": "earth-rotation-day-night",
+          "name": "자전과 낮과 밤",
+          "desc": "도는 지구 위에서 낮과 밤이 갈리는 이유"
+        },
+        {
+          "id": "earth-revolution-constellations",
+          "name": "공전과 별자리",
+          "desc": "계절마다 보이는 별자리가 달라지는 이유"
+        },
+        {
+          "id": "solar-altitude-shadow",
+          "name": "태양 고도와 그림자",
+          "desc": "고도가 바뀌면 그림자 길이와 기온이 함께 바뀐다"
+        },
+        {
+          "id": "seasonal-sun-path",
+          "name": "계절과 태양의 길",
+          "desc": "남중 고도와 낮 길이가 함께 달라지는 것"
+        },
+        {
+          "id": "axial-tilt-seasons",
+          "name": "자전축 기울기와 계절",
+          "desc": "기울어진 채 도는 것이 만드는 계절"
+        },
+        {
+          "id": "moon-phases",
+          "name": "달의 위상",
+          "desc": "햇빛을 받는 달의 어느 쪽을 보는가"
+        },
+        {
+          "id": "eclipse",
+          "name": "일식과 월식",
+          "desc": "해와 지구와 달이 한 줄에 설 때"
+        },
+        {
+          "id": "stellar-parallax",
+          "name": "연주시차",
+          "desc": "지구가 공전하며 가까운 별이 어긋나 보이는 각"
+        },
+        {
+          "id": "apparent-brightness",
+          "name": "겉보기 밝기",
+          "desc": "같은 별도 거리에 따라 다르게 밝아 보이는 것",
+          "simId": "aperi21:apparent-brightness",
+          "labUrl": "piece-lab/apparent-brightness/index.html"
+        },
+        {
+          "id": "magnitude-scale",
+          "name": "별의 등급",
+          "desc": "밝기를 등급으로 나타내는 방식"
+        },
+        {
+          "id": "star-color-temperature",
+          "name": "별의 색과 표면 온도",
+          "desc": "표면 온도가 정하는 별빛의 색"
+        },
+        {
+          "id": "expanding-universe",
+          "name": "우주의 팽창",
+          "desc": "모든 방향으로 멀어지는 은하들"
         }
       ]
     },
@@ -1164,6 +1246,11 @@
           "id": "maxwells-demon",
           "name": "맥스웰의 도깨비",
           "desc": "정보와 엔트로피의 관계"
+        },
+        {
+          "id": "insulation",
+          "name": "보온과 단열",
+          "desc": "열의 이동을 늦추는 것"
         }
       ]
     },
@@ -1344,6 +1431,16 @@
           "id": "noise-cancellation",
           "name": "능동 소음 제거",
           "desc": "역위상 파동의 중첩"
+        },
+        {
+          "id": "sound-source-vibration",
+          "name": "소리와 떨림",
+          "desc": "소리 나는 물체는 떨리고, 떨림이 멎으면 소리도 멎는다"
+        },
+        {
+          "id": "sound-through-materials",
+          "name": "물질을 통한 소리 전달",
+          "desc": "매질에 따라 달라지는 소리의 전달"
         }
       ]
     },
@@ -1576,6 +1673,21 @@
           "id": "rayleigh-scattering",
           "name": "레일리 산란",
           "desc": "파장 4제곱에 반비례하는 산란"
+        },
+        {
+          "id": "seeing-requires-light",
+          "name": "보려면 빛이 있어야",
+          "desc": "빛이 없으면 물체가 보이지 않는다"
+        },
+        {
+          "id": "color-addition",
+          "name": "빛의 합성",
+          "desc": "세 색의 빛이 겹쳐 만드는 색"
+        },
+        {
+          "id": "object-color",
+          "name": "물체의 색",
+          "desc": "물체가 되쏘는 빛이 정하는 색"
         }
       ]
     },
@@ -1970,6 +2082,26 @@
           "id": "antenna-radiation",
           "name": "안테나의 복사",
           "desc": "가속하는 전하가 내는 파동"
+        },
+        {
+          "id": "magnet-attraction",
+          "name": "자석에 붙는 것",
+          "desc": "자석이 당기는 물체와 당기지 않는 물체"
+        },
+        {
+          "id": "magnetic-poles",
+          "name": "자석의 두 극",
+          "desc": "같은 극은 밀고 다른 극은 당긴다"
+        },
+        {
+          "id": "simple-circuit",
+          "name": "전기 회로 만들기",
+          "desc": "이어져야 흐르고 끊기면 꺼진다"
+        },
+        {
+          "id": "electromagnet",
+          "name": "전자석",
+          "desc": "전류가 흐를 때만 자석이 되는 것"
         }
       ]
     },
@@ -2366,13 +2498,18 @@
           "id": "bose-einstein-condensate",
           "name": "보스-아인슈타인 응축",
           "desc": "같은 상태로 몰리는 저온의 입자"
+        },
+        {
+          "id": "scale-of-universe",
+          "name": "우주의 규모",
+          "desc": "원자에서 우주까지 10의 거듭제곱으로 잇는 크기"
         }
       ]
     }
   ],
   "summary": {
-    "topics": 455,
-    "implemented": 19,
-    "labs": 6
+    "topics": 482,
+    "implemented": 20,
+    "labs": 7
   }
 }
