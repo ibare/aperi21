@@ -4,7 +4,8 @@
  * 원본은 `docs/topics/topics.yaml` 하나다. 사람이 그 파일만 고치고 사이트가 읽는
  * JSON 은 여기서 만든다 — 두 곳에 적으면 반드시 어긋난다.
  *
- * 모집단(글로벌 초·중·고 물리)과 판정 기준, 스키마는 `docs/topics/README.md` 가 정한다.
+ * 모집단(시각화할 수 있는 물리 전체)과 판정 기준, 스키마는 `docs/topics/README.md` 가
+ * 정한다. 초·중·고 교육과정은 빠지면 안 되는 하한이지 상한이 아니다.
  *
  * 구조는 FACET `apps/playground/src/catalog.json` 을 따른다: **주제와 구현물이 한
  * 트리에 살고, 구현된 것만 레지스트리 id 를 단다.** FACET 은 835개 항목 중 137개만
@@ -95,6 +96,9 @@ for (const t of source.topics) {
   if (t.sim && !t.sim.startsWith('aperi21:')) {
     throw new Error(`주제 '${t.id}' 의 sim '${t.sim}' 이 등록 키 형태가 아니다`);
   }
+  // curricula 가 비어 있어도 좋다. 교육과정 태그는 어느 수준에서 다뤄지는지를
+  // 알려 주는 분류이지 모집단의 조건이 아니다 (README 1절). 넣고 빼는 잣대는
+  // visual 하나다.
 }
 
 const byDomain = new Map<string, Topic[]>(source.domains.map((d) => [d.id, []]));

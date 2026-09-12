@@ -4,7 +4,8 @@
 # 규약(모집단 · 수준 축 · 판정 기준 · 이 스키마)은 docs/topics/README.md.
 # 사이트가 읽는 apps/catalog/src/data/catalog.json 은 여기서 생성된다 (pnpm catalog:topics).
 #
-# level 과 curricula 가 비어 있는 것은 아직 교육과정과 대조하지 않았다는 뜻이다.
+# level 과 curricula 가 비어 있는 것은 네 교육과정 어디에서도 다루지 않는다는 뜻이다.
+# 빼는 근거가 아니다 — 넣고 빼는 잣대는 visual 하나다 (README 1절).
 # visual 의 "unsure" 는 판정을 미룬 상태이지 중립이 아니다 — 구현 대상 집계에서 빠진다.
 
 # 분과는 열거의 비계다. 소속이 아니라 출처를 뜻한다 (README 3절).
@@ -55,7 +56,8 @@ topics:
     domain: kinematics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 축을 어디에 두느냐로 같은 운동의 식이 달라진다
   - id: average-velocity
     name: 평균 속도
     desc: 구간 전체를 대표하는 속도
@@ -160,7 +162,8 @@ topics:
     domain: kinematics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 올라갈 때와 내려올 때가 거울처럼 겹친다
   - id: gravitational-acceleration
     name: 중력 가속도
     desc: 질량과 무관한 낙하 가속도
@@ -215,7 +218,8 @@ topics:
     domain: kinematics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 뱃머리를 어디로 두느냐로 도착점이 달라진다
   - id: projectile-motion
     name: 포물선 운동
     desc: 수평·연직 성분의 독립
@@ -281,14 +285,16 @@ topics:
     domain: kinematics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 가속도가 속력을 바꾸는 몫과 방향을 바꾸는 몫으로 갈린다
   - id: radius-of-curvature
     name: 곡률 반지름
     desc: 곡선이 국소적으로 닮은 원
     domain: kinematics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 굽은 정도에 맞는 원이 경로에 얹힌다
   - id: stopping-distance
     name: 정지 거리
     desc: 반응 거리와 제동 거리의 합
@@ -362,7 +368,8 @@ topics:
     domain: newtonian-mechanics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 같이 떨어지는 것이 두 질량이 같다는 증거다
   - id: normal-force
     name: 수직항력
     desc: 접촉면이 수직으로 미는 힘
@@ -377,7 +384,8 @@ topics:
     domain: newtonian-mechanics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 엘리베이터가 오르내리면 저울 눈금이 달라진다
   - id: static-friction
     name: 정지 마찰력
     desc: 움직이기 전까지 버티는 힘
@@ -408,7 +416,8 @@ topics:
     domain: newtonian-mechanics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 기울이다 보면 어느 각에서 미끄러지기 시작한다
   - id: inclined-plane
     name: 빗면
     desc: 중력을 면에 나란한 성분과 수직 성분으로
@@ -471,21 +480,24 @@ topics:
     domain: newtonian-mechanics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 빨리 돌릴수록 줄이 더 눕는다
   - id: banked-curve
     name: 경사진 커브
     desc: 마찰 없이도 도는 각도
     domain: newtonian-mechanics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 각을 맞추면 마찰 없이도 돈다
   - id: vertical-loop
     name: 연직 원운동
     desc: 꼭대기에서 떨어지지 않는 최소 속력
     domain: newtonian-mechanics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 꼭대기에서 최소 속력을 못 넘기면 떨어진다
   - id: drag-force
     name: 공기 저항
     desc: 속도의 1차·2차에 비례하는 저항
@@ -508,21 +520,24 @@ topics:
     domain: newtonian-mechanics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 버스 안에서 보면 정지한 물체가 저절로 밀린다
   - id: fictitious-force
     name: 관성력
     desc: 비관성계에서 도입하는 겉보기 힘
     domain: newtonian-mechanics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 회전 원판 위에서 공이 휘어 보인다
   - id: coriolis-effect
     name: 코리올리 효과
     desc: 회전 기준틀에서 휘는 경로
     domain: newtonian-mechanics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 도는 원판 위에서 곧게 던진 공이 휘어 보인다
   - id: impulse-force-relation
     name: 힘과 충격량
     desc: 짧고 큰 힘과 길고 작은 힘
@@ -682,7 +697,8 @@ topics:
     domain: energy-momentum
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 골에 갇히고 마루에서 굴러떨어진다
   - id: power
     name: 일률
     desc: 단위 시간당 일
@@ -761,7 +777,8 @@ topics:
     domain: energy-momentum
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "no"
+    visualNote: 튀는 정도를 나타내는 비 — 값이다
   - id: two-dimensional-collision
     name: 2차원 충돌
     desc: 성분마다 따로 성립하는 보존
@@ -800,7 +817,8 @@ topics:
     domain: energy-momentum
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 질량을 버리며 나아가는 계의 운동이다
   - id: rocket-equation
     name: 로켓 방정식
     desc: 연료를 버려 얻는 속도
@@ -815,7 +833,8 @@ topics:
     domain: energy-momentum
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 박혀 함께 올라간 높이로 처음 속력을 되짚는다
   - id: energy-in-collision
     name: 충돌에서의 에너지
     desc: 보존되는 것과 안 되는 것의 구분
@@ -943,7 +962,8 @@ topics:
     domain: rotation-oscillation
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 축을 기울이면 그 방향이 따라 돈다
   - id: simple-harmonic-motion
     name: 단순 조화 운동
     desc: 복원력이 변위에 비례하는 운동
@@ -1040,42 +1060,48 @@ topics:
     domain: rotation-oscillation
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: Q 가 클수록 공명 봉우리가 뾰족하고 오래 울린다
   - id: coupled-oscillators
     name: 결합 진동자
     desc: 에너지가 오가는 두 진동자
     domain: rotation-oscillation
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 한쪽을 흔들면 에너지가 옆으로 옮겨 갔다 돌아온다
   - id: normal-modes
     name: 정규 모드
     desc: 계가 가진 고유 진동 형태
     domain: rotation-oscillation
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 계 전체가 한 진동수로 함께 흔들리는 모양이 있다
   - id: beats-in-oscillation
     name: 진동의 맥놀이
     desc: 가까운 두 진동수의 합
     domain: rotation-oscillation
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 두 진동수가 가까우면 진폭이 부풀었다 줄어든다
   - id: phase-space
     name: 위상 공간
     desc: 위치-속도 평면에서 본 운동
     domain: rotation-oscillation
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 위치와 운동량 평면에 그린 궤적이 닫히거나 감긴다
   - id: nonlinear-oscillation
     name: 비선형 진동
     desc: 복원력이 비례를 벗어날 때
     domain: rotation-oscillation
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 진폭이 커지면 주기가 달라지고 모양이 일그러진다
   - id: gears
     name: 기어
     desc: 톱니 수가 바꾸는 회전과 힘
@@ -1123,7 +1149,8 @@ topics:
     domain: gravitation
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 중심으로 갈수록 중력이 줄어 0 이 된다
   - id: gravitational-potential-energy-general
     name: 중력 퍼텐셜 에너지(일반)
     desc: 무한대를 기준으로 한 음의 에너지
@@ -1193,35 +1220,40 @@ topics:
     domain: gravitation
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 둘이 공통 질량 중심을 돈다
   - id: reduced-mass
     name: 환산 질량
     desc: 이체를 일체로 바꾸는 양
     domain: gravitation
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "no"
+    visualNote: 두 물체 문제를 하나로 바꾸는 계산 장치다
   - id: tidal-force
     name: 조석력
     desc: 중력의 차이가 만드는 늘어남
     domain: gravitation
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 가까운 쪽과 먼 쪽의 차이가 양쪽으로 늘린다
   - id: roche-limit
     name: 로슈 한계
     desc: 조석력이 천체를 부수는 거리
     domain: gravitation
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 너무 가까이 가면 조석력이 천체를 찢는다
   - id: weightlessness
     name: 무중력
     desc: 자유 낙하 중의 겉보기 무게
     domain: gravitation
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 함께 자유 낙하하면 저울이 0 을 가리킨다
   - id: geostationary-orbit
     name: 정지 궤도
     desc: 자전 주기와 같은 궤도
@@ -1236,21 +1268,24 @@ topics:
     domain: gravitation
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 행성을 스쳐 지나며 속도를 얻는다
   - id: lagrange-points
     name: 라그랑주 점
     desc: 두 천체 사이의 평형 위치
     domain: gravitation
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 두 중력이 만드는 다섯 자리가 드러난다
   - id: orbital-transfer
     name: 궤도 전이
     desc: 호만 전이와 그 비용
     domain: gravitation
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 두 번 밀어 낮은 궤도에서 높은 궤도로 옮긴다
   - id: black-hole-horizon
     name: 사건 지평선
     desc: 탈출 속도가 광속이 되는 반지름
@@ -1510,7 +1545,8 @@ topics:
     domain: fluids
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 압력 차가 액면 높이 차로 나타난다
   - id: pascals-principle
     name: 파스칼 원리
     desc: 압력의 전달과 유압 장치
@@ -1591,28 +1627,32 @@ topics:
     domain: fluids
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 받음각을 올리면 양력이 커지다 어느 순간 무너진다
   - id: viscosity
     name: 점성
     desc: 층 사이의 마찰
     domain: fluids
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 끈적한 유체일수록 층이 느리게 끌린다
   - id: poiseuille-flow
     name: 관 속의 층류
     desc: 반지름 4제곱에 비례하는 유량
     domain: fluids
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 관 속 속도가 가운데는 빠르고 벽에서 0 인 포물선을 그린다
   - id: stokes-drag
     name: 스토크스 항력
     desc: 느린 흐름에서의 저항
     domain: fluids
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 작은 구가 느리게 가라앉으며 종단 속도에 이른다
   - id: laminar-vs-turbulent
     name: 층류와 난류
     desc: 흐름의 두 양상
@@ -1628,42 +1668,48 @@ topics:
     domain: fluids
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 한 수를 넘기면 흐름의 결이 바뀐다
   - id: boundary-layer
     name: 경계층
     desc: 벽 근처에서 속도가 0이 되는 층
     domain: fluids
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 벽 가까이에서만 속도가 급히 변하는 얇은 층이 생긴다
   - id: surface-tension
     name: 표면 장력
     desc: 표면을 줄이려는 힘
     domain: fluids
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 물방울이 공 모양으로 뭉치고 소금쟁이가 뜬다
   - id: laplace-pressure
     name: 라플라스 압력
     desc: 곡률이 만드는 안팎 압력차
     domain: fluids
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 작은 거품 안이 더 세게 눌린다
   - id: capillary-action
     name: 모세관 현상
     desc: 좁은 관에서의 상승과 하강
     domain: fluids
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 가는 관일수록 물이 높이 올라간다
   - id: wetting-and-contact-angle
     name: 젖음과 접촉각
     desc: 액체가 고체 위에 퍼지는 정도
     domain: fluids
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 같은 물방울이 표면에 따라 퍼지거나 뭉친다
   - id: drag-in-fluid
     name: 유체 속 항력
     desc: 형상과 속도가 정하는 저항
@@ -1695,7 +1741,8 @@ topics:
     domain: thermodynamics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "no"
+    visualNote: 열평형의 이행 관계를 세우는 약속이다
   - id: temperature-scales
     name: 온도 눈금
     desc: 섭씨·화씨·절대 온도
@@ -1758,14 +1805,16 @@ topics:
     domain: thermodynamics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 압력과 온도를 옮기면 어느 상태에 있는지 자리가 바뀐다
   - id: triple-point
     name: 삼중점
     desc: 세 상이 공존하는 조건
     domain: thermodynamics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 셋이 함께 있는 한 점에서 만난다
   - id: thermal-conduction
     name: 열전도
     desc: 접촉을 통한 전달
@@ -1864,21 +1913,24 @@ topics:
     domain: thermodynamics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "no"
+    visualNote: 자유도마다 같은 몫이 간다는 정리다
   - id: maxwell-boltzmann-distribution
     name: 맥스웰-볼츠만 분포
     desc: 분자 속력의 분포
     domain: thermodynamics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 온도를 올리면 분포가 넓어지고 오른쪽으로 밀린다
   - id: mean-free-path
     name: 평균 자유 행로
     desc: 충돌과 충돌 사이의 거리
     domain: thermodynamics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 밀도를 높이면 부딪히기까지의 거리가 짧아진다
   - id: internal-energy
     name: 내부 에너지
     desc: 계가 담고 있는 미시 에너지
@@ -1989,7 +2041,8 @@ topics:
     domain: thermodynamics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "no"
+    visualNote: 절대 영도에 이를 수 없다는 진술이다
   - id: brownian-motion
     name: 브라운 운동
     desc: 분자 충돌이 만드는 무작위 운동
@@ -2012,21 +2065,24 @@ topics:
     domain: thermodynamics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 걸음이 쌓여도 거리는 걸음 수의 제곱근으로만 는다
   - id: statistical-fluctuation
     name: 요동
     desc: 입자 수가 적을 때 커지는 흔들림
     domain: thermodynamics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 입자 수가 적을수록 요동이 크게 보인다
   - id: maxwells-demon
     name: 맥스웰의 도깨비
     desc: 정보와 엔트로피의 관계
     domain: thermodynamics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 빠른 분자만 골라 보내면 저절로 갈라지는 것처럼 보인다
   - id: insulation
     name: 보온과 단열
     desc: 열의 이동을 늦추는 것
@@ -2074,7 +2130,8 @@ topics:
     domain: waves-acoustics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 매질은 제자리에서 흔들리는데 에너지는 건너간다
   - id: transverse-wave
     name: 횡파
     desc: 진동 방향이 진행 방향과 수직
@@ -2129,7 +2186,8 @@ topics:
     domain: waves-acoustics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 파면의 각 점이 낸 잔물결이 다음 파면을 만든다
   - id: superposition
     name: 중첩 원리
     desc: 파동이 겹칠 때의 합
@@ -2228,14 +2286,16 @@ topics:
     domain: waves-acoustics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 음속을 넘기면 파면이 원뿔로 모인다
   - id: mach-number
     name: 마하 수
     desc: 음속에 대한 속도의 비
     domain: waves-acoustics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "no"
+    visualNote: 속력과 음속의 비 — 값이다
   - id: sound-speed
     name: 음속
     desc: 매질과 온도가 정하는 속도
@@ -2258,7 +2318,8 @@ topics:
     domain: waves-acoustics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "no"
+    visualNote: 로그로 압축한 눈금이다
   - id: pitch-loudness-timbre
     name: 높이·크기·음색
     desc: 물리량과 감각의 대응
@@ -2378,14 +2439,16 @@ topics:
     domain: optics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 광원을 키우면 본그림자가 줄고 반그림자가 는다
   - id: pinhole-camera
     name: 바늘구멍 사진기
     desc: 구멍 하나가 만드는 상
     domain: optics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 구멍을 키우면 밝아지는 대신 흐려진다
   - id: law-of-reflection
     name: 반사 법칙
     desc: 입사각과 반사각
@@ -2416,7 +2479,8 @@ topics:
     domain: optics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 두 거울의 각을 좁히면 상이 늘어난다
   - id: concave-mirror
     name: 오목거울
     desc: 초점과 실상
@@ -2463,7 +2527,8 @@ topics:
     domain: optics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 물속 물체가 실제보다 얕은 곳에 보인다
   - id: total-internal-reflection
     name: 전반사
     desc: 임계각과 그 조건
@@ -2486,28 +2551,32 @@ topics:
     domain: optics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 뜨거운 공기층에서 빛이 휘어 하늘이 바닥에 비친다
   - id: dispersion
     name: 분산
     desc: 파장에 따른 굴절률 차이
     domain: optics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 흰빛이 색으로 갈라진다
   - id: prism
     name: 프리즘
     desc: 분산으로 나뉘는 스펙트럼
     domain: optics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 두 번 꺾이며 색이 벌어진다
   - id: rainbow
     name: 무지개
     desc: 물방울 속 굴절과 반사
     domain: optics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 물방울 안에서 꺾이고 되비쳐 40도쯤에 색이 선다
   - id: thin-lens
     name: 얇은 렌즈
     desc: 초점과 결상
@@ -2555,7 +2624,8 @@ topics:
     domain: optics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "no"
+    visualNote: 곡률과 굴절률로 초점을 구하는 공식이다
   - id: lens-combination
     name: 렌즈의 조합
     desc: 두 렌즈가 만드는 합성 초점
@@ -2586,14 +2656,16 @@ topics:
     domain: optics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 수정체 두께가 바뀌며 초점이 맞는다
   - id: myopia-hyperopia
     name: 근시와 원시
     desc: 상이 맺히는 위치와 교정
     domain: optics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 상이 망막 앞뒤에 맺히고 렌즈가 그것을 옮긴다
   - id: magnifying-glass
     name: 돋보기
     desc: 가까운 초점 안의 물체
@@ -2656,7 +2728,8 @@ topics:
     domain: optics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 간격이 벌어질수록 고리가 촘촘해진다
   - id: resolving-power
     name: 분해능
     desc: 두 점을 가르는 한계
@@ -2687,28 +2760,32 @@ topics:
     domain: optics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 어느 각에서 반사광이 완전히 편광된다
   - id: birefringence
     name: 복굴절
     desc: 방향에 따라 다른 굴절률
     domain: optics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 한 줄기가 두 줄기로 갈라져 상이 겹쳐 보인다
   - id: scattering
     name: 산란
     desc: 하늘과 노을의 색
     domain: optics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 입자 크기에 따라 흩어지는 방향이 달라진다
   - id: rayleigh-scattering
     name: 레일리 산란
     desc: 파장 4제곱에 반비례하는 산란
     domain: optics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 짧은 파장이 더 흩어져 하늘이 파랗고 노을이 붉다
   - id: seeing-requires-light
     name: 보려면 빛이 있어야
     desc: 빛이 없으면 물체가 보이지 않는다
@@ -2780,7 +2857,8 @@ topics:
     domain: electromagnetism
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 여러 전하가 주는 힘의 화살표가 하나로 모인다
   - id: electric-field
     name: 전기장
     desc: 단위 전하가 받는 힘
@@ -2803,7 +2881,8 @@ topics:
     domain: electromagnetism
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 두 전하 사이와 바깥의 선 모양이 다르다
   - id: uniform-field
     name: 균일한 전기장
     desc: 평행판 사이의 장
@@ -2874,14 +2953,16 @@ topics:
     domain: electromagnetism
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 도체 상자 안으로 장이 들어오지 못한다
   - id: charge-on-conductor-surface
     name: 도체 표면의 전하
     desc: 뾰족한 곳에 몰리는 전하
     domain: electromagnetism
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 전하가 표면으로, 뾰족한 곳에 몰린다
   - id: dielectric
     name: 유전체
     desc: 분극과 전기장의 약화
@@ -3009,7 +3090,8 @@ topics:
     domain: electromagnetism
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 저항을 맞추면 검류계 바늘이 0 으로 선다
   - id: electric-power
     name: 전력
     desc: 소비되는 에너지의 비율
@@ -3138,7 +3220,8 @@ topics:
     domain: electromagnetism
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 고리 전류가 만드는 장이 막대자석과 같은 모양이다
   - id: magnetic-materials
     name: 자성체
     desc: 강자성·상자성·반자성
@@ -3251,7 +3334,8 @@ topics:
     domain: electromagnetism
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 진동수를 바꾸면 막는 정도가 달라진다
   - id: phase-in-ac-circuit
     name: 교류의 위상차
     desc: 전압과 전류가 어긋나는 것
@@ -3266,7 +3350,8 @@ topics:
     domain: electromagnetism
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 공진 진동수에서 전류가 최대가 된다
   - id: transformer
     name: 변압기
     desc: 감은 수와 전압비
@@ -3321,7 +3406,8 @@ topics:
     domain: electromagnetism
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "no"
+    visualNote: 두 상수로부터 광속이 나온다는 유도다
   - id: electromagnetic-spectrum
     name: 전자기 스펙트럼
     desc: 파장에 따른 분류
@@ -3336,7 +3422,8 @@ topics:
     domain: electromagnetism
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 에너지가 어느 쪽으로 흐르는지 화살표가 가리킨다
   - id: radiation-pressure
     name: 복사압
     desc: 빛이 미는 힘
@@ -3440,7 +3527,8 @@ topics:
     domain: modern-physics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 간섭계를 돌려도 무늬가 움직이지 않는다
   - id: special-relativity-postulates
     name: 특수 상대성 가정
     desc: 광속 불변과 상대성 원리
@@ -3471,7 +3559,8 @@ topics:
     domain: modern-physics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 옆으로 흐르는 빛 시계의 경로가 길어져 느려진다
   - id: length-contraction
     name: 길이 수축
     desc: 운동 방향으로의 수축
@@ -3510,7 +3599,8 @@ topics:
     domain: modern-physics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 두 세계선의 길이가 달라 나이가 갈린다
   - id: spacetime-diagram
     name: 시공간 도표
     desc: 세계선과 동시선
@@ -3541,7 +3631,8 @@ topics:
     domain: modern-physics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 광속에 다가갈수록 곡선이 위로 치솟는다
   - id: mass-energy-equivalence
     name: 질량-에너지 등가
     desc: E=mc² 의 뜻
@@ -3564,7 +3655,8 @@ topics:
     domain: modern-physics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 다가오는 빛이 푸르게, 멀어지는 빛이 붉게 밀린다
   - id: equivalence-principle
     name: 등가 원리
     desc: 가속과 중력의 구별 불가
@@ -3587,7 +3679,8 @@ topics:
     domain: modern-physics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 우물에서 올라온 빛의 파장이 늘어난다
   - id: light-bending-by-gravity
     name: 빛의 휨
     desc: 질량 근처에서 휘는 경로
@@ -3706,14 +3799,16 @@ topics:
     domain: modern-physics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "no"
+    visualNote: 켤레량 사이의 관계식이다
   - id: wave-function
     name: 파동 함수
     desc: 확률 진폭과 그 해석
     domain: modern-physics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 퍼진 파동의 모양이 있을 곳의 분포를 그린다
   - id: born-rule
     name: 보른 규칙
     desc: 제곱이 확률이 되는 규약
@@ -3744,14 +3839,16 @@ topics:
     domain: modern-physics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 벽 사이에 정상파처럼 몇 가지 모양만 허용된다
   - id: finite-well
     name: 유한 우물
     desc: 벽 바깥으로 새는 파동 함수
     domain: modern-physics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 벽 밖으로 파동이 새어 나간다
   - id: quantum-tunneling
     name: 터널 효과
     desc: 장벽을 통과하는 확률
@@ -3774,7 +3871,8 @@ topics:
     domain: modern-physics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 층마다 다른 마디 수의 파동이 쌓인다
   - id: hydrogen-spectrum
     name: 수소 스펙트럼
     desc: 불연속한 선 스펙트럼
@@ -3805,42 +3903,48 @@ topics:
     domain: modern-physics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "no"
+    visualNote: 상태를 가리키는 번호 체계다
   - id: pauli-exclusion
     name: 파울리 배타 원리
     desc: 같은 상태를 못 가짐
     domain: modern-physics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 같은 자리에 둘이 못 들어가 위층부터 채운다
   - id: electron-configuration
     name: 전자 배치
     desc: 주기율표가 나오는 방식
     domain: modern-physics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 껍질이 차례로 차는 것이 보인다
   - id: spin
     name: 스핀
     desc: 고전 대응물이 없는 각운동량
     domain: modern-physics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 슈테른-게를라흐에서 두 값만 나온다
   - id: stern-gerlach
     name: 슈테른-게를라흐 실험
     desc: 갈라지는 원자 빔
     domain: modern-physics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 고르게 퍼질 줄 알았던 빔이 둘로 갈라진다
   - id: zeeman-effect
     name: 제이만 효과
     desc: 자기장이 가르는 준위
     domain: modern-physics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 자기장을 걸면 한 줄이던 선이 갈라진다
   - id: laser-and-stimulated-emission
     name: 레이저와 유도 방출
     desc: 결이 맞는 빛의 증폭
@@ -3975,7 +4079,8 @@ topics:
     domain: modern-physics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 채워진 데까지의 경계가 띠 그림에서 드러난다
   - id: semiconductor-doping
     name: 도핑
     desc: 불순물이 만드는 n형과 p형
@@ -4030,14 +4135,16 @@ topics:
     domain: modern-physics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 자기장을 밀어내며 자석이 떠오른다
   - id: bose-einstein-condensate
     name: 보스-아인슈타인 응축
     desc: 같은 상태로 몰리는 저온의 입자
     domain: modern-physics
     level: null
     curricula: []
-    visual: "unsure"
+    visual: "yes"
+    visualNote: 식히면 분포가 한 점으로 무너져 내린다
   - id: scale-of-universe
     name: 우주의 규모
     desc: 원자에서 우주까지 10의 거듭제곱으로 잇는 크기
