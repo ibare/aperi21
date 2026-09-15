@@ -113,7 +113,6 @@ export const torricellisLawSchema: BundleSchema = {
 
   views: [{ id: 'jets', label: text('label.view'), default: true }],
 
-  autoViews: { energy: false },
   /**
    * 세로가 비싸다. 물통(0.92 m)과 물줄기가 떨어지는 자리(−0.23 m)를 함께 담아야
    * 하는데 가로는 1.37 m 뿐이라, 낮은 캔버스에서는 세로가 제약이 되어 그림이

@@ -6,7 +6,7 @@
 
 import type { Bundle, StageDef } from '@aperi21/schema';
 import { controllers } from './controllers';
-import { derivedValues, step } from './physics';
+import { step } from './physics';
 import { scene } from './scene';
 import { pressureAndContainerShapeSchema, SCENE_BOUNDS } from './schema';
 import { initialState, type PressureAndContainerShapeState } from './state';
@@ -17,7 +17,6 @@ export const pressureAndContainerShapeBundle: Bundle<PressureAndContainerShapeSt
   step,
   scene,
   controllers,
-  derivedValues,
   // 물이 차올라도 프레임은 고정이다 — 글 한복판의 그림이 흔들리지 않는다 (원칙 6).
   boundsHint(_state: PressureAndContainerShapeState, _stage: StageDef) {
     return { ...SCENE_BOUNDS };

@@ -153,8 +153,12 @@ export const beatsSchema: BundleSchema = {
 
   /**
    * 파라미터가 없다. 독자가 만지는 것은 조작기 하나(두 음의 진동수 차이)이고
-   * 그것은 `controllers` 의 선언이다 — 파라미터로 두면 그림 옆에 상시 값 표시줄
-   * (ParamPanel)이 서고, 그것은 조각이 두지 않기로 한 크롬이다 (S-piece).
+   * 그것은 `controllers` 의 선언이다.
+   *
+   * 2026-09-14 이전에는 "파라미터로 두면 상시 값 표시줄이 자동으로 선다" 가
+   * 근거였는데, 그 자동 동작은 사라졌다(`param-panel` 을 선언해야 뜬다). 그래도
+   * 파라미터를 두지 않는다 — 여기서 만질 것은 **차이** 하나이고, 값 둘을 따로
+   * 내놓으면 무엇을 보라는 그림인지가 흐려진다.
    */
   parameters: [],
 
@@ -175,7 +179,6 @@ export const beatsSchema: BundleSchema = {
 
   views: [{ id: 'waveform', label: text('label.view'), default: true }],
 
-  autoViews: { energy: false },
 
   /** 원본 판과 같은 크기(860×400). 마운트 뒤에는 바뀌지 않는다 (원칙 6). */
   canvas: { height: 400, minHeight: 360 },

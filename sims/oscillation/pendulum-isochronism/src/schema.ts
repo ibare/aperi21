@@ -204,7 +204,6 @@ export const pendulumIsochronismSchema: BundleSchema = {
   environments: [],
   views: [{ id: 'five', label: text('label.view'), default: true }],
 
-  autoViews: { energy: false },
   /** 원본 캔버스와 같은 비율(860×372). 세로가 비싸다. */
   canvas: { height: 372, minHeight: 330 },
 

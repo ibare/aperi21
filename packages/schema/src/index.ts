@@ -805,6 +805,82 @@ export type ControllerKind =
       range?: [number, number];
       unit?: string;
       label?: LocalizedText;
+    }
+  | {
+      /**
+       * 파라미터 상자 — `BundleSchema.parameters` 를 한자리에 모아 조작한다.
+       *
+       * 예전에는 러너가 파라미터가 하나라도 있으면 자동으로 띄웠다. 그러면
+       * 저작자가 "이 조각은 값을 만지게 하지 않는다" 를 고를 수 없다 (원칙 2).
+       * 이제 선언해야 뜬다.
+       */
+      type: 'param-panel';
+      /** 보일 파라미터 id. 생략하면 선언된 파라미터 전부. */
+      params?: string[];
+      /** 자리. 생략하면 왼쪽 위에서 선언 순서대로 아래로 쌓인다. */
+      at?: Anchor;
+      /** 크기 `[너비, 높이]`(화면 px). 생략하면 기본값. */
+      size?: Vec2;
+      /** 이름표. 생략하면 프레임워크 문구. */
+      label?: LocalizedText;
+      /** 되돌리기 단추를 둘지. 기본 true. */
+      reset?: boolean;
+    }
+  | {
+      /**
+       * 뷰 탭 — `BundleSchema.views` 사이를 오간다.
+       *
+       * **고를 것이 하나뿐이면 선언해도 그리지 않는다.** 탭 하나는 조작기가
+       * 아니라 크롬이다 (S-piece).
+       */
+      type: 'view-tabs';
+      /** 자리. 생략하면 왼쪽 위에서 선언 순서대로 아래로 쌓인다. */
+      at?: Anchor;
+      /** 크기 `[너비, 높이]`(화면 px). 생략하면 내용에 맞춘 기본값. */
+      size?: Vec2;
+    }
+  | {
+      /**
+       * 스테이지 탭 — `BundleSchema.stages` 사이를 오간다.
+       *
+       * `view-tabs` 와 같이, 고를 것이 하나뿐이면 그리지 않는다 (S-piece).
+       */
+      type: 'stage-tabs';
+      /** 자리. 생략하면 왼쪽 위에서 선언 순서대로 아래로 쌓인다. */
+      at?: Anchor;
+      /** 크기 `[너비, 높이]`(화면 px). 생략하면 내용에 맞춘 기본값. */
+      size?: Vec2;
+      /** 이름표. 생략하면 프레임워크 문구. */
+      label?: LocalizedText;
+    }
+  | {
+      /**
+       * 환경 토글 — `BundleSchema.environments` 를 켜고 끈다. 지금 스테이지에서
+       * 쓸 수 있는 것만 나온다(`availableInStages`).
+       *
+       * 켤 것이 없으면 그리지 않는다.
+       */
+      type: 'env-toggles';
+      /** 자리. 생략하면 왼쪽 위에서 선언 순서대로 아래로 쌓인다. */
+      at?: Anchor;
+      /** 크기 `[너비, 높이]`(화면 px). 생략하면 내용에 맞춘 기본값. */
+      size?: Vec2;
+      /** 이름표. 생략하면 프레임워크 문구. */
+      label?: LocalizedText;
+    }
+  | {
+      /**
+       * 되돌리기 단추. 프레이밍을 되돌릴지 상태를 되돌릴지는 선언이 고른다 —
+       * 카메라 버튼은 프레이밍의 권한을 독자에게 넘기는 것이라 저작 결정이다
+       * (원칙 4).
+       */
+      type: 'reset-buttons';
+      /** 무엇을 되돌릴지. 생략하면 둘 다. */
+      targets?: ('camera' | 'state')[];
+      /** 자리. 생략하면 오른쪽 아래에서 선언 순서대로 왼쪽으로 쌓인다. */
+      at?: Anchor;
+      /** 크기 `[너비, 높이]`(화면 px). 생략하면 내용에 맞춘 기본값. */
+      size?: Vec2;
     };
 
 /** Bundle의 정적 스키마. */
@@ -822,15 +898,6 @@ export interface BundleSchema {
   environments: EnvironmentDef[];
   views: ViewDef[];
   plugins?: string[];                    // 예: ['optics', 'em']
-
-  /**
-   * 호스트가 자동으로 생성하는 오버레이 뷰. 기본은 모두 true.
-   * - energy: view.id === 'energy' 일 때 derivedValues(ke, pe, total) 기반
-   *   에너지 바 HUD 를 호스트가 자동 렌더.
-   */
-  autoViews?: {
-    energy?: boolean;
-  };
 
   /**
    * 임베드 캔버스 치수. 화면에 나타나는 것은 저작 결정이므로 선언에 둔다 (원칙 2).
@@ -861,10 +928,6 @@ export interface BundleSchema {
   chrome?: {
     /** 월드 m 단위 거리 축 그리드와 라벨. 기본 false. */
     grid?: boolean;
-    /** 카메라 팬·줌·리셋 버튼. 기본 false. */
-    cameraControls?: boolean;
-    /** 스테이지 이름과 중력(`g`) 배지. 기본 false — 중력이 주장의 일부인 그림만 켠다. */
-    stageBadge?: boolean;
   };
 
   /**
@@ -935,7 +998,7 @@ export interface BundleSchema {
    * 저작자가 정한 화면 문안. 조회 3층 중 **1층**이며 언제나 이긴다 (C1).
    *
    * 키는 코드의 호출부가 쓰는 것과 같다 — 프레임워크 문구를 덮어쓰려면 그쪽 키를
-   * 그대로 쓰면 된다 (`ui.cameraControls.reset`). sim 고유 문안은 네임스페이스
+   * 그대로 쓰면 된다 (`ui.resetButtons.state`). sim 고유 문안은 네임스페이스
    * 없이 짧게 (`label.energy`).
    *
    * 이 선언은 장차 에디터로 불특정 다수가 만든다. 시각화가 무엇이라 말하는지도
@@ -1104,8 +1167,6 @@ export interface Bundle<TState extends BundleState = BundleState> {
   /** 종료 판정 (linear·discrete 타임 모델에서). */
   isTerminated?(state: TState): boolean;
 
-  /** 파생값 (에너지 뷰 등 프레임워크 공통 뷰용). */
-  derivedValues?(state: TState, stage: StageDef): Record<string, number>;
 
   /**
    * Camera 자동 프레이밍 힌트. 사용자가 팬/줌 하기 전까지 호스트가 매 프레임
@@ -1257,6 +1318,14 @@ export interface RenderContext {
   store?<T>(key: string, init: () => T): T;
 }
 
+/**
+ * 렌더러가 보는 테마 — **그림 축 하나뿐이다.**
+ *
+ * 코어가 제공하는 조작기의 색·치수(`UiTheme`)는 여기 없다. 렌더러가 그것까지
+ * 보면 두 축을 나눈 뜻이 사라진다 — 조작기 모양을 바꾸려다 그림이 함께 바뀐다.
+ * 모서리 반경도 없다. 둥근 모서리는 상자를 그리는 UI 의 어휘이고, 그림에는
+ * 상자가 없다.
+ */
 export interface Theme {
   resolveColor(role: ColorRole, emphasis?: 'strong' | 'medium' | 'subtle'): string;
   /** 배경(스테이지 기본 배경). */
@@ -1273,21 +1342,16 @@ export interface Theme {
   fontFamily: string;
   /** 모노 글꼴 패밀리 (숫자·라벨). */
   fontFamilyMono: string;
-  /** 작은 모서리 반경 (px). */
-  radiusSmall: number;
-  /** 중간 모서리 반경 (px). */
-  radiusMedium: number;
-  /** 선 두께 토큰. */
-  strokeWidth: { thin: number; regular: number; thick: number };
-  /**
-   * 구형 호환. 새 코드는 background/foreground/line 을 쓸 것.
-   * @deprecated
-   */
-  backgroundColor?: string;
-  /** @deprecated */
-  textColor?: string;
-  /** @deprecated */
-  lineColor?: string;
+  /** 그림 안 글자 크기(px). */
+  fontSize: { small: number; regular: number; large: number };
+  /** 선 두께 토큰. 다섯 단 — 눈금·외곽·벡터가 굵기로 갈라져야 한다. */
+  strokeWidth: {
+    hair: number;
+    thin: number;
+    regular: number;
+    thick: number;
+    heavy: number;
+  };
 }
 
 export interface I18n {

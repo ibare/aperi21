@@ -13,7 +13,7 @@ last_verified: 2026-09-10
 - `packages/host/src/renderer/**` — 표준 primitive 렌더러
 - `packages/host/src/runtime/runBundle.ts` — 캔버스 껍데기와 RAF 루프
 - `packages/plugin-*/src/renderers.ts` — 도메인 primitive 렌더러
-- `packages/react/src/embed/Canvas.tsx` — React 마운트 경로
+- `packages/react/src/Embed.tsx` — 그 러너를 React 에 잇는 얇은 껍데기
 
 ## 프리미티브 어휘
 
@@ -31,7 +31,7 @@ last_verified: 2026-09-10
 쓴 순서대로 그린다(먼저 쓴 것이 아래). "말뚝을 띠 위에 긋는다" 처럼 겹침이 판정
 장치인 그림이 고른다. 그때 위 세 관계를 지키는 책임은 저작자에게 넘어가고 `zHints`
 도 무시된다. 엔진이 보장하는 것은 둘뿐이다 — 참조 의존(위상 정렬)과 캡션 슬롯이
-맨 위라는 것. 두 러너는 `orderForDrawing` 하나로 정렬한다.
+맨 위라는 것. 정렬은 `orderForDrawing` 하나가 한다.
 
 plugin 이 `primitiveTypes` 로 더 확장한다 — optics `['ray','opticalElement']`,
 circuit `['circuitElement','wire','terminal']`.
@@ -95,10 +95,10 @@ circuit `['circuitElement','wire','terminal']`.
 > 2026-09-09 에 두 sim 이 자유 렌더를 썼고(342 + 288줄), 2026-09-10 에 일곱 어휘로
 > 승격되며 둘 다 0 이 됐다.
 
-## 현재 위반 (AUDIT-v1 대상)
+## 현재 위반
 
-- `runBundle.ts` 가 캔버스 껍데기의 높이를 `360px` / `320px` 로 코드에 박고 있다.
-  껍데기를 러너가 만드는 것 자체는 맞으나, **치수가 선언이 아니다** (원칙 2 · C2).
+없다. AUDIT-v1 이 잡았던 캔버스 높이 하드코딩은 `CANVAS_DEFAULT` 기본값 +
+`BundleSchema.canvas` 선언으로 옮겼다.
 
 ## PREFER
 

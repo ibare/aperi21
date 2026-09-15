@@ -16,6 +16,11 @@ import { PlacementController } from './controller/placement';
 import { ValueEditController } from './controller/value-edit';
 import { SliderController } from './controller/slider';
 import { ScaleDragController } from './controller/scale-drag';
+import { ParamPanelController } from './controller/param-panel';
+import { ViewTabsController } from './controller/view-tabs';
+import { StageTabsController } from './controller/stage-tabs';
+import { EnvTogglesController } from './controller/env-toggles';
+import { ResetButtonsController } from './controller/reset-buttons';
 import { I18nResolver, type Dictionary, type HostI18n } from './i18n/resolver';
 import { FRAMEWORK_MESSAGES } from './i18n/messages';
 import { PluginManager, ServiceRegistry, type HostPlugin } from './pluginManager';
@@ -23,6 +28,12 @@ import { CORE_RENDERERS } from './renderer/primitives';
 import { RendererRegistry } from './renderer/registry';
 import { getBundleCapabilities } from './runtime/bundleRegistry';
 import { getTheme, type HostTheme, type ThemeMode } from './theme';
+
+/** 모드 이름이면 기본 테마를, 한 벌이면 그대로. */
+function resolveThemeInput(input: ThemeMode | HostTheme | undefined): HostTheme {
+  if (!input) return getTheme('light');
+  return typeof input === 'string' ? getTheme(input) : input;
+}
 import {
   createTimeEngine,
   type TimeEngine,
@@ -31,7 +42,14 @@ import {
 
 export interface HostConfig {
   plugins?: HostPlugin[];
-  theme?: ThemeMode;
+  /**
+   * 테마. 모드 이름이거나, **완성된 테마 한 벌**이다.
+   *
+   * 한 벌을 통째로 준다 — 일부만 덮는 길을 두지 않는다. 부분 병합은 토큰을
+   * 빠뜨렸을 때 조용히 기본값으로 떨어지고, 그 자리가 어디인지 화면을 봐야
+   * 알게 된다. 통째로 주면 빠진 토큰을 타입이 잡는다.
+   */
+  theme?: ThemeMode | HostTheme;
   lang?: string;
   dictionary?: Dictionary;
   logger?: PluginLogger;
@@ -84,6 +102,11 @@ export function standardCapabilities(): Required<HostCapabilities> {
       'value-edit': () => new ValueEditController(),
       slider: () => new SliderController(),
       'scale-drag': () => new ScaleDragController(),
+      'param-panel': () => new ParamPanelController(),
+      'view-tabs': () => new ViewTabsController(),
+      'stage-tabs': () => new StageTabsController(),
+      'env-toggles': () => new EnvTogglesController(),
+      'reset-buttons': () => new ResetButtonsController(),
     },
     vectorCompute: { uniform: uniformVectorField, gravity: gravityVectorField },
   };
@@ -184,8 +207,8 @@ export class Host {
       this.computeRegistry.registerVector(name, fn);
     }
 
-    this.themeMode = config.theme ?? 'light';
-    this.theme = getTheme(this.themeMode);
+    this.theme = resolveThemeInput(config.theme);
+    this.themeMode = this.theme.mode;
     this.i18n = new I18nResolver(config.lang ?? 'ko', mergeDictionary(config.dictionary));
 
     // 서비스 등록 — Plugin 의 HostAPI.getService 로 조회 가능.
@@ -249,9 +272,10 @@ export class Host {
     }
   }
 
-  setTheme(mode: ThemeMode): void {
-    this.themeMode = mode;
-    this.theme = getTheme(mode);
+  /** 테마를 갈아 끼운다. 모드 이름이거나 완성된 한 벌이다. */
+  setTheme(theme: ThemeMode | HostTheme): void {
+    this.theme = resolveThemeInput(theme);
+    this.themeMode = this.theme.mode;
     this.services.register(HOST_SERVICE_IDS.theme, this.theme);
   }
 

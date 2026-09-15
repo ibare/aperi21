@@ -163,7 +163,6 @@ export const pressureAndContainerShapeSchema: BundleSchema = {
       default: true,
     },
   ],
-  autoViews: { energy: false },
   canvas: { height: 400, minHeight: 360 },
   messages: pressureAndContainerShapeMessages,
 };

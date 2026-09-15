@@ -224,7 +224,6 @@ export const dopplerEffectSchema: BundleSchema = {
   ],
   environments: [],
   views: [{ id: 'fronts', label: text('label.view'), default: true }],
-  autoViews: { energy: false },
 
   /**
    * 원본은 880 × 330 이었다. 세로를 480 으로 두는 것은 러너 둘이 같은 화면을

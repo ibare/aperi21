@@ -29,7 +29,6 @@ const LINEAR = {
   tickMinor: 5,
   labelGap: 14,
   markerSize: 5,
-  fontSize: 10,
 } as const;
 
 /**
@@ -85,7 +84,7 @@ export const renderScale: PrimitiveRenderer = (rc, p0) => {
       }
       // 지침이 출발했던 자리
       c.strokeStyle = rc.theme.muted;
-      c.lineWidth = rc.theme.strokeWidth.regular;
+      c.lineWidth = rc.theme.strokeWidth.thin;
       c.setLineDash([3, 3]);
       c.beginPath();
       c.moveTo(cx, cy);
@@ -99,7 +98,7 @@ export const renderScale: PrimitiveRenderer = (rc, p0) => {
       const a = angle(v);
       const major = i % 2 === 0;
       const inner = R * (major ? DIAL.tickMajor : DIAL.tickMinor);
-      c.lineWidth = major ? rc.theme.strokeWidth.regular : rc.theme.strokeWidth.thin;
+      c.lineWidth = major ? rc.theme.strokeWidth.thin : rc.theme.strokeWidth.hair;
       c.beginPath();
       c.moveTo(cx + Math.cos(a) * inner, cy + Math.sin(a) * inner);
       c.lineTo(cx + Math.cos(a) * R * DIAL.tickOuter, cy + Math.sin(a) * R * DIAL.tickOuter);
@@ -165,7 +164,7 @@ export const renderScale: PrimitiveRenderer = (rc, p0) => {
   const ny = (x1 - x0) / (Math.hypot(x1 - x0, y1 - y0) || 1);
 
   c.strokeStyle = rc.theme.line;
-  c.lineWidth = rc.theme.strokeWidth.regular;
+  c.lineWidth = rc.theme.strokeWidth.thin;
   c.beginPath();
   c.moveTo(x0, y0);
   c.lineTo(x1, y1);
@@ -183,14 +182,14 @@ export const renderScale: PrimitiveRenderer = (rc, p0) => {
     const major = anchor !== undefined;
     const size = major ? LINEAR.tickMajor : LINEAR.tickMinor;
     c.strokeStyle = major ? accent : rc.theme.muted;
-    c.lineWidth = major ? rc.theme.strokeWidth.thick : rc.theme.strokeWidth.thin;
+    c.lineWidth = major ? rc.theme.strokeWidth.thick : rc.theme.strokeWidth.hair;
     c.beginPath();
     c.moveTo(tx, ty);
     c.lineTo(tx + nx * size, ty + ny * size);
     c.stroke();
 
     if (major) {
-      c.font = `600 ${LINEAR.fontSize}px ${rc.theme.fontFamilyMono}`;
+      c.font = `600 ${rc.theme.fontSize.small}px ${rc.theme.fontFamilyMono}`;
       c.fillStyle = accent;
       c.textAlign = 'center';
       c.textBaseline = 'top';

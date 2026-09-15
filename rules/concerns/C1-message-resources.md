@@ -10,7 +10,7 @@ last_verified: 2026-09-09
 
 ## When to Apply
 
-- `packages/react/src/embed/**` · `packages/host/src/renderer/**` 가 화면에 문자를 그릴 때
+- `packages/host/src/controller/**` · `packages/host/src/renderer/**` 가 화면에 문자를 그릴 때
 - `sims/**/schema.ts` 의 라벨·설명 작성
 - `packages/host/src/i18n/**` · `apps/catalog/src/i18n/**` 편집
 
@@ -42,7 +42,7 @@ last_verified: 2026-09-09
 - 값 삽입은 **`{name}` 플레이스홀더 + vars** 로 한다. 문자열 이어붙이기나 템플릿 리터럴
   보간을 쓰면 어순이 다른 언어에서 문장이 깨진다.
 - sim 고유 키는 네임스페이스 없이 짧게(`label.energy`), 프레임워크 키는
-  `ui.<component>.<name>`(`ui.cameraControls.reset`). 세그먼트는 lowerCamelCase.
+  `ui.<component>.<name>`(`ui.resetButtons.state`). 세그먼트는 lowerCamelCase.
 - 선언의 `LocalizedText` 는 최소 `en` 을 갖는다.
 
 ## MUST NOT
@@ -70,11 +70,16 @@ last_verified: 2026-09-09
 > 우리 도메인은 3번이 압도적으로 많다. 판정표 없이 시작하면 수식까지 번역 키로 만들어
 > 화면이 망가진다.
 
-## 현재 위반 (AUDIT-v1 대상)
+## 현재 위반
 
-- `packages/react/src/embed/CameraControls.tsx` — 삼항식 4
-- `packages/react/src/embed/EnergyHUD.tsx` — 삼항식 5
-- `packages/react/src/embed/InfoPanel.tsx` — 모듈 상수 표 5키
+AUDIT-v1 이 잡았던 셋(`CameraControls` 삼항식 4 · `EnergyHUD` 삼항식 5 ·
+`InfoPanel` 모듈 상수 표 5키)은 2026-09-14 에 그 파일들이 사라지며 함께 없어졌다 —
+오버레이가 조작기 어휘로 옮겨 가면서 문안이 전부 키 조회가 됐다.
+
+남은 것 하나 — `packages/host-tiptap/src/node-view.ts:22` 의 `STATUS_BY_LOCALE` 이
+`{en, ko}` 모듈 상수 표다. 이 파일은 위 「When to Apply」 경로에 없어 C1 의 판정
+대상은 아니나, **원칙 5 「코드 안 카탈로그도 코드다」에는 정면으로 해당한다.**
+로딩·오류 배지의 문안이라 세 번째 언어를 받을 수 없다.
 
 ## Exception
 

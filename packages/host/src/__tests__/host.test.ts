@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { Body, SceneGraph } from '@aperi21/schema';
 import {
   createHost,
+  getTheme,
   gravityVectorField,
   I18nResolver,
   preprocessScene,
@@ -98,12 +99,12 @@ describe('RendererRegistry', () => {
   });
 });
 
-describe('Theme.resolveColor', () => {
-  it('6개 colorRole 전부를 문자열로 반환', () => {
+describe('테마 두 축', () => {
+  it('scene 축이 6개 colorRole 전부를 문자열로 반환', () => {
     const host = createHost({ theme: 'light' });
     const roles = ['primary', 'secondary', 'accent', 'muted', 'positive', 'negative'] as const;
     for (const role of roles) {
-      const value = host.theme.resolveColor(role);
+      const value = host.theme.scene.resolveColor(role);
       expect(typeof value).toBe('string');
       expect(value.length).toBeGreaterThan(0);
     }
@@ -111,19 +112,41 @@ describe('Theme.resolveColor', () => {
 
   it('emphasis 별로 다른 값을 반환', () => {
     const host = createHost({ theme: 'light' });
-    const strong = host.theme.resolveColor('primary', 'strong');
-    const medium = host.theme.resolveColor('primary', 'medium');
-    const subtle = host.theme.resolveColor('primary', 'subtle');
+    const strong = host.theme.scene.resolveColor('primary', 'strong');
+    const medium = host.theme.scene.resolveColor('primary', 'medium');
+    const subtle = host.theme.scene.resolveColor('primary', 'subtle');
     expect(strong).not.toBe(medium);
     expect(medium).not.toBe(subtle);
   });
 
   it('setTheme 으로 다크 모드로 전환하면 배경이 변경', () => {
     const host = createHost({ theme: 'light' });
-    const lightBg = host.theme.background;
+    const lightBg = host.theme.scene.background;
     host.setTheme('dark');
-    expect(host.theme.background).not.toBe(lightBg);
+    expect(host.theme.scene.background).not.toBe(lightBg);
     expect(host.theme.mode).toBe('dark');
+  });
+
+  it('완성된 한 벌을 통째로 주입한다 — 코어 UI 를 조각과 따로 바꾼다', () => {
+    // 이 구조가 없으면 소비 호스트가 자기 색을 쓰려고 엔진을 고쳐 재발행해야 한다.
+    const base = getTheme('light');
+    const host = createHost({
+      theme: { ...base, ui: { ...base.ui, selected: '#123456', surface: '#654321' } },
+    });
+    expect(host.theme.ui.selected).toBe('#123456');
+    // 조각의 시각화는 건드리지 않았다 — 그것이 두 축을 가른 이유다.
+    expect(host.theme.scene.resolveColor('primary', 'strong')).toBe(
+      base.scene.resolveColor('primary', 'strong'),
+    );
+  });
+
+  it('두 축의 치수가 따로 논다 — UI 여백을 넓혀도 그림의 선이 굵어지지 않는다', () => {
+    const base = getTheme('light');
+    const host = createHost({
+      theme: { ...base, ui: { ...base.ui, strokeWidth: { thin: 9, regular: 9, thick: 9 } } },
+    });
+    expect(host.theme.ui.strokeWidth.thick).toBe(9);
+    expect(host.theme.scene.strokeWidth.thick).toBe(base.scene.strokeWidth.thick);
   });
 });
 

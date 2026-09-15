@@ -10,8 +10,8 @@ last_verified: 2026-09-10
 
 ## When to Apply
 
-- `packages/host/src/runtime/runBundle.ts` · `packages/react/src/embed/Canvas.tsx`
-  등 RAF 루프를 도는 코드
+- `packages/host/src/runtime/runBundle.ts` — RAF 루프를 도는 유일한 자리
+- `packages/react/src/Embed.tsx` — 그 루프를 React 라이프사이클에 잇는 자리
 - `addEventListener` · `ResizeObserver` · `setTimeout` / `setInterval` 을 쓰는 모든 자리
 - 모듈 최상단에 가변 상태를 두려 할 때
 
@@ -47,10 +47,13 @@ last_verified: 2026-09-10
 
 대체로 지켜지고 있다 (`_analysis.md` G5).
 
-| | runBundle.ts | Canvas.tsx |
-|---|---:|---:|
-| `addEventListener` / `removeEventListener` | 5 / 5 | 5 / 5 |
-| `requestAnimationFrame` / `cancelAnimationFrame` | 2 / 1 | 2 / 1 |
+| | runBundle.ts |
+|---|---:|
+| `addEventListener` / `removeEventListener` | 5 / 5 |
+| `requestAnimationFrame` / `cancelAnimationFrame` | 2 / 1 |
+
+2026-09-14 에 `react/embed/Canvas.tsx` 의 복제 루프가 사라졌다. 러너가 하나이므로
+이 표도 한 줄이다.
 
 RAF 2:1 은 루프 재귀 호출이 한 건 섞인 것으로, 핸들 관리 자체는 있다. 이 규칙은 잠금이
 주목적이다.

@@ -14,7 +14,7 @@ export const renderMarker: PrimitiveRenderer = (rc, p0) => {
   const color = primitiveColor(rc, p, { role: 'muted', emphasis: 'medium' });
 
   if (p.kind === 'label' && text) {
-    c.font = `600 11px ${rc.theme.fontFamilyMono}`;
+    c.font = `600 ${rc.theme.fontSize.regular}px ${rc.theme.fontFamilyMono}`;
     const tw = rc.measure.textWidth(text, 11);
     const pad = 6;
     const w = tw + pad * 2;
@@ -24,7 +24,7 @@ export const renderMarker: PrimitiveRenderer = (rc, p0) => {
     c.fillRect(sx - w / 2, sy - h - 4, w, h);
     setAlpha(c, 1);
     c.strokeStyle = rc.theme.line;
-    c.lineWidth = 1;
+    c.lineWidth = rc.theme.strokeWidth.thin;
     c.strokeRect(sx - w / 2, sy - h - 4, w, h);
     c.fillStyle = color;
     c.textAlign = 'center';
@@ -36,13 +36,13 @@ export const renderMarker: PrimitiveRenderer = (rc, p0) => {
     c.arc(sx, sy, 4, 0, Math.PI * 2);
     c.fill();
     if (text) {
-      c.font = `10px ${rc.theme.fontFamilyMono}`;
+      c.font = `${rc.theme.fontSize.small}px ${rc.theme.fontFamilyMono}`;
       c.fillStyle = rc.theme.muted;
       c.textAlign = 'left';
       c.fillText(text, sx + 8, sy + 4);
     }
   } else if (text) {
-    c.font = `10px ${rc.theme.fontFamilyMono}`;
+    c.font = `${rc.theme.fontSize.small}px ${rc.theme.fontFamilyMono}`;
     c.fillStyle = color;
     c.textAlign = 'left';
     c.textBaseline = 'top';

@@ -7,3 +7,8 @@ export { PlacementController } from './placement';
 export { ValueEditController } from './value-edit';
 export { SliderController } from './slider';
 export { ScaleDragController } from './scale-drag';
+export { ParamPanelController } from './param-panel';
+export { ViewTabsController } from './view-tabs';
+export { StageTabsController } from './stage-tabs';
+export { EnvTogglesController } from './env-toggles';
+export { ResetButtonsController } from './reset-buttons';

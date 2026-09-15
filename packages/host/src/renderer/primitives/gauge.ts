@@ -24,10 +24,10 @@ export const renderGauge: PrimitiveRenderer = (rc, p0) => {
   c.fillStyle = primitiveColor(rc, p, { role: 'accent', emphasis: 'strong' });
   c.fillRect(x, y, w * pct, h);
   c.strokeStyle = rc.theme.line;
-  c.lineWidth = 1;
+  c.lineWidth = rc.theme.strokeWidth.thin;
   c.strokeRect(x, y, w, h);
 
-  c.font = `10px ${rc.theme.fontFamilyMono}`;
+  c.font = `${rc.theme.fontSize.small}px ${rc.theme.fontFamilyMono}`;
   c.fillStyle = rc.theme.muted;
   c.textAlign = 'right';
   c.textBaseline = 'middle';

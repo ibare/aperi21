@@ -46,7 +46,7 @@ export function drawChip(
   c.fillRect(x, y, width, height);
   setAlpha(c, 1);
   c.strokeStyle = rc.theme.line;
-  c.lineWidth = rc.theme.strokeWidth.regular;
+  c.lineWidth = rc.theme.strokeWidth.thin;
   c.strokeRect(x, y, width, height);
 
   c.font = font;

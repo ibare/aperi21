@@ -206,7 +206,7 @@ export const renderFilament: PrimitiveRenderer = (rc, p0) => {
   applyBaseMeta(rc, p);
   const c = rc.ctx;
   const color = primitiveColor(rc, p, { role: 'primary', emphasis: 'strong' });
-  const width = p.width ?? 2;
+  const width = p.width ?? rc.theme.strokeWidth.thick;
 
   // 접힌 실. **이웃이 멀어지면 끊는다** — 이어 버리면 접힌 자리가 곧은
   // 대각선이 되어 커다란 삼각형으로 보인다.

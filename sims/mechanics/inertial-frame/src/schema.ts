@@ -170,7 +170,6 @@ export const inertialFrameSchema: BundleSchema = {
   stages: [{ id: 'road', label: text('label.stage'), constants: {} }],
   environments: [],
   views: [{ id: 'ground', label: text('label.view'), default: true }],
-  autoViews: { energy: false },
 
   /** 원본 캔버스는 860 × 280 한 장이고 캡션까지 그 안에 있었다. 러너의 사방 여백만큼 더 잡는다. */
   canvas: { height: 320, minHeight: 300 },

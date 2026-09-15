@@ -1,20 +1,22 @@
 import type {
   EnvironmentDef,
+  Gauge,
   SceneGraph,
   StageDef,
   Vec2,
   ViewDef,
 } from '@aperi21/schema';
 import type { ProjectileState } from './state';
+import { derivedValues } from './physics';
+import { ENERGY_BARS, ENERGY_UNIT } from './schema';
 
 /**
  * 뷰·스테이지·환경별 Scene Graph.
  * - 중력(g)이 0 이면 지평선을 그리지 않는다(우주 진공).
  *
- * 스테이지 뱃지·중력 화살표·환경 뱃지는 월드 좌표 고정이 줌아웃 시 한 점으로
- * 응집되어 가독성이 떨어지므로 React 오버레이(StageOverlay)에서 스크린 좌표로
- * 그린다. 에너지 뷰는 Graph 프리미티브를 포함하지 않으며 EnergyHUD 가
- * derivedValues 를 읽어 자동 렌더한다.
+ * **에너지 뷰의 막대는 이 선언이 만든다.** 예전에는 러너가 `autoViews.energy` 를
+ * 보고 HUD 를 자동으로 띄웠는데, 그러면 무엇을 보여 줄지가 조각의 결정이 아니게
+ * 된다 (S-piece 「화면에 없는 것도 결정이다」). 이제 `gauge` 를 선언한다.
  */
 export function scene(params: {
   state: ProjectileState;
@@ -104,8 +106,6 @@ export function scene(params: {
   }
 
   if (view.id === 'energy' && state.phase !== 'idle') {
-    // 에너지 뷰는 Graph 프리미티브를 포함하지 않는다 (Phase 2 설계 변경).
-    // 대신 속도 벡터만 강조 표시.
     const velocityVec = {
       type: 'vector' as const,
       id: 'v',
@@ -114,7 +114,22 @@ export function scene(params: {
       label: { ko: '속도', en: 'Velocity' },
       style: { colorRole: 'accent' as const },
     };
-    return [...ground, trail, ball, velocityVec, ...landingFlash];
+    // 운동·위치·손실을 한 눈금자 위에 놓는다. 셋이 같은 범위(처음의 전체 에너지)를
+    // 나눠 쓰므로 막대 길이끼리 견줄 수 있다 — 셋이 각자 제 범위를 쓰면 "옮겨
+    // 갔다" 가 보이지 않는다.
+    const d = derivedValues(state, stage);
+    const span: [number, number] = [0, Math.max(1e-6, d.initialTotal ?? 1)];
+    const bars = ENERGY_BARS.map((b): Gauge => ({
+      type: 'gauge',
+      id: `energy-${b.key}`,
+      value: d[b.key] ?? 0,
+      range: span,
+      unit: ENERGY_UNIT,
+      kind: 'linear',
+      label: b.label,
+      style: { colorRole: b.role, emphasis: 'strong' },
+    }));
+    return [...ground, trail, ball, velocityVec, ...bars, ...landingFlash];
   }
 
   return [...ground, trail, ball, ...landingFlash];

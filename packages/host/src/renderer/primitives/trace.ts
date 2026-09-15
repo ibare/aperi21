@@ -4,7 +4,6 @@ import { applyBaseMeta, finalizeBaseMeta, primitiveColor, setAlpha } from '../co
 /** 자국 하나의 기본 크기(화면 px). */
 const DEFAULT_SIZE = 2;
 /** `ring`·`tick` 의 기본 획 굵기(화면 px). */
-const DEFAULT_WIDTH = 1.5;
 /** 다 늙은 자국의 최소 알파. 0 으로 떨어뜨리면 마지막 한 칸이 툭 사라진다. */
 const MIN_ALPHA = 0.05;
 
@@ -26,7 +25,7 @@ export const renderTrace: PrimitiveRenderer = (rc, p0) => {
   const color = primitiveColor(rc, p, { role: 'secondary', emphasis: 'medium' });
   const shape = p.shape ?? 'dot';
   const size = p.size ?? DEFAULT_SIZE;
-  const width = p.width ?? DEFAULT_WIDTH;
+  const width = p.width ?? rc.theme.strokeWidth.regular;
   const life = p.life;
 
   c.fillStyle = color;

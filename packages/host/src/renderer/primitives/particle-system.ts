@@ -34,7 +34,7 @@ export const renderParticleSystem: PrimitiveRenderer = (rc, p0) => {
   // 자취 먼저 — 입자 아래로 깔린다.
   if (p.trail && p.velocities) {
     c.strokeStyle = color;
-    c.lineWidth = 1;
+    c.lineWidth = rc.theme.strokeWidth.thin;
     c.lineCap = 'round';
     setAlpha(c, TRAIL_ALPHA);
     c.beginPath();

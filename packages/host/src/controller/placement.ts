@@ -1,6 +1,7 @@
 import type { BundleState, ControllerSpec, Vec2 } from '@aperi21/schema';
 import type { Viewport } from '../camera';
-import { placeBox, stackedAnchor, type ScreenAnchor } from './layout';
+import type { UiTheme } from '../theme/types';
+import { placeBox, stackedAnchor, type Box, type ScreenAnchor } from './layout';
 import { readPath, writePath } from './path';
 import { controllerText } from './text';
 import type {
@@ -19,11 +20,12 @@ interface PlacedItem {
   position: Vec2;
 }
 
-const PALETTE_MARGIN = 24;
 /** 선언에 `size` 가 없을 때의 견본 한 칸 크기. 코어는 기본값만 준다 (원칙 7 ③). */
 const DEFAULT_SWATCH_W = 56;
 const DEFAULT_SWATCH_H = 56;
 const PALETTE_GAP = 10;
+/** 견본 칸의 기호 글자 크기. 칸 크기를 따라가는 이 조작기 고유 치수다. */
+const SWATCH_GLYPH_SIZE = 18;
 
 interface PaletteRect {
   index: number;
@@ -51,17 +53,18 @@ function computePalette(
   viewport: Viewport,
   toScreen: (w: Vec2) => Vec2,
   slot: number,
+  ui: UiTheme,
 ): Palette {
   const n = spec.placeableTypes.length;
   const [sw, sh] = spec.size ?? [DEFAULT_SWATCH_W, DEFAULT_SWATCH_H];
   const width = Math.max(sw, n * (sw + PALETTE_GAP) - PALETTE_GAP);
   const at = spec.at ?? stackedAnchor(DEFAULT_AT, slot, [0, sh + PALETTE_STACK_GAP]);
-  const box = placeBox(at, width, sh, viewport, toScreen, PALETTE_MARGIN);
+  const box = placeBox(at, width, sh, viewport, toScreen, ui.layout.margin);
   const rects: PaletteRect[] = [];
   for (let i = 0; i < n; i++) {
     const type = spec.placeableTypes[i]!;
     const x = box.x + i * (sw + PALETTE_GAP);
-    if (x + sw > viewport.width - PALETTE_MARGIN) break;
+    if (x + sw > viewport.width - ui.layout.margin) break;
     rects.push({ index: i, type, x, y: box.y, w: sw, h: sh });
   }
   return { x: box.x, y: box.y, rects };
@@ -114,18 +117,35 @@ export class PlacementController implements ControllerImpl<PlacementSpec> {
     return this.dragging;
   }
 
+  /** 마지막 렌더의 자리. */
+  private box: Box | null = null;
+
+  /** 마지막 렌더에서 차지한 화면 상자. 자동 프레이밍이 이만큼을 비운다. */
+  screenBounds(): Box | null {
+    return this.box;
+  }
+
+
   render(rc: ControllerRenderContext, spec: PlacementSpec, _state: BundleState): void {
-    const { ctx, theme, viewport } = rc;
-    const palette = computePalette(spec, viewport, rc.toScreen, rc.slot);
+    const { ctx, ui, viewport } = rc;
+    const palette = computePalette(spec, viewport, rc.toScreen, rc.slot, rc.ui);
     const rects = palette.rects;
+    this.box = rects.length
+      ? {
+          x: palette.x,
+          y: palette.y,
+          w: rects[rects.length - 1]!.x + rects[rects.length - 1]!.w - palette.x,
+          h: rects[0]!.h,
+        }
+      : null;
 
     ctx.save();
-    ctx.font = `10px ${theme.fontFamilyMono}`;
+    ctx.font = `${ui.fontSize.small}px ${ui.fontFamilyMono}`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
     // 헤더
-    ctx.fillStyle = theme.muted;
+    ctx.fillStyle = ui.label;
     ctx.textAlign = 'left';
     ctx.fillText(
       controllerText(rc.i18n, spec.label, 'ui.placement.label', 'PLACE'),
@@ -135,35 +155,35 @@ export class PlacementController implements ControllerImpl<PlacementSpec> {
     ctx.textAlign = 'center';
 
     for (const r of rects) {
-      ctx.fillStyle = theme.resolveColor('muted', 'subtle');
-      ctx.strokeStyle = theme.line;
-      ctx.lineWidth = 1.5;
+      ctx.fillStyle = ui.surface;
+      ctx.strokeStyle = ui.border;
+      ctx.lineWidth = ui.strokeWidth.regular;
       ctx.beginPath();
       ctx.rect(r.x, r.y, r.w, r.h);
       ctx.fill();
       ctx.stroke();
 
       // 타입 라벨
-      ctx.fillStyle = theme.muted;
+      ctx.fillStyle = ui.label;
       ctx.fillText(r.type, r.x + r.w / 2, r.y + r.h - 12);
 
       // 초성 아이콘
-      ctx.fillStyle = theme.foreground;
-      ctx.font = `600 18px ${theme.fontFamilyMono}`;
+      ctx.fillStyle = ui.text;
+      ctx.font = `600 ${SWATCH_GLYPH_SIZE}px ${ui.fontFamilyMono}`;
       ctx.fillText(r.type.slice(0, 2).toUpperCase(), r.x + r.w / 2, r.y + r.h / 2 - 4);
-      ctx.font = `10px ${theme.fontFamilyMono}`;
+      ctx.font = `${ui.fontSize.small}px ${ui.fontFamilyMono}`;
     }
 
     // 드래그 ghost
     if (this.dragging && this.ghostScreen && this.dragType) {
       const [gx, gy] = this.ghostScreen;
       ctx.globalAlpha = 0.6;
-      ctx.fillStyle = theme.resolveColor('accent', 'strong');
+      ctx.fillStyle = ui.toggled;
       ctx.beginPath();
       ctx.arc(gx, gy, 10, 0, Math.PI * 2);
       ctx.fill();
       ctx.globalAlpha = 1;
-      ctx.fillStyle = theme.foreground;
+      ctx.fillStyle = ui.text;
       ctx.fillText(this.dragType, gx, gy + 22);
     }
 
@@ -172,7 +192,7 @@ export class PlacementController implements ControllerImpl<PlacementSpec> {
 
   hitTest(input: PointerInput, ctx: ControllerEventContext, spec: PlacementSpec): boolean {
     if (this.dragging) return true;
-    return paletteHit(input, computePalette(spec, ctx.viewport, ctx.toScreen, ctx.slot).rects) !== null;
+    return paletteHit(input, computePalette(spec, ctx.viewport, ctx.toScreen, ctx.slot, ctx.ui).rects) !== null;
   }
 
   onPointerDown(
@@ -180,7 +200,7 @@ export class PlacementController implements ControllerImpl<PlacementSpec> {
     ctx: ControllerEventContext,
     spec: PlacementSpec,
   ): BundleState | null {
-    const hit = paletteHit(input, computePalette(spec, ctx.viewport, ctx.toScreen, ctx.slot).rects);
+    const hit = paletteHit(input, computePalette(spec, ctx.viewport, ctx.toScreen, ctx.slot, ctx.ui).rects);
     if (!hit) return null;
     this.dragging = true;
     this.dragType = hit.type;
@@ -207,7 +227,7 @@ export class PlacementController implements ControllerImpl<PlacementSpec> {
     this.ghostScreen = null;
 
     // 팔레트 위에서 놓으면 취소
-    if (paletteHit(input, computePalette(spec, ctx.viewport, ctx.toScreen, ctx.slot).rects)) return null;
+    if (paletteHit(input, computePalette(spec, ctx.viewport, ctx.toScreen, ctx.slot, ctx.ui).rects)) return null;
 
     const world = ctx.toWorld([input.px, input.py]);
     const snapped = ctx.snapWorld(world);

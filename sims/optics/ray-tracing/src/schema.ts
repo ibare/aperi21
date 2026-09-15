@@ -62,5 +62,4 @@ export const schema: BundleSchema = {
     { id: 'image', label: { ko: '결상', en: 'Image' } },
   ],
 
-  autoViews: { energy: false },
 };

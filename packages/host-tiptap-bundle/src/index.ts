@@ -29,13 +29,16 @@
 
 import { BundleExtension } from '@aperi21/host-tiptap';
 import { bootstrapAperi21 } from '@aperi21/bootstrap';
-import { createHost } from '@aperi21/host';
+import { createHost, type HostTheme, type ThemeMode } from '@aperi21/host';
 
 export type CreateAperi21ExtensionOptions = {
   /** runBundle 에 전달할 locale. host 의 lang 으로도 쓰인다. */
   locale?: string;
-  /** runBundle 및 host 테마. */
-  theme?: 'light' | 'dark';
+  /**
+   * 테마. 모드 이름이거나 **완성된 한 벌**이다 — 호스트가 자기 색·치수로 갈아
+   * 끼우려면 `HostTheme` 을 통째로 준다.
+   */
+  theme?: ThemeMode | HostTheme;
 };
 
 /**

@@ -82,14 +82,12 @@ export const schema: BundleSchema = {
     { id: 'energy', label: { ko: '에너지', en: 'Energy' } },
   ],
 
-  autoViews: { energy: true },
 
   /**
    * 이 그림은 사거리를 재는 것이 주장의 일부다 — 각도를 바꾸면 얼마나 멀리
    * 가는가. 그래서 거리 격자를 **켠다.** 기본값이 아니라 이 그림의 선택이다.
    */
-  // 지구·달을 바꿔 보는 그림이라 스테이지와 중력 배지도 켠다.
-  chrome: { grid: true, stageBadge: true },
+  chrome: { grid: true },
 
   /**
    * 지면에서 위로 날아가는 그림이라 세로 쓰임이 위쪽으로 치우쳐 있다.
@@ -97,3 +95,21 @@ export const schema: BundleSchema = {
    */
   camera: { screenYBias: 60 },
 };
+
+/**
+ * 에너지 뷰 막대 셋의 문안과 색 역할.
+ *
+ * 문안은 선언에 둔다 — 화면에 뜨는 글자가 scene 코드에 있으면 저작자가 바꿀 수
+ * 없다 (원칙 2 · C1 · S-sim).
+ *
+ * `accent` 를 쓰지 않는다. 이 조각에서 accent 는 이미 **속도 벡터**의 뜻이고,
+ * 강조색은 한 가지 뜻에만 쓴다 (S-piece). 운동·위치는 같은 에너지의 두 형태라
+ * 주·보조로 가르고, 손실은 `negative` 가 정의 그대로 받는다.
+ */
+export const ENERGY_UNIT = { ko: 'J', en: 'J' } as const;
+
+export const ENERGY_BARS = [
+  { key: 'ke', role: 'primary', label: { ko: '운동', en: 'KE' } },
+  { key: 'pe', role: 'secondary', label: { ko: '위치', en: 'PE' } },
+  { key: 'lost', role: 'negative', label: { ko: '손실', en: 'Lost' } },
+] as const;

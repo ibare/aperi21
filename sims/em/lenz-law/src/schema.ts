@@ -160,7 +160,6 @@ export const lenzLawSchema: BundleSchema = {
 
   environments: [],
   views: [{ id: 'side', label: text('label.view'), default: true }],
-  autoViews: { energy: false },
 
   /** 원본 860 × 250. 가로로 넓고 세로로 좁다 — 자석이 지나가는 축이 전부다. */
   canvas: { height: 250, minHeight: 250 },

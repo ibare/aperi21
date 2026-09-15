@@ -1,6 +1,7 @@
 import type { BundleState, ControllerSpec, Vec2 } from '@aperi21/schema';
 import type { Viewport } from '../camera';
-import { placeBox, stackedAnchor, type ScreenAnchor } from './layout';
+import type { UiTheme } from '../theme/types';
+import { placeBox, stackedAnchor, type Box, type ScreenAnchor } from './layout';
 import { readPath, writePath } from './path';
 import type {
   ControllerEventContext,
@@ -20,11 +21,16 @@ interface Layout {
   handleR: number;
 }
 
-const SLIDER_MARGIN = 24;
 /** 선언에 `size` 가 없을 때의 크기. 코어는 기본값만 준다 (원칙 7 ③). */
 const DEFAULT_SLIDER_WIDTH = 220;
 const DEFAULT_SLIDER_HEIGHT = 44;
-/** 자리를 선언하지 않은 슬라이더끼리의 세로 간격. */
+/**
+ * 자리를 선언하지 않은 슬라이더끼리의 세로 간격.
+ *
+ * 축의 `ui.layout.stackGap` 을 쓰지 않는다 — 그 값은 **한 줄짜리** 조작기(칩 줄)
+ * 사이의 간격이다. 쌓이는 상자의 크기가 서로 다르면 간격도 그 상자를 따라야
+ * 한다. 축이 정할 수 있는 것은 "얼마나 띄우나" 가 아니라 "무엇 사이" 다.
+ */
 const SLIDER_STACK_GAP = 12;
 /** 자리를 선언하지 않으면 오른쪽 위에서 아래로 쌓인다. */
 const DEFAULT_AT: ScreenAnchor = { screen: 'top-right' };
@@ -34,10 +40,11 @@ function computeLayout(
   viewport: Viewport,
   toScreen: (w: Vec2) => Vec2,
   slot: number,
+  ui: UiTheme,
 ): Layout {
   const [w, h] = spec.size ?? [DEFAULT_SLIDER_WIDTH, DEFAULT_SLIDER_HEIGHT];
   const at = spec.at ?? stackedAnchor(DEFAULT_AT, slot, [0, h + SLIDER_STACK_GAP]);
-  const box = placeBox(at, w, h, viewport, toScreen, SLIDER_MARGIN);
+  const box = placeBox(at, w, h, viewport, toScreen, ui.layout.margin);
   // 안쪽 치수는 크기를 따라간다 — 고정하면 큰 슬라이더에서 비율이 깨진다.
   return { ...box, trackY: box.y + box.h / 2 + 6, handleR: Math.max(5, h * 0.18) };
 }
@@ -63,14 +70,23 @@ export class SliderController implements ControllerImpl<SliderSpec> {
   readonly type = 'slider' as const;
 
   private dragging = false;
+  /** 마지막 렌더의 자리. */
+  private box: Box | null = null;
 
   isDragging(): boolean {
     return this.dragging;
   }
 
+  /** 마지막 렌더에서 차지한 화면 상자. 자동 프레이밍이 이만큼을 비운다. */
+  screenBounds(): Box | null {
+    return this.box;
+  }
+
+
   render(rc: ControllerRenderContext, spec: SliderSpec, state: BundleState): void {
-    const { ctx, theme, viewport, i18n } = rc;
-    const layout = computeLayout(spec, viewport, rc.toScreen, rc.slot);
+    const { ctx, ui, viewport, i18n } = rc;
+    const layout = computeLayout(spec, viewport, rc.toScreen, rc.slot, rc.ui);
+    this.box = { x: layout.x, y: layout.y, w: layout.w, h: layout.h };
     const [lo, hi] = spec.range;
     const raw = readPath<number>(state, spec.binds.value);
     const value = typeof raw === 'number' ? raw : lo;
@@ -79,9 +95,9 @@ export class SliderController implements ControllerImpl<SliderSpec> {
     ctx.save();
 
     // 바탕
-    ctx.fillStyle = theme.resolveColor('muted', 'subtle');
-    ctx.strokeStyle = theme.line;
-    ctx.lineWidth = 1.5;
+    ctx.fillStyle = ui.surface;
+    ctx.strokeStyle = ui.border;
+    ctx.lineWidth = ui.strokeWidth.regular;
     ctx.beginPath();
     ctx.rect(layout.x, layout.y, layout.w, layout.h);
     ctx.fill();
@@ -90,8 +106,8 @@ export class SliderController implements ControllerImpl<SliderSpec> {
     // track
     const trackX0 = layout.x + 12;
     const trackX1 = layout.x + layout.w - 12;
-    ctx.strokeStyle = theme.muted;
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = ui.label;
+    ctx.lineWidth = ui.strokeWidth.thick;
     ctx.beginPath();
     ctx.moveTo(trackX0, layout.trackY);
     ctx.lineTo(trackX1, layout.trackY);
@@ -99,31 +115,31 @@ export class SliderController implements ControllerImpl<SliderSpec> {
 
     // filled part
     const hx = trackX0 + t * (trackX1 - trackX0);
-    ctx.strokeStyle = theme.resolveColor('primary', 'strong');
-    ctx.lineWidth = 3;
+    ctx.strokeStyle = ui.selected;
+    ctx.lineWidth = ui.strokeWidth.heavy;
     ctx.beginPath();
     ctx.moveTo(trackX0, layout.trackY);
     ctx.lineTo(hx, layout.trackY);
     ctx.stroke();
 
     // handle
-    ctx.fillStyle = theme.resolveColor('primary', 'strong');
+    ctx.fillStyle = ui.selected;
     ctx.beginPath();
     ctx.arc(hx, layout.trackY, layout.handleR, 0, Math.PI * 2);
     ctx.fill();
-    ctx.strokeStyle = theme.background;
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = ui.onSelected;
+    ctx.lineWidth = ui.strokeWidth.thick;
     ctx.stroke();
 
     // 라벨 + 값
-    ctx.font = `10px ${theme.fontFamilyMono}`;
+    ctx.font = `${ui.fontSize.small}px ${ui.fontFamilyMono}`;
     ctx.textBaseline = 'top';
-    ctx.fillStyle = theme.muted;
+    ctx.fillStyle = ui.label;
     ctx.textAlign = 'left';
     ctx.fillText(i18n.resolve(spec.label), layout.x + 8, layout.y + 6);
 
-    ctx.font = `600 12px ${theme.fontFamilyMono}`;
-    ctx.fillStyle = theme.foreground;
+    ctx.font = `600 ${ui.fontSize.large}px ${ui.fontFamilyMono}`;
+    ctx.fillStyle = ui.text;
     ctx.textAlign = 'right';
     const txt = `${value.toFixed(2)}${spec.unit ? ' ' + spec.unit : ''}`;
     ctx.fillText(txt, layout.x + layout.w - 8, layout.y + 6);
@@ -132,7 +148,7 @@ export class SliderController implements ControllerImpl<SliderSpec> {
   }
 
   hitTest(input: PointerInput, ctx: ControllerEventContext, spec: SliderSpec): boolean {
-    return hitLayout(input, computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot));
+    return hitLayout(input, computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot, ctx.ui));
   }
 
   onPointerDown(
@@ -141,7 +157,7 @@ export class SliderController implements ControllerImpl<SliderSpec> {
     spec: SliderSpec,
     state: BundleState,
   ): BundleState | null {
-    const layout = computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot);
+    const layout = computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot, ctx.ui);
     if (!hitLayout(input, layout)) return null;
     this.dragging = true;
     return this.valueFromPointer(input, layout, spec, state);
@@ -154,7 +170,7 @@ export class SliderController implements ControllerImpl<SliderSpec> {
     state: BundleState,
   ): BundleState | null {
     if (!this.dragging) return null;
-    const layout = computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot);
+    const layout = computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot, ctx.ui);
     return this.valueFromPointer(input, layout, spec, state);
   }
 

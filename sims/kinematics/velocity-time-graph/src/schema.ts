@@ -98,7 +98,6 @@ export const velocityTimeGraphSchema: BundleSchema = {
   stages: [{ id: 'main', label: text('label.stage'), constants: {} }],
   environments: [],
   views: [{ id: 'main', label: text('label.view'), default: true }],
-  autoViews: { energy: false },
 
   /**
    * 원본은 그림 250px + 캔버스 밖 캡션이었다. 캡션이 캔버스 안(화면 고정 줄)으로

@@ -41,7 +41,7 @@ concerns:
     description: 화면 문자열은 코드에 하드코딩하지 않는다. 선언의 문안 → locale 번들 → en 원본 3층 조회
     triggers:
       paths:
-        - "packages/react/src/embed/**"
+        - "packages/host/src/controller/**"
         - "packages/host/src/renderer/**"
         - "packages/host/src/i18n/**"
         - "sims/**/schema.ts"
@@ -54,11 +54,12 @@ concerns:
 
   - id: C2
     file: concerns/C2-token-boundary.md
-    description: 색은 theme 경유, 치수는 선언 경유. hex/rgba/px 리터럴 금지
+    description: 색·글자·굵기·여백은 theme 의 두 축(scene·ui) 경유, 치수는 선언 경유. hex/rgba/px 리터럴 금지
     triggers:
       paths:
         - "packages/host/src/renderer/**"
         - "packages/host/src/runtime/**"
+        - "packages/host/src/controller/**"
         - "packages/host/src/theme/**"
         - "packages/plugin-*/src/renderers.ts"
         - "packages/host-tiptap/src/node-view.ts"
@@ -104,7 +105,7 @@ concerns:
     triggers:
       paths:
         - "packages/host/src/runtime/**"
-        - "packages/react/src/embed/**"
+        - "packages/react/src/Embed.tsx"
         - "packages/host-tiptap/src/node-view.ts"
         - "packages/host/src/host.ts"
         - "packages/host/src/controller/**"
@@ -197,7 +198,6 @@ specifics:
         - "packages/host/src/renderer/**"
         - "packages/host/src/runtime/runBundle.ts"
         - "packages/plugin-*/src/renderers.ts"
-        - "packages/react/src/embed/Canvas.tsx"
       patterns:
         - "primitiveTypes"
         - "registerRenderer"

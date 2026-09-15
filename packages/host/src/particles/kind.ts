@@ -1,13 +1,15 @@
-import type { BackgroundParticleKind } from '@aperi21/host';
+import type { BackgroundParticleKind } from './background';
 import type { EnvironmentDef, StageDef } from '@aperi21/schema';
 
 /**
- * 스테이지·환경 조합에서 배경 입자 종류를 결정.
- * Phase 3 에서 Bundle 이 자체 규칙을 제공하게 이동할 수 있도록 별도 함수로 유지.
+ * 스테이지·환경 조합에서 배경 입자 종류를 결정한다.
+ *
+ * 대기가 없고 중력이 약하면 별, 비가 오는 환경이면 빗줄기. 배경은 "여기가 어디인가"
+ * 를 말하는 것이라 스테이지를 바꾸면 함께 바뀌어야 한다.
  */
 export function resolveBackgroundKind(
   stage: StageDef | undefined,
-  environments: EnvironmentDef[],
+  environments: readonly EnvironmentDef[],
 ): BackgroundParticleKind {
   for (const env of environments) {
     if ((env.effects.drag ?? 0) > 0 && env.id.toLowerCase().includes('rain')) {

@@ -195,7 +195,6 @@ export const currentMagneticFieldSchema: BundleSchema = {
   environments: [],
   views: [{ id: 'compasses', label: text('label.view'), default: true }],
 
-  autoViews: { energy: false },
 
   /** 원본의 화면 비(860 × 420). 가로로 넓고 세로로 얕은 그림이다. */
   canvas: { height: 420, minHeight: 360 },

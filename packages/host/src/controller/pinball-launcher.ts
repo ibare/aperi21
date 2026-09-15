@@ -1,6 +1,7 @@
 import type { BundleState, ControllerSpec, Vec2 } from '@aperi21/schema';
 import type { Viewport } from '../camera';
-import { placeBox, stackedAnchor, type ScreenAnchor } from './layout';
+import type { UiTheme } from '../theme/types';
+import { placeBox, stackedAnchor, type Box, type ScreenAnchor } from './layout';
 import { readPath, writePath } from './path';
 import { controllerText } from './text';
 import type {
@@ -25,7 +26,6 @@ const DEFAULT_TUBE_WIDTH = 56;
 const DEFAULT_TUBE_HEIGHT = 220;
 /** 튜브가 캔버스 세로에서 양보하는 몫 — 위쪽 이름표와 아래 여백. */
 const TUBE_HEIGHT_RESERVE = 120;
-const TUBE_MARGIN = 32;
 /** 자리를 선언하지 않은 발사대끼리의 가로 간격. */
 const TUBE_STACK_GAP = 56;
 /** 자리를 선언하지 않으면 오른쪽 아래에서 왼쪽으로 쌓인다. */
@@ -36,13 +36,14 @@ function computeLayout(
   viewport: Viewport,
   toScreen: (w: Vec2) => Vec2,
   slot: number,
+  ui: UiTheme,
 ): Layout {
   const [declW, declH] = spec.size ?? [DEFAULT_TUBE_WIDTH, DEFAULT_TUBE_HEIGHT];
   // 뷰포트 clamp 는 선언보다 뒤에 온다 — 임베드 높이는 마운트 뒤 바뀌지 않으므로
   // 넘치는 튜브는 자리를 넓히는 대신 담는다 (원칙 6).
   const tubeH = Math.min(declH, viewport.height - TUBE_HEIGHT_RESERVE);
   const at = spec.at ?? stackedAnchor(DEFAULT_AT, slot, [-(declW + TUBE_STACK_GAP), 0]);
-  const box = placeBox(at, declW, tubeH, viewport, toScreen, TUBE_MARGIN);
+  const box = placeBox(at, declW, tubeH, viewport, toScreen, ui.layout.margin);
   return { tubeX: box.x, tubeY: box.y, tubeW: box.w, tubeH: box.h };
 }
 
@@ -76,9 +77,19 @@ export class PinballLauncherController
     return this.dragging;
   }
 
+  /** 마지막 렌더의 자리. */
+  private box: Box | null = null;
+
+  /** 마지막 렌더에서 차지한 화면 상자. 자동 프레이밍이 이만큼을 비운다. */
+  screenBounds(): Box | null {
+    return this.box;
+  }
+
+
   render(rc: ControllerRenderContext, spec: PinballSpec, state: BundleState): void {
-    const { ctx, theme, viewport } = rc;
-    const layout = computeLayout(spec, viewport, rc.toScreen, rc.slot);
+    const { ctx, ui, viewport } = rc;
+    const layout = computeLayout(spec, viewport, rc.toScreen, rc.slot, rc.ui);
+    this.box = { x: layout.tubeX, y: layout.tubeY, w: layout.tubeW, h: layout.tubeH };
     const phase = readPath<string>(state, spec.binds.trigger) ?? 'idle';
     const range = spec.powerRange ?? [1, 60];
     const storedV0 = Number(readPath<number>(state, spec.binds.power) ?? range[0]);
@@ -99,9 +110,9 @@ export class PinballLauncherController
     ctx.save();
 
     // 튜브 외곽
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = theme.line;
-    ctx.fillStyle = theme.resolveColor('muted', 'subtle');
+    ctx.lineWidth = ui.strokeWidth.thick;
+    ctx.strokeStyle = ui.border;
+    ctx.fillStyle = ui.surface;
     this.roundRect(ctx, layout.tubeX, layout.tubeY, layout.tubeW, layout.tubeH, 12);
     ctx.fill();
     ctx.stroke();
@@ -111,8 +122,8 @@ export class PinballLauncherController
     const barX = layout.tubeX + layout.tubeW - barW - 6;
     const barBottom = layout.tubeY + layout.tubeH - 8;
     const barTop = layout.tubeY + 8;
-    ctx.strokeStyle = theme.line;
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = ui.border;
+    ctx.lineWidth = ui.strokeWidth.thin;
     ctx.strokeRect(barX, barTop, barW, barBottom - barTop);
     const barH = (barBottom - barTop) * power;
     if (barH > 1) {
@@ -125,8 +136,8 @@ export class PinballLauncherController
     const coilBottom = plungerY;
     const coilHeight = coilBottom - coilTop;
     if (coilHeight > 4) {
-      ctx.strokeStyle = theme.muted;
-      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = ui.label;
+      ctx.lineWidth = ui.strokeWidth.regular;
       const coils = 6;
       ctx.beginPath();
       for (let i = 0; i <= coils; i++) {
@@ -140,23 +151,23 @@ export class PinballLauncherController
     }
 
     // 플런저 캡 — 공 아래, 드래그하면 아래로 이동.
-    ctx.fillStyle = theme.foreground;
+    ctx.fillStyle = ui.text;
     ctx.fillRect(layout.tubeX + 4, plungerY, layout.tubeW - 8 - barW - 6, plungerThickness);
 
     // 공: 튜브 상단(출구)에 고정. idle 일 때만 표시.
     if (phase === 'idle') {
-      ctx.fillStyle = theme.resolveColor('primary', 'strong');
+      ctx.fillStyle = ui.selected;
       ctx.beginPath();
       ctx.arc(cx - barW / 2 - 1, ballY, ballR, 0, Math.PI * 2);
       ctx.fill();
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = theme.line;
+      ctx.lineWidth = ui.strokeWidth.thin;
+      ctx.strokeStyle = ui.border;
       ctx.stroke();
     }
 
     // 라벨
-    ctx.font = `11px ${theme.fontFamilyMono}`;
-    ctx.fillStyle = theme.muted;
+    ctx.font = `${ui.fontSize.regular}px ${ui.fontFamilyMono}`;
+    ctx.fillStyle = ui.label;
     ctx.textAlign = 'center';
     ctx.fillText(
       controllerText(rc.i18n, spec.label, 'ui.pinballLauncher.label', 'LAUNCHER · {power}%', {
@@ -170,7 +181,7 @@ export class PinballLauncherController
   }
 
   hitTest(input: PointerInput, ctx: ControllerEventContext, spec: PinballSpec): boolean {
-    return inTube(input, computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot));
+    return inTube(input, computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot, ctx.ui));
   }
 
   onPointerDown(
@@ -179,7 +190,7 @@ export class PinballLauncherController
     spec: PinballSpec,
     state: BundleState,
   ): BundleState | null {
-    const layout = computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot);
+    const layout = computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot, ctx.ui);
     if (!inTube(input, layout)) return null;
     const phase = readPath<string>(state, spec.binds.trigger) ?? 'idle';
     if (phase !== 'idle') {
@@ -201,7 +212,7 @@ export class PinballLauncherController
     spec: PinballSpec,
   ): BundleState | null {
     if (!this.dragging) return null;
-    const layout = computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot);
+    const layout = computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot, ctx.ui);
     const dy = input.py - this.dragStartY;
     const travel = layout.tubeH - 24;
     this.dragPower = Math.max(0, Math.min(1, dy / travel));
@@ -235,10 +246,13 @@ export class PinballLauncherController
   }
 
   private powerColor(rc: ControllerRenderContext, power: number): string {
-    // 0~.4 초록, .4~.75 노랑(accent), .75~1 빨강(primary)
-    if (power < 0.4) return rc.theme.resolveColor('positive', 'strong');
-    if (power < 0.75) return rc.theme.resolveColor('accent', 'strong');
-    return rc.theme.resolveColor('primary', 'strong');
+    // 당길수록 짙어진다. 옅음 → 함께 켜진 색 → 고른 색.
+    //
+    // 예전에는 초록 → 노랑 → 빨강이었는데 그것은 **그림의 역할색**(`positive`)을
+    // 조작기가 빌려 쓴 것이었다. 두 축을 가른 뒤로 조작기는 제 축의 색만 쓴다.
+    if (power < 0.4) return rc.ui.track;
+    if (power < 0.75) return rc.ui.toggled;
+    return rc.ui.selected;
   }
 
   private roundRect(

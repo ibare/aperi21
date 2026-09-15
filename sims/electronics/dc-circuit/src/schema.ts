@@ -65,5 +65,4 @@ export const schema: BundleSchema = {
     { id: 'meters', label: { ko: '계측', en: 'Meters' } },
   ],
 
-  autoViews: { energy: false },
 };

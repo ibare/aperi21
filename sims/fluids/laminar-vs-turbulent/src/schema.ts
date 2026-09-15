@@ -156,7 +156,6 @@ export const laminarVsTurbulentSchema: BundleSchema = {
   environments: [],
   views: [{ id: 'dye', label: text('label.view'), default: true }],
 
-  autoViews: { energy: false },
   /**
    * 가로로 긴 관이 필수다. 성장이 **하류로 진행되는 것**을 보여야 하기 때문에
    * 정사각형 무대에서는 이 그림이 성립하지 않는다.

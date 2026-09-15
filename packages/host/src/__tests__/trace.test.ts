@@ -6,6 +6,7 @@
  * 자리를 지우지 않고 남기며, 점 사이 간격이 곧 속력이라 지우면 주장이 사라진다.
  */
 import { describe, expect, it } from 'vitest';
+import { getTheme } from '../theme';
 import type { RenderContext, Trace, Vec2 } from '@aperi21/schema';
 import { renderTrace } from '../index';
 
@@ -43,15 +44,9 @@ function makeRc(rec: Recorder): RenderContext {
     toWorld: (s: Vec2): Vec2 => [s[0] / 10, (100 - s[1]) / 10],
     scale: 10,
     viewport: { width: 200, height: 200 },
-    theme: {
-      background: '#ffffff',
-      foreground: '#000000',
-      muted: '#888888',
-      line: '#cccccc',
-      fontFamily: 'sans-serif',
-      fontFamilyMono: 'monospace',
-      resolveColor: () => '#123456',
-    } as unknown as RenderContext['theme'],
+    // 실물 축을 쓴다. 손으로 꾸민 스텁은 `as unknown as` 로 타입을 우회하므로,
+    // 축에 토큰이 늘 때마다 tsc 가 아닌 런타임이 알려 준다.
+    theme: { ...getTheme('light').scene, resolveColor: () => '#123456' },
     i18n: { resolve: () => '', t: () => '' } as unknown as RenderContext['i18n'],
     time: 0,
     deltaTime: 0,

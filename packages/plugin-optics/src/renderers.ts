@@ -37,7 +37,7 @@ export const renderRay: PrimitiveRenderer = (rc, p0) => {
   c.save();
   c.globalAlpha = intensity;
   c.strokeStyle = color;
-  c.lineWidth = 1.6;
+  c.lineWidth = rc.theme.strokeWidth.regular;
   c.lineCap = 'round';
   c.beginPath();
   let prev = rc.toScreen(ray.segments[0]!);
@@ -87,7 +87,7 @@ export const renderOpticalElement: PrimitiveRenderer = (rc, p0) => {
   c.save();
   c.strokeStyle = rc.theme.foreground;
   c.fillStyle = rc.theme.resolveColor('muted', 'subtle');
-  c.lineWidth = 2;
+  c.lineWidth = rc.theme.strokeWidth.thick;
 
   switch (el.subtype) {
     case 'mirror-flat': {
@@ -98,7 +98,7 @@ export const renderOpticalElement: PrimitiveRenderer = (rc, p0) => {
       // 배면 해칭
       const hatchCount = 6;
       c.strokeStyle = rc.theme.muted;
-      c.lineWidth = 1;
+      c.lineWidth = rc.theme.strokeWidth.thin;
       for (let i = 0; i < hatchCount; i++) {
         const u = i / (hatchCount - 1);
         const px = ax + (bx - ax) * u;

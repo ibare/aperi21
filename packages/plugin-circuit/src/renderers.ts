@@ -33,7 +33,7 @@ export const renderCircuitElement: PrimitiveRenderer = (rc, p0) => {
   c.save();
   c.strokeStyle = rc.theme.foreground;
   c.fillStyle = rc.theme.background;
-  c.lineWidth = 2;
+  c.lineWidth = rc.theme.strokeWidth.thick;
   c.lineCap = 'round';
 
   // 단자까지의 리드선
@@ -81,14 +81,22 @@ export const renderCircuitElement: PrimitiveRenderer = (rc, p0) => {
     }
     case 'ammeter':
     case 'voltmeter': {
-      drawMeter(c, (leadAx + leadBx) / 2, (leadAy + leadBy) / 2, el.subtype === 'ammeter' ? 'A' : 'V', rc.theme.fontFamilyMono, rc.theme.foreground);
+      drawMeter(
+        c,
+        (leadAx + leadBx) / 2,
+        (leadAy + leadBy) / 2,
+        el.subtype === 'ammeter' ? 'A' : 'V',
+        rc.theme.fontFamilyMono,
+        rc.theme.fontSize.large,
+        rc.theme.foreground,
+      );
       break;
     }
   }
 
   // 값 라벨
   if (typeof el.value === 'number') {
-    c.font = `10px ${rc.theme.fontFamilyMono}`;
+    c.font = `${rc.theme.fontSize.small}px ${rc.theme.fontFamilyMono}`;
     c.fillStyle = rc.theme.muted;
     c.textAlign = 'center';
     c.textBaseline = 'top';
@@ -245,11 +253,19 @@ function drawLamp(c: CanvasRenderingContext2D, cx: number, cy: number, r: number
   c.stroke();
 }
 
-function drawMeter(c: CanvasRenderingContext2D, cx: number, cy: number, glyph: string, font: string, color: string) {
+function drawMeter(
+  c: CanvasRenderingContext2D,
+  cx: number,
+  cy: number,
+  glyph: string,
+  font: string,
+  fontSize: number,
+  color: string,
+) {
   c.beginPath();
   c.arc(cx, cy, 12, 0, Math.PI * 2);
   c.stroke();
-  c.font = `600 12px ${font}`;
+  c.font = `600 ${fontSize}px ${font}`;
   c.fillStyle = color;
   c.textAlign = 'center';
   c.textBaseline = 'middle';
@@ -268,7 +284,7 @@ export const renderWire: PrimitiveRenderer = (rc, p0, refs) => {
   const c = rc.ctx;
   c.save();
   c.strokeStyle = rc.theme.foreground;
-  c.lineWidth = 1.8;
+  c.lineWidth = rc.theme.strokeWidth.regular;
   c.lineCap = 'round';
   c.lineJoin = 'round';
   c.beginPath();
@@ -290,7 +306,7 @@ export const renderTerminal: PrimitiveRenderer = (rc, p0) => {
   c.save();
   c.strokeStyle = rc.theme.foreground;
   c.fillStyle = t.kind === 'junction' ? rc.theme.foreground : rc.theme.background;
-  c.lineWidth = 1.5;
+  c.lineWidth = rc.theme.strokeWidth.regular;
   c.beginPath();
   c.arc(sx, sy, 3, 0, Math.PI * 2);
   c.fill();

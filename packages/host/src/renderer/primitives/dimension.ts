@@ -5,7 +5,6 @@ import { resolveText } from '../kit/text';
 /** 끝점 표시와 글자 자리(화면 px). */
 const CAP = 3;
 const TEXT_GAP = 4;
-const FONT_SIZE = 11;
 
 /**
  * 두 점 사이를 재는 표시.
@@ -23,7 +22,7 @@ export const renderDimension: PrimitiveRenderer = (rc, p0) => {
   const [x1, y1] = rc.toScreen(p.to);
 
   c.strokeStyle = color;
-  c.lineWidth = rc.theme.strokeWidth.regular;
+  c.lineWidth = rc.theme.strokeWidth.thin;
   c.setLineDash([4, 3]);
   c.beginPath();
   c.moveTo(x0, y0);
@@ -49,7 +48,7 @@ export const renderDimension: PrimitiveRenderer = (rc, p0) => {
     // 뻗어 나가 그림을 침범한다 — 치수선은 재는 것을 가리면 안 된다.
     const tx = p.elbow ? (x0 + x1) / 2 : (x0 + x1) / 2;
     const ty = p.elbow ? y1 - TEXT_GAP : Math.min(y0, y1) - TEXT_GAP;
-    c.font = `${FONT_SIZE}px ${rc.theme.fontFamilyMono}`;
+    c.font = `${rc.theme.fontSize.regular}px ${rc.theme.fontFamilyMono}`;
     c.fillStyle = color;
     c.textAlign = 'center';
     c.textBaseline = 'bottom';

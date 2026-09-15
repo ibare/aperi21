@@ -1,12 +1,12 @@
 /**
- * runBundle — Bundle JSON 을 DOM 영역에 마운트하는 비-React 진입점.
+ * runBundle — Bundle 을 DOM 영역에 마운트하는 **유일한 러너.**
  *
- * Tiptap NodeView 같이 React 라이프사이클 밖에서 시뮬레이션을 띄울 때 사용.
- * react/embed/Canvas.tsx 의 RAF 루프와 동일한 골격을 재사용한다.
+ * 캔버스 껍데기 · RAF 루프 · 카메라 자동 프레이밍 · 포인터 · 세션이 전부 여기 있다.
+ * React 는 이것을 감쌀 뿐이다 (`packages/react/src/Embed.tsx`).
  *
- * 첫 구현은 단일 캔버스 + RAF + 카메라 자동 프레이밍 + 컨트롤러 입력만 포함.
- * ParamPanel/HUD/ViewTabs 같은 React UI 는 이 진입점 범위 외 (Phase 5+ 에서
- * 별도 mount 옵션으로 제공 가능).
+ * 2026-09-14 이전에는 `react/embed/Canvas.tsx` 가 같은 루프를 복제했고, 복제는
+ * 곧 갈라졌다 — 배경 입자가 한쪽에만 있었고 프레이밍 여백이 한쪽만 조작기를 셌다.
+ * 같은 조각이 카탈로그와 외부 호스트에서 다른 화면으로 열렸다는 뜻이다.
  */
 
 import type {
@@ -22,13 +22,18 @@ import type {
   ViewDef,
 } from '@aperi21/schema';
 
-import { BackgroundParticleSystem } from '../particles';
+import { BackgroundParticleSystem, resolveBackgroundKind } from '../particles';
 import { orderForDrawing, preprocessScene } from '../scene';
 import { Camera, type Viewport } from '../camera';
 import { Host, createHost } from '../host';
 import { createTimeEngine, evaluateTimeline, withCaption } from '../time';
-import type { ThemeMode } from '../theme';
-import type { ControllerEventContext, PointerInput, ResolvedController } from '../controller/types';
+import type { HostTheme, SceneTheme, ThemeMode } from '../theme';
+import type {
+  ControllerEventContext,
+  ControllerSession,
+  PointerInput,
+  ResolvedController,
+} from '../controller/types';
 import { visibleControllers } from '../controller/visibility';
 import { writePath } from '../controller/path';
 
@@ -38,7 +43,74 @@ import { writePath } from '../controller/path';
  */
 const CANVAS_DEFAULT = { height: 360, minHeight: 320 } as const;
 
-const HUD_MARGINS = { top: 24, bottom: 24, left: 24, right: 24 };
+/** 어느 변에나 두는 최소 숨 쉴 자리(화면 px). */
+const BASE_MARGIN = 24;
+/** 조작기와 그림 사이에 두는 틈. */
+const CONTROLLER_GAP = 8;
+/**
+ * 한 변의 여백 상한 — **그 방향 가용 공간의** 이 비율까지다.
+ *
+ * 기준이 화면 전체가 아니라 절반인 이유: `camera.fitToBounds` 는 bounds 의 가운데를
+ * 화면 가운데에 놓고 **네 방향을 따로** 맞춘다. 그래서 왼쪽 여백은 화면 전체가
+ * 아니라 왼쪽 절반에서 빠진다 — 600px 화면에서 여백 220 은 왼쪽에 80 만 남긴다.
+ * 전체 기준으로 재면 이 두 배의 아픔이 보이지 않는다.
+ *
+ * 상자를 전부 비우지 않는 것은 의도다. 조작기는 화면 가장자리에 반투명으로 얹히고,
+ * 그림이 그 아래로 조금 들어가도 읽힌다. 다 비우면 그림이 사라진다.
+ */
+const MARGIN_LIMIT = 0.4;
+
+/**
+ * 조작기가 실제로 차지한 자리만큼 프레이밍을 비운다.
+ *
+ * 예전에는 네 변 모두 24 고정이었고, 카탈로그 쪽 러너는 오버레이가 있을지를
+ * `schema.views.length > 1` 같은 조건으로 **추정**했다. 그래서 각도 다이얼을 쓰는
+ * 조각은 발행본에서 조작기가 그림 위에 얹혔다. 이제 조작기가 마지막 렌더에서
+ * 차지한 상자를 돌려주므로 추정하지 않는다.
+ *
+ * **자리를 선언한 조작기(`at`)는 세지 않는다.** 저작자가 그림과 겹치지 않게 놓은
+ * 것이라, 거기까지 비우면 그림이 두 번 밀린다.
+ */
+function screenMargins(
+  resolved: readonly ResolvedController[],
+  vp: Viewport,
+): { top: number; bottom: number; left: number; right: number } {
+  const m = { top: BASE_MARGIN, bottom: BASE_MARGIN, left: BASE_MARGIN, right: BASE_MARGIN };
+  for (const r of resolved) {
+    if ('at' in r.spec && r.spec.at) continue;
+    const b = r.impl.screenBounds?.();
+    if (!b) continue;
+
+    // **비우는 면적이 가장 작은 변**에 귀속시킨다.
+    //
+    // 직사각형 여백으로는 "구석에 놓인 상자" 를 정확히 말할 수 없다 — 어느 변에
+    // 붙이든 그 변 전체를 비우게 된다. 그러니 덜 잃는 쪽을 고른다.
+    //
+    // 예전에는 "가장 가까운 변" 이었다. 그러면 왼쪽 아래 구석의 파라미터 상자가
+    // **아래** 변으로 가서 세로를 상한까지 먹었고, 그림이 세로에 갇혀 아주 작게
+    // 그려졌다. 임베드는 가로로 넓고 세로로 좁아 **세로가 비싸다** (S-piece).
+    // 면적으로 재면 같은 상자라도 아래로 가는 쪽이 훨씬 비싸므로 자연히 옆으로 간다.
+    const sides = [
+      { side: 'top' as const, room: b.y + b.h + CONTROLLER_GAP, span: vp.width },
+      { side: 'bottom' as const, room: vp.height - b.y + CONTROLLER_GAP, span: vp.width },
+      { side: 'left' as const, room: b.x + b.w + CONTROLLER_GAP, span: vp.height },
+      { side: 'right' as const, room: vp.width - b.x + CONTROLLER_GAP, span: vp.height },
+    ];
+    let best = sides[0]!;
+    for (const s of sides) {
+      if (s.room * s.span < best.room * best.span) best = s;
+    }
+    m[best.side] = Math.max(m[best.side], best.room);
+  }
+  const capV = (vp.height / 2) * MARGIN_LIMIT;
+  const capH = (vp.width / 2) * MARGIN_LIMIT;
+  return {
+    top: Math.min(m.top, capV),
+    bottom: Math.min(m.bottom, capV),
+    left: Math.min(m.left, capH),
+    right: Math.min(m.right, capH),
+  };
+}
 
 /**
  * 프리롤의 걸음(초). 60fps 한 프레임이다.
@@ -49,6 +121,8 @@ const HUD_MARGINS = { top: 24, bottom: 24, left: 24, right: 24 };
 const PREROLL_STEP = 1 / 60;
 /** 프리롤 상한(걸음). 선언이 터무니없이 크면 마운트가 멈춘다. */
 const PREROLL_MAX_STEPS = 20_000;
+/** 검사 시각 이동의 상한(초). 동기 루프가 메인 스레드를 막으므로 둔다. */
+const INSPECT_MAX_T = 60;
 
 /**
  * 조작기를 잡고 있다는 사실을 선언한 자리에 적는다.
@@ -90,7 +164,8 @@ export function prerollState<T extends BundleState>(
 
 export interface RunBundleOptions {
   locale?: string;
-  theme?: ThemeMode;
+  /** 테마. 모드 이름이거나 완성된 한 벌. host 를 함께 주면 그쪽이 이긴다. */
+  theme?: ThemeMode | HostTheme;
   /** 호스트가 이미 만들어둔 Host 가 있으면 재사용. 없으면 새로 만든다. */
   host?: Host;
   /** Stage id (없으면 첫 stage). */
@@ -101,6 +176,17 @@ export interface RunBundleOptions {
   environmentIds?: string[];
   /** 파라미터 초기값 (없으면 schema default). */
   values?: Record<string, number>;
+  /**
+   * **검사 전용.** 이 시각(초)까지 고정 걸음으로 미리 굴린 뒤 시간을 멈춘다.
+   *
+   * 자유 구현본과 같은 시각에 스크린샷을 찍어 나란히 비교하기 위한 것이다
+   * (`scripts/piece-report.mts --sims`). **S-piece 의 프리롤이 아니다** — "도착한
+   * 순간 이미 진행 중" 은 저작 결정이라 선언(`BundleSchema.preroll`)에 둔다.
+   *
+   * 한계: 렌더러 안에서 적분하는 어휘(`filament` · `vortexField`)는 이것으로
+   * 전진하지 않는다. 그 상태는 `bundle.step` 이 아니라 `rc.store` 에 있다.
+   */
+  inspectAt?: number;
   /**
    * Host 가 자동 생성될 때 호출되는 플러그인 설치 훅. bootstrap 패키지의
    * installAperi21Plugins 같은 함수를 외부에서 주입할 수 있다. host 옵션이
@@ -188,10 +274,10 @@ export function runBundle<T extends BundleState = BundleState>(
   wrapper.style.width = '100%';
   wrapper.style.minHeight = `${minHeight}px`;
   wrapper.style.height = `${height}px`;
-  wrapper.style.background = host.theme.background;
-  wrapper.style.borderRadius = `${host.theme.radiusMedium * 2}px`;
+  wrapper.style.background = host.theme.scene.background;
+  wrapper.style.borderRadius = `${host.theme.ui.radius.container}px`;
   wrapper.style.overflow = 'hidden';
-  wrapper.style.border = `1px solid ${host.theme.line}`;
+  wrapper.style.border = `${host.theme.ui.strokeWidth.regular}px solid ${host.theme.ui.border}`;
 
   const canvas = document.createElement('canvas');
   canvas.style.position = 'absolute';
@@ -220,6 +306,7 @@ export function runBundle<T extends BundleState = BundleState>(
   if (bundle.schema.startAt) timeEngine.seek(bundle.schema.startAt);
   timeEngine.start();
 
+
   let disposed = false;
   let rafId = 0;
   let lastT =
@@ -243,6 +330,122 @@ export function runBundle<T extends BundleState = BundleState>(
   let wasTerminated = bundle.isTerminated?.(state) ?? false;
 
   const refs: RunContextRefs<T> = { bundle, stage, view, envs, state };
+
+  /**
+   * 상태를 선언의 초기값으로 다시 만든다. 스테이지 · 환경 · 파라미터가 바뀌면
+   * 그때까지 굴러온 상태가 더는 그 조건의 것이 아니다.
+   */
+  function reinitState(): void {
+    refs.state = prerollState(
+      bundle,
+      bundle.initialState({ values, stage: refs.stage, environments: refs.envs }),
+      refs.stage,
+      refs.envs,
+    );
+  }
+
+  /**
+   * 이 임베드의 세션. 조작기 가운데 화면을 갈아 끼우는 것들이 읽고 쓴다.
+   *
+   * **임베드마다 하나다** (C5). 마운트 클로저 안에 있으므로 한 문서에 임베드가
+   * 여럿이어도 스테이지 · 뷰 · 파라미터가 섞이지 않는다.
+   */
+  const session: ControllerSession = {
+    get stageId() {
+      return refs.stage.id;
+    },
+    get viewId() {
+      return refs.view.id;
+    },
+    get envIds() {
+      return refs.envs.map((e) => e.id);
+    },
+    get params() {
+      return values;
+    },
+    get stages() {
+      return bundle.schema.stages;
+    },
+    get views() {
+      return bundle.schema.views;
+    },
+    get environments() {
+      // 지금 스테이지에서 쓸 수 있는 것만. 이 추리기를 조작기마다 다시 짜면
+      // 조작기마다 다른 목록이 뜬다.
+      return bundle.schema.environments.filter(
+        (e) => !e.availableInStages || e.availableInStages.includes(refs.stage.id),
+      );
+    },
+    get parameters() {
+      return bundle.schema.parameters;
+    },
+    setStage(id: string) {
+      const next = bundle.schema.stages.find((s) => s.id === id);
+      if (!next || next.id === refs.stage.id) return;
+      refs.stage = next;
+      // 새 스테이지에서 못 쓰는 환경은 함께 내린다.
+      refs.envs = refs.envs.filter(
+        (e) => !e.availableInStages || e.availableInStages.includes(id),
+      );
+      camera.reset();
+      reinitState();
+    },
+    setView(id: string) {
+      const next = bundle.schema.views.find((v) => v.id === id);
+      if (next) refs.view = next;
+    },
+    toggleEnv(id: string) {
+      if (refs.envs.some((e) => e.id === id)) {
+        refs.envs = refs.envs.filter((e) => e.id !== id);
+        reinitState();
+        return;
+      }
+      const env = bundle.schema.environments.find((e) => e.id === id);
+      if (!env) return;
+      if (env.availableInStages && !env.availableInStages.includes(refs.stage.id)) return;
+      refs.envs = [...refs.envs, env];
+      reinitState();
+    },
+    setParam(id: string, value: number) {
+      const p = bundle.schema.parameters.find((x) => x.id === id);
+      if (!p) return;
+      values[id] = value;
+      if (p.statePath) {
+        // 그 경로가 단일 소스다. 처음부터 다시 만들지 않는다 — 굴러가던 것이 멈춘다.
+        refs.state = writePath(refs.state, p.statePath, value) as T;
+        return;
+      }
+      reinitState();
+    },
+    resetCamera() {
+      camera.reset();
+    },
+    resetState() {
+      for (const p of bundle.schema.parameters) values[p.id] = p.default;
+      camera.reset();
+      reinitState();
+    },
+  };
+  // 검사 시각 이동. t=0 도 검사 시각이다 — 첫 프레임에 멈춰야 도착 순간을 원본과
+  // 견줄 수 있다.
+  if (options.inspectAt !== undefined && bundle.schema.timeModel !== 'static') {
+    const target = Math.min(options.inspectAt, INSPECT_MAX_T);
+    const steps = Math.round(target / PREROLL_STEP);
+    for (let i = 0; i < steps; i++) {
+      if (bundle.isTerminated?.(refs.state)) {
+        timeEngine.markTerminated();
+        break;
+      }
+      refs.state = bundle.step({
+        state: refs.state,
+        dt: PREROLL_STEP,
+        stage: refs.stage,
+        environments: refs.envs,
+      });
+    }
+    timeEngine.seek(target);
+    timeEngine.pause();
+  }
 
   function sizeCanvas(): Viewport {
     const rect = canvas.getBoundingClientRect();
@@ -273,6 +476,8 @@ export function runBundle<T extends BundleState = BundleState>(
       snapWorld: (w: Vec2) => camera.snapWorld(w),
       scale: camera.scale,
       slot,
+      session,
+      ui: host.theme.ui,
     };
   }
 
@@ -400,12 +605,13 @@ export function runBundle<T extends BundleState = BundleState>(
     lastT = now;
 
     const vp = sizeCanvas();
-    const theme = host.theme;
+    // 그림 축과 UI 축을 여기서 가른다. 프리미티브 렌더러에게는 앞의 것만 간다.
+    const theme = host.theme.scene;
+    const ui = host.theme.ui;
     const i18n = scopedI18n;
     const b = refs.bundle;
 
     // 시간표 단계의 재생 속도. 시간표가 없으면 1 — 앞 번들의 느린 속도가 남지 않게.
-    // react/embed/Canvas.tsx 와 같은 규약.
     timeEngine.setSpeed(
       b.schema.timeline ? evaluateTimeline(b.schema.timeline, timeEngine.currentTime).timeScale : 1,
     );
@@ -420,15 +626,21 @@ export function runBundle<T extends BundleState = BundleState>(
     if (wasTerminated && !isTerm) camera.userAdjusted = false;
     wasTerminated = isTerm;
 
+    // 이 프레임에 그려질 조작기. 아래 렌더 루프와 프레이밍이 같은 목록을 봐야
+    // 여백과 그림이 어긋나지 않는다.
+    const resolved = controllers.resolve(
+      visibleControllers(b.controllers, refs.state as BundleState),
+    );
+
     if (!camera.userAdjusted && b.boundsHint) {
       const bounds = b.boundsHint(refs.state, refs.stage);
       camera.fitToBounds(bounds, vp, {
         padding: 12,
-        screenMargins: HUD_MARGINS,
+        screenMargins: screenMargins(resolved, vp),
       });
     }
 
-    particles.setKind('none', vp);
+    particles.setKind(resolveBackgroundKind(refs.stage, refs.envs), vp);
     particles.update(realDt, vp);
 
     ctx!.save();
@@ -437,10 +649,10 @@ export function runBundle<T extends BundleState = BundleState>(
     ctx!.fillStyle = theme.background;
     ctx!.fillRect(0, 0, vp.width, vp.height);
     particles.render(ctx!, theme);
-    // 그리드는 선언이 켜야 나온다 (원칙 4, R9). react/embed/Canvas.tsx 와 같은 규약.
+    // 그리드는 선언이 켜야 나온다 (원칙 4, R9).
     if (b.schema.chrome?.grid) drawAxisGrid(ctx!, vp, camera, theme);
 
-    // 시간표와 캡션은 선언이다. react/embed/Canvas.tsx 와 같은 규약.
+    // 시간표와 캡션은 선언이다.
     const timeline = b.schema.timeline
       ? evaluateTimeline(b.schema.timeline, timeEngine.currentTime)
       : undefined;
@@ -478,6 +690,11 @@ export function runBundle<T extends BundleState = BundleState>(
       scene: sceneRefs,
       measure: createMeasure(ctx!, theme.fontFamily),
     };
+    // 조작기는 세션을 함께 본다. 프리미티브 렌더러에게는 넘기지 않는다 —
+    // 렌더러가 읽는 것은 SceneGraph 선언과 theme 뿐이다 (S-render).
+    // 그림 축을 덜어내고 UI 축을 얹는다 — 조작기는 제 축의 색·치수만 본다.
+    const { theme: _scene, ...rest } = rc;
+    const crc = { ...rest, viewport: vp, session, ui };
 
     host.pluginManager.runFrameHooks(rc);
 
@@ -487,9 +704,8 @@ export function runBundle<T extends BundleState = BundleState>(
       renderer(rc, p, sceneRefs);
     }
 
-    const visible = visibleControllers(b.controllers, refs.state as BundleState);
-    for (const r of controllers.resolve(visible)) {
-      r.impl.render({ ...rc, viewport: vp, slot: r.slot }, r.spec, refs.state as BundleState);
+    for (const r of resolved) {
+      r.impl.render({ ...crc, slot: r.slot }, r.spec, refs.state as BundleState);
     }
 
     ctx!.restore();
@@ -536,14 +752,13 @@ function createMeasure(ctx: CanvasRenderingContext2D, fontFamily: string): Measu
 }
 
 /**
- * 월드 좌표 m 단위 거리 축 그리드. react/embed/Canvas.tsx 의 drawAxisGrid 와
- * 동일 로직을 NodeView 마운트용으로 복제. 두 진입점이 같은 시각 언어를 공유한다.
+ * 월드 좌표 m 단위 거리 축 그리드.
  */
 function drawAxisGrid(
   ctx: CanvasRenderingContext2D,
   viewport: Viewport,
   camera: Camera,
-  theme: { foreground: string; muted: string; line: string; fontFamilyMono: string },
+  theme: SceneTheme,
 ): void {
   const scale = camera.scale;
   if (!isFinite(scale) || scale <= 0) return;
@@ -569,7 +784,7 @@ function drawAxisGrid(
   ctx.save();
 
   ctx.strokeStyle = gridColor;
-  ctx.lineWidth = 1;
+  ctx.lineWidth = theme.strokeWidth.thin;
   ctx.beginPath();
   const xStart = Math.ceil(xMin / step) * step;
   for (let x = xStart; x <= xMax + 1e-9; x += step) {
@@ -588,7 +803,7 @@ function drawAxisGrid(
   if (xMin <= 0 && xMax >= 0) {
     const [sx] = camera.toScreen([0, 0], viewport);
     ctx.strokeStyle = axisColor;
-    ctx.lineWidth = 1.2;
+    ctx.lineWidth = theme.strokeWidth.regular;
     ctx.beginPath();
     ctx.moveTo(sx, 0);
     ctx.lineTo(sx, viewport.height);
@@ -597,7 +812,7 @@ function drawAxisGrid(
   if (yMin <= 0 && yMax >= 0) {
     const [, sy] = camera.toScreen([0, 0], viewport);
     ctx.strokeStyle = axisColor;
-    ctx.lineWidth = 1.2;
+    ctx.lineWidth = theme.strokeWidth.regular;
     ctx.beginPath();
     ctx.moveTo(0, sy);
     ctx.lineTo(viewport.width, sy);
@@ -608,7 +823,7 @@ function drawAxisGrid(
   const fmt = (v: number) => `${v.toFixed(decimals)}m`;
 
   ctx.fillStyle = labelColor;
-  ctx.font = `11px ${theme.fontFamilyMono}`;
+  ctx.font = `${theme.fontSize.regular}px ${theme.fontFamilyMono}`;
 
   const yAxisScreen =
     yMin <= 0 && yMax >= 0

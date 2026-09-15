@@ -15,7 +15,7 @@
  */
 
 import { Node, mergeAttributes, InputRule, PasteRule } from '@tiptap/core';
-import type { Host } from '@aperi21/host';
+import type { Host, HostTheme, ThemeMode } from '@aperi21/host';
 import { createBundleNodeView } from './node-view.js';
 
 // id 본문은 영문자 시작, 영숫자/하이픈/언더스코어. snake_case 와 kebab-case 모두 허용.
@@ -33,7 +33,7 @@ export type BundleExtensionOptions = {
   /** runBundle 에 전달할 locale. 변경 시 호스트가 editor 를 재생성해야 반영된다. */
   locale?: string;
   /** runBundle 에 전달할 theme. */
-  theme?: 'light' | 'dark';
+  theme?: ThemeMode | HostTheme;
   /**
    * NodeView 의 runBundle 이 사용할 Host. plugin(optics/circuit)이 설치된 host 를
    * 넘기면 plugin 의존 번들(ray-tracing/dc-circuit)의 renderer 가 그 host 에서

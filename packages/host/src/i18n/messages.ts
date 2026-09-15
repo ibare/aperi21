@@ -12,28 +12,13 @@ import type { Dictionary } from './resolver';
  */
 export const FRAMEWORK_MESSAGES: Dictionary = {
   ko: {
-    'ui.cameraControls.camera': '카메라',
-    'ui.cameraControls.cameraTitle': '카메라 리셋',
-    'ui.cameraControls.reset': '초기화',
-    'ui.cameraControls.resetTitle': '상태 초기화',
-
-    'ui.energyHud.title': '에너지',
-    'ui.energyHud.kinetic': '운동',
-    'ui.energyHud.potential': '위치',
-    'ui.energyHud.lost': '손실',
-    'ui.energyHud.initial': '초기',
-
     'ui.paramPanel.title': '파라미터',
     'ui.paramPanel.reset': '초기값',
 
-    'ui.infoPanel.time': '시간',
-    'ui.infoPanel.speed': '속도',
-    'ui.infoPanel.maxHeight': '최고점',
-    'ui.infoPanel.range': '비거리',
-    'ui.infoPanel.flightTime': '체공',
-
-    'ui.topBar.stage': '스테이지',
-    'ui.topBar.env': '환경',
+    'ui.stageTabs.label': '스테이지',
+    'ui.envToggles.label': '환경',
+    'ui.resetButtons.camera': '카메라',
+    'ui.resetButtons.state': '초기화',
 
     'ui.angleDial.label': '각도',
     'ui.pinballLauncher.label': '발사대 · {power}%',

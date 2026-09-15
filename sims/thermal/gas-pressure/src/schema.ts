@@ -185,7 +185,6 @@ export const gasPressureSchema: BundleSchema = {
   environments: [],
   views: [{ id: 'molecules', label: text('label.view'), default: true }],
 
-  autoViews: { energy: false },
 
   // 마운트 후 바뀌지 않는다 (원칙 6). 원본 캔버스와 같은 비율이다.
   canvas: { height: 356, minHeight: 320 },

@@ -78,7 +78,6 @@ export const pressureIsotropySchema: BundleSchema = {
     },
   ],
   // 에너지 오버레이는 이 조각과 무관하다.
-  autoViews: { energy: false },
   // 글 한복판에 박히는 그림이라 마운트 후 높이가 바뀌지 않는다 (원칙 6).
   // 호스트 카메라는 세로 가용 픽셀이 (height/2 - 84) 로 제한되므로, 자취 원과
   // 깊이 눈금이 함께 읽히려면 기본값 360 보다 자리가 조금 더 필요하다.

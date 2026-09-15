@@ -6,18 +6,22 @@
 // 여기 없는 능력은 이 조각의 번들에 실리지 않는다 (R10).
 
 import type { HostCapabilities } from '@aperi21/host';
-import { AngleDialController, PinballLauncherController, renderBody, renderEvent, renderSurface, renderTrajectory, renderVector } from '@aperi21/host';
+import { AngleDialController, EnvTogglesController, PinballLauncherController, StageTabsController, ViewTabsController, renderBody, renderEvent, renderGauge, renderSurface, renderTrajectory, renderVector } from '@aperi21/host';
 
 export const capabilities: HostCapabilities = {
   renderers: {
     body: renderBody,
     event: renderEvent,
+    gauge: renderGauge,
     surface: renderSurface,
     trajectory: renderTrajectory,
     vector: renderVector,
   },
   controllers: {
     'angle-dial': () => new AngleDialController(),
+    'env-toggles': () => new EnvTogglesController(),
     'pinball-launcher': () => new PinballLauncherController(),
+    'stage-tabs': () => new StageTabsController(),
+    'view-tabs': () => new ViewTabsController(),
   },
 };

@@ -4,9 +4,8 @@ import { applyBaseMeta, finalizeBaseMeta, setAlpha } from '../common';
 /**
  * Graph 렌더러. Phase 2 MVP 는 style==='bar' + placement==='screen-hud' 만.
  * placement==='world-inline' 은 Phase 3+. series 마다 하나의 bar 를 그린다.
- * scene graph 의 graph 프리미티브는 Phase 2 현재 Bundle 이 에너지 뷰에서
- * 선언하지 않도록 바뀌었지만 (호스트 EnergyHUD 가 대신 렌더), 임의 Bundle 이
- * 직접 선언할 수도 있으므로 이 렌더러를 유지한다.
+ * 에너지 막대처럼 값을 견주는 그림은 `gauge` 를 쓴다. 이 어휘는 여러 계열을
+ * 한 축에 놓아야 할 때를 위해 남긴다.
  */
 export const renderGraph: PrimitiveRenderer = (rc, p0) => {
   const p = p0 as Graph;
@@ -26,7 +25,7 @@ export const renderGraph: PrimitiveRenderer = (rc, p0) => {
   c.fillRect(x, y, w, h);
   setAlpha(c, 1);
   c.strokeStyle = rc.theme.line;
-  c.lineWidth = 1;
+  c.lineWidth = rc.theme.strokeWidth.thin;
   c.strokeRect(x, y, w, h);
 
   const pad = 12;
@@ -47,7 +46,7 @@ export const renderGraph: PrimitiveRenderer = (rc, p0) => {
   p.series.forEach((s, i) => {
     const by = barsTop + i * (barH + 6);
     // 라벨
-    c.font = `10px ${rc.theme.fontFamilyMono}`;
+    c.font = `${rc.theme.fontSize.small}px ${rc.theme.fontFamilyMono}`;
     c.fillStyle = rc.theme.muted;
     c.textAlign = 'left';
     c.textBaseline = 'middle';
@@ -82,7 +81,7 @@ export const renderGraph: PrimitiveRenderer = (rc, p0) => {
 
   // xAxis 라벨
   if (p.xAxis?.label) {
-    c.font = `10px ${rc.theme.fontFamilyMono}`;
+    c.font = `${rc.theme.fontSize.small}px ${rc.theme.fontFamilyMono}`;
     c.fillStyle = rc.theme.muted;
     c.textAlign = 'center';
     c.fillText(

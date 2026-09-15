@@ -168,7 +168,6 @@ export const apparentBrightnessSchema: BundleSchema = {
   stages: [{ id: 'sky', label: text('label.stage'), constants: {} }],
   environments: [],
   views: [{ id: 'bundle', label: text('label.view'), default: true }],
-  autoViews: { energy: false },
 
   /**
    * 원본은 860 × 304 px. 러너가 사방에 여백을 두므로 그만큼 더 잡는다 — 칸 한 변이

@@ -28,7 +28,7 @@ export const renderStream: PrimitiveRenderer = (rc, p0) => {
   const color = primitiveColor(rc, p, { role: 'secondary', emphasis: 'strong' });
   const ax = p.acceleration?.[0] ?? 0;
   const ay = p.acceleration?.[1] ?? 0;
-  const baseWidth = p.width ?? 2;
+  const baseWidth = p.width ?? rc.theme.strokeWidth.thick;
   const jitter = p.jitter ?? 0;
 
   /** 나이 t 에서의 자리. 등가속 운동. */

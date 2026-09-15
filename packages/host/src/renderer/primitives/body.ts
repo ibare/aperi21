@@ -43,7 +43,7 @@ export const renderBody: PrimitiveRenderer = (rc, p0) => {
     c.fillStyle = color;
     c.fillRect(-w / 2, -h / 2, w, h);
     c.strokeStyle = rc.theme.line;
-    c.lineWidth = 1;
+    c.lineWidth = rc.theme.strokeWidth.thin;
     c.strokeRect(-w / 2, -h / 2, w, h);
     c.restore();
   } else {
@@ -66,12 +66,12 @@ export const renderBody: PrimitiveRenderer = (rc, p0) => {
     c.arc(sx, sy, radius, 0, Math.PI * 2);
     c.fill();
     c.strokeStyle = rc.theme.line;
-    c.lineWidth = 1;
+    c.lineWidth = rc.theme.strokeWidth.thin;
     c.stroke();
   }
 
   if (p.label) {
-    c.font = `11px ${rc.theme.fontFamilyMono}`;
+    c.font = `${rc.theme.fontSize.regular}px ${rc.theme.fontFamilyMono}`;
     c.fillStyle = rc.theme.muted;
     c.textAlign = 'center';
     c.fillText(rc.i18n.resolve(p.label), sx, sy + radius + 14);

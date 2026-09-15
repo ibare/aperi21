@@ -2,7 +2,6 @@ import type { PrimitiveRenderer, Trajectory } from '@aperi21/schema';
 import { applyBaseMeta, finalizeBaseMeta, primitiveColor, setAlpha } from '../common';
 
 /** 선 굵기 기본값(화면 px). 곡선·궤적의 굵기. 안내선은 선언이 `width` 로 가늘게 준다. */
-const DEFAULT_WIDTH = 2;
 /** 대시·점선 무늬(화면 px, 굵기 2 기준). 굵기에 비례해 늘인다. */
 const DASH_PATTERN = [6, 5] as const;
 const DOT_PATTERN = [0.5, 4] as const;
@@ -26,8 +25,9 @@ export const renderTrajectory: PrimitiveRenderer = (rc, p0) => {
   const c = rc.ctx;
   const color = primitiveColor(rc, p, { role: 'secondary', emphasis: 'medium' });
   const pts = p.points.map((w) => rc.toScreen(w));
-  const width = p.width ?? DEFAULT_WIDTH;
-  const scale = Math.max(1, width / DEFAULT_WIDTH);
+  const base = rc.theme.strokeWidth.thick;
+  const width = p.width ?? base;
+  const scale = Math.max(1, width / base);
 
   c.lineWidth = width;
   c.lineCap = 'round';

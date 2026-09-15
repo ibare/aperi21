@@ -10,8 +10,7 @@ const DEFAULT_HEAD = 8;
 const HEAD_MAX_RATIO = 0.35;
 /** 이 길이(화면 px) 아래는 그리지 않는다. */
 const MIN_LENGTH = 2;
-const LABEL_FONT_SIZE = 11;
-const MAGNITUDE_FONT_SIZE = 10;
+
 
 /**
  * Vector 렌더러. 본체 라인 + 화살촉 삼각형.
@@ -40,7 +39,7 @@ export const renderVector: PrimitiveRenderer = (rc, p0) => {
 
   c.strokeStyle = color;
   c.fillStyle = color;
-  // 기본은 굵은 선(2px). strokeWidth.regular 는 1 이라 모든 벡터가 가늘어진다.
+  // 벡터는 굵다 — 화살표가 가늘면 방향보다 길이만 읽힌다. 선언이 `width` 로 덮는다.
   c.lineWidth = p.width ?? rc.theme.strokeWidth.thick;
   c.lineCap = 'round';
   c.beginPath();
@@ -58,7 +57,7 @@ export const renderVector: PrimitiveRenderer = (rc, p0) => {
   c.fill();
 
   if (p.label) {
-    c.font = `600 ${LABEL_FONT_SIZE}px ${rc.theme.fontFamilyMono}`;
+    c.font = `600 ${rc.theme.fontSize.regular}px ${rc.theme.fontFamilyMono}`;
     c.fillStyle = color;
     c.textAlign = 'left';
     const lx = sx0 + ux * len * 0.4 + 6;
@@ -68,7 +67,7 @@ export const renderVector: PrimitiveRenderer = (rc, p0) => {
 
   if (p.showMagnitude) {
     const mag = Math.hypot(p.delta[0], p.delta[1]);
-    c.font = `${MAGNITUDE_FONT_SIZE}px ${rc.theme.fontFamilyMono}`;
+    c.font = `${rc.theme.fontSize.small}px ${rc.theme.fontFamilyMono}`;
     c.fillStyle = rc.theme.muted;
     c.fillText(mag.toFixed(1), (sx0 + sx1) / 2 + 6, (sy0 + sy1) / 2 + 4);
   }

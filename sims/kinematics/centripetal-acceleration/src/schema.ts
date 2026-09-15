@@ -115,7 +115,6 @@ export const centripetalAccelerationSchema: BundleSchema = {
   stages: [{ id: 'main', label: text('label.stage'), constants: {} }],
   environments: [],
   views: [{ id: 'main', label: text('label.view'), default: true }],
-  autoViews: { energy: false },
 
   /**
    * 원본은 840×280. 원을 왼쪽에, 캡션을 오른쪽에 둬 세로를 막았다. 여백(72 px)을

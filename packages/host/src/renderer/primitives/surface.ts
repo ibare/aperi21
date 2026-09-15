@@ -19,7 +19,7 @@ export const renderSurface: PrimitiveRenderer = (rc, p0) => {
     const [x0s, ys] = rc.toScreen([-1000, y]);
     const [x1s] = rc.toScreen([1000, y]);
     c.strokeStyle = line;
-    c.lineWidth = 1.5;
+    c.lineWidth = rc.theme.strokeWidth.regular;
     c.beginPath();
     c.moveTo(x0s, ys);
     c.lineTo(x1s, ys);
@@ -46,7 +46,7 @@ export const renderSurface: PrimitiveRenderer = (rc, p0) => {
     c.fill();
     setAlpha(c, 1);
     c.strokeStyle = line;
-    c.lineWidth = 1.5;
+    c.lineWidth = rc.theme.strokeWidth.regular;
     c.beginPath();
     c.moveTo(ox, oy);
     c.lineTo(tx, ty);
@@ -55,7 +55,7 @@ export const renderSurface: PrimitiveRenderer = (rc, p0) => {
     const [x0s, y0s] = rc.toScreen(g.from);
     const [x1s, y1s] = rc.toScreen(g.to);
     c.strokeStyle = line;
-    c.lineWidth = 3;
+    c.lineWidth = rc.theme.strokeWidth.heavy;
     c.beginPath();
     c.moveTo(x0s, y0s);
     c.lineTo(x1s, y1s);

@@ -191,7 +191,6 @@ export const heatConductionSchema: BundleSchema = {
   environments: [],
   views: [{ id: 'pair', label: text('label.view'), default: true }],
 
-  autoViews: { energy: false },
 
   /**
    * 세로가 비싸다. 막대 둘 + 구슬이 떨어질 자리 + 캡션 한 줄로 끝낸다 — 원본이

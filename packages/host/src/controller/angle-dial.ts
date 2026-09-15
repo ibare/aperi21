@@ -1,6 +1,7 @@
 import type { BundleState, ControllerSpec, Vec2 } from '@aperi21/schema';
 import type { Viewport } from '../camera';
-import { placeBox, stackedAnchor, type ScreenAnchor } from './layout';
+import type { UiTheme } from '../theme/types';
+import { placeBox, stackedAnchor, type Box, type ScreenAnchor } from './layout';
 import { readPath, writePath } from './path';
 import { controllerText } from './text';
 import type {
@@ -18,10 +19,16 @@ interface Layout {
   r: number;
 }
 
-const DIAL_MARGIN = 32;
 /** 선언에 `radius` 가 없을 때의 반지름. 코어는 기본값만 준다 (원칙 7 ③). */
 const DEFAULT_DIAL_RADIUS = 72;
-/** 자리를 선언하지 않은 다이얼끼리의 가로 간격. */
+/**
+ * 중앙 각도 숫자의 기준 크기. 반지름에 비례해 커진다 — 이 조작기 고유 치수다
+ * (`scale.ts` 의 다이얼 글자와 같은 성격). 이름표 쪽은 축의 값을 쓴다.
+ */
+const VALUE_FONT_BASE = 18;
+/** 줄여도 여기까지. 더 작으면 읽히지 않는다. */
+const MIN_LABEL_FONT = 8;
+/** 자리를 선언하지 않은 다이얼끼리의 **가로** 간격. 축의 stackGap 은 세로용이다. */
 const DIAL_STACK_GAP = 24;
 /** 자리를 선언하지 않으면 왼쪽 아래에서 오른쪽으로 쌓인다. */
 const DEFAULT_AT: ScreenAnchor = { screen: 'bottom-left' };
@@ -32,11 +39,12 @@ function computeLayout(
   viewport: Viewport,
   toScreen: (w: Vec2) => Vec2,
   slot: number,
+  ui: UiTheme,
 ): Layout {
   const r = spec.radius ?? DEFAULT_DIAL_RADIUS;
   // 쌓는 간격도 선언한 반지름을 따른다 — 기본값으로 세면 큰 다이얼끼리 겹친다.
   const at = spec.at ?? stackedAnchor(DEFAULT_AT, slot, [2 * r + DIAL_STACK_GAP, 0]);
-  const box = placeBox(at, 2 * r, r, viewport, toScreen, DIAL_MARGIN);
+  const box = placeBox(at, 2 * r, r, viewport, toScreen, ui.layout.margin);
   return { cx: box.x + r, cy: box.y + r, r };
 }
 
@@ -63,9 +71,20 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
     return this.dragging;
   }
 
+  /** 마지막 렌더의 자리. */
+  private box: Box | null = null;
+
+  /** 마지막 렌더에서 차지한 화면 상자. 자동 프레이밍이 이만큼을 비운다. */
+  screenBounds(): Box | null {
+    return this.box;
+  }
+
+
   render(rc: ControllerRenderContext, spec: AngleSpec, state: BundleState): void {
-    const { ctx, theme, viewport } = rc;
-    const layout = computeLayout(spec, viewport, rc.toScreen, rc.slot);
+    const { ctx, ui, viewport } = rc;
+    const layout = computeLayout(spec, viewport, rc.toScreen, rc.slot, rc.ui);
+    // 반원이라 상자는 `2r × r` 이고 중심이 아래 변 가운데다.
+    this.box = { x: layout.cx - layout.r, y: layout.cy - layout.r, w: 2 * layout.r, h: layout.r };
     const angle = Number(readPath<number>(state, spec.binds.angle) ?? 45);
     const range = spec.range ?? [0, 90];
 
@@ -75,15 +94,15 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
     ctx.beginPath();
     ctx.arc(layout.cx, layout.cy, layout.r, Math.PI, 2 * Math.PI);
     ctx.closePath();
-    ctx.fillStyle = theme.resolveColor('muted', 'subtle');
+    ctx.fillStyle = ui.surface;
     ctx.fill();
-    ctx.strokeStyle = theme.line;
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = ui.border;
+    ctx.lineWidth = ui.strokeWidth.thick;
     ctx.stroke();
 
     // 각도 틱 (10° 마다) — 0°=오른쪽, 90°=위쪽 (포물선 발사 방향)
-    ctx.strokeStyle = theme.muted;
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = ui.label;
+    ctx.lineWidth = ui.strokeWidth.thin;
     for (let a = range[0]; a <= range[1]; a += 10) {
       const rad = (a * Math.PI) / 180;
       const x1 = layout.cx + Math.cos(rad) * (layout.r - 6);
@@ -98,8 +117,8 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
 
     // tickAt 강조 (물리 특수점)
     if (spec.tickAt) {
-      ctx.strokeStyle = theme.resolveColor('accent', 'strong');
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = ui.toggled;
+      ctx.lineWidth = ui.strokeWidth.thick;
       for (const a of spec.tickAt) {
         const rad = (a * Math.PI) / 180;
         const x1 = layout.cx + Math.cos(rad) * (layout.r - 12);
@@ -117,8 +136,8 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
     const rad = (angle * Math.PI) / 180;
     const nx = layout.cx + Math.cos(rad) * (layout.r - 12);
     const ny = layout.cy - Math.sin(rad) * (layout.r - 12);
-    ctx.strokeStyle = theme.resolveColor('primary', 'strong');
-    ctx.lineWidth = 3;
+    ctx.strokeStyle = ui.selected;
+    ctx.lineWidth = ui.strokeWidth.heavy;
     ctx.lineCap = 'round';
     ctx.beginPath();
     ctx.moveTo(layout.cx, layout.cy);
@@ -128,24 +147,24 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
     // 글자와 중심점은 선언한 반지름을 따른다 — 기본 크기에 맞춰 고정하면 작은
     // 다이얼을 선언했을 때 글자가 상자를 벗어난다.
     const k = layout.r / DEFAULT_DIAL_RADIUS;
-    const valueFont = Math.max(10, Math.round(18 * k));
-    const labelFont = Math.max(8, Math.round(10 * k));
+    const valueFont = Math.max(ui.fontSize.small, Math.round(VALUE_FONT_BASE * k));
+    const labelFont = Math.max(MIN_LABEL_FONT, Math.round(ui.fontSize.small * k));
 
     // 중심 point
-    ctx.fillStyle = theme.foreground;
+    ctx.fillStyle = ui.text;
     ctx.beginPath();
     ctx.arc(layout.cx, layout.cy, Math.max(2, 4 * k), 0, Math.PI * 2);
     ctx.fill();
 
     // 큰 각도 숫자
-    ctx.font = `600 ${valueFont}px ${theme.fontFamilyMono}`;
-    ctx.fillStyle = theme.foreground;
+    ctx.font = `600 ${valueFont}px ${ui.fontFamilyMono}`;
+    ctx.fillStyle = ui.text;
     ctx.textAlign = 'center';
     ctx.fillText(`${Math.round(angle)}°`, layout.cx, layout.cy + valueFont + 6);
 
     // 이름표 — 선언의 label, 없으면 프레임워크 문구
-    ctx.font = `${labelFont}px ${theme.fontFamilyMono}`;
-    ctx.fillStyle = theme.muted;
+    ctx.font = `${labelFont}px ${ui.fontFamilyMono}`;
+    ctx.fillStyle = ui.label;
     ctx.fillText(
       controllerText(rc.i18n, spec.label, 'ui.angleDial.label', 'ANGLE'),
       layout.cx,
@@ -156,7 +175,7 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
   }
 
   hitTest(input: PointerInput, ctx: ControllerEventContext, spec: AngleSpec): boolean {
-    return hitDial(input, computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot));
+    return hitDial(input, computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot, ctx.ui));
   }
 
   onPointerDown(
@@ -165,7 +184,7 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
     spec: AngleSpec,
     state: BundleState,
   ): BundleState | null {
-    const layout = computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot);
+    const layout = computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot, ctx.ui);
     if (!hitDial(input, layout)) return null;
     this.dragging = true;
     return this.angleFromPointer(input, layout, spec, state);
@@ -180,7 +199,7 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
     if (!this.dragging) return null;
     return this.angleFromPointer(
       input,
-      computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot),
+      computeLayout(spec, ctx.viewport, ctx.toScreen, ctx.slot, ctx.ui),
       spec,
       state,
     );

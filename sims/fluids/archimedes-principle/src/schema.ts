@@ -103,7 +103,6 @@ export const archimedesPrincipleSchema: BundleSchema = {
 
   views: [{ id: 'balance', label: text('label.view'), default: true }],
 
-  autoViews: { energy: false },
 
   // 마운트 후 바뀌지 않는다 (원칙 6).
   canvas: { height: 460, minHeight: 460 },

@@ -12,7 +12,7 @@ import type { Bundle } from '@aperi21/schema';
 
 import { archimedesPrincipleSchema } from './schema';
 import { initialState, type ArchimedesPrincipleState } from './state';
-import { derivedValues, step } from './physics';
+import { step } from './physics';
 import { boundsHint, scene } from './scene';
 import { controllers } from './controllers';
 
@@ -22,7 +22,6 @@ export const archimedesPrincipleBundle: Bundle<ArchimedesPrincipleState> = {
   step,
   scene,
   controllers,
-  derivedValues,
   boundsHint,
 };
 
@@ -40,7 +39,6 @@ export {
   clamp01,
   deriveCupLevel,
   deriveReadings,
-  derivedValues,
   readConstants,
   step,
 } from './physics';

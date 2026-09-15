@@ -1,4 +1,4 @@
-import type { HostTheme } from '../theme/types';
+import type { SceneTheme } from '../theme/types';
 import type { Viewport } from '../camera';
 
 export type BackgroundParticleKind = 'none' | 'rain' | 'stars-dense' | 'stars-sparse';
@@ -56,12 +56,12 @@ export class BackgroundParticleSystem {
     }
   }
 
-  render(ctx: CanvasRenderingContext2D, theme: HostTheme): void {
+  render(ctx: CanvasRenderingContext2D, theme: SceneTheme): void {
     if (this.kind === 'none' || this.particles.length === 0) return;
     ctx.save();
     if (this.kind === 'rain') {
       ctx.strokeStyle = theme.resolveColor('secondary', 'subtle');
-      ctx.lineWidth = 1;
+      ctx.lineWidth = theme.strokeWidth.thin;
       for (const p of this.particles) {
         ctx.globalAlpha = p.alpha;
         ctx.beginPath();

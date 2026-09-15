@@ -77,10 +77,10 @@ export class ScaleDragController implements ControllerImpl<ScaleDragSpec> {
     c.save();
     c.beginPath();
     c.arc(x, y, held ? HANDLE_HELD_RADIUS_PX : HANDLE_RADIUS_PX, 0, Math.PI * 2);
-    c.fillStyle = rc.theme.resolveColor('ink', 'strong');
+    c.fillStyle = rc.ui.text;
     c.fill();
-    c.lineWidth = rc.theme.strokeWidth.thick;
-    c.strokeStyle = rc.theme.background;
+    c.lineWidth = rc.ui.strokeWidth.thick;
+    c.strokeStyle = rc.ui.onSelected;
     c.stroke();
     c.restore();
   }

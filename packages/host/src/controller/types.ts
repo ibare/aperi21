@@ -1,5 +1,16 @@
-import type { BundleState, ControllerSpec, RenderContext, Vec2 } from '@aperi21/schema';
+import type {
+  BundleState,
+  ControllerSpec,
+  EnvironmentDef,
+  ParamDef,
+  RenderContext,
+  StageDef,
+  Vec2,
+  ViewDef,
+} from '@aperi21/schema';
 import type { Viewport } from '../camera';
+import type { Box } from './layout';
+import type { UiTheme } from '../theme/types';
 
 /**
  * 포인터 이벤트를 소비하는 Controller 의 입력. PointerEvent 원형이 아닌,
@@ -13,17 +24,76 @@ export interface PointerInput {
 }
 
 /**
+ * 러너 세션에서 읽는 값. 조각 state 가 아니라 **이 임베드가 지금 무엇을 보고
+ * 있는가** 다 — 어느 스테이지 · 어느 뷰 · 어떤 환경이 켜져 있고 파라미터가 얼마인지.
+ *
+ * 조작기 가운데 화면을 갈아 끼우는 것들(`view-tabs` · `stage-tabs` · `env-toggles` ·
+ * `param-panel`)이 이것을 읽고 쓴다. 조각의 `step` 이 다루는 상태가 아니므로
+ * `BundleState` 에 두지 않는다.
+ *
+ * 임베드마다 하나다 (원칙 6 · C5). 모듈 스코프에 두면 한 문서의 임베드가 스테이지를
+ * 나눠 쓴다.
+ */
+export interface SessionView {
+  readonly stageId: string;
+  readonly viewId: string;
+  readonly envIds: readonly string[];
+  /** 파라미터의 지금 값. `statePath` 를 가진 것은 state 에서 읽어 채운다. */
+  readonly params: Readonly<Record<string, number>>;
+
+  /**
+   * 고를 수 있는 것들. 러너가 선언에서 추려 넘긴다.
+   *
+   * 조작기가 `BundleSchema` 를 통째로 들여다보지 않게 한다 — 환경은 지금
+   * 스테이지에서 쓸 수 있는 것만 골라야 하는데, 그 추리기를 조작기마다 다시
+   * 짜면 조작기마다 다른 목록이 뜬다.
+   */
+  readonly stages: readonly StageDef[];
+  readonly views: readonly ViewDef[];
+  readonly environments: readonly EnvironmentDef[];
+  readonly parameters: readonly ParamDef[];
+}
+
+/**
+ * 세션을 바꾸는 손잡이. 러너가 만들어 조작기에게 넘긴다.
+ *
+ * **선언에 두지 않는다.** 이것은 런타임 객체이고, 선언(`ControllerSpec`)에는 함수가
+ * 들어가지 않는다 (원칙 2 · 7 ④). 조작기는 선언에서 무엇을 바꿀지를 읽고, 바꾸는
+ * 일은 여기로 한다.
+ */
+export interface ControllerSession extends SessionView {
+  setStage(id: string): void;
+  setView(id: string): void;
+  toggleEnv(id: string): void;
+  setParam(id: string, value: number): void;
+  /** 프레이밍을 자동으로 되돌린다(`userAdjusted` 해제). */
+  resetCamera(): void;
+  /** 조각 상태를 초기값으로 되돌린다. */
+  resetState(): void;
+}
+
+/**
  * Controller 렌더·이벤트에 전달되는 컨텍스트. RenderContext 를 일부 재활용하지만
  * Controller 는 월드 좌표 프리미티브가 아니라 스크린 오버레이이므로 renderer
  * 가 보는 RenderContext 보다 좁은 편이 이상적. 지금은 공용으로 쓴다.
  */
-export interface ControllerRenderContext extends RenderContext {
+export interface ControllerRenderContext extends Omit<RenderContext, 'theme'> {
+  /**
+   * 코어 UI 축. **그림 축(`RenderContext.theme`)은 여기 없다** — 조작기가 그림의
+   * 색·치수를 보면 두 축을 나눈 뜻이 사라진다 (`theme/types.ts` 머리말).
+   */
+  ui: UiTheme;
   viewport: Viewport;
   /**
    * 같은 종류 선언 가운데 몇 번째인가(0 부터). 선언에 자리(`at`)가 없을 때 기본
    * 자리를 겹치지 않게 쌓는 데 쓴다. 러너가 선언 순서로 센다.
    */
   slot: number;
+  /**
+   * 세션에서 **읽기만** 한다. 그리는 중에 세션을 바꾸면 같은 프레임 안에서
+   * 화면이 두 상태를 섞어 그린다 — 바꾸는 것은 포인터 핸들러의 일이다.
+   */
+  session: SessionView;
 }
 
 /**
@@ -39,6 +109,13 @@ export interface ControllerEventContext {
   scale: number;
   /** 같은 종류 선언 가운데 몇 번째인가 — `ControllerRenderContext.slot` 과 같다. */
   slot: number;
+  /** 세션을 읽고 바꾼다. 러너가 임베드마다 하나 만들어 넘긴다. */
+  session: ControllerSession;
+  /**
+   * UI 축. **렌더와 hitTest 가 같은 함수로 자리를 내야** 보이는 자리와 잡히는
+   * 자리가 어긋나지 않는데(`layout.ts` 머리말), 그 함수가 여백 토큰을 읽는다.
+   */
+  ui: UiTheme;
 }
 
 /**
@@ -83,6 +160,18 @@ export interface ControllerImpl<T extends ControllerSpec = ControllerSpec> {
 
   /** 드래그 중인지(pointer capture 여부). */
   isDragging(): boolean;
+
+  /**
+   * 마지막 렌더에서 차지한 **화면 상자.** 자동 프레이밍이 이만큼을 비우고 그림을
+   * 잡는다 — 비우지 않으면 조작기가 그림 위에 얹힌다.
+   *
+   * 조작기는 화면 좌표에 놓이므로 배율과 무관하다. 그래서 프레이밍이 이 값을
+   * 읽어도 순환이 생기지 않는다.
+   *
+   * 그림 안에 놓이는 조작기(`scale-drag` 처럼 눈금 자체가 손잡이인 것)는 돌려주지
+   * 않는다 — 그것을 비우면 제 그림을 밀어내게 된다.
+   */
+  screenBounds?(): Box | null;
 }
 
 /** 조작기를 만드는 함수. 인스턴스는 임베드마다 따로 만든다 (C5). */

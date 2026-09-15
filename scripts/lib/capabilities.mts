@@ -45,6 +45,11 @@ export const CONTROLLERS: Record<string, string> = {
   'value-edit': 'ValueEditController',
   placement: 'PlacementController',
   'scale-drag': 'ScaleDragController',
+  'param-panel': 'ParamPanelController',
+  'view-tabs': 'ViewTabsController',
+  'stage-tabs': 'StageTabsController',
+  'env-toggles': 'EnvTogglesController',
+  'reset-buttons': 'ResetButtonsController',
 };
 
 export const ALL_CAPABILITIES: Record<string, string> = { ...RENDERERS, ...CONTROLLERS };

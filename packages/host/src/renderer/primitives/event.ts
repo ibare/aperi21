@@ -29,7 +29,7 @@ export const renderEvent: PrimitiveRenderer = (rc, p0) => {
     const r0 = progress * 12;
     setAlpha(c, Math.max(0, 1 - progress));
     c.strokeStyle = color;
-    c.lineWidth = 2;
+    c.lineWidth = rc.theme.strokeWidth.thick;
     for (let i = 0; i < spokes; i++) {
       const a = (i / spokes) * Math.PI * 2;
       const cos = Math.cos(a);

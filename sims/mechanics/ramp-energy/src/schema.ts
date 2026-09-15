@@ -179,7 +179,6 @@ export const rampEnergySchema: BundleSchema = {
   environments: [],
   views: [{ id: 'paths', label: text('label.view'), default: true }],
 
-  autoViews: { energy: false },
 
   /** 원본의 세로. 레인 셋에 캡션 한 줄이 들어가야 해서 더 줄이기 어려웠다. */
   canvas: { height: STAGE_PX.height, minHeight: STAGE_PX.height },

@@ -5,7 +5,6 @@ import { fitFontSize, resolveText } from '../kit/text';
 
 /** 화면 고정 앵커의 기본 여백(px). 코드에 남는 기본값은 한 곳에 (C2). */
 const SCREEN_MARGIN = 24;
-const DEFAULT_FONT_SIZE = 11;
 const MIN_FONT_SIZE = 8;
 /** `weight: 'bold'` 의 실제 굵기. 700 은 작은 글자에서 뭉친다. */
 const BOLD_WEIGHT = 600;
@@ -44,7 +43,7 @@ export const renderReadout: PrimitiveRenderer = (rc, p0) => {
   applyBaseMeta(rc, p);
   const c = rc.ctx;
   const color = primitiveColor(rc, p, { role: 'muted', emphasis: 'strong' });
-  const fontSize = p.fontSize ?? DEFAULT_FONT_SIZE;
+  const fontSize = p.fontSize ?? rc.theme.fontSize.regular;
   const lines = text.split('\n');
 
   if ('world' in p.anchor) {

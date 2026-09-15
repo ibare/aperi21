@@ -2,9 +2,7 @@ import type { Constraint, PrimitiveRenderer, SceneGraphRefs, Vec2 } from '@aperi
 import { applyBaseMeta, finalizeBaseMeta, primitiveColor, setAlpha } from '../common';
 
 /** 매단 줄의 굵기(화면 px). 가늘다 — 줄은 보이되 추를 이기지 않는다. */
-const STRING_WIDTH = 1;
 /** 단단한 막대의 굵기(화면 px). */
-const ROD_WIDTH = 3;
 /** 용수철 코일의 기본 개수. */
 const DEFAULT_COILS = 8;
 /** 용수철이 옆으로 벌어지는 폭(화면 px). */
@@ -42,14 +40,15 @@ export const renderConstraint: PrimitiveRenderer = (rc, p0, refs) => {
 
   switch (p.subtype) {
     case 'spring': {
-      c.lineWidth = STRING_WIDTH + 0.5;
+      // 매듭은 줄보다 반 단 굵다 — 실이 어디에 매였는지 보이게.
+      c.lineWidth = rc.theme.strokeWidth.regular;
       setAlpha(c, 1);
       drawSpring(c, ax, ay, bx, by, p.coils ?? DEFAULT_COILS);
       break;
     }
     case 'rail': {
       // 두 줄. 물체가 그 사이를 달린다.
-      c.lineWidth = STRING_WIDTH;
+      c.lineWidth = rc.theme.strokeWidth.thin;
       setAlpha(c, STRING_ALPHA);
       const dx = bx - ax;
       const dy = by - ay;
@@ -65,14 +64,14 @@ export const renderConstraint: PrimitiveRenderer = (rc, p0, refs) => {
       break;
     }
     case 'rigid_rod': {
-      c.lineWidth = ROD_WIDTH;
+      c.lineWidth = rc.theme.strokeWidth.heavy;
       setAlpha(c, 1);
       line(c, ax, ay, bx, by);
       break;
     }
     default: {
       // string — 매단 줄.
-      c.lineWidth = STRING_WIDTH;
+      c.lineWidth = rc.theme.strokeWidth.thin;
       setAlpha(c, STRING_ALPHA);
       line(c, ax, ay, bx, by);
       break;
