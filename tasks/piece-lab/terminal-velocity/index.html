@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>종단 속도</title>
+<style>
+  html, body { margin: 0; background: #faf7f2;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  #wrap { max-width: 860px; margin: 0 auto; }
+  canvas { display: block; width: 100%; height: 300px; }
+  #ctl { display: flex; align-items: center; gap: 9px; padding: 15px 2px 12px;
+    font-size: 12.5px; color: #8c837a; }
+  #ctl b { font-weight: 600; color: #2b2724; }
+  #ctl input { flex: 0 1 200px; accent-color: #d2542a; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="scene"></canvas>
+  <div id="ctl">
+    <b>공기 저항</b><span>약</span>
+    <input id="drag" type="range" min="0" max="8" step="1" value="4" aria-label="공기 저항 세기">
+    <span>강</span>
+  </div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var CV = document.getElementById('scene');
+  var ctx = CV.getContext('2d');
+  var H = 300, W = 820;
+  function fit() {
+    var d = window.devicePixelRatio || 1;
+    W = CV.clientWidth || 820;
+    CV.width = Math.round(W * d);
+    CV.height = Math.round(H * d);
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+  }
+  fit();
+  window.addEventListener('resize', fit);
+
+  var FONT = '-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+  var BG = '#faf7f2';
+  var INK = '#2b2724';          // 물체·중력·글자 — 같은 대상 계열
+  var TRACE = 'rgba(43,39,36,0.28)'; // 물체가 지나간 자국 (같은 잉크, 옅게)
+  var SOFT = '#8c837a';
+  var DRAGC = '#d2542a';        // 강조색 — 오직 '공기 저항' 한 뜻
+
+  // --- 화면 좌표계에서 직접 세운 물리 (1픽셀 = 길이 단위 하나) ---
+  var G = 215;       // 중력 가속도
+  var Y0 = 30;       // 출발 높이
+  var YF = 242;      // 화면 아래 끝 (중력 화살표까지 캔버스 안에 들어오는 한계)
+  var STROBE = 0.2;  // 자국을 남기는 주기(초)
+  var HOLD = 1.1;    // 다 떨어진 장면을 붙잡아 두는 시간
+  var LG = 42;       // 중력 화살표 길이 (= mg, 고정)
+  var R = 9;         // 물체 반지름
+
+  var vt = 88;               // 종단 속도
+  var k = G / (vt * vt);     // 저항 계수 — mg = k·vt² 가 되도록
+  var y = Y0, v = 0, acc = 0, hold = -1;
+  var marks = [Y0];
+
+  function reset() { y = Y0; v = 0; acc = 0; hold = -1; marks = [Y0]; }
+
+  var slider = document.getElementById('drag');
+  if (!PieceKit.frozen) {
+    slider.addEventListener('input', function () {
+      vt = 120 - (+slider.value) * 8;
+      k = G / (vt * vt);
+      reset();
+    });
+  }
+
+  function arrow(x, from, to, color, w) {
+    var len = Math.abs(to - from);
+    if (len < 1.2) return;
+    var dir = to > from ? 1 : -1;
+    var head = Math.min(8, len);
+    ctx.strokeStyle = color; ctx.lineWidth = w; ctx.lineCap = 'butt';
+    ctx.beginPath(); ctx.moveTo(x, from); ctx.lineTo(x, to - dir * head * 0.85); ctx.stroke();
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(x, to);
+    ctx.lineTo(x - 5, to - dir * head);
+    ctx.lineTo(x + 5, to - dir * head);
+    ctx.closePath(); ctx.fill();
+  }
+
+  function tag(text, x, ty, color) {
+    ctx.font = '12px ' + FONT;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    var w = ctx.measureText(text).width;
+    ctx.fillStyle = BG;
+    ctx.fillRect(x - 3, ty - 8, w + 6, 16);
+    ctx.fillStyle = color;
+    ctx.fillText(text, x, ty);
+  }
+
+  function wrapText(s, maxW) {
+    var words = s.split(' '), lines = [], cur = '';
+    for (var i = 0; i < words.length; i++) {
+      var next = cur ? cur + ' ' + words[i] : words[i];
+      if (cur && ctx.measureText(next).width > maxW) { lines.push(cur); cur = words[i]; }
+      else cur = next;
+    }
+    if (cur) lines.push(cur);
+    return lines;
+  }
+
+  PieceKit.loop({
+    step: function (dt) {
+      if (hold >= 0) {
+        hold += dt;
+        if (hold >= HOLD) reset();
+        return;
+      }
+      var a = G - k * v * v;
+      v += a * dt;
+      y += v * dt;
+      acc += dt;
+      if (acc >= STROBE) { acc -= STROBE; marks.push(y); }
+      if (y >= YF) { y = YF; hold = 0; }
+    },
+
+    draw: function () {
+      var cx = Math.min(250, W * 0.34);
+      var half = 150;
+      var capX = cx + half + 32;
+      var capW = Math.min(370, Math.max(160, W - capX - 16));
+      var ratio = v / vt;
+      var LD = LG * ratio * ratio;   // 저항 = k·v² 를 같은 자 위에 올린 길이
+
+      PieceKit.mark('바탕', function () {
+        ctx.fillStyle = BG;
+        ctx.fillRect(0, 0, W, H);
+      });
+
+      PieceKit.mark('자국 사다리', function () {
+        ctx.strokeStyle = TRACE; ctx.lineWidth = 1.5; ctx.lineCap = 'butt';
+        ctx.beginPath();
+        for (var i = 0; i < marks.length; i++) {
+          var my = marks[i];
+          ctx.moveTo(cx - half, my); ctx.lineTo(cx - 14, my);
+          ctx.moveTo(cx + 14, my); ctx.lineTo(cx + half, my);
+        }
+        ctx.stroke();
+      });
+
+      PieceKit.mark('자국 주기 표시', function () {
+        ctx.font = '11px ' + FONT;
+        ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+        ctx.fillStyle = SOFT;
+        ctx.fillText('0.2초마다 남긴 자국', cx - half, 17);
+      });
+
+      PieceKit.mark('중력 화살표', function () {
+        var from = y + R + 2, to = from + LG;
+        arrow(cx, from, to, INK, 2.5);
+        tag('중력', cx + 9, to - 7, INK);
+      });
+
+      PieceKit.mark('공기 저항 화살표', function () {
+        var from = y - R - 2, to = from - LD;
+        arrow(cx, from, to, DRAGC, 2.5);
+        // 저항이 0 일 때도 딱지는 남긴다 — '저항이라는 게 있는데 지금은 0' 이 읽혀야 한다.
+        // 다만 물체와 겹치지 않게 물체 위로 최소한 띄운다.
+        tag('공기 저항', cx + 9, Math.min(to + 7, from - 9), DRAGC);
+      });
+
+      PieceKit.mark('떨어지는 물체', function () {
+        ctx.fillStyle = INK;
+        ctx.beginPath();
+        ctx.arc(cx, y, R, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      PieceKit.mark('캡션', function () {
+        var msg;
+        if (hold >= 0 || ratio >= 0.96) {
+          msg = '공기 저항이 중력을 따라잡았다. 자국 간격이 더 벌어지지 않는다.';
+        } else if (ratio < 0.15) {
+          msg = '막 떨어지기 시작했다. 공기 저항은 아직 거의 없다.';
+        } else {
+          msg = '빨라질수록 공기 저항이 자란다. 자국 간격이 아직 벌어진다.';
+        }
+        ctx.font = '16px ' + FONT;
+        ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+        var lines = wrapText(msg, capW);
+        var lh = 25;
+        var top = H / 2 - (lines.length - 1) * lh / 2;
+        ctx.fillStyle = INK;
+        for (var i = 0; i < lines.length; i++) ctx.fillText(lines[i], capX, top + i * lh);
+      });
+    }
+  });
+})();
+</script>
+</body>
+</html>

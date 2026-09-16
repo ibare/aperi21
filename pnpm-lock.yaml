@@ -144,6 +144,9 @@ importers:
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../schema
+      '@aperi21/sim-angular-acceleration':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/angular-acceleration
       '@aperi21/sim-apparent-brightness':
         specifier: workspace:*
         version: link:../../sims/astro/apparent-brightness
@@ -156,6 +159,9 @@ importers:
       '@aperi21/sim-doppler-effect':
         specifier: workspace:*
         version: link:../../sims/waves/doppler-effect
+      '@aperi21/sim-free-fall':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/free-fall
       '@aperi21/sim-gas-pressure':
         specifier: workspace:*
         version: link:../../sims/thermal/gas-pressure
@@ -171,9 +177,33 @@ importers:
       '@aperi21/sim-pendulum-isochronism':
         specifier: workspace:*
         version: link:../../sims/oscillation/pendulum-isochronism
+      '@aperi21/sim-position-time-graph':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/position-time-graph
+      '@aperi21/sim-projectile-motion':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/projectile-motion
+      '@aperi21/sim-radius-of-curvature':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/radius-of-curvature
       '@aperi21/sim-ramp-energy':
         specifier: workspace:*
         version: link:../../sims/mechanics/ramp-energy
+      '@aperi21/sim-relative-velocity':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/relative-velocity
+      '@aperi21/sim-stopping-distance':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/stopping-distance
+      '@aperi21/sim-terminal-velocity':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/terminal-velocity
+      '@aperi21/sim-uniform-motion':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/uniform-motion
+      '@aperi21/sim-vector-addition':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/vector-addition
     devDependencies:
       '@aperi21/plugin-circuit':
         specifier: workspace:*
@@ -486,7 +516,106 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/kinematics/angular-acceleration:
+    devDependencies:
+      '@aperi21/plugin-mechanics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-mechanics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/kinematics/centripetal-acceleration:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/kinematics/free-fall:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/kinematics/position-time-graph:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/kinematics/projectile-motion:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/kinematics/radius-of-curvature:
+    devDependencies:
+      '@aperi21/plugin-mechanics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-mechanics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/kinematics/relative-velocity:
+    devDependencies:
+      '@aperi21/plugin-mechanics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-mechanics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/kinematics/stopping-distance:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/kinematics/terminal-velocity:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/kinematics/uniform-motion:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/kinematics/vector-addition:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*

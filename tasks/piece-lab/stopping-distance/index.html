@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>정지 거리</title>
+<style>
+  html, body { margin: 0; background: #f7f4ee; }
+  #c { display: block; width: 100%; height: 272px; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var c = document.getElementById('c');
+  var ctx = c.getContext('2d');
+
+  function fit() {
+    var d = window.devicePixelRatio || 1;
+    c.width = Math.round(c.clientWidth * d);
+    c.height = Math.round(272 * d);
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+  }
+  fit();
+  window.addEventListener('resize', fit);
+
+  // ---- 물리 상수 (미터 · 초) ----
+  var DT = PieceKit.DT;            // 1/60
+  var A = 6.0;                     // 제동 감속도 m/s^2
+  var T_REACT = 1.0;               // 반응 시간 s
+  var KMH = 1 / 3.6;
+
+  // 프레임 눈금 — 부동소수 누적 없이 위상을 가른다
+  var F_DISCOVER = 72;             // 1.2 s : 위험 발견 (모두 원점 도달)
+  var F_REACT_END = 132;           // 2.2 s : 반응 끝, 제동 시작
+  var F_ALL_STOP = 382;            // 6.37 s: 가장 빠른 차가 선다
+  var CYCLE = 576;                 // 9.6 s : 한 바퀴
+  var START_AT = 60;               // 도착한 순간 이미 접근 중이도록 위상을 미리 돌린다
+
+  var CARS = [
+    { kmh: 30, label: '30 km/h', y: 46 },
+    { kmh: 60, label: '60 km/h', y: 124 },
+    { kmh: 90, label: '90 km/h', y: 202 }
+  ];
+  CARS.forEach(function (car) {
+    car.v0 = car.kmh * KMH;
+    car.reactDist = car.v0 * T_REACT;
+    car.brakeDist = (car.v0 * car.v0) / (2 * A);
+  });
+
+  var REACT_UNIT = CARS[0].reactDist;                    // 8.3333 m
+  var BRAKE_UNIT = CARS[0].brakeDist;                    // 5.7870 m
+  var TOTAL_MAX = CARS[2].reactDist + CARS[2].brakeDist; // 77.083 m
+
+  // ---- 화면 상수 ----
+  var X0 = 84, PAD = 18, BAR_DY = 12, BAR_H = 15;
+  var BG = '#f7f4ee', ROAD = '#e6e1d5', CAR = '#363b42';
+  var REACT = '#b6ad99', BRAKE = '#cf4132', INK = '#363b42';
+
+  // ---- 상태 ----
+  var n = 0;
+
+  function reset() {
+    CARS.forEach(function (car) {
+      car.x = -car.v0 * (F_DISCOVER * DT);  // 발견 지점(0 m) 뒤에서 달려온다
+      car.v = car.v0;
+      car.reactEndX = null;
+      car.stopped = false;
+      car.stopFrame = null;
+    });
+  }
+
+  function advance() {
+    n++;
+    if (n >= CYCLE) { n = 0; reset(); return; }
+    for (var i = 0; i < CARS.length; i++) {
+      var car = CARS[i];
+      if (n <= F_REACT_END) {
+        // 접근 + 반응 — 둘 다 등속. 브레이크는 아직 걸리지 않았다.
+        car.x += car.v * DT;
+        if (n === F_REACT_END) car.reactEndX = car.x;
+      } else if (!car.stopped) {
+        var vNext = car.v - A * DT;
+        if (vNext <= 0) {
+          // 마지막 조각 스텝 — 남은 거리는 정확히 v^2/2a 여야 표의 값과 어긋나지 않는다
+          car.x += (car.v * car.v) / (2 * A);
+          car.v = 0;
+          car.stopped = true;
+          car.stopFrame = n;
+        } else {
+          car.x += ((car.v + vNext) / 2) * DT;  // 사다리꼴 = 등가속에서 정확
+          car.v = vNext;
+        }
+      }
+    }
+  }
+
+  reset();
+  for (var k = 0; k < START_AT; k++) advance();
+
+  // ---- 그리기 ----
+  function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+
+  function caption() {
+    if (n <= F_DISCOVER) return '세 대가 같은 곳에서 위험을 본다';
+    if (n <= F_REACT_END) return '아직 브레이크는 걸리지 않았다 — 반응하는 1초 동안 속력 그대로 간다';
+    if (n < F_ALL_STOP) return '브레이크가 걸렸다 — 붉은 구간이 뒤에서 벌어진다';
+    return '속력 3배 — 반응 거리는 3배, 제동 거리는 9배';
+  }
+
+  function ticks(px0, px1, unitPx, alpha, top, h) {
+    if (alpha <= 0 || unitPx <= 2) return;
+    ctx.save();
+    ctx.globalAlpha = alpha * 0.9;
+    ctx.fillStyle = '#ffffff';
+    for (var x = px0 + unitPx; x < px1 - 1; x += unitPx) ctx.fillRect(Math.round(x) - 0.5, top, 1, h);
+    ctx.restore();
+  }
+
+  function labelIn(text, px, top, unitPx, alpha, color) {
+    if (alpha <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = color;
+    ctx.font = '10px system-ui, -apple-system, sans-serif';
+    if (ctx.measureText(text).width + 12 <= unitPx) ctx.fillText(text, px + 5, top + BAR_H - 4.5);
+    ctx.restore();
+  }
+
+  PieceKit.loop({
+    step: function () { advance(); },
+
+    draw: function () {
+      var W = c.clientWidth;
+      var scale = (W - X0 - PAD) / TOTAL_MAX;   // px per meter
+      var trackW = TOTAL_MAX * scale;
+      var tickA = clamp01((n - F_ALL_STOP) / 36);
+
+      ctx.fillStyle = BG;
+      ctx.fillRect(0, 0, W, 272);
+
+      PieceKit.mark('도로', function () {
+        ctx.fillStyle = ROAD;
+        CARS.forEach(function (car) { ctx.fillRect(X0, car.y + BAR_DY, trackW, BAR_H); });
+      });
+
+      PieceKit.mark('위험 발견 지점', function () {
+        ctx.save();
+        ctx.globalAlpha = 0.55;
+        ctx.strokeStyle = INK;
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([3, 4]);
+        ctx.beginPath();
+        ctx.moveTo(X0, 20);
+        ctx.lineTo(X0, 240);
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      PieceKit.mark('반응 구간 자취', function () {
+        ctx.fillStyle = REACT;
+        CARS.forEach(function (car) {
+          var end = car.reactEndX === null ? car.x : car.reactEndX;
+          if (end <= 0) return;
+          var w = end * scale;
+          var top = car.y + BAR_DY;
+          ctx.fillRect(X0, top, w, BAR_H);
+          ticks(X0, X0 + w, REACT_UNIT * scale, tickA, top, BAR_H);
+        });
+      });
+
+      PieceKit.mark('제동 구간 자취', function () {
+        ctx.fillStyle = BRAKE;
+        CARS.forEach(function (car) {
+          if (car.reactEndX === null) return;
+          var w = (car.x - car.reactEndX) * scale;
+          if (w <= 0) return;
+          var px = X0 + car.reactEndX * scale;
+          var top = car.y + BAR_DY;
+          ctx.fillRect(px, top, w, BAR_H);
+          ticks(px, px + w, BRAKE_UNIT * scale, tickA, top, BAR_H);
+        });
+      });
+
+      PieceKit.mark('구간 거리 값', function () {
+        CARS.forEach(function (car, i) {
+          if (car.stopFrame === null) return;
+          var a = clamp01((n - car.stopFrame) / 18);
+          var top = car.y + BAR_DY;
+          var rw = car.reactDist * scale, bw = car.brakeDist * scale;
+          var rTxt = (i === 0 ? '반응 ' : '') + car.reactDist.toFixed(1) + ' m';
+          var bTxt = (i === 0 ? '제동 ' : '') + car.brakeDist.toFixed(1) + ' m';
+          labelIn(rTxt, X0, top, Math.min(rw, REACT_UNIT * scale), a, INK);
+          labelIn(bTxt, X0 + rw, top, Math.min(bw, BRAKE_UNIT * scale), a, '#ffffff');
+        });
+      });
+
+      PieceKit.mark('자동차', function () {
+        var W = c.clientWidth;
+        CARS.forEach(function (car) {
+          var px = X0 + car.x * scale, y = car.y;
+          ctx.fillStyle = CAR;
+          ctx.fillRect(px - 24, y - 6, 24, 11);
+          ctx.fillRect(px - 18, y - 12, 12, 7);
+          ctx.beginPath(); ctx.arc(px - 18, y + 7, 3, 0, 6.2832); ctx.fill();
+          ctx.beginPath(); ctx.arc(px - 6, y + 7, 3, 0, 6.2832); ctx.fill();
+          if (n > F_REACT_END && !car.stopped) {
+            ctx.fillStyle = BRAKE;
+            ctx.fillRect(px - 26, y - 4, 2, 5);
+          }
+          ctx.fillStyle = INK;
+          ctx.font = '11px system-ui, -apple-system, sans-serif';
+          var lw = ctx.measureText(car.label).width;
+          ctx.fillText(car.label, Math.min(px - 24, W - PAD - lw), y - 17);
+        });
+      });
+
+      PieceKit.mark('캡션', function () {
+        ctx.fillStyle = INK;
+        ctx.font = '13px system-ui, -apple-system, sans-serif';
+        ctx.fillText(caption(), X0, 258);
+      });
+    }
+  });
+})();
+</script>
+</body>
+</html>

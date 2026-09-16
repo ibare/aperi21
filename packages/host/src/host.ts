@@ -16,10 +16,12 @@ import { PlacementController } from './controller/placement';
 import { ValueEditController } from './controller/value-edit';
 import { SliderController } from './controller/slider';
 import { ScaleDragController } from './controller/scale-drag';
+import { PointDragController } from './controller/point-drag';
 import { ParamPanelController } from './controller/param-panel';
 import { ViewTabsController } from './controller/view-tabs';
 import { StageTabsController } from './controller/stage-tabs';
 import { EnvTogglesController } from './controller/env-toggles';
+import { ParamChipsController } from './controller/param-chips';
 import { ResetButtonsController } from './controller/reset-buttons';
 import { I18nResolver, type Dictionary, type HostI18n } from './i18n/resolver';
 import { FRAMEWORK_MESSAGES } from './i18n/messages';
@@ -102,10 +104,12 @@ export function standardCapabilities(): Required<HostCapabilities> {
       'value-edit': () => new ValueEditController(),
       slider: () => new SliderController(),
       'scale-drag': () => new ScaleDragController(),
+      'point-drag': () => new PointDragController(),
       'param-panel': () => new ParamPanelController(),
       'view-tabs': () => new ViewTabsController(),
       'stage-tabs': () => new StageTabsController(),
       'env-toggles': () => new EnvTogglesController(),
+      'param-chips': () => new ParamChipsController(),
       'reset-buttons': () => new ResetButtonsController(),
     },
     vectorCompute: { uniform: uniformVectorField, gravity: gravityVectorField },

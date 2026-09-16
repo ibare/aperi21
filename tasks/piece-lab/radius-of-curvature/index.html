@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>곡률 반지름</title>
+<style>
+  html, body { margin: 0; background: #f7f4ec; }
+  #c {
+    display: block;
+    width: 100%;
+    height: 400px;
+    cursor: grab;
+    touch-action: none;
+  }
+  #c.dragging { cursor: grabbing; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ────────────────────────────────────────────────────────────
+  // 경로 — 지지함수 h(φ) 로 빚는다.
+  //
+  // φ 는 바깥 법선의 방향각. h(φ) 는 원점에서 그 방향의 접선까지 거리.
+  //   P(φ) = ( h cosφ − h' sinφ ,  h sinφ + h' cosφ )
+  //   R(φ) = h + h''                       ← 곡률 반지름이 바로 나온다
+  //
+  // h = C + A·cos2φ 로 두면 R = C − 3A·cos2φ 이므로
+  // 곡률 반지름의 최소·최대를 직접 정할 수 있다. 여기서는 72 ~ 288 (4배).
+  // 곡선은 닫혀 있고 어디서나 볼록(R>0)이라, 점이 한 방향으로 계속 돈다.
+  // ────────────────────────────────────────────────────────────
+  var C = 180;          // 평균 곡률 반지름
+  var A = 36;           // 흔들림 폭 — R 은 C−3A 에서 C+3A 사이
+  var LEN = 2 * Math.PI * C;   // 둘레 = ∫R dφ = 2πC
+  var PERIOD = 7;              // 한 바퀴 도는 데 걸리는 시간 (초)
+  var V = LEN / PERIOD;        // 호길이 기준 등속
+  var PHI0 = 0.6;              // 시작 위치 — 오른쪽 끝을 막 지난 자리
+
+  var TAU = Math.PI * 2;
+
+  function pointAt(p) {
+    var h = C + A * Math.cos(2 * p);
+    var hp = -2 * A * Math.sin(2 * p);
+    var cp = Math.cos(p), sp = Math.sin(p);
+    return [h * cp - hp * sp, h * sp + hp * cp];
+  }
+  function radiusAt(p) {
+    return C - 3 * A * Math.cos(2 * p);
+  }
+  function centerAt(p) {
+    var P = pointAt(p), R = radiusAt(p);
+    return [P[0] - R * Math.cos(p), P[1] - R * Math.sin(p)];
+  }
+  // 호길이 s(φ) = ∫R dφ — 닫힌 꼴이라 역함수도 뉴턴 몇 번이면 닿는다.
+  function arcAt(p) {
+    return C * p - 1.5 * A * Math.sin(2 * p);
+  }
+  function phiOfArc(s) {
+    var p = s / C;
+    for (var i = 0; i < 6; i++) p -= (arcAt(p) - s) / radiusAt(p);
+    return p;
+  }
+
+  // ────────────────────────────────────────────────────────────
+  // 화면
+  // ────────────────────────────────────────────────────────────
+  var INK = '#2e3440';        // 길
+  var ACCENT = '#c8542a';     // 지금 이 자리의 원 — 원·반지름·중심·달리는 점이 전부 이 색
+  var PAPER = '#f7f4ec';
+  var TEXT = '#5b6472';
+  var H = 400;
+
+  var cv = document.getElementById('c');
+  var ctx = cv.getContext('2d');
+  var W = 0, SC = 1, cx = 0, cy = 180;
+
+  function fit() {
+    var d = window.devicePixelRatio || 1;
+    W = cv.clientWidth || 840;
+    cv.width = Math.round(W * d);
+    cv.height = Math.round(H * d);
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+    // 곡선의 가로 지름은 2(C+A)=432. 좁은 컨테이너에서는 줄여서 전부 담는다.
+    SC = Math.max(0.45, Math.min(1, (W - 56) / 480));
+    cx = W / 2;
+    cy = 180;
+  }
+  fit();
+  window.addEventListener('resize', fit);
+
+  function sx(x) { return cx + SC * x; }
+  function sy(y) { return cy - SC * y; }
+
+  // 경로와 축폐선은 모양이 변하지 않는다 — 한 번만 샘플링한다.
+  var N = 360;
+  var pathPts = [], evolutePts = [];
+  for (var i = 0; i <= N; i++) {
+    var p = (i / N) * TAU;
+    pathPts.push(pointAt(p));
+    evolutePts.push(centerAt(p));
+  }
+
+  function polyline(pts, close) {
+    ctx.beginPath();
+    for (var i = 0; i < pts.length; i++) {
+      var X = sx(pts[i][0]), Y = sy(pts[i][1]);
+      if (i === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y);
+    }
+    if (close) ctx.closePath();
+    ctx.stroke();
+  }
+
+  // ────────────────────────────────────────────────────────────
+  // 상태 — 달리는 점의 호길이 하나뿐이다.
+  // ────────────────────────────────────────────────────────────
+  var arc = arcAt(PHI0);
+  var dragging = false;
+
+  function nearestArc(mx, my) {
+    var x = (mx - cx) / SC, y = (cy - my) / SC;
+    var best = 0, bd = Infinity;
+    for (var i = 0; i < 240; i++) {
+      var p = (i / 240) * TAU, P = pointAt(p);
+      var dx = P[0] - x, dy = P[1] - y, d = dx * dx + dy * dy;
+      if (d < bd) { bd = d; best = p; }
+    }
+    return arcAt(best);
+  }
+
+  if (!PieceKit.frozen) {
+    cv.addEventListener('pointerdown', function (e) {
+      dragging = true;
+      cv.classList.add('dragging');
+      cv.setPointerCapture(e.pointerId);
+      var r = cv.getBoundingClientRect();
+      arc = nearestArc(e.clientX - r.left, e.clientY - r.top);
+    });
+    cv.addEventListener('pointermove', function (e) {
+      if (!dragging) return;
+      var r = cv.getBoundingClientRect();
+      arc = nearestArc(e.clientX - r.left, e.clientY - r.top);
+    });
+    var release = function () { dragging = false; cv.classList.remove('dragging'); };
+    cv.addEventListener('pointerup', release);
+    cv.addEventListener('pointercancel', release);
+  }
+
+  // ────────────────────────────────────────────────────────────
+  PieceKit.loop({
+    step: function (dt) {
+      if (!dragging) arc += V * dt;
+    },
+
+    draw: function () {
+      var s = ((arc % LEN) + LEN) % LEN;
+      var phi = phiOfArc(s);
+      var P = pointAt(phi);
+      var R = radiusAt(phi);
+      var O = centerAt(phi);
+      var swelling = Math.sin(2 * phi) > 0;   // dR/dφ = 6A·sin2φ
+
+      var PX = sx(P[0]), PY = sy(P[1]);
+      var OX = sx(O[0]), OY = sy(O[1]);
+      var RS = R * SC;
+
+      ctx.fillStyle = PAPER;
+      ctx.fillRect(0, 0, W, H);
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
+
+      // 원의 중심이 훑고 지나가는 자리. 중심점이 그 위를 달리는 것이 보이라고 둔다.
+      PieceKit.mark('중심이 지나는 길', function () {
+        ctx.strokeStyle = 'rgba(200, 84, 42, 0.17)';
+        ctx.lineWidth = 1;
+        polyline(evolutePts, true);
+      });
+
+      PieceKit.mark('길', function () {
+        ctx.strokeStyle = INK;
+        ctx.lineWidth = 2.4;
+        polyline(pathPts, true);
+      });
+
+      // 접촉점에서 멀어질수록 옅어진다 — '국소적으로' 닮았다는 것.
+      PieceKit.mark('얹힌 원', function () {
+        var SEG = 96, W_SEG = TAU / SEG;
+        ctx.lineWidth = 2.6;
+        // butt cap + 아주 조금 겹치게. round cap 으로 두면 세그먼트 끝이 서로 겹쳐
+        // 알파가 쌓이면서 옅은 구간이 점선처럼 끊겨 보인다 — 원이 아니라 다른 뜻이 된다.
+        ctx.lineCap = 'butt';
+        for (var i = 0; i < SEG; i++) {
+          var a0 = phi - Math.PI + i * W_SEG;
+          var a1 = a0 + W_SEG * 1.06;
+          var d = a0 + W_SEG / 2 - phi;
+          d = Math.atan2(Math.sin(d), Math.cos(d));
+          var al = 0.11 + 0.78 * Math.exp(-(d * d) / (2 * 0.55 * 0.55));
+          ctx.strokeStyle = 'rgba(200, 84, 42, ' + al.toFixed(3) + ')';
+          ctx.beginPath();
+          ctx.arc(OX, OY, RS, -a1, -a0);
+          ctx.stroke();
+        }
+        ctx.lineCap = 'round';
+      });
+
+      PieceKit.mark('반지름', function () {
+        ctx.strokeStyle = 'rgba(200, 84, 42, 0.72)';
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.moveTo(OX, OY);
+        ctx.lineTo(PX, PY);
+        ctx.stroke();
+      });
+
+      PieceKit.mark('원의 중심', function () {
+        ctx.fillStyle = ACCENT;
+        ctx.beginPath();
+        ctx.arc(OX, OY, 3.4, 0, TAU);
+        ctx.fill();
+      });
+
+      PieceKit.mark('달리는 점', function () {
+        ctx.fillStyle = ACCENT;
+        ctx.beginPath();
+        ctx.arc(PX, PY, 6.2, 0, TAU);
+        ctx.fill();
+        ctx.strokeStyle = PAPER;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(PX, PY, 6.2, 0, TAU);
+        ctx.stroke();
+      });
+
+      PieceKit.mark('캡션', function () {
+        ctx.fillStyle = TEXT;
+        ctx.font = '500 15px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillText(
+          swelling ? '길이 펴진다 — 얹힌 원이 부푼다'
+                   : '길이 굽는다 — 얹힌 원이 오므라든다',
+          cx, 378
+        );
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

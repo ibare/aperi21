@@ -128,6 +128,86 @@ export function registerAperi21Bundles(): void {
     return registerBundle('aperi21:velocity-time-graph', m.velocityTimeGraphBundle, caps.capabilities);
   });
 
+  registerBundleLoader('aperi21:position-time-graph', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-position-time-graph'),
+      import('./capabilities/kinematics/position-time-graph.generated.js'),
+    ]);
+    return registerBundle('aperi21:position-time-graph', m.positionTimeGraphBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:uniform-motion', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-uniform-motion'),
+      import('./capabilities/kinematics/uniform-motion.generated.js'),
+    ]);
+    return registerBundle('aperi21:uniform-motion', m.uniformMotionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:free-fall', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-free-fall'),
+      import('./capabilities/kinematics/free-fall.generated.js'),
+    ]);
+    return registerBundle('aperi21:free-fall', m.freeFallBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:projectile-motion', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-projectile-motion'),
+      import('./capabilities/kinematics/projectile-motion.generated.js'),
+    ]);
+    return registerBundle('aperi21:projectile-motion', m.projectileMotionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:vector-addition', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-vector-addition'),
+      import('./capabilities/kinematics/vector-addition.generated.js'),
+    ]);
+    return registerBundle('aperi21:vector-addition', m.vectorAdditionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:relative-velocity', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-relative-velocity'),
+      import('./capabilities/kinematics/relative-velocity.generated.js'),
+    ]);
+    return registerBundle('aperi21:relative-velocity', m.relativeVelocityBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:terminal-velocity', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-terminal-velocity'),
+      import('./capabilities/kinematics/terminal-velocity.generated.js'),
+    ]);
+    return registerBundle('aperi21:terminal-velocity', m.terminalVelocityBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:stopping-distance', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-stopping-distance'),
+      import('./capabilities/kinematics/stopping-distance.generated.js'),
+    ]);
+    return registerBundle('aperi21:stopping-distance', m.stoppingDistanceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:angular-acceleration', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-angular-acceleration'),
+      import('./capabilities/kinematics/angular-acceleration.generated.js'),
+    ]);
+    return registerBundle('aperi21:angular-acceleration', m.angularAccelerationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:radius-of-curvature', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-radius-of-curvature'),
+      import('./capabilities/kinematics/radius-of-curvature.generated.js'),
+    ]);
+    return registerBundle('aperi21:radius-of-curvature', m.radiusOfCurvatureBundle, caps.capabilities);
+  });
+
   registerBundleLoader('aperi21:archimedes-principle', async () => {
     const [m, caps] = await Promise.all([
       import('@aperi21/sim-archimedes-principle'),

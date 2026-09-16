@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>등속 운동 — 같은 시간에 같은 간격</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #faf6ee; }
+  .piece {
+    max-width: 880px; margin: 0 auto; padding: 4px 0 10px;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    color: #1f4e60;
+  }
+  canvas { display: block; width: 100%; height: 214px; }
+  .caption {
+    font-size: 14px; line-height: 1.5; color: #43707f;
+    padding: 2px 30px 0; letter-spacing: -0.01em;
+  }
+  .ctl {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 30px 0; font-size: 12px; color: #8a9aa1; letter-spacing: -0.01em;
+  }
+  .ctl input[type=range] {
+    flex: 0 1 240px; accent-color: #1f4e60; height: 18px; margin: 0; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <p class="caption">1초마다 자국 하나. 자국과 자국 사이가 모두 같다.</p>
+  <div class="ctl">
+    <span>느리게</span>
+    <input id="speed" type="range" min="45" max="100" value="88" aria-label="빠르기">
+    <span>빠르게</span>
+  </div>
+</div>
+
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var canvas = document.getElementById('c');
+  var ctx = canvas.getContext('2d');
+  var slider = document.getElementById('speed');
+
+  // ---- 상수 ----
+  var STEPS = 6;      // 한 랩에서 남기는 걸음(구간) 수
+  var LAP = 7.0;      // 랩 주기(초) = 6초 진행 + 1초 마무리와 전환
+  var PHASE0 = 3.05;  // 도착한 순간 이미 세 걸음째, 그것도 자국이 막 찍힌 참 — 빈 화면도 멈춘 화면도 보여주지 않는다
+  var H = 214;
+
+  var INK = '#1f4e60';        // 움직이는 대상과 그것이 남긴 것 — 모두 같은 색
+  var INK_SOFT = '#5b8b9e';
+  var ACCENT = '#e2682c';     // 한 가지 뜻에만: "바로 지금 한 걸음이 찍혔다"
+  var GROUND = '#ded6c6';
+
+  // ---- 상태: dt 로 쌓이는 것은 lapT 하나뿐 ----
+  var lapT = PHASE0;
+  var speed = 0.88;           // 0.45 ~ 1.00, 무차원
+
+  slider.addEventListener('input', function () {
+    speed = parseInt(slider.value, 10) / 100;
+    lapT = 0;                 // 빠르기를 바꾸면 처음부터 — 간격이 섞이지 않게
+  });
+
+  // ---- 레이아웃: 폭에 비례해 매 프레임 다시 잡는다 ----
+  function layout() {
+    var w = canvas.clientWidth || 880;
+    var pad = 30;
+    var span = w - pad * 2;
+    return {
+      w: w,
+      x0: pad,
+      v: (span / STEPS) * speed,   // px/초 — 가장 빠를 때 6초에 끝까지
+      groundY: 86,
+      rowTop: 128,
+      rowH: 13,
+      barH: 8,
+    };
+  }
+
+  function fit() {
+    var d = window.devicePixelRatio || 1;
+    var w = canvas.clientWidth || 880;
+    if (canvas.width !== Math.round(w * d) || canvas.height !== Math.round(H * d)) {
+      canvas.width = Math.round(w * d);
+      canvas.height = Math.round(H * d);
+    }
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+  }
+
+  function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+  function easeOut(p) { var q = 1 - p; return 1 - q * q * q; }
+  function lerp(a, b, p) { return a + (b - a) * p; }
+
+  // ---- 그리기 ----
+  function draw() {
+    fit();
+    var L = layout();
+    ctx.clearRect(0, 0, L.w, H);
+
+    // 랩 경계에서만 잠깐 흐려진다. 진행 구간에서는 늘 1.
+    var alpha = 1;
+    if (lapT > 6.62) alpha = 1 - clamp01((lapT - 6.62) / 0.38);
+    else if (lapT < 0.28) alpha = clamp01(lapT / 0.28);
+    ctx.globalAlpha = alpha;
+
+    var walked = Math.min(lapT, STEPS);          // 걸은 시간(초)
+    var n = Math.floor(walked + 1e-9);           // 지금까지 찍힌 자국 개수 - 1
+    var ballX = L.x0 + L.v * walked;
+
+    PieceKit.mark('바닥', function () {
+      ctx.strokeStyle = GROUND;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(L.x0 - 12, L.groundY);
+      ctx.lineTo(L.w - L.x0 + 12, L.groundY);
+      ctx.stroke();
+    });
+
+    PieceKit.mark('걸음 막대', function () {
+      // 구간 k 는 자국 k 와 k+1 사이. 찍히는 순간 제자리에서 떨어져 나와
+      // 아래로 내려가 왼쪽 끝을 맞춰 쌓인다. 길이는 도중에 절대 변하지 않는다.
+      for (var k = 0; k < STEPS; k++) {
+        if (lapT < k + 1) break;
+        var p = easeOut(clamp01((lapT - (k + 1)) / 0.5));
+        var sx = L.x0 + L.v * k;
+        var sy = L.groundY + 20;
+        var ex = L.x0;
+        var ey = L.rowTop + k * L.rowH;
+        var x = lerp(sx, ex, p);
+        var y = lerp(sy, ey, p);
+        ctx.fillStyle = INK_SOFT;
+        ctx.globalAlpha = alpha * (0.35 + 0.65 * clamp01(p / 0.2));
+        ctx.fillRect(x, y, L.v, L.barH);
+      }
+      ctx.globalAlpha = alpha;
+    });
+
+    PieceKit.mark('자국', function () {
+      for (var k = 0; k <= n; k++) {
+        var x = L.x0 + L.v * k;
+        var age = lapT - k;
+        var pulse = age < 0.42 ? 1 - age / 0.42 : 0;
+        ctx.strokeStyle = pulse > 0 ? ACCENT : INK;
+        ctx.lineWidth = 2.5;
+        // 바닥선 아래로만 뻗는다 — 물체가 자국 위를 지나며 가리지 않게
+        ctx.beginPath();
+        ctx.moveTo(x, L.groundY - 3);
+        ctx.lineTo(x, L.groundY + 13 + 8 * pulse);
+        ctx.stroke();
+        if (pulse > 0) {
+          ctx.globalAlpha = alpha * pulse * 0.75;
+          ctx.strokeStyle = ACCENT;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.arc(x, L.groundY, 8 + 26 * (1 - pulse), 0, Math.PI);
+          ctx.stroke();
+          ctx.globalAlpha = alpha;
+        }
+      }
+    });
+
+    PieceKit.mark('가는 것', function () {
+      ctx.fillStyle = INK;
+      ctx.beginPath();
+      ctx.arc(ballX, L.groundY - 13, 12, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    ctx.globalAlpha = 1;
+  }
+
+  PieceKit.loop({
+    step: function (dt) {
+      lapT += dt;
+      if (lapT >= LAP) lapT -= LAP;
+    },
+    draw: draw,
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>위치-시간 그래프</title>
+<style>
+  html, body { margin: 0; background: #f7f4ee; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 8px; }
+  canvas { display: block; width: 100%; height: 342px; }
+  .ctrl {
+    display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center;
+    padding: 2px 20px 10px;
+    font: 12px/1.6 -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    color: #3f3a32;
+  }
+  .ctrl label { display: flex; gap: 7px; align-items: center; }
+  .sw { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+  input[type=range] { width: 124px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <canvas id="c"></canvas>
+  <div class="ctrl" id="ctrl">
+    <label><span class="sw" style="background:#d9622b"></span>왼쪽 구슬 빠르기
+      <input id="sA" type="range" min="0.04" max="0.2" step="0.002" value="0.083" aria-label="왼쪽 구슬 빠르기"></label>
+    <label><span class="sw" style="background:#1f7a8c"></span>오른쪽 구슬 빠르기
+      <input id="sB" type="range" min="0.04" max="0.2" step="0.002" value="0.152" aria-label="오른쪽 구슬 빠르기"></label>
+  </div>
+</div>
+
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var c = document.getElementById('c');
+  var ctx = c.getContext('2d');
+  var sA = document.getElementById('sA');
+  var sB = document.getElementById('sB');
+
+  // ---- 타임라인 ----
+  var RUN = 6;            // 구슬이 오르며 선이 그려지는 시간
+  var HOLD = 2;           // 다 그린 그래프를 그대로 두는 시간
+  var FADE = 0.6;         // 지우는 시간
+  var RT = RUN + HOLD + FADE;   // 라운드 하나
+  var CYCLE = RT * 2;           // 라운드 둘이 한 바퀴
+  var T0 = 2.4;           // 도착했을 때 이미 이만큼 그려져 있게 미리 돌려 둔다
+
+  var V_SLOW = 0.083;     // 높이비율/초
+  var V_FAST = 0.152;
+
+  // ---- 색 ----
+  var BG = '#f7f4ee', LANE = '#e9e3d5', AX = '#8d8778', TXT = '#3f3a32';
+  var COL = ['#d9622b', '#1f7a8c'];
+
+  var DT = PieceKit.DT;
+
+  var st = {
+    pos: [0, 0],          // 0~1, 길에서 오른 높이
+    v: [V_SLOW, V_FAST],
+    tr: 0,                // 이번 라운드가 시작하고 흐른 시간
+    round: -2,
+    trail: [[], []],      // [시각, 높이, 시각, 높이, ...]
+    ticks: [[], []],      // 정수 초마다의 [시각, 높이]
+    alpha: 1,
+    manual: false,
+  };
+
+  function mod(x, m) { return ((x % m) + m) % m; }
+
+  function reset() {
+    st.pos = [0, 0];
+    st.tr = 0;
+    st.trail = [[0, 0], [0, 0]];
+    st.ticks = [[0, 0], [0, 0]];
+  }
+
+  function integrate(dt) {
+    var prev = st.tr;
+    for (var i = 0; i < 2; i++) st.pos[i] = Math.min(1, st.pos[i] + st.v[i] * dt);
+    st.tr = prev + dt;
+    // 표본은 0.05 초마다만 남긴다 (끝점은 그릴 때 늘 덧붙인다)
+    for (i = 0; i < 2; i++) {
+      var tr = st.trail[i];
+      if (st.tr - tr[tr.length - 2] >= 0.05) { tr.push(st.tr, st.pos[i]); }
+    }
+    // 정수 초를 지나면 그 순간의 높이를 자국으로 남긴다
+    if (Math.floor(st.tr) > Math.floor(prev)) {
+      var n = Math.floor(st.tr);
+      for (i = 0; i < 2; i++) st.ticks[i].push(n, st.pos[i]);
+    }
+  }
+
+  function step(dt, t) {
+    if (st.manual) {
+      st.round = -1;
+      if (st.tr >= RUN || st.pos[0] >= 1 || st.pos[1] >= 1) reset();
+      integrate(dt);
+      st.alpha = 1;
+      return;
+    }
+    var tc = mod(T0 + t, CYCLE);
+    var r = tc < RT ? 0 : 1;
+    var tr = tc - r * RT;
+    if (r !== st.round) {
+      st.round = r;
+      reset();
+      // 라운드 둘째 판에서 두 구슬의 빠르기를 맞바꾼다
+      st.v = r === 0 ? [V_SLOW, V_FAST] : [V_FAST, V_SLOW];
+    }
+    if (tr < RUN) integrate(dt);
+    if (tr > RUN + HOLD) st.alpha = Math.max(0, 1 - (tr - (RUN + HOLD)) / FADE);
+    else if (tr < 0.35) st.alpha = Math.min(1, tr / 0.35);
+    else st.alpha = 1;
+  }
+
+  // ---- 자리 ----
+  var lastW = 0, lastH = 0;
+  function fit() {
+    var d = window.devicePixelRatio || 1;
+    var w = c.clientWidth, h = c.clientHeight;
+    if (w === lastW && h === lastH && c.width) return;
+    lastW = w; lastH = h;
+    c.width = Math.round(w * d);
+    c.height = Math.round(h * d);
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+  }
+  function geom() {
+    var W = c.clientWidth;
+    return {
+      W: W, yTop: 40, yBot: 276,
+      lane: [[22, 60], [68, 106]],
+      gx0: 142, gx1: Math.max(320, W - 30),
+    };
+  }
+  function Y(g, p) { return g.yBot - p * (g.yBot - g.yTop); }
+  function X(g, tt) { return g.gx0 + (Math.min(tt, RUN) / RUN) * (g.gx1 - g.gx0); }
+
+  function captionText() {
+    if (st.manual) return '빠르기를 올린 구슬의 선이 더 가파르게 선다.';
+    if (st.round === 0) return '더 빨리 오르는 구슬일수록 남기는 선이 더 가파르다.';
+    return '두 구슬의 빠르기를 맞바꾸자, 가파른 선도 따라 바뀌었다.';
+  }
+
+  var FONT = '12px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+  var FONT_CAP = '14px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+
+  function draw() {
+    fit();
+    var g = geom(), W = g.W, H = c.clientHeight;
+    var a = st.alpha;
+    var penT = Math.min(st.tr, RUN);
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = BG;
+    ctx.fillRect(0, 0, W, H);
+    ctx.font = FONT;
+    ctx.textBaseline = 'alphabetic';
+    ctx.textAlign = 'left';
+
+    PieceKit.mark('오르는 두 길', function () {
+      ctx.fillStyle = LANE;
+      for (var i = 0; i < 2; i++) {
+        var L = g.lane[i];
+        ctx.fillRect(L[0], g.yTop, L[1] - L[0], g.yBot - g.yTop);
+      }
+      ctx.fillStyle = TXT;
+      ctx.fillText('높이', 22, g.yTop - 11);
+    });
+
+    PieceKit.mark('시간과 높이의 축', function () {
+      ctx.strokeStyle = AX;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(g.gx0, g.yTop - 10);
+      ctx.lineTo(g.gx0, g.yBot);
+      ctx.lineTo(g.gx1 + 10, g.yBot);
+      ctx.stroke();
+      ctx.fillStyle = AX;
+      ctx.beginPath();
+      ctx.moveTo(g.gx1 + 10, g.yBot);
+      ctx.lineTo(g.gx1 + 3, g.yBot - 3.6);
+      ctx.lineTo(g.gx1 + 3, g.yBot + 3.6);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(g.gx0, g.yTop - 10);
+      ctx.lineTo(g.gx0 - 3.6, g.yTop - 3);
+      ctx.lineTo(g.gx0 + 3.6, g.yTop - 3);
+      ctx.fill();
+      ctx.fillStyle = TXT;
+      ctx.textAlign = 'right';
+      ctx.fillText('시간', g.gx1 + 10, g.yBot + 17);
+      ctx.textAlign = 'left';
+    });
+
+    PieceKit.mark('높이를 잇는 안내선', function () {
+      ctx.save();
+      ctx.setLineDash([3, 4]);
+      ctx.lineWidth = 1;
+      for (var i = 0; i < 2; i++) {
+        var cx = (g.lane[i][0] + g.lane[i][1]) / 2;
+        var y = Y(g, st.pos[i]);
+        ctx.globalAlpha = 0.4 * a;
+        ctx.strokeStyle = COL[i];
+        ctx.beginPath();
+        ctx.moveTo(cx + 12, y);
+        ctx.lineTo(X(g, penT), y);
+        ctx.stroke();
+      }
+      ctx.restore();
+    });
+
+    function trailOf(i, name) {
+      PieceKit.mark(name, function () {
+        var tr = st.trail[i];
+        ctx.save();
+        ctx.globalAlpha = a;
+        ctx.strokeStyle = COL[i];
+        ctx.lineWidth = 2.6;
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(X(g, tr[0]), Y(g, tr[1]));
+        for (var k = 2; k < tr.length; k += 2) ctx.lineTo(X(g, tr[k]), Y(g, tr[k + 1]));
+        ctx.lineTo(X(g, penT), Y(g, st.pos[i]));
+        ctx.stroke();
+        ctx.fillStyle = COL[i];
+        ctx.beginPath();
+        ctx.arc(X(g, penT), Y(g, st.pos[i]), 4.5, 0, 6.2832);
+        ctx.fill();
+        ctx.restore();
+      });
+    }
+    trailOf(0, '왼쪽 구슬이 남긴 선');
+    trailOf(1, '오른쪽 구슬이 남긴 선');
+
+    PieceKit.mark('1초마다 찍히는 자국', function () {
+      ctx.save();
+      for (var i = 0; i < 2; i++) {
+        var tk = st.ticks[i], L = g.lane[i];
+        for (var k = 2; k < tk.length; k += 2) {
+          var y = Y(g, tk[k + 1]);
+          ctx.globalAlpha = 0.5 * a;
+          ctx.strokeStyle = COL[i];
+          ctx.lineWidth = 1.6;
+          ctx.beginPath();
+          ctx.moveTo(L[0] + 4, y);
+          ctx.lineTo(L[1] - 4, y);
+          ctx.stroke();
+          ctx.globalAlpha = a;
+          ctx.fillStyle = BG;
+          ctx.beginPath();
+          ctx.arc(X(g, tk[k]), y, 3.6, 0, 6.2832);
+          ctx.fill();
+          ctx.fillStyle = COL[i];
+          ctx.beginPath();
+          ctx.arc(X(g, tk[k]), y, 2.4, 0, 6.2832);
+          ctx.fill();
+        }
+      }
+      ctx.restore();
+    });
+
+    function ball(i, name) {
+      PieceKit.mark(name, function () {
+        var cx = (g.lane[i][0] + g.lane[i][1]) / 2;
+        var y = Y(g, st.pos[i]);
+        ctx.save();
+        ctx.globalAlpha = a;
+        ctx.fillStyle = COL[i];
+        ctx.beginPath();
+        ctx.arc(cx, y, 10, 0, 6.2832);
+        ctx.fill();
+        ctx.strokeStyle = BG;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.restore();
+      });
+    }
+    ball(0, '왼쪽 구슬');
+    ball(1, '오른쪽 구슬');
+
+    PieceKit.mark('캡션', function () {
+      ctx.fillStyle = TXT;
+      ctx.font = FONT_CAP;
+      ctx.fillText(captionText(), 22, 324);
+      ctx.font = FONT;
+    });
+
+    // 자동 진행 중에는 손잡이가 지금 빠르기를 비춘다 (?t= 로 찍을 때도 어긋나지 않게)
+    if (!st.manual) {
+      if (+sA.value !== st.v[0]) sA.value = st.v[0];
+      if (+sB.value !== st.v[1]) sB.value = st.v[1];
+    }
+  }
+
+  // ---- 조작기 ----
+  if (PieceKit.frozen) {
+    sA.disabled = true;
+    sB.disabled = true;
+  } else {
+    var take = function () {
+      st.manual = true;
+      st.v = [+sA.value, +sB.value];
+    };
+    sA.addEventListener('input', take);
+    sB.addEventListener('input', take);
+  }
+
+  // ---- 도착한 순간 이미 진행 중이도록 T0 만큼 미리 돌린다 ----
+  reset();
+  var pt = -T0;
+  var n0 = Math.round(T0 / DT);
+  for (var i0 = 0; i0 < n0; i0++) { step(DT, pt); pt += DT; }
+
+  PieceKit.loop({ step: step, draw: draw });
+})();
+</script>
+</body>
+</html>

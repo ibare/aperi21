@@ -1,0 +1,70 @@
+{
+  "rows": [
+    {
+      "element": "강물 (그라데이션 띠)",
+      "vocab": "region (points · fillOpacity · opaque)",
+      "status": "수정 필요",
+      "note": "region 은 단색 채움이다. 세로 선형 그라데이션이 없다. 다만 가장자리가 짙은 것은 주장이 아니라 분위기라, 이관에서 뺄 수 있는지부터 본다"
+    },
+    {
+      "element": "물거품 (짧은 흰 줄 150개)",
+      "vocab": "trace (shape 'tick' · direction) / particleSystem",
+      "status": "있음",
+      "note": "particleSystem 은 positions 를 그대로 받으므로 주기 배치를 sim 이 낸다"
+    },
+    {
+      "element": "강둑 · 자갈",
+      "vocab": "region + particleSystem (또는 trace dot)",
+      "status": "있음"
+    },
+    {
+      "element": "선착장 말뚝",
+      "vocab": "body (shape 'rect') × n",
+      "status": "있음"
+    },
+    {
+      "element": "지나온 길 (붉은 꺾은선)",
+      "vocab": "trajectory (points 누적 · fade)",
+      "status": "있음",
+      "note": "직전 회차를 옅게 남기는 것은 인스턴스를 하나 더 내고 opacity 를 낮추면 된다"
+    },
+    {
+      "element": "시간 자국 (0.4초마다 찍힌 점)",
+      "vocab": "trace (shape 'dot')",
+      "status": "있음"
+    },
+    {
+      "element": "배 (뱃머리 모양)",
+      "vocab": "body (shape 'custom' · customPath · orientation)",
+      "status": "있음",
+      "note": "customPath 는 body.ts:31 이 읽는다. 다만 '종이색 테두리를 두른 채움' 은 안 된다 — 윤곽 색 고정 문제와 같은 뿌리"
+    },
+    {
+      "element": "세계 좌표 주기로 감기는 배경",
+      "vocab": "—",
+      "status": "없음",
+      "note": "'이 요소는 세계 좌표 60 m 주기로 되풀이된다' 를 선언할 자리가 없다. 조각이 경계에서 두 벌 그리는 계산을 세 번 다시 짰다. 기준틀을 옮기는 조각이라면 반드시 필요하다 — 어느 기준틀에서 보든 화면이 비면 안 되기 때문"
+    },
+    {
+      "element": "기준틀 변환 (사건 (x,y,t) 의 갈릴레이 변환)",
+      "vocab": "—",
+      "status": "없음",
+      "note": "'지금 있는 것' 과 '지나간 사건' 의 변환식이 다르고, 전단항 u·(t − tᵢ) 를 빠뜨리면 예외도 안 나고 그럴듯해 보인다. 조용히 틀리는 종류라 어휘로 올릴 값이 크다. 다만 무엇이 변환을 받고 무엇이 안 받는지는 조각이 정해야 한다 — 이 조각은 뱃머리 각도가 변환을 받지 않아야 주장이 선다"
+    },
+    {
+      "element": "보는 사람의 속도 슬라이더",
+      "vocab": "controller slider",
+      "status": "있음",
+      "note": "ControllerInstance.heldPath 가 이미 조작기 종류와 무관한 공통 규약으로 있다 — 러너가 잡힌 동안 state 에 적고, 놓은 뒤 무엇으로 돌아갈지는 조각의 step 이 정한다 (01-broad 에서 여섯이 각자 짜던 것을 올렸다). 대조 때 slider 의 binds 만 보고 인스턴스 공통 필드를 놓쳤다 — 2026-09-16 교정"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "관측자 위치를 적분으로 두는 것 (Xobs += u·dt) — sim 의 물리. 다만 위 '기준틀 변환' 어휘가 생기면 그 안에서 보장되어야 할 규약이다",
+    "숫자를 골라 건너는 시간 · 떠내려간 거리가 딱 떨어지게 한 것 — sim 의 결정"
+  ]
+}

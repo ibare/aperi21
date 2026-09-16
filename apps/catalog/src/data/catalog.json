@@ -55,7 +55,9 @@
         {
           "id": "uniform-motion",
           "name": "등속 운동",
-          "desc": "속도가 변하지 않는 운동"
+          "desc": "속도가 변하지 않는 운동",
+          "simId": "aperi21:uniform-motion",
+          "labUrl": "piece-lab/uniform-motion/index.html"
         },
         {
           "id": "uniformly-accelerated-motion",
@@ -65,7 +67,9 @@
         {
           "id": "position-time-graph",
           "name": "위치-시간 그래프",
-          "desc": "기울기가 속도인 표현"
+          "desc": "기울기가 속도인 표현",
+          "simId": "aperi21:position-time-graph",
+          "labUrl": "piece-lab/position-time-graph/index.html"
         },
         {
           "id": "velocity-time-graph",
@@ -82,7 +86,9 @@
         {
           "id": "free-fall",
           "name": "자유 낙하",
-          "desc": "중력만 받는 연직 운동"
+          "desc": "중력만 받는 연직 운동",
+          "simId": "aperi21:free-fall",
+          "labUrl": "piece-lab/free-fall/index.html"
         },
         {
           "id": "vertical-throw",
@@ -102,7 +108,9 @@
         {
           "id": "terminal-velocity",
           "name": "종단 속도",
-          "desc": "저항과 중력이 균형에 이르는 속도"
+          "desc": "저항과 중력이 균형에 이르는 속도",
+          "simId": "aperi21:terminal-velocity",
+          "labUrl": "piece-lab/terminal-velocity/index.html"
         },
         {
           "id": "vector-decomposition",
@@ -112,12 +120,16 @@
         {
           "id": "vector-addition",
           "name": "벡터의 합성",
-          "desc": "꼬리와 머리를 잇는 덧셈"
+          "desc": "꼬리와 머리를 잇는 덧셈",
+          "simId": "aperi21:vector-addition",
+          "labUrl": "piece-lab/vector-addition/index.html"
         },
         {
           "id": "relative-velocity",
           "name": "상대 속도",
-          "desc": "기준틀 사이의 속도 변환"
+          "desc": "기준틀 사이의 속도 변환",
+          "simId": "aperi21:relative-velocity",
+          "labUrl": "piece-lab/relative-velocity/index.html"
         },
         {
           "id": "river-crossing",
@@ -128,6 +140,13 @@
           "id": "projectile-motion",
           "name": "포물선 운동",
           "desc": "수평·연직 성분의 독립",
+          "simId": "aperi21:projectile-motion",
+          "labUrl": "piece-lab/projectile-motion/index.html"
+        },
+        {
+          "id": "projectile-range",
+          "name": "사거리와 발사각",
+          "desc": "던지는 각도가 날아가는 거리를 바꾸는 방식",
           "simId": "aperi21:projectile"
         },
         {
@@ -160,7 +179,9 @@
         {
           "id": "angular-acceleration",
           "name": "각가속도",
-          "desc": "각속도의 변화율"
+          "desc": "각속도의 변화율",
+          "simId": "aperi21:angular-acceleration",
+          "labUrl": "piece-lab/angular-acceleration/index.html"
         },
         {
           "id": "tangential-normal-acceleration",
@@ -170,12 +191,16 @@
         {
           "id": "radius-of-curvature",
           "name": "곡률 반지름",
-          "desc": "곡선이 국소적으로 닮은 원"
+          "desc": "곡선이 국소적으로 닮은 원",
+          "simId": "aperi21:radius-of-curvature",
+          "labUrl": "piece-lab/radius-of-curvature/index.html"
         },
         {
           "id": "stopping-distance",
           "name": "정지 거리",
-          "desc": "반응 거리와 제동 거리의 합"
+          "desc": "반응 거리와 제동 거리의 합",
+          "simId": "aperi21:stopping-distance",
+          "labUrl": "piece-lab/stopping-distance/index.html"
         }
       ]
     },
@@ -2663,8 +2688,8 @@
     }
   ],
   "summary": {
-    "topics": 513,
-    "implemented": 20,
-    "labs": 7
+    "topics": 514,
+    "implemented": 30,
+    "labs": 17
   }
 }

@@ -114,6 +114,7 @@ topics:
     curricula: [ngss]
     visual: "yes"
     visualNote: 같은 시간에 같은 간격으로 자리를 옮긴다
+    sim: aperi21:uniform-motion
   - id: uniformly-accelerated-motion
     name: 등가속도 운동
     desc: 가속도가 일정한 운동의 세 식
@@ -130,6 +131,7 @@ topics:
     curricula: [kr, ib, ngss, ap, uk]
     visual: "yes"
     visualNote: 기울기가 속도로 읽힌다
+    sim: aperi21:position-time-graph
   - id: velocity-time-graph
     name: 속도-시간 그래프
     desc: 기울기가 가속도, 넓이가 변위인 표현
@@ -156,6 +158,7 @@ topics:
     curricula: [kr, ib, ngss, ap, uk]
     visual: "yes"
     visualNote: 질량이 달라도 나란히 떨어진다
+    sim: aperi21:free-fall
   - id: vertical-throw
     name: 연직 투상
     desc: 올라갔다 내려오는 운동의 대칭
@@ -188,6 +191,7 @@ topics:
     curricula: [ib, ap, uk]
     visual: "yes"
     visualNote: 두 힘이 같아지는 순간 속도가 더 늘지 않는다
+    sim: aperi21:terminal-velocity
   - id: vector-decomposition
     name: 벡터의 성분 분해
     desc: 한 벡터를 축 방향으로 나누기
@@ -204,6 +208,7 @@ topics:
     curricula: [kr, ap, uk]
     visual: "yes"
     visualNote: 꼬리와 머리를 이으면 합이 나온다
+    sim: aperi21:vector-addition
   - id: relative-velocity
     name: 상대 속도
     desc: 기준틀 사이의 속도 변환
@@ -212,6 +217,7 @@ topics:
     curricula: [ib, ap]
     visual: "yes"
     visualNote: 기준틀을 바꾸면 같은 운동이 달라 보인다
+    sim: aperi21:relative-velocity
   - id: river-crossing
     name: 강 건너기
     desc: 두 속도의 합성이 만드는 경로
@@ -228,6 +234,18 @@ topics:
     curricula: [kr, ib, ap, uk]
     visual: "yes"
     visualNote: 수평과 연직이 서로를 건드리지 않고 따로 간다
+    sim: aperi21:projectile-motion
+  # 사거리는 성분의 독립과 **장면이 다르다.** 앞의 것은 세 공을 잇는 선이 수평임을
+  # 보이고, 이것은 각도를 바꿔 가며 사거리를 재게 한다 — 한 조각으로 둘 다 만들 수
+  # 없으므로 주제를 나눈다 (README 1절).
+  - id: projectile-range
+    name: 사거리와 발사각
+    desc: 던지는 각도가 날아가는 거리를 바꾸는 방식
+    domain: kinematics
+    level: upper
+    curricula: [kr, ib, ap, uk]
+    visual: "yes"
+    visualNote: 45도에서 가장 멀리 간다
     sim: aperi21:projectile
   - id: trajectory-equation
     name: 궤적 방정식
@@ -279,6 +297,7 @@ topics:
     curricula: [ib, ap]
     visual: "yes"
     visualNote: 회전이 점점 빨라진다
+    sim: aperi21:angular-acceleration
   - id: tangential-normal-acceleration
     name: 접선·법선 가속도
     desc: 속력 변화와 방향 변화의 분리
@@ -295,6 +314,7 @@ topics:
     curricula: []
     visual: "yes"
     visualNote: 굽은 정도에 맞는 원이 경로에 얹힌다
+    sim: aperi21:radius-of-curvature
   - id: stopping-distance
     name: 정지 거리
     desc: 반응 거리와 제동 거리의 합
@@ -303,6 +323,7 @@ topics:
     curricula: [uk]
     visual: "yes"
     visualNote: 속력을 올리면 반응 거리는 비례로, 제동 거리는 제곱으로 늘어난다
+    sim: aperi21:stopping-distance
   # ── 뉴턴 역학
   - id: newtons-first-law
     name: 관성 법칙

@@ -35,6 +35,7 @@ export const RENDERERS: Record<string, string> = {
   constraint: 'renderConstraint',
   particleSystem: 'renderParticleSystem',
   trace: 'renderTrace',
+  sector: 'renderSector',
 };
 
 /** 표준 조작기 — 선언의 controller type → 클래스 이름. */
@@ -45,10 +46,12 @@ export const CONTROLLERS: Record<string, string> = {
   'value-edit': 'ValueEditController',
   placement: 'PlacementController',
   'scale-drag': 'ScaleDragController',
+  'point-drag': 'PointDragController',
   'param-panel': 'ParamPanelController',
   'view-tabs': 'ViewTabsController',
   'stage-tabs': 'StageTabsController',
   'env-toggles': 'EnvTogglesController',
+  'param-chips': 'ParamChipsController',
   'reset-buttons': 'ResetButtonsController',
 };
 

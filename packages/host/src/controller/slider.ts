@@ -176,6 +176,8 @@ export class SliderController implements ControllerImpl<SliderSpec> {
 
   onPointerUp(): BundleState | null {
     this.dragging = false;
+    // 잡고 있다는 사실은 러너가 `ControllerInstance.heldPath` 로 적는다 — 조작기 종류와
+    // 무관한 공통 규약이라 여기서 다시 적지 않는다.
     return null;
   }
 

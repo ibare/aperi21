@@ -1,0 +1,23 @@
+{
+  "rows": [
+    { "element": "벡터 가 · 나 (화살표)", "vocab": "vector (from · delta · headSize · width)", "status": "있음",
+      "note": "둘을 같은 색으로 두는 것은 style.colorRole 을 같게 주면 된다. 엔진이 팔레트를 순서대로 배급하지 않는 것이 전제인데, 지금 primitiveColor 는 선언된 colorRole 만 본다 — 전제가 지켜져 있다" },
+    { "element": "나의 원래 자리 (점선 화살표)", "vocab": "vector", "status": "수정 필요",
+      "note": "vector 렌더러는 점선을 긋지 않는다 (vector.ts 가 읽는 것은 delta · from · headSize · showMagnitude · width · label 뿐). trajectory 에는 style.lineStyle 이 있는데 vector 에는 없다 — 같은 '선' 인데 한쪽만 된다" },
+    { "element": "화살표 옆 이름 ('가' · '나' · '가 + 나')", "vocab": "vector.label / readout (world anchor)", "status": "수정 필요",
+      "note": "label 은 붙지만 '법선 방향으로 밀어 겹침을 피하는' 배치가 없다. 끌어서 방향이 뒤집히면 이름이 다른 화살표에 올라탄다. 빈 자리를 찾아 주는 배치기가 필요하다" },
+    { "element": "걷는 점", "vocab": "body (shape 'circle')", "status": "수정 필요",
+      "note": "'종이색 테두리 원 위에 잉크색 원' 이라는 두 겹은 body 둘로 쌓아 흉내낼 수 있으나, 윤곽 색을 고를 수 없어 (theme.line 고정) 배경색 테두리가 안 된다 — free-fall · position-time-graph 와 같은 뿌리" },
+    { "element": "걸어온 자국 (굵은 꺾인 자국)", "vocab": "trajectory (width 11 · opacity 0.2)", "status": "있음" },
+    { "element": "합 벡터 (자라나는 붉은 화살표)", "vocab": "vector (colorRole accent)", "status": "있음" },
+    { "element": "출발 꼬리 (빈 동그라미)", "vocab": "body", "status": "수정 필요", "note": "위와 같다 — 속을 비운 원이 안 된다" },
+    { "element": "끌기 손잡이 (화살표 머리를 직접 잡는 2차원 끌기)", "vocab": "—", "status": "없음",
+      "note": "scale-drag 는 1차원 트랙 위를 끄는 것이고 (track.direction · size), angle-dial 은 따로 뜨는 반원 다이얼, placement 는 팔레트에서 끌어다 놓는 배치다. 그림 속 한 점을 잡아 방향과 길이를 한꺼번에 바꾸는 손잡이가 없다. 잡기 반경 · 포인터 캡처 · 잡는 동안 시간 세우기까지 같은 어휘에 딸려야 한다" },
+    { "element": "구간 타임라인 (미끄러짐 → 걷기 → 자람 → 유지)", "vocab": "TimelineDef.phases (ease · caption)", "status": "있음" },
+    { "element": "캡션", "vocab": "CaptionSlotDef", "status": "있음" }
+  ],
+  "outside": [
+    "합을 평행사변형으로도 보일지 — 캡션이 둘이 되므로 뺀다는 조각의 결정",
+    "격자 · 좌표축을 두지 않는 것 — 엔진이 '벡터를 그리려면 좌표계를 선언하라' 로 강제하면 이 조각이 성립하지 않는다 (사용자 결정 사항)"
+  ]
+}

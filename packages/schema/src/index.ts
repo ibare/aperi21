@@ -86,9 +86,32 @@ export interface Body extends BaseMeta {
   mass?: Scalar;                  // 정보용 (시각에만 반영될 수 있음)
   /**
    * `shape: 'custom'` 의 외형. SVG path 문법이고 **좌표는 `pos` 기준 월드 단위, y 는 위**다.
-   * 채움만 하고 윤곽선은 긋지 않는다. `orientation` 만큼 돈다.
+   * 기본은 채움만 하고 윤곽선은 긋지 않는다 — 필요하면 `outline` 으로 켠다.
+   * `orientation` 만큼 돈다.
    */
   customPath?: string;
+  /**
+   * 속을 채울지. 기본 `'solid'`.
+   *
+   * `'none'` 이면 윤곽만 긋는다. **같은 크기의 두 물체를 채움으로 가르는 그림**이
+   * 이것을 쓴다 — 질량을 크기로 보이면 "큰 쪽이 공기를 더 받으니까" 라는 의심이
+   * 붙어 주장이 무너지는 자리가 있다 (`free-fall`).
+   */
+  fill?: 'solid' | 'none';
+  /**
+   * 둘레 선. **기본값이 모양마다 다르다** — `point` 와 `custom` 은 `'none'`(채움만),
+   * 나머지는 `'line'`(테마의 선 색). 작은 점에 테두리가 붙으면 채운 점이 고리로
+   * 읽히고, 자유 경로는 저작자가 그린 모양 그대로 나가야 한다.
+   *
+   * `'background'` 는 바탕색으로 긋는다. 선이나 다른 물체 위에 겹쳐 놓이는 점이
+   * 제 경계를 그 자리에서 떼어 내 읽히게 한다.
+   *
+   * `'role'` 은 **이 물체의 색**(`style.colorRole`)으로 긋는다. `fill: 'none'` 과
+   * 함께 쓰는 자리다 — 속을 비우면 남는 것이 둘레뿐인데 그것이 테마의 선 색으로
+   * 고정되면 물체가 바탕에 묻힌다. 같은 크기의 두 물체를 채움/테두리로 가르는
+   * 그림에서 가벼운 쪽이 사라져 버린다 (`free-fall`).
+   */
+  outline?: 'line' | 'background' | 'role' | 'none';
   /**
    * 둘레의 번짐. **`circle`(과 `disc`) 에만 있다** — 다른 모양에서는 무시된다.
    * 기본은 `emphasis: 'strong'` 일 때 켜진다. 짙게 칠하되 후광은 없어야 하는 물체
@@ -102,8 +125,20 @@ export interface Trajectory extends BaseMeta {
   points: readonly Vec2[];
   style?: BaseMeta['style'] & {
     lineStyle?: 'solid' | 'dashed' | 'dotted';
-    fade?: 'none' | 'tail' | 'head';  // 시간 흐름 표현
+    /**
+     * 옅어지는 방식. `tail` 은 지나온 쪽이, `focus` 는 `focus.at` 에서 멀어질수록 옅다.
+     *
+     * `'head'` 는 2026-09-16 에 지웠다 — 선언에만 있고 렌더러가 읽지 않았으며
+     * 사용처가 0건이었다 (S-render). 필요해지면 그때 그 조각이 요구하는 모양으로 올린다.
+     */
+    fade?: 'none' | 'tail' | 'focus';
   };
+  /**
+   * `fade: 'focus'` 가 진하게 남기는 자리. `at` 은 경로 위 위치(0~1), `width` 는
+   * 진한 구간의 폭(0~1). 끝이 아니라 **한 점을 중심으로** 양쪽으로 옅어진다 —
+   * 곡선에 얹힌 원이 접촉점 근처만 진한 것이 이 꼴이다 (`radius-of-curvature`).
+   */
+  focus?: { at: number; width: number };
   closed?: boolean;               // 닫힌 궤적 (궤도)
   /**
    * 선 굵기(화면 px). 기본 2 — 곡선·궤적의 굵기다. 축·경계·말뚝 같은 안내선은
@@ -118,6 +153,18 @@ export interface Vector extends BaseMeta {
   delta: Vec2;                    // 끝점 = from + delta
   showMagnitude?: boolean;
   headSize?: Scalar;
+  style?: BaseMeta['style'] & {
+    /** 선 모양. 지나간 자리를 점선으로 남기는 화살표가 쓴다. 기본 `solid`. */
+    lineStyle?: 'solid' | 'dashed' | 'dotted';
+  };
+  /**
+   * 이름을 화살표의 어느 쪽에 둘지. 기본 `'auto'` — 화살표가 도는 대로 따라 옮겨
+   * 다른 화살표에 올라타지 않게 한다. 끌 수 있는 화살표는 방향이 뒤집히므로
+   * 자리를 고정하면 이름이 남의 그림 위에 얹힌다.
+   */
+  labelSide?: 'auto' | 'cw' | 'ccw';
+  /** 이름 뒤에 배경 칩을 깐다. 선 위에 겹쳐도 읽힌다. 기본 false. */
+  labelChip?: boolean;
   /**
    * 선 굵기(화면 px). 기본은 테마의 굵은 선. 굵기는 물리량이 아니라 위계라 배율을
    * 따라가지 않는다 — 살아 있는 화살표와 지난 잔상을 굵기로 가른다.
@@ -187,32 +234,33 @@ export interface GraphSeries {
   colorRole?: ColorRole;
 }
 
+/**
+ * 계열을 한 축에 놓아 견주는 그림.
+ *
+ * 2026-09-16 에 `scatter` · `phasor` · `pv` · `spectrum` 과 `horizontal` ·
+ * `placement: 'world-inline'` · 축의 `scale: 'log'` 를 지웠다. 선언만 있고 렌더러가
+ * 없었고 `sims/**` 사용처가 0건이었다 — 선언만 있는 필드는 저작자에게 거짓말을
+ * 한다 (S-render). 필요해지면 그때 그 조각이 요구하는 모양으로 올린다 (원칙 4).
+ */
 export interface Graph extends Omit<BaseMeta, 'style'> {
   type: 'graph';
   style:
-    | 'line'          // 선 그래프 (파형, 감쇠)
-    | 'bar'           // 막대 (에너지, 히스토그램)
-    | 'scatter'       // 산점 (위상공간)
-    | 'phasor'        // 페이저 (AC 회로)
-    | 'pv'            // PV 다이어그램 (열역학)
-    | 'spectrum';     // 스펙트럼 라인
+    | 'line'          // 선 그래프 (시간에 따라 자라는 값)
+    | 'bar';          // 막대 (에너지, 히스토그램)
 
   series: readonly GraphSeries[];
 
-  xAxis?: { label?: LocalizedText; range?: [number, number]; scale?: 'linear' | 'log' };
-  yAxis?: { label?: LocalizedText; range?: [number, number]; scale?: 'linear' | 'log' };
-
-  // 스타일별 추가 속성
-  showGrid?: boolean;
-  horizontal?: boolean;            // bar 전용
-  reference?: { value: number; label?: LocalizedText };  // 기준선
-
+  xAxis?: { label?: LocalizedText; range?: [number, number] };
   /**
-   * 배치 힌트. 'screen-hud' (기본) 는 호스트가 제공한 HUD 영역에 스크린 좌표로
-   * 렌더. 'world-inline' 은 월드 좌표 anchor 기준 (P-V 다이어그램 등).
-   * Phase 2 는 'screen-hud' 만 구현.
+   * **`line` 전용.** `bar` 는 세로가 계열 구분이라 세로 범위에 뜻이 없어 읽지 않는다.
+   * 적용 범위를 적어 두지 않으면 `bar` 저작자에게는 지키지 않는 약속이 된다 (S-render).
    */
-  placement?: 'screen-hud' | 'world-inline';
+  yAxis?: { label?: LocalizedText; range?: [number, number] };
+
+  /** 눈금 격자. 기본 꺼짐 — 크롬은 기본이 전부 꺼짐이다 (원칙 2). */
+  showGrid?: boolean;
+  /** 기준선. */
+  reference?: { value: number; label?: LocalizedText };
 }
 
 export interface Gauge extends BaseMeta {
@@ -357,6 +405,19 @@ export interface Readout extends BaseMeta {
   italic?: boolean;
   /** 굵기. 기본 `normal`. */
   weight?: 'normal' | 'bold';
+  /**
+   * 뷰포트 밖으로 밀려나면 안으로 당긴다. 기본 false.
+   *
+   * 좁은 컨테이너에서 값이 잘려 나가는 것을 조각마다 손으로 막던 자리다.
+   */
+  clamp?: boolean;
+  /** 놓일 자리가 모자라면 아예 그리지 않는다. 기본 false — 잘린 글자를 남기지 않는다. */
+  hideWhenClipped?: boolean;
+  /**
+   * 줄바꿈 폭(화면 px). 주면 이 폭 안에서 줄을 나눈다. 생략하면 한 줄이다.
+   * 캡션 슬롯의 `wrapWidth` 가 이리로 내려온다.
+   */
+  wrapWidth?: number;
 }
 
 /**
@@ -389,6 +450,31 @@ export interface Scale extends BaseMeta {
   /** 소수 자릿수. 기본 2. 유효숫자는 주장의 일부라 자동으로 줄이지 않는다. */
   digits?: number;
 }
+
+/**
+ * 두 각 사이를 쓸고 지나간 부채꼴. 채움과 테두리 위의 호를 한 덩어리로 그린다.
+ *
+ * `scale`(dial)로 대신하지 않는다 — 그것은 눈금판이라 **각도자로 읽힌다.** 회전이
+ * 점점 빨라지는 것이 주장인 조각에서 눈금이 각도 표시로 읽히면 "같은 시간에 도는
+ * 각이 커진다" 가 "눈금이 원래 그렇게 생겼다" 로 뒤집힌다 (`angular-acceleration`).
+ */
+export interface Sector extends BaseMeta {
+  type: 'sector';
+  center: Vec2;
+  radius: Scalar;
+  /** 시작 각(라디안, 월드 x 축에서 반시계). */
+  from: number;
+  /** 끝 각. `from` 보다 작아도 된다 — 그 방향으로 쓸고 간다. */
+  to: number;
+  /** 채움 불투명도. 기본 0.22 — 아래에 깔린 것이 비쳐 보이는 정도. */
+  fillOpacity?: number;
+  /**
+   * 테두리 위에 덧긋는 호의 굵기(화면 px). 0 이면 긋지 않는다. 기본은 테마의 굵은 선.
+   * 굵기는 물리량이 아니라 위계라 배율을 따라가지 않는다.
+   */
+  rimWidth?: number;
+}
+
 
 /**
  * 두 점 사이를 재는 표시. 치수선.
@@ -513,20 +599,42 @@ export interface Trace extends BaseMeta {
     age?: number;
     /** 0~1. 이 자국의 세기. 크기와 진하기에 함께 걸린다. 기본 1. */
     strength?: number;
+    /**
+     * 이 자국만의 `tick` 방향(월드). 생략하면 인스턴스의 `direction`.
+     *
+     * 자국마다 방향이 다른 **방사 배치**가 이것을 쓴다 — 바퀴 테두리를 가로지르는
+     * 눈금은 자국마다 다른 쪽을 본다 (`angular-acceleration`).
+     */
+    direction?: Vec2;
   }[];
   /** 자국이 사라지기까지(초). `age` 를 준 자국에만 쓴다. */
   life?: number;
   /** 자국 하나의 모양. 기본 `dot`. */
   shape?: 'dot' | 'ring' | 'tick';
-  /** 자국 크기(화면 px). `dot`·`ring` 은 반지름, `tick` 은 길이. 기본 2. */
+  /**
+   * 자국 크기. **모양마다 단위가 다르다** — `dot`·`ring` 은 **화면 px** 반지름,
+   * `tick` 은 **월드 단위** 길이다. 기본 2.
+   *
+   * 다른 것이 사고가 아니라 쓰임이다. `dot`·`ring` 은 사건을 가리키는 표식이라
+   * 배율과 무관해야 하고, `tick` 은 길이 자체가 그림의 일부라 — 통로를 가로지르는
+   * 금, 바퀴 테두리를 가로지르는 눈금 — 배율을 따라가야 한다. 좁은 임베드에서
+   * 금만 그대로면 제 자리를 넘어간다.
+   */
   size?: number;
   /**
    * `ring` 이 나이와 함께 퍼지는 끝 반지름(화면 px). 주면 `size` 에서 이 값까지
    * 자란다 — 사건이 일어난 순간의 짧은 강조(통과 섬광 · 도착 표시)가 이 꼴이다.
    */
   spreadTo?: number;
-  /** `tick` 의 방향(월드). 기본 세로. */
+  /** `tick` 의 방향(월드). 기본 세로. 자국마다 다르면 `marks[].direction` 으로 준다. */
   direction?: Vec2;
+  /**
+   * `ring` 이 도는 각도 범위(라디안, 월드 x 축에서 반시계). 생략하면 온전한 원.
+   *
+   * **반쪽만 있어야 하는** 사건이 쓴다 — 지면에서 퍼지는 착지 파문을 온전한 원으로
+   * 그리면 땅 밑으로도 퍼진다.
+   */
+  arc?: readonly [number, number];
   /** 획 굵기(화면 px). `ring`·`tick` 에만. 기본 1.5. */
   width?: number;
 }
@@ -613,7 +721,8 @@ export type Primitive =
   | Body | Trajectory | Vector | Constraint | Surface
   | ParticleSystem
   | Graph | Gauge | Marker
-  | Region | Stream | Readout | Scale | Dimension
+  | Region | Stream | Readout | Scale | Sector
+  | Dimension
   | VortexField | Filament | Trace
   | Event_
   // 도메인
@@ -749,6 +858,11 @@ export type ControllerKind =
     }
   | {
       type: 'slider';
+      /**
+       * 잡고 있는 동안을 알려면 `ControllerInstance.heldPath` 를 쓴다 — 조작기 종류와
+       * 무관하게 러너가 적어 주는 공통 규약이다 (01-broad 에서 여섯이 각자 짜던 것을
+       * 올렸다). 같은 사실에 이름을 둘 두지 않는다.
+       */
       binds: { value: string };
       range: [number, number];
       label: LocalizedText;
@@ -757,6 +871,48 @@ export type ControllerKind =
       at?: Anchor;
       /** 크기 `[너비, 높이]`(화면 px). 생략하면 기본값. */
       size?: Vec2;
+    }
+  | {
+      /**
+       * 값을 후보 중에서 고르는 칩 줄.
+       *
+       * `env-toggles` · `stage-tabs` · `view-tabs` 와 같은 칩 모양(`controller/chips.ts`)을
+       * 쓰되 바꾸는 것이 **파라미터 값**이다. 환경이나 단계로 모델링하면 뜻이 어긋난다 —
+       * 질량 2 / 10 / 50 kg 은 환경이 아니라 그 물체의 값이다 (`free-fall`).
+       */
+      type: 'param-chips';
+      binds: { value: string };
+      /** 고를 것들. 화면에 뜨는 문안은 선언이 가진다 (C1). */
+      options: readonly { value: number | string; label: LocalizedText }[];
+      /**
+       * 자리. 생략하면 왼쪽 아래에서 선언 순서대로 **아래로** 쌓인다 — 칩 폭이 글자
+       * 길이를 따라가 가로 간격을 미리 알 수 없어서다 (`reset-buttons` 도 같다).
+       */
+      at?: Anchor;
+      /** 줄 이름표. 생략하면 이름표 없이 칩만 놓는다. */
+      label?: LocalizedText;
+    }
+  | {
+      /**
+       * 그림 속 한 점을 잡아 끈다. 방향과 길이를 한꺼번에 바꾼다.
+       *
+       * `scale-drag` 는 직선 트랙 위 1 차원이고, `angle-dial` 은 따로 뜨는 다이얼이며,
+       * `placement` 는 팔레트에서 끌어다 놓는 것이다. **그림 안에 있는 점 자체가
+       * 손잡이**인 경우가 이것이다 — 화살표의 머리를 잡는 일 (`vector-addition`).
+       *
+       * 누르는 동안 `binds.held` 가 true. 손을 뗀 뒤 자동 진행으로 돌아가는 일은
+       * sim 이 한다.
+       */
+      type: 'point-drag';
+      binds: { pos: string; held: string };
+      /** 잡히는 반경(화면 px). 생략하면 기본값. */
+      grabRadius?: number;
+      /**
+       * 끌린 자리를 이 점들 중 가장 가까운 곳에 붙인다. 굽은 길 위를 끄는 경우다
+       * (`radius-of-curvature`). **무엇이 제약인지는 조각이 정한다** — 엔진이 경로를
+       * 알아서 고르지 않는다.
+       */
+      snapTo?: readonly Vec2[];
     }
   | {
       /**
@@ -1055,6 +1211,13 @@ export interface CaptionSlotDef {
   fade?: number;
   /** 단계가 캡션을 말하지 않을 때의 문안 키. 시간표가 없는 조각은 이것만 쓴다. */
   text?: string;
+  /**
+   * 줄바꿈 폭(화면 px). 주면 이 폭 안에서 줄을 나눈다. 생략하면 한 줄이다.
+   *
+   * 세로가 비싼 조각이 남는 가로를 캡션에 내주는 배치가 이것을 쓴다 — 세로 낙하는
+   * 화면의 왼쪽만 쓰므로 오른쪽에 문장을 세운다 (`terminal-velocity`).
+   */
+  wrapWidth?: number;
 
   /**
    * **상태**로 문안을 고른다. 시간표 단계로 나눌 수 없는 캡션을 위한 것이다 —

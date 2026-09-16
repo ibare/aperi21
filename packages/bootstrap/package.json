@@ -16,16 +16,26 @@
   "dependencies": {
     "@aperi21/host": "workspace:*",
     "@aperi21/schema": "workspace:*",
+    "@aperi21/sim-angular-acceleration": "workspace:*",
     "@aperi21/sim-apparent-brightness": "workspace:*",
     "@aperi21/sim-beats": "workspace:*",
     "@aperi21/sim-current-magnetic-field": "workspace:*",
     "@aperi21/sim-doppler-effect": "workspace:*",
+    "@aperi21/sim-free-fall": "workspace:*",
     "@aperi21/sim-gas-pressure": "workspace:*",
     "@aperi21/sim-heat-conduction": "workspace:*",
     "@aperi21/sim-inertial-frame": "workspace:*",
     "@aperi21/sim-lenz-law": "workspace:*",
     "@aperi21/sim-pendulum-isochronism": "workspace:*",
-    "@aperi21/sim-ramp-energy": "workspace:*"
+    "@aperi21/sim-position-time-graph": "workspace:*",
+    "@aperi21/sim-projectile-motion": "workspace:*",
+    "@aperi21/sim-radius-of-curvature": "workspace:*",
+    "@aperi21/sim-ramp-energy": "workspace:*",
+    "@aperi21/sim-relative-velocity": "workspace:*",
+    "@aperi21/sim-stopping-distance": "workspace:*",
+    "@aperi21/sim-terminal-velocity": "workspace:*",
+    "@aperi21/sim-uniform-motion": "workspace:*",
+    "@aperi21/sim-vector-addition": "workspace:*"
   },
   "devDependencies": {
     "@aperi21/plugin-circuit": "workspace:*",

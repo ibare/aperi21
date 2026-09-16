@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>벡터의 합성</title>
+<style>
+  :root {
+    --paper: #f7f4ee;
+    --ink:   #2b3138;
+    --faint: #b3aea5;
+    --sum:   #d8452f;
+  }
+  html, body { margin: 0; padding: 0; background: var(--paper); }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+                 "Noto Sans KR", "Malgun Gothic", sans-serif;
+    color: var(--ink);
+  }
+  #piece { max-width: 880px; margin: 0 auto; }
+  #c { display: block; width: 100%; height: 336px; touch-action: none; cursor: default; }
+  #caption {
+    height: 26px; line-height: 26px;
+    padding: 0 4px 6px;
+    font-size: 15px;
+    color: var(--ink);
+    opacity: 0.86;
+  }
+</style>
+</head>
+<body>
+<div id="piece">
+  <canvas id="c"></canvas>
+  <div id="caption"></div>
+</div>
+
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var INK = '#2b3138';
+  var FAINT = '#b3aea5';
+  var SUM = '#d8452f';
+  var PAPER = '#f7f4ee';
+
+  var c = document.getElementById('c');
+  var ctx = c.getContext('2d');
+  var capEl = document.getElementById('caption');
+
+  var W = 0, H = 336;
+  var origin = { x: 0, y: 0 };
+  var a = null, b = null;        // 두 벡터 (화면 픽셀, y 는 아래가 +)
+  var sized = false;
+
+  function fit() {
+    var d = window.devicePixelRatio || 1;
+    W = c.clientWidth || 880;
+    c.width = Math.round(W * d);
+    c.height = Math.round(H * d);
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+    origin.x = Math.round(W * 0.060);
+    origin.y = 300;
+    if (!sized) {
+      a = { x: W * 0.440, y: -64 };
+      b = { x: W * 0.300, y: -182 };
+      sized = true;
+    }
+  }
+  fit();
+  window.addEventListener('resize', function () { fit(); });
+
+  // ---- 주기 ----
+  var T     = 8.00;
+  var SLIDE = 0.00, SLIDE_E = 1.10;   // 나 가 가의 머리로 미끄러진다
+  var WALKA = 1.10, WALKA_E = 2.20;   // 점이 가를 걷는다
+  var WALKB = 2.20, WALKB_E = 3.30;   // 점이 이어서 나를 걷는다
+  var GROW  = 3.30, GROW_E  = 4.30;   // 합 화살표가 자란다
+  var HOLD  = 4.30, HOLD_E  = 6.60;   // 유지
+  var BACK  = 6.60, BACK_E  = 7.60;   // 나 가 제자리로
+  // 7.60 ~ 8.00 : 주어진 상태 (같은 꼬리에서 나간 두 화살표)
+
+  var phase = 0;            // 누적 상태. 끄는 동안에는 전진하지 않는다.
+  var drag = null;          // 'a' | 'b' | null
+  var hover = null;
+
+  function smooth(u) { u = u < 0 ? 0 : u > 1 ? 1 : u; return u * u * (3 - 2 * u); }
+  function seg(p, s, e) { return smooth((p - s) / (e - s)); }
+  function add(p, q) { return { x: p.x + q.x, y: p.y + q.y }; }
+  function mul(p, k) { return { x: p.x * k, y: p.y * k }; }
+
+  // 지금 phase 에서의 화면 상태를 전부 계산한다.
+  function scene(p) {
+    var s;                                   // 나의 꼬리가 가의 머리로 간 정도 0..1
+    if (p < SLIDE_E)      s = seg(p, SLIDE, SLIDE_E);
+    else if (p < BACK)    s = 1;
+    else if (p < BACK_E)  s = 1 - seg(p, BACK, BACK_E);
+    else                  s = 0;
+
+    var aHead = add(origin, a);
+    var bTail = add(origin, mul(a, s));
+    var bHead = add(bTail, b);
+    var end   = add(aHead, b);
+
+    var walk = null, walkAlpha = 0;
+    if (p >= WALKA && p < WALKB) {
+      walk = add(origin, mul(a, seg(p, WALKA, WALKA_E)));
+      walkAlpha = 1;
+    } else if (p >= WALKB && p < BACK) {
+      walk = add(aHead, mul(b, p < WALKB_E ? seg(p, WALKB, WALKB_E) : 1));
+      walkAlpha = 1;
+    } else if (p >= BACK && p < BACK_E) {
+      walk = end;
+      walkAlpha = 1 - seg(p, BACK, BACK_E);
+    }
+
+    var sumT = 0, sumAlpha = 0;
+    if (p >= GROW && p < BACK) { sumT = p < GROW_E ? seg(p, GROW, GROW_E) : 1; sumAlpha = 1; }
+    else if (p >= BACK && p < BACK_E) { sumT = 1; sumAlpha = 1 - seg(p, BACK, BACK_E); }
+
+    return {
+      s: s, aHead: aHead, bTail: bTail, bHead: bHead, end: end,
+      walk: walk, walkAlpha: walkAlpha, sumT: sumT, sumAlpha: sumAlpha,
+    };
+  }
+
+  function caption(p) {
+    if (drag) return '끄는 대로 합도 따라 바뀐다';
+    if (p < SLIDE_E) return '나를 가의 머리로 옮겨 붙인다';
+    if (p < WALKA_E) return '꼬리에서 출발해 가를 따라 걷는다';
+    if (p < WALKB_E) return '가의 머리에서 이어 나를 따라 걷는다';
+    if (p < GROW_E)  return '출발한 꼬리에서 도착한 머리까지 곧게 잇는다';
+    if (p < BACK)    return '처음 꼬리에서 마지막 머리까지, 이것이 가 + 나 다';
+    if (p < BACK_E)  return '나를 제자리로 되돌린다';
+    return '가와 나, 같은 꼬리에서 나간 두 화살표';
+  }
+
+  // ---- 그리기 도구 ----
+  function arrow(from, to, color, width, headLen) {
+    var dx = to.x - from.x, dy = to.y - from.y, L = Math.hypot(dx, dy);
+    if (L < 1) return;
+    var ux = dx / L, uy = dy / L;
+    var h = Math.min(headLen, L * 0.5);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(from.x, from.y);
+    ctx.lineTo(to.x - ux * h * 0.85, to.y - uy * h * 0.85);
+    ctx.stroke();
+    var bx = to.x - ux * h, by = to.y - uy * h, px = -uy, py = ux, w = h * 0.40;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(to.x, to.y);
+    ctx.lineTo(bx + px * w, by + py * w);
+    ctx.lineTo(bx - px * w, by - py * w);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  // 화살표 옆에 이름을 붙인다. side = +1 이면 법선 방향, -1 이면 반대.
+  function label(from, to, text, color, side, gap) {
+    var dx = to.x - from.x, dy = to.y - from.y, L = Math.hypot(dx, dy);
+    if (L < 24) return;
+    var nx = dy / L * side, ny = -dx / L * side;
+    ctx.fillStyle = color;
+    ctx.font = '600 15px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, (from.x + to.x) / 2 + nx * gap, (from.y + to.y) / 2 + ny * gap);
+  }
+
+  function handle(pt, active) {
+    ctx.strokeStyle = active ? INK : FAINT;
+    ctx.lineWidth = active ? 2.6 : 1.5;
+    ctx.beginPath(); ctx.arc(pt.x, pt.y, 13, 0, 6.2832); ctx.stroke();
+  }
+
+  // ---- 조작 ----
+  function local(ev) {
+    var r = c.getBoundingClientRect();
+    return { x: ev.clientX - r.left, y: ev.clientY - r.top };
+  }
+  function near(p, q) { return Math.hypot(p.x - q.x, p.y - q.y) < 24; }
+
+  function grabPoints() {
+    var sc = scene(drag ? HOLD : phase);
+    return { a: sc.aHead, b: sc.bHead, bTail: sc.bTail };
+  }
+
+  function setVec(which, pt, tail) {
+    var vx = pt.x - tail.x, vy = pt.y - tail.y;
+    var L = Math.hypot(vx, vy);
+    if (L < 34) { var k = 34 / (L || 1); vx *= k; vy *= k; }
+    var tx = Math.max(24, Math.min(W - 24, tail.x + vx));
+    var ty = Math.max(26, Math.min(H - 26, tail.y + vy));
+    var v = { x: tx - tail.x, y: ty - tail.y };
+    if (which === 'a') a = v; else b = v;
+  }
+
+  if (!PieceKit.frozen) {
+    c.addEventListener('pointerdown', function (ev) {
+      var p = local(ev), g = grabPoints();
+      var which = near(p, g.a) ? 'a' : near(p, g.b) ? 'b' : null;
+      if (!which) return;
+      drag = which;
+      phase = HOLD;                    // 끄는 동안은 완성된 그림에 멈춰 둔다
+      c.setPointerCapture(ev.pointerId);
+      ev.preventDefault();
+    });
+    c.addEventListener('pointermove', function (ev) {
+      var p = local(ev), g = grabPoints();
+      if (drag) {
+        setVec(drag, p, drag === 'a' ? origin : scene(HOLD).bTail);
+      } else {
+        hover = near(p, g.a) ? 'a' : near(p, g.b) ? 'b' : null;
+        c.style.cursor = hover ? 'grab' : 'default';
+      }
+    });
+    function release() { drag = null; c.style.cursor = 'default'; }
+    c.addEventListener('pointerup', release);
+    c.addEventListener('pointercancel', release);
+    c.addEventListener('pointerleave', function () { if (!drag) { hover = null; c.style.cursor = 'default'; } });
+  }
+
+  // ---- 시간 ----
+  PieceKit.loop({
+    step: function (dt) {
+      if (drag) return;                // 끄는 동안 자동 진행을 멈춘다
+      phase = (phase + dt) % T;
+    },
+    draw: function () {
+      var p = drag ? HOLD : phase;
+      var sc = scene(p);
+
+      ctx.fillStyle = PAPER;
+      ctx.fillRect(0, 0, W, H);
+
+      PieceKit.mark('나의 원래 자리', function () {
+        if (sc.s <= 0.02) return;
+        ctx.save();
+        ctx.globalAlpha = 0.55 * sc.s;
+        ctx.setLineDash([5, 6]);
+        arrow(origin, add(origin, b), FAINT, 2, 12);
+        ctx.setLineDash([]);
+        ctx.restore();
+      });
+
+      PieceKit.mark('걸어온 자국', function () {
+        if (!sc.walk || sc.walkAlpha <= 0) return;
+        ctx.save();
+        ctx.globalAlpha = 0.20 * sc.walkAlpha;
+        ctx.strokeStyle = INK;
+        ctx.lineWidth = 11;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        ctx.moveTo(origin.x, origin.y);
+        if (p >= WALKB) { ctx.lineTo(sc.aHead.x, sc.aHead.y); }
+        ctx.lineTo(sc.walk.x, sc.walk.y);
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      PieceKit.mark('벡터 가', function () {
+        arrow(origin, sc.aHead, INK, 3.4, 16);
+        label(origin, sc.aHead, '가', INK, -1, 17);
+      });
+
+      PieceKit.mark('벡터 나', function () {
+        arrow(sc.bTail, sc.bHead, INK, 3.4, 16);
+        label(sc.bTail, sc.bHead, '나', INK, -1, 17);
+      });
+
+      PieceKit.mark('합 벡터', function () {
+        if (sc.sumAlpha <= 0) return;
+        ctx.save();
+        ctx.globalAlpha = sc.sumAlpha;
+        var tip = { x: origin.x + (sc.end.x - origin.x) * sc.sumT,
+                    y: origin.y + (sc.end.y - origin.y) * sc.sumT };
+        arrow(origin, tip, SUM, 4.4, 19);
+        if (sc.sumT > 0.55) {
+          ctx.globalAlpha = sc.sumAlpha * smooth((sc.sumT - 0.55) / 0.45);
+          label(origin, sc.end, '가 + 나', SUM, 1, 21);
+        }
+        ctx.restore();
+      });
+
+      PieceKit.mark('출발 꼬리', function () {
+        ctx.fillStyle = PAPER;
+        ctx.beginPath(); ctx.arc(origin.x, origin.y, 6, 0, 6.2832); ctx.fill();
+        ctx.strokeStyle = INK;
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(origin.x, origin.y, 6, 0, 6.2832); ctx.stroke();
+      });
+
+      PieceKit.mark('걷는 점', function () {
+        if (!sc.walk || sc.walkAlpha <= 0) return;
+        ctx.save();
+        ctx.globalAlpha = sc.walkAlpha;
+        ctx.fillStyle = PAPER;
+        ctx.beginPath(); ctx.arc(sc.walk.x, sc.walk.y, 8, 0, 6.2832); ctx.fill();
+        ctx.fillStyle = INK;
+        ctx.beginPath(); ctx.arc(sc.walk.x, sc.walk.y, 5.5, 0, 6.2832); ctx.fill();
+        ctx.restore();
+      });
+
+      PieceKit.mark('끌기 손잡이', function () {
+        handle(sc.aHead, drag === 'a' || hover === 'a');
+        handle(sc.bHead, drag === 'b' || hover === 'b');
+        var hint = 0;
+        if (p >= HOLD && p < BACK) {
+          hint = Math.min(smooth((p - HOLD) / 0.5), 1 - smooth((p - (BACK - 0.4)) / 0.4));
+        }
+        if (drag || hover) hint = 1;
+        if (hint <= 0) return;
+        ctx.save();
+        ctx.globalAlpha = hint;
+        ctx.fillStyle = FAINT;
+        ctx.font = '13px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('끌기', sc.aHead.x + 18, sc.aHead.y);
+        ctx.fillText('끌기', sc.bHead.x + 18, sc.bHead.y);
+        ctx.restore();
+      });
+
+      capEl.textContent = caption(p);
+    },
+  });
+})();
+</script>
+</body>
+</html>

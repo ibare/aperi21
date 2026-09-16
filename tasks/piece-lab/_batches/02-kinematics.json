@@ -1,0 +1,17 @@
+{
+  "name": "02-kinematics",
+  "title": "운동학 10 — 그래프·낙하·성분·기준틀·회전",
+  "record": "tasks/engine-requirements/batches/02-kinematics.md",
+  "pieces": [
+    "position-time-graph",
+    "uniform-motion",
+    "free-fall",
+    "projectile-motion",
+    "vector-addition",
+    "relative-velocity",
+    "terminal-velocity",
+    "stopping-distance",
+    "angular-acceleration",
+    "radius-of-curvature"
+  ]
+}

@@ -11,6 +11,7 @@ import { renderRegion } from './region';
 import { renderStream } from './stream';
 import { renderReadout } from './readout';
 import { renderScale } from './scale';
+import { renderSector } from './sector';
 import { renderDimension } from './dimension';
 import { renderVortexField } from './vortex-field';
 import { renderFilament } from './filament';
@@ -31,6 +32,7 @@ export {
   renderStream,
   renderReadout,
   renderScale,
+  renderSector,
   renderDimension,
   renderVortexField,
   renderFilament,
@@ -52,6 +54,7 @@ export const CORE_RENDERERS: Record<string, PrimitiveRenderer> = {
   stream: renderStream,
   readout: renderReadout,
   scale: renderScale,
+  sector: renderSector,
   dimension: renderDimension,
   vortexField: renderVortexField,
   filament: renderFilament,

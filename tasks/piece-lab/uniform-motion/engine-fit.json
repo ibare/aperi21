@@ -1,0 +1,70 @@
+{
+  "rows": [
+    {
+      "element": "바닥",
+      "vocab": "surface (geometry.kind: 'ground')",
+      "status": "있음"
+    },
+    {
+      "element": "가는 것",
+      "vocab": "body (shape: 'circle')",
+      "status": "있음"
+    },
+    {
+      "element": "자국",
+      "vocab": "trace (shape 'tick' · direction [0,-1] · size · width)",
+      "status": "있음",
+      "note": "tick 의 방향 선언이 있어 바닥선 아래로만 뻗는 것이 된다"
+    },
+    {
+      "element": "방금 찍힌 자국의 강조",
+      "vocab": "trace 인스턴스를 하나 더 (colorRole accent)",
+      "status": "있음",
+      "note": "marks[].strength 는 크기·진하기만 걸리고 색은 인스턴스 단위다. 강조되는 자국 하나를 별도 인스턴스로 낸다"
+    },
+    {
+      "element": "바닥 아래 반원 파동",
+      "vocab": "trace (ring · spreadTo) / event (pulse)",
+      "status": "수정 필요",
+      "note": "온전한 원만 그린다. 바닥 아래로만 퍼지는 반원이 안 된다 — projectile-motion · free-fall 과 같은 요구다"
+    },
+    {
+      "element": "걸음 막대",
+      "vocab": "body (shape 'rect' · size [w,h])",
+      "status": "있음",
+      "note": "body rect 는 채움 + theme.line 윤곽이 함께 나간다. 채움만 원하면 지금은 못 끈다"
+    },
+    {
+      "element": "막대가 제자리에서 떨어져 내려가는 전이",
+      "vocab": "—",
+      "status": "엔진 밖",
+      "note": "위치 보간은 sim 이 한다. 다만 '폭은 상수, 위치만 보간' 이 주장이므로 엔진이 크기를 건드리는 전이를 기본으로 주면 안 된다"
+    },
+    {
+      "element": "빠르기 슬라이더",
+      "vocab": "controller slider",
+      "status": "있음",
+      "note": "ControllerInstance.heldPath 가 이미 조작기 종류와 무관한 공통 규약으로 있다 — 러너가 잡힌 동안 state 에 적고, 놓은 뒤 무엇으로 돌아갈지는 조각의 step 이 정한다 (01-broad 에서 여섯이 각자 짜던 것을 올렸다). 대조 때 slider 의 binds 만 보고 인스턴스 공통 필드를 놓쳤다 — 2026-09-16 교정"
+    },
+    {
+      "element": "랩 주기 · 경계 페이드",
+      "vocab": "TimelineDef.phases (마지막 단계를 페이드로)",
+      "status": "있음"
+    },
+    {
+      "element": "초기 위상 3.05초",
+      "vocab": "BundleSchema.startAt",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "속도를 '몇 초에 화면을 가로지르는가' 로 두는 것 — boundsHint 로 월드를 선언하면 풀리는 문제라, 조각이 px/초로 짠 것은 엔진을 몰라서다",
+    "랩당 걸음 수 6 고정 — sim 의 결정",
+    "조작 시 랩 전체를 되돌리는 범위 — sim 이 정한다"
+  ]
+}

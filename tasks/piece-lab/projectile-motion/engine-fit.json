@@ -1,0 +1,71 @@
+{
+  "rows": [
+    {
+      "element": "지면",
+      "vocab": "surface (geometry.kind: 'ground')",
+      "status": "있음"
+    },
+    {
+      "element": "공 셋",
+      "vocab": "body (shape: 'circle' · glow: false)",
+      "status": "있음",
+      "note": "수평 속도 배수만 다른 셋은 scene 이 배열로 낸다. 어휘 문제가 아니라 선언 편의 문제다"
+    },
+    {
+      "element": "지금 높이선",
+      "vocab": "trajectory (points 2개 · width 2 · colorRole accent)",
+      "status": "있음",
+      "note": "dimension 은 점선 + 끝점 원 + 얇은 선이 고정이라 '꿰는 굵은 선'이 되지 않는다. trajectory 로 간다"
+    },
+    {
+      "element": "잔상",
+      "vocab": "trace (shape 'dot' · age 생략)",
+      "status": "있음",
+      "note": "age 를 주지 않으면 늙지 않는다 — 스트로보 용도가 선언에 이미 적혀 있다"
+    },
+    {
+      "element": "지나간 높이선",
+      "vocab": "trajectory × 스트로브 시각 수 (opacity 로 옅게)",
+      "status": "있음"
+    },
+    {
+      "element": "착지 파문",
+      "vocab": "trace (shape 'ring' · spreadTo) / event (kind 'pulse')",
+      "status": "수정 필요",
+      "note": "둘 다 0~2π 온전한 원만 그린다 (trace.ts:46,55 · event.ts:23). 지면 위로만 퍼지는 반원이 안 된다 — 호의 각도 범위 선언이 필요하다"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef + TimelinePhase.caption",
+      "status": "있음",
+      "note": "착지라는 사건으로 문장이 갈리므로 cases (when) 쪽이 맞다"
+    },
+    {
+      "element": "빠르기 슬라이더",
+      "vocab": "controller slider",
+      "status": "있음",
+      "note": "ControllerInstance.heldPath 가 이미 조작기 종류와 무관한 공통 규약으로 있다 — 러너가 잡힌 동안 state 에 적고, 놓은 뒤 무엇으로 돌아갈지는 조각의 step 이 정한다 (01-broad 에서 여섯이 각자 짜던 것을 올렸다). 대조 때 slider 의 binds 만 보고 인스턴스 공통 필드를 놓쳤다 — 2026-09-16 교정"
+    },
+    {
+      "element": "사이클 (진행 → 착지 → 머묾 → 리셋)",
+      "vocab": "TimelineDef.phases",
+      "status": "있음"
+    },
+    {
+      "element": "도착한 순간 이미 진행 중",
+      "vocab": "BundleSchema.startAt",
+      "status": "있음"
+    },
+    {
+      "element": "물리 좌표 → 화면 좌표",
+      "vocab": "Bundle.boundsHint + RenderContext.toScreen",
+      "status": "있음",
+      "note": "조각이 픽셀에서 g 를 역산한 것은 엔진을 몰라서다. 이관에서 걷어낸다"
+    }
+  ],
+  "outside": [
+    "0.2초 등간격 스트로브 시각을 해석적으로 계산해 기록하는 것 — sim 의 물리",
+    "슬라이더를 만지면 phase 를 0 으로 되돌리고 잔상을 비우는 것 — 무엇을 되돌릴지는 sim 이 안다 (scale-drag 주석의 규약과 같다)",
+    "화면 폭에 맞춘 v 상한 계산 — 배치 계산"
+  ]
+}

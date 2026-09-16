@@ -1,0 +1,65 @@
+{
+  "rows": [
+    {
+      "element": "길 (닫힌 곡선)",
+      "vocab": "trajectory (points 360 · closed · width)",
+      "status": "있음"
+    },
+    {
+      "element": "중심이 지나는 길 (축폐선)",
+      "vocab": "trajectory (closed · opacity · colorRole accent)",
+      "status": "있음"
+    },
+    {
+      "element": "얹힌 원 (접촉점에서 멀수록 옅어지는 96개 호)",
+      "vocab": "trajectory (style.fade 'tail')",
+      "status": "수정 필요",
+      "note": "fade 는 'tail' · 'head' 뿐이라 끝에서만 옅어진다. '경로 위 한 점을 중심으로 양쪽으로 감쇠' 가 안 된다. 조각은 96개 호 조각으로 쪼개 알파를 직접 매겼다. 다만 감쇠 폭은 엔진이 정하면 안 된다는 것이 조각의 요구다"
+    },
+    {
+      "element": "반지름 선분",
+      "vocab": "trajectory (2점 · width 1.6 · colorRole accent)",
+      "status": "있음",
+      "note": "dimension 을 쓰면 값을 재는 치수선이 되는데, 이 조각은 숫자를 두지 않고 선분 길이 자체를 값으로 삼는다. trajectory 가 맞다"
+    },
+    {
+      "element": "원의 중심 (작은 점)",
+      "vocab": "body (shape 'circle' · size 작게)",
+      "status": "있음"
+    },
+    {
+      "element": "달리는 점 (종이색 테두리를 두른 점)",
+      "vocab": "body",
+      "status": "수정 필요",
+      "note": "윤곽 색이 theme.line 고정이라 배경색 테두리가 안 된다 — free-fall · vector-addition · position-time-graph 와 같은 뿌리"
+    },
+    {
+      "element": "경로 위 최근접점 드래그",
+      "vocab": "—",
+      "status": "없음",
+      "note": "scale-drag 는 직선 트랙 위를 끈다. 굽은 경로 위에서 '가장 가까운 지점' 으로 끌리는 손잡이가 없다. 상태가 호길이 하나뿐이면 대입 한 줄로 끝나는 일이다. vector-addition 의 2차원 손잡이와 함께 볼 자리다"
+    },
+    {
+      "element": "자동 진행과 손 조작의 인계",
+      "vocab": "controller (held)",
+      "status": "있음",
+      "note": "ControllerInstance.heldPath 가 이미 조작기 종류와 무관한 공통 규약으로 있다 — 러너가 잡힌 동안 state 에 적고, 놓은 뒤 무엇으로 돌아갈지는 조각의 step 이 정한다 (01-broad 에서 여섯이 각자 짜던 것을 올렸다). 대조 때 slider 의 binds 만 보고 인스턴스 공통 필드를 놓쳤다 — 2026-09-16 교정"
+    },
+    {
+      "element": "캡션 (dR/dφ 부호로 갈림)",
+      "vocab": "CaptionSlotDef.cases",
+      "status": "있음",
+      "note": "when 은 state 의 boolean 경로 이름이므로 부호 판정은 physics 가 하고 선언은 결과를 가리킨다 — 규약과 맞는다"
+    },
+    {
+      "element": "화면보다 큰 원이 잘리는 것",
+      "vocab": "Bundle.boundsHint",
+      "status": "엔진 밖",
+      "note": "가장 큰 원이 화면을 넘치는 것은 실패가 아니라 주장이다. 엔진이 자동으로 뷰포트를 맞추면 크기 차이가 통째로 사라진다 — boundsHint 는 조각이 내는 것이라 지금 구조로 지켜진다"
+    }
+  ],
+  "outside": [
+    "지지함수 h = 180 + 36cos2φ 로 곡선을 빚어 R = h + h'' 가 설계값으로 나오게 한 것 — sim 의 물리. 곡률 반지름 R(φ) 를 입력으로 받는 경로 객체는 운동학 전체에서 이 조각 하나가 쓰므로, 지금 어휘로 올릴 값이 있는지는 판단이 필요하다 (사용자 결정 사항)",
+    "호길이 ↔ 파라미터 상호 변환과 호길이 등속 진행 — sim 의 물리. ds = R dφ 를 무시하고 φ 등속으로 두면 '굽은 곳에서 느리다' 는 오독이 생기는데, 이것은 조용히 틀리는 종류라 어휘로 올릴 값이 있다"
+  ]
+}

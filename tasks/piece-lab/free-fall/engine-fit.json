@@ -1,0 +1,75 @@
+{
+  "rows": [
+    {
+      "element": "땅 (바닥선 + 아래 옅은 띠)",
+      "vocab": "surface (ground) + region",
+      "status": "있음"
+    },
+    {
+      "element": "낙하 사다리 — 잔상 원 쌍",
+      "vocab": "trace (shape 'ring')",
+      "status": "있음",
+      "note": "trace 의 ring 은 채우지 않고 긋는 원이라 '테두리만' 이 그대로 된다. 두 공의 잔상을 인스턴스 둘로 낸다"
+    },
+    {
+      "element": "사다리 가로대",
+      "vocab": "trajectory (2점 · opacity)",
+      "status": "있음"
+    },
+    {
+      "element": "나란함 잣대",
+      "vocab": "trajectory (2점 · width · colorRole accent)",
+      "status": "있음",
+      "note": "둥근 끝(lineCap)은 선언에 없다. 표현이지 주장이 아니라 '있음' 으로 둔다"
+    },
+    {
+      "element": "무거운 공 (채운 원)",
+      "vocab": "body (shape 'circle')",
+      "status": "있음"
+    },
+    {
+      "element": "가벼운 공 (테두리만 있는 원)",
+      "vocab": "body",
+      "status": "수정 필요",
+      "note": "body 는 언제나 채운다 (body.ts:64-70 — fill 뒤 theme.line 으로 stroke). 채움 없이 윤곽만 그리는 선언이 없다. 이 조각은 크기를 같게 두고 채움/테두리로 질량을 가르는 것이 결정이었다 — 크기로 가르면 공기 저항 의문이 붙어 주장이 무너진다"
+    },
+    {
+      "element": "무게 딱지 (공을 따라가는 kg)",
+      "vocab": "readout (world anchor · chip)",
+      "status": "있음"
+    },
+    {
+      "element": "착지 울림 (위쪽 반원 호)",
+      "vocab": "trace (ring · spreadTo) / event (pulse)",
+      "status": "수정 필요",
+      "note": "온전한 원만 그린다. 땅 위로만 퍼지는 반원이 안 된다 — projectile-motion · uniform-motion 과 같은 요구다"
+    },
+    {
+      "element": "질량 택1 버튼 4칸 (차례로 / 2 / 10 / 50 kg)",
+      "vocab": "env-toggles · stage-tabs · view-tabs",
+      "status": "수정 필요",
+      "note": "칩 줄 자체는 controller/chips.ts 로 이미 공유돼 있는데, 그것을 쓰는 조작기는 환경 · 단계 · 뷰를 바꾸는 셋뿐이다. 파라미터 값을 후보 중에서 고르는 칩 줄이 없다. 질량을 '환경' 으로 모델링하는 것은 뜻이 어긋난다"
+    },
+    {
+      "element": "사이클 (들기 → 놓기 → 착지 → 감상 → 페이드)",
+      "vocab": "TimelineDef.phases",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef.cases",
+      "status": "있음",
+      "note": "'두 공이 모두 내려섰을 때' 처럼 상태로 갈리는 문장이라 cases 가 맞는 자리다"
+    },
+    {
+      "element": "px ↔ 물리 단위 환산",
+      "vocab": "boundsHint + toScreen",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "질량이 F = mg 에서 들어갔다 a = F/m 에서 상쇄되는 것을 코드에 남겨 두는 것 — sim 의 물리이자 이 조각의 주장",
+    "두 공이 서로를 참조하지 않고 각자 적분하는 것 — 나란함을 '맞춰 준 것' 으로 만들지 않기 위한 sim 의 결정",
+    "질량 → 반지름 사상을 엔진이 기본으로 강제하지 않을 것 (사용자 결정 사항)"
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "rows": [
+    {
+      "element": "오르는 두 길 (통로)",
+      "vocab": "region (points · opaque · fillOpacity)",
+      "status": "있음"
+    },
+    {
+      "element": "시간과 높이의 축 (ㄴ자 두 줄 + 화살촉)",
+      "vocab": "vector (from · delta · headSize) 2개",
+      "status": "있음",
+      "note": "'축' 이라는 어휘는 없다. 화살촉 달린 선이라 vector 로 세운다 — 축을 둘지는 조각이 정할 일이므로 전용 어휘를 만들 이유가 없다"
+    },
+    {
+      "element": "축 이름 ('시간' · '높이')",
+      "vocab": "readout (world anchor · font 'text')",
+      "status": "있음"
+    },
+    {
+      "element": "높이를 잇는 안내선",
+      "vocab": "trajectory (style.lineStyle 'dashed' · width 1)",
+      "status": "있음",
+      "note": "lineStyle · closed · fade 는 선언만 있던 시절이 있었으나 지금은 trajectory.ts 가 모두 읽는다 (확인함)"
+    },
+    {
+      "element": "구슬이 남긴 선",
+      "vocab": "trajectory (points 누적)",
+      "status": "있음"
+    },
+    {
+      "element": "펜 끝점",
+      "vocab": "body (shape 'circle' · size 작게)",
+      "status": "있음"
+    },
+    {
+      "element": "1초마다 찍히는 자국",
+      "vocab": "trace (dot) + trace (tick)",
+      "status": "있음"
+    },
+    {
+      "element": "구슬 (배경색 테두리를 두른 원)",
+      "vocab": "body (shape 'circle')",
+      "status": "수정 필요",
+      "note": "body 는 채움 + theme.line 윤곽이 고정이다 (body.ts:64-70). 윤곽 색을 배경색으로 두어 선 위에서도 읽히게 하는 것이 안 된다"
+    },
+    {
+      "element": "위치-시간 그래프 그 자체",
+      "vocab": "graph (style 'line')",
+      "status": "수정 필요",
+      "note": "renderGraph 는 style !== 'bar' 이면 곧장 return 한다 (graph.ts:11). 선언에 있는 line · scatter · phasor · pv · spectrum 과 yAxis · showGrid · horizontal · placement 는 구현이 없다 — 저작자에게 거짓말을 하는 필드다 (S-render). 이 조각은 trajectory 조합으로 우회할 수 있고 기존 velocity-time-graph 도 그렇게 했다"
+    },
+    {
+      "element": "통로 세로와 그래프 세로축이 같은 픽셀 눈금",
+      "vocab": "Bundle.boundsHint (하나의 월드)",
+      "status": "있음",
+      "note": "두 그림을 한 월드 좌표에 놓으면 상수를 손으로 공유할 일이 없다"
+    },
+    {
+      "element": "빠르기 슬라이더 둘 · 주도권 넘기기",
+      "vocab": "controller slider",
+      "status": "있음",
+      "note": "ControllerInstance.heldPath 가 이미 조작기 종류와 무관한 공통 규약으로 있다 — 러너가 잡힌 동안 state 에 적고, 놓은 뒤 무엇으로 돌아갈지는 조각의 step 이 정한다 (01-broad 에서 여섯이 각자 짜던 것을 올렸다). 대조 때 slider 의 binds 만 보고 인스턴스 공통 필드를 놓쳤다 — 2026-09-16 교정"
+    },
+    {
+      "element": "라운드 구조 (주행 6 / 유지 2 / 지우기 0.6, 두 판)",
+      "vocab": "TimelineDef.phases",
+      "status": "있음"
+    },
+    {
+      "element": "도착 즉시 2.4초째",
+      "vocab": "BundleSchema.startAt",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "표본 솎기 · 라운드 리셋 · 두 구슬의 속도 교환 — sim 의 물리",
+    "어떤 물리량을 어느 방향에 놓을지 (통로를 세로로 세운 것) — 조각의 결정이고 엔진이 기본형을 강제하면 이 조각이 성립하지 않는다"
+  ]
+}

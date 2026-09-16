@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>각가속도</title>
+<style>
+  :root {
+    --bg: #f7f4ee;
+    --ink: #33302b;
+    --faint: #ded7c9;
+    --mute: #8c8579;
+    --accent: #c0442f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  }
+  #piece { width: 100%; max-width: 900px; margin: 0 auto; padding: 8px 16px 14px; }
+  canvas { display: block; width: 100%; height: 280px; }
+  #caption {
+    margin: 2px 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink);
+    text-align: center;
+  }
+  #controls {
+    margin-top: 12px;
+    display: flex;
+    gap: 28px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .ctl { display: flex; align-items: center; gap: 9px; font-size: 13px; color: var(--mute); }
+  .ctl input[type=range] { width: 148px; accent-color: var(--mute); }
+  .ctl .val { font-variant-numeric: tabular-nums; color: var(--ink); min-width: 92px; }
+</style>
+</head>
+<body>
+<div id="piece">
+  <canvas id="c"></canvas>
+  <p id="caption">0.5초마다 테두리에 눈금 하나 — 같은 0.5초인데 눈금 사이가 갈수록 벌어진다</p>
+  <div id="controls">
+    <label class="ctl">시작 각속도 ω₀
+      <input id="w0" type="range" min="0" max="0.25" step="0.01" value="0.10">
+      <span class="val" id="w0v">0.10 rad/s</span>
+    </label>
+    <label class="ctl">각가속도 α
+      <input id="al" type="range" min="0" max="0.110" step="0.005" value="0.100">
+      <span class="val" id="alv">0.100 rad/s²</span>
+    </label>
+  </div>
+</div>
+
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var c = document.getElementById('c');
+  var ctx = c.getContext('2d');
+  function fit() {
+    var d = window.devicePixelRatio || 1;
+    c.width = Math.round(c.clientWidth * d);
+    c.height = Math.round(c.clientHeight * d);
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+  }
+  fit();
+  window.addEventListener('resize', fit);
+
+  // ---- 상수 ----
+  var STAMP = 0.5;    // 눈금을 찍는 시간 간격 (초)
+  var RUN   = 8.0;    // 한 번 돌리는 시간
+  var FADE  = 0.7;    // 기록이 지워지는 시간
+  var CYCLE = 9.2;    // 한 주기 (빈 사이 0.5초 포함)
+  var PHASE = 5.3;    // 도착한 순간 이미 열한 눈금째, 부채꼴도 벌어지는 중 — 빈 화면을 보여 주지 않는다
+
+  // ---- 조작기 ----
+  var w0El = document.getElementById('w0');
+  var alEl = document.getElementById('al');
+  var w0Val = document.getElementById('w0v');
+  var alVal = document.getElementById('alv');
+  var W0_DEFAULT = 0.10, AL_DEFAULT = 0.100;
+  var w0 = W0_DEFAULT, alpha = AL_DEFAULT;
+
+  function syncLabels() {
+    w0Val.textContent = w0.toFixed(2) + ' rad/s';
+    alVal.textContent = alpha.toFixed(3) + ' rad/s²';
+  }
+  if (PieceKit.frozen) {
+    // ?t= 로 찍는 중 — 자동 진행 상태 그대로.
+    w0El.value = String(W0_DEFAULT);
+    alEl.value = String(AL_DEFAULT);
+    w0El.disabled = true;
+    alEl.disabled = true;
+  } else {
+    w0El.addEventListener('input', function () { w0 = parseFloat(w0El.value); syncLabels(); });
+    alEl.addEventListener('input', function () { alpha = parseFloat(alEl.value); syncLabels(); });
+  }
+  syncLabels();
+
+  // ---- 상태: 흐른 시간 하나뿐 ----
+  var elapsed = 0;
+
+  // 각도는 tau 의 해석해다. 조작기를 움직이면 눈금 배열 전체가 그 자리에서 다시 잡힌다.
+  function angleAt(tau) { return w0 * tau + 0.5 * alpha * tau * tau; }
+
+  // ---- 그리기 ----
+  var ACCENT = '#c0442f';
+  var INK = '#33302b';
+  var RIM = '#ded7c9';
+
+  function pt(cx, cy, r, th) {
+    return [cx + r * Math.sin(th), cy - r * Math.cos(th)];
+  }
+
+  function draw() {
+    var w = c.clientWidth, h = 280;
+    var cx = w / 2, cy = 142, R = 108;
+
+    var tau = (elapsed + PHASE) % CYCLE;
+    var recT = Math.min(tau, RUN);                 // 기록이 멈추는 시각
+    var fadeIn = Math.min(1, tau / 0.35);
+    var fadeOut = tau <= RUN ? 1 : Math.max(0, 1 - (tau - RUN) / FADE);
+    var op = fadeIn * fadeOut;                     // 기록·바퀴살의 불투명도
+    var kLast = Math.floor(recT / STAMP + 1e-9);   // 마지막으로 찍힌 눈금 번호
+    var thNow = angleAt(tau);
+
+    ctx.clearRect(0, 0, w, h);
+
+    PieceKit.mark('바퀴 테두리', function () {
+      ctx.strokeStyle = RIM;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.fillStyle = RIM;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    PieceKit.mark('이번 0.5초 부채꼴', function () {
+      if (op <= 0.01) return;
+      var thA = angleAt(kLast * STAMP);
+      var thB = thNow;
+      if (thB - thA < 1e-4) return;
+      ctx.globalAlpha = op * 0.22;
+      ctx.fillStyle = ACCENT;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, R, thA - Math.PI / 2, thB - Math.PI / 2);
+      ctx.fill();
+      ctx.globalAlpha = op;
+      ctx.strokeStyle = ACCENT;
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, thA - Math.PI / 2, thB - Math.PI / 2);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('0.5초 눈금', function () {
+      if (op <= 0.01) return;
+      ctx.globalAlpha = op;
+      ctx.strokeStyle = INK;
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'butt';
+      for (var k = 0; k <= kLast; k++) {
+        var th = angleAt(k * STAMP);
+        var a = pt(cx, cy, R - 8, th), b = pt(cx, cy, R + 10, th);
+        ctx.beginPath();
+        ctx.moveTo(a[0], a[1]);
+        ctx.lineTo(b[0], b[1]);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('회전하는 바퀴살', function () {
+      if (op <= 0.01) return;
+      ctx.globalAlpha = op;
+      var tip = pt(cx, cy, R, thNow);
+      ctx.strokeStyle = INK;
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(tip[0], tip[1]);
+      ctx.stroke();
+      ctx.fillStyle = INK;
+      ctx.beginPath();
+      ctx.arc(tip[0], tip[1], 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    });
+  }
+
+  PieceKit.loop({
+    step: function (dt) { elapsed += dt; },
+    draw: draw,
+  });
+})();
+</script>
+</body>
+</html>

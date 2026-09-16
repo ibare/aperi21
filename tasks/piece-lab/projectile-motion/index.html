@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>포물선 운동 — 수평·연직의 독립</title>
+<style>
+  :root {
+    --paper: #f7f4ee;
+    --ink: #2b2b33;
+    --ground: #8a8578;
+    --accent: #d4483b;
+    --caption: #3a3a42;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    font-family: system-ui, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    color: var(--ink);
+  }
+  .piece { max-width: 860px; margin: 0 auto; padding: 8px 16px 12px; }
+  canvas { display: block; width: 100%; height: 282px; }
+  .under {
+    display: flex; align-items: center; gap: 20px;
+    margin-top: 6px;
+  }
+  .caption {
+    flex: 1 1 auto;
+    font-size: 14.5px; line-height: 1.45; color: var(--caption);
+    letter-spacing: -0.01em;
+  }
+  .knob { flex: 0 0 auto; display: flex; align-items: center; gap: 9px; }
+  .knob label { font-size: 12.5px; color: #6f6a62; white-space: nowrap; }
+  input[type=range] {
+    -webkit-appearance: none; appearance: none;
+    width: 128px; height: 18px; background: transparent; cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-runnable-track {
+    height: 2px; background: #cdc7bb; border-radius: 2px;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 13px; height: 13px; margin-top: -5.5px;
+    background: var(--ink); border-radius: 50%; border: none;
+  }
+  input[type=range]::-moz-range-track { height: 2px; background: #cdc7bb; border-radius: 2px; }
+  input[type=range]::-moz-range-thumb { width: 13px; height: 13px; background: var(--ink); border: none; border-radius: 50%; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <div class="under">
+    <div class="caption" id="cap"></div>
+    <div class="knob">
+      <label for="vk">앞으로 던지는 빠르기</label>
+      <input type="range" id="vk" min="0" max="100" value="62" aria-label="앞으로 던지는 빠르기">
+    </div>
+  </div>
+</div>
+
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var c = document.getElementById('c');
+  var ctx = c.getContext('2d');
+  var capEl = document.getElementById('cap');
+  var knob = document.getElementById('vk');
+
+  var W = 0, H = 282;
+  function fit() {
+    var d = window.devicePixelRatio || 1;
+    W = c.clientWidth || 860;
+    c.width = Math.round(W * d);
+    c.height = Math.round(H * d);
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+  }
+  fit();
+
+  // ---- 장면의 치수 (화면 좌표에서 직접 정의한다) ----
+  var X0 = 58;            // 세 공이 함께 놓이는 지점
+  var Y0 = 42;            // 놓는 높이
+  var GROUND = 268;       // 지면
+  var R = 7;              // 공 반지름
+  var T_FALL = 2.0;       // 바닥에 닿기까지 (화면 시간)
+  var REST = 1.3;         // 닿은 뒤 머무는 시간
+  var CYCLE = T_FALL + REST;
+  var STROBE = 0.2;       // 잔상을 남기는 간격
+  var G = 2 * (GROUND - R - Y0) / (T_FALL * T_FALL);  // 아래로 당기는 가속도
+  var SPLASH = 0.6;       // 착지 파문이 사는 시간
+  var SPLASH_R0 = 13;     // 파문의 처음 반지름 (공보다 커야 공에 가리지 않는다)
+  var SPLASH_R1 = 44;
+
+  function vmax() { return (W - X0 - 42) / (2 * T_FALL); }
+  function vBase() { return vmax() * (knobValue() / 100); }
+  function knobValue() { return PieceKit.frozen ? 62 : (parseFloat(knob.value) || 0); }
+
+  // 세 공은 수평 속도의 배수만 다르다
+  var MULT = [0, 1, 2];
+
+  // ---- 상태 ----
+  var phase = 0.70;       // 도착한 순간 이미 던져진 뒤다
+  var lastIdx = 3;
+  var strobes = [0, STROBE, 2 * STROBE, 3 * STROBE];
+  var vx = 0;
+
+  function reset() {
+    phase = 0;
+    lastIdx = -1;
+    strobes = [];
+  }
+
+  if (!PieceKit.frozen) {
+    knob.addEventListener('input', function () { vx = vBase(); reset(); });
+    window.addEventListener('resize', function () { fit(); vx = vBase(); });
+  }
+  vx = vBase();
+
+  // ---- 위치 ----
+  function posX(mult, tau) { return X0 + mult * vx * tau; }
+  function posY(tau) { return Y0 + 0.5 * G * tau * tau; }
+  function tauOf(p) { return p < T_FALL ? p : T_FALL; }
+
+  // ---- 진행 ----
+  PieceKit.loop({
+    step: function (dt) {
+      phase += dt;
+      if (phase >= CYCLE) { phase -= CYCLE; lastIdx = -1; strobes = []; }
+      var maxIdx = Math.floor(tauOf(phase) / STROBE + 1e-9);
+      while (lastIdx < maxIdx) { lastIdx++; strobes.push(lastIdx * STROBE); }
+    },
+
+    draw: function () {
+      var tau = tauOf(phase);
+      var landed = phase >= T_FALL;
+
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = '#f7f4ee';
+      ctx.fillRect(0, 0, W, H);
+
+      PieceKit.mark('지면', function () {
+        ctx.strokeStyle = '#8a8578';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(18, GROUND + 0.75);
+        ctx.lineTo(W - 18, GROUND + 0.75);
+        ctx.stroke();
+      });
+
+      PieceKit.mark('지나간 높이선', function () {
+        ctx.strokeStyle = 'rgba(212,72,59,0.20)';
+        ctx.lineWidth = 1;
+        for (var i = 0; i < strobes.length; i++) {
+          var s = strobes[i];
+          var y = posY(s);
+          ctx.beginPath();
+          ctx.moveTo(posX(MULT[0], s), y);
+          ctx.lineTo(posX(MULT[2], s), y);
+          ctx.stroke();
+        }
+      });
+
+      PieceKit.mark('잔상', function () {
+        ctx.fillStyle = 'rgba(43,43,51,0.24)';
+        for (var i = 0; i < strobes.length; i++) {
+          var s = strobes[i];
+          var y = posY(s);
+          for (var k = 0; k < MULT.length; k++) {
+            ctx.beginPath();
+            ctx.arc(posX(MULT[k], s), y, 3.1, 0, 6.2832);
+            ctx.fill();
+          }
+        }
+      });
+
+      PieceKit.mark('착지 파문', function () {
+        if (!landed) return;
+        var age = phase - T_FALL;
+        if (age > SPLASH) return;
+        var f = age / SPLASH;
+        ctx.strokeStyle = 'rgba(212,72,59,' + (0.6 * (1 - f)).toFixed(3) + ')';
+        ctx.lineWidth = 2;
+        var rad = SPLASH_R0 + (SPLASH_R1 - SPLASH_R0) * f;
+        for (var k = 0; k < MULT.length; k++) {
+          ctx.beginPath();
+          ctx.arc(posX(MULT[k], T_FALL), GROUND, rad, Math.PI, 2 * Math.PI);
+          ctx.stroke();
+        }
+      });
+
+      PieceKit.mark('지금 높이선', function () {
+        var y = posY(tau);
+        ctx.strokeStyle = '#d4483b';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(posX(MULT[0], tau), y);
+        ctx.lineTo(posX(MULT[2], tau), y);
+        ctx.stroke();
+      });
+
+      PieceKit.mark('공', function () {
+        var y = posY(tau);
+        ctx.fillStyle = '#2b2b33';
+        for (var k = 0; k < MULT.length; k++) {
+          ctx.beginPath();
+          ctx.arc(posX(MULT[k], tau), y, R, 0, 6.2832);
+          ctx.fill();
+        }
+      });
+
+      capEl.textContent = landed
+        ? '셋이 한꺼번에 닿았다 — 달라진 것은 앞으로 간 거리뿐이다'
+        : '세 공을 잇는 선이 수평인 채로 내려온다';
+    }
+  });
+})();
+</script>
+</body>
+</html>

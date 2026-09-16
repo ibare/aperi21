@@ -1,0 +1,26 @@
+{
+  "rows": [
+    { "element": "도로 (옅은 띠 세 줄)", "vocab": "region (points · opaque)", "status": "있음" },
+    { "element": "위험 발견 지점 (세로 점선)", "vocab": "trajectory (2점 · style.lineStyle 'dashed' · width 1)", "status": "있음" },
+    { "element": "반응 구간 자취 (자라는 회색 띠)", "vocab": "region (points 를 매 프레임 갱신)", "status": "있음" },
+    { "element": "제동 구간 자취 (이어 자라는 붉은 띠)", "vocab": "region (colorRole accent)", "status": "있음" },
+    { "element": "정지 후 나타나는 반복 눈금 (1/2/3 칸 · 1/4/9 칸)", "vocab": "scale (shape 'linear' · pos · direction · size · tickAt)", "status": "있음",
+      "note": "tickAt 에 30 km/h 의 구간 길이 배수를 넣으면 된다. 다만 scale 은 눈금선과 숫자를 함께 내는 어휘라, 숫자를 붙이지 않으려면 labelAt 을 비운다 — 이 조각은 '세는 일' 로 만드는 것이 결정이라 숫자를 붙이면 안 된다" },
+    { "element": "구간 거리 값 (띠 안에 얹힌 숫자)", "vocab": "readout (world anchor · chip false)", "status": "수정 필요",
+      "note": "'그 차가 선 순간부터 0.3초에 걸쳐 나타난다' 는 opacity 로 되지만, '칸에 안 들어가면 스스로 빠지는' 규칙이 없다. 720px 컨테이너에서 라벨이 잘리던 것을 조각이 손으로 클램프했다" },
+    { "element": "자동차 (사각 둘 + 원 둘 + 속력 텍스트)", "vocab": "body (rect) × 2 + body (circle) × 2 + readout", "status": "있음",
+      "note": "부품 여섯으로 차 한 대를 낸다. shape 'custom' + customPath 로 한 덩어리로 낼 수도 있다" },
+    { "element": "속력만 다른 차 세 대", "vocab": "scene 이 배열로", "status": "있음",
+      "note": "같은 법칙을 다른 파라미터로 따르는 인스턴스 여럿 — 어휘 문제가 아니라 선언 편의 문제다. projectile-motion 의 공 셋과 같은 요구다" },
+    { "element": "사이클 (접근 → 반응 → 제동 → 유지)", "vocab": "TimelineDef.phases", "status": "있음" },
+    { "element": "초기 위상 1.0초", "vocab": "BundleSchema.startAt", "status": "있음" },
+    { "element": "캡션", "vocab": "CaptionSlotDef", "status": "있음" },
+    { "element": "미터 → 픽셀 사상", "vocab": "boundsHint + toScreen", "status": "있음",
+      "note": "상태를 끝까지 미터로 두게 하는 것이 요구였고, 엔진이 이미 그 모양이다" }
+  ],
+  "outside": [
+    "사다리꼴 적분 + 마지막 조각 스텝 보정으로 v²/2a 와 화면을 정확히 일치시킨 것 — sim 의 물리. 다만 '화면 값과 표 값이 어긋나지 않는 것은 적분기가 보장할 일' 이라는 조각의 요구는 시간 엔진 쪽에서 볼 값이 있다",
+    "조작기를 두지 않은 것 — 세 결과가 동시에 화면에 있어야 한다는 조각의 결정",
+    "반복 눈금이 켜지는 조건 — 자동으로 켜지는 기능이면 안 된다는 조각의 요구 (사용자 결정 사항)"
+  ]
+}

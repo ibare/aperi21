@@ -163,6 +163,8 @@ export function captionPrimitive(
     font: 'text',
     align: slot.align,
     fontSize: slot.fontSize,
+    // 슬롯이 정한 줄바꿈 폭을 그대로 내려보낸다 — 어디서 끊을지는 readout 이 판단한다.
+    wrapWidth: slot.wrapWidth,
     style: slot.style ?? CAPTION_STYLE,
     opacity,
   };

@@ -1,0 +1,70 @@
+{
+  "rows": [
+    {
+      "element": "자국 사다리 (가운데를 비운 가로 선 쌍)",
+      "vocab": "trace (shape 'tick' · direction [1,0]) 인스턴스 둘",
+      "status": "있음",
+      "note": "가운데 28px 을 비우는 것은 좌우 두 인스턴스를 각각 다른 pos 로 내면 된다"
+    },
+    {
+      "element": "자국 주기 표시 ('0.2초마다 남긴 자국')",
+      "vocab": "readout (world anchor · font 'text')",
+      "status": "있음"
+    },
+    {
+      "element": "중력 화살표 (길이 고정)",
+      "vocab": "vector (from · delta)",
+      "status": "있음"
+    },
+    {
+      "element": "공기 저항 화살표 (자라서 중력과 같아짐)",
+      "vocab": "vector (colorRole accent)",
+      "status": "있음",
+      "note": "같은 자로 재는 것이 주장이므로 엔진이 화살표 길이를 보기 좋게 정규화하면 안 된다. 지금 vector 렌더러는 delta 를 그대로 쓴다 — 전제가 지켜져 있다"
+    },
+    {
+      "element": "길이 0 일 때 딱지만 남기기",
+      "vocab": "vector.label",
+      "status": "수정 필요",
+      "note": "delta 가 [0,0] 일 때 label 이 어디에 놓이는지가 정의돼 있지 않다. '저항이라는 게 있는데 지금은 0' 이 읽혀야 하는 자리다"
+    },
+    {
+      "element": "화살표 딱지 ('중력' · '공기 저항')",
+      "vocab": "vector.label / readout",
+      "status": "수정 필요",
+      "note": "딱지 뒤에 배경 칩을 까는 것은 readout.chip 에 있는데 vector.label 에는 없다. 조각은 measureText 로 직접 깔았다"
+    },
+    {
+      "element": "떨어지는 물체",
+      "vocab": "body (shape 'circle')",
+      "status": "있음"
+    },
+    {
+      "element": "캡션 (오른쪽, 세로 중앙, 상태에 따라 셋 중 하나)",
+      "vocab": "CaptionSlotDef.cases + anchor",
+      "status": "수정 필요",
+      "note": "상태로 문구를 고르는 cases 는 있다. 없는 것은 '주어진 폭 안에서 한국어를 줄바꿈해 세로 중앙에 놓기' 다 — 세로가 비싼 조각이 가로를 캡션에 내주는 배치라 자리와 함께 필요하다"
+    },
+    {
+      "element": "저항 세기 슬라이더 (9단)",
+      "vocab": "controller slider",
+      "status": "있음",
+      "note": "ControllerInstance.heldPath 가 이미 조작기 종류와 무관한 공통 규약으로 있다 — 러너가 잡힌 동안 state 에 적고, 놓은 뒤 무엇으로 돌아갈지는 조각의 step 이 정한다 (01-broad 에서 여섯이 각자 짜던 것을 올렸다). 대조 때 slider 의 binds 만 보고 인스턴스 공통 필드를 놓쳤다 — 2026-09-16 교정"
+    },
+    {
+      "element": "사이클 (낙하 → 붙잡기 1.1초 → 되감기)",
+      "vocab": "TimelineDef.phases",
+      "status": "있음"
+    },
+    {
+      "element": "물리 단위 적분과 화면 환산",
+      "vocab": "boundsHint + toScreen",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "a = g − k·v² 를 고정 dt 로 적분하는 것 — sim 의 물리",
+    "시간 축을 압축해 (g 71 → 215) 초반이 화면에 오래 머물지 않게 한 것 — 조각의 배치 결정",
+    "균형에 이른 순간에도 색을 바꾸지 않는 것 — 강조색이 두 뜻을 가지면 안 된다는 조각의 결정"
+  ]
+}

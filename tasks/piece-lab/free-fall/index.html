@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>자유 낙하</title>
+<style>
+  :root {
+    --bg: #f7f4ee;
+    --ink: #2b2a27;
+    --accent: #cf4520;
+  }
+  html, body { margin: 0; background: var(--bg); }
+  body {
+    font-family: system-ui, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    color: var(--ink);
+  }
+  #stage { max-width: 860px; margin: 0 auto; }
+  canvas { display: block; width: 100%; height: 340px; }
+  #controls {
+    display: flex; align-items: center; gap: 6px;
+    padding: 2px 0 6px; flex-wrap: wrap;
+    font-size: 13px;
+  }
+  #controls .label { color: #6f6a61; margin-right: 4px; }
+  #controls button {
+    font: inherit; font-weight: 600;
+    padding: 5px 12px; border-radius: 999px;
+    border: 1px solid #cdc6b8; background: transparent; color: #6f6a61;
+    cursor: pointer;
+  }
+  #controls button[aria-pressed="true"] {
+    border-color: var(--ink); background: var(--ink); color: var(--bg);
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="c"></canvas>
+  <div id="controls">
+    <span class="label">무거운 공의 무게</span>
+    <button type="button" data-m="auto" aria-pressed="true">차례로 바꾸기</button>
+    <button type="button" data-m="2" aria-pressed="false">2 kg</button>
+    <button type="button" data-m="10" aria-pressed="false">10 kg</button>
+    <button type="button" data-m="50" aria-pressed="false">50 kg</button>
+  </div>
+</div>
+
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var INK = '#2b2a27';
+  var ACCENT = '#cf4520';
+  var BG = '#f7f4ee';
+  var FONT = "system-ui, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif";
+
+  var H = 340;          // 캔버스 높이 (CSS px)
+  var Y_TOP = 48;       // 공 중심의 출발 높이
+  var Y_GROUND = 282;   // 바닥선
+  var R = 13;           // 공 반지름
+  var Y_LAND = Y_GROUND - R;
+  var Y_CAPTION = 318;
+
+  var G = 9.8;                        // m/s^2
+  var DROP_M = 5;                     // 떨어뜨리는 높이 (m)
+  var PPM = (Y_LAND - Y_TOP) / DROP_M; // 픽셀/미터
+
+  var CYCLE = 4.3;      // 한 번 떨어뜨리고 다시 드는 데 걸리는 시간
+  var HOLD = 0.35;      // 놓기 전 들고 있는 시간
+  var SETTLE = 3.55;    // 착지한 화면을 보여 주는 끝 시각
+  var FADE = CYCLE - SETTLE;
+  var STROBE = 0.09;    // 잔상을 남기는 간격
+
+  var MASSES = [2, 10, 50];
+  var M_LIGHT = 1;
+
+  var c = document.getElementById('c');
+  var ctx = c.getContext('2d');
+  function fit() {
+    var d = window.devicePixelRatio || 1;
+    c.width = Math.round(c.clientWidth * d);
+    c.height = Math.round(H * d);
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+  }
+  fit();
+  if (!PieceKit.frozen) window.addEventListener('resize', fit);
+
+  // ---- 상태 ----
+  function newBall() { return { y: Y_TOP, v: 0, landed: false, landTau: -1 }; }
+  var st = {
+    tau: 0,        // 이번 사이클 안에서 흐른 시간
+    cyc: 0,        // 몇 번째로 떨어뜨리는 중인가
+    heavy: newBall(),
+    light: newBall(),
+    ghosts: [],    // 잔상 — { yH, yL }
+    strobe: 0,
+    fixed: null,   // 조작기로 고정한 무게 (null = 차례로 바꾸기)
+    appear: false  // 다시 시작한 적이 있는가 (첫 등장은 페이드인 없이)
+  };
+
+  function heavyMass() { return st.fixed !== null ? st.fixed : MASSES[st.cyc % MASSES.length]; }
+
+  function restart() {
+    st.tau = 0;
+    st.heavy = newBall();
+    st.light = newBall();
+    st.ghosts = [];
+    st.strobe = 0;
+    st.appear = true;
+  }
+
+  // 공 하나를 dt 만큼 떨어뜨린다.
+  // 무게(중력)는 무거울수록 크지만, 가속도로 바꾸는 순간 같은 m 으로 나뉘어 사라진다.
+  function drop(b, m, dt) {
+    if (b.landed) return;
+    var F = m * G;   // 이 공을 끌어내리는 힘 — 무거울수록 크다
+    var a = F / m;   // 그 힘이 만드는 가속도 — 나누면 m 이 지워진다
+    b.v += a * dt;
+    b.y += b.v * dt * PPM;
+    if (b.y >= Y_LAND) { b.y = Y_LAND; b.v = 0; b.landed = true; b.landTau = st.tau; }
+  }
+
+  PieceKit.loop({
+    step: function (dt) {
+      st.tau += dt;
+      if (st.tau >= CYCLE) {
+        st.tau -= CYCLE;
+        st.cyc++;
+        var keepTau = st.tau;
+        restart();
+        st.tau = keepTau;
+      }
+      if (st.tau < HOLD) return;
+
+      var before = st.heavy.landed;
+      drop(st.heavy, heavyMass(), dt);
+      drop(st.light, M_LIGHT, dt);
+
+      if (!before) {
+        st.strobe += dt;
+        if (st.strobe >= STROBE || st.heavy.landed) {
+          if (st.strobe >= STROBE) st.strobe -= STROBE;
+          st.ghosts.push({ yH: st.heavy.y, yL: st.light.y });
+        }
+      }
+    },
+
+    draw: function () {
+      var W = c.clientWidth;
+      var xH = W * 0.34;
+      var xL = W * 0.66;
+      var tau = st.tau;
+      var mH = heavyMass();
+
+      // 무대가 흐려지는 정도 — 사이클 끝에서 잔상을 걷고, 다시 들 때 나타난다
+      var alpha = 1;
+      if (tau >= SETTLE) alpha = Math.max(0, 1 - (tau - SETTLE) / FADE);
+      else if (st.appear && tau < 0.12) alpha = tau / 0.12;
+
+      PieceKit.mark('무대', function () {
+        ctx.fillStyle = BG;
+        ctx.fillRect(0, 0, W, H);
+      });
+
+      PieceKit.mark('땅', function () {
+        ctx.fillStyle = 'rgba(43,42,39,0.05)';
+        ctx.fillRect(0, Y_GROUND, W, 10);
+        ctx.strokeStyle = 'rgba(43,42,39,0.55)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(0, Y_GROUND - 0.75);
+        ctx.lineTo(W, Y_GROUND - 0.75);
+        ctx.stroke();
+      });
+
+      // 지나온 높이들 — 칸마다 두 공이 같은 자리에 있었다는 기록
+      PieceKit.mark('낙하 사다리', function () {
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        for (var i = 0; i < st.ghosts.length; i++) {
+          var g = st.ghosts[i];
+          ctx.strokeStyle = 'rgba(207,69,32,0.24)';
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(xH, g.yH);
+          ctx.lineTo(xL, g.yL);
+          ctx.stroke();
+          ctx.strokeStyle = 'rgba(43,42,39,0.22)';
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.arc(xH, g.yH, R, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(xL, g.yL, R, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+        ctx.restore();
+      });
+
+      // 두 공에 걸쳐 놓인 막대 — 한쪽이 앞서면 기울어야 하는데 끝까지 수평이다
+      PieceKit.mark('나란함 잣대', function () {
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.strokeStyle = ACCENT;
+        ctx.lineWidth = 2.5;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(xH, st.heavy.y);
+        ctx.lineTo(xL, st.light.y);
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      PieceKit.mark('무거운 공', function () {
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = INK;
+        ctx.beginPath();
+        ctx.arc(xH, st.heavy.y, R, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+
+      PieceKit.mark('가벼운 공', function () {
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.strokeStyle = INK;
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(xL, st.light.y, R, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      PieceKit.mark('무게 딱지', function () {
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = INK;
+        ctx.font = '600 14px ' + FONT;
+        ctx.textBaseline = 'middle';
+        ctx.textAlign = 'right';
+        ctx.fillText(mH + ' kg', xH - R - 9, st.heavy.y);
+        ctx.textAlign = 'left';
+        ctx.fillText(M_LIGHT + ' kg', xL + R + 9, st.light.y);
+        ctx.restore();
+      });
+
+      PieceKit.mark('착지 울림', function () {
+        ctx.save();
+        [[xH, st.heavy], [xL, st.light]].forEach(function (p) {
+          var b = p[1];
+          if (!b.landed) return;
+          var age = tau - b.landTau;
+          if (age < 0 || age > 0.42) return;
+          var k = age / 0.42;
+          ctx.globalAlpha = (1 - k) * 0.85 * alpha;
+          ctx.strokeStyle = ACCENT;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(p[0], Y_GROUND, R + 5 + 26 * k, Math.PI * 1.13, Math.PI * 1.87);
+          ctx.stroke();
+        });
+        ctx.restore();
+      });
+
+      PieceKit.mark('캡션', function () {
+        var text;
+        if (tau < HOLD) text = '무게가 다른 두 공을 같은 높이에서 든다';
+        else if (!st.heavy.landed) text = '두 공이 같은 높이를 나란히 지나간다';
+        else text = mH + '배 무거운 공도 바닥에 같이 닿았다';
+        ctx.fillStyle = INK;
+        ctx.font = '15px ' + FONT;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(text, W / 2, Y_CAPTION);
+      });
+    }
+  });
+
+  // ---- 조작기 ----
+  if (!PieceKit.frozen) {
+    var buttons = Array.prototype.slice.call(document.querySelectorAll('#controls button'));
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var raw = btn.getAttribute('data-m');
+        st.fixed = raw === 'auto' ? null : parseInt(raw, 10);
+        buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b === btn)); });
+        restart();
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>
