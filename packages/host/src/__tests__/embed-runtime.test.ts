@@ -314,6 +314,70 @@ describe('임베드 인스턴스 독립', () => {
 
 // ── 3. destroy 뒷정리 (C5) ─────────────────────────────────────────────────
 
+// ── 4. 끝난 뒤 다시 시작하기 (시간 엔진 · 러너) ────────────────────────────
+
+describe('종료된 조각을 되살리면 시계가 다시 흐른다', () => {
+  it('조작기가 상태를 되돌리면 step 이 다시 불린다', () => {
+    // 엔진 쪽 계약은 `time-resume.test.ts` 가 잠근다. 여기서 재는 것은 **러너가
+    // 실제로 되살리는가** 다.
+    //
+    // 조각이 `isTerminated` 로 「끝났다」고 하면 러너가 시계를 세운다. 세워진 시계의
+    // `tick()` 은 0 을 돌려주므로 **`bundle.step` 이 아예 안 불린다.** 그래서 발사대를
+    // 다시 당기거나 스테이지·환경을 바꿔도 상태만 갱신되고 화면은 멎어 있었다 —
+    // 예외도 안 나고 타입도 통과한다.
+    const steps: number[] = [];
+    const bundle: Bundle<TestState> = {
+      ...makeBundle(),
+      step: ({ state, dt }) => {
+        steps.push(state.t);
+        return { t: state.t + dt };
+      },
+      isTerminated: (s) => s.t >= 0.05,
+      // 누르면 처음으로 되돌린다 — 발사대의 재장전과 같은 모양이다.
+      controllers: [
+        { id: 'r', type: 'slider', binds: { value: 't' }, range: [0, 1], label: { en: 'R' } },
+      ] as readonly ControllerSpec[],
+    };
+    const host = createHost({
+      capabilities: {
+        controllers: {
+          slider: () => ({
+            type: 'slider',
+            render: () => undefined,
+            hitTest: () => true,
+            onPointerDown: (_i, _c, _s, state) => ({ ...(state as TestState), t: 0 }),
+            onPointerMove: () => null,
+            onPointerUp: () => null,
+            isDragging: () => false,
+          }) as ControllerImpl,
+        },
+      },
+    });
+
+    const mount = document.createElement('div');
+    document.body.append(mount);
+    const handle = runBundle(bundle, mount, { host });
+
+    raf.tick(30);
+    const afterTerminated = steps.length;
+    // 끝났으니 더 이상 전진하지 않는다.
+    raf.tick(10);
+    expect(steps.length).toBe(afterTerminated);
+
+    // 되돌린다.
+    const canvas = mount.querySelector('canvas')!;
+    const ev = new Event('pointerdown', { bubbles: true });
+    Object.assign(ev, { pointerId: 1, clientX: 20, clientY: 20, button: 0, buttons: 1 });
+    canvas.dispatchEvent(ev);
+
+    raf.tick(10);
+    // 여기가 이 테스트의 전부다 — 시계를 풀지 않으면 step 이 영영 안 불린다.
+    expect(steps.length).toBeGreaterThan(afterTerminated);
+
+    handle.destroy();
+  });
+});
+
 describe('destroy 뒷정리', () => {
   it('RAF 루프를 멈추고 컨테이너에서 자기 DOM 을 걷어낸다', () => {
     const mount = document.createElement('div');

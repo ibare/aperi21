@@ -35,7 +35,25 @@ export function step(params: {
   environments: EnvironmentDef[];
 }): ProjectileState {
   const { state, dt, stage, environments } = params;
-  if (state.phase !== 'flying') return state;
+  if (state.phase !== 'flying') {
+    // `idle` 은 **발사 직전**이다. 한 번 날아간 뒤 다시 당기면 런처는 `phase` 만
+    // 되돌린다 — 그 조작기는 조각의 상태 구조를 모르고, 알아서도 안 된다
+    // (「무엇으로 돌아갈지는 조각이 안다」). 그래서 착지 자리의 `t`·`pos`·`vel`·
+    // `history` 가 그대로 남고, 다음 발사가 그 자리에서 시작해 **공이 날지 않는다.**
+    // 예외도 안 나고 타입도 통과한다.
+    if (state.phase === 'idle' && state.t !== 0) {
+      const rad = (state.launch.theta * Math.PI) / 180;
+      return {
+        ...state,
+        t: 0,
+        pos: [0, 0],
+        vel: [state.launch.v0 * Math.cos(rad), state.launch.v0 * Math.sin(rad)],
+        history: [[0, 0]],
+        landedAt: undefined,
+      };
+    }
+    return state;
+  }
 
   // 발사 순간 initialState 로 이미 vel 이 세팅되어 있을 수도 있지만,
   // 런처가 phase 를 flying 으로 전환할 때 launch.v0/theta 만 바꾸고 vel 을

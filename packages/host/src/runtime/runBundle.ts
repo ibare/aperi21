@@ -623,7 +623,20 @@ export function runBundle<T extends BundleState = BundleState>(
     }
 
     const isTerm = b.isTerminated?.(refs.state) ?? false;
-    if (wasTerminated && !isTerm) camera.userAdjusted = false;
+    if (wasTerminated && !isTerm) {
+      // 조각이 「이제 안 끝났다」고 말하면 **시계가 다시 흘러야 한다.**
+      //
+      // 종료 상태의 `tick()` 은 0 을 돌려주므로 `simDt > 0` 이 거짓이 되어
+      // `bundle.step` 이 아예 불리지 않는다. 발사대를 다시 당겨도 공이 날지 않았고,
+      // 착지 뒤 스테이지·환경·파라미터를 바꾸거나 되돌려도 마찬가지였다 — 상태는
+      // 갱신되는데 시계만 멈춰 있어서다. 예외도 안 나고 타입도 통과한다.
+      //
+      // `start()` 는 `terminated` 에서도 `running` 으로 보내고 `currentTime` 을
+      // 건드리지 않는다. 시각을 되돌릴지는 조각의 몫이라 여기서 정하지 않는다
+      // (`reset()` 을 쓰면 시간표 단계와 `startAt` 앞당김이 함께 지워진다).
+      timeEngine.start();
+      camera.userAdjusted = false;
+    }
     wasTerminated = isTerm;
 
     // 이 프레임에 그려질 조작기. 아래 렌더 루프와 프레이밍이 같은 목록을 봐야
