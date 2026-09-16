@@ -91,20 +91,43 @@ export class PinballLauncherController
     const layout = computeLayout(spec, viewport, rc.toScreen, rc.slot, rc.ui);
     this.box = { x: layout.tubeX, y: layout.tubeY, w: layout.tubeW, h: layout.tubeH };
     const phase = readPath<string>(state, spec.binds.trigger) ?? 'idle';
-    const range = spec.powerRange ?? [1, 60];
-    const storedV0 = Number(readPath<number>(state, spec.binds.power) ?? range[0]);
-    const storedPower = (storedV0 - range[0]) / Math.max(1, range[1] - range[0]);
-    const power = this.dragging ? this.dragPower : phase === 'idle' ? storedPower : 0;
+    /**
+     * **끄는 동안만 당겨진다.** 손을 떼면 0 으로 돌아온다.
+     *
+     * 전에는 쉬는 동안 `binds.power` 에 남은 값을 되돌려 당겨진 채로 열렸다. 그것은
+     * 마지막 설정을 붙들고 있는 슬라이더의 사고방식이고, 플런저는 **놓으면 튀어나가
+     * 제자리로 돌아오는 물건**이라 은유가 어긋난다. 도착한 독자에게 "누가 이미 당겨
+     * 놓았다" 고 말하는 셈이라, 당기는 일이 자기 몫이라는 것도 흐려진다.
+     *
+     * 발사 속도 자체는 `binds.power` 에 그대로 남는다 — 조각의 궤적이 그것을 쓴다.
+     * 여기서 달라지는 것은 발사대가 무엇을 보이느냐뿐이다.
+     */
+    const power = this.dragging ? this.dragPower : 0;
 
     const ballR = 10;
     const plungerThickness = 6;
     const topInset = 12;
     const bottomInset = 12;
-    const ballY = layout.tubeY + topInset + ballR + 2;
-    const plungerRest = ballY + ballR + 6;
-    const plungerFull = layout.tubeY + layout.tubeH - bottomInset - plungerThickness;
-    const travelY = plungerFull - plungerRest;
+    /**
+     * 완전히 눌려도 남기는 스프링 높이(px). 0 이 되면 **무엇이 발판을 밀어 올리는지**
+     * 화면에서 사라진다.
+     */
+    const springMin = 18;
+    /**
+     * 발판이 가장 위에 있을 때의 자리 — 공이 튜브 꼭대기에 닿는다.
+     *
+     * 공은 **발판에 얹혀 함께 내려온다** (`ballY` 는 아래에서 `plungerY` 로 낸다).
+     * 공중에 붙박아 두면 발판만 혼자 물러나, 무엇이 무엇을 미는지가 사라진다.
+     */
+    const plungerRest = layout.tubeY + topInset + ballR * 2;
+    /** 스프링이 받치고 선 바닥. 여기는 움직이지 않는다 — 눌리는 쪽은 위다. */
+    const springBase = layout.tubeY + layout.tubeH - bottomInset;
+    const plungerFull = springBase - springMin - plungerThickness;
+    // 낮은 뷰포트에서 튜브가 짧아지면 음수가 되어 당길수록 발판이 **위로** 간다.
+    const travelY = Math.max(0, plungerFull - plungerRest);
     const plungerY = plungerRest + power * travelY;
+    /** 발판 윗면에 얹힌 공의 중심. 당기면 발판을 따라 내려온다. */
+    const ballY = plungerY - ballR;
     const cx = layout.tubeX + layout.tubeW / 2;
 
     ctx.save();
@@ -131,9 +154,13 @@ export class PinballLauncherController
       ctx.fillRect(barX, barBottom - barH, barW, barH);
     }
 
-    // 스프링 코일: 공 바로 아래 고정점 ↔ 플런저 상단. 드래그로 아래로 늘어남.
-    const coilTop = ballY + ballR + 2;
-    const coilBottom = plungerY;
+    // 스프링 코일: **발판 아래**, 바닥에 받쳐 있다. 실제 플런저가 그렇고, 그래야
+    // 당길 때 눌리는 것이 보인다.
+    //
+    // 코일 수는 고정이고 구간만 짧아진다 — 그래서 **조밀해지는 일이 저절로 일어난다.**
+    // 감는 수를 파워에 따라 바꾸면 "눌렸다" 가 아니라 "다른 스프링" 이 된다.
+    const coilTop = plungerY + plungerThickness;
+    const coilBottom = springBase;
     const coilHeight = coilBottom - coilTop;
     if (coilHeight > 4) {
       ctx.strokeStyle = ui.label;
@@ -150,11 +177,14 @@ export class PinballLauncherController
       ctx.stroke();
     }
 
-    // 플런저 캡 — 공 아래, 드래그하면 아래로 이동.
+    // 플런저 캡 — 공 아래. 당기면 스프링을 누르며 내려간다.
+    const capX = layout.tubeX + 4;
+    const capW = layout.tubeW - 8 - barW - 6;
     ctx.fillStyle = ui.text;
-    ctx.fillRect(layout.tubeX + 4, plungerY, layout.tubeW - 8 - barW - 6, plungerThickness);
+    ctx.fillRect(capX, plungerY, capW, plungerThickness);
 
-    // 공: 튜브 상단(출구)에 고정. idle 일 때만 표시.
+
+    // 공: 발판 위에 얹혀 함께 움직인다. idle 일 때만 — 날아간 뒤에는 튜브가 비어야 한다.
     if (phase === 'idle') {
       ctx.fillStyle = ui.selected;
       ctx.beginPath();

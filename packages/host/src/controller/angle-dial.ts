@@ -16,6 +16,8 @@ type AngleSpec = Extract<ControllerSpec, { type: 'angle-dial' }>;
 interface Layout {
   cx: number;
   cy: number;
+  /** 반원 아래 글자의 치수. `screenBounds` 가 이만큼을 함께 비우고 render 가 그대로 그린다. */
+  band: TextBand;
   r: number;
 }
 
@@ -33,7 +35,44 @@ const DIAL_STACK_GAP = 24;
 /** 자리를 선언하지 않으면 왼쪽 아래에서 오른쪽으로 쌓인다. */
 const DEFAULT_AT: ScreenAnchor = { screen: 'bottom-left' };
 
-/** 반원 다이얼의 상자는 지름 × 반지름. 중심은 상자 아래 가운데. */
+/** 이름표 baseline 아래로 글자가 내려가는 몫. 글꼴 계량 어림값이다. */
+const LABEL_DESCENDER_RATIO = 0.3;
+
+interface TextBand {
+  valueFont: number;
+  labelFont: number;
+  /** 값 글자와 반원 사이. */
+  lead: number;
+  /** 값 글자와 이름표 사이. */
+  gap: number;
+  /** 띠 전체 세로. */
+  height: number;
+}
+
+/**
+ * 반원 아래에 붙는 글자(각도 값 + 이름표)의 치수. **재는 쪽과 그리는 쪽이 이 하나를
+ * 함께 본다.**
+ *
+ * 상자를 반원(`2r × r`)으로만 잡으면 글자가 그 밖에 그려져 캔버스 아래로 잘린다.
+ * 그렇다고 띠 높이를 따로 세면 같은 숫자가 두 곳에 남아, 한쪽만 고쳤을 때 **다시
+ * 잘린다** — 고치려던 버그와 같은 모양이 된다. 그래서 값을 한 군데서 낸다.
+ */
+function textBand(r: number, ui: UiTheme): TextBand {
+  const k = r / DEFAULT_DIAL_RADIUS;
+  const valueFont = Math.max(ui.fontSize.small, Math.round(VALUE_FONT_BASE * k));
+  const labelFont = Math.max(MIN_LABEL_FONT, Math.round(ui.fontSize.small * k));
+  const lead = ui.spacing.sm;
+  const gap = ui.spacing.lg;
+  return {
+    valueFont,
+    labelFont,
+    lead,
+    gap,
+    height: valueFont + labelFont + gap + Math.round(labelFont * LABEL_DESCENDER_RATIO),
+  };
+}
+
+/** 반원 다이얼의 상자는 지름 × (반지름 + 글자 띠). 중심은 반원의 아래 변 가운데. */
 function computeLayout(
   spec: AngleSpec,
   viewport: Viewport,
@@ -44,8 +83,9 @@ function computeLayout(
   const r = spec.radius ?? DEFAULT_DIAL_RADIUS;
   // 쌓는 간격도 선언한 반지름을 따른다 — 기본값으로 세면 큰 다이얼끼리 겹친다.
   const at = spec.at ?? stackedAnchor(DEFAULT_AT, slot, [2 * r + DIAL_STACK_GAP, 0]);
-  const box = placeBox(at, 2 * r, r, viewport, toScreen, ui.layout.margin);
-  return { cx: box.x + r, cy: box.y + r, r };
+  const band = textBand(r, ui);
+  const box = placeBox(at, 2 * r, r + band.height, viewport, toScreen, ui.layout.margin);
+  return { cx: box.x + r, cy: box.y + r, r, band };
 }
 
 function hitDial(input: PointerInput, layout: Layout): boolean {
@@ -84,7 +124,14 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
     const { ctx, ui, viewport } = rc;
     const layout = computeLayout(spec, viewport, rc.toScreen, rc.slot, rc.ui);
     // 반원이라 상자는 `2r × r` 이고 중심이 아래 변 가운데다.
-    this.box = { x: layout.cx - layout.r, y: layout.cy - layout.r, w: 2 * layout.r, h: layout.r };
+    // 글자 띠까지 포함한다. 반원만 잡으면 자동 프레이밍이 글자 자리를 안 비워
+    // 그림이 그 위로 올라오고, 아래로는 캔버스 밖으로 잘린다.
+    this.box = {
+      x: layout.cx - layout.r,
+      y: layout.cy - layout.r,
+      w: 2 * layout.r,
+      h: layout.r + layout.band.height,
+    };
     const angle = Number(readPath<number>(state, spec.binds.angle) ?? 45);
     const range = spec.range ?? [0, 90];
 
@@ -145,10 +192,10 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
     ctx.stroke();
 
     // 글자와 중심점은 선언한 반지름을 따른다 — 기본 크기에 맞춰 고정하면 작은
-    // 다이얼을 선언했을 때 글자가 상자를 벗어난다.
+    // 다이얼을 선언했을 때 글자가 상자를 벗어난다. 값은 `computeLayout` 이 낸 것을
+    // 그대로 쓴다. 여기서 다시 세면 상자와 어긋난다.
+    const { valueFont, labelFont, lead, gap } = layout.band;
     const k = layout.r / DEFAULT_DIAL_RADIUS;
-    const valueFont = Math.max(ui.fontSize.small, Math.round(VALUE_FONT_BASE * k));
-    const labelFont = Math.max(MIN_LABEL_FONT, Math.round(ui.fontSize.small * k));
 
     // 중심 point
     ctx.fillStyle = ui.text;
@@ -160,7 +207,7 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
     ctx.font = `600 ${valueFont}px ${ui.fontFamilyMono}`;
     ctx.fillStyle = ui.text;
     ctx.textAlign = 'center';
-    ctx.fillText(`${Math.round(angle)}°`, layout.cx, layout.cy + valueFont + 6);
+    ctx.fillText(`${Math.round(angle)}°`, layout.cx, layout.cy + valueFont + lead);
 
     // 이름표 — 선언의 label, 없으면 프레임워크 문구
     ctx.font = `${labelFont}px ${ui.fontFamilyMono}`;
@@ -168,7 +215,7 @@ export class AngleDialController implements ControllerImpl<AngleSpec> {
     ctx.fillText(
       controllerText(rc.i18n, spec.label, 'ui.angleDial.label', 'ANGLE'),
       layout.cx,
-      layout.cy + valueFont + labelFont + 12,
+      layout.cy + valueFont + labelFont + gap,
     );
 
     ctx.restore();
