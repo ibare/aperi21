@@ -153,11 +153,14 @@ export function captionPrimitive(
   const opacity =
     !matched && frame?.caption && fade > 0 ? EASES.smooth(clamp01(frame.captionAge / fade)) : 1;
 
+  const vars = slot.vars ? captionVars(slot.vars, state) : undefined;
+
   return {
     type: 'readout',
     id: CAPTION_ID,
     anchor: slot.anchor,
     text,
+    ...(vars ? { vars } : {}),
     chip: false,
     // 캡션은 문장이다 — 월드 앵커에 붙어도 값 칩의 모노 글꼴을 쓰지 않는다.
     font: 'text',
@@ -171,8 +174,30 @@ export function captionPrimitive(
 }
 
 /**
- * scene 의 결과에 캡션을 덧붙인다. 러너 두 곳(`runBundle` · react `Canvas`)이 이것
- * 하나를 부른다 — z 정렬 **전에** 불러야 readout 층 순서가 지켜진다.
+ * 캡션 문안에 끼울 값을 state 경로에서 읽는다.
+ *
+ * 값이 없거나 문자열·수가 아니면 **던진다.** 넘어가면 `{drift}` 가 화면에 그대로
+ * 뜨는데 예외가 없다 — 없는 문안 키를 던지는 것과 같은 이유다. state 없이 불렸는데
+ * `vars` 를 선언했다면 그것도 값이 없는 것이다.
+ */
+function captionVars(
+  paths: Record<string, string>,
+  state?: BundleState,
+): Record<string, string | number> {
+  const out: Record<string, string | number> = {};
+  for (const [name, path] of Object.entries(paths)) {
+    const value = state ? readPath<unknown>(state, path) : undefined;
+    if (typeof value !== 'string' && typeof value !== 'number') {
+      throw new Error(`caption: vars '${name}' 의 경로 '${path}' 에 문자열이나 수가 없다`);
+    }
+    out[name] = value;
+  }
+  return out;
+}
+
+/**
+ * scene 의 결과에 캡션을 덧붙인다. 러너(`runBundle`)가 이것 하나를 부른다 —
+ * z 정렬 **전에** 불러야 readout 층 순서가 지켜진다.
  */
 export function withCaption(
   scene: SceneGraph,

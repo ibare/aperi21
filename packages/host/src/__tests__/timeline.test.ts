@@ -127,6 +127,23 @@ describe('캡션 슬롯', () => {
     expect(() => captionPrimitive({ ...SCHEMA, messages: {} })).toThrow();
   });
 
+  it('vars 는 state 경로에서 값을 읽어 문안에 끼울 자리로 넘긴다', () => {
+    const schema = { ...SCHEMA, caption: { ...SCHEMA.caption!, vars: { drift: 'result.drift' } } };
+    const c = captionPrimitive(schema, undefined, { result: { drift: '30.0' } });
+    expect(c?.vars).toEqual({ drift: '30.0' });
+  });
+
+  it('vars 의 경로에 값이 없으면 던진다 — {이름} 이 화면에 그대로 뜨는 것을 막는다', () => {
+    const schema = { ...SCHEMA, caption: { ...SCHEMA.caption!, vars: { drift: 'result.drift' } } };
+    expect(() => captionPrimitive(schema, undefined, { result: {} })).toThrow();
+    expect(() => captionPrimitive(schema, undefined, { result: { drift: { m: 3 } } })).toThrow();
+    expect(() => captionPrimitive(schema)).toThrow();
+  });
+
+  it('vars 를 선언하지 않으면 readout 에 vars 를 싣지 않는다', () => {
+    expect(captionPrimitive(SCHEMA)).not.toHaveProperty('vars');
+  });
+
   it('슬롯이 없으면 scene 을 그대로 돌려준다', () => {
     const scene = [{ type: 'marker', kind: 'pin', pos: [0, 0] }] as const;
     expect(withCaption(scene, { ...SCHEMA, caption: undefined })).toBe(scene);

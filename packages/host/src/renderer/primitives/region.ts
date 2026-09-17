@@ -32,6 +32,45 @@ function rippleEdge(
 }
 
 /**
+ * 사선 사이 간격(화면 px). 결은 물리량이 아니라 그림의 결이라 배율을 따라가지 않는다 —
+ * 월드로 잡으면 좁은 임베드에서 사선이 뭉쳐 채움처럼 보인다.
+ */
+const HATCH_SPACING_PX = 6;
+
+/**
+ * 방금 채운 경로 안에 바탕색 사선을 긋는다. 경로는 호출 시점에 열려 있어야 한다.
+ *
+ * clip 은 **따로 save/restore 로 가둔다.** `applyBaseMeta` 가 연 save 는
+ * `finalizeBaseMeta` 에서야 닫히므로, 그 안에서 clip 을 걸면 뒤에 긋는 `outline`
+ * 굵은 변이 폴리곤 밖 절반을 잃는다 — 예외 없이 선만 가늘어진다.
+ */
+function hatch(rc: RenderContext, p: Region, amplitudePx: number): void {
+  const c = rc.ctx;
+  const screen = p.points.map((pt) => rc.toScreen(pt));
+  const pad = amplitudePx + rc.theme.strokeWidth.regular;
+  const minX = Math.min(...screen.map((s) => s[0])) - pad;
+  const maxX = Math.max(...screen.map((s) => s[0])) + pad;
+  const minY = Math.min(...screen.map((s) => s[1])) - pad;
+  const maxY = Math.max(...screen.map((s) => s[1])) + pad;
+
+  c.save();
+  c.clip();
+  // 강조 상태의 그림자가 사선마다 번지면 결이 뭉개진다. 면은 이미 그림자를 받았다.
+  c.shadowBlur = 0;
+  c.strokeStyle = rc.theme.background;
+  c.lineWidth = rc.theme.strokeWidth.regular;
+  c.beginPath();
+  // 45° 사선. 상자 높이만큼 왼쪽에서 출발해야 왼쪽 아래 모서리까지 덮인다.
+  const h = maxY - minY;
+  for (let x = minX - h; x <= maxX; x += HATCH_SPACING_PX) {
+    c.moveTo(x, maxY);
+    c.lineTo(x + h, minY);
+  }
+  c.stroke();
+  c.restore();
+}
+
+/**
  * 자유 곡선 경계를 가진 채워진 영역.
  *
  * 반투명하게 채우는 것이 핵심이다 — 잠긴 것이 아래로 비쳐 보여야 "잠겼다" 로
@@ -84,6 +123,8 @@ export const renderRegion: PrimitiveRenderer = (rc, p0) => {
   c.fillStyle = color;
   c.fill();
   setAlpha(c, 1);
+
+  if ((p.fill ?? 'solid') === 'hatch') hatch(rc, p, amplitudePx);
 
   // 굵게 그릴 변만 따로 긋는다. 수면처럼 한 변만 또렷해야 하는 경우가 흔하다.
   for (const [i, j] of p.outline ?? []) {

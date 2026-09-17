@@ -319,6 +319,14 @@ export interface Region extends BaseMeta {
    * 잠긴 것이 비쳐 보여야 하는 매질에는 쓰지 않는다.
    */
   opaque?: boolean;
+  /**
+   * 면의 결. 기본 `'solid'`. `'hatch'` 는 채움 위에 바탕색 사선을 긋는다.
+   *
+   * **같은 대상의 다른 몫**을 색이 아니라 결로 가르는 자리다 — 쌓인 넓이 중 축 아래
+   * 넓이가 깎아 내는 몫 (`acceleration-time-graph`). 색을 바꾸면 다른 대상으로 읽히고
+   * 색으로 설명하는 것이 된다 (S-piece). `body.fill` 과 같은 이름이고 `'solid'` 의 뜻도 같다.
+   */
+  fill?: 'solid' | 'hatch';
   /** 굵게 그릴 변. `points` 의 인덱스 쌍 목록. 생략하면 경계선 없음. */
   outline?: readonly (readonly [number, number])[];
 }
@@ -867,6 +875,14 @@ export type ControllerKind =
       range: [number, number];
       label: LocalizedText;
       unit?: string;
+      /**
+       * 값이 붙는 간격. 주면 끌린 값을 `range[0] + k·step` 중 가장 가까운 곳에 붙인다 —
+       * **기준점은 `range[0]`** 이다(`ParamDef.step` 은 0 을 기준으로 붙는다). 생략하면
+       * 연속으로 움직인다.
+       */
+      step?: number;
+      /** 값 표시의 소수 자릿수. 기본 2. 유효숫자는 주장의 일부라 자동으로 줄이지 않는다. */
+      digits?: number;
       /** 자리. 생략하면 오른쪽 위에서 선언 순서대로 아래로 쌓인다. */
       at?: Anchor;
       /** 크기 `[너비, 높이]`(화면 px). 생략하면 기본값. */
@@ -913,6 +929,14 @@ export type ControllerKind =
        * 알아서 고르지 않는다.
        */
       snapTo?: readonly Vec2[];
+      /**
+       * 손잡이 모양. 기본 `'dot'` — 채운 점. `'ring'` 은 테두리만 긋는다.
+       *
+       * 손잡이가 화살표 머리 위에 얹히면 채운 점이 머리를 가려 "이 화살표의 끝" 이
+       * 아니라 "따로 있는 점" 으로 읽힌다. 테두리만 두르면 끝점이 비쳐 보인다
+       * (`vector-decomposition`).
+       */
+      handle?: 'dot' | 'ring';
     }
   | {
       /**
@@ -1232,6 +1256,23 @@ export interface CaptionSlotDef {
    * (원칙 2, `visibleWhen` 과 같은 규약).
    */
   cases?: readonly { when: string; text: string }[];
+
+  /**
+   * 문안의 `{이름}` 자리에 끼울 값. 키는 문안 속 이름, 값은 state 의 **경로 이름**이다.
+   *
+   * 캡션이 지금 값을 말해야 하는 조각이 쓴다 — 구간의 평균 속도, 떠밀린 거리처럼
+   * 문장 안에 수가 들어가는 경우다 (`average-velocity` · `river-crossing`). 이것이
+   * 없으면 그런 조각은 슬롯을 버리고 scene 에 글자를 따로 두어야 해서, 캡션이
+   * 하나라는 것을 엔진이 지켜 주지 못한다.
+   *
+   * 경로가 가리키는 값은 **문자열이나 수**다. 자릿수는 조각이 정해 문자열로 둔다 —
+   * 유효숫자는 주장의 일부라 엔진이 줄이지 않는다. 단위·낱말은 state 가 아니라
+   * 문안 틀에 둔다 (C1). 값이 없으면 던진다 — `{drift}` 가 그대로 화면에 뜨는데
+   * 예외가 없으면 조용히 틀린다.
+   *
+   * `cases.when` 과 같이 식을 넣지 않는다 (원칙 2).
+   */
+  vars?: Record<string, string>;
 }
 
 /**

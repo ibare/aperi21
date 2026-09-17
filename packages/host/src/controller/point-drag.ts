@@ -86,11 +86,18 @@ export class PointDragController implements ControllerImpl<PointDragSpec> {
     c.save();
     c.beginPath();
     c.arc(x, y, held ? HANDLE_HELD_RADIUS_PX : HANDLE_RADIUS_PX, 0, Math.PI * 2);
-    c.fillStyle = rc.ui.text;
-    c.fill();
-    c.lineWidth = rc.ui.strokeWidth.thick;
-    c.strokeStyle = rc.ui.onSelected;
-    c.stroke();
+    if ((spec.handle ?? 'dot') === 'ring') {
+      // 테두리만. 아래에 있는 화살표 머리가 비쳐 보여야 "그 끝을 잡는다" 로 읽힌다.
+      c.lineWidth = rc.ui.strokeWidth.regular;
+      c.strokeStyle = rc.ui.label;
+      c.stroke();
+    } else {
+      c.fillStyle = rc.ui.text;
+      c.fill();
+      c.lineWidth = rc.ui.strokeWidth.thick;
+      c.strokeStyle = rc.ui.onSelected;
+      c.stroke();
+    }
     c.restore();
   }
 
