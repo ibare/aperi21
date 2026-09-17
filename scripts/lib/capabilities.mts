@@ -54,6 +54,7 @@ export const CONTROLLERS: Record<string, string> = {
   'param-chips': 'ParamChipsController',
   'reset-buttons': 'ResetButtonsController',
   button: 'ButtonController',
+  'press-area': 'PressAreaController',
 };
 
 export const ALL_CAPABILITIES: Record<string, string> = { ...RENDERERS, ...CONTROLLERS };

@@ -886,6 +886,24 @@ export interface ControllerInstance {
 export type ControllerKind =
   | {
       /**
+       * 그림 속 자리를 누른다. **아무것도 그리지 않는다** — 그 자리에 그려진 물체가 곧 손잡이다.
+       * 누르면 러너가 `binds.pressed` 경로에 true 를 적고, 지우는 것은 조각의 `step` 이다
+       * (`button` 과 같은 규약).
+       *
+       * `button` 은 화면 구석의 칩이라 「이 물체를 골라라」 가 되지 않는다. 컵 · 책 · 책상을
+       * 눌러 그 물체부터 떼어 내는 일이 이것이다 (`free-body-diagram`). 물체마다 인스턴스
+       * 하나를 선언한다.
+       *
+       * 자리는 **월드 사각형**이다. 조작기 선언은 정적이라 움직이는 물체를 따라가지 않는다 —
+       * 물체가 쉬는 자리를 준다. 사각형이 겹치면 **조작기 선언 전체에서** 앞선 것이 잡힌다 —
+       * 다른 손가락이 이미 잡고 있는 인스턴스는 건너뛴다.
+       */
+      type: 'press-area';
+      binds: { pressed: string };
+      area: { min: Vec2; max: Vec2 };
+    }
+  | {
+      /**
        * 누르는 단추. 누르면 러너가 `binds.pressed` 경로에 true 를 적는다.
        *
        * **false 로 되돌리는 것은 조각의 `step` 이다** — 누름을 소비한 걸음에서 지운다.
