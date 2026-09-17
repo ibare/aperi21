@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>원자 궤도</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #26324a;
+    --muted: #7a8394;
+    --accent: #e0572a; /* 뜻 하나: 방금 발견된 자리 */
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 12px 0; }
+  canvas { display: block; width: 100%; height: 380px; }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 6px 16px 0; }
+  .caption { font-size: 15px; line-height: 1.5; min-height: 1.5em; }
+  .pick { display: flex; gap: 4px; flex-shrink: 0; }
+  .pick button { font: inherit; font-size: 13px; padding: 3px 10px; border-radius: 12px;
+    border: 1px solid #cfd3da; background: transparent; color: var(--muted); cursor: pointer; }
+  .pick button[aria-pressed="true"] { border-color: var(--ink); color: var(--ink); font-weight: 600; }
+  .pick button:disabled { cursor: default; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <div class="row">
+    <div class="caption" id="cap"></div>
+    <div class="pick" id="pick" aria-label="궤도 고르기">
+      <button data-k="1s">1s</button>
+      <button data-k="2p">2p</button>
+      <button data-k="3d">3d</button>
+    </div>
+  </div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const capEl = document.getElementById('cap');
+  const INK = '#26324a';
+  const ACCENT = '#e0572a';
+
+  const R = () => PieceKit.random();
+  const gamma = (k, scale) => { // 정수 k 감마 표집 = 지수분포 k 개의 합
+    let p = 1;
+    for (let i = 0; i < k; i++) p *= 1 - R();
+    return -Math.log(p) * scale;
+  };
+  const dir = () => { // 구면 위 균일 방향
+    const z = 2 * R() - 1, ph = 2 * Math.PI * R(), s = Math.sqrt(1 - z * z);
+    return [s * Math.cos(ph), s * Math.sin(ph), z];
+  };
+
+  // 수소 궤도의 |ψ|² 를 정확히 표집한다 (원자 단위, 보어 반지름 = 1).
+  // 동경 부분 r²|R(r)|² 은 감마분포, 각도 부분은 거부 표집.
+  const ORBITALS = {
+    '1s': { // |ψ|² ∝ e^{-2r}
+      reach: 3.2,
+      sample() { const r = gamma(3, 0.5); const d = dir(); return [r * d[0], r * d[1], r * d[2]]; },
+    },
+    '2p': { // 2p_x : |ψ|² ∝ x² e^{-r}
+      reach: 9.2,
+      sample() {
+        const r = gamma(5, 1);
+        let d; do { d = dir(); } while (R() > d[0] * d[0]);
+        return [r * d[0], r * d[1], r * d[2]];
+      },
+    },
+    '3d': { // 3d_z² : |ψ|² ∝ (3z² − r²)² e^{-2r/3}
+      reach: 17.7,
+      sample() {
+        const r = gamma(7, 1.5);
+        let d; do { d = dir(); } while (R() > Math.pow((3 * d[2] * d[2] - 1) / 2, 2));
+        return [r * d[0], r * d[1], r * d[2]];
+      },
+    },
+  };
+
+  const CAP = 9000;
+  const TAU0 = 1.0;      // 도착 순간 이미 몇 번 측정된 상태
+  // 방금 발견된 자리로 보이는 시간(초): 한 점씩 찍힐 땐 0.5초, 빨라지면 동시에 십여 개만 강조되게 줄인다
+  const flashLife = (r) => Math.min(0.5, 12 / r);
+  const xs = new Float32Array(CAP), ys = new Float32Array(CAP), zs = new Float32Array(CAP);
+  const born = new Float32Array(CAP);
+  const life = new Float32Array(CAP);
+
+  const state = { key: '2p', n: 0, tau: 0, acc: 0 };
+
+  function rate(tau) { // 초당 측정 횟수
+    if (tau < 3.5) return 3;
+    return Math.min(1500, 3 * Math.exp(1.13 * (tau - 3.5)));
+  }
+  function detect() {
+    if (state.n >= CAP) return;
+    const p = ORBITALS[state.key].sample();
+    xs[state.n] = p[0]; ys[state.n] = p[1]; zs[state.n] = p[2];
+    born[state.n] = state.tau;
+    life[state.n] = flashLife(rate(state.tau));
+    state.n++;
+  }
+  function advance(dt) {
+    state.acc += rate(state.tau) * dt;
+    state.tau += dt;
+    while (state.acc >= 1) { state.acc -= 1; detect(); }
+  }
+  function reset(key) {
+    state.key = key; state.n = 0; state.acc = 0; state.tau = 0;
+    // 도착 순간처럼 이미 진행 중인 상태에서 다시 시작
+    const steps = Math.round(TAU0 * 60);
+    for (let i = 0; i < steps; i++) advance(1 / 60);
+    syncButtons();
+  }
+
+  const buttons = [...document.querySelectorAll('#pick button')];
+  function syncButtons() {
+    for (const b of buttons) {
+      b.setAttribute('aria-pressed', String(b.dataset.k === state.key));
+      b.disabled = PieceKit.frozen;
+    }
+  }
+  for (const b of buttons) {
+    b.addEventListener('click', () => { if (!PieceKit.frozen) reset(b.dataset.k); });
+  }
+
+  let W = 0, H = 0;
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    W = rect.width; H = rect.height;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  window.addEventListener('resize', resize);
+
+  function caption() {
+    const n = state.n;
+    if (n < 30) return '잴 때마다 전자는 한 자리에서만 발견되고, 그 자리는 매번 다르다.';
+    if (n < 2000) return '발견된 자리가 쌓이면서, 자주 찍히는 곳과 거의 찍히지 않는 곳이 갈라진다.';
+    return '쌓인 자리의 모양이 궤도다 — 전자가 도는 길이 아니라, 발견되는 분포.';
+  }
+
+  reset('2p');
+  resize();
+
+  const PITCH = 0.38;
+  const BANDS = 5;
+
+  PieceKit.loop({
+    step(dt) { advance(dt); },
+    draw(t) {
+      if (canvas.width === 0) resize();
+      ctx.clearRect(0, 0, W, H);
+      const cx = W / 2, cy = H / 2;
+      const scale = (H * 0.46) / ORBITALS[state.key].reach;
+      const yaw = 0.3 * Math.sin(0.35 * t); // 옆모습 주변으로 좌우로 흔들어 입체를 보인다
+      const cyw = Math.cos(yaw), syw = Math.sin(yaw);
+      const cp = Math.cos(PITCH), sp = Math.sin(PITCH);
+      const reach = ORBITALS[state.key].reach;
+
+      // 투영: z 축이 화면 위쪽, 수직축 둘레로 좌우로 흔들고 살짝 내려다본다
+      const proj = (i) => {
+        const x1 = xs[i] * cyw - ys[i] * syw;
+        const y1 = xs[i] * syw + ys[i] * cyw; // 깊이 방향(양수 = 안쪽)
+        const z = zs[i];
+        const sy = z * cp - y1 * sp;
+        const depth = y1 * cp + z * sp;
+        return [cx + x1 * scale, cy - sy * scale, depth];
+      };
+
+      PieceKit.mark('발견된 자리들', () => {
+        const paths = [];
+        for (let b = 0; b < BANDS; b++) paths.push(new Path2D());
+        for (let i = 0; i < state.n; i++) {
+          if (state.tau - born[i] < life[i]) continue;
+          const [px, py, d] = proj(i);
+          let f = 0.5 - d / (2 * reach); // 1 = 앞, 0 = 뒤
+          f = Math.max(0, Math.min(0.999, f));
+          const b = Math.floor(f * BANDS);
+          const s = 1.6 + 0.3 * b;
+          paths[b].rect(px - s / 2, py - s / 2, s, s);
+        }
+        ctx.fillStyle = INK;
+        for (let b = 0; b < BANDS; b++) {
+          ctx.globalAlpha = 0.3 + 0.1 * b;
+          ctx.fill(paths[b]);
+        }
+        ctx.globalAlpha = 1;
+      });
+
+      PieceKit.mark('핵', () => {
+        ctx.fillStyle = INK;
+        ctx.beginPath(); ctx.arc(cx, cy, 2.5, 0, Math.PI * 2); ctx.fill();
+      });
+
+      PieceKit.mark('방금 발견된 자리', () => {
+        // 수명은 최대 0.5초이므로 최근 0.5초 안의 점만 살핀다
+        let from = state.n;
+        while (from > 0 && state.tau - born[from - 1] < 0.5) from--;
+        const ring = rate(state.tau) < 20;
+        ctx.fillStyle = ACCENT; ctx.strokeStyle = ACCENT;
+        for (let i = from; i < state.n; i++) {
+          const age = state.tau - born[i];
+          if (age >= life[i]) continue;
+          const k = age / life[i];
+          const [px, py] = proj(i);
+          ctx.globalAlpha = 1 - 0.6 * k;
+          ctx.beginPath(); ctx.arc(px, py, ring ? 3.2 : 2, 0, Math.PI * 2); ctx.fill();
+          if (ring) {
+            ctx.globalAlpha = 1 - k;
+            ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.arc(px, py, 4 + 16 * k, 0, Math.PI * 2); ctx.stroke();
+          }
+        }
+        ctx.globalAlpha = 1;
+      });
+
+      PieceKit.mark('캡션', () => {
+        const c = caption();
+        if (capEl.textContent !== c) capEl.textContent = c;
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

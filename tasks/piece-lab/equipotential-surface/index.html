@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>등전위면</title>
+<style>
+  html, body { margin: 0; background: #fbfbfc; color: #1f2a38;
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 8px 0; }
+  canvas { display: block; width: 100%; height: auto; touch-action: none; }
+  .cap { margin: 6px 12px 0; font-size: 15px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <p class="cap" id="cap"></p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// 등전위면 — 전위 지형의 가장 가파른 내리막은 등고선을 직각으로 가로지른다.
+const W = 900, H = 330;
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+const DPR = Math.min(2, window.devicePixelRatio || 1);
+cv.width = W * DPR; cv.height = H * DPR;
+
+// 물리 영역 (단위 길이)
+const XMIN = -2, XMAX = 2, YMIN = -1.5, YMAX = 1.5;
+const EPS = 0.06;          // 점전하 특이점 완화
+const V0 = 2.2;            // 높이 압축 척도: h = tanh(V / V0) — 단조 변환이라 등전위선·기울기 방향이 보존된다
+const LEVEL_MIN = -0.8, LEVEL_STEP = 0.2, LEVEL_COUNT = 9;
+
+const ACCENT = '#e8590c';  // 강조색: 시험 전하의 이동(점과 그 경로)에만 쓴다
+const INK = '#1f2a38';
+const CONTOUR = '#4b5666';
+
+const charges = [
+  { x: -0.75, y: 0.2, q: 2 },
+  { x: 0.85, y: -0.3, q: -1 },
+];
+
+function pot(x, y) {
+  let v = 0;
+  for (const c of charges) {
+    const dx = x - c.x, dy = y - c.y;
+    v += c.q / Math.sqrt(dx * dx + dy * dy + EPS * EPS);
+  }
+  return v;
+}
+function height(x, y) { return Math.tanh(pot(x, y) / V0); }
+function field(x, y) {
+  let ex = 0, ey = 0;
+  for (const c of charges) {
+    const dx = x - c.x, dy = y - c.y;
+    const r2 = dx * dx + dy * dy + EPS * EPS;
+    const k = c.q / (r2 * Math.sqrt(r2));
+    ex += k * dx; ey += k * dy;
+  }
+  return [ex, ey];
+}
+// 전위 높이 → 색 (두 판에서 같은 대상은 같은 색)
+function rampRGB(h, shade) {
+  const u = (h + 1) / 2;
+  return [
+    (74 + (238 - 74) * u) * shade,
+    (90 + (242 - 90) * u) * shade,
+    (112 + (246 - 112) * u) * shade,
+  ];
+}
+
+// ─── 오른쪽: 위에서 본 전위 지도 ───
+const MAP = { x: 490, y: 15, w: 400, h: 300 };
+function toMap(x, y) {
+  return [MAP.x + (x - XMIN) / (XMAX - XMIN) * MAP.w, MAP.y + (YMAX - y) / (YMAX - YMIN) * MAP.h];
+}
+function fromMap(px, py) {
+  return [XMIN + (px - MAP.x) / MAP.w * (XMAX - XMIN), YMAX - (py - MAP.y) / MAP.h * (YMAX - YMIN)];
+}
+const mapCanvas = document.createElement('canvas');
+
+// ─── 왼쪽: 3차원 전위 지형 ───
+const P3 = { cx: 240, cy: 168, s: 80, hs: 0.9, yaw: 0.5, el: 0.55 };
+const cYaw = Math.cos(P3.yaw), sYaw = Math.sin(P3.yaw);
+const cEl = Math.cos(P3.el), sEl = Math.sin(P3.el);
+function proj(x, y, h) {
+  const xr = x * cYaw - y * sYaw;
+  const yr = x * sYaw + y * cYaw;
+  const z = h * P3.hs;
+  return [P3.cx + P3.s * xr, P3.cy - P3.s * (yr * sEl + z * cEl), yr * cEl - z * sEl];
+}
+const MX = 64, MY = 48;
+const ZW = 480;
+const zbuf = new Float32Array(ZW * H);
+
+// 격자 등고선 (마칭 스퀘어)
+function march(nx, ny, xAt, yAt, val, level, emit) {
+  const ex = [0, 0, 0, 0], ey = [0, 0, 0, 0];
+  for (let j = 0; j < ny - 1; j++) {
+    for (let i = 0; i < nx - 1; i++) {
+      const v0 = val[j * nx + i], v1 = val[j * nx + i + 1];
+      const v2 = val[(j + 1) * nx + i + 1], v3 = val[(j + 1) * nx + i];
+      const b0 = v0 >= level, b1 = v1 >= level, b2 = v2 >= level, b3 = v3 >= level;
+      if (b0 === b1 && b1 === b2 && b2 === b3) continue;
+      let n = 0;
+      const x0 = xAt(i), x1 = xAt(i + 1), y0 = yAt(j), y1 = yAt(j + 1);
+      if (b0 !== b1) { const f = (level - v0) / (v1 - v0); ex[n] = x0 + (x1 - x0) * f; ey[n] = y0; n++; }
+      if (b1 !== b2) { const f = (level - v1) / (v2 - v1); ex[n] = x1; ey[n] = y0 + (y1 - y0) * f; n++; }
+      if (b2 !== b3) { const f = (level - v2) / (v3 - v2); ex[n] = x1 + (x0 - x1) * f; ey[n] = y1; n++; }
+      if (b3 !== b0) { const f = (level - v3) / (v0 - v3); ex[n] = x0; ey[n] = y1 + (y0 - y1) * f; n++; }
+      if (n >= 2) emit(ex[0], ey[0], ex[1], ey[1]);
+      if (n === 4) emit(ex[2], ey[2], ex[3], ey[3]);
+    }
+  }
+}
+
+function rastTri(a, b, c) {
+  const minX = Math.max(0, Math.floor(Math.min(a[0], b[0], c[0])));
+  const maxX = Math.min(ZW - 1, Math.ceil(Math.max(a[0], b[0], c[0])));
+  const minY = Math.max(0, Math.floor(Math.min(a[1], b[1], c[1])));
+  const maxY = Math.min(H - 1, Math.ceil(Math.max(a[1], b[1], c[1])));
+  const den = (b[1] - c[1]) * (a[0] - c[0]) + (c[0] - b[0]) * (a[1] - c[1]);
+  if (Math.abs(den) < 1e-9) return;
+  for (let y = minY; y <= maxY; y++) {
+    const py = y + 0.5;
+    for (let x = minX; x <= maxX; x++) {
+      const px = x + 0.5;
+      const w1 = ((b[1] - c[1]) * (px - c[0]) + (c[0] - b[0]) * (py - c[1])) / den;
+      const w2 = ((c[1] - a[1]) * (px - c[0]) + (a[0] - c[0]) * (py - c[1])) / den;
+      const w3 = 1 - w1 - w2;
+      if (w1 < -1e-3 || w2 < -1e-3 || w3 < -1e-3) continue;
+      const d = w1 * a[2] + w2 * b[2] + w3 * c[2];
+      const idx = y * ZW + x;
+      if (d < zbuf[idx]) zbuf[idx] = d;
+    }
+  }
+}
+function visible3(x, y, h) {
+  const p = proj(x, y, h);
+  const px = Math.floor(p[0]), py = Math.floor(p[1]);
+  if (px < 0 || py < 0 || px >= ZW || py >= H) return true;
+  return p[2] <= zbuf[py * ZW + px] + 0.05;
+}
+
+// 시험 전하 경로 (전기장 방향 = 가장 가파른 내리막)
+const DS = 0.02, SPEED = 0.8, PAUSE = 1.2;
+const OFFS = [0.4, 2.1, 3.9, 1.3, 5.2, 3.0];
+
+function trace(x, y) {
+  const pts = [{ x, y, s: 0, h: height(x, y) }];
+  let s = 0;
+  for (let n = 0; n < 800; n++) {
+    let [ex, ey] = field(x, y);
+    let m = Math.hypot(ex, ey);
+    if (m < 1e-6) break;
+    const hx = x + 0.5 * DS * ex / m, hy = y + 0.5 * DS * ey / m;
+    [ex, ey] = field(hx, hy);
+    m = Math.hypot(ex, ey);
+    if (m < 1e-6) break;
+    x += DS * ex / m; y += DS * ey / m; s += DS;
+    if (x < XMIN || x > XMAX || y < YMIN || y > YMAX) break;
+    pts.push({ x, y, s, h: height(x, y) });
+    let sink = false;
+    for (const c of charges) if (c.q < 0 && Math.hypot(x - c.x, y - c.y) < 0.12) sink = true;
+    if (sink) break;
+  }
+  return pts;
+}
+
+let mapSegs = [];     // 지도 위 등고선 선분
+let surfCells = [];   // 지형 면 조각 (깊이 순)
+let surfSegs = [];    // 지형 위에서 보이는 등고선 선분
+let paths = [];
+
+function rebuild(fast) {
+  // 지도 음영
+  const scale = fast ? 1 : DPR;
+  mapCanvas.width = MAP.w * scale; mapCanvas.height = MAP.h * scale;
+  const mc = mapCanvas.getContext('2d');
+  const img = mc.createImageData(mapCanvas.width, mapCanvas.height);
+  const iw = mapCanvas.width, ih = mapCanvas.height;
+  for (let j = 0; j < ih; j++) {
+    const y = YMAX - (j + 0.5) / ih * (YMAX - YMIN);
+    for (let i = 0; i < iw; i++) {
+      const x = XMIN + (i + 0.5) / iw * (XMAX - XMIN);
+      const rgb = rampRGB(height(x, y), 1);
+      const k = (j * iw + i) * 4;
+      img.data[k] = rgb[0]; img.data[k + 1] = rgb[1]; img.data[k + 2] = rgb[2]; img.data[k + 3] = 255;
+    }
+  }
+  mc.putImageData(img, 0, 0);
+
+  // 지도 등고선
+  const NX = 161, NY = 121;
+  const gx = i => XMIN + i / (NX - 1) * (XMAX - XMIN);
+  const gy = j => YMIN + j / (NY - 1) * (YMAX - YMIN);
+  const gv = new Float32Array(NX * NY);
+  for (let j = 0; j < NY; j++) for (let i = 0; i < NX; i++) gv[j * NX + i] = height(gx(i), gy(j));
+  mapSegs = [];
+  for (let k = 0; k < LEVEL_COUNT; k++) {
+    march(NX, NY, gx, gy, gv, LEVEL_MIN + k * LEVEL_STEP, (x1, y1, x2, y2) => {
+      mapSegs.push([toMap(x1, y1), toMap(x2, y2)]);
+    });
+  }
+
+  // 지형 격자
+  const mx = i => XMIN + i / MX * (XMAX - XMIN);
+  const my = j => YMIN + j / MY * (YMAX - YMIN);
+  const nh = new Float32Array((MX + 1) * (MY + 1));
+  const np = [];
+  for (let j = 0; j <= MY; j++) for (let i = 0; i <= MX; i++) {
+    const h = height(mx(i), my(j));
+    nh[j * (MX + 1) + i] = h;
+    np.push(proj(mx(i), my(j), h));
+  }
+  const L = [-0.5, 0.4, 0.77], Ln = Math.hypot(L[0], L[1], L[2]);
+  const dx = (XMAX - XMIN) / MX, dy = (YMAX - YMIN) / MY;
+  surfCells = [];
+  zbuf.fill(Infinity);
+  for (let j = 0; j < MY; j++) for (let i = 0; i < MX; i++) {
+    const a = j * (MX + 1) + i, b = a + 1, c = a + MX + 2, d = a + MX + 1;
+    const h00 = nh[a], h10 = nh[b], h11 = nh[c], h01 = nh[d];
+    const gxv = ((h10 + h11) - (h00 + h01)) / (2 * dx) * P3.hs;
+    const gyv = ((h01 + h11) - (h00 + h10)) / (2 * dy) * P3.hs;
+    const nn = Math.hypot(gxv, gyv, 1);
+    const dot = (-gxv * L[0] - gyv * L[1] + L[2]) / (nn * Ln);
+    const shade = 0.7 + 0.3 * Math.max(0, dot);
+    const rgb = rampRGB((h00 + h10 + h11 + h01) / 4, shade);
+    const poly = [np[a], np[b], np[c], np[d]];
+    rastTri(np[a], np[b], np[c]);
+    rastTri(np[a], np[c], np[d]);
+    surfCells.push({
+      poly,
+      depth: (np[a][2] + np[b][2] + np[c][2] + np[d][2]) / 4,
+      color: `rgb(${rgb[0] | 0},${rgb[1] | 0},${rgb[2] | 0})`,
+    });
+  }
+  surfCells.sort((p, q) => q.depth - p.depth);
+
+  // 지형 위 등고선 (보이는 것만)
+  surfSegs = [];
+  for (let k = 0; k < LEVEL_COUNT; k++) {
+    const lv = LEVEL_MIN + k * LEVEL_STEP;
+    march(MX + 1, MY + 1, mx, my, nh, lv, (x1, y1, x2, y2) => {
+      if (!visible3((x1 + x2) / 2, (y1 + y2) / 2, lv)) return;
+      const p1 = proj(x1, y1, lv + 0.01), p2 = proj(x2, y2, lv + 0.01);
+      surfSegs.push([p1, p2]);
+    });
+  }
+
+  // 시험 전하 경로
+  const src = charges.find(c => c.q > 0);
+  paths = [];
+  const N = 6;
+  for (let i = 0; i < N; i++) {
+    const ang = 2 * Math.PI * (i + 0.5) / N + 0.3;
+    const pts = trace(src.x + 0.16 * Math.cos(ang), src.y + 0.16 * Math.sin(ang));
+    if (pts.length < 3) { paths.push(null); continue; }
+    for (const p of pts) {
+      p.m = toMap(p.x, p.y);
+      p.p3 = proj(p.x, p.y, p.h + 0.015);
+      p.vis = visible3(p.x, p.y, p.h);
+    }
+    // 등고선과 만나는 곳
+    const cross = [];
+    for (let n = 1; n < pts.length; n++) {
+      const A = pts[n - 1], B = pts[n];
+      const hi = Math.max(A.h, B.h), lo = Math.min(A.h, B.h);
+      const k0 = Math.ceil((lo - LEVEL_MIN) / LEVEL_STEP - 1e-9);
+      const k1 = Math.floor((hi - LEVEL_MIN) / LEVEL_STEP + 1e-9);
+      for (let k = Math.max(0, k0); k <= Math.min(LEVEL_COUNT - 1, k1); k++) {
+        const lv = LEVEL_MIN + k * LEVEL_STEP;
+        if (hi === lo) continue;
+        const f = (A.h - lv) / (A.h - B.h);
+        if (f < 0 || f > 1) continue;
+        const x = A.x + (B.x - A.x) * f, y = A.y + (B.y - A.y) * f;
+        const [ex, ey] = field(x, y);
+        const m = Math.hypot(ex, ey) || 1;
+        cross.push({ s: A.s + (B.s - A.s) * f, m: toMap(x, y), ux: ex / m, uy: ey / m });
+      }
+    }
+    paths.push({ pts, cross, L: pts[pts.length - 1].s, off: OFFS[i] });
+  }
+}
+
+function stateOf(path, t) {
+  const travel = path.L / SPEED;
+  const cycle = travel + PAUSE;
+  const tau = (((t + path.off) % cycle) + cycle) % cycle;
+  const s = Math.min(tau, travel) * SPEED;
+  const alpha = tau <= travel ? 1 : Math.max(0, 1 - (tau - travel) / PAUSE);
+  return { s, alpha };
+}
+function headOf(path, s) {
+  const pts = path.pts;
+  const k = Math.min(pts.length - 2, Math.floor(s / DS));
+  const f = Math.max(0, Math.min(1, (s - pts[k].s) / DS));
+  const A = pts[k], B = pts[k + 1];
+  const x = A.x + (B.x - A.x) * f, y = A.y + (B.y - A.y) * f, h = A.h + (B.h - A.h) * f;
+  return { k, x, y, h, m: toMap(x, y), p3: proj(x, y, h + 0.015), vis: visible3(x, y, h) };
+}
+
+// ─── 조작: 원천 전하 끌기 ───
+let drag = null, dirty = false, dirtyFast = false;
+function canvasPoint(e) {
+  const r = cv.getBoundingClientRect();
+  return [(e.clientX - r.left) * W / r.width, (e.clientY - r.top) * H / r.height];
+}
+function hitCharge(px, py) {
+  for (const c of charges) {
+    const [cx, cy] = toMap(c.x, c.y);
+    if (Math.hypot(px - cx, py - cy) < 16) return c;
+  }
+  return null;
+}
+cv.addEventListener('pointerdown', e => {
+  if (PieceKit.frozen) return;
+  const [px, py] = canvasPoint(e);
+  const c = hitCharge(px, py);
+  if (c) { drag = c; cv.setPointerCapture(e.pointerId); cv.style.cursor = 'grabbing'; }
+});
+cv.addEventListener('pointermove', e => {
+  if (PieceKit.frozen) return;
+  const [px, py] = canvasPoint(e);
+  if (!drag) { cv.style.cursor = hitCharge(px, py) ? 'grab' : 'default'; return; }
+  let [x, y] = fromMap(px, py);
+  x = Math.max(XMIN + 0.25, Math.min(XMAX - 0.25, x));
+  y = Math.max(YMIN + 0.25, Math.min(YMAX - 0.25, y));
+  const other = charges.find(c => c !== drag);
+  if (Math.hypot(x - other.x, y - other.y) < 0.45) return;
+  drag.x = x; drag.y = y;
+  dirty = true; dirtyFast = true;
+});
+function endDrag() {
+  if (!drag) return;
+  drag = null; cv.style.cursor = 'default';
+  dirty = true; dirtyFast = false;
+}
+cv.addEventListener('pointerup', endDrag);
+cv.addEventListener('pointercancel', endDrag);
+
+rebuild(false);
+
+const CAPTION = '양전하에서 풀려난 시험 전하가 전위 지형의 가장 가파른 내리막을 따라 내려가며, 등전위선을 만날 때마다 직각으로 가로지른다.';
+const capEl = document.getElementById('cap');
+
+function drawCharge(px, py, r, q) {
+  ctx.beginPath(); ctx.arc(px, py, r, 0, Math.PI * 2);
+  ctx.fillStyle = '#ffffff'; ctx.fill();
+  ctx.lineWidth = 1.5; ctx.strokeStyle = INK; ctx.stroke();
+  const g = r * 0.5;
+  ctx.beginPath();
+  ctx.moveTo(px - g, py); ctx.lineTo(px + g, py);
+  if (q > 0) { ctx.moveTo(px, py - g); ctx.lineTo(px, py + g); }
+  ctx.stroke();
+}
+
+PieceKit.loop({
+  step(dt, t) { /* 상태는 t 의 함수 — 쌓이는 것이 없다 */ },
+  draw(t) {
+    if (dirty) { rebuild(dirtyFast); dirty = false; }
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+
+    const states = paths.map(p => p ? stateOf(p, t) : null);
+
+    PieceKit.mark('전위 지형', () => {
+      for (const c of surfCells) {
+        const p = c.poly;
+        ctx.beginPath();
+        ctx.moveTo(p[0][0], p[0][1]); ctx.lineTo(p[1][0], p[1][1]);
+        ctx.lineTo(p[2][0], p[2][1]); ctx.lineTo(p[3][0], p[3][1]);
+        ctx.closePath();
+        ctx.fillStyle = c.color; ctx.fill();
+        ctx.lineWidth = 0.6; ctx.strokeStyle = c.color; ctx.stroke();
+      }
+    });
+
+    PieceKit.mark('지형 위 등전위선', () => {
+      ctx.beginPath();
+      for (const [a, b] of surfSegs) { ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); }
+      ctx.lineCap = 'butt'; ctx.lineWidth = 1; ctx.strokeStyle = CONTOUR; ctx.stroke(); ctx.lineCap = 'round';
+    });
+
+    PieceKit.mark('지형 위 원천 전하', () => {
+      for (const c of charges) {
+        const h = height(c.x, c.y);
+        if (!visible3(c.x, c.y, h)) continue;
+        const p = proj(c.x, c.y, h);
+        drawCharge(p[0], p[1], 6, c.q);
+      }
+    });
+
+    PieceKit.mark('지형 위 시험 전하', () => {
+      paths.forEach((path, i) => {
+        if (!path) return;
+        const st = states[i];
+        if (st.alpha <= 0) return;
+        const head = headOf(path, st.s);
+        ctx.globalAlpha = st.alpha;
+        ctx.strokeStyle = ACCENT; ctx.lineWidth = 2;
+        ctx.beginPath();
+        let pen = false;
+        for (let n = 0; n <= head.k; n++) {
+          const p = path.pts[n];
+          if (!p.vis) { pen = false; continue; }
+          if (pen) ctx.lineTo(p.p3[0], p.p3[1]); else ctx.moveTo(p.p3[0], p.p3[1]);
+          pen = true;
+        }
+        if (pen && head.vis) ctx.lineTo(head.p3[0], head.p3[1]);
+        ctx.stroke();
+        if (head.vis) {
+          ctx.beginPath(); ctx.arc(head.p3[0], head.p3[1], 4, 0, Math.PI * 2);
+          ctx.fillStyle = ACCENT; ctx.fill();
+          ctx.lineWidth = 1.2; ctx.strokeStyle = '#ffffff'; ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+      });
+    });
+
+    PieceKit.mark('전위 지도', () => {
+      ctx.imageSmoothingEnabled = true;
+      ctx.drawImage(mapCanvas, MAP.x, MAP.y, MAP.w, MAP.h);
+    });
+
+    PieceKit.mark('등전위선', () => {
+      ctx.beginPath();
+      for (const [a, b] of mapSegs) { ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); }
+      ctx.lineCap = 'butt'; ctx.lineWidth = 1; ctx.strokeStyle = CONTOUR; ctx.stroke(); ctx.lineCap = 'round';
+    });
+
+    PieceKit.mark('시험 전하 경로', () => {
+      paths.forEach((path, i) => {
+        if (!path) return;
+        const st = states[i];
+        if (st.alpha <= 0) return;
+        const head = headOf(path, st.s);
+        ctx.globalAlpha = st.alpha;
+        ctx.beginPath();
+        ctx.moveTo(path.pts[0].m[0], path.pts[0].m[1]);
+        for (let n = 1; n <= head.k; n++) ctx.lineTo(path.pts[n].m[0], path.pts[n].m[1]);
+        ctx.lineTo(head.m[0], head.m[1]);
+        ctx.strokeStyle = ACCENT; ctx.lineWidth = 2; ctx.stroke();
+        ctx.globalAlpha = 1;
+      });
+    });
+
+    PieceKit.mark('직각 표시', () => {
+      const a = 7;
+      paths.forEach((path, i) => {
+        if (!path) return;
+        const st = states[i];
+        if (st.alpha <= 0) return;
+        ctx.globalAlpha = st.alpha;
+        ctx.beginPath();
+        for (const c of path.cross) {
+          if (c.s > st.s) break;
+          // 화면 좌표: y 뒤집힘
+          const ux = c.ux, uy = -c.uy;      // 경로 방향
+          const wx = -uy, wy = ux;          // 등전위선 방향
+          const [px, py] = c.m;
+          ctx.moveTo(px - a * ux, py - a * uy);
+          ctx.lineTo(px - a * ux + a * wx, py - a * uy + a * wy);
+          ctx.lineTo(px + a * wx, py + a * wy);
+        }
+        ctx.strokeStyle = INK; ctx.lineWidth = 1.2; ctx.stroke();
+        ctx.globalAlpha = 1;
+      });
+    });
+
+    PieceKit.mark('시험 전하', () => {
+      paths.forEach((path, i) => {
+        if (!path) return;
+        const st = states[i];
+        if (st.alpha <= 0) return;
+        const head = headOf(path, st.s);
+        ctx.globalAlpha = st.alpha;
+        ctx.beginPath(); ctx.arc(head.m[0], head.m[1], 4.5, 0, Math.PI * 2);
+        ctx.fillStyle = ACCENT; ctx.fill();
+        ctx.lineWidth = 1.2; ctx.strokeStyle = '#ffffff'; ctx.stroke();
+        ctx.globalAlpha = 1;
+      });
+    });
+
+    PieceKit.mark('원천 전하', () => {
+      for (const c of charges) {
+        const [px, py] = toMap(c.x, c.y);
+        drawCharge(px, py, 9, c.q);
+      }
+    });
+
+    PieceKit.mark('캡션', () => {
+      if (capEl.textContent !== CAPTION) capEl.textContent = CAPTION;
+    });
+  },
+});
+</script>
+</body>
+</html>

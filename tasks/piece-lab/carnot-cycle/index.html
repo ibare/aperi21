@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>카르노 순환</title>
+<style>
+  :root { --ink: #23242a; --muted: #6b6e78; --bg: #ffffff; --accent: #d9480f; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 12px 16px; box-sizing: border-box; }
+  canvas { display: block; width: 100%; height: 300px; }
+  .row { display: flex; align-items: center; gap: 12px; margin-top: 6px; font-size: 14px; color: var(--muted); }
+  .row input { flex: 0 1 260px; }
+  .caption { margin-top: 8px; font-size: 15px; line-height: 1.5; min-height: 1.5em; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <div class="row">
+    <label for="tc">차가운 쪽 온도</label>
+    <input id="tc" type="range" min="50" max="450" step="5" value="300">
+    <span id="tcv">300 K</span>
+  </div>
+  <div class="caption" id="cap"></div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// 카르노 순환을 온도-엔트로피 도표에 그린다.
+// 받은 열 = 뜨거운 쪽 온도선 아래 면적(0 K 바닥까지), 버린 열 = 차가운 쪽 온도선 아래 면적.
+// 화면의 모든 것은 순환 안의 시각 u 와 차가운 쪽 온도 하나로 정해진다.
+
+const TH = 500;          // 뜨거운 쪽 온도 (K), 고정
+const T_TOP = 560;       // 도표 위쪽 끝 온도
+const DEFAULT_TC = 300;
+const PERIOD = 9;
+const OFFSET = 1.2;      // 도착한 순간 이미 열을 받는 중이게 한다
+// 구간 경계 (초)
+const P1 = 2.4, P2 = 3.4, P3 = 5.8, P4 = 6.8, FADE = 8.6;
+const SINK = 0.9;        // 한 줄기 열이 바닥 아래로 빠져나가는 데 걸리는 시간
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const cap = document.getElementById('cap');
+const slider = document.getElementById('tc');
+const tcv = document.getElementById('tcv');
+
+const css = getComputedStyle(document.documentElement);
+const INK = css.getPropertyValue('--ink').trim();
+const MUTED = css.getPropertyValue('--muted').trim();
+const ACCENT = css.getPropertyValue('--accent').trim();
+const FILL = 'rgba(60, 62, 75, 0.20)';
+
+let userTc = DEFAULT_TC;
+slider.addEventListener('input', () => { userTc = Number(slider.value); });
+
+function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+  }
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return { W: w, H: h };
+}
+
+PieceKit.loop({
+  step(dt, t) { /* 상태는 t 의 함수라 쌓을 것이 없다 */ },
+  draw(t) {
+    const tc = PieceKit.frozen ? DEFAULT_TC : userTc;
+    if (PieceKit.frozen) slider.value = String(DEFAULT_TC);
+    tcv.textContent = tc + ' K';
+    const discardPct = Math.round(tc / TH * 100); // 50~450 K, 5 K 단위라 언제나 정수
+    const workPct = 100 - discardPct;
+
+    const u = (t + OFFSET) % PERIOD;
+    const { W, H } = resize();
+    ctx.clearRect(0, 0, W, H);
+
+    const padL = 130, padR = 24, top = 16, floorY = H - 30;
+    const plotW = W - padL - padR;
+    const x1 = padL + plotW * 0.10;   // 순환의 작은 엔트로피 쪽
+    const x2 = padL + plotW * 0.80;   // 큰 엔트로피 쪽
+    const yOf = (T) => floorY - T / T_TOP * (floorY - top);
+    const yH = yOf(TH), yC = yOf(tc);
+    const fade = u > FADE ? 1 - (u - FADE) / (PERIOD - FADE) : 1;
+
+    // 받은 열이 채워진 오른쪽 끝, 차가운 쪽에서 쓸고 지나간 왼쪽 끝
+    const xa = x1 + (x2 - x1) * clamp01(u / P1);
+    const xs = u < P2 ? x2 : x2 - (x2 - x1) * clamp01((u - P2) / (P3 - P2));
+    const sweptTime = (x) => P2 + (x2 - x) / (x2 - x1) * (P3 - P2);
+
+    PieceKit.mark('절대 영도 바닥과 온도 축', () => {
+      ctx.strokeStyle = MUTED; ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(padL, top); ctx.lineTo(padL, floorY); ctx.lineTo(W - padR, floorY);
+      ctx.stroke();
+      ctx.fillStyle = MUTED; ctx.font = '12px sans-serif';
+      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      ctx.fillText('0 K 절대 영도', padL - 8, floorY);
+      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.fillText('온도', padL + 6, top);
+      ctx.textAlign = 'right'; ctx.textBaseline = 'top';
+      ctx.fillText('엔트로피 →', W - padR, floorY + 8);
+    });
+
+    PieceKit.mark('두 열원의 온도선', () => {
+      ctx.strokeStyle = MUTED; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(padL, yH); ctx.lineTo(W - padR, yH);
+      ctx.moveTo(padL, yC); ctx.lineTo(W - padR, yC);
+      ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = INK; ctx.font = '13px sans-serif';
+      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      ctx.fillText('뜨거운 쪽 ' + TH + ' K', padL - 8, yH);
+      ctx.fillText('차가운 쪽 ' + tc + ' K', padL - 8, yC);
+    });
+
+    PieceKit.mark('받은 열', () => {
+      ctx.globalAlpha = fade;
+      ctx.fillStyle = FILL;
+      // 차가운 쪽 온도 위 몫: 받은 만큼 그대로 남는다
+      if (xa > x1) ctx.fillRect(x1, yH, xa - x1, yC - yH);
+      // 차가운 쪽 온도 아래 몫: 아직 쓸리지 않은 부분만
+      const right = Math.min(xa, xs);
+      if (right > x1) ctx.fillRect(x1, yC, right - x1, floorY - yC);
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('빠져나간 자리', () => {
+      if (xs >= x2) return;
+      ctx.globalAlpha = fade * 0.9;
+      ctx.strokeStyle = ACCENT; ctx.lineWidth = 1; ctx.setLineDash([3, 3]);
+      ctx.strokeRect(xs, yC, x2 - xs, floorY - yC);
+      ctx.setLineDash([]);
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('빠져나가는 열', () => {
+      if (xs >= x2) return;
+      ctx.save();
+      ctx.beginPath(); ctx.rect(x1, top, x2 - x1, floorY - top); ctx.clip();
+      ctx.fillStyle = ACCENT;
+      const colH = floorY - yC;
+      const step = 3;
+      for (let x = xs; x < x2; x += step) {
+        const k = clamp01((u - sweptTime(x + step / 2)) / SINK);
+        if (k >= 1) continue;
+        ctx.globalAlpha = fade * 0.55 * (1 - k * 0.5);
+        const off = k * (colH + 4);
+        ctx.fillRect(x, yC + off, Math.min(step, x2 - x) + 0.5, colH);
+      }
+      ctx.restore();
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('상태점의 경로', () => {
+      ctx.globalAlpha = fade;
+      ctx.strokeStyle = INK; ctx.lineWidth = 2.2; ctx.lineJoin = 'round';
+      ctx.beginPath();
+      ctx.moveTo(x1, yH);
+      ctx.lineTo(xa, yH);
+      if (u >= P1) ctx.lineTo(x2, yH + (yC - yH) * clamp01((u - P1) / (P2 - P1)));
+      if (u >= P2) ctx.lineTo(xs, yC);
+      if (u >= P3) ctx.lineTo(x1, yC + (yH - yC) * clamp01((u - P3) / (P4 - P3)));
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('기체의 상태점', () => {
+      let px, py;
+      if (u < P1) { px = xa; py = yH; }
+      else if (u < P2) { px = x2; py = yH + (yC - yH) * clamp01((u - P1) / (P2 - P1)); }
+      else if (u < P3) { px = xs; py = yC; }
+      else { px = x1; py = yC + (yH - yC) * clamp01((u - P3) / (P4 - P3)); }
+      ctx.globalAlpha = fade;
+      ctx.fillStyle = INK;
+      ctx.beginPath(); ctx.arc(px, py, 5.5, 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = 1;
+    });
+
+    if (u >= P4) {
+      PieceKit.mark('일로 남은 몫', () => {
+        ctx.globalAlpha = fade;
+        ctx.fillStyle = INK; ctx.font = '600 13px sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('일 ' + workPct + '%', (x1 + x2) / 2, (yH + yC) / 2);
+        ctx.globalAlpha = 1;
+      });
+      PieceKit.mark('버린 열의 몫', () => {
+        ctx.globalAlpha = fade;
+        ctx.fillStyle = ACCENT; ctx.font = '600 13px sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('빠져나간 열 ' + discardPct + '%', (x1 + x2) / 2, (yC + floorY) / 2);
+        ctx.globalAlpha = 1;
+      });
+    }
+
+    PieceKit.mark('캡션', () => {
+      let s;
+      if (u < P1) s = TH + ' K 에서 열을 받는다 — 받은 열은 0 K 바닥부터 ' + TH + ' K 까지 채워진다';
+      else if (u < P2) s = '열 출입 없이 팽창하며 ' + TH + ' K 에서 ' + tc + ' K 로 식는다';
+      else if (u < P3) s = tc + ' K 에서 열을 내놓는다 — ' + tc + ' K 아래 깔린 몫이 바닥으로 빠져나간다';
+      else if (u < P4) s = '열 출입 없이 압축되며 ' + tc + ' K 에서 ' + TH + ' K 로 돌아간다';
+      else s = '받은 열 중 ' + tc + ' K 아래 ' + discardPct + '% 는 빠져나가고, 그 위 ' + workPct + '% 만 일로 남는다';
+      if (cap.textContent !== s) cap.textContent = s;
+    });
+  },
+});
+</script>
+</body>
+</html>

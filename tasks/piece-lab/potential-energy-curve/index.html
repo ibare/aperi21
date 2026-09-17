@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>퍼텐셜 곡선</title>
+<style>
+  html, body { margin: 0; background: #fbfaf7; }
+  .piece { max-width: 860px; margin: 0 auto; padding: 12px 16px; font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; color: #2b2a27; }
+  canvas { display: block; width: 100%; height: auto; touch-action: none; cursor: ns-resize; }
+  .caption { min-height: 2.8em; margin: 6px 4px 0; font-size: 15px; line-height: 1.45; word-break: keep-all; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c" width="860" height="300"></canvas>
+  <p class="caption" id="caption"></p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 화면 크기 ──
+  const W = 860, H = 300;
+  const canvas = document.getElementById('c');
+  const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const captionEl = document.getElementById('caption');
+
+  // ── 색: 강조색은 "되돌아오는 점" 한 가지 뜻에만 ──
+  const INK = '#2b2a27';        // 물체, 전체 에너지 선
+  const CURVE = '#5b6f86';      // 퍼텐셜 에너지 곡선
+  const GAP = 'rgba(91,111,134,0.28)'; // 운동 에너지(선과 곡선 사이 틈)
+  const WALL = 'rgba(43,42,39,0.07)';  // 선보다 곡선이 높은 곳(들어갈 수 없는 곳)
+  const MUTED = '#8d8a83';
+  const ACCENT = '#d9622b';     // 되돌아오는 점
+
+  // ── 퍼텐셜: 비대칭 이중 우물, 양 끝은 벽 ──
+  const U_MIN = -1.25, U_MAX = 1.25;
+  const TILT = 0.15;
+  const pot = (u) => u*u*u*u - u*u + TILT*u;
+  const force = (u) => -(4*u*u*u - 2*u + TILT);
+  // 가운데 언덕 꼭대기(수치로 찾는다)
+  let barrierU = 0, best = -Infinity;
+  for (let i = 0; i <= 2000; i++) { const u = -0.4 + 0.8*i/2000; if (pot(u) > best) { best = pot(u); barrierU = u; } }
+
+  const PAD_L = 24, PAD_R = 24, PAD_T = 18, PAD_B = 18;
+  const Y_TOP = 0.62, Y_BOT = -0.42;
+  const sx = (u) => PAD_L + (u - U_MIN) / (U_MAX - U_MIN) * (W - PAD_L - PAD_R);
+  const sy = (e) => PAD_T + (Y_TOP - e) / (Y_TOP - Y_BOT) * (H - PAD_T - PAD_B);
+  const ey = (py) => Y_TOP - (py - PAD_T) / (H - PAD_T - PAD_B) * (Y_TOP - Y_BOT);
+
+  // ── 자동 진행 일정(에너지 높이) ──
+  const E_LOW = -0.06, E_HIGH = 0.22, CYCLE = 20;
+  const smooth = (a) => a <= 0 ? 0 : a >= 1 ? 1 : a*a*(3 - 2*a);
+  function autoTarget(t) {
+    const c = t % CYCLE;
+    if (c < 7) return E_LOW;
+    if (c < 9) return E_LOW + (E_HIGH - E_LOW) * smooth((c - 7) / 2);
+    if (c < 16) return E_HIGH;
+    return E_LOW; // 낮추기는 마찰로 천천히 일어난다(applyEnergy)
+  }
+
+  // ── 상태 ──
+  const u0 = -0.7327;
+  const state = {
+    u: u0,
+    v: Math.sqrt(2 * (E_LOW - pot(u0))),
+    E: E_LOW,
+    frame: 0,
+    trail: [],           // 일정 간격으로 찍은 과거 위치 u
+    manual: false,       // 독자가 선을 끌었는가
+    manualE: E_LOW,
+  };
+  const TIME_SCALE = 1.6;
+  const SUB = 16;
+  const TRAIL_EVERY = 5, TRAIL_MAX = 26;
+
+  const FRICTION_AUTO = 0.5, FRICTION_MANUAL = 2.0;
+  function applyEnergy(target, dt, friction) {
+    if (target >= state.E) {
+      // 올리기: 물체를 밀어 에너지를 더한다
+      state.E = target;
+    } else {
+      // 낮추기: 움직이는 동안에만 마찰로 에너지를 뺀다(dE/dt = -γ·2K).
+      // 선을 억지로 물체 자리까지 끌어내리면 벽에 붙어 기어가는 비물리 운동이 생긴다.
+      const K = Math.max(0, state.E - pot(state.u));
+      state.E = Math.max(target, state.E - friction * 2 * K * dt * TIME_SCALE);
+    }
+  }
+
+  function substep(h) {
+    const a0 = force(state.u);
+    let vHalf = state.v + 0.5 * h * a0;
+    let uNew = state.u + h * vHalf;
+    const K = state.E - pot(uNew);
+    if (K < 0) {
+      // 선을 넘어선 자리: 들어가지 못하고 그 자리에서 되돌아온다
+      state.v = 0;
+      return;
+    }
+    const aNew = force(uNew);
+    let vNew = vHalf + 0.5 * h * aNew;
+    let sgn = Math.sign(vNew);
+    if (sgn === 0) sgn = Math.sign(aNew) || 1;
+    state.u = uNew;
+    state.v = sgn * Math.sqrt(2 * K); // 에너지 높이를 정확히 지킨다
+  }
+
+  function step(dt, t) {
+    const manual = state.manual && !PieceKit.frozen;
+    applyEnergy(manual ? state.manualE : autoTarget(t), dt, manual ? FRICTION_MANUAL : FRICTION_AUTO);
+    const h = dt * TIME_SCALE / SUB;
+    for (let i = 0; i < SUB; i++) substep(h);
+    state.frame++;
+    if (state.frame % TRAIL_EVERY === 0) {
+      state.trail.push({ u: state.u });
+      if (state.trail.length > TRAIL_MAX) state.trail.shift();
+    }
+  }
+
+  // ── 물체가 닿을 수 있는 구간: 물체 자리에서 좌우로 곡선이 선보다 높아지는 곳까지 ──
+  function crossing(uIn, uOut, E) {
+    let a = uIn, b = uOut;
+    for (let i = 0; i < 40; i++) {
+      const m = 0.5 * (a + b);
+      if (pot(m) <= E) a = m; else b = m;
+    }
+    return 0.5 * (a + b);
+  }
+  function reachable(u, E) {
+    const N = 800, du = (U_MAX - U_MIN) / N;
+    let left = U_MIN, right = U_MAX;
+    for (let x = u; x > U_MIN; x -= du) {
+      if (pot(x - du) > E) { left = crossing(x, x - du, E); break; }
+    }
+    for (let x = u; x < U_MAX; x += du) {
+      if (pot(x + du) > E) { right = crossing(x, x + du, E); break; }
+    }
+    return [left, right];
+  }
+
+  // ── 조작: 캔버스를 위아래로 끌어 전체 에너지 높이를 바꾼다 ──
+  let dragging = false;
+  function pointerE(ev) {
+    const r = canvas.getBoundingClientRect();
+    const py = (ev.clientY - r.top) / r.height * H;
+    return Math.max(Y_BOT + 0.02, Math.min(Y_TOP - 0.02, ey(py)));
+  }
+  canvas.addEventListener('pointerdown', (ev) => {
+    if (PieceKit.frozen) return;
+    dragging = true; state.manual = true; state.manualE = pointerE(ev);
+    canvas.setPointerCapture(ev.pointerId);
+  });
+  canvas.addEventListener('pointermove', (ev) => { if (dragging) state.manualE = pointerE(ev); });
+  canvas.addEventListener('pointerup', () => { dragging = false; });
+  canvas.addEventListener('pointercancel', () => { dragging = false; });
+
+  // ── 그리기 ──
+  function draw(t) {
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fbfaf7';
+    ctx.fillRect(0, 0, W, H);
+
+    const E = state.E;
+    const [uL, uR] = reachable(state.u, E);
+    const lineY = sy(E);
+    const N = 400;
+
+    PieceKit.mark('들어갈 수 없는 곳', () => {
+      // 곡선이 선보다 높은 곳: 선과 곡선 사이를 옅게 채운다
+      ctx.fillStyle = WALL;
+      ctx.beginPath();
+      let open = false;
+      for (let i = 0; i <= N; i++) {
+        const u = U_MIN + (U_MAX - U_MIN) * i / N;
+        const p = pot(u);
+        const above = p > E;
+        const cy = Math.max(sy(p), 0);
+        if (above && !open) { ctx.moveTo(sx(u), lineY); open = true; }
+        if (above) ctx.lineTo(sx(u), cy);
+        if ((!above || i === N) && open) {
+          ctx.lineTo(sx(u), lineY); ctx.closePath(); open = false;
+        }
+      }
+      ctx.fill();
+    });
+
+    PieceKit.mark('퍼텐셜 에너지 곡선', () => {
+      ctx.strokeStyle = CURVE; ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      for (let i = 0; i <= N; i++) {
+        const u = U_MIN + (U_MAX - U_MIN) * i / N;
+        const x = sx(u), y = sy(pot(u));
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.fillStyle = CURVE; ctx.font = '13px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText('퍼텐셜 에너지', sx(1.07) - 10, sy(0.52));
+    });
+
+    PieceKit.mark('전체 에너지 선', () => {
+      // 닿을 수 없는 구간은 옅은 점선, 물체가 오가는 구간은 진한 실선
+      ctx.strokeStyle = 'rgba(43,42,39,0.28)'; ctx.lineWidth = 1.2;
+      ctx.setLineDash([4, 5]);
+      ctx.beginPath(); ctx.moveTo(sx(U_MIN), lineY); ctx.lineTo(sx(U_MAX), lineY); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.strokeStyle = INK; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(sx(uL), lineY); ctx.lineTo(sx(uR), lineY); ctx.stroke();
+    });
+
+    PieceKit.mark('에너지 높이 손잡이', () => {
+      const x = sx(0.8);
+      ctx.fillStyle = PieceKit.frozen || !state.manual ? MUTED : INK;
+      ctx.font = '12px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText('전체 에너지 ↕', x, lineY - 8);
+    });
+
+    PieceKit.mark('물체가 지나온 자리', () => {
+      // 같은 시간 간격으로 찍힌 자국: 간격이 좁아지는 곳이 느려지는 곳
+      const n = state.trail.length;
+      for (let i = 0; i < n; i++) {
+        const p = state.trail[i];
+        if (p.u < uL || p.u > uR) continue; // 에너지가 줄기 전 자국은 벽 안쪽에 남기지 않는다
+        const alpha = 0.08 + 0.42 * (i + 1) / n;
+        ctx.fillStyle = `rgba(43,42,39,${alpha.toFixed(3)})`;
+        ctx.beginPath(); ctx.arc(sx(p.u), lineY, 2.6, 0, Math.PI * 2); ctx.fill();
+      }
+    });
+
+    PieceKit.mark('운동 에너지 틈', () => {
+      const x = sx(state.u);
+      const yCurve = sy(pot(state.u));
+      ctx.fillStyle = GAP;
+      ctx.fillRect(x - 5, lineY, 10, Math.max(0, yCurve - lineY));
+      if (yCurve - lineY > 26) {
+        ctx.fillStyle = CURVE;
+        ctx.font = '12px -apple-system, "Apple SD Gothic Neo", sans-serif';
+        const rightSide = state.u < 0.9;
+        ctx.textAlign = rightSide ? 'left' : 'right';
+        ctx.fillText('운동 에너지', x + (rightSide ? 10 : -10), (lineY + yCurve) / 2 + 4);
+      }
+    });
+
+    PieceKit.mark('물체', () => {
+      ctx.fillStyle = INK;
+      ctx.beginPath(); ctx.arc(sx(state.u), lineY, 7, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#fbfaf7'; ctx.lineWidth = 1.5; ctx.stroke();
+    });
+
+    PieceKit.mark('되돌아오는 점', () => {
+      ctx.strokeStyle = ACCENT; ctx.fillStyle = ACCENT; ctx.lineWidth = 2;
+      for (const u of [uL, uR]) {
+        const x = sx(u);
+        ctx.beginPath(); ctx.arc(x, lineY, 10, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(x, lineY, 3, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(x, lineY + 10); ctx.lineTo(x, H - 4); ctx.stroke();
+      }
+    });
+
+    PieceKit.mark('캡션', () => {
+      const spansBoth = uL < barrierU && uR > barrierU;
+      let text;
+      if (spansBoth) {
+        text = '선이 가운데 언덕보다 높아 언덕에는 닿지 않는다. 닿는 고리는 바깥 두 벽에만 남아, 물체는 언덕을 넘어 두 골짜기를 오가고 그 두 고리에서 되돌아온다.';
+      } else {
+        const side = state.u < barrierU ? '왼쪽' : '오른쪽';
+        text = `선이 곡선에 닿는 두 고리에서 운동 에너지가 바닥나 물체가 되돌아온다. 가운데 언덕이 선보다 높아 ${side} 골짜기에 갇힌다.`;
+      }
+      if (captionEl.textContent !== text) captionEl.textContent = text;
+    });
+  }
+
+  PieceKit.loop({ step, draw });
+})();
+</script>
+</body>
+</html>

@@ -479,7 +479,9 @@
         {
           "id": "potential-energy-curve",
           "name": "퍼텐셜 곡선",
-          "desc": "곡선의 모양이 운동을 정하는 방식"
+          "desc": "곡선의 모양이 운동을 정하는 방식",
+          "simId": "aperi21:potential-energy-curve",
+          "labUrl": "piece-lab/potential-energy-curve/index.html"
         },
         {
           "id": "equilibrium-points",
@@ -617,7 +619,9 @@
         {
           "id": "gyroscopic-precession",
           "name": "세차 운동",
-          "desc": "돌림힘이 각운동량 방향을 돌리는 것"
+          "desc": "돌림힘이 각운동량 방향을 돌리는 것",
+          "simId": "aperi21:gyroscopic-precession",
+          "labUrl": "piece-lab/gyroscopic-precession/index.html"
         },
         {
           "id": "angular-momentum-vector",
@@ -900,7 +904,9 @@
         {
           "id": "hr-diagram",
           "name": "HR 도",
-          "desc": "온도와 광도로 별을 늘어놓은 그림"
+          "desc": "온도와 광도로 별을 늘어놓은 그림",
+          "simId": "aperi21:hr-diagram",
+          "labUrl": "piece-lab/hr-diagram/index.html"
         },
         {
           "id": "star-radiation-gravity-balance",
@@ -1033,7 +1039,9 @@
         {
           "id": "lift-force",
           "name": "양력",
-          "desc": "날개 위아래의 흐름 차이"
+          "desc": "날개 위아래의 흐름 차이",
+          "simId": "aperi21:lift-force",
+          "labUrl": "piece-lab/lift-force/index.html"
         },
         {
           "id": "viscosity",
@@ -1245,7 +1253,9 @@
         {
           "id": "carnot-cycle",
           "name": "카르노 순환",
-          "desc": "이론적 최대 효율"
+          "desc": "이론적 최대 효율",
+          "simId": "aperi21:carnot-cycle",
+          "labUrl": "piece-lab/carnot-cycle/index.html"
         },
         {
           "id": "refrigerator-heat-pump",
@@ -1321,7 +1331,9 @@
         {
           "id": "longitudinal-wave",
           "name": "종파",
-          "desc": "진동 방향이 진행 방향과 나란함"
+          "desc": "진동 방향이 진행 방향과 나란함",
+          "simId": "aperi21:longitudinal-wave",
+          "labUrl": "piece-lab/longitudinal-wave/index.html"
         },
         {
           "id": "wave-speed-in-medium",
@@ -1634,7 +1646,9 @@
         {
           "id": "thin-film-interference",
           "name": "박막 간섭",
-          "desc": "두께가 만드는 색"
+          "desc": "두께가 만드는 색",
+          "simId": "aperi21:thin-film-interference",
+          "labUrl": "piece-lab/thin-film-interference/index.html"
         },
         {
           "id": "newtons-rings",
@@ -1764,7 +1778,9 @@
         {
           "id": "equipotential-surface",
           "name": "등전위면",
-          "desc": "전기장과 수직인 면"
+          "desc": "전기장과 수직인 면",
+          "simId": "aperi21:equipotential-surface",
+          "labUrl": "piece-lab/equipotential-surface/index.html"
         },
         {
           "id": "potential-vs-field",
@@ -2285,7 +2301,9 @@
         {
           "id": "atomic-orbital",
           "name": "원자 궤도",
-          "desc": "확률 분포로서의 전자"
+          "desc": "확률 분포로서의 전자",
+          "simId": "aperi21:atomic-orbital",
+          "labUrl": "piece-lab/atomic-orbital/index.html"
         },
         {
           "id": "pauli-exclusion",
@@ -2437,7 +2455,7 @@
   ],
   "summary": {
     "topics": 442,
-    "implemented": 84,
-    "labs": 71
+    "implemented": 93,
+    "labs": 80
   }
 }

@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>세차 운동</title>
+<style>
+  :root {
+    --ink: #2b2b2b;
+    --muted: #8a8a8a;
+    --faint: #d6d6d6;
+    --accent: #d9622b; /* 오직 한 뜻: 돌림힘과, 돌림힘이 L 에 더한 몫 */
+    --bg: #fbfaf7;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 8px 12px 10px; box-sizing: border-box; }
+  canvas { display: block; width: 100%; height: auto; }
+  .row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 4px; }
+  .caption { flex: 1 1 380px; font-size: 15px; line-height: 1.5; margin: 0; }
+  .ctl { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+  .ctl input { width: 130px; }
+  .ctl output { font-variant-numeric: tabular-nums; color: var(--ink); min-width: 92px; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c" width="840" height="340"></canvas>
+  <div class="row">
+    <p class="caption" id="caption">돌림힘은 L 끝에 늘 옆으로 더해진다 — 그래서 축은 떨어지지 않고, L 은 길이 그대로 방향만 돈다.</p>
+    <label class="ctl">스핀
+      <input id="spin" type="range" min="2" max="6" step="0.5" value="3.5" />
+      <output id="period"></output>
+    </label>
+  </div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 물리 설정 ─────────────────────────────────────────────
+  // 무게 × 받침점-원판 거리 = 돌림힘 크기 τ = 1 (단위 약속)
+  // 빠른 팽이 근사: L 은 축 방향, 세차 각속도 Ω = τ / L
+  const TAU = 1;
+  const DEFAULT_L = 3.5;
+  const DEPOSIT = 1;          // 1 초마다 돌림힘이 더한 몫(τ·1초)을 한 토막으로 남긴다
+  const SEED = 5;             // 도착한 순간 이미 쌓여 있는 토막 수
+  const AXLE = 1.0;           // 받침점 ~ 원판 중심 (세계 단위)
+  const DISK_R = 0.45;
+  const L_DRAW = 0.45;        // L 1 단위를 세계 길이로 바꾸는 배율 (돌림힘 토막도 같은 배율)
+  const POST_H = 1.25;
+
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const spinInput = document.getElementById('spin');
+  const periodOut = document.getElementById('period');
+  const css = getComputedStyle(document.documentElement);
+  const INK = css.getPropertyValue('--ink').trim();
+  const MUTED = css.getPropertyValue('--muted').trim();
+  const FAINT = css.getPropertyValue('--faint').trim();
+  const ACCENT = css.getPropertyValue('--accent').trim();
+
+  // ── 상태 ─────────────────────────────────────────────────
+  const state = { L: DEFAULT_L, phi: 0, psi: 0, since: 0, tips: [] };
+
+  function reset(L) {
+    state.L = L;
+    state.since = 0;
+    state.tips = [];
+    for (let k = SEED; k >= 1; k--) state.tips.push(state.phi - (k * DEPOSIT * TAU) / L);
+    state.tips.push(state.phi);
+  }
+  state.phi = -0.35;
+  reset(DEFAULT_L);
+
+  function currentL() {
+    return PieceKit.frozen ? DEFAULT_L : Number(spinInput.value);
+  }
+  function updateReadout(L) {
+    const T = (2 * Math.PI * L) / TAU;
+    periodOut.textContent = '한 바퀴 ' + T.toFixed(1) + '초';
+  }
+  if (PieceKit.frozen) spinInput.value = String(DEFAULT_L);
+  updateReadout(currentL());
+  spinInput.addEventListener('input', () => {
+    if (PieceKit.frozen) return;
+    reset(Number(spinInput.value));
+    updateReadout(state.L);
+  });
+
+  // ── 투영 (고정된 비스듬한 시점) ──────────────────────────
+  const YAW = 0.5, ELEV = 0.42;
+  let W = 840, H = 340, S = 110, CX = 420, CY = 140;
+  function project(p) {
+    const xr = p[0] * Math.cos(YAW) - p[1] * Math.sin(YAW);
+    const depth = p[0] * Math.sin(YAW) + p[1] * Math.cos(YAW);
+    const yr = p[2] * Math.cos(ELEV) - depth * Math.sin(ELEV);
+    return [CX + xr * S, CY - yr * S];
+  }
+  const add = (a, b) => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
+  const mul = (a, k) => [a[0] * k, a[1] * k, a[2] * k];
+  const axis = (phi) => [Math.cos(phi), Math.sin(phi), 0];
+  const side = (phi) => [-Math.sin(phi), Math.cos(phi), 0];
+
+  function arrow2d(a, b, color, width, head) {
+    const dx = b[0] - a[0], dy = b[1] - a[1];
+    const len = Math.hypot(dx, dy);
+    if (len < 0.5) return;
+    const ux = dx / len, uy = dy / len;
+    const h = Math.min(head, len * 0.6);
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = width; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0] - ux * h * 0.7, b[1] - uy * h * 0.7); ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(b[0], b[1]);
+    ctx.lineTo(b[0] - ux * h - uy * h * 0.45, b[1] - uy * h + ux * h * 0.45);
+    ctx.lineTo(b[0] - ux * h + uy * h * 0.45, b[1] - uy * h - ux * h * 0.45);
+    ctx.closePath(); ctx.fill();
+  }
+  function label(text, p, color, dx, dy, align) {
+    ctx.fillStyle = color;
+    ctx.font = '13px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+    ctx.textAlign = align || 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, p[0] + dx, p[1] + dy);
+  }
+
+  // 이름표를 장면 중심에서 바깥쪽으로 밀어 원판·화살표와 겹치지 않게 한다
+  function outward(p, dist) {
+    const dx = p[0] - CX, dy = (p[1] - CY) * 2.2;
+    const len = Math.hypot(dx, dy) || 1;
+    return [p[0] + (dx / len) * dist, p[1] + (dy / len) * dist * 0.6];
+  }
+
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = canvas.clientWidth || 840;
+    W = cssW; H = Math.round(cssW * 340 / 840);
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    S = 110 * (W / 840); CX = W / 2; CY = H * 0.41;
+  }
+
+  resize();
+
+  PieceKit.loop({
+    step(dt) {
+      const L = currentL();
+      if (L !== state.L) { reset(L); updateReadout(L); }
+      const omega = TAU / state.L;               // 세차 각속도
+      state.phi += omega * dt;
+      state.psi += 2.4 * state.L * dt;           // 원판 자체의 회전 (L 에 비례)
+      state.since += dt;
+      if (state.since >= DEPOSIT - 1e-9) {
+        state.since -= DEPOSIT;
+        state.tips.push(state.phi - (state.since * TAU) / state.L);
+        const keep = Math.ceil((2 * Math.PI * state.L) / (DEPOSIT * TAU)) + 1;
+        while (state.tips.length > keep) state.tips.shift();
+      }
+    },
+    draw() {
+      if (canvas.clientWidth && Math.abs(canvas.clientWidth - W) > 1) resize();
+      ctx.clearRect(0, 0, W, H);
+      const L = state.L;
+      const rL = L * L_DRAW;
+      const u = axis(state.phi);
+      const pivot = [0, 0, 0];
+      const floorZ = -POST_H;
+
+      PieceKit.mark('L 끝이 도는 수평면', () => {
+        ctx.strokeStyle = FAINT; ctx.lineWidth = 1; ctx.setLineDash([3, 5]);
+        ctx.beginPath();
+        for (let i = 0; i <= 96; i++) {
+          const a = (i / 96) * Math.PI * 2;
+          const q = project([rL * Math.cos(a), rL * Math.sin(a), 0]);
+          i === 0 ? ctx.moveTo(q[0], q[1]) : ctx.lineTo(q[0], q[1]);
+        }
+        ctx.stroke(); ctx.setLineDash([]);
+      });
+
+      PieceKit.mark('바닥 그림자', () => {
+        const base = project([0, 0, floorZ]);
+        const end = project(add([0, 0, floorZ], mul(u, AXLE)));
+        ctx.strokeStyle = FAINT; ctx.lineWidth = 5; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(base[0], base[1]); ctx.lineTo(end[0], end[1]); ctx.stroke();
+      });
+
+      PieceKit.mark('받침대', () => {
+        const a = project([0, 0, floorZ]);
+        const b = project(pivot);
+        ctx.strokeStyle = MUTED; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+        ctx.fillStyle = MUTED;
+        ctx.beginPath(); ctx.ellipse(a[0], a[1], 22 * S / 110, 22 * S / 110 * Math.sin(ELEV), 0, 0, Math.PI * 2); ctx.fill();
+      });
+
+      PieceKit.mark('돌림힘이 쌓은 토막', () => {
+        const tips = state.tips;
+        const n = tips.length;
+        for (let i = 1; i < n; i++) {
+          const a = project(mul(axis(tips[i - 1]), rL));
+          const b = project(mul(axis(tips[i]), rL));
+          const age = n - 1 - i;                       // 0 = 가장 최근
+          ctx.globalAlpha = Math.max(0.18, 0.9 - age * 0.06);
+          arrow2d(a, b, ACCENT, 2, 8);
+        }
+        // 지난 토막 끝 → 지금 L 끝: 지금 쌓이는 중인 몫
+        ctx.globalAlpha = 0.9;
+        const a = project(mul(axis(tips[n - 1]), rL));
+        const b = project(mul(u, rL));
+        ctx.strokeStyle = ACCENT; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+        ctx.globalAlpha = 1;
+      });
+
+      PieceKit.mark('축과 원판', () => {
+        const p0 = project(pivot);
+        const c3 = mul(u, AXLE);
+        const c = project(c3);
+        ctx.strokeStyle = INK; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.moveTo(p0[0], p0[1]); ctx.lineTo(c[0], c[1]); ctx.stroke();
+        const v = side(state.phi), w = [0, 0, 1];
+        const rim = (th) => project(add(c3, add(mul(v, DISK_R * Math.cos(th)), mul(w, DISK_R * Math.sin(th)))));
+        ctx.fillStyle = 'rgba(160,160,160,0.28)'; ctx.strokeStyle = INK; ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        for (let i = 0; i <= 64; i++) { const q = rim((i / 64) * Math.PI * 2); i === 0 ? ctx.moveTo(q[0], q[1]) : ctx.lineTo(q[0], q[1]); }
+        ctx.fill(); ctx.stroke();
+        // 원판이 제 축으로 도는 것을 보이는 바큇살
+        ctx.strokeStyle = MUTED; ctx.lineWidth = 1.5;
+        for (let k = 0; k < 3; k++) {
+          const q = rim(state.psi + (k * 2 * Math.PI) / 3);
+          ctx.beginPath(); ctx.moveTo(c[0], c[1]); ctx.lineTo(q[0], q[1]); ctx.stroke();
+        }
+        ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(p0[0], p0[1], 3.5, 0, Math.PI * 2); ctx.fill();
+      });
+
+      PieceKit.mark('무게', () => {
+        const c3 = mul(u, AXLE);
+        const a = project(c3);
+        const b = project(add(c3, [0, 0, -0.62]));
+        arrow2d(a, b, MUTED, 2, 8);
+        label('무게', b, MUTED, 8, 4);
+      });
+
+      PieceKit.mark('각운동량 L', () => {
+        const a = project(pivot);
+        const b = project(mul(u, rL));
+        arrow2d(a, b, INK, 3, 12);
+        label('L', outward(b, 14), INK, 0, -8, 'center');
+      });
+
+      PieceKit.mark('돌림힘', () => {
+        const tip3 = mul(u, rL);
+        const a = project(tip3);
+        const b = project(add(tip3, mul(side(state.phi), DEPOSIT * TAU * L_DRAW)));
+        arrow2d(a, b, ACCENT, 3, 11);
+        label('돌림힘', outward(b, 26), ACCENT, 0, 0, 'center');
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

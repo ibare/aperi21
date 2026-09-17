@@ -159,6 +159,9 @@ importers:
       '@aperi21/sim-apparent-weight':
         specifier: workspace:*
         version: link:../../sims/mechanics/apparent-weight
+      '@aperi21/sim-atomic-orbital':
+        specifier: workspace:*
+        version: link:../../sims/modern/atomic-orbital
       '@aperi21/sim-atwood-machine':
         specifier: workspace:*
         version: link:../../sims/mechanics/atwood-machine
@@ -183,6 +186,9 @@ importers:
       '@aperi21/sim-buoyant-force-as-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/buoyant-force-as-force
+      '@aperi21/sim-carnot-cycle':
+        specifier: workspace:*
+        version: link:../../sims/thermal/carnot-cycle
       '@aperi21/sim-centripetal-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/centripetal-force
@@ -219,6 +225,9 @@ importers:
       '@aperi21/sim-equilibrium-of-forces':
         specifier: workspace:*
         version: link:../../sims/mechanics/equilibrium-of-forces
+      '@aperi21/sim-equipotential-surface':
+        specifier: workspace:*
+        version: link:../../sims/em/equipotential-surface
       '@aperi21/sim-fictitious-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/fictitious-force
@@ -237,9 +246,15 @@ importers:
       '@aperi21/sim-gravitational-acceleration':
         specifier: workspace:*
         version: link:../../sims/kinematics/gravitational-acceleration
+      '@aperi21/sim-gyroscopic-precession':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/gyroscopic-precession
       '@aperi21/sim-heat-conduction':
         specifier: workspace:*
         version: link:../../sims/thermal/heat-conduction
+      '@aperi21/sim-hr-diagram':
+        specifier: workspace:*
+        version: link:../../sims/astro/hr-diagram
       '@aperi21/sim-impulse-force-relation':
         specifier: workspace:*
         version: link:../../sims/mechanics/impulse-force-relation
@@ -261,6 +276,12 @@ importers:
       '@aperi21/sim-lenz-law':
         specifier: workspace:*
         version: link:../../sims/em/lenz-law
+      '@aperi21/sim-lift-force':
+        specifier: workspace:*
+        version: link:../../sims/fluids/lift-force
+      '@aperi21/sim-longitudinal-wave':
+        specifier: workspace:*
+        version: link:../../sims/waves/longitudinal-wave
       '@aperi21/sim-maxwell-boltzmann-distribution':
         specifier: workspace:*
         version: link:../../sims/thermal/maxwell-boltzmann-distribution
@@ -291,6 +312,9 @@ importers:
       '@aperi21/sim-position-time-graph':
         specifier: workspace:*
         version: link:../../sims/kinematics/position-time-graph
+      '@aperi21/sim-potential-energy-curve':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/potential-energy-curve
       '@aperi21/sim-projectile-motion':
         specifier: workspace:*
         version: link:../../sims/kinematics/projectile-motion
@@ -336,6 +360,9 @@ importers:
       '@aperi21/sim-terminal-velocity':
         specifier: workspace:*
         version: link:../../sims/kinematics/terminal-velocity
+      '@aperi21/sim-thin-film-interference':
+        specifier: workspace:*
+        version: link:../../sims/optics/thin-film-interference
       '@aperi21/sim-tidal-force':
         specifier: workspace:*
         version: link:../../sims/astro/tidal-force
@@ -594,6 +621,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/astro/hr-diagram:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/astro/tidal-force:
     devDependencies:
       '@aperi21/schema':
@@ -623,6 +659,15 @@ importers:
       '@aperi21/plugin-em':
         specifier: workspace:*
         version: link:../../../packages/plugin-em
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/equipotential-surface:
+    devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../../../packages/schema
@@ -670,6 +715,15 @@ importers:
         version: 5.9.3
 
   sims/fluids/laminar-vs-turbulent:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/fluids/lift-force:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1182,6 +1236,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/potential-energy-curve:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/mechanics/pulley-system:
     devDependencies:
       '@aperi21/schema':
@@ -1257,6 +1320,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/modern/atomic-orbital:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/modern/spacetime-diagram:
     devDependencies:
       '@aperi21/schema':
@@ -1290,6 +1362,24 @@ importers:
         specifier: ^2.1.9
         version: 2.1.9(jsdom@25.0.1)
 
+  sims/optics/thin-film-interference:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/gyroscopic-precession:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/oscillation/pendulum-isochronism:
     devDependencies:
       '@aperi21/schema':
@@ -1319,6 +1409,15 @@ importers:
       vitest:
         specifier: ^2.1.9
         version: 2.1.9(jsdom@25.0.1)
+
+  sims/thermal/carnot-cycle:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
 
   sims/thermal/gas-pressure:
     devDependencies:
@@ -1366,6 +1465,15 @@ importers:
         version: 5.9.3
 
   sims/waves/interference:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/waves/longitudinal-wave:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*

@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>종파</title>
+<style>
+  :root { --bg: #fbfaf7; --ink: #2a2a2a; --muted: #8a867e; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 12px 16px; }
+  canvas { display: block; width: 100%; height: 250px; }
+  .caption { margin: 8px 0 0; font-size: 15px; line-height: 1.5; color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <p class="caption">점 하나하나는 제자리에서 좌우로만 흔들리는데, 빽빽한 자리는 오른쪽으로 계속 나아간다.</p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+  var canvas = document.getElementById('c');
+  var ctx = canvas.getContext('2d');
+
+  // 색 — 같은 대상은 같은 색. 강조색은 「계속 같은 입자」 한 가지 뜻.
+  var INK = '#2a2a2a';
+  var MUTED = '#8a867e';
+  var ACCENT = '#d4602a';
+
+  // 배치 (CSS 픽셀)
+  var H = 250;
+  var FIELD_TOP = 10, FIELD_H = 170;
+  var STRIP_TOP = 204, STRIP_H = 26;
+  var PAD_L = 0;
+
+  var W = 0;              // 캔버스 가로 (CSS 픽셀)
+  var particles = [];     // { x0, y }
+  var tagged = [];        // 강조 입자 인덱스
+  var lambda, k, A, omega;
+  var PERIOD = 2.4;       // 한 입자가 한 번 왕복하는 시간 (초)
+  var N = 2600;
+
+  function build() {
+    var dpr = window.devicePixelRatio || 1;
+    W = canvas.clientWidth || 800;
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    lambda = W / 3;
+    k = 2 * Math.PI / lambda;
+    A = 0.7 / k;          // kA = 0.7 — 입자가 서로 앞지르지 않는 범위
+    omega = 2 * Math.PI / PERIOD;
+
+    // 평형 위치: 화면 밖 A 만큼 여유를 두고 고르게 흩뿌린다 (시드 난수 → 매번 같은 배치)
+    particles = [];
+    var xmin = -A - 4, xmax = W + A + 4;
+    var n = Math.round(N * (xmax - xmin) / W);
+    for (var i = 0; i < n; i++) {
+      particles.push({
+        x0: xmin + (xmax - xmin) * PieceKit.random(),
+        y: FIELD_TOP + 4 + (FIELD_H - 8) * PieceKit.random(),
+      });
+    }
+    // 강조 입자 셋: 서로 다른 위상에 있는 자리를 고른다
+    var yMid = FIELD_TOP + FIELD_H / 2;
+    tagged = [];
+    [0.2, 0.5, 0.8].forEach(function (fx, j) {
+      particles.push({ x0: W * fx, y: yMid + (j - 1) * 38 });
+      tagged.push(particles.length - 1);
+    });
+  }
+
+  // 변위 s(x0, t) = A cos(k x0 − ω t) → 밀도 ∝ 1 / (1 − kA sin(k x0 − ω t)), 오른쪽으로 진행
+  function xAt(p, t) { return p.x0 + A * Math.cos(k * p.x0 - omega * t); }
+
+  function drawField(t) {
+    PieceKit.mark('공기 입자', function () {
+      ctx.fillStyle = INK;
+      ctx.globalAlpha = 0.55;
+      ctx.beginPath();
+      for (var i = 0; i < particles.length; i++) {
+        if (tagged.indexOf(i) >= 0) continue;
+        var p = particles[i];
+        var x = xAt(p, t);
+        if (x < -2 || x > W + 2) continue;
+        ctx.moveTo(x + 1.3, p.y);
+        ctx.arc(x, p.y, 1.3, 0, Math.PI * 2);
+      }
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    });
+  }
+
+  function drawTaggedRange() {
+    PieceKit.mark('강조 입자의 흔들림 폭', function () {
+      ctx.strokeStyle = MUTED;
+      ctx.lineWidth = 1;
+      for (var j = 0; j < tagged.length; j++) {
+        var p = particles[tagged[j]];
+        ctx.beginPath();
+        ctx.moveTo(p.x0 - A, p.y);
+        ctx.lineTo(p.x0 + A, p.y);
+        ctx.moveTo(p.x0 - A, p.y - 5); ctx.lineTo(p.x0 - A, p.y + 5);
+        ctx.moveTo(p.x0 + A, p.y - 5); ctx.lineTo(p.x0 + A, p.y + 5);
+        ctx.stroke();
+      }
+    });
+  }
+
+  function drawTagged(t) {
+    PieceKit.mark('강조 입자', function () {
+      ctx.fillStyle = ACCENT;
+      ctx.strokeStyle = '#fbfaf7';
+      ctx.lineWidth = 1.5;
+      for (var j = 0; j < tagged.length; j++) {
+        var p = particles[tagged[j]];
+        ctx.beginPath();
+        ctx.arc(xAt(p, t), p.y, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+      }
+    });
+  }
+
+  // 밀도 띠: 지금 그려진 입자를 세로로 세어 만든다 (공식으로 따로 칠하지 않는다)
+  function drawDensity(t) {
+    PieceKit.mark('빽빽함 띠', function () {
+      var BIN = 3;
+      var nb = Math.ceil(W / BIN);
+      var counts = new Float32Array(nb);
+      for (var i = 0; i < particles.length; i++) {
+        if (tagged.indexOf(i) >= 0) continue;
+        var b = Math.floor(xAt(particles[i], t) / BIN);
+        if (b >= 0 && b < nb) counts[b]++;
+      }
+      // 가우스 번짐 (반경 4칸) — 점 수가 유한해서 생기는 알갱이만 지운다
+      var R = 4, sig = 2.2, wsum = 0, ker = [];
+      for (var r = -R; r <= R; r++) { var w = Math.exp(-r * r / (2 * sig * sig)); ker.push(w); wsum += w; }
+      var mean = 0;
+      var sm = new Float32Array(nb);
+      for (var b2 = 0; b2 < nb; b2++) {
+        var acc = 0, ww = 0;
+        for (var r2 = -R; r2 <= R; r2++) {
+          var q = b2 + r2;
+          if (q < 0 || q >= nb) continue;
+          acc += counts[q] * ker[r2 + R]; ww += ker[r2 + R];
+        }
+        sm[b2] = acc / ww;
+        mean += sm[b2];
+      }
+      mean /= nb;
+      for (var b3 = 0; b3 < nb; b3++) {
+        var rel = sm[b3] / mean;                 // 평균 대비 빽빽함
+        var a = Math.max(0, Math.min(1, (rel - 0.25) / 2.6));
+        ctx.fillStyle = 'rgba(42,42,42,' + a.toFixed(3) + ')';
+        ctx.fillRect(b3 * BIN, STRIP_TOP, BIN + 0.5, STRIP_H);
+      }
+    });
+    PieceKit.mark('빽빽함 띠 테두리', function () {
+      ctx.strokeStyle = 'rgba(138,134,126,0.5)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(0.5, STRIP_TOP + 0.5, W - 1, STRIP_H - 1);
+    });
+    PieceKit.mark('빽빽함 띠 이름', function () {
+      ctx.fillStyle = MUTED;
+      ctx.font = '12px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText('입자가 몰린 정도', 2, STRIP_TOP - 4);
+    });
+  }
+
+  build();
+  window.addEventListener('resize', function () {
+    if (canvas.clientWidth !== W && !PieceKit.frozen) {
+      // 배치를 다시 만들면 난수 흐름이 바뀌므로, 가로 비율만 맞춰 옮긴다
+      var old = W;
+      var dpr = window.devicePixelRatio || 1;
+      W = canvas.clientWidth;
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var s = W / old;
+      lambda = W / 3; k = 2 * Math.PI / lambda; A = 0.7 / k;
+      particles.forEach(function (p) { p.x0 *= s; });
+    }
+  });
+
+  PieceKit.loop({
+    step: function () { /* 상태 없음 — 모든 위치는 t 의 함수 */ },
+    draw: function (t) {
+      ctx.clearRect(0, 0, W, H);
+      drawField(t);
+      drawTaggedRange();
+      drawTagged(t);
+      drawDensity(t);
+    },
+  });
+})();
+</script>
+</body>
+</html>

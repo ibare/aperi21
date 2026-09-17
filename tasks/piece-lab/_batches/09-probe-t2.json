@@ -1,0 +1,16 @@
+{
+  "name": "09-probe-t2",
+  "title": "표현력 검증 턴 2 — 9개 분야 각 2번",
+  "record": "tasks/engine-requirements/gap-ledger.md",
+  "pieces": [
+    "potential-energy-curve",
+    "gyroscopic-precession",
+    "hr-diagram",
+    "lift-force",
+    "carnot-cycle",
+    "longitudinal-wave",
+    "thin-film-interference",
+    "equipotential-surface",
+    "atomic-orbital"
+  ]
+}

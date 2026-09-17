@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>양력</title>
+<style>
+  :root {
+    --paper: #f6f4ef;
+    --ink: #2a3446;
+    --accent: #d9622b;
+    --muted: #6b7384;
+  }
+  html, body { margin: 0; background: var(--paper); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 8px 0; }
+  canvas { display: block; width: 100%; height: auto; border-radius: 6px; }
+  .row { display: flex; align-items: center; gap: 16px; padding: 8px 4px 0; }
+  .caption { flex: 1; font-size: 15px; line-height: 1.45; min-height: 2.9em; }
+  .control { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .control input { width: 130px; }
+  .control output { display: inline-block; width: 2.6em; text-align: right; color: var(--ink); font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="cv" width="860" height="310"></canvas>
+  <div class="row">
+    <div class="caption" id="caption"></div>
+    <label class="control">받음각
+      <input id="aoa" type="range" min="0" max="12" step="1" value="8">
+      <output id="aoaOut">8°</output>
+    </label>
+  </div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 캔버스와 세계 좌표 ──────────────────────────────────────────
+  const cv = document.getElementById('cv');
+  const ctx = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+  const X_MIN = -4.6, X_MAX = 4.6;
+  const SCALE = W / (X_MAX - X_MIN);          // 세계 1 단위당 픽셀
+  const Y_HALF = H / 2 / SCALE;
+  const toPx = (x) => (x - X_MIN) * SCALE;
+  const toPy = (y) => H / 2 - y * SCALE;
+
+  // ── 주코프스키 날개 둘레의 퍼텐셜 흐름 (쿠타 조건) ───────────────
+  // 원 평면 ζ 에서 중심 μ=(-ε,0), 반지름 a=c+ε 인 원 둘레 흐름을
+  // z = ζ + c²/ζ 로 옮긴다. 날개 좌표계에서 흐름은 받음각 α 로 들어오고,
+  // 화면에는 −α 만큼 돌려 흐름이 수평, 날개 앞전이 들린 모습으로 그린다.
+  const U = 1.6;          // 먼 곳 흐름 속력 (세계 단위/초)
+  const C = 1.0;
+  const EPS = 0.1;
+  const MU = -EPS;
+  const A = C + EPS;
+  const AUTO_AOA_DEG = 8;
+
+  let aoa = AUTO_AOA_DEG * Math.PI / 180;
+  let ca = Math.cos(aoa), sa = Math.sin(aoa);
+  let gammaTerm = 2 * U * A * sa;   // Γ/(2π), Γ = 4πUa·sinα
+
+  function setAoa(deg) {
+    aoa = deg * Math.PI / 180;
+    ca = Math.cos(aoa); sa = Math.sin(aoa);
+    gammaTerm = 2 * U * A * sa;
+  }
+
+  // 화면 좌표 (px,py) 에서의 흐름. 결과를 out 에 채운다.
+  // out.inside: 날개 안쪽이면 참. out.u, out.v: 화면 좌표계 속도.
+  function flowAt(px, py, out) {
+    // 화면 → 날개 좌표: z = e^{iα} P
+    const zr = px * ca - py * sa;
+    const zi = px * sa + py * ca;
+    // ζ = (z ± sqrt(z² − 4c²)) / 2
+    const qr = zr * zr - zi * zi - 4 * C * C;
+    const qi = 2 * zr * zi;
+    const mod = Math.hypot(qr, qi);
+    let sr = Math.sqrt(Math.max(0, (mod + qr) / 2));
+    let si = Math.sqrt(Math.max(0, (mod - qr) / 2));
+    if (qi < 0) si = -si;
+    const z1r = (zr + sr) / 2, z1i = (zi + si) / 2;
+    const z2r = (zr - sr) / 2, z2i = (zi - si) / 2;
+    const d1 = Math.hypot(z1r - MU, z1i), d2 = Math.hypot(z2r - MU, z2i);
+    let er, ei, dmod;
+    if (d1 >= d2) { er = z1r; ei = z1i; dmod = d1; } else { er = z2r; ei = z2i; dmod = d2; }
+    const dr = er - MU, di = ei;
+    out.dr = dr; out.di = di;
+    if (dmod < A) { out.inside = true; out.u = 0; out.v = 0; return out; }
+    out.inside = false;
+    // w_ζ = U(e^{-iα} − a² e^{iα}/d²) + iΓ/(2π d)
+    const d2r = dr * dr - di * di, d2i = 2 * dr * di;
+    const dd = d2r * d2r + d2i * d2i;
+    // e^{iα}/d²
+    const t1r = (ca * d2r + sa * d2i) / dd;
+    const t1i = (sa * d2r - ca * d2i) / dd;
+    const dm2 = dr * dr + di * di;
+    // i/d = i·conj(d)/|d|² = (di + i·dr)/|d|²
+    const t2r = di / dm2, t2i = dr / dm2;
+    const wr = U * (ca - A * A * t1r) + gammaTerm * t2r;
+    const wi = U * (-sa - A * A * t1i) + gammaTerm * t2i;
+    // dz/dζ = 1 − c²/ζ²
+    const e2r = er * er - ei * ei, e2i = 2 * er * ei;
+    const ee = e2r * e2r + e2i * e2i;
+    const jr = 1 - C * C * e2r / ee;
+    const ji = C * C * e2i / ee;
+    const jj = jr * jr + ji * ji;
+    // w_z = w_ζ / (dz/dζ)
+    const wzr = (wr * jr + wi * ji) / jj;
+    const wzi = (wi * jr - wr * ji) / jj;
+    let u = wzr, v = -wzi;              // 날개 좌표계 속도
+    const sp = Math.hypot(u, v), cap = 3.2 * U;
+    if (sp > cap) { u *= cap / sp; v *= cap / sp; }  // 뒷전 뾰족점 근처의 수치 발산만 막는다
+    // 날개 → 화면: e^{-iα}
+    out.u = u * ca + v * sa;
+    out.v = -u * sa + v * ca;
+    return out;
+  }
+
+  // 날개 안으로 들어간 점을 원 평면에서 둘레 바로 밖으로 밀어낸다.
+  function pushOut(dr, di) {
+    const m = Math.hypot(dr, di) || 1;
+    const k = A * 1.003 / m;
+    const er = MU + dr * k, ei = di * k;
+    const ee = er * er + ei * ei;
+    const zr = er + C * C * er / ee;
+    const zi = ei - C * C * ei / ee;
+    return [zr * ca + zi * sa, -zr * sa + zi * ca];
+  }
+
+  // ── 압력장 그림 (받음각이 바뀔 때만 다시 계산) ─────────────────
+  const field = document.createElement('canvas');
+  const FS = 2;                                  // 2px 마다 한 표본
+  field.width = Math.ceil(W / FS); field.height = Math.ceil(H / FS);
+  const fctx = field.getContext('2d');
+  let fieldAoa = null;
+  // 명도 한 줄: 압력이 높을수록 밝고, 낮을수록 짙은 회청색.
+  const HIGH = [251, 250, 246], FREE = [232, 233, 234], LOW = [118, 138, 166];
+  function pressureColor(cp) {
+    // 등압 띠가 보이도록 0.25 간격으로 끊는다.
+    const q = Math.round(cp / 0.25) * 0.25;
+    let from, to, k;
+    if (q >= 0) { from = FREE; to = HIGH; k = Math.min(1, q); }
+    else { from = FREE; to = LOW; k = Math.min(1, -q / 1.6); }
+    return [from[0] + (to[0] - from[0]) * k, from[1] + (to[1] - from[1]) * k, from[2] + (to[2] - from[2]) * k];
+  }
+  function buildField() {
+    const img = fctx.createImageData(field.width, field.height);
+    const o = { u: 0, v: 0, inside: false, dr: 0, di: 0 };
+    for (let j = 0; j < field.height; j++) {
+      const y = (H / 2 - (j + 0.5) * FS) / SCALE;
+      for (let i = 0; i < field.width; i++) {
+        const x = X_MIN + (i + 0.5) * FS / SCALE;
+        flowAt(x, y, o);
+        const p = (j * field.width + i) * 4;
+        if (o.inside) { img.data[p + 3] = 0; continue; }
+        const cp = 1 - (o.u * o.u + o.v * o.v) / (U * U);
+        const col = pressureColor(cp);
+        img.data[p] = col[0]; img.data[p + 1] = col[1]; img.data[p + 2] = col[2]; img.data[p + 3] = 255;
+      }
+    }
+    fctx.putImageData(img, 0, 0);
+    fieldAoa = aoa;
+  }
+
+  // ── 연기 줄: 같은 순간 한 줄로 뿌린 연기 표지들 ─────────────────
+  const RELEASE_X = -4.45;
+  const RELEASE_EVERY = 0.8;      // 초
+  const TRACK_EVERY = 4;          // 네 줄에 하나를 추적 줄로
+  const MARKERS = 150;
+  const MAX_MARKERS = 1400;
+  const SPLIT_GAP = 0.1;
+  let lines = [];
+  let releaseClock = 0;
+  let releaseCount = 0;
+
+  function release() {
+    const xs = [], ys = [];
+    for (let k = 0; k < MARKERS; k++) {
+      const s = -1 + 2 * k / (MARKERS - 1);
+      // 가운데(날개 높이)에 표지를 촘촘히 둔다
+      const y = 1.05 * Y_HALF * Math.sign(s) * Math.pow(Math.abs(s), 1.5);
+      xs.push(RELEASE_X); ys.push(y);
+    }
+    lines.push({ id: releaseCount, xs, ys, age: 0 });
+    releaseCount++;
+  }
+
+  const va = { u: 0, v: 0, inside: false, dr: 0, di: 0 };
+  function advance(xs, ys, k, dt) {
+    const x0 = xs[k], y0 = ys[k];
+    flowAt(x0, y0, va);
+    if (va.inside) { const p = pushOut(va.dr, va.di); xs[k] = p[0]; ys[k] = p[1]; return; }
+    const mx = x0 + va.u * dt / 2, my = y0 + va.v * dt / 2;
+    flowAt(mx, my, va);
+    let nx, ny;
+    if (va.inside) { nx = mx; ny = my; }
+    else { nx = x0 + va.u * dt; ny = y0 + va.v * dt; }
+    flowAt(nx, ny, va);
+    if (va.inside) { const p = pushOut(va.dr, va.di); nx = p[0]; ny = p[1]; }
+    xs[k] = nx; ys[k] = ny;
+  }
+
+  const probe = { u: 0, v: 0, inside: false, dr: 0, di: 0 };
+  function insideBody(x, y) { return flowAt(x, y, probe).inside; }
+
+  function refine(line) {
+    const xs = line.xs, ys = line.ys;
+    if (xs.length >= MAX_MARKERS) return;
+    const nx = [xs[0]], ny = [ys[0]];
+    for (let k = 1; k < xs.length; k++) {
+      const dx = xs[k] - xs[k - 1], dy = ys[k] - ys[k - 1];
+      const gap = Math.hypot(dx, dy);
+      if (gap > SPLIT_GAP && gap < 1.2 && nx.length + (xs.length - k) < MAX_MARKERS) {
+        const mx = xs[k - 1] + dx / 2, my = ys[k - 1] + dy / 2;
+        if (!insideBody(mx, my)) { nx.push(mx); ny.push(my); }
+      }
+      nx.push(xs[k]); ny.push(ys[k]);
+    }
+    line.xs = nx; line.ys = ny;
+  }
+
+  function simStep(dt) {
+    releaseClock += dt;
+    if (releaseClock >= RELEASE_EVERY) { releaseClock -= RELEASE_EVERY; release(); }
+    for (const line of lines) {
+      line.age += dt;
+      for (let k = 0; k < line.xs.length; k++) {
+        if (line.xs[k] > X_MAX + 0.4) continue;
+        advance(line.xs, line.ys, k, dt);
+      }
+      refine(line);
+    }
+    lines = lines.filter((l) => l.age < 13 && l.xs.some((x) => x < X_MAX + 0.3));
+  }
+
+  // 도착한 순간 이미 흐르고 있도록 미리 진행해 둔다 (시계와 무관, 결정적).
+  const WARM = 7.0, DT = 1 / 60;
+  function resetFlow() {
+    lines = []; releaseClock = 0; releaseCount = 0;
+    release();
+    for (let n = 0; n < Math.round(WARM / DT); n++) simStep(DT);
+  }
+
+  // ── 조작기 ─────────────────────────────────────────────────────
+  const slider = document.getElementById('aoa');
+  const out = document.getElementById('aoaOut');
+  const caption = document.getElementById('caption');
+  let aoaDeg = AUTO_AOA_DEG;
+  if (PieceKit.frozen) { slider.disabled = true; }
+  slider.addEventListener('input', () => {
+    if (PieceKit.frozen) return;
+    aoaDeg = Number(slider.value);
+    out.textContent = aoaDeg + '°';
+    setAoa(aoaDeg);
+    resetFlow();      // 이전 받음각의 연기 줄이 남아 캡션과 어긋나지 않게 새로 흘린다
+  });
+
+  setAoa(aoaDeg);
+  resetFlow();
+
+  // ── 그리기 ─────────────────────────────────────────────────────
+  const airfoil = [];
+  function airfoilPath() {
+    airfoil.length = 0;
+    for (let k = 0; k <= 240; k++) {
+      const th = 2 * Math.PI * k / 240;
+      const er = MU + A * Math.cos(th), ei = A * Math.sin(th);
+      const ee = er * er + ei * ei;
+      const zr = er + C * C * er / ee, zi = ei - C * C * ei / ee;
+      airfoil.push([zr * ca + zi * sa, -zr * sa + zi * ca]);
+    }
+  }
+
+  function drawLine(line, color, width) {
+    const xs = line.xs, ys = line.ys;
+    ctx.strokeStyle = color; ctx.lineWidth = width;
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    ctx.beginPath();
+    let pen = false;
+    for (let k = 0; k < xs.length; k++) {
+      if (k > 0) {
+        const dx = xs[k] - xs[k - 1], dy = ys[k] - ys[k - 1];
+        const far = Math.hypot(dx, dy) > 0.35;
+        const across = !far && insideBody(xs[k - 1] + dx / 2, ys[k - 1] + dy / 2);
+        if (far || across) pen = false;
+      }
+      const px = toPx(xs[k]), py = toPy(ys[k]);
+      if (pen) ctx.lineTo(px, py); else { ctx.moveTo(px, py); pen = true; }
+    }
+    ctx.stroke();
+  }
+
+  function captionText(deg) {
+    if (deg === 0) {
+      return '받음각이 0° 이면 같은 순간 뿌린 연기 줄의 위아래가 나란히 날개를 지나고, 위아래 압력도 같다.';
+    }
+    return '같은 순간 한 줄로 뿌린 연기가 날개 앞에서 갈라져, 위쪽 절반이 아래쪽을 앞질러 간다 — 빨리 흐르는 날개 위쪽의 압력이 아래쪽보다 낮다.';
+  }
+
+  PieceKit.loop({
+    step(dt) { simStep(dt); },
+    draw() {
+      if (fieldAoa !== aoa) { buildField(); airfoilPath(); }
+      ctx.clearRect(0, 0, W, H);
+
+      PieceKit.mark('압력장', () => {
+        ctx.imageSmoothingEnabled = true;
+        ctx.drawImage(field, 0, 0, W, H);
+      });
+
+      PieceKit.mark('연기 줄', () => {
+        for (const line of lines) {
+          if (line.id % TRACK_EVERY === 0) continue;
+          drawLine(line, 'rgba(42, 52, 70, 0.42)', 1.1);
+        }
+      });
+
+      PieceKit.mark('추적 연기 줄', () => {
+        for (const line of lines) {
+          if (line.id % TRACK_EVERY !== 0) continue;
+          drawLine(line, '#d9622b', 2.4);
+        }
+      });
+
+      PieceKit.mark('날개', () => {
+        ctx.beginPath();
+        airfoil.forEach(([x, y], k) => {
+          if (k === 0) ctx.moveTo(toPx(x), toPy(y)); else ctx.lineTo(toPx(x), toPy(y));
+        });
+        ctx.closePath();
+        ctx.fillStyle = '#3b4252';
+        ctx.fill();
+      });
+
+      PieceKit.mark('캡션', () => {
+        const text = captionText(aoaDeg);
+        if (caption.textContent !== text) caption.textContent = text;
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

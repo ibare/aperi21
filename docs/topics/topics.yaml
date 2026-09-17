@@ -590,6 +590,7 @@ topics:
     level: lower
     curricula: [ngss]
     visualNote: 곡선의 골에 갇히고 언덕을 넘는다
+    sim: aperi21:potential-energy-curve
   - id: equilibrium-points
     name: 평형점
     desc: 안정·불안정·중립 평형
@@ -774,6 +775,7 @@ topics:
     level: upper
     curricula: [ap]
     visualNote: 미는 방향이 아니라 옆으로 돈다
+    sim: aperi21:gyroscopic-precession
   - id: angular-momentum-vector
     name: 각운동량의 방향
     desc: 오른손 규칙과 회전축
@@ -1159,6 +1161,7 @@ topics:
     level: upper
     curricula: [ib, uk]
     visualNote: 두 축에 별을 놓으면 주계열이라는 띠가 드러난다
+    sim: aperi21:hr-diagram
   - id: star-radiation-gravity-balance
     name: 복사압과 중력의 평형
     desc: 별이 무너지지도 흩어지지도 않는 이유
@@ -1333,6 +1336,7 @@ topics:
     level: null
     curricula: []
     visualNote: 받음각을 올리면 양력이 커지다 어느 순간 무너진다
+    sim: aperi21:lift-force
   - id: viscosity
     name: 점성
     desc: 층 사이의 마찰
@@ -1620,6 +1624,7 @@ topics:
     level: upper
     curricula: [kr, ib, ap]
     visualNote: 네 과정을 돌며 이론적 한계가 드러난다
+    sim: aperi21:carnot-cycle
   - id: refrigerator-heat-pump
     name: 냉장고와 열펌프
     desc: 일을 넣어 열을 옮기는 것
@@ -1719,6 +1724,7 @@ topics:
     level: lower
     curricula: [kr, ib, ap, uk]
     visualNote: 빽빽한 곳과 성긴 곳이 밀려간다
+    sim: aperi21:longitudinal-wave
   - id: wave-speed-in-medium
     name: 매질과 파동 속도
     desc: 장력·밀도·탄성이 정하는 속도
@@ -2146,6 +2152,7 @@ topics:
     level: upper
     curricula: [ap]
     visualNote: 두께가 바뀌며 색이 돈다
+    sim: aperi21:thin-film-interference
   - id: newtons-rings
     name: 뉴턴 링
     desc: 곡면과 평면 사이의 간섭
@@ -2317,6 +2324,7 @@ topics:
     level: upper
     curricula: [kr, ib, ap, uk]
     visualNote: 면을 따라 움직이면 일이 들지 않는다
+    sim: aperi21:equipotential-surface
   - id: potential-vs-field
     name: 전위와 전기장
     desc: 기울기 관계
@@ -3038,6 +3046,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 확률 구름의 모양이 양자수마다 다르다
+    sim: aperi21:atomic-orbital
   - id: pauli-exclusion
     name: 파울리 배타 원리
     desc: 같은 상태를 못 가짐

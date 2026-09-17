@@ -568,6 +568,78 @@ export function registerAperi21Bundles(): void {
     return registerBundle('aperi21:spacetime-diagram', m.spacetimeDiagramBundle, caps.capabilities);
   });
 
+  registerBundleLoader('aperi21:potential-energy-curve', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-potential-energy-curve'),
+      import('./capabilities/mechanics/potential-energy-curve.generated.js'),
+    ]);
+    return registerBundle('aperi21:potential-energy-curve', m.potentialEnergyCurveBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:gyroscopic-precession', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-gyroscopic-precession'),
+      import('./capabilities/oscillation/gyroscopic-precession.generated.js'),
+    ]);
+    return registerBundle('aperi21:gyroscopic-precession', m.gyroscopicPrecessionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:hr-diagram', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-hr-diagram'),
+      import('./capabilities/astro/hr-diagram.generated.js'),
+    ]);
+    return registerBundle('aperi21:hr-diagram', m.hrDiagramBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:lift-force', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-lift-force'),
+      import('./capabilities/fluids/lift-force.generated.js'),
+    ]);
+    return registerBundle('aperi21:lift-force', m.liftForceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:carnot-cycle', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-carnot-cycle'),
+      import('./capabilities/thermal/carnot-cycle.generated.js'),
+    ]);
+    return registerBundle('aperi21:carnot-cycle', m.carnotCycleBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:longitudinal-wave', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-longitudinal-wave'),
+      import('./capabilities/waves/longitudinal-wave.generated.js'),
+    ]);
+    return registerBundle('aperi21:longitudinal-wave', m.longitudinalWaveBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:thin-film-interference', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-thin-film-interference'),
+      import('./capabilities/optics/thin-film-interference.generated.js'),
+    ]);
+    return registerBundle('aperi21:thin-film-interference', m.thinFilmInterferenceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:equipotential-surface', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-equipotential-surface'),
+      import('./capabilities/em/equipotential-surface.generated.js'),
+    ]);
+    return registerBundle('aperi21:equipotential-surface', m.equipotentialSurfaceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:atomic-orbital', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-atomic-orbital'),
+      import('./capabilities/modern/atomic-orbital.generated.js'),
+    ]);
+    return registerBundle('aperi21:atomic-orbital', m.atomicOrbitalBundle, caps.capabilities);
+  });
+
   registerBundleLoader('aperi21:uniform-motion', async () => {
     const [m, caps] = await Promise.all([
       import('@aperi21/sim-uniform-motion'),

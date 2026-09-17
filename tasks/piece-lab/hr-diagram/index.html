@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>HR 도 — 무거운 별부터 띠를 떠난다</title>
+<style>
+  :root { --bg: #0d1017; --ink: #c9ced8; --dim: #6b7280; --accent: #4ade80; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 8px 0; }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { min-height: 1.5em; padding: 6px 16px 4px; font-size: 15px; line-height: 1.5; }
+  .caption .m { color: var(--accent); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c" width="860" height="440"></canvas>
+  <div class="caption" id="cap"></div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  const cv = document.getElementById('c');
+  const ctx = cv.getContext('2d');
+  const cap = document.getElementById('cap');
+  const W = cv.width, H = cv.height;
+  const ACCENT = '#4ade80';
+
+  // ── 그림 영역: 가로는 표면 온도(왼쪽이 뜨거움, 로그), 세로는 광도(로그) ──
+  const PL = 92, PR = 18, PT = 14, PB = 46;
+  const T_LEFT = 4.8, T_RIGHT = 3.40;   // log10 K
+  const L_TOP = 6.4, L_BOT = -4.2;      // log10 (태양 광도)
+  const sx = (lt) => PL + (T_LEFT - lt) / (T_LEFT - T_RIGHT) * (W - PL - PR);
+  const sy = (ll) => PT + (L_TOP - ll) / (L_TOP - L_BOT) * (H - PT - PB);
+
+  // ── 주계열 관계 (근사식) ──
+  function msLogL(M) {
+    if (M < 0.43) return Math.log10(0.23 * Math.pow(M, 2.3));
+    if (M < 2) return 4 * Math.log10(M);
+    return Math.log10(1.4 * Math.pow(M, 3.5));
+  }
+  function msLogR(M) { return M < 1 ? 0.8 * Math.log10(M) : 0.57 * Math.log10(M); }
+  function msLogT(M) { return Math.log10(5772) + 0.25 * (msLogL(M) - 2 * msLogR(M)); }
+  // 주계열 수명(년): 연료(질량) / 소비율(광도)
+  function lifetime(M) { return 1e10 * M / Math.pow(10, msLogL(M)); }
+
+  // ── 성단 나이: t 의 함수. 26초 주기, 22초 동안 로그로 흐르고 4초 머문다 ──
+  const PERIOD = 26, RUN = 22, LOGA0 = 6.3, LOGA1 = 10.1;
+  function ageAt(t) {
+    const c = ((t % PERIOD) + PERIOD) % PERIOD;
+    const u = Math.min(c / RUN, 1);
+    return Math.pow(10, LOGA0 + (LOGA1 - LOGA0) * u);
+  }
+  function cycleStart(t) { return t - (((t % PERIOD) + PERIOD) % PERIOD); }
+
+  // ── 별 1000개: 질량은 멱법칙에서 뽑는다 (윗부분이 비는 걸 보이려 기울기를 완만하게) ──
+  const N = 1000, MMIN = 0.2, MMAX = 40, ALPHA = 1.7;
+  const stars = [];
+  {
+    const a = 1 - ALPHA;
+    const lo = Math.pow(MMIN, a), hi = Math.pow(MMAX, a);
+    for (let i = 0; i < N; i++) {
+      const u = PieceKit.random();
+      const M = Math.pow(lo + u * (hi - lo), 1 / a);
+      stars.push({
+        M,
+        L0: msLogL(M), T0: msLogT(M), tau: lifetime(M),
+        dL: (PieceKit.random() - 0.5) * 0.14,
+        dT: (PieceKit.random() - 0.5) * 0.025,
+      });
+    }
+  }
+
+  const lerp = (a, b, s) => a + (b - a) * s;
+  const clamp01 = (s) => Math.max(0, Math.min(1, s));
+
+  // 나이 A 에서 별 하나의 위치. 반환: {lt, ll, alpha, kind}
+  function stateOf(s, A) {
+    const f = A / s.tau;
+    const endL = s.L0 + 0.3, endT = s.T0 - 0.03;
+    if (f <= 1) {
+      return { lt: s.T0 - 0.03 * f + s.dT, ll: s.L0 + 0.3 * f + s.dL, alpha: 1, kind: 'ms' };
+    }
+    const phi = f - 1;
+    if (s.M >= 8) {
+      // 초거성: 밝기는 거의 그대로, 오른쪽으로 식으며 건너간다. 끝나면 사라진다.
+      if (phi > 0.12) return null;
+      const k = clamp01(phi / 0.1);
+      const alpha = 1 - clamp01((phi - 0.1) / 0.02);
+      return { lt: lerp(endT, 3.56, k) + s.dT, ll: endL + 0.1 * k + s.dL, alpha, kind: 'giant' };
+    }
+    const tipL = Math.max(endL + 0.1, 3.2);
+    const sgT = Math.min(endT, 3.70);
+    if (phi <= 0.06) {           // 준거성: 오른쪽으로
+      const k = phi / 0.06;
+      return { lt: lerp(endT, sgT, k) + s.dT, ll: endL + 0.1 * k + s.dL, alpha: 1, kind: 'giant' };
+    }
+    if (phi <= 0.16) {           // 적색거성: 위로 부푼다, 끝에서 껍질을 벗고 흐려진다
+      const k = clamp01((phi - 0.06) / 0.08);
+      const alpha = 1 - clamp01((phi - 0.14) / 0.02);
+      return { lt: lerp(sgT, 3.58, k) + s.dT, ll: lerp(endL + 0.1, tipL, k * k) + s.dL, alpha, kind: 'giant' };
+    }
+    // 백색왜성: 반지름은 고정, 식어 가며 왼쪽 아래에서 오른쪽 아래로 내려간다
+    const tc = A - 1.16 * s.tau;
+    const T = 50000 * Math.pow(1 + tc / 1e6, -0.3);
+    const lt = Math.log10(T);
+    const ll = 2 * Math.log10(0.013) + 4 * (lt - Math.log10(5772));
+    const alpha = clamp01(tc / (0.02 * s.tau + 1e5));
+    return { lt: lt + s.dT * 0.5, ll: ll + s.dL * 0.5, alpha, kind: 'wd' };
+  }
+
+  function turnoffMass(A) {
+    let lo = Math.log10(0.1), hi = Math.log10(MMAX);
+    for (let i = 0; i < 50; i++) {
+      const mid = (lo + hi) / 2;
+      if (lifetime(Math.pow(10, mid)) > A) lo = mid; else hi = mid;
+    }
+    return Math.pow(10, (lo + hi) / 2);
+  }
+
+  // 온도 → 별빛 색 (흑체 근사)
+  function starColor(lt, alpha) {
+    const t = Math.pow(10, lt) / 100;
+    let r, g, b;
+    if (t <= 66) { r = 255; g = 99.47 * Math.log(t) - 161.12; }
+    else { r = 329.7 * Math.pow(t - 60, -0.1332); g = 288.12 * Math.pow(t - 60, -0.0755); }
+    if (t >= 66) b = 255; else if (t <= 19) b = 0; else b = 138.52 * Math.log(t - 10) - 305.04;
+    const c = (v) => Math.round(Math.max(0, Math.min(255, v)));
+    return `rgba(${c(r)},${c(g)},${c(b)},${alpha})`;
+  }
+
+  // 유효숫자 2자리로 고정해 표기 (화면과 캡션이 같은 규칙을 쓴다)
+  function fmtAge(A) {
+    const v = Number(A.toPrecision(2));
+    if (v >= 1e8) return `${Number((v / 1e8).toPrecision(2))}억 년`;
+    return `${Number((v / 1e4).toPrecision(2))}만 년`;
+  }
+  const fmtMass = (M) => String(Number(M.toPrecision(2)));
+
+  PieceKit.loop({
+    step() { /* 상태는 모두 t 의 함수다 */ },
+    draw(t) {
+      const A = ageAt(t);
+      const Aprev = ageAt(Math.max(t - 0.3, cycleStart(t)));
+      const Mto = turnoffMass(A);
+
+      ctx.fillStyle = '#0d1017';
+      ctx.fillRect(0, 0, W, H);
+
+      PieceKit.mark('축과 눈금', () => {
+        ctx.strokeStyle = '#2a303b';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(PL, PT); ctx.lineTo(PL, H - PB); ctx.lineTo(W - PR, H - PB);
+        ctx.stroke();
+        ctx.fillStyle = '#6b7280';
+        ctx.font = '12px -apple-system, "Apple SD Gothic Neo", sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        for (const [K, label] of [[30000, '30000K'], [10000, '10000K'], [6000, '6000K'], [3000, '3000K']]) {
+          const x = sx(Math.log10(K));
+          ctx.beginPath(); ctx.moveTo(x, H - PB); ctx.lineTo(x, H - PB + 4); ctx.stroke();
+          ctx.fillText(label, x, H - PB + 6);
+        }
+        ctx.fillText('표면 온도 — 왼쪽이 뜨겁다', (PL + W - PR) / 2, H - PB + 24);
+        ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+        for (const [ll, label] of [[4, '태양의 1만 배'], [0, '태양만큼'], [-3, '1000분의 1']]) {
+          const y = sy(ll);
+          ctx.beginPath(); ctx.moveTo(PL - 4, y); ctx.lineTo(PL, y); ctx.stroke();
+          ctx.fillText(label, PL - 7, y);
+        }
+        ctx.save();
+        ctx.translate(14, (PT + H - PB) / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.textAlign = 'center';
+        ctx.fillText('밝기', 0, 0);
+        ctx.restore();
+      });
+
+      PieceKit.mark('처음 띠', () => {
+        ctx.strokeStyle = 'rgba(160,168,184,0.22)';
+        ctx.lineWidth = 10;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        for (let i = 0; i <= 60; i++) {
+          const M = MMIN * Math.pow(MMAX / MMIN, i / 60);
+          const x = sx(msLogT(M)), y = sy(msLogL(M) + 0.15);
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        ctx.lineCap = 'butt';
+        ctx.fillStyle = '#6b7280';
+        ctx.font = '12px -apple-system, "Apple SD Gothic Neo", sans-serif';
+        ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+        ctx.fillText('주계열', sx(msLogT(0.6)) - 8, sy(msLogL(0.6)) + 26);
+      });
+
+      PieceKit.mark('떠나는 별의 자취', () => {
+        ctx.lineWidth = 1.2;
+        for (const s of stars) {
+          if (A <= s.tau) continue;
+          const now = stateOf(s, A);
+          const was = stateOf(s, Aprev);
+          if (!now || !was || now.kind === 'wd' || was.kind === 'wd') continue;
+          const x0 = sx(was.lt), y0 = sy(was.ll), x1 = sx(now.lt), y1 = sy(now.ll);
+          if (Math.hypot(x1 - x0, y1 - y0) < 2) continue;
+          const g = ctx.createLinearGradient(x0, y0, x1, y1);
+          g.addColorStop(0, starColor(now.lt, 0));
+          g.addColorStop(1, starColor(now.lt, 0.55 * now.alpha));
+          ctx.strokeStyle = g;
+          ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
+        }
+      });
+
+      PieceKit.mark('별', () => {
+        for (const s of stars) {
+          const st = stateOf(s, A);
+          if (!st || st.alpha <= 0) continue;
+          const y = sy(st.ll);
+          if (y > H - PB - 2 || y < PT) continue;
+          const r = st.kind === 'wd' ? 1.1 : Math.max(1.1, Math.min(3.6, 1.6 + 0.35 * st.ll));
+          ctx.fillStyle = starColor(st.lt, 0.9 * st.alpha);
+          ctx.beginPath(); ctx.arc(sx(st.lt), y, r, 0, Math.PI * 2); ctx.fill();
+        }
+      });
+
+      PieceKit.mark('꺾이는 점', () => {
+        // 지금 막 띠를 떠나는 질량의 자리: 띠를 가로지르는 짧은 막대
+        const ltA = msLogT(Mto) - 0.03, llA = msLogL(Mto) + 0.3;
+        const ltB = msLogT(Mto * 1.05), llB = msLogL(Mto * 1.05);
+        const dx = sx(ltB) - sx(msLogT(Mto)), dy = sy(llB) - sy(msLogL(Mto));
+        const len = Math.hypot(dx, dy) || 1;
+        const nx = -dy / len, ny = dx / len;
+        const cx = sx(ltA), cy = sy(llA);
+        ctx.strokeStyle = ACCENT;
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(cx - nx * 16, cy - ny * 16);
+        ctx.lineTo(cx + nx * 16, cy + ny * 16);
+        ctx.stroke();
+      });
+
+      PieceKit.mark('캡션', () => {
+        cap.innerHTML = `성단 나이 ${fmtAge(A)} — 무거운 별부터 띠를 떠난다. 지금은 태양 질량의 <span class="m">${fmtMass(Mto)}배</span>보다 무거운 별이 떠났다.`;
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>
