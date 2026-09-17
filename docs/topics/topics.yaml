@@ -876,6 +876,7 @@ topics:
     level: null
     curricula: []
     visualNote: 계 전체가 한 진동수로 함께 흔들리는 모양이 있다
+    sim: aperi21:normal-modes
   - id: beats-in-oscillation
     name: 진동의 맥놀이
     desc: 가까운 두 진동수의 합
@@ -1103,6 +1104,7 @@ topics:
     level: lower
     curricula: [kr, ngss]
     visualNote: 공전 위치를 옮기면 보이는 밝은 쪽이 달라진다
+    sim: aperi21:moon-phases
   - id: eclipse
     name: 일식과 월식
     desc: 해와 지구와 달이 한 줄에 설 때
@@ -1351,6 +1353,7 @@ topics:
     level: null
     curricula: []
     visualNote: 관 속 속도가 가운데는 빠르고 벽에서 0 인 포물선을 그린다
+    sim: aperi21:poiseuille-flow
   - id: stokes-drag
     name: 스토크스 항력
     desc: 느린 흐름에서의 저항
@@ -1474,6 +1477,7 @@ topics:
     level: primary
     curricula: [kr, ib, ap]
     visualNote: 데워진 유체가 올라가고 찬 것이 내려오며 고리가 생긴다
+    sim: aperi21:thermal-convection
   - id: thermal-radiation
     name: 열복사
     desc: 매질 없이 전달되는 열
@@ -1746,6 +1750,7 @@ topics:
     level: null
     curricula: []
     visualNote: 파면의 각 점이 낸 잔물결이 다음 파면을 만든다
+    sim: aperi21:huygens-principle
   - id: superposition
     name: 중첩 원리
     desc: 파동이 겹칠 때의 합
@@ -2174,6 +2179,7 @@ topics:
     level: upper
     curricula: [kr, ap, uk]
     visualNote: 판을 돌리면 밝기가 오르내린다
+    sim: aperi21:polarization
   - id: malus-law
     name: 말뤼스 법칙
     desc: 편광판을 지난 세기
@@ -2694,6 +2700,7 @@ topics:
     level: lower
     curricula: [ib, uk]
     visualNote: 전기장과 자기장이 서로를 낳으며 나아간다
+    sim: aperi21:electromagnetic-wave
   - id: poynting-vector
     name: 포인팅 벡터
     desc: 전자기파가 나르는 에너지 흐름
@@ -2962,6 +2969,7 @@ topics:
     level: upper
     curricula: [kr, ib]
     visualNote: 하나씩 보내도 쌓이면 무늬가 된다
+    sim: aperi21:double-slit-with-electrons
   - id: uncertainty-principle
     name: 불확정성 원리
     desc: 켤레량의 동시 결정 한계

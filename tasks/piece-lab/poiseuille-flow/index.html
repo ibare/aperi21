@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>관 속의 층류</title>
+<style>
+  html, body { margin: 0; background: #fbfaf7; }
+  .piece { max-width: 860px; margin: 0 auto; padding: 12px 0; font-family: system-ui, -apple-system, "Apple SD Gothic Neo", sans-serif; }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { margin: 6px 16px 0; font-size: 15px; line-height: 1.5; color: #2b2b2b; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <p class="caption" id="caption">같은 압력으로 밀 때, 가는 관이 한 칸을 채우는 동안 반지름이 두 배인 관은 열여섯 칸을 채운다.</p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// 좌표는 논리 픽셀(860×280) 기준. 같은 압력 기울기·같은 길이·같은 유체.
+const W = 860, H = 280;
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const dpr = Math.min(2, window.devicePixelRatio || 1);
+canvas.width = W * dpr;
+canvas.height = H * dpr;
+
+const 색 = {
+  바탕: '#fbfaf7',
+  벽: '#3a3a3a',
+  물: '#b9d4ea',
+  염료: '#2c5d85',
+  떠다니는점: 'rgba(255,255,255,0.85)',
+  칸테두리: '#8a8a8a',
+};
+
+const X_IN = 110, X_OUT = 610, L = X_OUT - X_IN;
+const U_BASE = 20; // 가는 관 중심 속도(px/s). 중심 속도는 반지름 제곱에 비례한다.
+
+// 두 관: 반지름 비 1 : 2 → 중심 속도 비 1 : 4 → 유량 비 1 : 16
+const 관들 = [
+  { 이름: '가는 관', cy: 72, R: 14, umax: U_BASE * 1, 칸수: 1, cols: 1 },
+  { 이름: '굵은 관', cy: 196, R: 28, umax: U_BASE * 4, 칸수: 16, cols: 4 },
+];
+
+// 흐름의 결을 보이는 떠다니는 점: 처음 위치만 난수, 이후 위치는 t 의 함수
+for (const p of 관들) {
+  p.점들 = [];
+  const n = Math.round(12 * p.R / 7);
+  for (let i = 0; i < n; i++) {
+    const s = PieceKit.random() * 2 - 1;       // 중심선에서의 상대 거리 −1..1
+    p.점들.push({ s, x0: PieceKit.random() * L });
+  }
+}
+
+const 속도 = (p, s) => p.umax * (1 - s * s);   // 포물선 속도 분포(벽에서 0)
+
+const 전선주기 = 1.5;   // 입구에서 곧은 염료 줄을 긋는 간격(s)
+const 전선수명 = 6.2;   // 굵은 관 포물선 끝이 출구에 닿을 무렵까지만 보인다(s)
+const 채움시간 = 8;    // 가는 관이 한 칸을 채우는 시간(s)
+const 머묾 = 2;         // 다 찬 상태로 머무는 시간(s)
+const 위상 = 1;         // 도착 순간 이미 조금 차 있도록
+
+function 채움비율(t) {
+  const tau = (t + 위상) % (채움시간 + 머묾);
+  return Math.min(tau / 채움시간, 1);
+}
+
+function 관그리기(p, t) {
+  const top = p.cy - p.R, bot = p.cy + p.R;
+
+  PieceKit.mark(p.이름 + ' 단면', () => {
+    ctx.beginPath();
+    ctx.arc(46, p.cy, p.R, 0, Math.PI * 2);
+    ctx.fillStyle = 색.물;
+    ctx.fill();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = 색.벽;
+    ctx.stroke();
+  });
+
+  PieceKit.mark(p.이름 + ' 속 물', () => {
+    ctx.fillStyle = 색.물;
+    ctx.fillRect(X_IN, top, L, 2 * p.R);
+  });
+
+  PieceKit.mark(p.이름 + ' 흐름 점', () => {
+    ctx.fillStyle = 색.떠다니는점;
+    for (const d of p.점들) {
+      const x = X_IN + ((d.x0 + 속도(p, d.s) * t) % L);
+      ctx.beginPath();
+      ctx.arc(x, p.cy + d.s * (p.R - 2), 1.4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  });
+
+  PieceKit.mark(p.이름 + ' 염료 전선', () => {
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(X_IN, top, L, 2 * p.R);
+    ctx.clip();
+    // 두 관에 같은 수명 — 같은 나이의 전선끼리 포물선 끝의 앞섬을 비교하게 한다
+    const 수명 = 전선수명;
+    const k0 = Math.ceil((t - 수명) / 전선주기);
+    const k1 = Math.floor(t / 전선주기);
+    ctx.lineWidth = 1.6;
+    ctx.strokeStyle = 색.염료;
+    for (let k = k0; k <= k1; k++) {
+      const a = t - k * 전선주기;
+      if (a < 0 || a > 수명) continue;
+      ctx.globalAlpha = Math.max(0, 1 - a / 수명);
+      ctx.beginPath();
+      const N = 40;
+      for (let i = 0; i <= N; i++) {
+        const s = -1 + 2 * i / N;
+        const x = X_IN + 속도(p, s) * a;
+        const y = p.cy + s * p.R;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+    ctx.restore();
+  });
+
+  PieceKit.mark(p.이름 + ' 벽', () => {
+    ctx.strokeStyle = 색.벽;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(X_IN, top); ctx.lineTo(X_OUT, top);
+    ctx.moveTo(X_IN, bot); ctx.lineTo(X_OUT, bot);
+    ctx.stroke();
+    ctx.lineWidth = 1.5;
+    for (const x of [X_IN, X_OUT]) {
+      ctx.beginPath();
+      ctx.ellipse(x, p.cy, p.R * 0.28, p.R, 0, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  });
+
+  PieceKit.mark(p.이름 + ' 받는 칸', () => {
+    const size = 22, gap = 4;
+    const rows = Math.ceil(p.칸수 / p.cols);
+    const gw = p.cols * size + (p.cols - 1) * gap;
+    const gh = rows * size + (rows - 1) * gap;
+    const gx = 650, gy = p.cy - gh / 2;
+    const 찬양 = 채움비율(t) * p.칸수;
+    for (let i = 0; i < p.칸수; i++) {
+      const col = i % p.cols;
+      const row = rows - 1 - Math.floor(i / p.cols); // 아래 줄부터 쌓는다
+      const x = gx + col * (size + gap), y = gy + row * (size + gap);
+      const f = Math.max(0, Math.min(1, 찬양 - i));
+      if (f > 0) {
+        ctx.fillStyle = 색.물;
+        ctx.fillRect(x, y + size * (1 - f), size, size * f);
+      }
+      ctx.strokeStyle = 색.칸테두리;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x + 0.5, y + 0.5, size - 1, size - 1);
+    }
+  });
+}
+
+PieceKit.loop({
+  step(dt, t) { /* 모든 상태가 t 의 함수라 쌓을 것이 없다 */ },
+  draw(t) {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.fillStyle = 색.바탕;
+    ctx.fillRect(0, 0, W, H);
+    for (const p of 관들) 관그리기(p, t);
+  },
+});
+</script>
+</body>
+</html>

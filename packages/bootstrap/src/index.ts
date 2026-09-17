@@ -640,6 +640,70 @@ export function registerAperi21Bundles(): void {
     return registerBundle('aperi21:atomic-orbital', m.atomicOrbitalBundle, caps.capabilities);
   });
 
+  registerBundleLoader('aperi21:normal-modes', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-normal-modes'),
+      import('./capabilities/oscillation/normal-modes.generated.js'),
+    ]);
+    return registerBundle('aperi21:normal-modes', m.normalModesBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:moon-phases', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-moon-phases'),
+      import('./capabilities/astro/moon-phases.generated.js'),
+    ]);
+    return registerBundle('aperi21:moon-phases', m.moonPhasesBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:poiseuille-flow', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-poiseuille-flow'),
+      import('./capabilities/fluids/poiseuille-flow.generated.js'),
+    ]);
+    return registerBundle('aperi21:poiseuille-flow', m.poiseuilleFlowBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:thermal-convection', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-thermal-convection'),
+      import('./capabilities/thermal/thermal-convection.generated.js'),
+    ]);
+    return registerBundle('aperi21:thermal-convection', m.thermalConvectionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:huygens-principle', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-huygens-principle'),
+      import('./capabilities/waves/huygens-principle.generated.js'),
+    ]);
+    return registerBundle('aperi21:huygens-principle', m.huygensPrincipleBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:polarization', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-polarization'),
+      import('./capabilities/optics/polarization.generated.js'),
+    ]);
+    return registerBundle('aperi21:polarization', m.polarizationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:electromagnetic-wave', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-electromagnetic-wave'),
+      import('./capabilities/em/electromagnetic-wave.generated.js'),
+    ]);
+    return registerBundle('aperi21:electromagnetic-wave', m.electromagneticWaveBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:double-slit-with-electrons', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-double-slit-with-electrons'),
+      import('./capabilities/modern/double-slit-with-electrons.generated.js'),
+    ]);
+    return registerBundle('aperi21:double-slit-with-electrons', m.doubleSlitWithElectronsBundle, caps.capabilities);
+  });
+
   registerBundleLoader('aperi21:uniform-motion', async () => {
     const [m, caps] = await Promise.all([
       import('@aperi21/sim-uniform-motion'),

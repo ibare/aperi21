@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>대류</title>
+<style>
+  :root {
+    --bg: #14161c;
+    --ink: #e8e6e1;
+    --ink-soft: #9a9890;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 12px 16px; box-sizing: border-box; }
+  canvas { display: block; width: 100%; height: auto; border-radius: 4px; }
+  .caption { min-height: 1.6em; margin: 10px 2px 6px; font-size: 16px; line-height: 1.5; }
+  .controls { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--ink-soft); }
+  .controls input { flex: 0 1 220px; accent-color: #8a8880; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="view" width="840" height="300"></canvas>
+  <div class="caption" id="caption"></div>
+  <div class="controls">
+    <label for="flow">흐름 세기</label>
+    <input id="flow" type="range" min="0" max="1.5" step="0.05" value="1">
+  </div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 영역과 격자 ─────────────────────────────────────────
+  const W = 3, H = 1;             // 가로 3, 세로 1 (무차원 길이)
+  const NX = 96, NY = 32;
+  const DX = W / NX, DY = H / NY;
+  const KAPPA = 0.012;            // 열확산 계수
+  const U0 = 0.8;                 // 흐름 세기 1 일 때 최대 속력
+  const SUB = 2;                  // 한 프레임당 적분 부분 단계
+  const T_HOT = 1, T_COLD = 0;
+
+  let T = new Float32Array(NX * NY);
+  let T2 = new Float32Array(NX * NY);
+  const idx = (i, j) => j * NX + i;
+
+  // 처음: 전도만 있을 때의 층 모양 분포
+  for (let j = 0; j < NY; j++) {
+    const y = (j + 0.5) * DY;
+    for (let i = 0; i < NX; i++) T[idx(i, j)] = T_HOT + (T_COLD - T_HOT) * y / H;
+  }
+
+  // ── 속도장: 세 개의 대류 롤 + 천천히 흔들리는 두 번째 모드 ──
+  // 유선함수에서 유도해 벽을 뚫지 않고 비압축이다.
+  let amp = 1;                    // 현재 흐름 세기 (조작값을 향해 부드럽게 따라감)
+  function velocity(x, y, t, out) {
+    const e = 0.35 * Math.sin(0.5 * t);
+    const A = amp * U0;
+    const px = Math.PI * x, py = Math.PI * y;
+    const qx = 2 * Math.PI * x / 3, qy = 2 * Math.PI * y;
+    out[0] = A * (Math.sin(px) * Math.cos(py) + e * 2 * Math.sin(qx) * Math.cos(qy));
+    out[1] = -A * (Math.cos(px) * Math.sin(py) + e * (2 / 3) * Math.cos(qx) * Math.sin(qy));
+    return out;
+  }
+
+  // 벽 경계를 반영한 온도 읽기 (바닥·천장은 고정 온도, 옆벽은 단열)
+  function cell(src, i, j) {
+    if (i < 0) i = 0; else if (i >= NX) i = NX - 1;
+    if (j < 0) return 2 * T_HOT - src[idx(i, 0)];
+    if (j >= NY) return 2 * T_COLD - src[idx(i, NY - 1)];
+    return src[idx(i, j)];
+  }
+  function sample(src, x, y) {
+    const fx = x / DX - 0.5, fy = y / DY - 0.5;
+    const i0 = Math.floor(fx), j0 = Math.floor(fy);
+    const sx = fx - i0, sy = fy - j0;
+    const a = cell(src, i0, j0), b = cell(src, i0 + 1, j0);
+    const c = cell(src, i0, j0 + 1), d = cell(src, i0 + 1, j0 + 1);
+    return (a * (1 - sx) + b * sx) * (1 - sy) + (c * (1 - sx) + d * sx) * sy;
+  }
+
+  const vtmp = [0, 0], vtmp2 = [0, 0];
+  function advanceField(h, t) {
+    // 1) 흐름이 열을 싣고 간다 — 반라그랑주 이류
+    for (let j = 0; j < NY; j++) {
+      const y = (j + 0.5) * DY;
+      for (let i = 0; i < NX; i++) {
+        const x = (i + 0.5) * DX;
+        velocity(x, y, t, vtmp);
+        const xm = x - 0.5 * h * vtmp[0], ym = y - 0.5 * h * vtmp[1];
+        velocity(xm, ym, t, vtmp2);
+        let xb = x - h * vtmp2[0], yb = y - h * vtmp2[1];
+        if (xb < 0) xb = 0; else if (xb > W) xb = W;
+        if (yb < 0) yb = 0; else if (yb > H) yb = H;
+        T2[idx(i, j)] = sample(T, xb, yb);
+      }
+    }
+    // 2) 제자리에서 번진다 — 확산
+    const rx = KAPPA * h / (DX * DX), ry = KAPPA * h / (DY * DY);
+    for (let j = 0; j < NY; j++) {
+      for (let i = 0; i < NX; i++) {
+        const c = T2[idx(i, j)];
+        const lap = rx * (cell(T2, i - 1, j) - 2 * c + cell(T2, i + 1, j))
+                  + ry * (cell(T2, i, j - 1) - 2 * c + cell(T2, i, j + 1));
+        T[idx(i, j)] = c + lap;
+      }
+    }
+  }
+
+  // ── 흐름 표시 입자 · 따라가는 유체 덩어리 ─────────────────
+  const tracers = [];
+  for (let k = 0; k < 90; k++) {
+    tracers.push({ x: 0.03 + PieceKit.random() * (W - 0.06), y: 0.03 + PieceKit.random() * (H - 0.06) });
+  }
+  const parcel = { x: 0.85, y: 0.15, temp: 0, trail: [] };
+  const EXCHANGE = 0.5;           // 덩어리가 주변과 열을 주고받는 빠르기 (1/초)
+  const TRAIL_LEN = 110;
+
+  function moveParticle(p, h, t) {
+    velocity(p.x, p.y, t, vtmp);
+    velocity(p.x + 0.5 * h * vtmp[0], p.y + 0.5 * h * vtmp[1], t, vtmp2);
+    p.x += h * vtmp2[0]; p.y += h * vtmp2[1];
+    if (p.x < 0.01) p.x = 0.01; else if (p.x > W - 0.01) p.x = W - 0.01;
+    if (p.y < 0.01) p.y = 0.01; else if (p.y > H - 0.01) p.y = H - 0.01;
+  }
+
+  // 도착한 순간 이미 진행 중이도록 0.4초 분량을 미리 적분해 둔다 (결정적)
+  const PRE_STEPS = 24;
+  for (let s = 0; s < PRE_STEPS; s++) {
+    const tp = (s - PRE_STEPS) / 60;
+    for (let k = 0; k < SUB; k++) advanceField(1 / 60 / SUB, tp);
+  }
+
+  parcel.temp = sample(T, parcel.x, parcel.y);
+
+  // ── 조작기 ─────────────────────────────────────────────
+  const slider = document.getElementById('flow');
+  const DEFAULT_FLOW = 1;
+  function targetFlow() {
+    if (PieceKit.frozen) return DEFAULT_FLOW;
+    return parseFloat(slider.value);
+  }
+
+  // ── 색: 온도 하나만을 뜻한다 ────────────────────────────
+  const STOPS = [[0, [29, 39, 64]], [0.5, [122, 59, 94]], [1, [240, 106, 60]]];
+  const LUT = new Uint8ClampedArray(256 * 3);
+  for (let n = 0; n < 256; n++) {
+    const v = n / 255;
+    let a = STOPS[0], b = STOPS[1];
+    if (v > STOPS[1][0]) { a = STOPS[1]; b = STOPS[2]; }
+    const s = (v - a[0]) / (b[0] - a[0]);
+    for (let c = 0; c < 3; c++) LUT[n * 3 + c] = a[1][c] + (b[1][c] - a[1][c]) * s;
+  }
+  const tempColor = (v) => {
+    const n = Math.max(0, Math.min(255, Math.round(v * 255)));
+    return `rgb(${LUT[n * 3]},${LUT[n * 3 + 1]},${LUT[n * 3 + 2]})`;
+  };
+  const ACCENT = '#7ff0c8';       // 강조색: 따라가는 유체 덩어리 하나에만
+
+  // ── 그리기 준비 ────────────────────────────────────────
+  const canvas = document.getElementById('view');
+  const ctx = canvas.getContext('2d');
+  const CW = canvas.width, CH = canvas.height;
+  const WALL = 22;                                 // 바닥·천장 띠 두께
+  const FX = 0, FY = WALL, FW = CW, FH = CH - 2 * WALL;
+  const sx = (x) => FX + x / W * FW;
+  const sy = (y) => FY + (1 - y / H) * FH;
+
+  const off = document.createElement('canvas');
+  off.width = NX; off.height = NY;
+  const octx = off.getContext('2d');
+  const img = octx.createImageData(NX, NY);
+  const captionEl = document.getElementById('caption');
+
+  PieceKit.loop({
+    step(dt, t) {
+      amp += (targetFlow() - amp) * Math.min(1, dt * 3);
+      if (Math.abs(amp) < 1e-4) amp = 0;
+      for (let k = 0; k < SUB; k++) advanceField(dt / SUB, t);
+      for (const p of tracers) moveParticle(p, dt, t);
+      moveParticle(parcel, dt, t);
+      // 덩어리는 제 열을 지닌 채 움직이고, 주변과는 천천히만 섞인다
+      parcel.temp += (sample(T, parcel.x, parcel.y) - parcel.temp) * EXCHANGE * dt;
+      parcel.trail.push([parcel.x, parcel.y]);
+      if (parcel.trail.length > TRAIL_LEN) parcel.trail.shift();
+    },
+
+    draw(t) {
+      PieceKit.mark('온도 장', () => {
+        for (let j = 0; j < NY; j++) {
+          for (let i = 0; i < NX; i++) {
+            const v = T[idx(i, j)];
+            const n = Math.max(0, Math.min(255, Math.round(v * 255)));
+            const o = ((NY - 1 - j) * NX + i) * 4;
+            img.data[o] = LUT[n * 3]; img.data[o + 1] = LUT[n * 3 + 1];
+            img.data[o + 2] = LUT[n * 3 + 2]; img.data[o + 3] = 255;
+          }
+        }
+        octx.putImageData(img, 0, 0);
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(off, FX, FY, FW, FH);
+      });
+
+      PieceKit.mark('뜨거운 바닥', () => {
+        ctx.fillStyle = tempColor(T_HOT);
+        ctx.fillRect(0, CH - WALL, CW, WALL);
+        ctx.fillStyle = 'rgba(20,22,28,0.9)';
+        ctx.font = '13px -apple-system, "Apple SD Gothic Neo", sans-serif';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('뜨거운 바닥', 10, CH - WALL / 2);
+      });
+
+      PieceKit.mark('차가운 천장', () => {
+        ctx.fillStyle = tempColor(T_COLD);
+        ctx.fillRect(0, 0, CW, WALL);
+        ctx.fillStyle = 'rgba(232,230,225,0.85)';
+        ctx.font = '13px -apple-system, "Apple SD Gothic Neo", sans-serif';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('차가운 천장', 10, WALL / 2);
+      });
+
+      PieceKit.mark('흐름 표시 입자', () => {
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(FX, FY, FW, FH);
+        ctx.clip();
+        ctx.strokeStyle = 'rgba(245,243,238,0.42)';
+        ctx.fillStyle = 'rgba(245,243,238,0.42)';
+        ctx.lineWidth = 1.3;
+        ctx.lineCap = 'round';
+        for (const p of tracers) {
+          velocity(p.x, p.y, t, vtmp);
+          const len = 0.09;                        // 속도 방향으로 짧은 꼬리
+          const x0 = sx(p.x), y0 = sy(p.y);
+          const x1 = sx(p.x - vtmp[0] * len), y1 = sy(p.y - vtmp[1] * len);
+          if (Math.hypot(x1 - x0, y1 - y0) < 1) {
+            ctx.fillRect(x0 - 1, y0 - 1, 2, 2);
+          } else {
+            ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x0, y0); ctx.stroke();
+          }
+        }
+        ctx.restore();
+      });
+
+      PieceKit.mark('따라가는 유체 덩어리', () => {
+        const tr = parcel.trail;
+        ctx.save();
+        ctx.lineCap = 'round';
+        for (let k = 1; k < tr.length; k++) {
+          const a = k / tr.length;
+          ctx.strokeStyle = `rgba(127,240,200,${(0.05 + 0.55 * a).toFixed(3)})`;
+          ctx.lineWidth = 1 + 1.5 * a;
+          ctx.beginPath();
+          ctx.moveTo(sx(tr[k - 1][0]), sy(tr[k - 1][1]));
+          ctx.lineTo(sx(tr[k][0]), sy(tr[k][1]));
+          ctx.stroke();
+        }
+        const px = sx(parcel.x), py = sy(parcel.y);
+        ctx.beginPath();
+        ctx.arc(px, py, 14, 0, Math.PI * 2);
+        ctx.fillStyle = tempColor(parcel.temp);   // 덩어리가 지닌 온도
+        ctx.fill();
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = ACCENT;
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      PieceKit.mark('캡션', () => {
+        const text = amp < 0.08
+          ? '흐름이 멎자 열은 더 실려 가지 않고, 제자리에서 느리게 번지기만 한다'
+          : '바닥에서 데워진 유체가 솟아오르며 열을 싣고 천장까지 올라간다';
+        if (captionEl.textContent !== text) captionEl.textContent = text;
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

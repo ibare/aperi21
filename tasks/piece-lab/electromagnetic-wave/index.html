@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>전자기파</title>
+<style>
+  html, body { margin: 0; background: #fbfaf7; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 12px 16px; box-sizing: border-box; }
+  canvas { display: block; width: 100%; height: auto; }
+  #cap {
+    margin: 8px 0 0; min-height: 1.5em;
+    font: 15px/1.5 -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    color: #2b2b2b;
+  }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c" width="860" height="360"></canvas>
+  <p id="cap"></p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// 진동하는 전기 쌍극자(작은 안테나)가 일정 시간 흔들렸다 멈추기를 되풀이한다.
+// 쌍극자 축을 품은 평면(자오면)에서
+//   전기력선 = Ψ(r,θ,t) = sin²θ · [ p'(τ)/c + p(τ)/r ] 의 등고선
+//   자기장   = B_φ ∝ sinθ · [ p''(τ)/(c r) + p'(τ)/r² ]  (평면에 수직)
+// τ = t − r/c 는 지연 시각. 전하가 멈추면 p=0 이 되어 전하 근처의 장은 사라지고,
+// 이미 방출된 부분은 닫힌 고리가 되어 광속으로 계속 나아간다.
+
+const W = 860, H = 360;
+const X0 = 34, Y0 = H / 2;          // 쌍극자 위치(왼쪽 가장자리 가까이)
+const PERIOD = 1.2;                 // 흔들림 한 번의 주기 [s]
+const OMEGA = 2 * Math.PI / PERIOD;
+const C = 150;                      // 전파 속력 [px/s] → 파장 180px
+const K = OMEGA / C;
+const ON = 3.6;                     // 한 번에 흔드는 시간 (3주기)
+const RAMP = 0.3;                   // 시작·멈춤의 부드러운 경사
+const CYCLE = 6.0;                  // 흔들기 + 쉬기 한 벌
+const OFFSET = 1.2;                 // 도착했을 때 이미 흔들리는 중이도록
+
+const canvas = document.getElementById('c');
+const cap = document.getElementById('cap');
+const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+canvas.width = W * dpr; canvas.height = H * dpr;
+const ctx = canvas.getContext('2d');
+ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+const INK = '#2b2b2b';
+const MUTED = '#8a8680';
+const ACCENT = '#c8532a';           // 강조색: 흔들리는 전하, 오직 그것 하나
+
+function mod(a, m) { return ((a % m) + m) % m; }
+
+// 쌍극자 모멘트 p(s), s 는 한 벌 안의 위상 시각
+function env(s) {
+  if (s < 0 || s > ON) return 0;
+  if (s < RAMP) return 0.5 - 0.5 * Math.cos(Math.PI * s / RAMP);
+  if (s > ON - RAMP) return 0.5 - 0.5 * Math.cos(Math.PI * (ON - s) / RAMP);
+  return 1;
+}
+function pAt(tau) { const s = mod(tau, CYCLE); return env(s) * Math.sin(OMEGA * s); }
+const HD = 1e-3;
+function dp(tau)  { return (pAt(tau + HD) - pAt(tau - HD)) / (2 * HD); }
+function ddp(tau) { return (pAt(tau + HD) - 2 * pAt(tau) + pAt(tau - HD)) / (HD * HD); }
+
+// ── 전기력선: 격자 위 Ψ 를 계산해 등고선을 긋는다 ──
+const G = 4;
+const COLS = Math.ceil(W / G) + 1, ROWS = Math.ceil(H / G) + 1;
+const psi = new Float64Array(COLS * ROWS);
+const R_MIN = 14;
+const LEVELS = [];
+for (const f of [0.2, 0.5, 0.85]) { LEVELS.push(f * K); LEVELS.push(-f * K); }
+
+function fillPsi(tSrc) {
+  for (let j = 0; j < ROWS; j++) {
+    const y = Y0 - j * G;
+    for (let i = 0; i < COLS; i++) {
+      const x = i * G - X0;
+      const r = Math.hypot(x, y);
+      if (r < R_MIN) { psi[j * COLS + i] = NaN; continue; }
+      const s2 = (x * x) / (r * r);
+      const tau = tSrc - r / C;
+      psi[j * COLS + i] = s2 * (dp(tau) / C + pAt(tau) / r);
+    }
+  }
+}
+
+function contour(level) {
+  ctx.beginPath();
+  for (let j = 0; j < ROWS - 1; j++) {
+    for (let i = 0; i < COLS - 1; i++) {
+      const a = psi[j * COLS + i], b = psi[j * COLS + i + 1];
+      const c = psi[(j + 1) * COLS + i + 1], d = psi[(j + 1) * COLS + i];
+      if (Number.isNaN(a) || Number.isNaN(b) || Number.isNaN(c) || Number.isNaN(d)) continue;
+      const pts = [];
+      const x = i * G, y = j * G;
+      if ((a - level) * (b - level) < 0) pts.push([x + G * (level - a) / (b - a), y]);
+      if ((b - level) * (c - level) < 0) pts.push([x + G, y + G * (level - b) / (c - b)]);
+      if ((d - level) * (c - level) < 0) pts.push([x + G * (level - d) / (c - d), y + G]);
+      if ((a - level) * (d - level) < 0) pts.push([x, y + G * (level - a) / (d - a)]);
+      if (pts.length >= 2) { ctx.moveTo(pts[0][0], pts[0][1]); ctx.lineTo(pts[1][0], pts[1][1]); }
+      if (pts.length === 4) { ctx.moveTo(pts[2][0], pts[2][1]); ctx.lineTo(pts[3][0], pts[3][1]); }
+    }
+  }
+  ctx.stroke();
+}
+
+// ── 자기장: 평면에 수직. 나오는 쪽 ⊙ / 들어가는 쪽 ⊗, 크기 ∝ 세기 ──
+const BSTEP = 30;
+const B_REF = OMEGA * OMEGA / (C * 300);
+function drawB(tSrc) {
+  ctx.strokeStyle = MUTED; ctx.fillStyle = MUTED; ctx.lineWidth = 1.1;
+  for (let py = BSTEP / 2; py < H; py += BSTEP) {
+    for (let px = BSTEP / 2 + 4; px < W; px += BSTEP) {
+      const x = px - X0, y = Y0 - py;
+      const r = Math.hypot(x, y);
+      if (r < 40) continue;
+      const sn = x / r;
+      const tau = tSrc - r / C;
+      const b = sn * (ddp(tau) / (C * r) + dp(tau) / (r * r));
+      const m = Math.min(1.2, Math.abs(b) / B_REF);
+      const rad = m * 5.5;
+      if (rad < 1.4) continue;
+      if (b > 0) {
+        ctx.beginPath(); ctx.arc(px, py, rad, 0, 2 * Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.arc(px, py, Math.max(0.8, rad * 0.25), 0, 2 * Math.PI); ctx.fill();
+      } else {
+        const q = rad * 0.75;
+        ctx.beginPath();
+        ctx.moveTo(px - q, py - q); ctx.lineTo(px + q, py + q);
+        ctx.moveTo(px + q, py - q); ctx.lineTo(px - q, py + q);
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function srcPhase(t) { return mod(t + OFFSET, CYCLE); }
+
+PieceKit.loop({
+  step(dt, t) { /* 상태 없음: 모든 장은 지연 시각 τ = t − r/c 의 함수 */ },
+  draw(t) {
+    const tSrc = t + OFFSET;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fbfaf7'; ctx.fillRect(0, 0, W, H);
+
+    PieceKit.mark('자기장', () => { drawB(tSrc); });
+
+    PieceKit.mark('전기력선', () => {
+      fillPsi(tSrc);
+      ctx.strokeStyle = INK; ctx.lineWidth = 1.3; ctx.lineJoin = 'round';
+      for (const L of LEVELS) contour(L);
+    });
+
+    PieceKit.mark('안테나', () => {
+      ctx.strokeStyle = MUTED; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(X0, Y0 - 22); ctx.lineTo(X0, Y0 + 22); ctx.stroke();
+    });
+
+    const p = pAt(tSrc);
+    PieceKit.mark('흔들리는 전하', () => {
+      ctx.fillStyle = ACCENT;
+      const d = 17 * p;
+      ctx.beginPath(); ctx.arc(X0, Y0 - d, 4.5, 0, 2 * Math.PI); ctx.fill();
+      ctx.beginPath(); ctx.arc(X0, Y0 + d, 4.5, 0, 2 * Math.PI); ctx.fill();
+    });
+
+    PieceKit.mark('캡션', () => {
+      const on = env(srcPhase(t)) > 0;
+      const text = on
+        ? '전하가 흔들리는 동안, 그 흔들림이 전기장과 자기장이 되어 바깥으로 퍼진다'
+        : '전하는 멈췄다 — 이미 떨어져 나간 장은 전하 없이 스스로 계속 나아간다';
+      if (cap.textContent !== text) cap.textContent = text;
+    });
+  },
+});
+</script>
+</body>
+</html>

@@ -692,7 +692,9 @@
         {
           "id": "normal-modes",
           "name": "정규 모드",
-          "desc": "계가 가진 고유 진동 형태"
+          "desc": "계가 가진 고유 진동 형태",
+          "simId": "aperi21:normal-modes",
+          "labUrl": "piece-lab/normal-modes/index.html"
         },
         {
           "id": "beats-in-oscillation",
@@ -862,7 +864,9 @@
         {
           "id": "moon-phases",
           "name": "달의 위상",
-          "desc": "햇빛을 받는 달의 어느 쪽을 보는가"
+          "desc": "햇빛을 받는 달의 어느 쪽을 보는가",
+          "simId": "aperi21:moon-phases",
+          "labUrl": "piece-lab/moon-phases/index.html"
         },
         {
           "id": "eclipse",
@@ -1051,7 +1055,9 @@
         {
           "id": "poiseuille-flow",
           "name": "관 속의 층류",
-          "desc": "반지름 4제곱에 비례하는 유량"
+          "desc": "반지름 4제곱에 비례하는 유량",
+          "simId": "aperi21:poiseuille-flow",
+          "labUrl": "piece-lab/poiseuille-flow/index.html"
         },
         {
           "id": "stokes-drag",
@@ -1145,7 +1151,9 @@
         {
           "id": "thermal-convection",
           "name": "대류",
-          "desc": "유체의 이동이 나르는 열"
+          "desc": "유체의 이동이 나르는 열",
+          "simId": "aperi21:thermal-convection",
+          "labUrl": "piece-lab/thermal-convection/index.html"
         },
         {
           "id": "thermal-radiation",
@@ -1348,7 +1356,9 @@
         {
           "id": "huygens-principle",
           "name": "하위헌스 원리",
-          "desc": "파면의 각 점이 새 파원이 되는 것"
+          "desc": "파면의 각 점이 새 파원이 되는 것",
+          "simId": "aperi21:huygens-principle",
+          "labUrl": "piece-lab/huygens-principle/index.html"
         },
         {
           "id": "superposition",
@@ -1663,7 +1673,9 @@
         {
           "id": "polarization",
           "name": "편광",
-          "desc": "진동면의 선택"
+          "desc": "진동면의 선택",
+          "simId": "aperi21:polarization",
+          "labUrl": "piece-lab/polarization/index.html"
         },
         {
           "id": "malus-law",
@@ -2043,7 +2055,9 @@
         {
           "id": "electromagnetic-wave",
           "name": "전자기파",
-          "desc": "전기장과 자기장의 자기 전파"
+          "desc": "전기장과 자기장의 자기 전파",
+          "simId": "aperi21:electromagnetic-wave",
+          "labUrl": "piece-lab/electromagnetic-wave/index.html"
         },
         {
           "id": "poynting-vector",
@@ -2241,7 +2255,9 @@
         {
           "id": "double-slit-with-electrons",
           "name": "전자의 이중 슬릿",
-          "desc": "하나씩 보내도 생기는 무늬"
+          "desc": "하나씩 보내도 생기는 무늬",
+          "simId": "aperi21:double-slit-with-electrons",
+          "labUrl": "piece-lab/double-slit-with-electrons/index.html"
         },
         {
           "id": "uncertainty-principle",
@@ -2455,7 +2471,7 @@
   ],
   "summary": {
     "topics": 442,
-    "implemented": 93,
-    "labs": 80
+    "implemented": 101,
+    "labs": 88
   }
 }

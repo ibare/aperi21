@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>전자의 이중 슬릿</title>
+<style>
+  html, body { margin: 0; background: #fbfaf7; }
+  .piece { max-width: 900px; margin: 0 auto; font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  canvas { display: block; width: 100%; height: auto; }
+  #caption { margin: 6px 12px 10px; font-size: 16px; line-height: 1.5; color: #2b2b2b; min-height: 1.5em; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <p id="caption"></p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 화면 좌표 (논리 픽셀) ──
+  const W = 860, H = 316;
+  const CY = 150;                 // 장치 중심선
+  const X_SRC = 30;               // 전자원
+  const X_WALL = 240;             // 슬릿 벽
+  const X_PLATE = 470;            // 검출 화면 왼쪽 가장자리 (파동이 닿는 곳)
+  const PLATE_W = 300;
+  const PLATE_TOP = 14, PLATE_BOT = 286;
+  const X_BARS = 780, BAR_MAX = 64;
+
+  // ── 물리 매개변수 (화면 픽셀 단위로 맞춘 모형) ──
+  const SLIT_HALF_SEP = 20;       // 슬릿 간격 d = 40
+  const SLIT_WIDTH = 9;           // 슬릿 폭 a
+  const LAMBDA = 7;               // 드브로이 파장
+  const K = 2 * Math.PI / LAMBDA;
+  const L = X_PLATE - X_WALL;     // 슬릿-화면 거리 230
+  const PACKET_W = 22;            // 파동 묶음 두께
+
+  // ── 자동 진행 일정 ──
+  const EMIT_END = 26;            // 이 시각 이후로는 새 전자를 보내지 않는다
+  const FADE_START = 30, CYCLE_END = 31.5;
+  const TAU0 = 2.5;               // 도착한 순간 이미 진행 중
+  const CAP = 8000;
+
+  const canvas = document.getElementById('c');
+  const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  const captionEl = document.getElementById('caption');
+
+  const INK = '#2b2b2b';
+  const ACCENT = '#e2572b';       // 강조색: 방금 도착한 전자, 그 한 가지 뜻만
+
+  function interval(n) { return Math.max(0.005, 0.85 * Math.pow(0.88, n)); }
+
+  function sinc(b) { return Math.abs(b) < 1e-6 ? 1 : Math.sin(b) / b; }
+
+  // 화면 위치 y 에서의 도착 확률 밀도 (두 슬릿 간섭 × 슬릿 하나의 회절 포락선)
+  function screenIntensity(y) {
+    const r1 = Math.hypot(L, y - (CY - SLIT_HALF_SEP));
+    const r2 = Math.hypot(L, y - (CY + SLIT_HALF_SEP));
+    const sinT = (y - CY) / Math.hypot(L, y - CY);
+    const env = sinc(K * SLIT_WIDTH * sinT / 2);
+    return (1 + Math.cos(K * (r1 - r2))) * env * env;
+  }
+  let IMAX = 0;
+  for (let y = PLATE_TOP; y <= PLATE_BOT; y += 0.25) IMAX = Math.max(IMAX, screenIntensity(y));
+
+  // ── 누적 상태 ──
+  const BIN_H = 4;
+  const NBINS = Math.ceil((PLATE_BOT - PLATE_TOP) / BIN_H);
+  const S = {
+    tau: 0, n: 0, lastArrival: 0, nextArrival: interval(0),
+    xs: new Float32Array(CAP), ys: new Float32Array(CAP),
+    bins: new Int32Array(NBINS), binMax: 0,
+  };
+
+  function reset() {
+    S.tau = 0; S.n = 0; S.lastArrival = 0; S.nextArrival = interval(0);
+    S.bins.fill(0); S.binMax = 0;
+  }
+
+  function sampleY() {
+    for (let i = 0; i < 1000; i++) {
+      const y = PLATE_TOP + PieceKit.random() * (PLATE_BOT - PLATE_TOP);
+      if (PieceKit.random() * IMAX <= screenIntensity(y)) return y;
+    }
+    return CY;
+  }
+
+  function advance(dt) {
+    S.tau += dt;
+    if (S.tau >= CYCLE_END) reset();
+    while (S.tau >= S.nextArrival && S.nextArrival < EMIT_END && S.n < CAP) {
+      const y = sampleY();
+      S.ys[S.n] = y;
+      S.xs[S.n] = X_PLATE + 6 + PieceKit.random() * (PLATE_W - 12);
+      const b = Math.min(NBINS - 1, Math.floor((y - PLATE_TOP) / BIN_H));
+      S.bins[b]++; if (S.bins[b] > S.binMax) S.binMax = S.bins[b];
+      S.n++;
+      S.lastArrival = S.nextArrival;
+      S.nextArrival += interval(S.n);
+    }
+  }
+
+  // 시작 시각을 앞당겨 둔다 (같은 step 을 그대로 돌리므로 결정적)
+  for (let i = 0, m = Math.round(TAU0 * 60); i < m; i++) advance(1 / 60);
+
+  function fadeK() {
+    return S.tau < FADE_START ? 1 : Math.max(0, 1 - (S.tau - FADE_START) / (CYCLE_END - FADE_START));
+  }
+
+  // ── 그리기 ──
+  const CELL = 5;
+  function drawWave() {
+    if (S.nextArrival >= EMIT_END) return;
+    const gap = S.nextArrival - S.lastArrival;
+    const fly = Math.min(0.7, gap * 0.95);   // 한 번에 전자 하나만 날아간다
+    const p = (S.tau - (S.nextArrival - fly)) / fly;
+    if (p < 0 || p >= 1) return;
+    const vis = Math.max(0, Math.min(1, (gap - 0.08) / 0.3));
+    if (vis <= 0) return;
+    const pathLen = (X_WALL - X_SRC) + L;
+    const s = p * pathLen;
+    const sAfter = s - (X_WALL - X_SRC);
+    for (let x = X_SRC + CELL / 2; x < X_PLATE; x += CELL) {
+      for (let y = PLATE_TOP + CELL / 2; y < PLATE_BOT; y += CELL) {
+        let I;
+        if (x < X_WALL) {
+          const r = Math.hypot(x - X_SRC, y - CY);
+          const g = Math.exp(-Math.pow((r - s) / PACKET_W, 2));
+          I = g * g;
+        } else {
+          if (sAfter <= 0) continue;
+          const r1 = Math.hypot(x - X_WALL, y - (CY - SLIT_HALF_SEP));
+          const r2 = Math.hypot(x - X_WALL, y - (CY + SLIT_HALF_SEP));
+          const e1 = sinc(K * SLIT_WIDTH * ((y - (CY - SLIT_HALF_SEP)) / r1) / 2);
+          const e2 = sinc(K * SLIT_WIDTH * ((y - (CY + SLIT_HALF_SEP)) / r2) / 2);
+          const a1 = Math.exp(-Math.pow((r1 - sAfter) / PACKET_W, 2)) * e1;
+          const a2 = Math.exp(-Math.pow((r2 - sAfter) / PACKET_W, 2)) * e2;
+          I = (a1 * a1 + a2 * a2 + 2 * a1 * a2 * Math.cos(K * (r1 - r2))) / 2.2;
+        }
+        if (I < 0.02) continue;
+        ctx.fillStyle = `rgba(62, 96, 150, ${Math.min(0.85, I * 0.85 * vis).toFixed(3)})`;
+        ctx.fillRect(x - CELL / 2, y - CELL / 2, CELL, CELL);
+      }
+    }
+  }
+
+  function label(text, x, y, align) {
+    ctx.fillStyle = '#6b6b6b';
+    ctx.font = '13px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+    ctx.textAlign = align || 'center';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText(text, x, y);
+  }
+
+  const CAPTIONS = [
+    '전자가 한 번에 하나씩 날아가고, 화면에는 점 하나로 떨어진다',
+    '점 하나하나가 떨어지는 자리는 제멋대로다',
+    '하나씩 떨어진 점이 쌓여 줄무늬가 된다',
+  ];
+  function stage() { return S.n < 30 ? 0 : S.n < 250 ? 1 : 2; }
+
+  PieceKit.loop({
+    step(dt) { advance(dt); },
+    draw() {
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = '#fbfaf7';
+      ctx.fillRect(0, 0, W, H);
+      const fk = fadeK();
+
+      PieceKit.mark('검출 화면', () => {
+        ctx.fillStyle = '#f0ede6';
+        ctx.fillRect(X_PLATE, PLATE_TOP, PLATE_W, PLATE_BOT - PLATE_TOP);
+        ctx.strokeStyle = '#c9c4b8';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(X_PLATE + 0.5, PLATE_TOP + 0.5, PLATE_W - 1, PLATE_BOT - PLATE_TOP - 1);
+      });
+
+      PieceKit.mark('전자 파동', drawWave);
+
+      PieceKit.mark('전자원', () => {
+        ctx.fillStyle = INK;
+        ctx.fillRect(X_SRC - 16, CY - 11, 16, 22);
+        label('전자원', X_SRC - 6, 305, 'left');
+      });
+
+      PieceKit.mark('이중 슬릿 벽', () => {
+        ctx.fillStyle = INK;
+        const gapTop1 = CY - SLIT_HALF_SEP - SLIT_WIDTH / 2, gapBot1 = CY - SLIT_HALF_SEP + SLIT_WIDTH / 2;
+        const gapTop2 = CY + SLIT_HALF_SEP - SLIT_WIDTH / 2, gapBot2 = CY + SLIT_HALF_SEP + SLIT_WIDTH / 2;
+        ctx.fillRect(X_WALL - 3, PLATE_TOP, 6, gapTop1 - PLATE_TOP);
+        ctx.fillRect(X_WALL - 3, gapBot1, 6, gapTop2 - gapBot1);
+        ctx.fillRect(X_WALL - 3, gapBot2, 6, PLATE_BOT - gapBot2);
+        label('이중 슬릿', X_WALL, 305);
+      });
+
+      PieceKit.mark('쌓인 점', () => {
+        ctx.fillStyle = `rgba(35, 35, 45, ${(0.55 * fk).toFixed(3)})`;
+        const last = S.n - 1;
+        for (let i = 0; i < S.n; i++) {
+          if (i === last) continue;
+          ctx.fillRect(S.xs[i] - 0.8, S.ys[i] - 0.8, 1.6, 1.6);
+        }
+      });
+
+      PieceKit.mark('방금 도착한 전자', () => {
+        if (S.n === 0 || fk <= 0) return;
+        const i = S.n - 1;
+        ctx.globalAlpha = fk;
+        ctx.fillStyle = ACCENT;
+        ctx.beginPath();
+        ctx.arc(S.xs[i], S.ys[i], 3.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      });
+
+      PieceKit.mark('도착 위치별 개수 막대', () => {
+        if (S.binMax === 0) return;
+        ctx.fillStyle = `rgba(35, 35, 45, ${(0.4 * fk).toFixed(3)})`;
+        for (let b = 0; b < NBINS; b++) {
+          const len = BAR_MAX * S.bins[b] / S.binMax;
+          if (len <= 0) continue;
+          ctx.fillRect(X_BARS, PLATE_TOP + b * BIN_H + 0.5, len, BIN_H - 1);
+        }
+      });
+
+      PieceKit.mark('도착 개수', () => {
+        label(`검출 화면(정면) · 도착한 전자 ${S.n.toLocaleString('ko-KR')}개`, X_PLATE + PLATE_W / 2, 305);
+      });
+
+      PieceKit.mark('캡션', () => {
+        const text = CAPTIONS[stage()];
+        if (captionEl.textContent !== text) captionEl.textContent = text;
+        captionEl.style.opacity = String(fk);
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

@@ -216,9 +216,15 @@ importers:
       '@aperi21/sim-doppler-effect':
         specifier: workspace:*
         version: link:../../sims/waves/doppler-effect
+      '@aperi21/sim-double-slit-with-electrons':
+        specifier: workspace:*
+        version: link:../../sims/modern/double-slit-with-electrons
       '@aperi21/sim-drag-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/drag-force
+      '@aperi21/sim-electromagnetic-wave':
+        specifier: workspace:*
+        version: link:../../sims/em/electromagnetic-wave
       '@aperi21/sim-energy-flow-diagram':
         specifier: workspace:*
         version: link:../../sims/mechanics/energy-flow-diagram
@@ -255,6 +261,9 @@ importers:
       '@aperi21/sim-hr-diagram':
         specifier: workspace:*
         version: link:../../sims/astro/hr-diagram
+      '@aperi21/sim-huygens-principle':
+        specifier: workspace:*
+        version: link:../../sims/waves/huygens-principle
       '@aperi21/sim-impulse-force-relation':
         specifier: workspace:*
         version: link:../../sims/mechanics/impulse-force-relation
@@ -288,6 +297,9 @@ importers:
       '@aperi21/sim-mechanical-advantage':
         specifier: workspace:*
         version: link:../../sims/mechanics/mechanical-advantage
+      '@aperi21/sim-moon-phases':
+        specifier: workspace:*
+        version: link:../../sims/astro/moon-phases
       '@aperi21/sim-net-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/net-force
@@ -303,12 +315,21 @@ importers:
       '@aperi21/sim-normal-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/normal-force
+      '@aperi21/sim-normal-modes':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/normal-modes
       '@aperi21/sim-pendulum-isochronism':
         specifier: workspace:*
         version: link:../../sims/oscillation/pendulum-isochronism
       '@aperi21/sim-phase-space':
         specifier: workspace:*
         version: link:../../sims/oscillation/phase-space
+      '@aperi21/sim-poiseuille-flow':
+        specifier: workspace:*
+        version: link:../../sims/fluids/poiseuille-flow
+      '@aperi21/sim-polarization':
+        specifier: workspace:*
+        version: link:../../sims/optics/polarization
       '@aperi21/sim-position-time-graph':
         specifier: workspace:*
         version: link:../../sims/kinematics/position-time-graph
@@ -360,6 +381,9 @@ importers:
       '@aperi21/sim-terminal-velocity':
         specifier: workspace:*
         version: link:../../sims/kinematics/terminal-velocity
+      '@aperi21/sim-thermal-convection':
+        specifier: workspace:*
+        version: link:../../sims/thermal/thermal-convection
       '@aperi21/sim-thin-film-interference':
         specifier: workspace:*
         version: link:../../sims/optics/thin-film-interference
@@ -630,6 +654,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/astro/moon-phases:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/astro/tidal-force:
     devDependencies:
       '@aperi21/schema':
@@ -659,6 +692,15 @@ importers:
       '@aperi21/plugin-em':
         specifier: workspace:*
         version: link:../../../packages/plugin-em
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/electromagnetic-wave:
+    devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../../../packages/schema
@@ -724,6 +766,15 @@ importers:
         version: 5.9.3
 
   sims/fluids/lift-force:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/fluids/poiseuille-flow:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1329,6 +1380,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/modern/double-slit-with-electrons:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/modern/spacetime-diagram:
     devDependencies:
       '@aperi21/schema':
@@ -1339,6 +1399,15 @@ importers:
         version: 5.9.3
 
   sims/optics/color-addition:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/polarization:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1372,6 +1441,15 @@ importers:
         version: 5.9.3
 
   sims/oscillation/gyroscopic-precession:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/normal-modes:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1446,6 +1524,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/thermal/thermal-convection:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/waves/beats:
     devDependencies:
       '@aperi21/schema':
@@ -1456,6 +1543,15 @@ importers:
         version: 5.9.3
 
   sims/waves/doppler-effect:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/waves/huygens-principle:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*

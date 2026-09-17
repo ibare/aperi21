@@ -1,0 +1,15 @@
+{
+  "name": "10-probe-t3",
+  "title": "표현력 검증 턴 3 — 8개 분야 각 3번",
+  "record": "tasks/engine-requirements/gap-ledger.md",
+  "pieces": [
+    "normal-modes",
+    "moon-phases",
+    "poiseuille-flow",
+    "thermal-convection",
+    "huygens-principle",
+    "polarization",
+    "electromagnetic-wave",
+    "double-slit-with-electrons"
+  ]
+}

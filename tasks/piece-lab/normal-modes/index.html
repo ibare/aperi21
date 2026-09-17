@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>정규 모드</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --ink: #1f2328;
+    --soft: #8a929a;
+    --faint: #e9ecef;
+    --accent: #d9480f;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); }
+  body { font-family: -apple-system, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 8px 0 10px; }
+  canvas { display: block; width: 100%; height: 372px; touch-action: none; }
+  .caption { margin: 6px 12px 0; font-size: 15px; line-height: 1.5; min-height: 45px; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <p class="caption" id="caption"></p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 계: 양 끝이 고정된 줄에 구슬 다섯 알, 가로로 흔들림 ──
+  const N = 5;
+  const W0 = 4.05;            // 이웃 구슬 사이 결합의 세기 (각진동수 단위)
+  const HIST = 240;           // 모드 크기 기록 길이 (4초)
+  const T0 = 1.7;             // 도착 시각에 이미 놓은 지 1.7초 지난 상태
+  const PLUCK_BEAD = 0;       // 자동 진행에서 당겨 놓는 구슬
+  const PLUCK_Y = 1.0;
+
+  const omega = [], shape = [];
+  for (let n = 1; n <= N; n++) {
+    omega.push(2 * W0 * Math.sin(n * Math.PI / (2 * (N + 1))));
+    const s = [];
+    for (let j = 1; j <= N; j++) s.push(Math.sqrt(2 / (N + 1)) * Math.sin(n * Math.PI * j / (N + 1)));
+    shape.push(s);
+  }
+
+  const y = new Float64Array(N), v = new Float64Array(N), acc = new Float64Array(N);
+  const q = new Float64Array(N), qd = new Float64Array(N), amp = new Float64Array(N);
+  const hist = []; for (let n = 0; n < N; n++) hist.push(new Float64Array(HIST));
+  let head = 0;               // 다음에 쓸 칸
+  let held = -1;              // 붙잡은 구슬 번호, 없으면 -1
+  let heldY = 0;
+  let activeModes = N;
+
+  function pluckModal(bead, y0) {
+    const q0 = new Float64Array(N);
+    for (let n = 0; n < N; n++) q0[n] = shape[n][bead] * y0;
+    return q0;
+  }
+
+  // 놓은 뒤 T0 초가 지난 상태와, 그 앞 4초의 기록을 해석해로 채운다
+  (function init() {
+    const q0 = pluckModal(PLUCK_BEAD, PLUCK_Y);
+    for (let k = 0; k < HIST; k++) {
+      const tt = T0 - (HIST - 1 - k) / 60;
+      for (let n = 0; n < N; n++) hist[n][k] = tt < 0 ? q0[n] : q0[n] * Math.cos(omega[n] * tt);
+    }
+    head = 0;
+    for (let j = 0; j < N; j++) { y[j] = 0; v[j] = 0; }
+    for (let n = 0; n < N; n++) {
+      const qn = q0[n] * Math.cos(omega[n] * T0);
+      const qdn = -q0[n] * omega[n] * Math.sin(omega[n] * T0);
+      for (let j = 0; j < N; j++) { y[j] += shape[n][j] * qn; v[j] += shape[n][j] * qdn; }
+    }
+    project();
+  })();
+
+  function accel() {
+    for (let j = 0; j < N; j++) {
+      const l = j > 0 ? y[j - 1] : 0, r = j < N - 1 ? y[j + 1] : 0;
+      acc[j] = W0 * W0 * (l - 2 * y[j] + r);
+    }
+  }
+  function project() {
+    activeModes = 0;
+    for (let n = 0; n < N; n++) {
+      let a = 0, b = 0;
+      for (let j = 0; j < N; j++) { a += shape[n][j] * y[j]; b += shape[n][j] * v[j]; }
+      q[n] = a; qd[n] = b;
+      amp[n] = Math.hypot(a, b / omega[n]);
+      if (amp[n] > 1e-3) activeModes++;
+    }
+  }
+
+  // ── 그리기 준비 ──
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const captionEl = document.getElementById('caption');
+  const css = getComputedStyle(document.documentElement);
+  const C = {
+    ink: css.getPropertyValue('--ink').trim(),
+    soft: css.getPropertyValue('--soft').trim(),
+    faint: css.getPropertyValue('--faint').trim(),
+    accent: css.getPropertyValue('--accent').trim(),
+  };
+  const H = 372, MAIN_H = 120, GAP = 14, ROW_H = 46;
+  const DISP_PX = 48;         // 변위 1 = 48px (사슬과 모드 줄이 같은 눈금)
+  const Q_PX = 34;            // 기록 그래프의 세로 눈금
+  let L = null;
+
+  function layout() {
+    const w = canvas.clientWidth || 860;
+    const dpr = window.devicePixelRatio || 1;
+    if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(H * dpr)) {
+      canvas.width = Math.round(w * dpr); canvas.height = Math.round(H * dpr);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const x0 = 44, x1 = Math.round(w * 0.62);
+    const bx = []; for (let j = 1; j <= N; j++) bx.push(x0 + (x1 - x0) * j / (N + 1));
+    const rowY = []; for (let n = 0; n < N; n++) rowY.push(MAIN_H + GAP + ROW_H * n + ROW_H / 2);
+    L = { w, x0, x1, bx, mainY: MAIN_H / 2, rowY, tx0: x1 + 28, tx1: w - 14 };
+  }
+
+  function wallTick(x, cy, half) {
+    ctx.beginPath(); ctx.moveTo(x, cy - half); ctx.lineTo(x, cy + half); ctx.stroke();
+  }
+  function chainPath(cy, disp, px) {
+    ctx.beginPath(); ctx.moveTo(L.x0, cy);
+    for (let j = 0; j < N; j++) ctx.lineTo(L.bx[j], cy - disp(j) * px);
+    ctx.lineTo(L.x1, cy); ctx.stroke();
+  }
+
+  function captionText() {
+    if (held >= 0) {
+      return '붙잡아 둔 모양도 아래 모양들을 더한 것이다 — 놓으면 저마다 제 박자로 흔들리기 시작한다.';
+    }
+    if (activeModes === 0) {
+      return '사슬이 멈춰 있어 아래 모양도 모두 납작하다 — 구슬 하나를 끌어 당겼다 놓아 보라.';
+    }
+    const word = ['', '한', '두', '세', '네', '다섯'][activeModes];
+    if (activeModes === N) {
+      return '한 알을 당겼다 놓은 사슬의 뒤섞인 흔들림은, 아래 다섯 모양이 제 모양 그대로 저마다 다른 박자로 부풀고 줄어드는 것을 더한 것이다.';
+    }
+    return '한 알을 당겼다 놓은 사슬의 뒤섞인 흔들림은, 아래 ' + word +
+      ' 모양이 제 모양 그대로 저마다 다른 박자로 부풀고 줄어드는 것을 더한 것이다. 납작한 줄의 모양은 처음부터 들어 있지 않았다.';
+  }
+
+  // ── 조작: 구슬을 끌어 당겼다 놓기 ──
+  function pointerPos(e) {
+    const r = canvas.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  }
+  canvas.addEventListener('pointerdown', (e) => {
+    if (PieceKit.frozen || !L) return;
+    const p = pointerPos(e);
+    let best = -1, bd = 26;
+    for (let j = 0; j < N; j++) {
+      const d = Math.hypot(p.x - L.bx[j], p.y - (L.mainY - y[j] * DISP_PX));
+      if (d < bd) { bd = d; best = j; }
+    }
+    if (best < 0) return;
+    held = best;
+    heldY = Math.max(-1.1, Math.min(1.1, (L.mainY - p.y) / DISP_PX));
+    canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener('pointermove', (e) => {
+    if (held < 0 || PieceKit.frozen) return;
+    const p = pointerPos(e);
+    heldY = Math.max(-1.1, Math.min(1.1, (L.mainY - p.y) / DISP_PX));
+  });
+  const release = () => { held = -1; };
+  canvas.addEventListener('pointerup', release);
+  canvas.addEventListener('pointercancel', release);
+
+  PieceKit.loop({
+    step(dt) {
+      if (held >= 0 && !PieceKit.frozen) {
+        for (let j = 0; j < N; j++) { y[j] = j === held ? heldY : 0; v[j] = 0; }
+      } else {
+        accel();
+        for (let j = 0; j < N; j++) { v[j] += 0.5 * dt * acc[j]; y[j] += dt * v[j]; }
+        accel();
+        for (let j = 0; j < N; j++) v[j] += 0.5 * dt * acc[j];
+      }
+      project();
+      for (let n = 0; n < N; n++) hist[n][head] = q[n];
+      head = (head + 1) % HIST;
+    },
+    draw() {
+      layout();
+      ctx.clearRect(0, 0, L.w, H);
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+
+      PieceKit.mark('구슬 칸 안내선', () => {
+        ctx.strokeStyle = C.faint; ctx.lineWidth = 1;
+        for (let j = 0; j < N; j++) {
+          ctx.beginPath(); ctx.moveTo(L.bx[j], 8); ctx.lineTo(L.bx[j], H - 6); ctx.stroke();
+        }
+      });
+
+      PieceKit.mark('사슬', () => {
+        ctx.strokeStyle = C.ink; ctx.lineWidth = 2.5;
+        wallTick(L.x0, L.mainY, 22); wallTick(L.x1, L.mainY, 22);
+        ctx.strokeStyle = C.soft; ctx.lineWidth = 1.5;
+        chainPath(L.mainY, (j) => y[j], DISP_PX);
+        ctx.fillStyle = C.ink;
+        for (let j = 0; j < N; j++) {
+          ctx.beginPath(); ctx.arc(L.bx[j], L.mainY - y[j] * DISP_PX, j === held ? 9.5 : 8, 0, Math.PI * 2); ctx.fill();
+        }
+      });
+
+      PieceKit.mark('더하기 기호', () => {
+        ctx.fillStyle = C.soft; ctx.font = '20px sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        for (let n = 0; n < N; n++) ctx.fillText(n === 0 ? '=' : '+', 16, L.rowY[n]);
+      });
+
+      PieceKit.mark('모드 모양의 폭', () => {
+        ctx.strokeStyle = C.soft; ctx.lineWidth = 1; ctx.setLineDash([3, 4]);
+        for (let n = 0; n < N; n++) {
+          if (amp[n] < 1e-3) continue;
+          chainPath(L.rowY[n], (j) => shape[n][j] * amp[n], DISP_PX);
+          chainPath(L.rowY[n], (j) => -shape[n][j] * amp[n], DISP_PX);
+        }
+        ctx.setLineDash([]);
+        ctx.strokeStyle = C.ink; ctx.lineWidth = 1.5;
+        for (let n = 0; n < N; n++) { wallTick(L.x0, L.rowY[n], 8); wallTick(L.x1, L.rowY[n], 8); }
+      });
+
+      PieceKit.mark('모드 모양의 지금 크기', () => {
+        ctx.strokeStyle = C.accent; ctx.fillStyle = C.accent; ctx.lineWidth = 2;
+        for (let n = 0; n < N; n++) {
+          chainPath(L.rowY[n], (j) => shape[n][j] * q[n], DISP_PX);
+          for (let j = 0; j < N; j++) {
+            ctx.beginPath(); ctx.arc(L.bx[j], L.rowY[n] - shape[n][j] * q[n] * DISP_PX, 3.5, 0, Math.PI * 2); ctx.fill();
+          }
+        }
+      });
+
+      PieceKit.mark('모드 크기 기록', () => {
+        const span = L.tx1 - L.tx0;
+        for (let n = 0; n < N; n++) {
+          const cy = L.rowY[n];
+          ctx.strokeStyle = C.faint; ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(L.tx0, cy); ctx.lineTo(L.tx1, cy); ctx.stroke();
+          ctx.strokeStyle = C.soft; ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          // 가장 새 값이 왼쪽(모드 줄 쪽), 오래된 값이 오른쪽으로 흘러간다
+          for (let k = 0; k < HIST; k++) {
+            const idx = (head - 1 - k + HIST * 2) % HIST;
+            const x = L.tx0 + span * k / (HIST - 1);
+            const yy = cy - hist[n][idx] * Q_PX;
+            if (k === 0) ctx.moveTo(x, yy); else ctx.lineTo(x, yy);
+          }
+          ctx.stroke();
+        }
+      });
+
+      PieceKit.mark('모드 크기 지금 점', () => {
+        ctx.fillStyle = C.accent;
+        for (let n = 0; n < N; n++) {
+          ctx.beginPath(); ctx.arc(L.tx0, L.rowY[n] - q[n] * Q_PX, 4, 0, Math.PI * 2); ctx.fill();
+        }
+      });
+
+      const text = captionText();
+      if (captionEl.textContent !== text) captionEl.textContent = text;
+    },
+  });
+})();
+</script>
+</body>
+</html>
