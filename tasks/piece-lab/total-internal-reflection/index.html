@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>전반사</title>
+<style>
+  :root {
+    --page: #f6f5f2;
+    --ink: #2a2d33;
+    --ink-soft: #6b7079;
+    --btn-line: #c9ccd2;
+    --btn-on: #2a2d33;
+  }
+  html, body { margin: 0; background: var(--page); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; min-width: 720px; margin: 0 auto; padding: 12px 0; }
+  canvas { display: block; width: 100%; height: 340px; touch-action: none; cursor: grab; }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 10px; min-height: 44px; }
+  .caption { font-size: 15px; line-height: 1.45; flex: 1; }
+  .media { display: flex; gap: 6px; flex: none; padding-right: 4px; }
+  .media button { font: inherit; font-size: 13px; padding: 5px 10px; border-radius: 6px;
+    border: 1px solid var(--btn-line); background: transparent; color: var(--ink); cursor: pointer; }
+  .media button[aria-pressed="true"] { background: var(--btn-on); color: var(--page); border-color: var(--btn-on); }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <div class="row">
+    <div class="caption" id="caption"></div>
+    <div class="media" id="media">
+      <button data-n="1.33" aria-pressed="true">물</button>
+      <button data-n="1.50" aria-pressed="false">유리</button>
+      <button data-n="2.42" aria-pressed="false">다이아몬드</button>
+    </div>
+  </div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 물리: 빛이 밀한 매질(n1)에서 공기(n2 = 1)로 나갈 때 ──
+  const N_AIR = 1.0;
+  const DEG = Math.PI / 180;
+  const MEDIA = { '1.33': '물', '1.50': '유리', '2.42': '다이아몬드' };
+
+  // 편광되지 않은 빛의 프레넬 반사 비율. 임계각 이상이면 1.
+  function split(n1, thetaI) {
+    const ci = Math.cos(thetaI);
+    const st = n1 / N_AIR * Math.sin(thetaI);
+    if (st >= 1) return { R: 1, T: 0, thetaT: null };
+    const ct = Math.sqrt(1 - st * st);
+    const rs = (n1 * ci - N_AIR * ct) / (n1 * ci + N_AIR * ct);
+    const rp = (N_AIR * ci - n1 * ct) / (N_AIR * ci + n1 * ct);
+    const R = (rs * rs + rp * rp) / 2;
+    return { R, T: 1 - R, thetaT: Math.asin(st) };
+  }
+  const criticalAngle = (n1) => Math.asin(N_AIR / n1);
+
+  // ── 상태 ──
+  let chosenN = 1.33;          // 독자가 고른 매질
+  let autoPhase = 0;           // 자동 진행 시간(누적)
+  let dragging = false;
+  let manual = false;          // 독자가 각을 쥐고 있는가
+  let manualAngle = 0;
+  let idle = 0;                // 손을 뗀 뒤 흐른 시간
+  let blend = 0;               // 1 이면 수동 각, 0 이면 자동 각
+  const PERIOD = 12;
+  const PHASE_OFFSET = 1.77;
+
+  const nNow = () => (PieceKit.frozen ? 1.33 : chosenN);
+
+  // 임계각 근처에 오래 머무는 왕복: 아래로 30°, 위로 20°
+  function autoAngle(p, n1) {
+    const v = -Math.cos(2 * Math.PI * (p + PHASE_OFFSET) / PERIOD);
+    const off = v < 0 ? -30 * Math.pow(-v, 1.8) : 20 * Math.pow(v, 1.8);
+    const deg = Math.min(85, Math.max(2, criticalAngle(n1) / DEG + off));
+    return deg * DEG;
+  }
+  function currentAngle() {
+    const a = autoAngle(autoPhase, nNow());
+    if (PieceKit.frozen) return a;
+    return a + (manualAngle - a) * blend;
+  }
+
+  // ── 캔버스 ──
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const captionEl = document.getElementById('caption');
+  let W = 860, H = 340;
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    W = canvas.clientWidth || 860; H = 340;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const COL = {
+    air: '#1b2230',
+    water: '#10263a',
+    boundary: 'rgba(200,215,230,0.55)',
+    light: '255,226,160',       // 빛은 입사·반사·굴절 모두 같은 색
+    guide: 'rgba(200,210,225,0.45)',
+    text: 'rgba(225,232,240,0.85)',
+    textSoft: 'rgba(200,210,225,0.6)',
+    accent: '#ff5d8f',          // 강조색: 임계각에만
+    graphInk: '#6b7079',
+    graphText: '#2a2d33',
+  };
+
+  const layout = () => {
+    const sceneW = Math.round(W * 0.56);
+    return {
+      sceneW,
+      by: 150,                       // 경계 높이
+      px: Math.round(sceneW * 0.5),  // 입사점
+      gx0: sceneW + 56, gx1: W - 20, gy0: 40, gy1: 286,
+    };
+  };
+
+  // 폭 있는 광선 띠: 중심선이 (x,y)를 지나고 방향 (dx,dy), 앞뒤로 len
+  function band(x, y, dx, dy, back, fwd, width, alpha) {
+    const nx = -dy, ny = dx, h = width / 2;
+    const ax = x - dx * back, ay = y - dy * back, bx = x + dx * fwd, by = y + dy * fwd;
+    for (const [k, a] of [[3.0, 0.08], [1.8, 0.16], [1, 0.8]]) {
+      ctx.fillStyle = `rgba(${COL.light},${(alpha * a).toFixed(4)})`;
+      ctx.beginPath();
+      ctx.moveTo(ax + nx * h * k, ay + ny * h * k);
+      ctx.lineTo(bx + nx * h * k, by + ny * h * k);
+      ctx.lineTo(bx - nx * h * k, by - ny * h * k);
+      ctx.lineTo(ax - nx * h * k, ay - ny * h * k);
+      ctx.closePath();
+      ctx.fill();
+    }
+  }
+  // 밝기는 몫에 비례하되, 몫이 있으면 아주 흐리게라도 보이도록 바닥 0.08 을 둔다
+  const visible = (f) => (f <= 0 ? 0 : 0.08 + 0.92 * f);
+
+  // ── 조작 ──
+  function pointerAngle(ev) {
+    const r = canvas.getBoundingClientRect();
+    const L = layout();
+    const x = ev.clientX - r.left, y = ev.clientY - r.top;
+    if (x > L.sceneW) return null;
+    const dx = Math.abs(x - L.px), dy = Math.max(1, y - L.by);
+    return Math.min(85 * DEG, Math.max(0, Math.atan2(dx, dy)));
+  }
+  canvas.addEventListener('pointerdown', (ev) => {
+    if (PieceKit.frozen) return;
+    const a = pointerAngle(ev);
+    if (a === null) return;
+    dragging = true; manual = true; manualAngle = a; idle = 0;
+    canvas.setPointerCapture(ev.pointerId);
+  });
+  canvas.addEventListener('pointermove', (ev) => {
+    if (!dragging) return;
+    const a = pointerAngle(ev);
+    if (a !== null) manualAngle = a;
+  });
+  const release = () => { dragging = false; idle = 0; };
+  canvas.addEventListener('pointerup', release);
+  canvas.addEventListener('pointercancel', release);
+  document.getElementById('media').addEventListener('click', (ev) => {
+    const b = ev.target.closest('button');
+    if (!b || PieceKit.frozen) return;
+    chosenN = parseFloat(b.dataset.n);
+    for (const x of document.querySelectorAll('#media button')) x.setAttribute('aria-pressed', String(x === b));
+  });
+
+  // ── 그리기 ──
+  function drawScene(theta, n1) {
+    const L = layout();
+    const { R, T, thetaT } = split(n1, theta);
+    const thc = criticalAngle(n1);
+    const LEN = 420, WIDTH = 12;
+    const sx = Math.sin(theta), cy = Math.cos(theta);
+
+    PieceKit.mark('매질', () => {
+      ctx.fillStyle = COL.air; ctx.fillRect(0, 0, L.sceneW, L.by);
+      ctx.fillStyle = COL.water; ctx.fillRect(0, L.by, L.sceneW, H - L.by);
+    });
+
+    PieceKit.mark('매질 이름', () => {
+      ctx.font = '13px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.fillStyle = COL.textSoft; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.fillText('공기  n = 1.00', 14, 12);
+      ctx.fillText(`${MEDIA[n1.toFixed(2)]}  n = ${n1.toFixed(2)}`, 14, L.by + 10);
+    });
+
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    // 물 쪽 광선(입사·반사)은 물 영역에서만, 나가는 광선은 공기 영역에서만 보인다
+    PieceKit.mark('들어오는 빛', () => {
+      ctx.save(); ctx.beginPath(); ctx.rect(0, L.by, L.sceneW, H - L.by); ctx.clip();
+      band(L.px, L.by, sx, -cy, LEN, WIDTH, WIDTH, 1);
+      ctx.restore();
+    });
+    PieceKit.mark('되돌아오는 빛', () => {
+      ctx.save(); ctx.beginPath(); ctx.rect(0, L.by, L.sceneW, H - L.by); ctx.clip();
+      band(L.px, L.by, sx, cy, WIDTH, LEN, WIDTH, visible(R));
+      ctx.restore();
+    });
+    PieceKit.mark('나가는 빛', () => {
+      if (thetaT === null || T <= 0) return;
+      // 경계 위 발자국(WIDTH / cosθi)을 같게 두면 나가는 띠의 폭은 WIDTH·cosθt/cosθi
+      const wT = WIDTH * Math.cos(thetaT) / cy;
+      ctx.save(); ctx.beginPath(); ctx.rect(0, 0, L.sceneW, L.by); ctx.clip();
+      band(L.px, L.by, Math.sin(thetaT), -Math.cos(thetaT), WIDTH, LEN, Math.max(0.6, wT), visible(T));
+      ctx.restore();
+    });
+    ctx.restore();
+
+    PieceKit.mark('경계면', () => {
+      ctx.strokeStyle = COL.boundary; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(0, L.by); ctx.lineTo(L.sceneW, L.by); ctx.stroke();
+    });
+
+    PieceKit.mark('법선', () => {
+      ctx.save();
+      ctx.strokeStyle = COL.guide; ctx.lineWidth = 1; ctx.setLineDash([4, 5]);
+      ctx.beginPath(); ctx.moveTo(L.px, L.by - 120); ctx.lineTo(L.px, L.by + 170); ctx.stroke();
+      ctx.restore();
+    });
+
+    PieceKit.mark('임계각 방향', () => {
+      const r1 = 190;
+      ctx.save();
+      ctx.strokeStyle = COL.accent; ctx.lineWidth = 1.5; ctx.setLineDash([6, 5]);
+      ctx.beginPath();
+      ctx.moveTo(L.px, L.by);
+      ctx.lineTo(L.px - Math.sin(thc) * r1, L.by + Math.cos(thc) * r1);
+      ctx.stroke();
+      ctx.restore();
+      // 수치는 나가는 빛이 닿지 않는 공기 영역 왼쪽 위에 고정
+      ctx.fillStyle = COL.accent;
+      ctx.font = '14px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.fillText(`임계각 ${(thc / DEG).toFixed(1)}°`, 14, 62);
+    });
+
+    PieceKit.mark('입사각', () => {
+      const r = 44;
+      ctx.save();
+      ctx.strokeStyle = COL.text; ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      // 법선 아래 방향(π/2)에서 광원 쪽으로 θ 만큼
+      ctx.arc(L.px, L.by, r, Math.PI / 2, Math.PI / 2 + theta, false);
+      ctx.stroke();
+      ctx.fillStyle = COL.text;
+      ctx.font = '14px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.fillText(`입사각 ${(theta / DEG).toFixed(1)}°`, 14, 40);
+      ctx.restore();
+    });
+
+    PieceKit.mark('광원', () => {
+      const d = 172;
+      const x = L.px - sx * d, y = L.by + cy * d;
+      ctx.save();
+      ctx.translate(x, y); ctx.rotate(-theta);
+      ctx.fillStyle = '#3b4556'; ctx.strokeStyle = 'rgba(210,220,235,0.7)'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.rect(-10, 0, 20, 22); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = `rgb(${COL.light})`;
+      ctx.beginPath(); ctx.rect(-7, -2, 14, 4); ctx.fill();
+      ctx.restore();
+    });
+
+    return { R, T };
+  }
+
+  function drawGraph(theta, n1, R) {
+    const L = layout();
+    const thc = criticalAngle(n1);
+    const X = (deg) => L.gx0 + (L.gx1 - L.gx0) * deg / 90;
+    const Y = (f) => L.gy1 - (L.gy1 - L.gy0) * f;
+    const font = '12px -apple-system, "Apple SD Gothic Neo", sans-serif';
+
+    PieceKit.mark('그래프 틀', () => {
+      ctx.strokeStyle = COL.graphInk; ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(L.gx0, L.gy0); ctx.lineTo(L.gx0, L.gy1); ctx.lineTo(L.gx1, L.gy1);
+      ctx.stroke();
+      ctx.fillStyle = COL.graphInk; ctx.font = font;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      ctx.fillText('0°', X(0), L.gy1 + 6);
+      ctx.fillText('90°', X(90), L.gy1 + 6);
+      ctx.fillText('입사각', (L.gx0 + L.gx1) / 2, L.gy1 + 22);
+      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      ctx.fillText('100%', L.gx0 - 6, Y(1));
+      ctx.fillText('0%', L.gx0 - 6, Y(0));
+      ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+      ctx.fillText('되돌아오는 빛의 몫', L.gx0, L.gy0 - 12);
+    });
+
+    PieceKit.mark('반사 비율 곡선', () => {
+      ctx.beginPath();
+      ctx.moveTo(X(0), Y(0));
+      for (let i = 0; i <= 360; i++) {
+        const deg = i * 0.25;
+        ctx.lineTo(X(deg), Y(split(n1, Math.min(deg, 89.99) * DEG).R));
+      }
+      ctx.lineTo(X(90), Y(0));
+      ctx.closePath();
+      ctx.fillStyle = `rgba(${COL.light},0.28)`;
+      ctx.fill();
+      ctx.beginPath();
+      for (let i = 0; i <= 360; i++) {
+        const deg = i * 0.25;
+        const px = X(deg), py = Y(split(n1, Math.min(deg, 89.99) * DEG).R);
+        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.strokeStyle = '#b8862a'; ctx.lineWidth = 2; ctx.stroke();
+    });
+
+    PieceKit.mark('그래프 임계각', () => {
+      ctx.save();
+      ctx.strokeStyle = COL.accent; ctx.lineWidth = 1.5; ctx.setLineDash([6, 5]);
+      ctx.beginPath(); ctx.moveTo(X(thc / DEG), L.gy0); ctx.lineTo(X(thc / DEG), L.gy1); ctx.stroke();
+      ctx.restore();
+      ctx.fillStyle = COL.accent; ctx.font = font;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      ctx.fillText(`${(thc / DEG).toFixed(1)}°`, X(thc / DEG), L.gy1 + 6);
+    });
+
+    PieceKit.mark('현재 입사각 표지', () => {
+      const x = X(theta / DEG), y = Y(R);
+      ctx.strokeStyle = 'rgba(42,45,51,0.35)'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, L.gy1); ctx.stroke();
+      ctx.fillStyle = COL.graphText; ctx.strokeStyle = '#f6f5f2'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      // 임계각 아래에서는 100% 로 반올림하지 않는다 — 조금이라도 나가는 빛이 있다
+      const pct = R >= 1 ? 100 : Math.min(99, Math.round(R * 100));
+      ctx.font = 'bold 13px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textBaseline = 'middle';
+      const left = x > (L.gx0 + L.gx1) / 2;
+      ctx.textAlign = left ? 'right' : 'left';
+      ctx.fillText(`${pct}%`, x + (left ? -10 : 10), Math.max(L.gy0 + 8, Math.min(L.gy1 - 10, y + (R > 0.9 ? 16 : -14))));
+    });
+  }
+
+  function captionFor(theta, n1, T) {
+    const thc = criticalAngle(n1);
+    if (T <= 0) return '임계각을 넘었다 — 공기로 나가는 빛이 없고, 빛이 전부 되돌아온다.';
+    if (theta >= thc - 10 * DEG)
+      return '임계각에 가까울수록 나가는 빛은 경계면에 눕고 흐려지며, 그만큼 되돌아오는 빛이 밝아진다.';
+    return '경계면에서 빛이 나뉜다 — 대부분은 공기로 나가고, 일부만 되돌아온다.';
+  }
+
+  PieceKit.loop({
+    step(dt) {
+      if (PieceKit.frozen) { autoPhase += dt; return; }
+      if (!manual) autoPhase += dt;
+      if (manual && !dragging) {
+        idle += dt;
+        if (idle > 5) manual = false;
+      }
+      const target = manual ? 1 : 0;
+      blend += (target - blend) * Math.min(1, dt * 4);
+      if (!manual && blend < 0.001) blend = 0;
+    },
+    draw() {
+      const n1 = nNow();
+      const theta = currentAngle();
+      PieceKit.mark('바탕', () => {
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = '#f6f5f2'; ctx.fillRect(0, 0, W, H);
+      });
+      const { R, T } = drawScene(theta, n1);
+      drawGraph(theta, n1, R);
+      PieceKit.mark('캡션', () => {
+        const text = captionFor(theta, n1, T);
+        if (captionEl.textContent !== text) captionEl.textContent = text;
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

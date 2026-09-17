@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>라그랑주 점</title>
+<style>
+  :root {
+    --bg: #0b111c;
+    --ink: #d7dee8;
+    --ink-dim: #8793a3;
+    --accent: #ffb454; /* 강조색: 시험 물체 하나에만 쓴다 */
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; }
+  canvas { display: block; width: 100%; }
+  .caption { margin: 0; padding: 10px 14px 14px; font-size: 15px; line-height: 1.55; color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <p class="caption" id="caption">지구와 달을 따라 함께 도는 틀에서, 다섯 평형점 곁에 살짝 비껴 놓은 물체는 안장인 L1·L2·L3에서는 흘러나가고 언덕 꼭대기인 L4·L5에서는 그 둘레를 맴돈다.</p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 물리: 원 궤도를 도는 두 천체와 함께 도는 틀 (길이 단위 = 두 천체 거리, 시간 단위 = 공전 주기/2π)
+  const MU = 0.01215;               // 달 질량 / (지구+달 질량)
+  const TIME_SCALE = 1.5;           // 화면 1초 = 물리 시간 1.5 단위 (공전 한 바퀴 ≈ 4.2초)
+  const SUBSTEPS = 4;
+  const OFFSET = 0.01;              // 평형점에서 비껴 놓는 거리
+  const EMIT_EVERY = 1.6;           // 점마다 물체를 새로 놓는 간격 (초)
+  const LIFE = 20;                  // 물체 수명 (초)
+  const FADE = 1.5;                 // 사라질 때 흐려지는 시간 (초)
+  const TRAIL_KEEP = 12;            // 남기는 자취 길이 (초)
+  const LEAVE_DIST = 0.5;           // 제자리에서 이만큼 벗어나면 떠난 것으로 보고 흐리게 지운다
+  const MOON_CAPTURE = 0.07;        // 달 우물 안으로 떨어졌다고 보는 거리
+  const PREROLL = 20;              // 도착한 순간 이미 진행 중이도록 미리 돌리는 시간 (초)
+
+  const EARTH = [-MU, 0], MOON = [1 - MU, 0];
+
+  function potential(x, y) {        // 유효 퍼텐셜 (높을수록 언덕)
+    const r1 = Math.hypot(x + MU, y), r2 = Math.hypot(x - 1 + MU, y);
+    return -(1 - MU) / r1 - MU / r2 - (x * x + y * y) / 2;
+  }
+  function deriv(s) {
+    const x = s[0], y = s[1], vx = s[2], vy = s[3];
+    const dx1 = x + MU, dx2 = x - 1 + MU;
+    const r1 = Math.hypot(dx1, y), r2 = Math.hypot(dx2, y);
+    const a = (1 - MU) / (r1 * r1 * r1), b = MU / (r2 * r2 * r2);
+    return [vx, vy, 2 * vy + x - a * dx1 - b * dx2, -2 * vx + y - a * y - b * y];
+  }
+  function rk4(s, h) {
+    const k1 = deriv(s);
+    const s2 = s.map((v, i) => v + h / 2 * k1[i]); const k2 = deriv(s2);
+    const s3 = s.map((v, i) => v + h / 2 * k2[i]); const k3 = deriv(s3);
+    const s4 = s.map((v, i) => v + h * k3[i]);     const k4 = deriv(s4);
+    return s.map((v, i) => v + h / 6 * (k1[i] + 2 * k2[i] + 2 * k3[i] + k4[i]));
+  }
+  function axisForce(x) { return deriv([x, 0, 0, 0])[2]; }
+  function bisect(lo, hi) {
+    for (let i = 0; i < 80; i++) {
+      const m = (lo + hi) / 2;
+      if (Math.sign(axisForce(m)) === Math.sign(axisForce(lo))) lo = m; else hi = m;
+    }
+    return (lo + hi) / 2;
+  }
+  const LPOINTS = [
+    { name: 'L1', x: bisect(-MU + 0.05, 1 - MU - 0.01), y: 0 },
+    { name: 'L2', x: bisect(1 - MU + 0.01, 2), y: 0 },
+    { name: 'L3', x: bisect(-2, -MU - 0.05), y: 0 },
+    { name: 'L4', x: 0.5 - MU, y: Math.sqrt(3) / 2 },
+    { name: 'L5', x: 0.5 - MU, y: -Math.sqrt(3) / 2 },
+  ];
+
+  // ── 시험 물체
+  const particles = [];
+  let simClock = 0;                 // 미리 돌린 시간을 포함한 누적 시각 (초)
+  let frame = 0;
+  const nextEmit = LPOINTS.map((_, i) => i * EMIT_EVERY / LPOINTS.length);
+
+  function emit(li) {
+    const L = LPOINTS[li];
+    const ang = PieceKit.random() * Math.PI * 2;
+    particles.push({
+      li, s: [L.x + OFFSET * Math.cos(ang), L.y + OFFSET * Math.sin(ang), 0, 0],
+      born: simClock, endAt: null, trail: [],
+    });
+  }
+
+  function advance(dt) {
+    for (let li = 0; li < LPOINTS.length; li++) {
+      while (simClock >= nextEmit[li]) { emit(li); nextEmit[li] += EMIT_EVERY; }
+    }
+    const h = dt * TIME_SCALE / SUBSTEPS;
+    for (const p of particles) {
+      if (p.endAt === null) {
+        for (let k = 0; k < SUBSTEPS; k++) p.s = rk4(p.s, h);
+        const [x, y] = p.s, L = LPOINTS[p.li];
+        // 지구에 닿거나 달 우물 안(달에서 0.07)으로 떨어지면 떠난 것으로 본다 — 그 뒤 달 둘레를 도는 행로는 주장 밖
+        const crashed = Math.hypot(x - EARTH[0], y) < 0.04 || Math.hypot(x - MOON[0], y) < MOON_CAPTURE;
+        const away = Math.hypot(x - L.x, y - L.y) > LEAVE_DIST || Math.hypot(x, y) > 2.4;
+        if (crashed || away || !isFinite(x + y) || simClock - p.born > LIFE) p.endAt = simClock;
+        if (frame % 2 === 0 && !crashed) p.trail.push([x, y, simClock]);
+      }
+      while (p.trail.length && simClock - p.trail[0][2] > TRAIL_KEEP) p.trail.shift();
+    }
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      if (p.endAt !== null && simClock - p.endAt > FADE) particles.splice(i, 1);
+    }
+    simClock += dt;
+    frame++;
+  }
+
+  // ── 화면
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  let W = 0, H = 0, DPR = 1, SCALE = 1, terrain = null;
+  const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const ACCENT = css('--accent'), INK = css('--ink'), INK_DIM = css('--ink-dim');
+
+  const toX = (x) => W / 2 + x * SCALE;
+  const toY = (y) => H / 2 - y * SCALE;
+
+  function buildTerrain() {
+    const off = document.createElement('canvas');
+    off.width = Math.round(W * DPR); off.height = Math.round(H * DPR);
+    const g = off.getContext('2d');
+    // 색 지형: 한 칸 2px 로 계산해 늘려 그린다
+    const cell = 2, cols = Math.ceil(W / cell) + 1, rows = Math.ceil(H / cell) + 1;
+    const lo = -1.75, hi = LPOINTS[3] ? potential(LPOINTS[3].x, LPOINTS[3].y) : -1.49;
+    const img = g.createImageData(cols, rows);
+    const vals = new Float64Array(cols * rows);
+    const dark = [11, 17, 28], light = [66, 84, 112];
+    for (let j = 0; j < rows; j++) {
+      for (let i = 0; i < cols; i++) {
+        const x = (i * cell - W / 2) / SCALE, y = (H / 2 - j * cell) / SCALE;
+        const u = potential(x, y);
+        vals[j * cols + i] = u;
+        let t = (u - lo) / (hi - lo); t = Math.max(0, Math.min(1, t)); t = t * t;
+        const o = (j * cols + i) * 4;
+        img.data[o] = dark[0] + (light[0] - dark[0]) * t;
+        img.data[o + 1] = dark[1] + (light[1] - dark[1]) * t;
+        img.data[o + 2] = dark[2] + (light[2] - dark[2]) * t;
+        img.data[o + 3] = 255;
+      }
+    }
+    const tmp = document.createElement('canvas'); tmp.width = cols; tmp.height = rows;
+    tmp.getContext('2d').putImageData(img, 0, 0);
+    g.imageSmoothingEnabled = true;
+    g.drawImage(tmp, 0, 0, cols * cell * DPR, rows * cell * DPR);
+
+    // 등고선: 세 안장점의 높이 + 꼭대기 바로 아래 + 비탈 몇 줄
+    const levels = [
+      potential(LPOINTS[0].x, 0), potential(LPOINTS[1].x, 0), potential(LPOINTS[2].x, 0),
+      hi - 0.003, hi - 0.01, -1.53, -1.64, -1.70, -1.80, -1.95,
+    ];
+    g.save(); g.scale(DPR, DPR);
+    g.strokeStyle = 'rgba(205,218,236,0.22)'; g.lineWidth = 1;
+    g.beginPath();
+    for (const lv of levels) {
+      for (let j = 0; j < rows - 1; j++) {
+        for (let i = 0; i < cols - 1; i++) {
+          const a = vals[j * cols + i], b = vals[j * cols + i + 1];
+          const c = vals[(j + 1) * cols + i + 1], d = vals[(j + 1) * cols + i];
+          const pts = [];
+          const edge = (v1, v2, x1, y1, x2, y2) => {
+            if ((v1 < lv) !== (v2 < lv)) {
+              const f = (lv - v1) / (v2 - v1);
+              pts.push([x1 + (x2 - x1) * f, y1 + (y2 - y1) * f]);
+            }
+          };
+          const X = i * cell, Y = j * cell;
+          edge(a, b, X, Y, X + cell, Y);
+          edge(b, c, X + cell, Y, X + cell, Y + cell);
+          edge(c, d, X + cell, Y + cell, X, Y + cell);
+          edge(d, a, X, Y + cell, X, Y);
+          for (let k = 0; k + 1 < pts.length; k += 2) {
+            g.moveTo(pts[k][0], pts[k][1]); g.lineTo(pts[k + 1][0], pts[k + 1][1]);
+          }
+        }
+      }
+    }
+    g.stroke();
+    g.restore();
+    terrain = off;
+  }
+
+  function resize() {
+    const w = Math.round(canvas.parentElement.clientWidth || 860);
+    const h = Math.round(w * 0.5);
+    DPR = window.devicePixelRatio || 1;
+    if (w === W && h === H && terrain) return;
+    W = w; H = h;
+    canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
+    canvas.style.height = H + 'px';
+    SCALE = Math.min(W / 2.9, H / 2.35);
+    buildTerrain();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function draw() {
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    PieceKit.mark('유효 퍼텐셜 지형', () => {
+      ctx.drawImage(terrain, 0, 0);
+    });
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+
+    PieceKit.mark('지구', () => {
+      ctx.fillStyle = INK;
+      ctx.beginPath(); ctx.arc(toX(EARTH[0]), toY(0), 9, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = INK_DIM; ctx.font = '12px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('지구', toX(EARTH[0]), toY(0) + 26);
+    });
+    PieceKit.mark('달', () => {
+      ctx.fillStyle = INK;
+      ctx.beginPath(); ctx.arc(toX(MOON[0]), toY(0), 4.5, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = INK_DIM; ctx.font = '12px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('달', toX(MOON[0]), toY(0) + 22);
+    });
+    PieceKit.mark('평형점 표시', () => {
+      ctx.strokeStyle = INK_DIM; ctx.lineWidth = 1;
+      ctx.fillStyle = INK_DIM; ctx.font = '12px sans-serif'; ctx.textAlign = 'center';
+      for (const L of LPOINTS) {
+        const X = toX(L.x), Y = toY(L.y);
+        ctx.beginPath();
+        ctx.moveTo(X - 5, Y); ctx.lineTo(X + 5, Y);
+        ctx.moveTo(X, Y - 5); ctx.lineTo(X, Y + 5);
+        ctx.stroke();
+        if (L.name === 'L3') ctx.fillText(L.name, X - 30, Y + 4);       // 자취가 위아래로 흐르므로 옆에
+        else if (L.name === 'L5') ctx.fillText(L.name, X, Y + 36);
+        else ctx.fillText(L.name, X, Y - 28);
+      }
+    });
+    PieceKit.mark('시험 물체', () => {
+      ctx.strokeStyle = ACCENT; ctx.fillStyle = ACCENT;
+      ctx.lineWidth = 1.3; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      const CHUNK = 8;
+      for (const p of particles) {
+        const fade = p.endAt === null ? 1 : Math.max(0, 1 - (simClock - p.endAt) / FADE);
+        const tr = p.trail;
+        for (let k = 0; k + 1 < tr.length; k += CHUNK) {
+          const end = Math.min(tr.length - 1, k + CHUNK);
+          const age = simClock - tr[end][2];
+          ctx.globalAlpha = fade * 0.75 * Math.max(0, 1 - age / TRAIL_KEEP);
+          ctx.beginPath();
+          ctx.moveTo(toX(tr[k][0]), toY(tr[k][1]));
+          for (let m = k + 1; m <= end; m++) ctx.lineTo(toX(tr[m][0]), toY(tr[m][1]));
+          ctx.stroke();
+        }
+        if (p.endAt === null) {
+          ctx.globalAlpha = 1;
+          ctx.beginPath(); ctx.arc(toX(p.s[0]), toY(p.s[1]), 2.2, 0, Math.PI * 2); ctx.fill();
+        }
+      }
+      ctx.globalAlpha = 1;
+    });
+  }
+
+  // 도착한 순간 이미 여러 물체가 흘러가고 맴도는 중이도록 미리 돌린다 (결정적)
+  for (let n = 0; n < PREROLL * 60; n++) advance(1 / 60);
+
+  PieceKit.loop({
+    step(dt) { advance(dt); },
+    draw() { resize(); draw(); },
+  });
+})();
+</script>
+</body>
+</html>

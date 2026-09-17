@@ -1,0 +1,14 @@
+{
+  "name": "12-probe-t5",
+  "title": "표현력 검증 턴 5 — 7개 분야 각 5번",
+  "record": "tasks/engine-requirements/gap-ledger.md",
+  "pieces": [
+    "moment-of-inertia",
+    "lagrange-points",
+    "stability-of-floating-body",
+    "refraction-of-waves",
+    "total-internal-reflection",
+    "charged-particle-in-magnetic-field",
+    "radioactive-decay"
+  ]
+}

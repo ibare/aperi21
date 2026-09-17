@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>관성 모멘트</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #2b2b2b;
+    --soft: #8a8a86;
+    --faint: #d8d6d0;
+    --accent: #d2601a;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 12px 16px; box-sizing: border-box; }
+  .caption { font-size: 15px; line-height: 1.5; min-height: 24px; margin: 0 0 6px; }
+  canvas { display: block; width: 100%; height: auto; }
+  .ctl { display: flex; justify-content: flex-end; align-items: center; gap: 10px;
+    font-size: 13px; color: var(--soft); margin-top: 2px; }
+  .ctl input { width: 180px; accent-color: var(--accent); }
+  .ctl output { min-width: 44px; color: var(--ink); font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <p class="caption" id="caption"></p>
+  <canvas id="cv" width="860" height="290"></canvas>
+  <div class="ctl">
+    <label for="radius">오른쪽 질량을 둘 자리</label>
+    <input id="radius" type="range" min="0.30" max="1.00" step="0.05" value="1.00">
+    <output id="radiusOut">1.00R</output>
+  </div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 물리 설정 ─────────────────────────────────────────
+  const N = 12;             // 두 바퀴 모두 같은 질량 알갱이 12개
+  const M_EACH = 1;         // 알갱이 하나의 질량
+  const I_FRAME = 0.12;     // 바퀴 틀(축·살·테)의 관성 모멘트 — 두 바퀴 같다
+  const R_LEFT = 0.30;      // 왼쪽 질량의 반지름 (고정)
+  const RUN = 6.0;          // 한 시행에서 돌림힘을 거는 시간
+  const HOLD = 0.8;         // 끝난 모습을 보여 주는 시간
+  const MOVE = 0.7;         // 오른쪽 질량을 옮기는 시간
+  const PERIOD = RUN + HOLD + MOVE;
+  const START_OFFSET = 2.0; // 도착한 순간 이미 2초 돌고 있다
+  const AUTO_SEQ = [1.00, 0.60, 0.30];
+
+  const inertia = (r) => I_FRAME + N * M_EACH * r * r;
+  const I_LEFT = inertia(R_LEFT);
+  // 왼쪽 바퀴가 한 시행에 정확히 3바퀴 돌도록 돌림힘을 정한다
+  const TAU = (3 * 2 * Math.PI) * 2 * I_LEFT / (RUN * RUN);
+  const angleAt = (r, s) => { const u = Math.min(Math.max(s, 0), RUN); return 0.5 * (TAU / inertia(r)) * u * u; };
+  const fullAngle = (r) => angleAt(r, RUN);
+  const THETA_MAX = fullAngle(R_LEFT); // = 6π
+
+  // ── 캔버스 배치 ─────────────────────────────────────────
+  const cv = document.getElementById('cv');
+  const ctx = cv.getContext('2d');
+  const W = 860, H = 290;
+  const css = getComputedStyle(document.documentElement);
+  const INK = css.getPropertyValue('--ink').trim();
+  const SOFT = css.getPropertyValue('--soft').trim();
+  const FAINT = css.getPropertyValue('--faint').trim();
+  const ACCENT = css.getPropertyValue('--accent').trim();
+
+  const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  cv.width = W * dpr; cv.height = H * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const RPX = 104;                       // 바퀴 테 반지름(px) = 1R
+  const LEFT_C = { x: 128, y: 130 };
+  const RIGHT_C = { x: 732, y: 130 };
+  const G = { x0: 300, x1: 580, y0: 245, y1: 30 }; // 그래프 영역
+
+  const captionEl = document.getElementById('caption');
+  const slider = document.getElementById('radius');
+  const out = document.getElementById('radiusOut');
+
+  // ── 상태: 자동 진행은 t 만으로 정해진다. 독자가 슬라이더를 만지면 그때부터 수동 시행 ──
+  let manual = null; // { r, start, baseL, baseR }
+  let lastState = null;
+
+  function autoState(t) {
+    const c = t + START_OFFSET;
+    const k = Math.floor(c / PERIOD);
+    const ph = c - k * PERIOD;
+    const rNow = AUTO_SEQ[k % 3];
+    const rNext = AUTO_SEQ[(k + 1) % 3];
+    // 지난 시행들에서 돈 각을 누적 (바퀴 방향이 이어지게)
+    const sum3 = AUTO_SEQ.reduce((a, r) => a + fullAngle(r), 0);
+    let baseR = Math.floor(k / 3) * sum3;
+    for (let j = 0; j < k % 3; j++) baseR += fullAngle(AUTO_SEQ[j]);
+    const baseL = k * fullAngle(R_LEFT);
+    let rDisp = rNow, phase = ph < RUN ? 'run' : (ph < RUN + HOLD ? 'hold' : 'move');
+    if (phase === 'move') {
+      const u = (ph - RUN - HOLD) / MOVE;
+      const e = u * u * (3 - 2 * u);
+      rDisp = rNow + (rNext - rNow) * e;
+    }
+    return { s: ph, phase, rTrial: rNow, rDisp, rNext, baseL, baseR };
+  }
+
+  function manualState(t) {
+    const c = t - manual.start;
+    const k = Math.floor(c / (RUN + HOLD));
+    const ph = c - k * (RUN + HOLD);
+    const baseL = manual.baseL + k * fullAngle(R_LEFT);
+    const baseR = manual.baseR + k * fullAngle(manual.r);
+    return { s: ph, phase: ph < RUN ? 'run' : 'hold', rTrial: manual.r, rDisp: manual.r, rNext: manual.r, baseL, baseR };
+  }
+
+  function stateAt(t) {
+    return (manual && !PieceKit.frozen) ? manualState(t) : autoState(t);
+  }
+
+  slider.addEventListener('input', () => {
+    if (PieceKit.frozen || !lastState) return;
+    const st = lastState;
+    manual = {
+      r: parseFloat(slider.value),
+      start: st.t,
+      baseL: st.baseL + angleAt(R_LEFT, st.s),
+      baseR: st.baseR + angleAt(st.rTrial, st.s),
+    };
+  });
+
+  const fmt2 = (v) => v.toFixed(2);
+  const fmt1 = (v) => v.toFixed(1);
+
+  // ── 그리기 ─────────────────────────────────────────
+  function drawWheel(c, r, theta, color, s, rTrial, moving) {
+    PieceKit.mark(color === ACCENT ? '오른쪽 바퀴 틀' : '왼쪽 바퀴 틀', () => {
+      ctx.save();
+      ctx.translate(c.x, c.y);
+      ctx.strokeStyle = FAINT; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(0, 0, RPX, 0, Math.PI * 2); ctx.stroke();
+      ctx.lineWidth = 1.5;
+      for (let i = 0; i < 3; i++) {
+        const a = theta + i * (2 * Math.PI / 3);
+        ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(a) * RPX, Math.sin(a) * RPX); ctx.stroke();
+      }
+      ctx.fillStyle = SOFT;
+      ctx.beginPath(); ctx.arc(0, 0, 5, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    });
+
+    PieceKit.mark(color === ACCENT ? '오른쪽 질량 잔상' : '왼쪽 질량 잔상', () => {
+      if (moving) return;
+      // 지난 0.3초 동안 각 알갱이가 지나간 길 — 길이가 곧 알갱이가 움직인 거리
+      const back = angleAt(rTrial, s) - angleAt(rTrial, s - 0.3);
+      if (back <= 1e-4) return;
+      ctx.save();
+      ctx.translate(c.x, c.y);
+      ctx.strokeStyle = color; ctx.lineCap = 'round';
+      const STEPS = 10;
+      for (let i = 0; i < N; i++) {
+        const a1 = theta + i * (2 * Math.PI / N);
+        for (let j = 0; j < STEPS; j++) {
+          const f0 = j / STEPS, f1 = (j + 1) / STEPS;
+          ctx.globalAlpha = 0.35 * (1 - f0);
+          ctx.lineWidth = 6 * (1 - f0 * 0.7);
+          ctx.beginPath();
+          ctx.arc(0, 0, r * RPX, a1 - back * f1, a1 - back * f0);
+          ctx.stroke();
+        }
+      }
+      ctx.restore();
+    });
+
+    PieceKit.mark(color === ACCENT ? '오른쪽 질량 알갱이' : '왼쪽 질량 알갱이', () => {
+      ctx.save();
+      ctx.translate(c.x, c.y);
+      ctx.fillStyle = color;
+      for (let i = 0; i < N; i++) {
+        const a = theta + i * (2 * Math.PI / N);
+        ctx.beginPath(); ctx.arc(Math.cos(a) * r * RPX, Math.sin(a) * r * RPX, 4.5, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.restore();
+    });
+  }
+
+  function drawTorque(c, name) {
+    PieceKit.mark(name, () => {
+      // 두 바퀴에 거는 같은 돌림힘 — 축 둘레의 굽은 화살표, 크기·모양이 완전히 같다
+      ctx.save();
+      ctx.translate(c.x, c.y);
+      ctx.strokeStyle = SOFT; ctx.fillStyle = SOFT; ctx.lineWidth = 2;
+      const rr = 16, a0 = -Math.PI * 0.85, a1 = Math.PI * 0.35;
+      ctx.beginPath(); ctx.arc(0, 0, rr, a0, a1); ctx.stroke();
+      const hx = Math.cos(a1) * rr, hy = Math.sin(a1) * rr;
+      const tx = -Math.sin(a1), ty = Math.cos(a1);
+      ctx.beginPath();
+      ctx.moveTo(hx + tx * 7, hy + ty * 7);
+      ctx.lineTo(hx - ty * 4.5, hy + tx * 4.5);
+      ctx.lineTo(hx + ty * 4.5, hy - tx * 4.5);
+      ctx.closePath(); ctx.fill();
+      ctx.restore();
+    });
+  }
+
+  function drawLabel(c, name, r) {
+    PieceKit.mark(name, () => {
+      ctx.save();
+      ctx.fillStyle = SOFT; ctx.font = '13px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(`질량 ${N}개 · 축에서 ${fmt2(r)}R`, c.x, c.y + RPX + 30);
+      ctx.restore();
+    });
+  }
+
+  const gx = (s) => G.x0 + (s / RUN) * (G.x1 - G.x0);
+  const gy = (th) => G.y0 - (th / THETA_MAX) * (G.y0 - G.y1);
+
+  function drawGraph(st) {
+    PieceKit.mark('돈 각 그래프 축', () => {
+      ctx.save();
+      ctx.strokeStyle = FAINT; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(G.x0, G.y1 - 6); ctx.lineTo(G.x0, G.y0); ctx.lineTo(G.x1 + 8, G.y0); ctx.stroke();
+      ctx.fillStyle = SOFT; ctx.font = '12px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      for (let n = 1; n <= 3; n++) {
+        const y = gy(n * 2 * Math.PI);
+        ctx.beginPath(); ctx.moveTo(G.x0 - 4, y); ctx.lineTo(G.x0, y); ctx.stroke();
+        ctx.fillText(`${n}바퀴`, G.x0 - 8, y);
+      }
+      ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+      ctx.fillText('돈 각', G.x0 + 6, G.y1 - 2);
+      ctx.textAlign = 'right';
+      ctx.fillText('시간 →', G.x1 + 8, G.y0 + 20);
+      ctx.restore();
+    });
+
+    const sEnd = st.phase === 'run' ? st.s : RUN;
+    const curve = (name, r, color, width) => PieceKit.mark(name, () => {
+      if (st.phase === 'move') return; // 질량을 옮기는 동안은 다음 시행을 기다린다
+      ctx.save();
+      ctx.strokeStyle = color; ctx.lineWidth = width;
+      ctx.beginPath();
+      const STEPS = 90;
+      for (let i = 0; i <= STEPS; i++) {
+        const s = sEnd * i / STEPS;
+        const x = gx(s), y = gy(angleAt(r, s));
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.fillStyle = color;
+      ctx.beginPath(); ctx.arc(gx(sEnd), gy(angleAt(r, sEnd)), 4.5, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    });
+    // 왼쪽을 굵게 먼저 깔고 오른쪽을 가늘게 위에 그린다 — 같은 거리여서 겹쳐도 두 선이 다 보인다
+    curve('왼쪽 바퀴의 돈 각 곡선', R_LEFT, INK, 6);
+    curve('오른쪽 바퀴의 돈 각 곡선', st.rTrial, ACCENT, 2.5);
+  }
+
+  function captionFor(st) {
+    if (st.phase === 'move') {
+      return `오른쪽 질량을 축에서 ${fmt2(st.rNext)}R 자리로 옮긴다 — 다시 멈춘 상태에서 같은 돌림힘으로 출발한다.`;
+    }
+    if (Math.abs(st.rTrial - R_LEFT) < 1e-9) {
+      return '같은 질량을 축에서 같은 거리에 두면, 같은 돌림힘에 두 바퀴가 나란히 돈다.';
+    }
+    const q = inertia(st.rTrial) / I_LEFT;
+    return `같은 질량, 같은 돌림힘 — 질량을 축에서 ${fmt1(st.rTrial / R_LEFT)}배 멀리 둔 오른쪽 바퀴가 뒤처진다. 같은 시간에 돈 각이 왼쪽의 1/${fmt1(q)}.`;
+  }
+
+  PieceKit.loop({
+    step(dt, t) { /* 모든 상태는 t 와 시행 시작점에서 해석적으로 나온다 */ },
+    draw(t) {
+      const st = stateAt(t);
+      st.t = t;
+      lastState = st;
+      const moving = st.phase === 'move';
+      const thL = st.baseL + angleAt(R_LEFT, st.s);
+      const thR = st.baseR + angleAt(st.rTrial, st.s);
+
+      ctx.clearRect(0, 0, W, H);
+      drawWheel(LEFT_C, R_LEFT, thL, INK, st.s, R_LEFT, moving);
+      drawWheel(RIGHT_C, st.rDisp, thR, ACCENT, st.s, st.rTrial, moving);
+      drawTorque(LEFT_C, '왼쪽 바퀴에 거는 돌림힘');
+      drawTorque(RIGHT_C, '오른쪽 바퀴에 거는 돌림힘');
+      drawLabel(LEFT_C, '왼쪽 질량 자리 표시', R_LEFT);
+      drawLabel(RIGHT_C, '오른쪽 질량 자리 표시', st.rDisp);
+      drawGraph(st);
+
+      const cap = captionFor(st);
+      if (captionEl.textContent !== cap) captionEl.textContent = cap;
+      if (!manual || PieceKit.frozen) {
+        const v = st.rDisp;
+        const snapped = Math.round(v / 0.05) * 0.05;
+        if (document.activeElement !== slider) slider.value = snapped.toFixed(2);
+      }
+      out.textContent = `${fmt2(manual && !PieceKit.frozen ? manual.r : st.rDisp)}R`;
+    },
+  });
+})();
+</script>
+</body>
+</html>

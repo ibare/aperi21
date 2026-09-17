@@ -574,7 +574,9 @@
         {
           "id": "moment-of-inertia",
           "name": "관성 모멘트",
-          "desc": "질량 분포가 정하는 회전 저항"
+          "desc": "질량 분포가 정하는 회전 저항",
+          "simId": "aperi21:moment-of-inertia",
+          "labUrl": "piece-lab/moment-of-inertia/index.html"
         },
         {
           "id": "parallel-axis-theorem",
@@ -823,7 +825,9 @@
         {
           "id": "lagrange-points",
           "name": "라그랑주 점",
-          "desc": "두 천체 사이의 평형 위치"
+          "desc": "두 천체 사이의 평형 위치",
+          "simId": "aperi21:lagrange-points",
+          "labUrl": "piece-lab/lagrange-points/index.html"
         },
         {
           "id": "orbital-transfer",
@@ -1018,7 +1022,9 @@
         {
           "id": "stability-of-floating-body",
           "name": "부유체의 안정",
-          "desc": "무게 중심과 부심의 관계"
+          "desc": "무게 중심과 부심의 관계",
+          "simId": "aperi21:stability-of-floating-body",
+          "labUrl": "piece-lab/stability-of-floating-body/index.html"
         },
         {
           "id": "continuity-equation",
@@ -1444,7 +1450,9 @@
         {
           "id": "refraction-of-waves",
           "name": "파동의 굴절",
-          "desc": "속도 변화가 만드는 방향 전환"
+          "desc": "속도 변화가 만드는 방향 전환",
+          "simId": "aperi21:refraction-of-waves",
+          "labUrl": "piece-lab/refraction-of-waves/index.html"
         },
         {
           "id": "diffraction",
@@ -1560,7 +1568,9 @@
         {
           "id": "total-internal-reflection",
           "name": "전반사",
-          "desc": "임계각과 그 조건"
+          "desc": "임계각과 그 조건",
+          "simId": "aperi21:total-internal-reflection",
+          "labUrl": "piece-lab/total-internal-reflection/index.html"
         },
         {
           "id": "optical-fiber",
@@ -1922,7 +1932,9 @@
         {
           "id": "charged-particle-in-magnetic-field",
           "name": "자기장 속 전하의 원운동",
-          "desc": "속도에 수직인 힘"
+          "desc": "속도에 수직인 힘",
+          "simId": "aperi21:charged-particle-in-magnetic-field",
+          "labUrl": "piece-lab/charged-particle-in-magnetic-field/index.html"
         },
         {
           "id": "velocity-selector",
@@ -2380,7 +2392,9 @@
         {
           "id": "radioactive-decay",
           "name": "방사성 붕괴",
-          "desc": "반감기와 지수 감소"
+          "desc": "반감기와 지수 감소",
+          "simId": "aperi21:radioactive-decay",
+          "labUrl": "piece-lab/radioactive-decay/index.html"
         },
         {
           "id": "decay-types",
@@ -2487,7 +2501,7 @@
   ],
   "summary": {
     "topics": 442,
-    "implemented": 109,
-    "labs": 96
+    "implemented": 116,
+    "labs": 103
   }
 }

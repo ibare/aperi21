@@ -712,6 +712,7 @@ topics:
     level: upper
     curricula: [ib, ap]
     visualNote: 같은 질량도 바깥으로 퍼뜨리면 돌리기 어려워진다
+    sim: aperi21:moment-of-inertia
   - id: parallel-axis-theorem
     name: 평행축 정리
     desc: 축을 옮길 때의 관성 모멘트
@@ -1043,6 +1044,7 @@ topics:
     level: null
     curricula: []
     visualNote: 두 중력이 만드는 다섯 자리가 드러난다
+    sim: aperi21:lagrange-points
   - id: orbital-transfer
     name: 궤도 전이
     desc: 호만 전이와 그 비용
@@ -1303,6 +1305,7 @@ topics:
     level: lower
     curricula: [uk]
     visualNote: 기울이면 되돌아오거나 그대로 뒤집힌다
+    sim: aperi21:stability-of-floating-body
   - id: continuity-equation
     name: 연속 방정식
     desc: 단면적과 유속의 반비례
@@ -1859,6 +1862,7 @@ topics:
     level: lower
     curricula: [ib, ngss, uk]
     visualNote: 얕은 곳으로 들어가며 파면이 꺾인다
+    sim: aperi21:refraction-of-waves
   - id: diffraction
     name: 회절
     desc: 장애물을 돌아가는 파동
@@ -2014,6 +2018,7 @@ topics:
     level: upper
     curricula: [ib, ap, uk]
     visualNote: 각을 키우다 보면 어느 순간 나가지 못한다
+    sim: aperi21:total-internal-reflection
   - id: optical-fiber
     name: 광섬유
     desc: 전반사로 가두는 빛
@@ -2500,6 +2505,7 @@ topics:
     level: upper
     curricula: [kr, ib, ap, uk]
     visualNote: 힘이 늘 수직이라 원을 그린다
+    sim: aperi21:charged-particle-in-magnetic-field
   - id: velocity-selector
     name: 속도 선택기
     desc: 전기력과 자기력의 균형
@@ -3126,6 +3132,7 @@ topics:
     level: lower
     curricula: [ib, ap, uk]
     visualNote: 남은 양이 반씩 줄어든다
+    sim: aperi21:radioactive-decay
   - id: decay-types
     name: 붕괴의 종류
     desc: 알파·베타·감마

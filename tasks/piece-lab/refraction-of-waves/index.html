@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>파동의 굴절</title>
+<style>
+  :root {
+    --bg: #f6f4ef;
+    --ink: #2b2d31;
+    --muted: #6b6f76;
+    --line: #c9c6bd;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #16181c; --ink: #e6e4df; --muted: #9a9ea6; --line: #3a3d44; }
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 860px; margin: 0 auto; padding: 12px 0; }
+  canvas { display: block; width: 100%; height: auto; border-radius: 6px; }
+  .caption { min-height: 1.5em; margin: 10px 4px 6px; font-size: 15px; line-height: 1.5; }
+  .control { display: flex; align-items: center; gap: 12px; margin: 0 4px; font-size: 13px; color: var(--muted); }
+  .control input { flex: 0 1 240px; }
+  .control output { font-variant-numeric: tabular-nums; color: var(--ink); min-width: 9em; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c" width="860" height="340"></canvas>
+  <div class="caption" id="caption"></div>
+  <label class="control">
+    <span>느린 쪽 속력</span>
+    <input id="ratio" type="range" min="0.35" max="1" step="0.05" value="0.55">
+    <output id="ratioOut"></output>
+  </label>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 장면 치수 (CSS 픽셀) ──
+  const W = 860, H = 340;
+  const XB = 400;                 // 경계의 x 위치 — 왼쪽이 빠른 쪽, 오른쪽이 느린 쪽
+  const LAMBDA1 = 60;             // 빠른 쪽 파장 (px)
+  const PERIOD = 1;               // 진동 주기 (s) — 두 쪽이 같다
+  const THETA1 = 50 * Math.PI / 180; // 입사각 (경계의 법선 기준)
+  const CYCLE = 8;                // 표시한 마루 하나를 따라가는 시간 (s) — 주기의 정수배
+  const DEFAULT_RATIO = 0.55;
+
+  const k1 = 2 * Math.PI / LAMBDA1;
+  const omega = 2 * Math.PI / PERIOD;
+  const sin1 = Math.sin(THETA1), cos1 = Math.cos(THETA1);
+  const D = LAMBDA1 / sin1;       // 경계를 따라 잰 마루 간격 (두 쪽이 같다)
+
+  // ── 색 ──
+  const dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const P = dark ? {
+    trough: [22, 44, 62], crest: [120, 176, 206],        // 물결: 골 → 마루
+    shallowShift: [14, 10, -6],                          // 얕은 쪽 바닥빛 (매질 구분, 물결 색은 같다)
+    ink: '#e6e4df', muted: 'rgba(230,228,223,0.72)', boundary: 'rgba(230,228,223,0.55)',
+    accent: '#ff9a3c',
+  } : {
+    trough: [46, 96, 132], crest: [196, 228, 240],
+    shallowShift: [22, 14, -10],
+    ink: '#2b2d31', muted: 'rgba(255,255,255,0.9)', boundary: 'rgba(255,255,255,0.75)',
+    accent: '#e8660c',
+  };
+
+  // ── 캔버스 ──
+  const canvas = document.getElementById('c');
+  const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+
+  // 물결 장은 절반 해상도로 계산해 늘려 그린다
+  const FS = 2;
+  const FW = Math.ceil(W / FS), FH = Math.ceil(H / FS);
+  const field = document.createElement('canvas');
+  field.width = FW; field.height = FH;
+  const fctx = field.getContext('2d');
+  const img = fctx.createImageData(FW, FH);
+
+  // ── 조작기 ──
+  const slider = document.getElementById('ratio');
+  const out = document.getElementById('ratioOut');
+  const caption = document.getElementById('caption');
+  function ratio() {
+    return PieceKit.frozen ? DEFAULT_RATIO : parseFloat(slider.value);
+  }
+  function showRatio(r) { out.textContent = '빠른 쪽의 ' + r.toFixed(2) + '배'; }
+  if (PieceKit.frozen) slider.value = String(DEFAULT_RATIO);
+  showRatio(ratio());
+  slider.addEventListener('input', () => showRatio(ratio()));
+
+  // ── 파동의 위상 ──
+  // 빠른 쪽: ψ = k1[(x−XB)cosθ1 + y sinθ1] − ωt
+  // 느린 쪽: ψ = k2(x−XB)cosθ2 + k1 y sinθ1 − ωt  (경계에서 이어진다)
+  function geometry(r) {
+    const k2 = k1 / r;
+    const sin2 = Math.min(1, r * sin1);
+    const cos2 = Math.sqrt(1 - sin2 * sin2);
+    return { k2, sin2, cos2 };
+  }
+
+  // 표시한 마루가 경계와 만나는 y
+  function trackedCrest(t) {
+    const c = Math.floor(t / CYCLE);
+    const tau = t - c * CYCLE;
+    const m = Math.round(-2) - CYCLE * c;   // 순환 시작에 yb ≈ −2D
+    const yb = (m + t / PERIOD) * D;
+    // 순환 양 끝에서 부드럽게 나타나고 사라진다
+    const edge = 0.6;
+    const a = Math.min(1, tau / edge, (CYCLE - tau) / edge);
+    const alpha = a * a * (3 - 2 * a);
+    return { yb, alpha };
+  }
+
+  function drawField(t, g) {
+    const d = img.data;
+    const base = k1 * sin1;
+    for (let j = 0; j < FH; j++) {
+      const y = (j + 0.5) * FS;
+      const py = base * y - omega * t;
+      for (let i = 0; i < FW; i++) {
+        const x = (i + 0.5) * FS - XB;
+        const slow = x >= 0;
+        const psi = slow ? g.k2 * g.cos2 * x + py : k1 * cos1 * x + py;
+        let s = 0.5 + 0.5 * Math.cos(psi);
+        s = s * s;
+        const o = (j * FW + i) * 4;
+        for (let ch = 0; ch < 3; ch++) {
+          let v = P.trough[ch] + (P.crest[ch] - P.trough[ch]) * s;
+          if (slow) v += P.shallowShift[ch];
+          d[o + ch] = v;
+        }
+        d[o + 3] = 255;
+      }
+    }
+    fctx.putImageData(img, 0, 0);
+    ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(field, 0, 0, FW, FH, 0, 0, W, H);
+  }
+
+  function clipHalf(slow, fn) {
+    ctx.save();
+    ctx.beginPath();
+    if (slow) ctx.rect(XB, 0, W - XB, H); else ctx.rect(0, 0, XB, H);
+    ctx.clip();
+    fn();
+    ctx.restore();
+  }
+
+  // (xb, yb) 를 지나고 방향 (dx, dy) 인 긴 선
+  function longLine(x0, y0, dx, dy) {
+    const L = 2000, n = Math.hypot(dx, dy);
+    ctx.beginPath();
+    ctx.moveTo(x0 - dx / n * L, y0 - dy / n * L);
+    ctx.lineTo(x0 + dx / n * L, y0 + dy / n * L);
+  }
+
+  let captionText = '';
+  function setCaption(s) {
+    if (s !== captionText) { captionText = s; caption.textContent = s; }
+  }
+
+  PieceKit.loop({
+    step(dt, t) { /* 모든 상태는 t 의 함수 — 쌓이는 것이 없다 */ },
+    draw(t) {
+      const r = ratio();
+      const g = geometry(r);
+      const bent = r < 0.98;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      PieceKit.mark('물결 장', () => drawField(t, g));
+
+      PieceKit.mark('경계', () => {
+        ctx.strokeStyle = P.boundary;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(XB, 0); ctx.lineTo(XB, H); ctx.stroke();
+      });
+
+      PieceKit.mark('매질 이름', () => {
+        ctx.font = '13px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+        ctx.fillStyle = P.muted;
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        ctx.fillText('깊은 물 — 빠르다', 12, 10);
+        ctx.textAlign = 'right';
+        ctx.fillText(bent ? '얕은 물 — 느리다' : '얕은 물 — 속력이 같다', W - 12, 10);
+      });
+
+      const { yb, alpha } = trackedCrest(t);
+
+      if (bent) {
+        PieceKit.mark('느려지지 않았을 마루', () => {
+          clipHalf(true, () => {
+            ctx.globalAlpha = alpha;
+            ctx.strokeStyle = P.ink === '#2b2d31' ? 'rgba(20,30,40,0.75)' : 'rgba(240,240,235,0.8)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([7, 6]);
+            longLine(XB, yb, sin1, -cos1);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.globalAlpha = 1;
+          });
+        });
+      }
+
+      PieceKit.mark('따라가는 마루', () => {
+        ctx.globalAlpha = alpha;
+        ctx.strokeStyle = P.accent;
+        ctx.lineWidth = 3.5;
+        ctx.lineCap = 'round';
+        clipHalf(false, () => { longLine(XB, yb, sin1, -cos1); ctx.stroke(); });
+        clipHalf(true, () => { longLine(XB, yb, k1 * sin1, -g.k2 * g.cos2); ctx.stroke(); });
+        ctx.globalAlpha = 1;
+      });
+
+      PieceKit.mark('캡션', () => {
+        if (!bent) {
+          setCaption('두 쪽 속력이 같으면 마루는 경계를 곧게 지나간다.');
+        } else if (yb < 0) {
+          setCaption('굵게 그린 마루가 빠른 쪽에서 경계로 다가온다.');
+        } else if (yb <= H) {
+          setCaption('경계를 먼저 넘은 쪽 끝부터 느려져 점선보다 뒤처진다 — 마루가 경계에서 꺾인다.');
+        } else {
+          setCaption('경계를 다 넘은 마루는 꺾인 방향 그대로 느리게 나아간다.');
+        }
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

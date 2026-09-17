@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>자기장 속 전하의 원운동</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #22252b;
+    --muted: #8a8f98;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); }
+  body { font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 12px 16px; box-sizing: border-box; }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { margin: 8px 0 0; font-size: 15px; line-height: 1.5; min-height: 1.5em; text-align: center; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c" width="840" height="300"></canvas>
+  <p class="caption" id="caption"></p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // 논리 크기 (CSS 가 가로에 맞춰 늘린다)
+  var W = 840, H = 300;
+  var canvas = document.getElementById('c');
+  var captionEl = document.getElementById('caption');
+  var dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  var ctx = canvas.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  var COLOR = {
+    field: 'rgba(34, 37, 43, 0.16)',
+    orbit: 'rgba(34, 37, 43, 0.10)',
+    charge: '#22252b',
+    chargeText: '#fbfaf7',
+    start: '#8a8f98',
+    same: '#e0701f', // 강조색: 「같은 순간의 전하들」 한 가지 뜻에만 쓴다
+  };
+
+  // 물리 설정 — 균일한 자기장 속 양전하. 각속도 ω = qB/m 은 속력과 무관하다.
+  var PERIOD = 4;                     // 한 바퀴 시간 (초)
+  var OMEGA = 2 * Math.PI / PERIOD;   // 화면 기준 반시계 방향으로 돈다
+  var START = { x: W / 2, y: H - 22 }; // 모두가 출발하는 점
+  var SPEEDS = [50, 100, 150, 200, 250].map(function (r) { return r * OMEGA / 2; }); // 반지름 25~125px
+  var TRAIL_SECONDS = 0.6;            // 모든 전하에 같은 시간만큼의 자취를 남긴다
+  var TRAIL_N = Math.round(TRAIL_SECONDS * 60);
+  var WARMUP = 1.0;                   // 도착한 순간 이미 1/4 바퀴 돈 상태
+
+  var charges = SPEEDS.map(function (v) {
+    return { x: START.x, y: START.y, vx: v, vy: 0, trail: [] };
+  });
+  var elapsed = 0; // 출발 뒤 흐른 시간 (예열 포함)
+
+  function advance(dt) {
+    var a = OMEGA * dt;          // 이 동안 속도가 도는 각
+    var chord = 2 * Math.sin(a / 2) / OMEGA; // 정확한 원호의 현 길이 계수
+    charges.forEach(function (c) {
+      // 속도를 a/2 돌린 방향으로 현만큼 이동 → 궤도가 닫힌다
+      var ch = Math.cos(-a / 2), sh = Math.sin(-a / 2);
+      var mx = c.vx * ch - c.vy * sh;
+      var my = c.vx * sh + c.vy * ch;
+      c.x += mx * chord;
+      c.y += my * chord;
+      // 속도는 크기를 그대로 둔 채 방향만 a 만큼 돈다 (화면 y 가 아래라 -a)
+      var ca = Math.cos(-a), sa = Math.sin(-a);
+      var nvx = c.vx * ca - c.vy * sa;
+      var nvy = c.vx * sa + c.vy * ca;
+      c.vx = nvx; c.vy = nvy;
+      c.trail.push({ x: c.x, y: c.y });
+      if (c.trail.length > TRAIL_N) c.trail.shift();
+    });
+    elapsed += dt;
+  }
+
+  // 예열 — 같은 고정 dt 로 돌려 결정적이다
+  for (var i = 0; i < Math.round(WARMUP * 60); i++) advance(PieceKit.DT);
+
+  function phase() {
+    var p = (elapsed / PERIOD) % 1;
+    // 부동소수 오차로 1 직전에 머무는 경우를 0 으로 본다
+    if (p > 1 - 1e-6) p = 0;
+    return p;
+  }
+
+  function captionFor(p) {
+    if (p >= 0.9) return '속력이 달라도 모두 같은 순간 출발점으로 돌아온다';
+    if (p < 0.06) return '같은 순간 출발점에 모였다가 다시 함께 떠난다';
+    return '빠른 전하는 큰 원을 돌지만, 모두 한 줄로 선 채 함께 돈다';
+  }
+
+  function drawField() {
+    // 종이 뒤로 들어가는 균일한 자기장: 같은 간격의 ⊗ 무늬
+    var step = 36;
+    ctx.strokeStyle = COLOR.field;
+    ctx.lineWidth = 1.2;
+    for (var y = step / 2; y < H; y += step) {
+      for (var x = step / 2; x < W; x += step) {
+        var r = 5;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.moveTo(x - r * 0.62, y - r * 0.62);
+        ctx.lineTo(x + r * 0.62, y + r * 0.62);
+        ctx.moveTo(x + r * 0.62, y - r * 0.62);
+        ctx.lineTo(x - r * 0.62, y + r * 0.62);
+        ctx.stroke();
+      }
+    }
+  }
+
+  function drawOrbits() {
+    ctx.strokeStyle = COLOR.orbit;
+    ctx.lineWidth = 1;
+    SPEEDS.forEach(function (v) {
+      var r = v / OMEGA;
+      ctx.beginPath();
+      ctx.arc(START.x, START.y - r, r, 0, Math.PI * 2);
+      ctx.stroke();
+    });
+  }
+
+  function drawTrails() {
+    ctx.lineCap = 'round';
+    charges.forEach(function (c) {
+      var n = c.trail.length;
+      for (var k = 1; k < n; k++) {
+        var alpha = (k / n) * 0.55;
+        ctx.strokeStyle = 'rgba(34, 37, 43, ' + alpha.toFixed(3) + ')';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(c.trail[k - 1].x, c.trail[k - 1].y);
+        ctx.lineTo(c.trail[k].x, c.trail[k].y);
+        ctx.stroke();
+      }
+    });
+  }
+
+  function drawSameLine() {
+    // 모든 전하가 출발점을 지나는 한 직선 위에 있다 (각속도가 같으므로)
+    var far = charges[charges.length - 1];
+    var dx = far.x - START.x, dy = far.y - START.y;
+    if (Math.hypot(dx, dy) < 2) return;
+    ctx.strokeStyle = COLOR.same;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(START.x, START.y);
+    ctx.lineTo(far.x, far.y);
+    ctx.stroke();
+  }
+
+  function drawStart() {
+    ctx.fillStyle = COLOR.start;
+    ctx.beginPath();
+    ctx.arc(START.x, START.y, 3, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function drawCharges() {
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = 'bold 11px -apple-system, sans-serif';
+    charges.forEach(function (c) {
+      ctx.fillStyle = COLOR.charge;
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, 7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = COLOR.chargeText;
+      ctx.fillText('+', c.x, c.y + 0.5);
+    });
+  }
+
+  PieceKit.loop({
+    step: function (dt) { advance(dt); },
+    draw: function () {
+      ctx.fillStyle = '#fbfaf7';
+      ctx.fillRect(0, 0, W, H);
+      PieceKit.mark('자기장 무늬', drawField);
+      PieceKit.mark('궤도', drawOrbits);
+      PieceKit.mark('자취', drawTrails);
+      PieceKit.mark('같은 순간의 전하를 잇는 선', drawSameLine);
+      PieceKit.mark('출발점', drawStart);
+      PieceKit.mark('전하', drawCharges);
+      var text = captionFor(phase());
+      if (captionEl.textContent !== text) captionEl.textContent = text;
+    },
+  });
+})();
+</script>
+</body>
+</html>

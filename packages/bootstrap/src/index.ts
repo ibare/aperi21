@@ -768,6 +768,62 @@ export function registerAperi21Bundles(): void {
     return registerBundle('aperi21:hydrogen-spectrum', m.hydrogenSpectrumBundle, caps.capabilities);
   });
 
+  registerBundleLoader('aperi21:moment-of-inertia', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-moment-of-inertia'),
+      import('./capabilities/oscillation/moment-of-inertia.generated.js'),
+    ]);
+    return registerBundle('aperi21:moment-of-inertia', m.momentOfInertiaBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:lagrange-points', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-lagrange-points'),
+      import('./capabilities/astro/lagrange-points.generated.js'),
+    ]);
+    return registerBundle('aperi21:lagrange-points', m.lagrangePointsBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:stability-of-floating-body', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-stability-of-floating-body'),
+      import('./capabilities/fluids/stability-of-floating-body.generated.js'),
+    ]);
+    return registerBundle('aperi21:stability-of-floating-body', m.stabilityOfFloatingBodyBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:refraction-of-waves', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-refraction-of-waves'),
+      import('./capabilities/waves/refraction-of-waves.generated.js'),
+    ]);
+    return registerBundle('aperi21:refraction-of-waves', m.refractionOfWavesBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:total-internal-reflection', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-total-internal-reflection'),
+      import('./capabilities/optics/total-internal-reflection.generated.js'),
+    ]);
+    return registerBundle('aperi21:total-internal-reflection', m.totalInternalReflectionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:charged-particle-in-magnetic-field', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-charged-particle-in-magnetic-field'),
+      import('./capabilities/em/charged-particle-in-magnetic-field.generated.js'),
+    ]);
+    return registerBundle('aperi21:charged-particle-in-magnetic-field', m.chargedParticleInMagneticFieldBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:radioactive-decay', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-radioactive-decay'),
+      import('./capabilities/modern/radioactive-decay.generated.js'),
+    ]);
+    return registerBundle('aperi21:radioactive-decay', m.radioactiveDecayBundle, caps.capabilities);
+  });
+
   registerBundleLoader('aperi21:uniform-motion', async () => {
     const [m, caps] = await Promise.all([
       import('@aperi21/sim-uniform-motion'),

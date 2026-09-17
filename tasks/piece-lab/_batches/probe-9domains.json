@@ -69,6 +69,9 @@
   },
   "excluded": {
     "energy-momentum": "턴 2 (potential-energy-curve) 새 부족 0 — 턴 3 부터 제외",
-    "thermodynamics": "턴 4 (phase-diagram) 새 부족 0 — 턴 5 부터 제외"
-  }
+    "thermodynamics": "턴 4 (phase-diagram) 새 부족 0 — 턴 5 부터 제외",
+    "waves-acoustics": "턴 5 (refraction-of-waves) 새 부족 0 — 목록 끝이라 기록만",
+    "modern-physics": "턴 5 (radioactive-decay) 새 부족 0 — 목록 끝이라 기록만"
+  },
+  "status": "완료 (턴 5, 2026-09-17). 요약: gap-ledger.md 「검증 요약」"
 }

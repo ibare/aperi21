@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>방사성 붕괴</title>
+<style>
+  html, body { margin: 0; background: #ffffff; }
+  body { font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; color: #1f2a36; }
+  #piece { max-width: 900px; margin: 0 auto; padding: 12px 16px; box-sizing: border-box; }
+  canvas { display: block; width: 100%; height: 300px; }
+  #caption { margin-top: 8px; font-size: 15px; line-height: 1.5; min-height: 23px; }
+</style>
+</head>
+<body>
+<div id="piece">
+  <canvas id="stage"></canvas>
+  <div id="caption"></div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// 방사성 붕괴 — 반감기가 지나면 남은 것이 다시 절반이 된다
+const N = 400;              // 원자 수 (20 × 20)
+const COLS = 20;
+const HALF = 2.0;           // 반감기 (초)
+const SPAN = 5;             // 한 순환에 보여 주는 반감기 수
+const HOLD = 2.0;           // 다섯 번째 반감기 뒤 멈춰 보여 주는 시간
+const CYCLE = SPAN * HALF + HOLD;
+const OFFSET = 0.6;         // 도착한 순간 이미 붕괴가 진행 중이도록
+const FLASH = 0.4;          // 방금 붕괴한 원자를 표시하는 시간
+
+const INK = '#2b3a4a';      // 살아 있는 원자, 그리고 그 수의 곡선 (같은 대상 = 같은 색)
+const GONE = '#c9d0d7';     // 붕괴한 원자
+const GUIDE = '#8a96a3';    // 반감기 경계와 절반 목표선
+const ACCENT = '#e0662b';   // 강조색: 오직 "방금 붕괴함" 의 뜻
+
+const canvas = document.getElementById('stage');
+const ctx = canvas.getContext('2d');
+const captionEl = document.getElementById('caption');
+
+// 원자 자리 (한 번만 정한다)
+const jitter = [];
+for (let i = 0; i < N; i++) jitter.push([(PieceKit.random() - 0.5) * 0.3, (PieceKit.random() - 0.5) * 0.3]);
+
+// 순환마다 새 수명을 뽑는다. 수명은 지수 분포 — 원자는 나이를 기억하지 않는다.
+let cycleIndex = -1;
+let life = new Float64Array(N);
+let sorted = [];
+function ensureCycle(k) {
+  if (k === cycleIndex) return;
+  cycleIndex = k;
+  for (let i = 0; i < N; i++) {
+    const u = 1 - PieceKit.random();
+    life[i] = -HALF / Math.LN2 * Math.log(u);
+  }
+  sorted = Array.from(life).sort((a, b) => a - b);
+}
+function survivorsAt(s) {
+  // 수명이 s 보다 긴 원자의 수
+  let lo = 0, hi = sorted.length;
+  while (lo < hi) { const m = (lo + hi) >> 1; if (sorted[m] <= s) lo = m + 1; else hi = m; }
+  return N - lo;
+}
+function phase(t) {
+  const g = t + OFFSET;
+  const k = Math.floor(g / CYCLE);
+  const tau = g - k * CYCLE;
+  return { k, tau, eff: Math.min(tau, SPAN * HALF) };
+}
+
+let cw = 0, ch = 300;
+function fit() {
+  const w = canvas.clientWidth || 720;
+  const dpr = window.devicePixelRatio || 1;
+  if (w !== cw || canvas.width !== Math.round(w * dpr)) {
+    cw = w;
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(ch * dpr);
+  }
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+PieceKit.loop({
+  step(dt, t) {
+    ensureCycle(phase(t).k);
+  },
+  draw(t) {
+    const { k, tau, eff } = phase(t);
+    ensureCycle(k);
+    fit();
+    ctx.clearRect(0, 0, cw, ch);
+
+    // ── 왼쪽: 원자 격자
+    const box = 270;
+    const gx = 10, gy = (ch - box) / 2;
+    const cell = box / COLS;
+    PieceKit.mark('붕괴한 원자', () => {
+      ctx.strokeStyle = GONE; ctx.lineWidth = 1;
+      for (let i = 0; i < N; i++) {
+        if (life[i] > eff || tau - life[i] < FLASH) continue;
+        const [x, y] = atomXY(i, gx, gy, cell);
+        ctx.beginPath(); ctx.arc(x, y, cell * 0.2, 0, Math.PI * 2); ctx.stroke();
+      }
+    });
+    PieceKit.mark('방금 붕괴한 원자', () => {
+      for (let i = 0; i < N; i++) {
+        if (life[i] > eff) continue;
+        const age = tau - life[i]; // 멈춤 구간에도 잔광은 사라진다
+        if (age >= FLASH) continue;
+        const f = age / FLASH;
+        const [x, y] = atomXY(i, gx, gy, cell);
+        ctx.globalAlpha = 1 - f;
+        ctx.fillStyle = ACCENT;
+        ctx.beginPath(); ctx.arc(x, y, cell * 0.32, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = ACCENT; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.arc(x, y, cell * (0.32 + 0.35 * f), 0, Math.PI * 2); ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    });
+    PieceKit.mark('살아 있는 원자', () => {
+      ctx.fillStyle = INK;
+      for (let i = 0; i < N; i++) {
+        if (life[i] <= eff) continue;
+        const [x, y] = atomXY(i, gx, gy, cell);
+        ctx.beginPath(); ctx.arc(x, y, cell * 0.32, 0, Math.PI * 2); ctx.fill();
+      }
+    });
+
+    // ── 오른쪽: 남은 원자 수의 곡선
+    const px0 = gx + box + 56, px1 = cw - 24;
+    const py0 = 22, py1 = ch - 34;           // 위 = N, 아래 = 0
+    const X = s => px0 + (px1 - px0) * s / (SPAN * HALF);
+    const Y = n => py1 - (py1 - py0) * n / N;
+    const nowInterval = Math.min(SPAN, Math.floor(eff / HALF) + 1); // 지금 진행 중인(또는 마지막) 반감기 번호
+
+    PieceKit.mark('시간 축과 반감기 경계', () => {
+      ctx.strokeStyle = GUIDE; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(px0, py1); ctx.lineTo(px1, py1); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(px0, py0); ctx.lineTo(px0, py1); ctx.stroke();
+      ctx.setLineDash([2, 4]);
+      for (let n = 1; n <= SPAN; n++) {
+        ctx.beginPath(); ctx.moveTo(X(n * HALF), py0); ctx.lineTo(X(n * HALF), py1); ctx.stroke();
+      }
+      ctx.setLineDash([]);
+      ctx.fillStyle = GUIDE; ctx.font = '12px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      for (let n = 1; n <= SPAN; n++) ctx.fillText('반감기 ' + n, X(n * HALF), py1 + 6);
+      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      ctx.fillText(String(N), px0 - 6, Y(N));
+      ctx.fillText('0', px0 - 6, Y(0));
+    });
+
+    PieceKit.mark('구간마다 시작 수의 절반 목표선', () => {
+      ctx.strokeStyle = GUIDE; ctx.lineWidth = 1.5;
+      ctx.fillStyle = GUIDE; ctx.font = '12px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      for (let n = 1; n <= nowInterval; n++) {
+        const start = survivorsAt((n - 1) * HALF);
+        const target = start / 2;
+        const xa = X((n - 1) * HALF), xb = X(n * HALF);
+        // 구간 시작 수에서 절반까지 내려오는 괄호
+        ctx.beginPath();
+        ctx.moveTo(xa + 4, Y(target)); ctx.lineTo(xb, Y(target));
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(xb, Y(start)); ctx.lineTo(xb, Y(target));
+        ctx.moveTo(xb - 4, Y(start)); ctx.lineTo(xb + 4, Y(start));
+        ctx.stroke();
+        if (n === 1) ctx.fillText('시작할 때의 절반', xa + 6, Y(target) + 4);
+      }
+    });
+
+    PieceKit.mark('남은 원자 수 곡선', () => {
+      ctx.strokeStyle = INK; ctx.lineWidth = 2;
+      ctx.beginPath();
+      const steps = Math.max(2, Math.ceil(eff / 0.02));
+      let prev = N;
+      ctx.moveTo(X(0), Y(N));
+      for (let j = 1; j <= steps; j++) {
+        const s = eff * j / steps;
+        const n = survivorsAt(s);
+        if (n !== prev) { ctx.lineTo(X(s), Y(prev)); prev = n; }
+        ctx.lineTo(X(s), Y(n));
+      }
+      ctx.stroke();
+      ctx.fillStyle = INK;
+      ctx.beginPath(); ctx.arc(X(eff), Y(survivorsAt(eff)), 4, 0, Math.PI * 2); ctx.fill();
+    });
+
+    // ── 캡션: 화면에 그려진 수를 그대로 쓴다
+    PieceKit.mark('캡션', () => {
+      let text;
+      if (tau < SPAN * HALF) {
+        const n = nowInterval;
+        const start = survivorsAt((n - 1) * HALF);
+        const now = survivorsAt(eff);
+        text = n + '번째 반감기 — 이 구간을 시작할 때 ' + start + '개였던 원자가 지금 ' + now + '개 남았다';
+      } else {
+        const counts = [];
+        for (let n = 0; n <= SPAN; n++) counts.push(survivorsAt(n * HALF));
+        text = '반감기 경계마다 남은 원자 수: ' + counts.join(' → ');
+      }
+      if (captionEl.textContent !== text) captionEl.textContent = text;
+    });
+  },
+});
+
+function atomXY(i, gx, gy, cell) {
+  const c = i % COLS, r = Math.floor(i / COLS);
+  return [gx + (c + 0.5 + jitter[i][0]) * cell, gy + (r + 0.5 + jitter[i][1]) * cell];
+}
+</script>
+</body>
+</html>

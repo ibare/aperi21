@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>부유체의 안정</title>
+<style>
+  :root {
+    --paper: #fbfaf6;
+    --ink: #2b2a27;
+    --muted: #7a766d;
+  }
+  html, body { margin: 0; background: var(--paper); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 8px 0 12px; }
+  canvas { display: block; width: 100%; height: 290px; }
+  .caption { min-height: 2.8em; margin: 6px 16px 0; font-size: 15px; line-height: 1.45; }
+  .control { display: flex; align-items: center; gap: 10px; margin: 6px 16px 0;
+    font-size: 13px; color: var(--muted); }
+  .control input { flex: 0 1 220px; }
+  .control output { font-variant-numeric: tabular-nums; min-width: 4.5em; color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <p class="caption" id="caption"></p>
+  <label class="control">
+    <span>무게중심 높이(배 밑바닥에서)</span>
+    <input id="zg" type="range" min="0.35" max="1.10" step="0.05" value="0.70">
+    <output id="zgOut">0.70 m</output>
+  </label>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ---- 물리 상수 ----
+  var GRAV = 9.8;          // m/s²
+  var DAMP = 0.35;         // 물의 저항을 흉내 낸 각속도 감쇠 (1/s, 물리 시간)
+  var TIME_SCALE = 0.45;   // 화면 1초 = 물리 0.45초 — 넘어가는 과정을 눈으로 따라가게
+  var CYCLE = 14;          // 화면 초. 이 주기마다 두 배를 같은 기울기에서 다시 놓는다
+  var FADE = 0.3;
+  var HEEL0 = -8 * Math.PI / 180; // 시계 방향(오른쪽이 낮아짐)으로 8° 기운 채 시작
+  var DRAFT = 0.5;         // 두 배 모두 똑바로 섰을 때 잠기는 깊이 (m)
+  var ZG_DEFAULT = 0.70;
+
+  var C = {
+    waterTop: '#d7e7f0', waterBottom: '#7fa9c4', surface: '#4f7f9e',
+    hullFill: '#e6dfd0', hullStroke: '#5b5346',
+    hatch: '#5f8fae',
+    pressure: 'rgba(28, 78, 112, 0.20)', pressureLine: 'rgba(28, 78, 112, 0.85)',
+    buoy: '#285f86', gravity: '#3b3a36',
+    trail: 'rgba(40, 96, 132, 0.55)',
+    accent: '#d9480f',   // 강조색: 오직 '배를 돌리는 짝힘(무게선과 부력선의 간격)' 하나
+    label: '#7a766d',
+  };
+
+  function makeHull(name, w, h) {
+    return { name: name, w: w, h: h, A0: w * DRAFT, zg: ZG_DEFAULT,
+      th: HEEL0, om: 0, trail: [], trailTick: 0,
+      table: null, stableUpright: true, lollDeg: 0, pastLoll: false, phaseB: false, settled: false };
+  }
+  var hulls = [makeHull('넓은 배', 3.0, 1.2), makeHull('좁은 배', 1.5, 1.2)];
+
+  // ---- 기하: 몸체 좌표(무게중심 G 원점, 위가 +y) → 세계 좌표(수면 y=0) ----
+  function worldPoly(H, th, gy) {
+    var c = Math.cos(th), s = Math.sin(th);
+    var body = [[-H.w / 2, -H.zg], [H.w / 2, -H.zg], [H.w / 2, H.h - H.zg], [-H.w / 2, H.h - H.zg]];
+    return body.map(function (p) {
+      return { x: c * p[0] - s * p[1], y: gy + s * p[0] + c * p[1] };
+    });
+  }
+  function clipBelow(pts) {
+    var out = [];
+    for (var i = 0; i < pts.length; i++) {
+      var a = pts[i], b = pts[(i + 1) % pts.length];
+      var ain = a.y <= 0, bin = b.y <= 0;
+      if (ain) out.push(a);
+      if (ain !== bin) {
+        var k = a.y / (a.y - b.y);
+        out.push({ x: a.x + (b.x - a.x) * k, y: 0 });
+      }
+    }
+    return out;
+  }
+  function areaCentroid(pts) {
+    var A = 0, cx = 0, cy = 0;
+    for (var i = 0; i < pts.length; i++) {
+      var a = pts[i], b = pts[(i + 1) % pts.length];
+      var cr = a.x * b.y - b.x * a.y;
+      A += cr; cx += (a.x + b.x) * cr; cy += (a.y + b.y) * cr;
+    }
+    A /= 2;
+    if (Math.abs(A) < 1e-9) return { A: 0, x: 0, y: 0 };
+    return { A: Math.abs(A), x: cx / (6 * A), y: cy / (6 * A) };
+  }
+  // 기울기 th 에서 잠긴 넓이가 A0 가 되도록 G 의 높이를 맞춘다 (상하 운동은 준정적)
+  function pose(H, th) {
+    var lo = -3, hi = 3, gy = 0, sub = null;
+    for (var i = 0; i < 40; i++) {
+      gy = (lo + hi) / 2;
+      sub = areaCentroid(clipBelow(worldPoly(H, th, gy)));
+      if (sub.A > H.A0) lo = gy; else hi = gy;
+    }
+    var poly = worldPoly(H, th, gy);
+    var subPoly = clipBelow(poly);
+    var B = areaCentroid(subPoly);
+    return { gy: gy, poly: poly, sub: subPoly, B: { x: B.x, y: B.y }, arm: B.x };
+  }
+  function k2(H) {
+    var d = H.zg - H.h / 2;
+    return (H.w * H.w + H.h * H.h) / 12 + d * d;
+  }
+  // 기울기별로 '되세우는 쪽인가'를 표로 — 캡션이 화면과 어긋나지 않게 하는 근거
+  function buildTable(H) {
+    var rows = [];
+    for (var deg = 0; deg <= 170; deg += 0.5) {
+      var th = -deg * Math.PI / 180;
+      var p = pose(H, th);
+      rows.push({ deg: deg, restore: p.arm }); // th<0 에서 arm>0 이면 되세우는 쪽
+    }
+    H.table = rows;
+    H.stableUpright = rows[2].restore > 0; // 1°
+    H.lollDeg = 0;
+    if (!H.stableUpright) {
+      for (var i = 3; i < rows.length; i++) {
+        if (rows[i - 1].restore <= 0 && rows[i].restore > 0) { H.lollDeg = rows[i].deg; break; }
+      }
+    }
+  }
+  function resetHull(H) {
+    H.th = HEEL0; H.om = 0; H.trail = []; H.trailTick = 0; H.pastLoll = false; H.phaseB = false; H.settled = false;
+  }
+  function setZg(z) {
+    hulls.forEach(function (H) { H.zg = z; H.trail = []; buildTable(H); H.pastLoll = false; H.phaseB = false; });
+  }
+  setZg(ZG_DEFAULT);
+
+  // ---- 조작기 ----
+  var slider = document.getElementById('zg');
+  var zgOut = document.getElementById('zgOut');
+  if (PieceKit.frozen) {
+    slider.disabled = true;
+  } else {
+    slider.addEventListener('input', function () {
+      var z = parseFloat(slider.value);
+      zgOut.textContent = z.toFixed(2) + ' m';
+      setZg(z);
+    });
+  }
+
+  // ---- 시간 ----
+  var cycleIndex = 0;
+  function stepHull(H, dt) {
+    var n = 4, h = dt * TIME_SCALE / n;
+    for (var i = 0; i < n; i++) {
+      var p = pose(H, H.th);
+      var alpha = GRAV * p.arm / k2(H) - DAMP * H.om;
+      H.om += alpha * h;
+      H.th += H.om * h;
+    }
+    var deg = Math.abs(H.th) * 180 / Math.PI;
+    // 넘어가는 배의 단계: 균형각을 지났는가 → 바깥으로 가던 기울기가 처음 되돌아섰는가
+    var lollRef = H.lollDeg > 0 ? H.lollDeg : 20;
+    if (!H.stableUpright && deg >= lollRef) H.pastLoll = true;
+    if (!H.stableUpright && H.pastLoll && H.th * H.om <= 0) H.phaseB = true;
+    H.settled = H.stableUpright && deg < 0.8 && Math.abs(H.om) < 0.02;
+    // 부심 자취 — 몸체 좌표로 쌓는다(배와 함께 돈다)
+    if ((H.trailTick++ % 3) === 0) {
+      var q = pose(H, H.th);
+      var c = Math.cos(-H.th), s = Math.sin(-H.th);
+      var bx = q.B.x, by = q.B.y - q.gy;
+      H.trail.push({ x: c * bx - s * by, y: s * bx + c * by });
+      if (H.trail.length > 400) H.trail.shift();
+    }
+  }
+
+  // ---- 그리기 ----
+  var canvas = document.getElementById('c');
+  var ctx = canvas.getContext('2d');
+  var W = 840, HGT = 290, dpr = 1;
+  function resize() {
+    W = canvas.clientWidth || 840; HGT = canvas.clientHeight || 290;
+    dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(HGT * dpr);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  var WL = 132; // 수면 화면 높이
+  function S() { return Math.min(W / 8.4, 100); }
+
+  function toScreen(cx, p) { return { x: cx + p.x * S(), y: WL - p.y * S() }; }
+  function pathPoly(pts) {
+    ctx.beginPath();
+    pts.forEach(function (p, i) { if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); });
+    ctx.closePath();
+  }
+  function haloText(text, x, y, align, color) {
+    ctx.font = '12px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+    ctx.textAlign = align; ctx.textBaseline = 'middle';
+    ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(251,250,246,0.9)';
+    ctx.strokeText(text, x, y);
+    ctx.fillStyle = color; ctx.fillText(text, x, y);
+  }
+
+  function drawHull(H, cx, alpha) {
+    var p = pose(H, H.th);
+    var sc = S();
+    var poly = p.poly.map(function (v) { return toScreen(cx, v); });
+    var sub = p.sub.map(function (v) { return toScreen(cx, v); });
+    var G = toScreen(cx, { x: 0, y: p.gy });
+    var B = toScreen(cx, p.B);
+    ctx.save();
+    ctx.globalAlpha = alpha;
+
+    PieceKit.mark('선체 단면', function () {
+      pathPoly(poly);
+      ctx.fillStyle = C.hullFill; ctx.fill();
+    });
+
+    PieceKit.mark('잠긴 단면(밀어낸 물의 모양)', function () {
+      if (sub.length < 3) return;
+      ctx.save();
+      pathPoly(sub); ctx.clip();
+      ctx.strokeStyle = C.hatch; ctx.lineWidth = 1;
+      ctx.beginPath();
+      var minX = cx - 3 * sc, maxX = cx + 3 * sc;
+      for (var x = minX - 200; x < maxX; x += 7) {
+        ctx.moveTo(x, WL + 200); ctx.lineTo(x + 200, WL);
+      }
+      ctx.globalAlpha = alpha * 0.4;
+      ctx.stroke();
+      ctx.restore();
+    });
+
+    PieceKit.mark('선체 윤곽', function () {
+      pathPoly(poly);
+      ctx.lineWidth = 1.6; ctx.strokeStyle = C.hullStroke; ctx.stroke();
+    });
+
+    PieceKit.mark('갑판', function () {
+      ctx.beginPath(); ctx.moveTo(poly[2].x, poly[2].y); ctx.lineTo(poly[3].x, poly[3].y);
+      ctx.lineWidth = 5; ctx.strokeStyle = C.hullStroke; ctx.stroke();
+    });
+
+    PieceKit.mark('선체를 누르는 수압 분포', function () {
+      var K = 0.4; // 깊이 1 m 당 화살 길이 (m) — 바깥에서 선체 면을 수직으로 누른다
+      for (var i = 0; i < p.poly.length; i++) {
+        var a = p.poly[i], b = p.poly[(i + 1) % p.poly.length];
+        var len = Math.hypot(b.x - a.x, b.y - a.y);
+        var nx = -(b.y - a.y) / len, ny = (b.x - a.x) / len; // 안쪽 법선
+        var N = Math.max(2, Math.round(len / 0.15));
+        var base = [], tips = [];
+        for (var j = 0; j <= N; j++) {
+          var u = j / N;
+          var q = { x: a.x + (b.x - a.x) * u, y: a.y + (b.y - a.y) * u };
+          if (q.y > 1e-6) continue;
+          var d = -q.y;
+          base.push(toScreen(cx, q));
+          tips.push(toScreen(cx, { x: q.x - nx * d * K, y: q.y - ny * d * K }));
+        }
+        if (base.length < 2) continue;
+        ctx.beginPath();
+        base.forEach(function (s, k) { if (k === 0) ctx.moveTo(s.x, s.y); else ctx.lineTo(s.x, s.y); });
+        for (var k = tips.length - 1; k >= 0; k--) ctx.lineTo(tips[k].x, tips[k].y);
+        ctx.closePath();
+        ctx.fillStyle = C.pressure; ctx.fill();
+        ctx.beginPath();
+        var hx = nx, hy = -ny; // 화면 좌표의 안쪽 방향
+        for (var m = 0; m < base.length; m++) {
+          var L = Math.hypot(tips[m].x - base[m].x, tips[m].y - base[m].y);
+          if (L < 5) continue;
+          ctx.moveTo(tips[m].x, tips[m].y); ctx.lineTo(base[m].x, base[m].y);
+          ctx.moveTo(base[m].x - hx * 4 + hy * 2.5, base[m].y - hy * 4 - hx * 2.5);
+          ctx.lineTo(base[m].x, base[m].y);
+          ctx.lineTo(base[m].x - hx * 4 - hy * 2.5, base[m].y - hy * 4 + hx * 2.5);
+        }
+        ctx.strokeStyle = C.pressureLine; ctx.lineWidth = 1; ctx.stroke();
+      }
+    });
+
+    PieceKit.mark('부심 자취', function () {
+      if (H.trail.length < 2) return;
+      var c = Math.cos(H.th), s = Math.sin(H.th);
+      ctx.beginPath();
+      H.trail.forEach(function (b, i) {
+        var w = { x: c * b.x - s * b.y, y: p.gy + s * b.x + c * b.y };
+        var q = toScreen(cx, w);
+        if (i === 0) ctx.moveTo(q.x, q.y); else ctx.lineTo(q.x, q.y);
+      });
+      ctx.strokeStyle = C.trail; ctx.lineWidth = 1.5; ctx.stroke();
+    });
+
+    PieceKit.mark('중력 작용선', function () {
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(G.x, G.y); ctx.lineTo(G.x, WL + 1.35 * sc);
+      ctx.strokeStyle = C.gravity; ctx.lineWidth = 1; ctx.stroke();
+      ctx.setLineDash([]);
+    });
+
+    PieceKit.mark('부력 작용선', function () {
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(B.x, B.y); ctx.lineTo(B.x, G.y - 0.75 * sc);
+      ctx.strokeStyle = C.buoy; ctx.lineWidth = 1; ctx.stroke();
+      ctx.setLineDash([]);
+    });
+
+    PieceKit.mark('되세우거나 넘기는 짝힘', function () {
+      var gap = B.x - G.x;
+      if (Math.abs(gap) < 1.5) return;
+      var y = G.y - 0.55 * sc;
+      ctx.strokeStyle = C.accent; ctx.fillStyle = C.accent; ctx.lineWidth = 2.2;
+      ctx.beginPath(); ctx.moveTo(G.x, y); ctx.lineTo(B.x, y); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(G.x, y - 4); ctx.lineTo(G.x, y + 4);
+      ctx.moveTo(B.x, y - 4); ctx.lineTo(B.x, y + 4); ctx.stroke();
+      // 돌리는 방향: 세계에서 반시계(부심이 오른쪽) = 화면에서도 반시계
+      var ccw = gap > 0;
+      var R = 20, span = Math.min(1.9, 0.5 + Math.abs(gap) / 18);
+      var a0 = -Math.PI / 2 + (ccw ? span / 2 : -span / 2);
+      var a1 = ccw ? a0 - span : a0 + span;
+      ctx.beginPath(); ctx.arc(G.x, G.y, R, a0, a1, ccw); ctx.stroke();
+      var ex = G.x + R * Math.cos(a1), ey = G.y + R * Math.sin(a1);
+      var tx = ccw ? Math.sin(a1) : -Math.sin(a1), ty = ccw ? -Math.cos(a1) : Math.cos(a1);
+      var nx = -ty, ny = tx;
+      ctx.beginPath();
+      ctx.moveTo(ex + tx * 6, ey + ty * 6);
+      ctx.lineTo(ex - tx * 2 + nx * 4, ey - ty * 2 + ny * 4);
+      ctx.lineTo(ex - tx * 2 - nx * 4, ey - ty * 2 - ny * 4);
+      ctx.closePath(); ctx.fill();
+    });
+
+    PieceKit.mark('부심', function () {
+      ctx.beginPath(); ctx.arc(B.x, B.y, 4.5, 0, Math.PI * 2);
+      ctx.fillStyle = C.buoy; ctx.fill();
+      ctx.lineWidth = 1.5; ctx.strokeStyle = '#fff'; ctx.stroke();
+      haloText('부심', B.x, B.y + 15, 'center', C.buoy);
+    });
+
+    PieceKit.mark('무게중심', function () {
+      ctx.beginPath(); ctx.arc(G.x, G.y, 5, 0, Math.PI * 2);
+      ctx.fillStyle = '#fff'; ctx.fill();
+      ctx.lineWidth = 2; ctx.strokeStyle = C.gravity; ctx.stroke();
+      ctx.beginPath(); ctx.arc(G.x, G.y, 1.8, 0, Math.PI * 2);
+      ctx.fillStyle = C.gravity; ctx.fill();
+      haloText('무게중심', G.x - 30, G.y, 'right', C.gravity);
+    });
+
+    ctx.restore();
+  }
+
+  function hullPhrase(H) {
+    if (H.stableUpright) {
+      return H.settled ? '똑바로 섰다' : '기울 때마다 부심이 낮은 쪽으로 무게중심 너머까지 옮겨 가 되세워진다';
+    }
+    if (H.phaseB) return '처음보다 크게 기운 자리를 중심으로 흔들린다';
+    if (H.pastLoll) return '부심이 무게중심 너머로 왔지만 넘어가던 기세로 더 기운다';
+    return '부심이 옮겨 가도 무게중심 아래까지 못 미쳐 점점 더 넘어간다';
+  }
+
+  PieceKit.loop({
+    step: function (dt, t) {
+      var ci = Math.floor((t + dt) / CYCLE);
+      if (ci !== cycleIndex) { cycleIndex = ci; hulls.forEach(resetHull); }
+      hulls.forEach(function (H) { stepHull(H, dt); });
+    },
+    draw: function (t) {
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, HGT);
+      var tc = t - cycleIndex * CYCLE;
+      var alpha = Math.min(1, (CYCLE - tc) / FADE);
+      if (cycleIndex > 0) alpha = Math.min(alpha, tc / FADE);
+      alpha = Math.max(0, alpha);
+
+      PieceKit.mark('물(깊을수록 큰 수압)', function () {
+        var g = ctx.createLinearGradient(0, WL, 0, HGT);
+        g.addColorStop(0, C.waterTop); g.addColorStop(1, C.waterBottom);
+        ctx.fillStyle = g; ctx.fillRect(0, WL, W, HGT - WL);
+      });
+
+      var centers = [W * 0.30, W * 0.74];
+      hulls.forEach(function (H, i) { drawHull(H, centers[i], alpha); });
+
+      PieceKit.mark('수면', function () {
+        ctx.beginPath(); ctx.moveTo(0, WL); ctx.lineTo(W, WL);
+        ctx.strokeStyle = C.surface; ctx.lineWidth = 1.2; ctx.stroke();
+      });
+
+      PieceKit.mark('배 이름', function () {
+        ctx.font = '13px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'top'; ctx.fillStyle = C.label;
+        hulls.forEach(function (H, i) {
+          ctx.fillText(H.name + ' · 폭 ' + H.w.toFixed(1) + ' m', centers[i], 12);
+        });
+      });
+
+      document.getElementById('caption').textContent =
+        '넓은 배는 ' + hullPhrase(hulls[0]) + '. 좁은 배는 ' + hullPhrase(hulls[1]) + '.';
+    },
+  });
+})();
+</script>
+</body>
+</html>

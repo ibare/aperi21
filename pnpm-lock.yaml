@@ -195,6 +195,9 @@ importers:
       '@aperi21/sim-centripetal-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/centripetal-force
+      '@aperi21/sim-charged-particle-in-magnetic-field':
+        specifier: workspace:*
+        version: link:../../sims/em/charged-particle-in-magnetic-field
       '@aperi21/sim-color-addition':
         specifier: workspace:*
         version: link:../../sims/optics/color-addition
@@ -291,6 +294,9 @@ importers:
       '@aperi21/sim-kinetic-friction':
         specifier: workspace:*
         version: link:../../sims/mechanics/kinetic-friction
+      '@aperi21/sim-lagrange-points':
+        specifier: workspace:*
+        version: link:../../sims/astro/lagrange-points
       '@aperi21/sim-lenz-law':
         specifier: workspace:*
         version: link:../../sims/em/lenz-law
@@ -306,6 +312,9 @@ importers:
       '@aperi21/sim-mechanical-advantage':
         specifier: workspace:*
         version: link:../../sims/mechanics/mechanical-advantage
+      '@aperi21/sim-moment-of-inertia':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/moment-of-inertia
       '@aperi21/sim-moon-phases':
         specifier: workspace:*
         version: link:../../sims/astro/moon-phases
@@ -354,6 +363,9 @@ importers:
       '@aperi21/sim-pulley-system':
         specifier: workspace:*
         version: link:../../sims/mechanics/pulley-system
+      '@aperi21/sim-radioactive-decay':
+        specifier: workspace:*
+        version: link:../../sims/modern/radioactive-decay
       '@aperi21/sim-radius-of-curvature':
         specifier: workspace:*
         version: link:../../sims/kinematics/radius-of-curvature
@@ -366,6 +378,9 @@ importers:
       '@aperi21/sim-reference-frame':
         specifier: workspace:*
         version: link:../../sims/kinematics/reference-frame
+      '@aperi21/sim-refraction-of-waves':
+        specifier: workspace:*
+        version: link:../../sims/waves/refraction-of-waves
       '@aperi21/sim-relative-velocity':
         specifier: workspace:*
         version: link:../../sims/kinematics/relative-velocity
@@ -381,6 +396,9 @@ importers:
       '@aperi21/sim-spring-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/spring-force
+      '@aperi21/sim-stability-of-floating-body':
+        specifier: workspace:*
+        version: link:../../sims/fluids/stability-of-floating-body
       '@aperi21/sim-standing-wave':
         specifier: workspace:*
         version: link:../../sims/waves/standing-wave
@@ -411,6 +429,9 @@ importers:
       '@aperi21/sim-tidal-force':
         specifier: workspace:*
         version: link:../../sims/astro/tidal-force
+      '@aperi21/sim-total-internal-reflection':
+        specifier: workspace:*
+        version: link:../../sims/optics/total-internal-reflection
       '@aperi21/sim-trajectory-equation':
         specifier: workspace:*
         version: link:../../sims/kinematics/trajectory-equation
@@ -687,6 +708,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/astro/lagrange-points:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/astro/moon-phases:
     devDependencies:
       '@aperi21/schema':
@@ -719,6 +749,15 @@ importers:
       vitest:
         specifier: ^2.1.9
         version: 2.1.9(jsdom@25.0.1)
+
+  sims/em/charged-particle-in-magnetic-field:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
 
   sims/em/current-magnetic-field:
     devDependencies:
@@ -844,6 +883,15 @@ importers:
         version: 5.9.3
 
   sims/fluids/pressure-isotropy:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/fluids/stability-of-floating-body:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1449,6 +1497,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/modern/radioactive-decay:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/modern/spacetime-diagram:
     devDependencies:
       '@aperi21/schema':
@@ -1500,6 +1557,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/optics/total-internal-reflection:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/optics/youngs-double-slit:
     devDependencies:
       '@aperi21/schema':
@@ -1510,6 +1576,15 @@ importers:
         version: 5.9.3
 
   sims/oscillation/gyroscopic-precession:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/moment-of-inertia:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1657,6 +1732,15 @@ importers:
         version: 5.9.3
 
   sims/waves/longitudinal-wave:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/waves/refraction-of-waves:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
