@@ -23,6 +23,20 @@ const DIAL = {
   fontDelta: 0.26,
   fontLabel: 0.26,
 } as const;
+/**
+ * 눈금 숫자(`labelAt`)가 있을 때의 글자 자리. 눈금판 양 끝(270° 의 아래 두 끝)에 붙는
+ * 숫자가 지금 값 글자와 겹치므로, 지금 값·차이 글자를 작게 해 아래 빈 틈으로 내린다.
+ * 숫자가 없는 눈금판은 위 `DIAL` 그대로다 — 선언을 생략한 그림은 바뀌지 않는다.
+ */
+const DIAL_LABELED = {
+  /** 숫자가 놓이는 반지름 — 눈금선 안쪽. */
+  tickLabel: 0.66,
+  fontTick: 0.13,
+  valueY: 0.62,
+  fontValue: 0.2,
+  deltaY: 0.82,
+  fontDelta: 0.15,
+} as const;
 /** 눈금자(직선)의 화면 치수. */
 const LINEAR = {
   tickMajor: 9,
@@ -105,6 +119,19 @@ export const renderScale: PrimitiveRenderer = (rc, p0) => {
       c.stroke();
     });
 
+    // 눈금 숫자 — 선언한 값의 자리에 바로 붙인다. linear 처럼 가까운 눈금을 찾지 않는다 —
+    // 눈금판은 눈금 간격을 선언이 정하므로 숫자 자리도 값 그 자체다. 정박값을 그대로 쓴다.
+    if (p.labelAt && p.labelAt.length > 0) {
+      c.font = `${Math.round(R * DIAL_LABELED.fontTick)}px ${rc.theme.fontFamilyMono}`;
+      c.fillStyle = rc.theme.muted;
+      c.textAlign = 'center';
+      c.textBaseline = 'middle';
+      for (const v of p.labelAt) {
+        const a = angle(v);
+        c.fillText(v.toFixed(digits), cx + Math.cos(a) * R * DIAL_LABELED.tickLabel, cy + Math.sin(a) * R * DIAL_LABELED.tickLabel);
+      }
+    }
+
     const a1 = angle(p.value);
     c.strokeStyle = rc.theme.foreground;
     c.lineWidth = rc.theme.strokeWidth.thick;
@@ -121,20 +148,21 @@ export const renderScale: PrimitiveRenderer = (rc, p0) => {
     // 지금 눈금 — 수와 단위는 표식이라 번역 대상이 아니다 (C1 판정 3).
     c.textAlign = 'center';
     c.textBaseline = 'middle';
-    c.font = `600 ${Math.round(R * DIAL.fontValue)}px ${rc.theme.fontFamilyMono}`;
+    const glyphs = p.labelAt && p.labelAt.length > 0 ? DIAL_LABELED : DIAL;
+    c.font = `600 ${Math.round(R * glyphs.fontValue)}px ${rc.theme.fontFamilyMono}`;
     c.fillStyle = rc.theme.foreground;
-    c.fillText(`${p.value.toFixed(digits)} ${unit}`.trim(), cx, cy + R * DIAL.valueY);
+    c.fillText(`${p.value.toFixed(digits)} ${unit}`.trim(), cx, cy + R * glyphs.valueY);
 
     // 차이를 부채꼴로만 보이려는 선언은 글자를 끈다 (`showDelta`).
     if (p.origin !== undefined && p.showDelta !== false) {
       const delta = p.value - p.origin;
       if (Math.abs(delta) > Math.pow(10, -digits) / 2) {
-        c.font = `600 ${Math.round(R * DIAL.fontDelta)}px ${rc.theme.fontFamilyMono}`;
+        c.font = `600 ${Math.round(R * glyphs.fontDelta)}px ${rc.theme.fontFamilyMono}`;
         c.fillStyle = accent;
         c.fillText(
           `${delta > 0 ? '+' : '−'}${Math.abs(delta).toFixed(digits)} ${unit}`.trim(),
           cx,
-          cy + R * DIAL.deltaY,
+          cy + R * glyphs.deltaY,
         );
       }
     }

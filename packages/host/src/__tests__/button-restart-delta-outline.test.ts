@@ -104,6 +104,33 @@ describe('scale.showDelta', () => {
   });
 });
 
+describe('scale(dial).labelAt', () => {
+  const dial = (over: Partial<Scale>): Scale => ({
+    type: 'scale',
+    shape: 'dial',
+    pos: [5, 5],
+    size: 3,
+    range: [30, 90],
+    // 지금 값 글자(45)는 눈금 숫자와 가르기 위해 어떤 labelAt 과도 겹치지 않게 둔다.
+    value: 45,
+    digits: 0,
+    ...over,
+  });
+  const tickNumbers = (calls: string[]): string[] => calls.filter((c) => /^fillText:\d+$/.test(c) && c !== 'fillText:45');
+
+  it('생략하면 눈금 숫자가 없다 (지금까지의 그림)', () => {
+    const calls: string[] = [];
+    renderScale(makeRc(calls), dial({}));
+    expect(tickNumbers(calls)).toEqual([]);
+  });
+
+  it('선언한 값에만 숫자를 붙인다', () => {
+    const calls: string[] = [];
+    renderScale(makeRc(calls), dial({ labelAt: [30, 60, 90] }));
+    expect(tickNumbers(calls)).toEqual(['fillText:30', 'fillText:60', 'fillText:90']);
+  });
+});
+
 describe('button', () => {
   type Spec = Extract<ControllerSpec, { type: 'button' }>;
   const spec: Spec = { id: 'release', type: 'button', binds: { pressed: 'release' }, label: { ko: '지금 놓기', en: 'Release now' } };
