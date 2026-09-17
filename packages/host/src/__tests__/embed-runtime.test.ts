@@ -424,3 +424,34 @@ describe('검사 시각은 선언의 앞당김 위에 놓인다', () => {
     handle.destroy();
   });
 });
+
+describe('검사 시각은 화면에서 흐른 시간이다', () => {
+  it('느린 단계가 있으면 시계는 inspectAt 보다 덜 간다 — 실시간 재생과 같은 셈', () => {
+    // 0.5배 단계 2초(조각 시계) 뒤 보통 속도. 화면 3초면 느린 단계에서 시계 1.5초.
+    const seen: number[] = [];
+    const bundle: Bundle<TestState> = {
+      ...makeBundle(),
+      schema: {
+        ...SCHEMA,
+        timeModel: 'periodic',
+        timeline: {
+          phases: [
+            { id: 'slow', duration: 2, timeScale: 0.5 },
+            { id: 'rest', duration: 100 },
+          ],
+        },
+      },
+      scene: ({ timeline }): SceneGraph => {
+        if (timeline) seen.push(timeline.t);
+        return [];
+      },
+    };
+    const mount = document.createElement('div');
+    document.body.append(mount);
+    // 화면 5초 = 느린 단계 4초(시계 2초) + 보통 1초(시계 1초) → 시계 3초.
+    const handle = runBundle(bundle, mount, { inspectAt: 5 });
+    raf.tick(3);
+    expect(seen.at(-1)).toBeCloseTo(3, 1);
+    handle.destroy();
+  });
+});

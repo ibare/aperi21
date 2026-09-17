@@ -431,24 +431,33 @@ export function runBundle<T extends BundleState = BundleState>(
   if (options.inspectAt !== undefined && bundle.schema.timeModel !== 'static') {
     const target = Math.min(options.inspectAt, INSPECT_MAX_T);
     const steps = Math.round(target / PREROLL_STEP);
+    // `target` 은 **화면에서 흐른 시간**이다(자유 구현본의 `?t=`). 조각 시계는 그보다
+    // 느리거나 빠를 수 있다 — 시간표 단계의 `timeScale` 만큼. 실시간 루프(`frame`)와
+    // 같은 셈으로 고정 걸음마다 그 순간의 재생 속도를 곱해 시계와 상태를 함께 민다.
+    //
+    // 시계는 **`startAt` 위에서** 출발한다. 앞당김을 지우면 sims 스크린샷이 `startAt`
+    // 만큼 이른 장면이 되는데 예외가 없다 — 03 배치 이관 에이전트 여섯이 각자 손으로
+    // 시각을 옮겨 찍었고, 04 에서는 느린 단계를 가진 조각이 같은 식으로 어긋났다.
+    // 상태 쪽 앞당김(`preroll`)은 위에서 이미 걸었으므로 여기서 더 걷지 않는다.
+    let clock = bundle.schema.startAt ?? 0;
     for (let i = 0; i < steps; i++) {
       if (bundle.isTerminated?.(refs.state)) {
         timeEngine.markTerminated();
         break;
       }
+      const scale = bundle.schema.timeline
+        ? evaluateTimeline(bundle.schema.timeline, clock).timeScale
+        : 1;
+      const dt = PREROLL_STEP * scale;
       refs.state = bundle.step({
         state: refs.state,
-        dt: PREROLL_STEP,
+        dt,
         stage: refs.stage,
         environments: refs.envs,
       });
+      clock += dt;
     }
-    // 시계는 **`startAt` 위에** 놓는다. 자유 구현본의 `?t=` 는 "도착한 뒤 흐른 시간" 이라
-    // 도착 순간이 이미 진행 중인 장면이다. `target` 으로 덮어쓰면 앞당김이 지워져
-    // sims 스크린샷이 `startAt` 만큼 이른 장면이 되는데 예외가 없다 — 03 배치 이관
-    // 에이전트 여섯이 각자 손으로 시각을 옮겨 찍었다. 상태 쪽 앞당김(`preroll`)은
-    // 위에서 이미 걸었으므로 여기서 더 걷지 않는다.
-    timeEngine.seek((bundle.schema.startAt ?? 0) + target);
+    timeEngine.seek(clock);
     timeEngine.pause();
   }
 
