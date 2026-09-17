@@ -26,7 +26,7 @@ import { BackgroundParticleSystem, resolveBackgroundKind } from '../particles';
 import { orderForDrawing, preprocessScene } from '../scene';
 import { Camera, type Viewport } from '../camera';
 import { Host, createHost } from '../host';
-import { createTimeEngine, evaluateTimeline, withCaption } from '../time';
+import { createTimeEngine, evaluateTimeline, withCaption, type TimeEngine } from '../time';
 import type { HostTheme, SceneTheme, ThemeMode } from '../theme';
 import type {
   ControllerEventContext,
@@ -138,6 +138,19 @@ export function markHeld(
 ): void {
   if (!spec.heldPath) return;
   refs.state = writePath(refs.state, spec.heldPath, held);
+}
+
+/**
+ * 선언이 `restart` 를 주면 조각 시계를 0 으로 되돌린다. 러너는 조작기가 state 를 건넬 때와
+ * 손을 놓을 때(`pointercancel` 포함) 부른다.
+ *
+ * 멈춘 시계(`terminated`)는 되돌리기만 해서는 흐르지 않는다 — 다시 놓는다는 뜻이니
+ * 함께 출발시킨다. 멈춰 둔 시계(`paused`, 검사 시각)는 0 으로 옮기되 출발시키지 않는다.
+ */
+export function restartOnChange(timeEngine: TimeEngine, spec: ControllerSpec): void {
+  if (!spec.restart) return;
+  timeEngine.seek(0);
+  if (timeEngine.state === 'terminated') timeEngine.start();
 }
 
 /**
@@ -508,9 +521,10 @@ export function runBundle<T extends BundleState = BundleState>(
     return null;
   }
 
-  function applyPartial(patch: unknown) {
+  function applyPartial(patch: unknown, spec: ControllerSpec) {
     if (patch === null || patch === undefined) return;
     refs.state = patch as T;
+    restartOnChange(timeEngine, spec);
   }
 
   function onPointerDown(e: PointerEvent) {
@@ -524,7 +538,7 @@ export function runBundle<T extends BundleState = BundleState>(
       // 돌아갈지는 조각의 step 이 안다 (원칙 7 ④ · ControllerInstance.heldPath).
       markHeld(refs, hit.spec, true);
       const patch = hit.impl.onPointerDown(input, makeEventCtx(vp, hit.slot), hit.spec, refs.state as BundleState);
-      applyPartial(patch);
+      applyPartial(patch, hit.spec);
       return;
     }
     // 카메라 팬은 조작기를 잡지 않은 손가락이 하나일 때만.
@@ -551,7 +565,7 @@ export function runBundle<T extends BundleState = BundleState>(
         session.spec,
         refs.state as BundleState,
       );
-      applyPartial(patch);
+      applyPartial(patch, session.spec);
       return;
     }
     if (panning && panning.pointerId === e.pointerId) {
@@ -585,8 +599,11 @@ export function runBundle<T extends BundleState = BundleState>(
         session.spec,
         refs.state as BundleState,
       );
-      applyPartial(patch);
+      applyPartial(patch, session.spec);
       markHeld(refs, session.spec, false);
+      // 놓는 순간에도 되돌린다. 누른 뒤 움직이지 않고 잡고만 있으면 그동안 state 를
+      // 건네지 않아 시계가 흘러 버린다 — 잡는 동안 제 시계를 0 에 두는 조각과 어긋난다.
+      restartOnChange(timeEngine, session.spec);
       sessions.delete(e.pointerId);
       try { canvas.releasePointerCapture(e.pointerId); } catch { /* noop */ }
       return;

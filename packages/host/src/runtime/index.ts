@@ -17,6 +17,7 @@ export {
   runBundle,
   prerollState,
   markHeld,
+  restartOnChange,
   type RunBundleOptions,
   type BundleRunHandle,
 } from './runBundle';

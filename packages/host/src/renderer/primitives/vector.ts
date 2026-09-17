@@ -92,27 +92,53 @@ export const renderVector: PrimitiveRenderer = (rc, p0) => {
   const wanted = typeof p.headSize === 'number' ? p.headSize * rc.scale : DEFAULT_HEAD;
   const head = Math.min(wanted, len * HEAD_MAX_RATIO);
 
-  c.strokeStyle = color;
-  c.fillStyle = color;
   // 벡터는 굵다 — 화살표가 가늘면 방향보다 길이만 읽힌다. 선언이 `width` 로 덮는다.
   const base = rc.theme.strokeWidth.thick;
-  c.lineWidth = p.width ?? base;
+  const width = p.width ?? base;
   c.lineCap = 'round';
-  c.setLineDash(dashOf(p.style, Math.max(1, c.lineWidth / base)));
-  c.beginPath();
-  c.moveTo(sx0, sy0);
-  // 화살촉 공간 남기기
-  c.lineTo(sx1 - ux * head * 0.4, sy1 - uy * head * 0.4);
+
+  const shaft = (): void => {
+    c.beginPath();
+    c.moveTo(sx0, sy0);
+    // 화살촉 공간 남기기
+    c.lineTo(sx1 - ux * head * 0.4, sy1 - uy * head * 0.4);
+  };
+  const tip = (): void => {
+    c.beginPath();
+    c.moveTo(sx1, sy1);
+    c.lineTo(sx1 - ux * head - uy * head * 0.5, sy1 - uy * head + ux * head * 0.5);
+    c.lineTo(sx1 - ux * head + uy * head * 0.5, sy1 - uy * head - ux * head * 0.5);
+    c.closePath();
+  };
+
+  if (p.outline === 'background') {
+    // 바탕색을 한 단 넓게 먼저 깐다. 점선이어도 바탕은 이어 깐다 — 끊긴 틈마다 아래
+    // 그림이 비치면 경계를 떼어 내는 뜻이 사라진다.
+    // 양쪽에 가는 선 한 줄씩.
+    const halo = rc.theme.strokeWidth.thin * 2;
+    c.strokeStyle = rc.theme.background;
+    // 머리의 바탕 윤곽이 뾰족하게 튀지 않게. 선언을 생략한 화살표는 이 설정을 받지 않는다.
+    c.lineJoin = 'round';
+    c.setLineDash([]);
+    c.lineWidth = width + halo;
+    shaft();
+    c.stroke();
+    c.lineWidth = halo;
+    tip();
+    c.stroke();
+  }
+
+  c.strokeStyle = color;
+  c.fillStyle = color;
+  c.lineWidth = width;
+  c.setLineDash(dashOf(p.style, Math.max(1, width / base)));
+  shaft();
   c.stroke();
   // 머리와 칩 테두리까지 점선이 되지 않게 축을 그은 직후 되돌린다.
   c.setLineDash([]);
 
   // 화살촉
-  c.beginPath();
-  c.moveTo(sx1, sy1);
-  c.lineTo(sx1 - ux * head - uy * head * 0.5, sy1 - uy * head + ux * head * 0.5);
-  c.lineTo(sx1 - ux * head + uy * head * 0.5, sy1 - uy * head - ux * head * 0.5);
-  c.closePath();
+  tip();
   c.fill();
 
   if (p.label) {

@@ -23,6 +23,7 @@ import { StageTabsController } from './controller/stage-tabs';
 import { EnvTogglesController } from './controller/env-toggles';
 import { ParamChipsController } from './controller/param-chips';
 import { ResetButtonsController } from './controller/reset-buttons';
+import { ButtonController } from './controller/button';
 import { I18nResolver, type Dictionary, type HostI18n } from './i18n/resolver';
 import { FRAMEWORK_MESSAGES } from './i18n/messages';
 import { PluginManager, ServiceRegistry, type HostPlugin } from './pluginManager';
@@ -111,6 +112,7 @@ export function standardCapabilities(): Required<HostCapabilities> {
       'env-toggles': () => new EnvTogglesController(),
       'param-chips': () => new ParamChipsController(),
       'reset-buttons': () => new ResetButtonsController(),
+      button: () => new ButtonController(),
     },
     vectorCompute: { uniform: uniformVectorField, gravity: gravityVectorField },
   };

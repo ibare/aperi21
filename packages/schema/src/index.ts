@@ -186,6 +186,15 @@ export interface Vector extends BaseMeta {
    * 따라가지 않는다 — 살아 있는 화살표와 지난 잔상을 굵기로 가른다.
    */
   width?: number;
+  /**
+   * 둘레. 기본 `'none'`. `'background'` 는 축과 머리를 바탕색으로 한 단 굵게 먼저 깔고
+   * 그 위에 긋는다 — 짙은 물체 위를 지나는 화살표가 제 경계를 떼어 내 읽히게 한다
+   * (`newtons-third-law`: 먹색 몸 위의 힘).
+   *
+   * `body.outline` 의 `'background'` 와 목적이 같다(바탕으로 도려내 읽히게). 다른 점은
+   * 모양이다 — 물체는 가장자리에 덧긋고, 화살표는 선이라 아래에 넓게 깐다.
+   */
+  outline?: 'none' | 'background';
 }
 
 export interface Constraint extends BaseMeta {
@@ -473,6 +482,15 @@ export interface Scale extends BaseMeta {
   unit?: LocalizedText;
   /** 소수 자릿수. 기본 2. 유효숫자는 주장의 일부라 자동으로 줄이지 않는다. */
   digits?: number;
+  /**
+   * **`dial` 전용.** `origin` 을 줬을 때 눈금판 아래에 ±차이 글자(`+12 kg`)를 쓸지.
+   * 기본 true. `linear` 에는 차이 글자가 없어 읽지 않는다.
+   *
+   * 끄는 자리는 차이를 **수가 아니라 부채꼴로만** 보여야 하는 그림이다 — 수를 늘리지
+   * 않으려 평소 눈금에서 벗어난 만큼을 호로만 보인다 (`apparent-weight`). 부채꼴은
+   * 그대로 그린다.
+   */
+  showDelta?: boolean;
 }
 
 /**
@@ -847,9 +865,48 @@ export interface ControllerInstance {
    * `visibleWhen` 과 같이 **경로 이름**이다. 식을 넣지 않는다.
    */
   heldPath?: string;
+
+  /**
+   * 이 조작기가 state 를 건넬 때(누르기 · 끌기)와 **놓을 때**(취소 포함) 조각 시계를 **0(주기 첫머리)으로**
+   * 되돌린다. 기본 false. state 는 건드리지 않는다. 값이 같아도 손잡이를 누르기만 하면 되돌린다 —
+   * 조작기는 누르는 순간 state 를 건넨다.
+   *
+   * 값을 바꾸면 연출을 처음부터 다시 보여야 하는 조각이 쓴다 — 두 추의 차이를 바꾸면
+   * 두 기계를 출발 높이부터 다시 놓는다 (`atwood-machine`). 시간표는 조각 시계의 함수라
+   * 조각이 스스로 시계를 되돌릴 방법이 없다. 그래서 03 `river-crossing` 은 `step` 안에서
+   * 제 시계를 따로 적분해 우회했다.
+   *
+   * `startAt` 으로 가지 않는다 — 그것은 도착한 순간의 앞당김이고, 이것은 다시 놓기다.
+   * 끄는 동안에는 바뀔 때마다 0 으로 붙잡히므로 **놓는 순간부터** 흐른다. 상태를 쌓는
+   * 조각은 시계만으로 처음이 되지 않는다 — 그때는 `heldPath` 로 알아채 `step` 이 비운다.
+   */
+  restart?: boolean;
 }
 
 export type ControllerKind =
+  | {
+      /**
+       * 누르는 단추. 누르면 러너가 `binds.pressed` 경로에 true 를 적는다.
+       *
+       * **false 로 되돌리는 것은 조각의 `step` 이다** — 누름을 소비한 걸음에서 지운다.
+       * 러너가 되돌리면 다음 걸음이 오기 전에 사라질 수 있다. 지금 눌러도 소용없는
+       * 때(이미 놓인 공)에 무시하는 것도 조각이 정한다.
+       *
+       * `reset-buttons` 는 되돌리기로 뜻과 문안이 고정이라 조각의 동작을 걸 수 없다.
+       * 줄을 놓는 순간을 독자가 고르는 일이 이것이다 (`centripetal-force`).
+       */
+      type: 'button';
+      binds: { pressed: string };
+      /** 단추 글자. 화면에 뜨는 문안은 선언이 가진다 (C1). */
+      label: LocalizedText;
+      /**
+       * 자리. 생략하면 오른쪽 아래에서 선언 순서대로 쌓인다. 기본 자리는 **종류마다**
+       * 세므로 `reset-buttons` 와 함께 쓰면 겹친다 — 그때는 `at` 을 준다.
+       */
+      at?: Anchor;
+      /** 크기 `[너비, 높이]`(화면 px). 생략하면 내용에 맞춘 기본값. */
+      size?: Vec2;
+    }
   | {
       type: 'pinball-launcher';
       binds: { power: string; trigger: string };  // state 필드 경로 매핑

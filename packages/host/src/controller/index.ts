@@ -14,3 +14,4 @@ export { StageTabsController } from './stage-tabs';
 export { EnvTogglesController } from './env-toggles';
 export { ParamChipsController } from './param-chips';
 export { ResetButtonsController } from './reset-buttons';
+export { ButtonController } from './button';

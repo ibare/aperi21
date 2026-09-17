@@ -53,6 +53,7 @@ export const CONTROLLERS: Record<string, string> = {
   'env-toggles': 'EnvTogglesController',
   'param-chips': 'ParamChipsController',
   'reset-buttons': 'ResetButtonsController',
+  button: 'ButtonController',
 };
 
 export const ALL_CAPABILITIES: Record<string, string> = { ...RENDERERS, ...CONTROLLERS };

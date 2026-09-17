@@ -125,7 +125,8 @@ export const renderScale: PrimitiveRenderer = (rc, p0) => {
     c.fillStyle = rc.theme.foreground;
     c.fillText(`${p.value.toFixed(digits)} ${unit}`.trim(), cx, cy + R * DIAL.valueY);
 
-    if (p.origin !== undefined) {
+    // 차이를 부채꼴로만 보이려는 선언은 글자를 끈다 (`showDelta`).
+    if (p.origin !== undefined && p.showDelta !== false) {
       const delta = p.value - p.origin;
       if (Math.abs(delta) > Math.pow(10, -digits) / 2) {
         c.font = `600 ${Math.round(R * DIAL.fontDelta)}px ${rc.theme.fontFamilyMono}`;
