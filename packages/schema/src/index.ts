@@ -202,7 +202,11 @@ export interface Constraint extends BaseMeta {
   subtype: 'rigid_rod' | 'string' | 'spring' | 'rail';
   from: Vec2 | string;            // 좌표 또는 Body ID
   to: Vec2 | string;
-  coils?: number;                  // spring 시각 표현용
+  /**
+   * `spring` 의 감은 수. 코일 하나는 위·아래로 한 번씩 꺾이는 **물결 한 벌**이다. 기본 4.
+   * 감은 수는 고정이고 길이가 늘면 간격이 벌어진다 — 늘어남이 간격으로 보인다 (`spring-force`).
+   */
+  coils?: number;
   //
   // `naturalLength`·`stiffness` 는 2026-09-12 에 지웠다. "정보용" 이라 적혀
   // 있었고 렌더러가 읽지 않아 그림이 달라지지 않았다 — 선언만 있고 구현이 없는

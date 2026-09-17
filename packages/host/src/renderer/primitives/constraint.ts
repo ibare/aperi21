@@ -3,8 +3,10 @@ import { applyBaseMeta, finalizeBaseMeta, primitiveColor, setAlpha } from '../co
 
 /** 매단 줄의 굵기(화면 px). 가늘다 — 줄은 보이되 추를 이기지 않는다. */
 /** 단단한 막대의 굵기(화면 px). */
-/** 용수철 코일의 기본 개수. */
-const DEFAULT_COILS = 8;
+/** 용수철 코일의 기본 개수. 코일 하나 = 위·아래로 한 번씩 꺾이는 물결 한 벌. */
+const DEFAULT_COILS = 4;
+/** 코일 하나가 지나는 꼭짓점 — 위 · 가운데 · 아래 · 가운데. */
+const VERTICES_PER_COIL = 4;
 /** 용수철이 옆으로 벌어지는 폭(화면 px). */
 const COIL_SPREAD = 7;
 /** 레일 두 줄 사이(화면 px). */
@@ -107,7 +109,7 @@ function drawSpring(
   const ny = ux;
   const neck = Math.min(len * 0.15, 10);
   const bodyLen = len - neck * 2;
-  const n = Math.max(1, Math.round(coils)) * 2;
+  const n = Math.max(1, Math.round(coils)) * VERTICES_PER_COIL;
 
   c.beginPath();
   c.moveTo(ax, ay);

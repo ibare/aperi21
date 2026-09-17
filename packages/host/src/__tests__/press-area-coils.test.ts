@@ -1,11 +1,11 @@
 /**
- * 06-newtonian 에서 올린 것 — 그림 속 자리 누르기.
+ * 06-newtonian 에서 올리거나 고친 것 — 그림 속 자리 누르기 · 용수철 감은 수의 뜻.
  * 선언을 생략하면 지금까지의 그림·동작 그대로여야 한다.
  */
 import { describe, expect, it } from 'vitest';
 import type { ControllerSpec, RenderContext, Vec2 } from '@aperi21/schema';
 import { getTheme } from '../theme';
-import { PressAreaController, type ControllerEventContext } from '../index';
+import { PressAreaController, renderConstraint, type ControllerEventContext } from '../index';
 
 /** 호출 이름과 붓 색을 순서대로 적는 2D 컨텍스트 스텁. */
 function makeCtx(calls: string[]): CanvasRenderingContext2D {
@@ -72,3 +72,25 @@ describe('press-area', () => {
   });
 });
 
+describe('constraint(spring).coils', () => {
+  const pointsOf = (coils?: number): number => {
+    const calls: string[] = [];
+    renderConstraint(makeRc(calls), {
+      type: 'constraint',
+      subtype: 'spring',
+      from: [0, 0],
+      to: [10, 0],
+      ...(coils === undefined ? {} : { coils }),
+    });
+    // moveTo 뒤 목 · 물결 꼭짓점 · 끝점 — 물결 꼭짓점만 센다.
+    return calls.filter((c) => c === 'lineTo').length - 2;
+  };
+
+  it('코일 하나는 위·아래 한 벌(꼭짓점 넷)이다', () => {
+    expect(pointsOf(3)).toBe(12);
+  });
+
+  it('생략하면 4 코일 — 이전 기본 그림(꼭짓점 16)과 같다', () => {
+    expect(pointsOf()).toBe(16);
+  });
+});
