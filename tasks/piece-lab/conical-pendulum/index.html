@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>원뿔 진자</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #2b2b2b;
+    --muted: #8a8780;
+    --faint: #d9d5cc;
+    --accent: #d2553a;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 12px 16px; box-sizing: border-box; }
+  canvas { display: block; width: 100%; height: 340px; }
+  .caption { margin: 6px 0 0; font-size: 15px; line-height: 1.5; min-height: 1.5em; }
+  .control { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: 13px; color: var(--muted); }
+  .control input { flex: 1; max-width: 320px; accent-color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <p class="caption" id="caption"></p>
+  <label class="control">
+    <span>돌리는 빠르기</span>
+    <input id="speed" type="range" min="0" max="1000" step="1">
+    <span>느리게 ← → 빠르게</span>
+  </label>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // 물리 상수 — 원뿔 진자의 정상 상태: ω² = g / h (h 는 축의 매단 점에서 추까지의 깊이)
+  const G = 9.8;
+  const LENGTHS = [0.5, 0.8, 1.2];          // 세 줄의 길이 (m)
+  const H_SLOW = 0.45;                        // 가장 느릴 때의 깊이 (m) — 가장 짧은 줄(0.5)보다 얕다
+  const H_FAST = 0.17;                        // 가장 빠를 때의 깊이 (m)
+  const W_MIN = Math.sqrt(G / H_SLOW);        // 약 4.67 rad/s
+  const W_MAX = Math.sqrt(G / H_FAST);        // 약 7.59 rad/s
+  const CYCLE = 12;                           // 자동 진행: 느림 → 빠름 → 느림 한 바퀴 (s)
+  const ELEV = 14 * Math.PI / 180;            // 내려다보는 각
+
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const captionEl = document.getElementById('caption');
+  const slider = document.getElementById('speed');
+
+  const css = getComputedStyle(document.documentElement);
+  const COLOR = {
+    ink: css.getPropertyValue('--ink').trim(),
+    muted: css.getPropertyValue('--muted').trim(),
+    faint: css.getPropertyValue('--faint').trim(),
+    accent: css.getPropertyValue('--accent').trim(),
+  };
+
+  const CAPTION = '줄 길이가 달라도 같은 빠르기로 돌면 세 추는 한 높이에서 돈다 — 빨리 돌수록 그 높이가 함께 올라간다';
+  captionEl.textContent = CAPTION;
+
+  // 자동 진행의 빠르기: 느림에서 시작해 부드럽게 빨라졌다가 다시 느려진다
+  function autoOmega(t) {
+    const u = (1 - Math.cos(2 * Math.PI * t / CYCLE)) / 2;
+    return W_MIN + (W_MAX - W_MIN) * u;
+  }
+
+  let manual = false;
+  let manualOmega = W_MIN;
+  slider.addEventListener('input', () => {
+    manual = true;
+    manualOmega = W_MIN + (W_MAX - W_MIN) * (Number(slider.value) / 1000);
+  });
+
+  const state = { phi: 0, omega: W_MIN };
+
+  function currentOmega(t) {
+    if (manual && !PieceKit.frozen) return manualOmega;
+    return autoOmega(t);
+  }
+
+  // 캔버스 크기
+  let W = 0, H = 0, dpr = 1;
+  function resize() {
+    dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    W = rect.width; H = rect.height;
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // 투영 — 수직축이 y, 보는 쪽이 +z
+  function view() {
+    // 먼 쪽 평면 가장자리(z = -1.28)가 위로 잘리지 않고, 가장 깊은 평면(h = 0.45)이 아래로 잘리지 않게
+    const k = 1.28 * Math.sin(ELEV);
+    const s = Math.min(W / 2.7, (H - 36) / (H_SLOW * Math.cos(ELEV) + 2 * k));
+    return { s, cx: W / 2, cy: 26 + s * k };
+  }
+  function project(v, x, y, z) {
+    return {
+      x: v.cx + v.s * x,
+      y: v.cy + v.s * (-y * Math.cos(ELEV) + z * Math.sin(ELEV)),
+      depth: z,
+    };
+  }
+
+  PieceKit.loop({
+    step(dt, t) {
+      state.omega = currentOmega(t);
+      state.phi += state.omega * dt;
+    },
+    draw(t) {
+      const omega = state.omega;
+      const h = G / (omega * omega);
+      const v = view();
+
+      if (!manual || PieceKit.frozen) {
+        const u = (omega - W_MIN) / (W_MAX - W_MIN);
+        slider.value = String(Math.round(u * 1000));
+      }
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+
+      const pivot = project(v, 0, 0, 0);
+      const center = project(v, 0, -h, 0);
+
+      // 각 추의 위치 — 세 추 모두 같은 각도, 같은 깊이 h
+      const bobs = LENGTHS.map((L) => {
+        const r = Math.sqrt(Math.max(L * L - h * h, 0));
+        const x = r * Math.cos(state.phi);
+        const z = r * Math.sin(state.phi);
+        return { L, r, p: project(v, x, -h, z) };
+      });
+
+      PieceKit.mark('추가 도는 길', () => {
+        ctx.strokeStyle = COLOR.faint;
+        ctx.lineWidth = 1;
+        for (const b of bobs) {
+          ctx.beginPath();
+          ctx.ellipse(center.x, center.y, v.s * b.r, v.s * b.r * Math.sin(ELEV), 0, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      });
+
+      PieceKit.mark('회전축', () => {
+        ctx.strokeStyle = COLOR.muted;
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(pivot.x, 4);
+        ctx.lineTo(pivot.x, pivot.y);
+        ctx.stroke();
+        // 축과 함께 도는 손잡이 — 축이 돌고 있다는 표시
+        const hx = 16 * Math.cos(state.phi);
+        const hz = 16 * Math.sin(state.phi) * Math.sin(ELEV);
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(pivot.x, 14);
+        ctx.lineTo(pivot.x + hx, 14 + hz);
+        ctx.stroke();
+        ctx.fillStyle = COLOR.ink;
+        ctx.beginPath();
+        ctx.arc(pivot.x, pivot.y, 3.5, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // 세 궤도를 모두 품는 수평면 — 추 셋이 이 한 판 위에 있다
+      PieceKit.mark('세 추가 도는 높이', () => {
+        const R = v.s * 1.28;
+        ctx.save();
+        ctx.globalAlpha = 0.08;
+        ctx.fillStyle = COLOR.accent;
+        ctx.beginPath();
+        ctx.ellipse(center.x, center.y, R, R * Math.sin(ELEV), 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+        ctx.strokeStyle = COLOR.accent;
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([6, 5]);
+        ctx.beginPath();
+        ctx.ellipse(center.x, center.y, R, R * Math.sin(ELEV), 0, 0, Math.PI * 2);
+        ctx.stroke();
+        // 매단 점에서 평면까지 내린 축의 연장
+        ctx.beginPath();
+        ctx.moveTo(pivot.x, pivot.y);
+        ctx.lineTo(center.x, center.y);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      });
+
+      // 뒤에 있는 것부터 그린다
+      const order = bobs.slice().sort((a, b) => a.p.depth - b.p.depth);
+
+      PieceKit.mark('줄', () => {
+        ctx.strokeStyle = COLOR.ink;
+        ctx.lineWidth = 1.5;
+        for (const b of order) {
+          ctx.beginPath();
+          ctx.moveTo(pivot.x, pivot.y);
+          ctx.lineTo(b.p.x, b.p.y);
+          ctx.stroke();
+        }
+      });
+
+      PieceKit.mark('추', () => {
+        for (const b of order) {
+          const rad = 7 + 1.2 * (b.p.depth / 1.2);
+          ctx.fillStyle = COLOR.ink;
+          ctx.beginPath();
+          ctx.arc(b.p.x, b.p.y, rad, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

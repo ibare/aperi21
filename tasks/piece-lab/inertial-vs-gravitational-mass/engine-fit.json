@@ -1,0 +1,35 @@
+{
+  "rows": [
+    {
+      "element": "칸 이름 · 기둥 · 수평 기준선 · 받침대",
+      "vocab": "readout + trajectory (dashed) + body (rect · opacity)",
+      "status": "있음"
+    },
+    {
+      "element": "저울대 · 접시 · 물체 · 추",
+      "vocab": "trajectory + body (circle · rect)",
+      "status": "있음",
+      "note": "rect 에 모서리 둥글림 없음"
+    },
+    {
+      "element": "얼음판 · 놓은 자리 · 용수철",
+      "vocab": "region + trace (tick) + constraint (spring · opacity)",
+      "status": "있음"
+    },
+    {
+      "element": "물체 고르기 (돌 · 쇠공 · 나무토막)",
+      "vocab": "param-chips + restart",
+      "status": "있음",
+      "note": "05 에서 올린 restart 로 추 1개부터 다시"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (cases — 놓기 전 / 모자람 / 맞음)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "저울 토크와 얼음 위 용수철 반동 — sim",
+    "원본 판단 거리 — 추 2개(7.2 초)에서 저울이 이미 멈춤 각에 닿아 추 1개와 기울기가 같아 보인다"
+  ]
+}

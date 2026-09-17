@@ -1,0 +1,40 @@
+{
+  "rows": [
+    {
+      "element": "물통 · 손잡이 막대",
+      "vocab": "trajectory + body (rect)",
+      "status": "있음"
+    },
+    {
+      "element": "용수철",
+      "vocab": "constraint (spring · coils)",
+      "status": "있음",
+      "note": "06 에서 coils 뜻을 고쳤다 — 감은 수 고정, 길이만 변한다"
+    },
+    {
+      "element": "물체",
+      "vocab": "body (rect)",
+      "status": "있음"
+    },
+    {
+      "element": "물 (물체 위 덧칠) · 수면선",
+      "vocab": "region (fillOpacity) + trajectory · drawOrder scene",
+      "status": "있음",
+      "note": "물체보다 뒤에 선언하면 잠긴 부분이 푸르게 비친다"
+    },
+    {
+      "element": "무게 · 물이 미는 힘 · 용수철 힘",
+      "vocab": "vector (같은 배율 · 물이 미는 힘만 accent · label) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (cases — 물 밖 / 일부 / 다 잠김은 상태)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "용수철 · 부력 · 무게의 평형을 반복 계산으로 푸는 것 — sim",
+    "원본 판단 거리 — 「무게」 「물이 미는 힘」 글자가 수면선에 걸치는 시각이 있다 (에이전트 자기 신고)"
+  ]
+}

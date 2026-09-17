@@ -1,0 +1,28 @@
+{
+  "rows": [
+    {
+      "element": "바닥 (눌려 파인 자리)",
+      "vocab": "region (윗변을 곡선 표본)",
+      "status": "있음"
+    },
+    {
+      "element": "막대 · 상자",
+      "vocab": "trajectory (width) + body (rect)",
+      "status": "있음"
+    },
+    {
+      "element": "무게 · 막대 힘 · 수직항력",
+      "vocab": "vector (수직항력만 accent) + readout (vars)",
+      "status": "있음",
+      "note": "0 이면 화살표 대신 글자만 — sim 이 고른다"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (cases — 떠 있음 / 내려옴 / 닿음)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "막대 힘 키프레임과 떨어짐 · 착지 — sim"
+  ]
+}

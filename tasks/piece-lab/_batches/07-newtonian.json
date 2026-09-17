@@ -1,0 +1,18 @@
+{
+  "name": "07-newtonian",
+  "title": "뉴턴 역학 3 — 부력·운동 마찰·힘의 평형·두 질량·장력·관성력·영률·수직항력·마찰각·연결된 물체·원뿔 진자",
+  "record": "tasks/engine-requirements/batches/07-newtonian.md",
+  "pieces": [
+    "buoyant-force-as-force",
+    "kinetic-friction",
+    "equilibrium-of-forces",
+    "inertial-vs-gravitational-mass",
+    "tension",
+    "fictitious-force",
+    "youngs-modulus",
+    "normal-force",
+    "angle-of-friction",
+    "connected-bodies",
+    "conical-pendulum"
+  ]
+}

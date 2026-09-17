@@ -1,0 +1,37 @@
+{
+  "rows": [
+    {
+      "element": "바닥 · 받침대 · 경첩",
+      "vocab": "trajectory + body (point)",
+      "status": "있음"
+    },
+    {
+      "element": "각도 호 · 미끄러진 각 눈금",
+      "vocab": "sector (fillOpacity 0 · rimWidth) + readout + trace (tick · accent · marks[].direction)",
+      "status": "있음"
+    },
+    {
+      "element": "나무판 · 상자 더미 · 가벼운 상자",
+      "vocab": "body (rect · orientation)",
+      "status": "있음"
+    },
+    {
+      "element": "미끄러진 각 기록",
+      "vocab": "readout (vars · 값만 accent 는 readout 둘로)",
+      "status": "있음"
+    },
+    {
+      "element": "상자 수 조작기",
+      "vocab": "slider (range [2,5] · step 1 · digits 0) + heldPath",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (cases — 미끄러지는 중 / 멈춤)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "빗면 좌표 · 정지→운동 마찰 전환 적분과 회차 순환 — sim step"
+  ]
+}

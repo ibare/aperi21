@@ -1,0 +1,166 @@
+{
+  "id": "fictitious-force",
+  "claim": "관성력은 중력처럼 질량에 비례하므로, 도는 그네에 매달린 무거운 추와 가벼운 추는 언제나 같은 각도로 기운다",
+  "verb": "나란히 기운다",
+  "probeTimes": [0, 3.5, 7, 11],
+  "elements": [
+    {
+      "mark": "바깥 풍경",
+      "what": "지평선의 나무 실루엣과 땅 선",
+      "physical": "그네와 함께 도는 틀에서 본 바깥 세상 — 틀이 돌고 있다는 증거",
+      "drawing": "옅은 삼각형 채움 반복, 가로로 흘러감",
+      "motion": "integrated",
+      "state": "틀이 돈 누적 각도 phi",
+      "interaction": null
+    },
+    {
+      "mark": "기둥과 팔",
+      "what": "회전 그네의 기둥, 좌우 팔, 꼭대기 고리",
+      "physical": "회전축과 반지름 R=1.5 m 의 팔",
+      "drawing": "굵은 선, 타원 윤곽",
+      "motion": "static",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "왼쪽 줄",
+      "what": "왼쪽 팔 끝에서 추까지 줄",
+      "physical": "길이 2 m 줄, 기운 각도 θ",
+      "drawing": "회색 선",
+      "motion": "integrated",
+      "state": "왼쪽 추의 θ, dθ/dt",
+      "interaction": null
+    },
+    {
+      "mark": "오른쪽 줄",
+      "what": "오른쪽 팔 끝에서 추까지 줄",
+      "physical": "길이 2 m 줄, 기운 각도 θ",
+      "drawing": "회색 선",
+      "motion": "integrated",
+      "state": "오른쪽 추의 θ, dθ/dt",
+      "interaction": null
+    },
+    {
+      "mark": "왼쪽 두 힘의 합",
+      "what": "중력·관성력 화살표로 만든 직사각형과 대각선",
+      "physical": "두 힘의 합력 — 줄 방향과 겹친다",
+      "drawing": "옅은 점선",
+      "motion": "integrated",
+      "state": "none (θ 에서 계산)",
+      "interaction": null
+    },
+    {
+      "mark": "오른쪽 두 힘의 합",
+      "what": "중력·관성력 화살표로 만든 직사각형과 대각선",
+      "physical": "두 힘의 합력 — 줄 방향과 겹친다",
+      "drawing": "옅은 점선",
+      "motion": "integrated",
+      "state": "none (θ 에서 계산)",
+      "interaction": "오른쪽 추 질량에 비례해 크기가 바뀐다"
+    },
+    {
+      "mark": "왼쪽 중력",
+      "what": "왼쪽 추에서 아래로 향한 화살표",
+      "physical": "mg (1 kg), 1 N = 3.5 px",
+      "drawing": "회색 화살표",
+      "motion": "integrated",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "오른쪽 중력",
+      "what": "오른쪽 추에서 아래로 향한 화살표",
+      "physical": "mg (기본 3 kg), 1 N = 3.5 px",
+      "drawing": "회색 화살표",
+      "motion": "integrated",
+      "state": "none",
+      "interaction": "질량 조작기에 비례"
+    },
+    {
+      "mark": "왼쪽 관성력",
+      "what": "왼쪽 추에서 바깥으로 향한 화살표",
+      "physical": "원심력 mω²r (1 kg), 1 N = 3.5 px",
+      "drawing": "강조색 화살표 — 강조색은 관성력에만 쓴다",
+      "motion": "integrated",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "오른쪽 관성력",
+      "what": "오른쪽 추에서 바깥으로 향한 화살표",
+      "physical": "원심력 mω²r (기본 3 kg), 1 N = 3.5 px",
+      "drawing": "강조색 화살표",
+      "motion": "integrated",
+      "state": "none",
+      "interaction": "질량 조작기에 비례"
+    },
+    {
+      "mark": "왼쪽 추",
+      "what": "왼쪽 추와 질량 표기 1 kg",
+      "physical": "질량 1 kg 물체",
+      "drawing": "채운 원(반지름 ∝ 질량의 세제곱근) + 텍스트",
+      "motion": "integrated",
+      "state": "θ, dθ/dt",
+      "interaction": null
+    },
+    {
+      "mark": "오른쪽 추",
+      "what": "오른쪽 추와 질량 표기",
+      "physical": "질량 1~3 kg 물체 (기본 3 kg)",
+      "drawing": "채운 원(반지름 ∝ 질량의 세제곱근) + 텍스트",
+      "motion": "integrated",
+      "state": "θ, dθ/dt",
+      "interaction": "질량 조작기에 따라 크기·표기가 바뀐다"
+    },
+    {
+      "mark": "힘 이름표",
+      "what": "오른쪽 추 화살표 옆 '관성력' '중력' 글자",
+      "physical": "화살표가 무엇인지 — 범례 대신",
+      "drawing": "텍스트 (관성력은 강조색, 중력은 회색)",
+      "motion": "integrated",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "캡션",
+      "what": "아래 캡션 한 줄 (DOM)",
+      "physical": "주장",
+      "drawing": "텍스트, 상태와 무관하게 고정",
+      "motion": "static",
+      "state": "none",
+      "interaction": null
+    }
+  ],
+  "controls": [
+    {
+      "kind": "range",
+      "label": "오른쪽 추의 질량",
+      "range": [1, 3],
+      "step": 1,
+      "default": 3,
+      "effect": "오른쪽 추의 크기와 두 힘 화살표 길이가 바뀌고, 기운 각도는 바뀌지 않는다. PieceKit.frozen 이면 3 kg 고정·비활성"
+    }
+  ],
+  "hidden": [
+    "각도 숫자 — 두 줄이 같은 각도라는 것은 그림에서 보이고, 숫자 두 개를 비교하게 하면 동사가 숫자로 대신된다",
+    "ω 숫자 — 회전 빠르기는 풍경이 흐르는 속도와 화살표 길이로 드러난다",
+    "장력 — 합력과 크기가 같고 방향이 반대라 화살표를 하나 더 두면 직사각형이 가려진다",
+    "오일러 힘·코리올리 힘 — 회전 빠르기 변화와 줄의 흔들림에서 생기지만 그림 평면 밖(접선 방향)이고, 코리올리는 이웃 조각의 주제다",
+    "바깥(관성계)에서 본 모습 — 관성계 대조는 이웃 non-inertial-frame 이 맡았다"
+  ],
+  "timeline": [
+    { "t": 0, "what": "가장 느린 회전(ω=1.4 rad/s). 두 추가 약 24° 로 같이 기울어 있고, 오른쪽 3 kg 추의 두 화살표가 왼쪽의 세 배" },
+    { "t": 3.5, "what": "회전이 빨라지는 중. 풍경이 빨리 흐르고 관성력 화살표가 길어지며 두 줄이 함께 바깥으로 벌어진다" },
+    { "t": 7, "what": "가장 빠른 회전(ω=2.2 rad/s). 두 추가 약 57° 로 같이 기울었다. 오른쪽 관성력 화살표가 가장 길다" },
+    { "t": 11, "what": "회전이 느려지는 중. 두 줄이 함께 안쪽으로 돌아온다" },
+    { "t": 14, "what": "한 주기 끝, t=0 과 같은 빠르기로 되돌아와 반복" }
+  ],
+  "engineWish": [
+    "힘 화살표(시작점·벡터·N→px 척도·머리 크기) — 거의 모든 역학 조각에서 다시 짠다",
+    "두 벡터의 합을 보여 주는 평행사변형 점선 — 벡터 합 표기 한 벌",
+    "회전하는 틀에서 본 배경 흐름 — 틀이 움직인다는 것을 보여 주는 공용 배경(이웃 조각들도 쓸 것)",
+    "진자/줄에 매단 추 적분기 — 각도 상태와 감쇠, 외력 가속도를 받는 형태",
+    "고정 논리 좌표 캔버스 + devicePixelRatio 대응 + 가로 폭 맞춤",
+    "조작기의 frozen 처리(기본값 고정·비활성) 를 킷이 대신 해 주면 좋겠다"
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "id": "inertial-vs-gravitational-mass",
+  "claim": "끌리는 세기로 재는 저울과 밀리기 어려움으로 재는 얼음 위 밀어내기는, 추를 하나씩 늘려 가면 정확히 같은 개수에서 함께 균형을 이룬다",
+  "verb": "같은 개수에서 함께 균형을 이룬다 (그 전에는 두 곳이 같은 쪽으로 어긋난다)",
+  "probeTimes": [0.1, 3.2, 7.2, 12.5],
+  "elements": [
+    { "mark": "칸 이름", "what": "두 칸 위의 짧은 이름", "physical": "각 칸이 쓰는 질량의 정의 (중력 / 관성)", "drawing": "회색 텍스트", "motion": "static", "state": "none", "interaction": null },
+    { "mark": "저울 기둥", "what": "양팔저울의 기둥과 바닥", "physical": "받침점", "drawing": "굵은 선", "motion": "static", "state": "none", "interaction": null },
+    { "mark": "수평 기준선", "what": "받침점 높이의 점선", "physical": "저울대가 수평인지 판단하는 기준", "drawing": "점선", "motion": "static", "state": "none", "interaction": null },
+    { "mark": "받침대", "what": "놓기 전 두 접시를 괴는 받침", "physical": "시험 시작 전 저울을 수평으로 붙잡아 두는 구속", "drawing": "옅은 채움 사각형, 놓는 순간 사라짐", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "저울대와 접시", "what": "기울어지는 저울대와 매달린 두 접시", "physical": "(물체 중력 질량 - 추 개수)의 돌림힘으로 도는 저울대", "drawing": "선 + 원", "motion": "integrated", "state": "저울대 각도와 각속도 (시험마다 0 으로 초기화, 멈춤 각에서 정지)", "interaction": null },
+    { "mark": "저울 위 물체", "what": "왼쪽 접시 위 물체", "physical": "잴 물체 (돌·쇠공·나무토막)", "drawing": "둥근 사각형 채움, 물체마다 고정색", "motion": "integrated", "state": "접시 위치를 따라감", "interaction": null },
+    { "mark": "저울 위 추", "what": "오른쪽 접시 위에 쌓인 추 n개", "physical": "기준 질량 n 단위", "drawing": "회색 사각형 쌓기", "motion": "integrated", "state": "접시 위치를 따라감, 시험마다 개수 1 증가", "interaction": null },
+    { "mark": "얼음판", "what": "마찰 없는 수평면", "physical": "중력이 운동에 관여하지 않는 수평 방향", "drawing": "옅은 파란 띠", "motion": "static", "state": "none", "interaction": null },
+    { "mark": "놓은 자리", "what": "얼음 위 가운데 눈금", "physical": "용수철을 놓은 위치 — 양쪽 이동 거리를 비교하는 기준", "drawing": "짧은 세로선", "motion": "static", "state": "none", "interaction": null },
+    { "mark": "용수철", "what": "물체와 추 사이의 눌린 용수철", "physical": "양쪽에 같은 크기의 충격량을 주는 장치", "drawing": "지그재그 선, 놓는 순간 사라짐", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "얼음 위 물체", "what": "왼쪽으로 미끄러지는 물체", "physical": "속력 = 충격량 / 관성 질량", "drawing": "저울 위 물체와 같은 모양·색", "motion": "integrated", "state": "변위 (시험마다 0 으로 초기화)", "interaction": null },
+    { "mark": "얼음 위 추", "what": "오른쪽으로 미끄러지는 추 n개 묶음", "physical": "속력 = 충격량 / n", "drawing": "저울 위 추와 같은 모양·색", "motion": "integrated", "state": "변위 (시험마다 0 으로 초기화)", "interaction": null },
+    { "mark": "캡션", "what": "그림 아래 한 줄", "physical": "지금 추 개수와 두 곳의 결과", "drawing": "DOM 텍스트, 놓기 전 / 모자람 / 맞음 세 경우", "motion": "time-function", "state": "none", "interaction": null }
+  ],
+  "controls": [
+    { "name": "올려 볼 물체", "kind": "버튼 셋 (돌·쇠공·나무토막)", "effect": "물체를 바꾸고 추 1개부터 다시 시작. 크기와 질량이 엇갈린 물체로도 두 방식이 같은 개수에서 맞는지 독자가 확인", "default": "돌", "frozen": "?t= 로 찍는 중에는 무시하고 돌로 자동 진행" }
+  ],
+  "hidden": [
+    "물체의 질량 값(3·4·2) — 숫자를 보여 주면 '같은 값'이 표기로 대신된다. 추 개수가 곧 눈금이다",
+    "얼음 위 속력·이동 거리 수치 — 가운데 눈금에서 양쪽 거리를 눈으로 비교하면 충분하다",
+    "추 개수가 물체보다 많은 경우 — 반대쪽으로 어긋나는 장면은 같은 말을 되풀이할 뿐이라 탐색은 맞는 개수에서 멈춘다",
+    "떨어뜨리는 장면 — 이웃 조각 free-fall 의 몫"
+  ],
+  "timeline": [
+    { "t": 0, "what": "돌과 추 1개가 저울과 얼음 위에 놓여 있고, 곧 받침과 용수철을 놓는다" },
+    { "t": 0.3, "what": "추 1개 시험 시작: 저울이 돌 쪽으로 기울고 얼음 위에서 추가 빠르게 멀어진다" },
+    { "t": 3.7, "what": "추 2개로 바꿔 다시 잡는다" },
+    { "t": 4.5, "what": "추 2개: 저울은 여전히 돌 쪽으로(더 천천히) 기울고, 얼음 위 추가 여전히 더 멀리 간다" },
+    { "t": 7.9, "what": "추 3개로 바꿔 다시 잡는다" },
+    { "t": 8.7, "what": "추 3개: 저울은 수평을 지키고, 얼음 위 돌과 추는 가운데 눈금에서 같은 거리로 멀어진다" },
+    { "t": 13.9, "what": "추 1개부터 되풀이" }
+  ],
+  "engineWish": [
+    "시험 단위로 끊어 되풀이하는 시간표 (잡기 → 놓기 → 관찰, 시험마다 상태 초기화) 를 선언으로 주기",
+    "한 대상을 두 칸에 같은 모양·색으로 그리는 '같은 대상' 묶음 — 지금은 drawObject 를 두 번 부른다",
+    "양팔저울(각도 적분 + 멈춤 각 + 매달린 접시 수평 유지) 을 조작 가능한 부품으로",
+    "상태(놓기 전 / 어긋남 / 맞음)에 따라 바뀌는 캡션을 조건 목록으로 선언하기",
+    "PieceKit.frozen 일 때 조작 입력을 막는 처리를 조작기 쪽에서 자동으로"
+  ]
+}

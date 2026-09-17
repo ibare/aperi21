@@ -308,6 +308,7 @@ topics:
     level: null
     curricula: []
     visualNote: 같이 떨어지는 것이 두 질량이 같다는 증거다
+    sim: aperi21:inertial-vs-gravitational-mass
   - id: normal-force
     name: 수직항력
     desc: 접촉면이 수직으로 미는 힘
@@ -315,6 +316,7 @@ topics:
     level: upper
     curricula: [ib, ap]
     visualNote: 면을 기울이면 수직항력이 줄고 미끄러진다
+    sim: aperi21:normal-force
   - id: apparent-weight
     name: 겉보기 무게
     desc: 가속하는 엘리베이터 안의 저울
@@ -337,7 +339,8 @@ topics:
     domain: newtonian-mechanics
     level: lower
     curricula: [kr, ib, ap]
-    visualNote: 움직이기 시작하는 순간 저항이 뚝 떨어진다
+    visualNote: 빠르기와 상관없이 같은 크기로 잡아 끈다
+    sim: aperi21:kinetic-friction
   - id: angle-of-friction
     name: 마찰각
     desc: 미끄러지기 시작하는 경사
@@ -345,6 +348,7 @@ topics:
     level: null
     curricula: []
     visualNote: 기울이다 보면 어느 각에서 미끄러지기 시작한다
+    sim: aperi21:angle-of-friction
   - id: inclined-plane
     name: 빗면
     desc: 중력을 면에 나란한 성분과 수직 성분으로
@@ -360,6 +364,7 @@ topics:
     level: upper
     curricula: [ib, ap]
     visualNote: 줄을 따라 같은 크기로 전달된다
+    sim: aperi21:tension
   - id: pulley-system
     name: 도르래
     desc: 힘의 방향과 크기를 바꾸는 장치
@@ -375,6 +380,7 @@ topics:
     level: upper
     curricula: [ap]
     visualNote: 한 몸처럼 움직이는 가속도가 나온다
+    sim: aperi21:connected-bodies
   - id: spring-force
     name: 탄성력
     desc: 변형에 비례하는 복원력
@@ -398,6 +404,7 @@ topics:
     level: null
     curricula: []
     visualNote: 빨리 돌릴수록 줄이 더 눕는다
+    sim: aperi21:conical-pendulum
   - id: banked-curve
     name: 경사진 커브
     desc: 마찰 없이도 도는 각도
@@ -429,6 +436,7 @@ topics:
     level: lower
     curricula: [kr, ib]
     visualNote: 잠긴 부피가 커지면 위로 미는 힘이 커진다
+    sim: aperi21:buoyant-force-as-force
   - id: non-inertial-frame
     name: 비관성계
     desc: 가속하는 기준틀에서의 운동
@@ -444,6 +452,7 @@ topics:
     level: null
     curricula: []
     visualNote: 회전 원판 위에서 공이 휘어 보인다
+    sim: aperi21:fictitious-force
   - id: coriolis-effect
     name: 코리올리 효과
     desc: 회전 기준틀에서 휘는 경로
@@ -467,6 +476,7 @@ topics:
     level: primary
     curricula: [kr, ib, ngss]
     visualNote: 화살표가 닫히면 멈춰 있다
+    sim: aperi21:equilibrium-of-forces
   - id: atwood-machine
     name: 애트우드 기계
     desc: 두 추가 도르래로 연결된 계
@@ -498,6 +508,7 @@ topics:
     level: upper
     curricula: [uk]
     visualNote: 같은 힘에 재료마다 다르게 늘어난다
+    sim: aperi21:youngs-modulus
   - id: stress-strain-curve
     name: 응력-변형률 곡선
     desc: 당길수록 달라지는 재료의 반응

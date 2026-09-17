@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>수직항력</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #2b2b2b;
+    --muted: #8a8780;
+    --block: #d9d4c7;
+    --block-edge: #6f6a5e;
+    --floor: #e6e1d6;
+    --floor-edge: #6f6a5e;
+    --accent: #d2552b;
+  }
+  html, body { margin: 0; background: var(--bg); }
+  .piece { max-width: 900px; margin: 0 auto; font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; color: var(--ink); }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { margin: 6px 0 0; min-height: 1.5em; font-size: 16px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c" width="840" height="290"></canvas>
+  <p class="caption" id="caption"></p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 물리 설정 ──
+  const G = 10;              // 중력 가속도 (m/s²)
+  const MASS = 2;            // 상자 질량 (kg)
+  const W = MASS * G;        // 무게 20 N
+  const CYCLE = 12;          // 막대 힘 한 바퀴 (초)
+
+  // 막대가 상자에 주는 힘 (위가 +: 당김, 아래가 −: 누름)
+  const KEYS = [
+    [0, 4], [2.6, 20.3], [4.0, 20.3], [4.2, 8], [5.6, 0],
+    [7, 0], [8.5, -16], [10.3, -16], [12, 4],
+  ];
+  function rodForce(t) {
+    const u = ((t % CYCLE) + CYCLE) % CYCLE;
+    for (let i = 0; i < KEYS.length - 1; i++) {
+      const [t0, f0] = KEYS[i];
+      const [t1, f1] = KEYS[i + 1];
+      if (u >= t0 && u <= t1) {
+        const s = (u - t0) / (t1 - t0);
+        const e = s * s * (3 - 2 * s);
+        return f0 + (f1 - f0) * e;
+      }
+    }
+    return KEYS[0][1];
+  }
+
+  // ── 누적 상태 ──
+  const state = { contact: true, h: 0, v: 0, F: rodForce(0), N: W - rodForce(0) };
+
+  function step(dt, t) {
+    const F = rodForce(t);
+    state.F = F;
+    if (state.contact) {
+      const need = W - F;               // 바닥이 뚫리지 않으려면 밀어야 할 힘
+      if (need > 0) {
+        state.N = need; state.h = 0; state.v = 0;
+      } else {
+        state.contact = false;          // 바닥이 당길 수는 없다 → 뜬다
+        state.N = 0;
+      }
+    }
+    if (!state.contact) {
+      const a = (F - W) / MASS;
+      state.v += a * dt;
+      state.h += state.v * dt;
+      if (state.h <= 0) {
+        state.h = 0; state.v = 0; state.contact = true;
+        state.N = Math.max(0, W - F);
+      } else {
+        state.N = 0;
+      }
+    }
+  }
+
+  // ── 그리기 ──
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const captionEl = document.getElementById('caption');
+  const CSS = getComputedStyle(document.documentElement);
+  const col = (n) => CSS.getPropertyValue(n).trim();
+  const C = {
+    ink: col('--ink'), muted: col('--muted'), block: col('--block'), blockEdge: col('--block-edge'),
+    floor: col('--floor'), floorEdge: col('--floor-edge'), accent: col('--accent'), bg: col('--bg'),
+  };
+
+  const DPR = Math.max(1, window.devicePixelRatio || 1);
+  const LW = 840, LH = 290;
+  canvas.width = LW * DPR; canvas.height = LH * DPR;
+  ctx.scale(DPR, DPR);
+
+  const FLOOR_Y = 222;
+  const CX = 420;
+  const BW = 110, BH = 70;
+  const PX_PER_N = 3;         // 화살표 길이
+  const DENT_PER_N = 0.32;    // 바닥이 눌린 깊이 (과장)
+  const PX_PER_M = 200;      // 뜬 높이
+  const MAT_HALF = 260;       // 바닥 판 반폭
+
+  // 화면 숫자: 막대 힘을 정수로 잘라 쓰고, 수직항력은 그 정수로 맞춘다 (합이 어긋나지 않게)
+  function shown() {
+    const Fd = Math.round(state.F);
+    const Nd = state.contact ? Math.max(0, W - Fd) : 0;
+    return { Fd, Nd };
+  }
+
+  function arrow(x, y0, y1, color, width) {
+    const dir = Math.sign(y1 - y0) || 1;
+    const len = Math.abs(y1 - y0);
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = width; ctx.lineCap = 'round';
+    if (len < 2) return;
+    const head = Math.min(12, len);
+    ctx.beginPath(); ctx.moveTo(x, y0); ctx.lineTo(x, y1 - dir * head * 0.8); ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x, y1);
+    ctx.lineTo(x - 6.5, y1 - dir * head);
+    ctx.lineTo(x + 6.5, y1 - dir * head);
+    ctx.closePath(); ctx.fill();
+  }
+
+  function label(text, x, y, color, align) {
+    ctx.fillStyle = color; ctx.font = '15px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+    ctx.textAlign = align; ctx.textBaseline = 'middle';
+    ctx.fillText(text, x, y);
+  }
+
+  function draw(t) {
+    const { Fd, Nd } = shown();
+    const dent = state.N * DENT_PER_N;
+    const lift = state.h * PX_PER_M;
+    const blockBottom = FLOOR_Y + dent - lift;
+    const blockTop = blockBottom - BH;
+    const bx = CX - BW / 2;
+
+    ctx.clearRect(0, 0, LW, LH);
+
+    PieceKit.mark('바닥', () => {
+      // 상자 아래만 눌려 들어간 바닥 윗면
+      const x0 = CX - MAT_HALF, x1 = CX + MAT_HALF;
+      const ease = 34;
+      ctx.beginPath();
+      ctx.moveTo(x0, FLOOR_Y);
+      ctx.lineTo(bx - ease, FLOOR_Y);
+      ctx.bezierCurveTo(bx - ease / 2, FLOOR_Y, bx - 4, FLOOR_Y + dent, bx, FLOOR_Y + dent);
+      ctx.lineTo(bx + BW, FLOOR_Y + dent);
+      ctx.bezierCurveTo(bx + BW + 4, FLOOR_Y + dent, bx + BW + ease / 2, FLOOR_Y, bx + BW + ease, FLOOR_Y);
+      ctx.lineTo(x1, FLOOR_Y);
+      ctx.lineTo(x1, FLOOR_Y + 36);
+      ctx.lineTo(x0, FLOOR_Y + 36);
+      ctx.closePath();
+      ctx.fillStyle = C.floor; ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(x0, FLOOR_Y);
+      ctx.lineTo(bx - ease, FLOOR_Y);
+      ctx.bezierCurveTo(bx - ease / 2, FLOOR_Y, bx - 4, FLOOR_Y + dent, bx, FLOOR_Y + dent);
+      ctx.lineTo(bx + BW, FLOOR_Y + dent);
+      ctx.bezierCurveTo(bx + BW + 4, FLOOR_Y + dent, bx + BW + ease / 2, FLOOR_Y, bx + BW + ease, FLOOR_Y);
+      ctx.lineTo(x1, FLOOR_Y);
+      ctx.strokeStyle = C.floorEdge; ctx.lineWidth = 1.5; ctx.stroke();
+    });
+
+    PieceKit.mark('막대', () => {
+      ctx.strokeStyle = C.muted; ctx.lineWidth = 6; ctx.lineCap = 'butt';
+      ctx.beginPath(); ctx.moveTo(CX, 0); ctx.lineTo(CX, blockTop); ctx.stroke();
+    });
+
+    PieceKit.mark('상자', () => {
+      ctx.fillStyle = C.block; ctx.fillRect(bx, blockTop, BW, BH);
+      ctx.strokeStyle = C.blockEdge; ctx.lineWidth = 1.5; ctx.strokeRect(bx, blockTop, BW, BH);
+    });
+
+    PieceKit.mark('무게 화살표', () => {
+      const x = bx + BW + 46;
+      const y0 = blockTop + BH / 2;
+      arrow(x, y0, y0 + W * PX_PER_N, C.ink, 3);
+      label(`무게 ${W} N`, x + 14, y0 + 12, C.ink, 'left');
+    });
+
+    PieceKit.mark('막대 힘 화살표', () => {
+      const x = CX + 22;
+      if (Fd > 0) {
+        arrow(x, blockTop - 4, blockTop - 4 - Fd * PX_PER_N, C.ink, 3);
+        label(`당김 ${Fd} N`, x + 14, blockTop - 4 - Fd * PX_PER_N / 2, C.ink, 'left');
+      } else if (Fd < 0) {
+        const len = -Fd * PX_PER_N;
+        arrow(x, blockTop - 4 - len, blockTop - 4, C.ink, 3);
+        label(`누름 ${-Fd} N`, x + 14, blockTop - 4 - len / 2, C.ink, 'left');
+      } else {
+        label('막대 힘 0 N', x + 6, blockTop - 22, C.muted, 'left');
+      }
+    });
+
+    PieceKit.mark('수직항력 화살표', () => {
+      const x = bx - 46;
+      const y0 = FLOOR_Y + dent;
+      if (Nd > 0) {
+        arrow(x, y0, y0 - Nd * PX_PER_N, C.accent, 4);
+        label(`수직항력 ${Nd} N`, x - 14, y0 - Nd * PX_PER_N / 2, C.accent, 'right');
+      } else {
+        label('수직항력 0 N', x - 14, FLOOR_Y - 12, C.accent, 'right');
+      }
+    });
+
+    PieceKit.mark('캡션', () => {
+      let text;
+      if (!state.contact && Fd >= W) text = '상자가 떴다 — 바닥은 더 밀 것이 없다';
+      else if (!state.contact) text = '놓인 상자가 내려온다 — 닿기 전까지 바닥은 밀지 않는다';
+      else if (Nd === 0) text = '당김이 무게와 같아졌다 — 바닥은 밀지 않는다';
+      else if (Fd > 0) text = '위로 당기는 만큼 바닥이 덜 민다';
+      else if (Fd < 0) text = '아래로 누르는 만큼 바닥이 더 민다';
+      else text = '막대가 힘을 주지 않으면 바닥은 무게만큼 민다';
+      if (captionEl.textContent !== text) captionEl.textContent = text;
+    });
+  }
+
+  PieceKit.loop({ step, draw });
+})();
+</script>
+</body>
+</html>

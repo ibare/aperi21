@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>연결된 물체</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --ink: #1f2328;
+    --muted: #8a9099;
+    --floor: #d5d9de;
+    --block: #5b6b7d;
+    --block-ink: #ffffff;
+    --rope: #3b4148;
+    --pull: #d9480f; /* 강조색: 바깥에서 당기는 힘 하나에만 쓴다 */
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 8px 0; }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { margin: 6px 16px 0; font-size: 15px; line-height: 1.5; min-height: 1.5em; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="scene" width="840" height="236"></canvas>
+  <p class="caption" id="caption"></p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  const canvas = document.getElementById('scene');
+  const ctx = canvas.getContext('2d');
+  const captionEl = document.getElementById('caption');
+
+  // 논리 크기 840×236 을 고정하고 CSS 로 늘린다. 선명도를 위해 픽셀 비율만 곱한다.
+  const W = 840, H = 236;
+  const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  ctx.scale(dpr, dpr);
+
+  const css = getComputedStyle(document.documentElement);
+  const C = {
+    ink: css.getPropertyValue('--ink').trim(),
+    muted: css.getPropertyValue('--muted').trim(),
+    floor: css.getPropertyValue('--floor').trim(),
+    block: css.getPropertyValue('--block').trim(),
+    blockInk: css.getPropertyValue('--block-ink').trim(),
+    rope: css.getPropertyValue('--rope').trim(),
+    pull: css.getPropertyValue('--pull').trim(),
+  };
+
+  // ── 물리 ────────────────────────────────────────────
+  const FORCE = 6;       // N, 세 줄 모두 같은 힘
+  const TOTAL = 3;       // kg, 세 줄 모두 같은 전체 질량
+  const ACC = FORCE / TOTAL; // 2 m/s² — 나누는 방식과 무관
+  const RUN = 3.0;       // 한 번 달리는 시간(초)
+  const PHASE = 1.0;     // 도착한 순간 이미 달리는 중이도록 앞당긴 시각
+  const STROBE = 0.5;    // 눈금을 남기는 간격(초)
+
+  // 줄마다 앞(당기는 쪽)부터 뒤로 질량을 적는다.
+  const LANES = [
+    { masses: [3] },
+    { masses: [1, 2] },
+    { masses: [2, 1] },
+  ];
+
+  // ── 화면 배치 ───────────────────────────────────────
+  const PX_PER_KG = 40;
+  const BLOCK_H = 34;
+  const ROPE_GAP = 34;
+  const LANE_TOP = 18;
+  const LANE_STEP = 72;
+  const LONGEST = 3 * PX_PER_KG + ROPE_GAP; // 가장 긴 줄(두 물체+끈)의 길이
+  const FRONT_START = 24 + LONGEST;
+  const FRONT_END = W - 96;                 // 힘 화살표와 글자가 들어갈 자리
+  const DIST_PX = FRONT_END - FRONT_START;
+  const ACC_PX = 2 * DIST_PX / (RUN * RUN); // 화면 가속도: RUN 초에 DIST_PX 를 간다
+  const ARROW_PX = 10 * FORCE;              // 1 N 당 10px
+
+  function localTime(t) {
+    return ((t + PHASE) % RUN + RUN) % RUN;
+  }
+  function frontX(tl) {
+    return FRONT_START + 0.5 * ACC_PX * tl * tl;
+  }
+
+  function laneFloorY(i) {
+    return LANE_TOP + i * LANE_STEP + BLOCK_H;
+  }
+
+  function drawArrow(x0, y, x1, color, width) {
+    const dir = Math.sign(x1 - x0) || 1;
+    const head = 9;
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.lineWidth = width;
+    ctx.beginPath();
+    ctx.moveTo(x0, y);
+    ctx.lineTo(x1 - dir * head, y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x1, y);
+    ctx.lineTo(x1 - dir * head, y - 5.5);
+    ctx.lineTo(x1 - dir * head, y + 5.5);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  // 캡션은 어느 시각에도 화면과 맞는 한 문장으로 고정한다.
+  const CAPTION = '같은 6 N 으로 전체 3 kg 을 당긴다 — 끈으로 어떻게 나눠 이어도 한 덩어리와 같은 눈금을 같은 때 지나며 나란히 빨라진다';
+
+  PieceKit.loop({
+    step(dt, t) {
+      // 상태가 쌓이지 않는다. 위치는 t 의 함수다.
+    },
+    draw(t) {
+      const tl = localTime(t);
+      const fx = frontX(tl);
+      ctx.clearRect(0, 0, W, H);
+
+      PieceKit.mark('바닥', () => {
+        ctx.strokeStyle = C.floor;
+        ctx.lineWidth = 1.5;
+        for (let i = 0; i < LANES.length; i++) {
+          const y = laneFloorY(i) + 0.75;
+          ctx.beginPath();
+          ctx.moveTo(16, y);
+          ctx.lineTo(W - 16, y);
+          ctx.stroke();
+        }
+      });
+
+      PieceKit.mark('같은 시각 눈금', () => {
+        // 0.5 초마다 앞면이 있던 자리. 세 줄의 눈금이 세로로 겹쳐 선다.
+        ctx.strokeStyle = C.muted;
+        ctx.lineWidth = 1.5;
+        const count = Math.floor(tl / STROBE + 1e-9);
+        for (let i = 0; i < LANES.length; i++) {
+          const y = laneFloorY(i);
+          for (let k = 0; k <= count; k++) {
+            const x = Math.round(frontX(k * STROBE)) + 0.5;
+            ctx.beginPath();
+            ctx.moveTo(x, y + 4);
+            ctx.lineTo(x, y + 14);
+            ctx.stroke();
+          }
+        }
+      });
+
+      PieceKit.mark('끈', () => {
+        ctx.strokeStyle = C.rope;
+        ctx.lineWidth = 2;
+        LANES.forEach((lane, i) => {
+          if (lane.masses.length < 2) return;
+          const y = laneFloorY(i) - BLOCK_H / 2;
+          const frontBack = fx - lane.masses[0] * PX_PER_KG;
+          ctx.beginPath();
+          ctx.moveTo(frontBack - ROPE_GAP, y);
+          ctx.lineTo(frontBack, y);
+          ctx.stroke();
+        });
+      });
+
+      PieceKit.mark('물체', () => {
+        ctx.font = '600 13px -apple-system, "Apple SD Gothic Neo", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        LANES.forEach((lane, i) => {
+          const top = laneFloorY(i) - BLOCK_H;
+          let right = fx;
+          lane.masses.forEach((m, j) => {
+            const w = m * PX_PER_KG;
+            const left = right - w;
+            ctx.fillStyle = C.block;
+            ctx.fillRect(left, top, w, BLOCK_H);
+            ctx.fillStyle = C.blockInk;
+            ctx.fillText(m + ' kg', left + w / 2, top + BLOCK_H / 2 + 0.5);
+            right = left - ROPE_GAP;
+          });
+        });
+      });
+
+      PieceKit.mark('당기는 힘', () => {
+        ctx.font = '600 13px -apple-system, "Apple SD Gothic Neo", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'alphabetic';
+        LANES.forEach((lane, i) => {
+          const y = laneFloorY(i) - BLOCK_H / 2;
+          drawArrow(fx, y, fx + ARROW_PX, C.pull, 3);
+          ctx.fillStyle = C.pull;
+          ctx.fillText(FORCE + ' N', fx + ARROW_PX / 2, y - 9);
+        });
+      });
+
+      PieceKit.mark('캡션', () => {
+        if (captionEl.textContent !== CAPTION) captionEl.textContent = CAPTION;
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

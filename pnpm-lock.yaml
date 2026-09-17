@@ -147,6 +147,9 @@ importers:
       '@aperi21/sim-acceleration-time-graph':
         specifier: workspace:*
         version: link:../../sims/kinematics/acceleration-time-graph
+      '@aperi21/sim-angle-of-friction':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/angle-of-friction
       '@aperi21/sim-angular-acceleration':
         specifier: workspace:*
         version: link:../../sims/kinematics/angular-acceleration
@@ -174,9 +177,18 @@ importers:
       '@aperi21/sim-beats':
         specifier: workspace:*
         version: link:../../sims/waves/beats
+      '@aperi21/sim-buoyant-force-as-force':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/buoyant-force-as-force
       '@aperi21/sim-centripetal-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/centripetal-force
+      '@aperi21/sim-conical-pendulum':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/conical-pendulum
+      '@aperi21/sim-connected-bodies':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/connected-bodies
       '@aperi21/sim-coordinate-choice':
         specifier: workspace:*
         version: link:../../sims/kinematics/coordinate-choice
@@ -195,6 +207,12 @@ importers:
       '@aperi21/sim-drag-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/drag-force
+      '@aperi21/sim-equilibrium-of-forces':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/equilibrium-of-forces
+      '@aperi21/sim-fictitious-force':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/fictitious-force
       '@aperi21/sim-free-body-diagram':
         specifier: workspace:*
         version: link:../../sims/mechanics/free-body-diagram
@@ -219,6 +237,12 @@ importers:
       '@aperi21/sim-inertial-frame':
         specifier: workspace:*
         version: link:../../sims/mechanics/inertial-frame
+      '@aperi21/sim-inertial-vs-gravitational-mass':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/inertial-vs-gravitational-mass
+      '@aperi21/sim-kinetic-friction':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/kinetic-friction
       '@aperi21/sim-lenz-law':
         specifier: workspace:*
         version: link:../../sims/em/lenz-law
@@ -237,6 +261,9 @@ importers:
       '@aperi21/sim-non-inertial-frame':
         specifier: workspace:*
         version: link:../../sims/mechanics/non-inertial-frame
+      '@aperi21/sim-normal-force':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/normal-force
       '@aperi21/sim-pendulum-isochronism':
         specifier: workspace:*
         version: link:../../sims/oscillation/pendulum-isochronism
@@ -279,6 +306,9 @@ importers:
       '@aperi21/sim-tangential-normal-acceleration':
         specifier: workspace:*
         version: link:../../sims/kinematics/tangential-normal-acceleration
+      '@aperi21/sim-tension':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/tension
       '@aperi21/sim-terminal-velocity':
         specifier: workspace:*
         version: link:../../sims/kinematics/terminal-velocity
@@ -306,6 +336,9 @@ importers:
       '@aperi21/sim-vertical-throw':
         specifier: workspace:*
         version: link:../../sims/kinematics/vertical-throw
+      '@aperi21/sim-youngs-modulus':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/youngs-modulus
     devDependencies:
       '@aperi21/plugin-circuit':
         specifier: workspace:*
@@ -861,6 +894,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/angle-of-friction:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/mechanics/apparent-weight:
     devDependencies:
       '@aperi21/schema':
@@ -897,7 +939,34 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/buoyant-force-as-force:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/mechanics/centripetal-force:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/conical-pendulum:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/connected-bodies:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -916,6 +985,24 @@ importers:
         version: 5.9.3
 
   sims/mechanics/drag-force:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/equilibrium-of-forces:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/fictitious-force:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -952,6 +1039,24 @@ importers:
         version: 5.9.3
 
   sims/mechanics/inertial-frame:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/inertial-vs-gravitational-mass:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/kinetic-friction:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -997,6 +1102,15 @@ importers:
         version: 5.9.3
 
   sims/mechanics/non-inertial-frame:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/normal-force:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1053,7 +1167,25 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/tension:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/mechanics/vertical-loop:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/youngs-modulus:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*

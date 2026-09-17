@@ -1,0 +1,38 @@
+{
+  "id": "youngs-modulus",
+  "claim": "같은 추를 걸면 길이가 두 배인 강철선은 두 배 늘어나지만 눈금 하나하나는 짧은 강철선과 똑같은 높이까지 내려오고, 알루미늄선은 눈금마다 더 내려온다 — 늘어나는 정도는 선의 길이가 아니라 재료가 정한다.",
+  "verb": "눈금마다 같은 만큼 벌어진다 (재료가 바뀌면 더 벌어진다)",
+  "probeTimes": [0, 2.5, 5, 6],
+  "elements": [
+    { "mark": "천장", "what": "세 선이 매달린 천장", "physical": "고정점", "drawing": "채운 띠 + 빗금", "motion": "static", "state": "none", "interaction": null },
+    { "mark": "선 이름", "what": "각 선 위의 재료·길이 글자", "physical": "재료(강철/알루미늄)와 늘어나기 전 길이", "drawing": "텍스트", "motion": "static", "state": "none", "interaction": null },
+    { "mark": "긴 강철선 눈금 높이", "what": "가운데 2 m 강철선의 눈금 높이를 가로로 끌어 온 점선 8개", "physical": "강철선에서 천장으로부터 25 cm, 50 cm … 지점이 지금 있는 높이", "drawing": "강조색 점선", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "늘어나기 전 눈금 자리", "what": "각 선 왼쪽의 옅은 짧은 선", "physical": "추를 걸기 전 눈금 위치", "drawing": "옅은 짧은 선", "motion": "static", "state": "none", "interaction": null },
+    { "mark": "선", "what": "매달린 세 선", "physical": "지름 1.0 mm 강철 1 m, 강철 2 m, 알루미늄 1 m 선", "drawing": "세로 선", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "선의 눈금", "what": "선에 25 cm 마다 찍힌 눈금", "physical": "선의 같은 물질 지점 — 선이 늘면 함께 내려간다", "drawing": "굵은 짧은 가로선", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "추", "what": "각 선 끝의 5 kg 추", "physical": "세 선에 같은 무게(49 N)", "drawing": "채운 사각형 + 글자", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "받침대", "what": "추를 받치다 내려가는 받침대", "physical": "추 무게 중 선이 떠맡는 몫을 바꾸는 장치 (선이 받는 힘 = 무게의 20%~100%)", "drawing": "채운 판 + 기둥 + 밑판", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "늘어난 길이", "what": "추 오른쪽의 늘어난 길이 수치", "physical": "선 전체가 늘어난 실제 길이 (mm, 소수 둘째 자리)", "drawing": "텍스트", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "배율 안내", "what": "아래쪽 작은 안내 글자", "physical": "늘어남을 약 730배로 키워 그렸다는 사실, 선 지름, 눈금 간격", "drawing": "텍스트", "motion": "static", "state": "none", "interaction": null }
+  ],
+  "controls": [],
+  "hidden": [
+    "응력(약 62 MPa)과 변형률 수치 — 정의·공식은 문단의 몫이고, 화면은 눈금 높이가 같다는 것으로 말한다",
+    "영률 값(200 GPa, 70 GPa) — 숫자를 보여 주면 비교가 숫자 읽기로 바뀐다",
+    "선의 굵기 차이 — 굵기를 바꾸면 추가로 응력 개념이 필요해 한 주장을 넘는다. 세 선은 같은 지름",
+    "알루미늄 선 속 원자 구조 — 이 조각의 질문과 무관"
+  ],
+  "timeline": [
+    { "t": 0, "what": "받침대가 내려가는 중. 선이 추 무게를 절반쯤 떠맡아 눈금들이 내려오기 시작, 짧은 강철선 눈금은 이미 점선 위에 있고 알루미늄 눈금은 점선 아래로 처진다" },
+    { "t": 1.5, "what": "받침대가 추에서 떨어진다. 세 선이 추 무게를 모두 받는다" },
+    { "t": 2.5, "what": "가장 많이 늘어난 상태 유지. 강철 1 m 0.31 mm, 강철 2 m 0.62 mm, 알루미늄 1 m 0.89 mm. 짧은 강철선 눈금 넷이 긴 강철선 점선 첫 넷에 정확히 겹친다" },
+    { "t": 5, "what": "받침대가 올라와 추를 받치며 선이 줄어든다(무게의 약 37%). 줄어드는 동안에도 짧은 강철선 눈금은 점선에 붙어 있고 알루미늄 눈금 처짐도 함께 줄어든다" },
+    { "t": 6, "what": "가장 덜 늘어난 상태(무게의 20%). 곧 다시 받침대가 내려가 8초 주기로 되풀이" }
+  ],
+  "engineWish": [
+    "매달린 선·용수철을 '천장 고정점 + 길이 + 늘어남'으로 그리고 선 위 같은 물질 지점(눈금)을 따라 움직이게 하는 부품 — 늘어난 뒤에도 '어느 지점이 어디 있는가'를 매번 계산했다",
+    "한 대상의 기준 높이를 화면 폭 전체로 끌어오는 가로 안내선 — 서로 다른 대상의 같은 높이 비교에 반복될 것",
+    "실제 크기와 그림 배율이 다른 양(늘어남)을 위한 '부풀림 배율' 선언과 그 안내 글자의 자동 생성",
+    "받침대로 하중을 서서히 넘기는 식의 '힘의 몫' 시간 함수(오르기·유지·내리기·유지) 구간 보간"
+  ]
+}

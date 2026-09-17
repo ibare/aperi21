@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>마찰각</title>
+<style>
+  :root {
+    --ink: #2b2f36;
+    --muted: #6b717b;
+    --line: #9aa0a8;
+    --accent: #d9480f;
+  }
+  html, body { margin: 0; background: #ffffff; color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 8px 16px 12px; box-sizing: border-box; }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { margin: 6px 0 4px; font-size: 16px; line-height: 1.5; min-height: 1.5em; }
+  .controls { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); }
+  .controls input { width: 160px; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c" width="860" height="290"></canvas>
+  <p class="caption" id="cap"></p>
+  <div class="controls">
+    <label for="stack">무거운 쪽 상자 수</label>
+    <input id="stack" type="range" min="2" max="5" step="1" value="3">
+    <output id="stackOut">3개</output>
+  </div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 물리 상수 ──────────────────────────────────────────
+  const G = 9.8;            // m/s²
+  const MU_S = 0.5;         // 정지 마찰 계수 (두 상자 모두 같은 재질)
+  const MU_K = 0.35;        // 운동 마찰 계수
+  const THETA_S = Math.atan(MU_S) * 180 / Math.PI; // 미끄러지기 시작하는 각 (26.565…°)
+  const PX_PER_M = 200;
+
+  // ── 진행 박자 ──────────────────────────────────────────
+  const START_DEG = 12;     // 도착했을 때 이미 이만큼 기울어 있다
+  const TILT_RATE = 4;      // °/s
+  const REST_END = 7.2;     // 미끄러진 뒤 멈춰 보여 주는 끝
+  const FADE_OUT_END = 7.8;
+  const LOWER_END = 8.4;
+  const CYCLE = 9.0;
+  const AUTO_SEQ = [3, 5, 2, 4];
+
+  // ── 화면 배치 (논리 좌표 860×290) ─────────────────────
+  const W = 860, H = 290;
+  const PIVOT = { x: 110, y: 252 };
+  const ARC_R = 110;          // 멈춘 상자(판 위 6~62)와 처음 더미(156~184) 사이
+  const BOARD_LEN = 560;
+  const BOARD_THICK = 10;
+  const BOX = 28;
+  const STOPPER = 6;
+  const HEAVY_S0 = 170;
+  const LIGHT_S0 = 400;
+
+  const COL = {
+    ink: '#2b2f36', muted: '#6b717b', line: '#9aa0a8',
+    board: '#b9bec6', boardEdge: '#80868f',
+    box: '#d2ad74', boxEdge: '#8a6a3a',
+    accent: '#d9480f',
+  };
+
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const capEl = document.getElementById('cap');
+  const slider = document.getElementById('stack');
+  const sliderOut = document.getElementById('stackOut');
+
+  let userN = null;
+  slider.addEventListener('input', () => {
+    if (PieceKit.frozen) return;
+    userN = Number(slider.value);
+    // 아직 미끄러지기 전이면 지금 올려 둔 더미를 바로 바꾼다 (미끄러지기 전엔 아무 일도 달라지지 않는다)
+    if (S.phase === 'tilt') S.n = userN;
+  });
+
+  const nextN = (k) => (userN != null && !PieceKit.frozen) ? userN : AUTO_SEQ[k % AUTO_SEQ.length];
+
+  // ── 상태 ──────────────────────────────────────────────
+  const S = {
+    k: 0, tau: 0, phase: 'tilt',
+    angle: START_DEG, n: AUTO_SEQ[0],
+    sH: HEAVY_S0, sL: LIGHT_S0, vH: 0, vL: 0,
+    alpha: 1,
+    records: [],
+  };
+
+  function resetBlocks() {
+    S.sH = HEAVY_S0; S.sL = LIGHT_S0; S.vH = 0; S.vL = 0;
+  }
+
+  function step(dt) {
+    S.tau += dt;
+    const rad = S.angle * Math.PI / 180;
+
+    if (S.phase === 'tilt') {
+      S.angle += TILT_RATE * dt;
+      if (S.angle >= THETA_S) {
+        S.angle = THETA_S;
+        S.phase = 'slide';
+        S.records.push({ n: S.n, angle: THETA_S });
+        if (S.records.length > 4) S.records.shift();
+      }
+    } else if (S.phase === 'slide') {
+      const a = G * (Math.sin(rad) - MU_K * Math.cos(rad)) * PX_PER_M; // 질량과 무관
+      const heavyStop = STOPPER + BOX / 2;
+      if (S.vH >= 0 && S.sH > heavyStop) {
+        S.vH += a * dt; S.sH -= S.vH * dt;
+        if (S.sH <= heavyStop) { S.sH = heavyStop; S.vH = -1; }
+      }
+      const lightStop = (S.vH < 0 ? S.sH : heavyStop) + BOX;
+      if (S.vL >= 0 && S.sL > lightStop) {
+        S.vL += a * dt; S.sL -= S.vL * dt;
+        if (S.sL <= lightStop) { S.sL = lightStop; S.vL = -1; }
+      }
+      if (S.tau >= REST_END) S.phase = 'reset';
+    } else if (S.phase === 'reset') {
+      if (S.tau < FADE_OUT_END) {
+        S.alpha = 1 - (S.tau - REST_END) / (FADE_OUT_END - REST_END);
+      } else if (S.tau < LOWER_END) {
+        S.alpha = 0;
+      } else {
+        if (S.n !== nextN(S.k + 1) || S.sH !== HEAVY_S0) { S.n = nextN(S.k + 1); resetBlocks(); }
+        S.alpha = (S.tau - LOWER_END) / (CYCLE - LOWER_END);
+      }
+      const u = Math.min(1, (S.tau - REST_END) / (LOWER_END - REST_END));
+      const ease = u * u * (3 - 2 * u);
+      S.angle = THETA_S + (START_DEG - THETA_S) * ease;
+      if (S.tau >= CYCLE) {
+        S.k += 1; S.tau -= CYCLE; S.phase = 'tilt';
+        S.angle = START_DEG; S.alpha = 1; S.n = nextN(S.k); resetBlocks();
+      }
+    }
+  }
+
+  // ── 그리기 도우미 ─────────────────────────────────────
+  const fmtDeg = (d) => d.toFixed(1) + '°';
+
+  function onBoard(s, rad) {
+    return { x: PIVOT.x + Math.cos(rad) * s, y: PIVOT.y - Math.sin(rad) * s };
+  }
+
+  function drawStack(s, count, rad) {
+    const p = onBoard(s, rad);
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(-rad);
+    ctx.globalAlpha = S.alpha;
+    ctx.lineWidth = 1.5;
+    for (let i = 0; i < count; i++) {
+      ctx.fillStyle = COL.box;
+      ctx.strokeStyle = COL.boxEdge;
+      ctx.beginPath();
+      ctx.rect(-BOX / 2, -BOX * (i + 1), BOX, BOX);
+      ctx.fill(); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const rad = S.angle * Math.PI / 180;
+    const end = onBoard(BOARD_LEN, rad);
+
+    PieceKit.mark('바닥', () => {
+      ctx.strokeStyle = COL.line; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(40, PIVOT.y + 0.5); ctx.lineTo(820, PIVOT.y + 0.5); ctx.stroke();
+    });
+
+    PieceKit.mark('받침대', () => {
+      ctx.strokeStyle = COL.boardEdge; ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(end.x - 6, end.y + BOARD_THICK + 2);
+      ctx.lineTo(end.x - 6, PIVOT.y);
+      ctx.stroke();
+    });
+
+    PieceKit.mark('각도 호', () => {
+      ctx.strokeStyle = COL.muted; ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.arc(PIVOT.x, PIVOT.y, ARC_R, -rad, 0); ctx.stroke();
+      // 숫자는 바닥선 아래 — 작은 각에서도 판과 겹치지 않는다
+      ctx.fillStyle = COL.ink; ctx.font = '15px sans-serif';
+      ctx.textBaseline = 'top'; ctx.textAlign = 'center';
+      ctx.fillText(fmtDeg(S.angle), PIVOT.x + ARC_R, PIVOT.y + 6);
+    });
+
+    PieceKit.mark('나무판', () => {
+      ctx.save();
+      ctx.translate(PIVOT.x, PIVOT.y);
+      ctx.rotate(-rad);
+      ctx.fillStyle = COL.board; ctx.strokeStyle = COL.boardEdge; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.rect(0, 0, BOARD_LEN, BOARD_THICK); ctx.fill(); ctx.stroke();
+      // 아래 끝 턱
+      ctx.fillStyle = COL.boardEdge;
+      ctx.fillRect(0, -16, STOPPER, 16);
+      ctx.restore();
+    });
+
+    if (S.records.length > 0) {
+      PieceKit.mark('미끄러진 각 눈금', () => {
+        const a = THETA_S * Math.PI / 180;
+        ctx.strokeStyle = COL.accent; ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(PIVOT.x + Math.cos(a) * (ARC_R - 12), PIVOT.y - Math.sin(a) * (ARC_R - 12));
+        ctx.lineTo(PIVOT.x + Math.cos(a) * (ARC_R + 12), PIVOT.y - Math.sin(a) * (ARC_R + 12));
+        ctx.stroke();
+      });
+    }
+
+    PieceKit.mark('경첩', () => {
+      ctx.fillStyle = COL.boardEdge;
+      ctx.beginPath(); ctx.arc(PIVOT.x, PIVOT.y, 5, 0, Math.PI * 2); ctx.fill();
+    });
+
+    PieceKit.mark('무거운 상자 더미', () => drawStack(S.sH, S.n, rad));
+    PieceKit.mark('가벼운 상자', () => drawStack(S.sL, 1, rad));
+
+    if (S.records.length > 0) {
+      PieceKit.mark('미끄러진 각 기록', () => {
+        const x0 = 672, y0 = 34;
+        ctx.textBaseline = 'middle';
+        ctx.font = '13px sans-serif'; ctx.fillStyle = COL.muted; ctx.textAlign = 'left';
+        ctx.fillText('미끄러지기 시작한 각', x0, y0);
+        ctx.font = '15px sans-serif';
+        S.records.forEach((r, i) => {
+          const y = y0 + 26 + i * 24;
+          ctx.fillStyle = COL.ink; ctx.textAlign = 'left';
+          ctx.fillText('1개 · ' + r.n + '개 더미', x0, y);
+          ctx.fillStyle = COL.accent; ctx.textAlign = 'right';
+          ctx.fillText(fmtDeg(r.angle), x0 + 160, y);
+        });
+      });
+    }
+
+    // 캡션 — 지금 화면에서 벌어지는 일만
+    let cap;
+    if (S.phase === 'tilt') {
+      cap = '판을 천천히 기울인다. 상자 1개도, ' + S.n + '개 더미도 아직 버틴다.';
+    } else if (S.phase === 'slide') {
+      const stopped = S.vH < 0 && S.vL < 0;
+      cap = '상자 1개와 ' + S.n + '개 더미가 같은 ' + fmtDeg(THETA_S) + '에서 함께 '
+        + (stopped ? '미끄러졌다.' : '미끄러진다.');
+    } else {
+      cap = S.tau < LOWER_END ? '판을 다시 눕힌다.' : '이번엔 ' + S.n + '개 더미를 올려 다시 기울인다.';
+    }
+    if (capEl.textContent !== cap) capEl.textContent = cap;
+
+    if (PieceKit.frozen || userN == null) slider.value = String(S.n);
+    sliderOut.textContent = (userN != null && !PieceKit.frozen ? userN : S.n) + '개';
+  }
+
+  PieceKit.loop({ step: (dt) => step(dt), draw: () => draw() });
+})();
+</script>
+</body>
+</html>

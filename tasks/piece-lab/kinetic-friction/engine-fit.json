@@ -1,0 +1,33 @@
+{
+  "rows": [
+    {
+      "element": "바닥 · 줄 이름",
+      "vocab": "trajectory + readout",
+      "status": "있음"
+    },
+    {
+      "element": "자리 눈금 (1 초 간격)",
+      "vocab": "trace (tick · age 생략)",
+      "status": "있음"
+    },
+    {
+      "element": "상자 ×2",
+      "vocab": "body (rect · 같은 colorRole)",
+      "status": "있음"
+    },
+    {
+      "element": "속도 · 마찰 화살표",
+      "vocab": "vector (마찰만 accent)",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (timeline phases.caption 또는 cases)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "감속 운동의 닫힌 식 — sim",
+    "원본 판단 거리 — 주장이 주제 판정 근거(「움직이기 시작하는 순간 저항이 뚝 떨어진다」)와 다르다. 그 장면은 static-friction 과 겹쳐 「빠르기와 상관없이 같은 만큼씩 느려진다」 를 골랐다"
+  ]
+}

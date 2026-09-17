@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>관성력</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #2b2a28;
+    --muted: #8a867e;
+    --faint: #cfcac0;
+    --accent: #d9622b; /* 관성력 한 가지 뜻에만 쓴다 */
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; }
+  canvas { display: block; width: 100%; height: auto; }
+  .row { display: flex; align-items: center; gap: 12px; padding: 6px 16px 0; font-size: 14px; color: var(--muted); }
+  .row input { width: 160px; }
+  .row output { color: var(--ink); min-width: 3.5em; }
+  .caption { padding: 8px 16px 14px; font-size: 16px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c" width="860" height="360"></canvas>
+  <div class="row">
+    <label for="mass">오른쪽 추의 질량</label>
+    <input id="mass" type="range" min="1" max="3" step="1" value="3">
+    <output id="massOut">3 kg</output>
+  </div>
+  <div class="caption" id="caption"></div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 물리 상수 (SI) ──
+  const G = 9.8;          // 중력 가속도 m/s²
+  const R = 1.5;          // 기둥에서 팔 끝까지 m
+  const L = 2.0;          // 줄 길이 m
+  const DAMP = 1.5;       // 줄 흔들림 감쇠 1/s
+  const LIGHT_M = 1;      // 왼쪽 추 kg
+  const DEFAULT_HEAVY_M = 3;
+  const OMEGA_MIN = 1.4, OMEGA_MAX = 2.2, PERIOD = 14; // rad/s, s
+
+  // ── 화면 배치 (논리 좌표 860×360) ──
+  const W = 860, H = 360;
+  const CX = W / 2, ARM_Y = 70, GROUND_Y = 340;
+  const PPM = 75;         // 1 m 당 픽셀
+  const PPN = 3.5;          // 힘 1 N 당 픽셀
+  const COLORS = { ink: '#2b2a28', muted: '#8a867e', faint: '#cfcac0', accent: '#d9622b', bg: '#fbfaf7' };
+
+  const omegaAt = (t) => OMEGA_MIN + (OMEGA_MAX - OMEGA_MIN) * (1 - Math.cos(2 * Math.PI * t / PERIOD)) / 2;
+
+  // 주어진 ω 에서 줄이 멈춰 설 각도 — tanθ = ω²(R + L sinθ)/g 를 반복으로 푼다
+  function equilibriumAngle(omega) {
+    let th = 0.3;
+    for (let i = 0; i < 60; i++) th = Math.atan(omega * omega * (R + L * Math.sin(th)) / G);
+    return th;
+  }
+
+  // 추 하나 — 회전하는 틀에서 받는 힘으로 적분한다. 질량은 힘에 곱해지고 가속도에서 나뉜다.
+  function makeBob(side) {
+    const th0 = equilibriumAngle(omegaAt(0));
+    return { side, th: th0, thd: 0 };
+  }
+  const bobs = [makeBob(-1), makeBob(1)];
+  let phi = 0; // 틀이 돈 누적 각도 rad — 바깥 풍경이 흘러가는 양
+
+  const massSlider = document.getElementById('mass');
+  const massOut = document.getElementById('massOut');
+  const captionEl = document.getElementById('caption');
+  const heavyMass = () => PieceKit.frozen ? DEFAULT_HEAVY_M : Number(massSlider.value);
+  const massOf = (bob) => bob.side < 0 ? LIGHT_M : heavyMass();
+  massSlider.addEventListener('input', () => { massOut.textContent = massSlider.value + ' kg'; });
+  if (PieceKit.frozen) { massSlider.disabled = true; massSlider.value = String(DEFAULT_HEAVY_M); }
+  massOut.textContent = heavyMass() + ' kg';
+
+  function forces(bob, omega) {
+    const m = massOf(bob);
+    const r = R + L * Math.sin(bob.th);
+    return { m, r, inertial: m * omega * omega * r, gravity: m * G };
+  }
+
+  function step(dt, t) {
+    const omega = omegaAt(t);
+    for (const bob of bobs) {
+      const f = forces(bob, omega);
+      // 줄에 수직인 방향 성분만 추를 돌린다. 장력은 줄 방향이라 빠진다.
+      const tangential = f.inertial * Math.cos(bob.th) - f.gravity * Math.sin(bob.th);
+      const thdd = tangential / (f.m * L) - DAMP * bob.thd;
+      bob.thd += thdd * dt;
+      bob.th += bob.thd * dt;
+    }
+    phi += omega * dt;
+  }
+
+  const canvas = document.getElementById('c');
+  const dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+
+  function arrow(x0, y0, x1, y1, color, width) {
+    const len = Math.hypot(x1 - x0, y1 - y0);
+    if (len < 1) return;
+    const ux = (x1 - x0) / len, uy = (y1 - y0) / len;
+    const head = Math.min(10, len * 0.45);
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = width; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1 - ux * head * 0.6, y1 - uy * head * 0.6); ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x1 - ux * head - uy * head * 0.45, y1 - uy * head + ux * head * 0.45);
+    ctx.lineTo(x1 - ux * head + uy * head * 0.45, y1 - uy * head - ux * head * 0.45);
+    ctx.closePath(); ctx.fill();
+  }
+
+  function bobPos(bob) {
+    const pivotX = CX + bob.side * R * PPM;
+    return {
+      pivotX,
+      x: pivotX + bob.side * L * PPM * Math.sin(bob.th),
+      y: ARM_Y + L * PPM * Math.cos(bob.th),
+    };
+  }
+
+  function draw(t) {
+    const omega = omegaAt(t);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.fillStyle = COLORS.bg; ctx.fillRect(0, 0, W, H);
+
+    PieceKit.mark('바깥 풍경', () => {
+      // 그네와 함께 도는 눈으로 보면 멀리 있는 나무들이 옆으로 흘러간다
+      const spacing = 96;
+      const shift = ((phi * 140) % spacing + spacing) % spacing;
+      ctx.fillStyle = '#e6e2d9';
+      for (let i = -1; i <= Math.ceil(W / spacing) + 1; i++) {
+        const x = i * spacing - shift;
+        const h = 26 + ((i % 3 + 3) % 3) * 9;
+        ctx.beginPath();
+        ctx.moveTo(x - 12, GROUND_Y); ctx.lineTo(x, GROUND_Y - h); ctx.lineTo(x + 12, GROUND_Y);
+        ctx.closePath(); ctx.fill();
+      }
+      ctx.strokeStyle = COLORS.faint; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(0, GROUND_Y + 0.5); ctx.lineTo(W, GROUND_Y + 0.5); ctx.stroke();
+    });
+
+    PieceKit.mark('기둥과 팔', () => {
+      ctx.strokeStyle = COLORS.ink; ctx.lineCap = 'round';
+      ctx.lineWidth = 6;
+      ctx.beginPath(); ctx.moveTo(CX, GROUND_Y); ctx.lineTo(CX, ARM_Y - 14); ctx.stroke();
+      ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.moveTo(CX - R * PPM, ARM_Y); ctx.lineTo(CX + R * PPM, ARM_Y); ctx.stroke();
+      // 도는 축 표시 — 기둥 꼭대기의 납작한 고리
+      ctx.lineWidth = 1.5; ctx.strokeStyle = COLORS.muted;
+      ctx.beginPath(); ctx.ellipse(CX, ARM_Y - 20, 22, 5, 0, 0, Math.PI * 2); ctx.stroke();
+    });
+
+    for (const bob of bobs) {
+      const p = bobPos(bob);
+      const f = forces(bob, omega);
+      const name = bob.side < 0 ? '왼쪽' : '오른쪽';
+      const gx = 0, gy = f.gravity * PPN;
+      const ix = bob.side * f.inertial * PPN, iy = 0;
+
+      PieceKit.mark(`${name} 줄`, () => {
+        ctx.strokeStyle = COLORS.muted; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(p.pivotX, ARM_Y); ctx.lineTo(p.x, p.y); ctx.stroke();
+      });
+
+      PieceKit.mark(`${name} 두 힘의 합`, () => {
+        // 두 힘으로 만든 직사각형의 먼 꼭짓점 — 언제나 줄의 연장선 위에 놓인다
+        ctx.strokeStyle = COLORS.faint; ctx.lineWidth = 1; ctx.setLineDash([3, 4]);
+        ctx.beginPath();
+        ctx.moveTo(p.x + ix, p.y); ctx.lineTo(p.x + ix, p.y + gy); ctx.lineTo(p.x, p.y + gy);
+        ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x + ix, p.y + gy); ctx.stroke();
+        ctx.setLineDash([]);
+      });
+
+      PieceKit.mark(`${name} 중력`, () => {
+        arrow(p.x, p.y, p.x + gx, p.y + gy, COLORS.muted, 2.5);
+      });
+
+      PieceKit.mark(`${name} 관성력`, () => {
+        arrow(p.x, p.y, p.x + ix, p.y + iy, COLORS.accent, 3);
+      });
+
+      PieceKit.mark(`${name} 추`, () => {
+        const rad = 9 * Math.cbrt(f.m);
+        ctx.fillStyle = COLORS.ink;
+        ctx.beginPath(); ctx.arc(p.x, p.y, rad, 0, Math.PI * 2); ctx.fill();
+        ctx.font = '13px -apple-system, "Apple SD Gothic Neo", sans-serif';
+        // 추 아래 기둥 쪽 — 줄·화살표와 겹치지 않는 자리
+        ctx.textAlign = bob.side < 0 ? 'left' : 'right';
+        ctx.textBaseline = 'top';
+        ctx.fillStyle = COLORS.ink;
+        ctx.fillText(`${f.m} kg`, p.x - bob.side * (rad + 2), p.y + rad + 2);
+      });
+
+      if (bob.side > 0) {
+        PieceKit.mark('힘 이름표', () => {
+          ctx.font = '13px -apple-system, "Apple SD Gothic Neo", sans-serif';
+          ctx.textBaseline = 'bottom'; ctx.textAlign = 'center';
+          ctx.fillStyle = COLORS.accent;
+          ctx.fillText('관성력', p.x + ix / 2, p.y - 6);
+          ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+          ctx.fillStyle = COLORS.muted;
+          ctx.fillText('중력', p.x - 34, p.y + gy * 0.8);
+        });
+      }
+    }
+
+    PieceKit.mark('캡션', () => {
+      const text = '관성력도 중력처럼 질량에 비례한다 — 그래서 무거운 추와 가벼운 추가 언제나 같은 각도로 기운다';
+      if (captionEl.textContent !== text) captionEl.textContent = text;
+    });
+  }
+
+  PieceKit.loop({ step, draw });
+})();
+</script>
+</body>
+</html>

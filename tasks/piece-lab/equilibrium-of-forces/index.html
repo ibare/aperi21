@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>힘의 평형</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --ink: #2b2b2b;
+    --rope: #8a8a8a;
+    --block: #e6e3dc;
+    --accent: #d9480f;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 8px 16px; box-sizing: border-box; }
+  canvas { display: block; width: 100%; height: auto; aspect-ratio: 860 / 340; touch-action: none; }
+  .caption { min-height: 1.6em; margin: 6px 0 0; font-size: 15px; line-height: 1.6; text-align: center; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c" width="1720" height="680"></canvas>
+  <p class="caption" id="caption"></p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // 논리 좌표 860×340. 캔버스는 2배 해상도로 그린다.
+  const W = 860, H = 340;
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  ctx.scale(2, 2);
+  const captionEl = document.getElementById('caption');
+  const css = getComputedStyle(document.documentElement);
+  const INK = css.getPropertyValue('--ink').trim();
+  const ROPE = css.getPropertyValue('--rope').trim();
+  const BLOCK = css.getPropertyValue('--block').trim();
+  const ACCENT = css.getPropertyValue('--accent').trim();
+
+  // 장면 — 도르래 둘, 매듭 하나, 추 세 묶음
+  const A = { x: 70, y: 46 };   // 왼쪽 도르래
+  const B = { x: 410, y: 46 };  // 오른쪽 도르래
+  const R = 13;                 // 도르래 반지름
+  const ROPE_LEN = 300;         // 매듭 → 도르래 → 추 까지 줄 길이
+  const HANG = 26;              // 매듭 아래 가운데 추까지 줄 길이
+  const BW = 26, BH = 11, BGAP = 1; // 추 한 칸
+
+  // 운동 — 추 한 칸의 무게를 1 로 둔다
+  const G = 6000;   // 한 칸 무게가 주는 가속 크기(논리 px/s² × 전체 칸 수)
+  const DAMP = 7;   // 도르래·줄의 마찰
+  const CLOSED = 0.03; // 틈이 이보다 작으면 닫혔다고 본다 (추 한 칸 기준)
+  const PERIOD = 6; // 6초마다 왼쪽 추에 한 칸이 더해지고 빠진다
+
+  // 도형 — 세 힘을 끝과 끝으로 잇는 자리
+  const U = 34;                  // 추 한 칸 = 34px
+  const O = { x: 680, y: 62 };   // 도형의 시작점
+
+  function massesAt(t) {
+    const added = Math.floor(t / PERIOD) % 2 === 1;
+    return { left: added ? 4 : 3, right: 4, middle: 5 };
+  }
+
+  function forces(p, m) {
+    const ax = A.x - p.x, ay = A.y - p.y, da = Math.hypot(ax, ay);
+    const bx = B.x - p.x, by = B.y - p.y, db = Math.hypot(bx, by);
+    const tl = { x: m.left * ax / da, y: m.left * ay / da };
+    const tr = { x: m.right * bx / db, y: m.right * by / db };
+    const w = { x: 0, y: m.middle };
+    return { tl, tr, w, net: { x: tl.x + tr.x + w.x, y: tl.y + tr.y + w.y } };
+  }
+
+  // 시작 상태 — 왼쪽 추 한 칸이 막 빠진 순간(4·4·5 의 평형 자리)
+  const knot = { x: 240.0, y: 182.1, vx: 0, vy: 0 };
+
+  // 조작 — 매듭을 끌어낸다
+  let dragging = false;
+  function toLogical(ev) {
+    const r = canvas.getBoundingClientRect();
+    return { x: (ev.clientX - r.left) * W / r.width, y: (ev.clientY - r.top) * H / r.height };
+  }
+  function clampKnot(p) {
+    return { x: Math.min(380, Math.max(110, p.x)), y: Math.min(290, Math.max(100, p.y)) };
+  }
+  canvas.addEventListener('pointerdown', (ev) => {
+    if (PieceKit.frozen) return;
+    const p = toLogical(ev);
+    if (Math.hypot(p.x - knot.x, p.y - knot.y) < 28) {
+      dragging = true;
+      canvas.setPointerCapture(ev.pointerId);
+    }
+  });
+  canvas.addEventListener('pointermove', (ev) => {
+    if (PieceKit.frozen) return;
+    const p = toLogical(ev);
+    if (dragging) {
+      const q = clampKnot(p);
+      knot.x = q.x; knot.y = q.y; knot.vx = 0; knot.vy = 0;
+    }
+    canvas.style.cursor = (dragging || Math.hypot(p.x - knot.x, p.y - knot.y) < 28) ? 'grab' : 'default';
+  });
+  const release = () => { dragging = false; };
+  canvas.addEventListener('pointerup', release);
+  canvas.addEventListener('pointercancel', release);
+
+  // ── 그리기 도구 ──
+  function arrow(x0, y0, x1, y1, color, dashed) {
+    const len = Math.hypot(x1 - x0, y1 - y0);
+    if (len < 0.5) return;
+    const ux = (x1 - x0) / len, uy = (y1 - y0) / len;
+    const head = Math.min(9, len * 0.6);
+    ctx.save();
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 2.2; ctx.lineCap = 'round';
+    if (dashed) ctx.setLineDash([6, 4]);
+    ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1 - ux * head * 0.8, y1 - uy * head * 0.8); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x1 - ux * head - uy * head * 0.5, y1 - uy * head + ux * head * 0.5);
+    ctx.lineTo(x1 - ux * head + uy * head * 0.5, y1 - uy * head - ux * head * 0.5);
+    ctx.closePath(); ctx.fill();
+    ctx.restore();
+  }
+  // 추 한 칸마다 눈금을 넣은 힘 화살표
+  function forceArrow(x0, y0, vx, vy) {
+    const x1 = x0 + vx * U, y1 = y0 + vy * U;
+    arrow(x0, y0, x1, y1, INK, false);
+    const n = Math.hypot(vx, vy);
+    const ux = vx / n, uy = vy / n;
+    ctx.save(); ctx.strokeStyle = INK; ctx.lineWidth = 1.4;
+    for (let k = 1; k < Math.round(n); k++) {
+      const cx = x0 + ux * U * k, cy = y0 + uy * U * k;
+      ctx.beginPath(); ctx.moveTo(cx - uy * 4, cy + ux * 4); ctx.lineTo(cx + uy * 4, cy - ux * 4); ctx.stroke();
+    }
+    ctx.restore();
+    return { x: x1, y: y1 };
+  }
+  function stack(cx, top, count) {
+    ctx.save(); ctx.fillStyle = BLOCK; ctx.strokeStyle = INK; ctx.lineWidth = 1.2;
+    for (let i = 0; i < count; i++) {
+      const y = top + i * (BH + BGAP);
+      ctx.fillRect(cx - BW / 2, y, BW, BH);
+      ctx.strokeRect(cx - BW / 2 + 0.5, y + 0.5, BW - 1, BH - 1);
+    }
+    ctx.restore();
+  }
+  function tangentTop(P, K) {
+    const d = Math.hypot(K.x - P.x, K.y - P.y);
+    const th = Math.atan2(K.y - P.y, K.x - P.x);
+    const al = Math.acos(Math.min(1, R / d));
+    const p1 = { x: P.x + R * Math.cos(th + al), y: P.y + R * Math.sin(th + al) };
+    const p2 = { x: P.x + R * Math.cos(th - al), y: P.y + R * Math.sin(th - al) };
+    return p1.y < p2.y ? p1 : p2;
+  }
+  function line(x0, y0, x1, y1, color, w) {
+    ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = w; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke(); ctx.restore();
+  }
+
+
+  PieceKit.loop({
+    step(dt, t) {
+      if (dragging) return;
+      const m = massesAt(t);
+      const f = forces(knot, m);
+      const M = m.left + m.right + m.middle;
+      knot.vx += (f.net.x * G / M - DAMP * knot.vx) * dt;
+      knot.vy += (f.net.y * G / M - DAMP * knot.vy) * dt;
+      knot.x += knot.vx * dt;
+      knot.y += knot.vy * dt;
+    },
+    draw(t) {
+      const m = massesAt(t);
+      const f = forces(knot, m);
+      const gap = Math.hypot(f.net.x, f.net.y);
+      const closed = gap < CLOSED;
+
+      ctx.clearRect(0, 0, W, H);
+
+      PieceKit.mark('천장', () => {
+        line(30, 16, 450, 16, INK, 2);
+        line(A.x, 16, A.x, A.y, INK, 1.5);
+        line(B.x, 16, B.x, B.y, INK, 1.5);
+      });
+
+      PieceKit.mark('도르래', () => {
+        for (const P of [A, B]) {
+          ctx.save(); ctx.strokeStyle = INK; ctx.fillStyle = '#ffffff'; ctx.lineWidth = 1.6;
+          ctx.beginPath(); ctx.arc(P.x, P.y, R, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+          ctx.beginPath(); ctx.arc(P.x, P.y, 2, 0, Math.PI * 2); ctx.fillStyle = INK; ctx.fill();
+          ctx.restore();
+        }
+      });
+
+      // 줄 길이가 보존되므로, 매듭이 도르래에서 멀어진 만큼 바깥 추가 올라간다
+      const dA = Math.hypot(knot.x - A.x, knot.y - A.y);
+      const dB = Math.hypot(knot.x - B.x, knot.y - B.y);
+      const topL = Math.min(H - 60, Math.max(A.y + 18, A.y + ROPE_LEN - dA));
+      const topR = Math.min(H - 60, Math.max(B.y + 18, B.y + ROPE_LEN - dB));
+      const midTop = knot.y + HANG;
+
+      PieceKit.mark('줄', () => {
+        const ta = tangentTop(A, knot), tb = tangentTop(B, knot);
+        line(knot.x, knot.y, ta.x, ta.y, ROPE, 1.8);
+        line(knot.x, knot.y, tb.x, tb.y, ROPE, 1.8);
+        line(A.x - R, A.y, A.x - R, topL, ROPE, 1.8);
+        line(B.x + R, B.y, B.x + R, topR, ROPE, 1.8);
+        line(knot.x, knot.y, knot.x, midTop, ROPE, 1.8);
+      });
+
+      PieceKit.mark('추', () => {
+        stack(A.x - R, topL, m.left);
+        stack(B.x + R, topR, m.right);
+        stack(knot.x, midTop, m.middle);
+      });
+
+      PieceKit.mark('매듭', () => {
+        ctx.save(); ctx.fillStyle = INK;
+        ctx.beginPath(); ctx.arc(knot.x, knot.y, 5, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      });
+
+      PieceKit.mark('매듭을 끄는 알짜힘', () => {
+        if (closed) return;
+        arrow(knot.x, knot.y, knot.x + f.net.x * U, knot.y + f.net.y * U, ACCENT, false);
+      });
+
+      // 세 힘을 끝과 끝으로 — 가운데 추의 무게, 왼쪽 줄, 오른쪽 줄 순서
+      let tip = O;
+      PieceKit.mark('끝과 끝으로 이은 세 힘', () => {
+        tip = forceArrow(O.x, O.y, f.w.x, f.w.y);
+        tip = forceArrow(tip.x, tip.y, f.tl.x, f.tl.y);
+        tip = forceArrow(tip.x, tip.y, f.tr.x, f.tr.y);
+        ctx.save(); ctx.fillStyle = INK;
+        ctx.beginPath(); ctx.arc(O.x, O.y, 3, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      });
+
+      PieceKit.mark('닫히지 않은 틈', () => {
+        if (closed) return;
+        arrow(O.x, O.y, tip.x, tip.y, ACCENT, true);
+      });
+
+      let text;
+      if (closed) text = '세 힘의 화살표가 닫혔다 — 매듭은 그 자리에 멈춰 있다';
+      else if (dragging) text = '매듭을 끌어낸 만큼 화살표가 벌어졌다 — 놓으면 틈 쪽으로 끌려간다';
+      else text = '화살표가 닫히지 않았다 — 매듭이 틈 쪽으로 끌려간다';
+      PieceKit.mark('캡션', () => {
+        if (captionEl.textContent !== text) captionEl.textContent = text;
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+{
+  "rows": [
+    {
+      "element": "천장 · 도르래 · 줄",
+      "vocab": "trajectory + body (circle · fill none) + body (point)",
+      "status": "있음"
+    },
+    {
+      "element": "추 묶음",
+      "vocab": "body (rect ×칸)",
+      "status": "있음"
+    },
+    {
+      "element": "매듭 · 매듭 끌기",
+      "vocab": "body (circle) + point-drag (binds pos/held · handle ring)",
+      "status": "있음",
+      "note": "놓으면 닫히는 자리로 돌아가는 것은 step"
+    },
+    {
+      "element": "알짜힘 · 틈",
+      "vocab": "vector (accent · 실선/dashed)",
+      "status": "있음"
+    },
+    {
+      "element": "끝과 끝으로 이은 세 힘 + 칸 눈금",
+      "vocab": "vector ×3 + trace (tick · marks[].direction)",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (cases — 틈이 문턱 아래인지는 상태)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "매듭 평형의 적분과 줄 길이 보존 — sim step"
+  ]
+}

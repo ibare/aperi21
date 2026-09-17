@@ -1,0 +1,38 @@
+{
+  "rows": [
+    {
+      "element": "천장 · 선 이름",
+      "vocab": "body (rect) + trace (tick) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "긴 강철선 눈금 높이 점선",
+      "vocab": "trajectory (dashed · accent)",
+      "status": "있음"
+    },
+    {
+      "element": "늘어나기 전 눈금 자리 · 선 · 눈금",
+      "vocab": "trace (tick · opacity) + trajectory + trace (tick)",
+      "status": "있음"
+    },
+    {
+      "element": "추 · 받침대",
+      "vocab": "body (rect) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "늘어난 길이 · 배율 안내",
+      "vocab": "readout (vars)",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (text)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "영률 · 늘어남 부풀림 배율 — sim",
+    "미확인 — 아래쪽 점선이 스크린샷에서 회색처럼 보인다 (에이전트 자기 신고)"
+  ]
+}

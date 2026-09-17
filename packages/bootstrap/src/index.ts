@@ -408,6 +408,94 @@ export function registerAperi21Bundles(): void {
     return registerBundle('aperi21:banked-curve', m.bankedCurveBundle, caps.capabilities);
   });
 
+  registerBundleLoader('aperi21:buoyant-force-as-force', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-buoyant-force-as-force'),
+      import('./capabilities/mechanics/buoyant-force-as-force.generated.js'),
+    ]);
+    return registerBundle('aperi21:buoyant-force-as-force', m.buoyantForceAsForceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:kinetic-friction', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-kinetic-friction'),
+      import('./capabilities/mechanics/kinetic-friction.generated.js'),
+    ]);
+    return registerBundle('aperi21:kinetic-friction', m.kineticFrictionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:equilibrium-of-forces', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-equilibrium-of-forces'),
+      import('./capabilities/mechanics/equilibrium-of-forces.generated.js'),
+    ]);
+    return registerBundle('aperi21:equilibrium-of-forces', m.equilibriumOfForcesBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:inertial-vs-gravitational-mass', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-inertial-vs-gravitational-mass'),
+      import('./capabilities/mechanics/inertial-vs-gravitational-mass.generated.js'),
+    ]);
+    return registerBundle('aperi21:inertial-vs-gravitational-mass', m.inertialVsGravitationalMassBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:tension', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-tension'),
+      import('./capabilities/mechanics/tension.generated.js'),
+    ]);
+    return registerBundle('aperi21:tension', m.tensionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:fictitious-force', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-fictitious-force'),
+      import('./capabilities/mechanics/fictitious-force.generated.js'),
+    ]);
+    return registerBundle('aperi21:fictitious-force', m.fictitiousForceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:youngs-modulus', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-youngs-modulus'),
+      import('./capabilities/mechanics/youngs-modulus.generated.js'),
+    ]);
+    return registerBundle('aperi21:youngs-modulus', m.youngsModulusBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:normal-force', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-normal-force'),
+      import('./capabilities/mechanics/normal-force.generated.js'),
+    ]);
+    return registerBundle('aperi21:normal-force', m.normalForceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:angle-of-friction', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-angle-of-friction'),
+      import('./capabilities/mechanics/angle-of-friction.generated.js'),
+    ]);
+    return registerBundle('aperi21:angle-of-friction', m.angleOfFrictionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:connected-bodies', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-connected-bodies'),
+      import('./capabilities/mechanics/connected-bodies.generated.js'),
+    ]);
+    return registerBundle('aperi21:connected-bodies', m.connectedBodiesBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:conical-pendulum', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-conical-pendulum'),
+      import('./capabilities/mechanics/conical-pendulum.generated.js'),
+    ]);
+    return registerBundle('aperi21:conical-pendulum', m.conicalPendulumBundle, caps.capabilities);
+  });
+
   registerBundleLoader('aperi21:uniform-motion', async () => {
     const [m, caps] = await Promise.all([
       import('@aperi21/sim-uniform-motion'),

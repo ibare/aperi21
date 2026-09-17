@@ -1,0 +1,38 @@
+{
+  "rows": [
+    {
+      "element": "회전축 · 매단 점",
+      "vocab": "trajectory (width) + body (point)",
+      "status": "있음"
+    },
+    {
+      "element": "줄 · 추 (깊이 순)",
+      "vocab": "trajectory + body (circle) · drawOrder scene",
+      "status": "있음",
+      "note": "비스듬히 내려다보는 투영과 뒤에서 앞으로의 순서는 sim 이 정렬해 선언한다"
+    },
+    {
+      "element": "추가 도는 길 (타원)",
+      "vocab": "trajectory (closed · 타원 표본 · opacity)",
+      "status": "있음"
+    },
+    {
+      "element": "세 추가 도는 높이",
+      "vocab": "region (타원 표본 · accent · fillOpacity) + trajectory (closed · dashed) + trajectory (dashed 세로)",
+      "status": "있음"
+    },
+    {
+      "element": "돌리는 빠르기",
+      "vocab": "slider + heldPath",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (text)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "3 차원 투영(원 → 타원) — sim 의 좌표 계산. 투영 어휘는 조각 하나라 올리지 않는다"
+  ]
+}

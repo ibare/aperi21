@@ -1,0 +1,34 @@
+{
+  "rows": [
+    {
+      "element": "천장 · 바닥 · 바닥 고리",
+      "vocab": "trajectory + trace (tick) + body (circle · fill none)",
+      "status": "있음"
+    },
+    {
+      "element": "도르래 · 줄 (사분원 포함)",
+      "vocab": "body (circle) + trajectory (호 표본)",
+      "status": "있음"
+    },
+    {
+      "element": "용수철 저울 ×3 (몸통 · 눈금 · 용수철 · 바늘)",
+      "vocab": "body (rect · orientation · opacity) + trace (tick) + constraint (spring) + vector/trajectory (accent 바늘) + readout",
+      "status": "있음",
+      "note": "셋째 저울은 90° 돌린다 — 글자는 돌리지 않는다(readout 은 회전하지 않음, 원본도 같음)"
+    },
+    {
+      "element": "손 · 손 끌기",
+      "vocab": "trajectory + body (rect) + point-drag (held)",
+      "status": "있음",
+      "note": "가로로만 끌리게 투영하고 놓은 뒤 0.8 s 에 자동으로 돌아가는 것은 step"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (vars — 저울 값)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "줄 길이 보존과 저울 늘음 — sim"
+  ]
+}

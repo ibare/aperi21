@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>운동 마찰력</title>
+<style>
+  html, body { margin: 0; background: #ffffff; }
+  canvas { display: block; width: 100%; max-width: 900px; height: auto; }
+</style>
+</head>
+<body>
+<canvas id="scene" width="860" height="268"></canvas>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// 같은 바닥 위를 빠르기가 다른 두 상자가 미끄러진다.
+// 운동 마찰은 빠르기와 상관없이 같은 크기라, 두 상자는 같은 만큼씩 느려진다.
+const W = 860, H = 268;
+const canvas = document.getElementById('scene');
+const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+canvas.width = W * dpr;
+canvas.height = H * dpr;
+const ctx = canvas.getContext('2d');
+ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+// 물리 (SI) — 감속도 = 운동 마찰 계수 × 중력 가속도
+const DECEL = 0.4;          // m/s²
+const TICK_EVERY = 1;       // s, 자리 눈금 간격
+const CYCLE = 8.5;          // s, 한 번 미끄러지고 멈춰 있는 시간까지
+const OFFSET = 0.5;         // s, 도착한 순간 이미 미끄러지는 중이게
+
+// 화면 척도
+const PX_PER_M = 100;
+const V_PX_PER_MPS = 40;
+const FRICTION_PX = 56;     // 마찰 화살표 길이 — 빠르기와 무관하게 고정
+const START_X = 110;        // 상자 앞면의 출발 위치
+const BOX_W = 44, BOX_H = 34;
+
+const COLOR = {
+  ink: '#1f2328',
+  soft: '#6b7280',
+  tick: '#9aa0a8',
+  floor: '#343a40',
+  boxFill: '#e9ecef',
+  boxLine: '#495057',
+  friction: '#e8590c',     // 강조색: 마찰력 한 가지 뜻에만
+};
+
+const lanes = [
+  { name: '빠르게 출발', v0: 2.4, floorY: 100 },
+  { name: '느리게 출발', v0: 1.2, floorY: 210 },
+];
+
+// 상태 — t 에서 곧바로 계산한다 (?t= 로 연 화면과 실시간 화면이 같도록)
+const state = { tc: 0, lanes: lanes.map(() => ({ x: 0, v: 0, stopped: false })) };
+
+function laneAt(lane, tc) {
+  const tStop = lane.v0 / DECEL;
+  const s = Math.min(tc, tStop);
+  return {
+    x: lane.v0 * s - 0.5 * DECEL * s * s,
+    v: Math.max(0, lane.v0 - DECEL * tc),
+    stopped: tc >= tStop,
+    tStop,
+  };
+}
+
+function arrow(x1, y, x2, color, width) {
+  const dir = Math.sign(x2 - x1) || 1;
+  const head = Math.min(8, Math.abs(x2 - x1));
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = width;
+  ctx.beginPath();
+  ctx.moveTo(x1, y);
+  ctx.lineTo(x2 - dir * head, y);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x2, y);
+  ctx.lineTo(x2 - dir * head, y - 5);
+  ctx.lineTo(x2 - dir * head, y + 5);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function captionText() {
+  const [fast, slow] = state.lanes;
+  if (fast.stopped && slow.stopped) {
+    return '둘 다 멈췄다. 1초마다 남긴 눈금 간격이 두 줄 모두 똑같은 폭씩 줄었다';
+  }
+  if (slow.stopped) {
+    return '느린 상자가 먼저 멈췄다. 빠른 상자는 여전히 같은 마찰을 받으며 같은 만큼씩 느려진다';
+  }
+  return '빠르기가 달라도 두 상자에 걸린 마찰은 같고, 두 상자는 같은 만큼씩 느려진다';
+}
+
+function syncState(t) {
+  const tc = (t + OFFSET) % CYCLE;
+  state.tc = tc;
+  lanes.forEach((lane, i) => {
+    const s = laneAt(lane, tc);
+    state.lanes[i].x = s.x;
+    state.lanes[i].v = s.v;
+    state.lanes[i].stopped = s.stopped;
+  });
+}
+
+PieceKit.loop({
+  step(dt, t) {
+    syncState(t);
+  },
+  draw(t) {
+    // 첫 프레임은 step 보다 draw 가 먼저 올 수 있다 — 상태가 t 의 함수이므로 여기서도 맞춘다
+    syncState(t);
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, W, H);
+
+    PieceKit.mark('바닥', () => {
+      lanes.forEach((lane) => {
+        ctx.strokeStyle = COLOR.floor;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(8, lane.floorY);
+        ctx.lineTo(W - 8, lane.floorY);
+        ctx.stroke();
+        ctx.fillStyle = COLOR.soft;
+        ctx.font = '13px system-ui, sans-serif';
+        ctx.textBaseline = 'alphabetic';
+        ctx.textAlign = 'left';
+        ctx.fillText(lane.name, 12, lane.floorY - 70);
+      });
+    });
+
+    PieceKit.mark('자리 눈금', () => {
+      lanes.forEach((lane) => {
+        const tStop = lane.v0 / DECEL;
+        ctx.strokeStyle = COLOR.tick;
+        ctx.lineWidth = 2;
+        for (let k = 0; k * TICK_EVERY <= Math.min(state.tc, tStop) + 1e-9; k++) {
+          const x = START_X + laneAt(lane, k * TICK_EVERY).x * PX_PER_M;
+          ctx.beginPath();
+          ctx.moveTo(x, lane.floorY + 3);
+          ctx.lineTo(x, lane.floorY + 15);
+          ctx.stroke();
+        }
+      });
+    });
+
+    PieceKit.mark('상자', () => {
+      lanes.forEach((lane, i) => {
+        const front = START_X + state.lanes[i].x * PX_PER_M;
+        ctx.fillStyle = COLOR.boxFill;
+        ctx.strokeStyle = COLOR.boxLine;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.rect(front - BOX_W, lane.floorY - BOX_H, BOX_W, BOX_H);
+        ctx.fill();
+        ctx.stroke();
+      });
+    });
+
+    PieceKit.mark('속도 화살표', () => {
+      lanes.forEach((lane, i) => {
+        const s = state.lanes[i];
+        if (s.stopped || s.v <= 0) return;
+        const front = START_X + s.x * PX_PER_M;
+        const x1 = front - BOX_W / 2;
+        const y = lane.floorY - BOX_H - 14;
+        const len = s.v * V_PX_PER_MPS;
+        arrow(x1, y, x1 + len, COLOR.ink, 2.5);
+        ctx.fillStyle = COLOR.ink;
+        ctx.font = '12px system-ui, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('속도', x1 - 2, y - 8);
+      });
+    });
+
+    PieceKit.mark('마찰 화살표', () => {
+      lanes.forEach((lane, i) => {
+        const s = state.lanes[i];
+        if (s.stopped) return;
+        const back = START_X + s.x * PX_PER_M - BOX_W;
+        const y = lane.floorY - 9;
+        arrow(back, y, back - FRICTION_PX, COLOR.friction, 3);
+        ctx.fillStyle = COLOR.friction;
+        ctx.font = '12px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('마찰', back - FRICTION_PX / 2, y - 9);
+      });
+    });
+
+    PieceKit.mark('캡션', () => {
+      ctx.fillStyle = COLOR.ink;
+      ctx.font = '15px system-ui, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillText(captionText(), 12, 256);
+    });
+  },
+});
+</script>
+</body>
+</html>

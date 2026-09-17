@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>영률</title>
+<style>
+  html, body { margin: 0; background: #fbfaf7; }
+  .piece { max-width: 860px; margin: 0 auto; font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; color: #2b2b2b; }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { margin: 6px 12px 0; font-size: 15px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <p class="caption" id="caption">같은 추를 걸면 강철선의 눈금은 선의 길이와 상관없이 같은 높이까지 내려오고, 알루미늄선의 눈금은 그보다 더 내려온다.</p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// ── 물리 값 (화면의 숫자는 모두 여기서 나온다) ──
+const G = 9.8;                 // 중력 가속도 m/s²
+const MASS = 5;                // 추 질량 kg
+const DIAMETER_MM = 1.0;       // 선 지름 mm
+const AREA = Math.PI * Math.pow(DIAMETER_MM / 2 / 1000, 2); // 단면적 m²
+const MARK_M = 0.25;           // 눈금 간격 m
+
+const WIRES = [
+  { name: '강철', lengthM: 1, E: 200e9, ink: '#4a5563' },
+  { name: '강철', lengthM: 2, E: 200e9, ink: '#4a5563' },
+  { name: '알루미늄', lengthM: 1, E: 70e9, ink: '#9a8f7e' },
+];
+
+// ── 화면 배율 ──
+const W = 860, H = 430;
+const FLOOR_Y = H - 28;         // 받침대 기둥이 멈추는 높이 (그 아래는 배율 안내 자리)
+const CEIL_Y = 44;
+const PX_PER_M = 110;          // 선 길이 배율
+const PX_PER_MM_STRETCH = 80;  // 늘어난 길이 배율 (실제 배율보다 크게 부풀림)
+const EXAGGERATION = PX_PER_MM_STRETCH / (PX_PER_M / 1000);
+const WIRE_X = [170, 430, 690];
+const ACCENT = '#d9622b';      // 강조색: 긴 강철선 눈금의 지금 높이, 이 뜻 하나에만 쓴다
+
+// ── 캔버스 ──
+const canvas = document.getElementById('c');
+const dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+canvas.width = W * dpr; canvas.height = H * dpr;
+const ctx = canvas.getContext('2d');
+ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+// ── 상태 ──
+// 받침대가 내려가는 정도 u: 0.2 에서 1.3 사이를 오간다.
+// 선이 받는 힘의 몫 f = min(u, 1). u > 1 이면 추가 온전히 매달리고 받침대는 추에서 떨어진다.
+const PERIOD = 8;
+const T_OFFSET = 1.5; // 도착했을 때 이미 받침대가 내려가는 중
+const U_LOW = 0.2, U_HIGH = 1.3;
+function smooth(x) { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); }
+function platformU(t) {
+  const p = ((t + T_OFFSET) % PERIOD + PERIOD) % PERIOD;
+  let s;
+  if (p < 3) s = smooth(p / 3);
+  else if (p < 5) s = 1;
+  else if (p < 7) s = 1 - smooth((p - 5) / 2);
+  else s = 0;
+  return U_LOW + (U_HIGH - U_LOW) * s;
+}
+
+let u = platformU(0);
+
+function stretchMM(wire, frac, lengthM) {
+  const stress = frac * MASS * G / AREA;
+  return (stress / wire.E) * lengthM * 1000;
+}
+function yAt(wire, frac, lengthM) {
+  return CEIL_Y + lengthM * PX_PER_M + stretchMM(wire, frac, lengthM) * PX_PER_MM_STRETCH;
+}
+
+PieceKit.loop({
+  step(dt, t) {
+    u = platformU(t + dt);
+  },
+  draw(t) {
+    u = platformU(t);
+    const f = Math.min(u, 1);
+    const gapPx = Math.max(0, u - 1) * 60;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fbfaf7';
+    ctx.fillRect(0, 0, W, H);
+
+    PieceKit.mark('천장', () => {
+      ctx.fillStyle = '#cfcac0';
+      ctx.fillRect(40, CEIL_Y - 12, W - 80, 12);
+      ctx.strokeStyle = '#b3ada2';
+      ctx.lineWidth = 1;
+      for (let x = 44; x < W - 44; x += 14) {
+        ctx.beginPath(); ctx.moveTo(x, CEIL_Y - 12); ctx.lineTo(x + 10, CEIL_Y - 22); ctx.stroke();
+      }
+    });
+
+    PieceKit.mark('선 이름', () => {
+      ctx.font = '14px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#2b2b2b';
+      WIRES.forEach((w, i) => {
+        ctx.fillText(`${w.name} ${w.lengthM} m`, WIRE_X[i], CEIL_Y - 28);
+      });
+    });
+
+    // 긴 강철선의 눈금 높이를 가로로 끌어 온다 — 다른 선의 눈금이 그 높이에 오는지 본다.
+    PieceKit.mark('긴 강철선 눈금 높이', () => {
+      const ref = WIRES[1];
+      ctx.strokeStyle = ACCENT;
+      ctx.globalAlpha = 0.85;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 5]);
+      const n = Math.round(ref.lengthM / MARK_M);
+      for (let k = 1; k <= n; k++) {
+        const y = Math.round(yAt(ref, f, k * MARK_M)) + 0.5;
+        ctx.beginPath(); ctx.moveTo(60, y); ctx.lineTo(W - 60, y); ctx.stroke();
+      }
+      ctx.setLineDash([]);
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('늘어나기 전 눈금 자리', () => {
+      ctx.strokeStyle = '#c9c4ba';
+      ctx.lineWidth = 2;
+      WIRES.forEach((w, i) => {
+        const n = Math.round(w.lengthM / MARK_M);
+        for (let k = 1; k <= n; k++) {
+          const y = CEIL_Y + k * MARK_M * PX_PER_M;
+          ctx.beginPath(); ctx.moveTo(WIRE_X[i] - 34, y); ctx.lineTo(WIRE_X[i] - 22, y); ctx.stroke();
+        }
+      });
+    });
+
+    PieceKit.mark('선', () => {
+      WIRES.forEach((w, i) => {
+        ctx.strokeStyle = w.ink;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(WIRE_X[i], CEIL_Y);
+        ctx.lineTo(WIRE_X[i], yAt(w, f, w.lengthM));
+        ctx.stroke();
+      });
+    });
+
+    PieceKit.mark('선의 눈금', () => {
+      WIRES.forEach((w, i) => {
+        ctx.strokeStyle = w.ink;
+        ctx.lineWidth = 3;
+        const n = Math.round(w.lengthM / MARK_M);
+        for (let k = 1; k <= n; k++) {
+          const y = yAt(w, f, k * MARK_M);
+          ctx.beginPath(); ctx.moveTo(WIRE_X[i] - 9, y); ctx.lineTo(WIRE_X[i] + 9, y); ctx.stroke();
+        }
+      });
+    });
+
+    PieceKit.mark('추', () => {
+      WIRES.forEach((w, i) => {
+        const top = yAt(w, f, w.lengthM);
+        const x = WIRE_X[i];
+        ctx.fillStyle = '#6b6258';
+        ctx.fillRect(x - 20, top + 4, 40, 32);
+        ctx.strokeStyle = '#6b6258';
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(x, top); ctx.lineTo(x, top + 4); ctx.stroke();
+        ctx.fillStyle = '#fbfaf7';
+        ctx.font = '12px -apple-system, "Apple SD Gothic Neo", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(`${MASS} kg`, x, top + 25);
+      });
+    });
+
+    PieceKit.mark('받침대', () => {
+      WIRES.forEach((w, i) => {
+        const y = yAt(w, f, w.lengthM) + 36 + gapPx;
+        const x = WIRE_X[i];
+        ctx.fillStyle = '#ddd7cc';
+        ctx.fillRect(x - 30, y, 60, 8);
+        ctx.fillRect(x - 3, y + 8, 6, Math.max(0, FLOOR_Y - y - 8));
+        ctx.fillRect(x - 22, FLOOR_Y - 4, 44, 4);
+      });
+    });
+
+    PieceKit.mark('늘어난 길이', () => {
+      ctx.font = '13px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#2b2b2b';
+      WIRES.forEach((w, i) => {
+        const y = yAt(w, f, w.lengthM) + 24;
+        ctx.fillText(`늘어남 ${stretchMM(w, f, w.lengthM).toFixed(2)} mm`, WIRE_X[i] + 30, y);
+      });
+    });
+
+    PieceKit.mark('배율 안내', () => {
+      ctx.font = '12px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#8a857c';
+      ctx.fillText(`늘어난 길이는 약 ${Math.round(EXAGGERATION / 10) * 10}배로 키워 그림 · 선 지름 ${DIAMETER_MM.toFixed(1)} mm · 눈금 ${MARK_M * 100} cm 마다`, W - 44, H - 10);
+    });
+  },
+});
+</script>
+</body>
+</html>

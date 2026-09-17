@@ -1,0 +1,42 @@
+{
+  "rows": [
+    {
+      "element": "흘러가는 바깥 풍경",
+      "vocab": "body (custom 삼각형 · opacity) 반복",
+      "status": "있음"
+    },
+    {
+      "element": "기둥 · 팔 · 줄",
+      "vocab": "trajectory + trajectory (closed 타원 표본)",
+      "status": "있음"
+    },
+    {
+      "element": "두 힘의 합 점선",
+      "vocab": "trajectory (dashed · opacity)",
+      "status": "있음"
+    },
+    {
+      "element": "중력 · 관성력",
+      "vocab": "vector (관성력만 accent · 같은 배율)",
+      "status": "있음"
+    },
+    {
+      "element": "추 · 이름표",
+      "vocab": "body (circle) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "오른쪽 추 질량",
+      "vocab": "slider (range [1,3] · step 1 · digits 0)",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (text)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "회전 틀에서의 추 평형각 — sim"
+  ]
+}

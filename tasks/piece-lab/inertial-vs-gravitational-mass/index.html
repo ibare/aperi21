@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>관성 질량과 중력 질량</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #2b2a27;
+    --muted: #8a867d;
+    --line: #b9b4a9;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 8px 0; }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { min-height: 2.6em; margin: 6px 16px 0; font-size: 15px; line-height: 1.5; }
+  .controls { display: flex; gap: 8px; margin: 6px 16px 0; align-items: center; font-size: 13px; color: var(--muted); }
+  .controls button { font: inherit; color: var(--ink); background: transparent; border: 1px solid var(--line);
+    border-radius: 999px; padding: 3px 12px; cursor: pointer; }
+  .controls button[aria-pressed="true"] { border-color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c" width="860" height="260"></canvas>
+  <div class="caption" id="caption"></div>
+  <div class="controls" id="controls"><span>올려 볼 물체</span></div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  // 화면 치수 (CSS 픽셀 기준 좌표계)
+  const W = 860, H = 260;
+  const canvas = document.getElementById('c');
+  const dpr = Math.max(1, window.devicePixelRatio || 1);
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  const captionEl = document.getElementById('caption');
+
+  // 물체들 — mass 는 두 정의가 공유하는 하나의 값 (단위: 추 한 개)
+  // 크기와 질량을 일부러 엇갈리게 둔다 (크다고 무겁지 않다).
+  const OBJECTS = [
+    { key: 'stone', name: '돌',     mass: 3, w: 46, h: 36, fill: '#9c8f7a', round: 12 },
+    { key: 'iron',  name: '쇠공',   mass: 4, w: 30, h: 30, fill: '#55606b', round: 15 },
+    { key: 'wood',  name: '나무토막', mass: 2, w: 64, h: 40, fill: '#c9a46a', round: 4 },
+  ];
+  const DEFAULT_OBJ = 0;
+
+  // 시간 구성
+  const HOLD = 0.8;        // 추를 올리고 잡아 둔 시간
+  const RUN = 3.4;         // 놓은 뒤 지켜보는 시간 (추가 모자랄 때)
+  const RUN_MATCH = 5.2;   // 개수가 맞았을 때 더 오래 보여 준다
+  const START_OFFSET = 0.5; // 도착한 순간 이미 진행 중이도록
+
+  // 물리 상수
+  const G_TORQUE = 2.0;    // 저울 각가속도 계수
+  const BEAM_INERTIA = 0.5;
+  const BEAM_DAMP = 3.0;
+  const THETA_MAX = 0.2;   // 받침대 멈춤 각
+  const IMPULSE = 48;      // 용수철이 양쪽에 주는 충격량 (px·추/s)
+
+  // 저울 배치
+  const PIVOT = { x: 210, y: 92 };
+  const ARM = 140, STRING = 58;
+  const BASE_Y = 238;
+  // 얼음 배치
+  const ICE_Y = 196, ICE_X0 = 450, ICE_X1 = 855, ICE_MID = 650, GAP = 24;
+  const WB = { w: 22, h: 14 }; // 추 한 개
+
+  const state = {
+    obj: DEFAULT_OBJ,
+    pending: null,
+    clock: START_OFFSET,
+    trial: -1,
+    theta: 0, omega: 0,
+    objX: 0, wX: 0, // 얼음 위 변위 (px)
+  };
+
+  function schedule(mass) {
+    const list = []; let t0 = 0;
+    for (let n = 1; n <= mass; n++) {
+      const run = n === mass ? RUN_MATCH : RUN;
+      list.push({ n, start: t0, release: t0 + HOLD, end: t0 + HOLD + run });
+      t0 += HOLD + run;
+    }
+    return { list, total: t0 };
+  }
+
+  function currentTrial() {
+    const o = OBJECTS[state.obj];
+    const s = schedule(o.mass);
+    const local = state.clock % s.total;
+    for (let i = 0; i < s.list.length; i++) {
+      if (local < s.list[i].end) return { idx: i, tr: s.list[i], local, mass: o.mass };
+    }
+    const last = s.list.length - 1;
+    return { idx: last, tr: s.list[last], local, mass: o.mass };
+  }
+
+  // 물체 고르기 (찍는 중에는 자동 진행 그대로)
+  const controls = document.getElementById('controls');
+  const buttons = OBJECTS.map((o, i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.textContent = o.name;
+    b.setAttribute('aria-pressed', String(i === state.obj));
+    b.addEventListener('click', () => { if (!PieceKit.frozen) state.pending = i; });
+    controls.appendChild(b);
+    return b;
+  });
+
+  PieceKit.loop({
+    step(dt) {
+      if (state.pending !== null && !PieceKit.frozen) {
+        state.obj = state.pending; state.pending = null;
+        state.clock = START_OFFSET; state.trial = -1;
+        buttons.forEach((b, i) => b.setAttribute('aria-pressed', String(i === state.obj)));
+      }
+      state.clock += dt;
+      const { idx, tr, local, mass } = currentTrial();
+      if (idx !== state.trial) {
+        state.trial = idx;
+        state.theta = 0; state.omega = 0; state.objX = 0; state.wX = 0;
+      }
+      if (local >= tr.release) {
+        const n = tr.n;
+        // 저울: 물체 쪽 알짜 돌림힘은 (중력 질량 - 추) 에 비례, 버팀은 전체 질량
+        const alpha = G_TORQUE * (mass - n) / (mass + n + BEAM_INERTIA) - BEAM_DAMP * state.omega;
+        state.omega += alpha * dt;
+        state.theta += state.omega * dt;
+        if (state.theta > THETA_MAX) { state.theta = THETA_MAX; state.omega = 0; }
+        if (state.theta < -THETA_MAX) { state.theta = -THETA_MAX; state.omega = 0; }
+        // 얼음: 같은 충격량을 양쪽이 나눠 받는다 — 속력은 관성 질량에 반비례
+        state.objX -= (IMPULSE / mass) * dt;
+        state.wX += (IMPULSE / n) * dt;
+      }
+    },
+    draw() {
+      const { tr, local, mass } = currentTrial();
+      const o = OBJECTS[state.obj];
+      const n = tr.n;
+      const released = local >= tr.release;
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+
+      PieceKit.mark('칸 이름', () => {
+        ctx.fillStyle = '#8a867d';
+        ctx.font = '13px -apple-system, "Apple SD Gothic Neo", sans-serif';
+        ctx.textBaseline = 'top';
+        ctx.fillText('저울 — 끌리는 세기로 비교', 16, 10);
+        ctx.fillText('얼음 위 — 밀리기 어려움으로 비교', ICE_X0, 10);
+      });
+
+      // ---------------- 저울 ----------------
+      const c = Math.cos(state.theta), s = Math.sin(state.theta);
+      const left = { x: PIVOT.x - ARM * c, y: PIVOT.y + ARM * s };
+      const right = { x: PIVOT.x + ARM * c, y: PIVOT.y - ARM * s };
+      const panL = { x: left.x, y: left.y + STRING };
+      const panR = { x: right.x, y: right.y + STRING };
+
+      PieceKit.mark('저울 기둥', () => {
+        ctx.strokeStyle = '#6f6a60'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(PIVOT.x, PIVOT.y); ctx.lineTo(PIVOT.x, BASE_Y); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(PIVOT.x - 50, BASE_Y); ctx.lineTo(PIVOT.x + 50, BASE_Y); ctx.stroke();
+      });
+
+      PieceKit.mark('수평 기준선', () => {
+        ctx.strokeStyle = '#d6d1c6'; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+        ctx.beginPath(); ctx.moveTo(PIVOT.x - ARM - 30, PIVOT.y); ctx.lineTo(PIVOT.x + ARM + 30, PIVOT.y); ctx.stroke();
+        ctx.setLineDash([]);
+      });
+
+      PieceKit.mark('받침대', () => {
+        if (released) return;
+        ctx.fillStyle = '#d6d1c6';
+        const top = PIVOT.y + STRING + 4;
+        ctx.fillRect(left.x - 10, top, 20, BASE_Y - top);
+        ctx.fillRect(right.x - 10, top, 20, BASE_Y - top);
+      });
+
+      PieceKit.mark('저울대와 접시', () => {
+        ctx.strokeStyle = '#4a463f'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(left.x, left.y); ctx.lineTo(right.x, right.y); ctx.stroke();
+        ctx.fillStyle = '#4a463f';
+        ctx.beginPath(); ctx.arc(PIVOT.x, PIVOT.y, 5, 0, Math.PI * 2); ctx.fill();
+        ctx.lineWidth = 1;
+        for (const [end, pan] of [[left, panL], [right, panR]]) {
+          ctx.beginPath(); ctx.moveTo(end.x, end.y); ctx.lineTo(pan.x - 32, pan.y);
+          ctx.moveTo(end.x, end.y); ctx.lineTo(pan.x + 32, pan.y); ctx.stroke();
+          ctx.lineWidth = 3;
+          ctx.beginPath(); ctx.moveTo(pan.x - 36, pan.y); ctx.lineTo(pan.x + 36, pan.y); ctx.stroke();
+          ctx.lineWidth = 1;
+        }
+      });
+
+      PieceKit.mark('저울 위 물체', () => { drawObject(o, panL.x - o.w / 2, panL.y - 2 - o.h); });
+      PieceKit.mark('저울 위 추', () => { drawWeights(n, panR.x - WB.w / 2, panR.y - 2); });
+
+      // ---------------- 얼음 ----------------
+      PieceKit.mark('얼음판', () => {
+        ctx.fillStyle = '#e6eef2';
+        ctx.fillRect(ICE_X0, ICE_Y, ICE_X1 - ICE_X0, 10);
+        ctx.strokeStyle = '#a9bcc6'; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(ICE_X0, ICE_Y); ctx.lineTo(ICE_X1, ICE_Y); ctx.stroke();
+      });
+
+      PieceKit.mark('놓은 자리', () => {
+        ctx.strokeStyle = '#8a867d'; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(ICE_MID, ICE_Y + 2); ctx.lineTo(ICE_MID, ICE_Y + 18); ctx.stroke();
+      });
+
+      const objRight = ICE_MID - GAP / 2 + state.objX;
+      const wLeft = ICE_MID + GAP / 2 + state.wX;
+
+      PieceKit.mark('용수철', () => {
+        // 놓기 전에만 둘 사이에 눌린 채로 있다 (질량은 무시)
+        if (released) return;
+        const y = ICE_Y - 10, x0 = objRight, x1 = wLeft, coils = 5;
+        ctx.strokeStyle = '#6f6a60'; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(x0, y);
+        for (let i = 1; i <= coils * 2; i++) {
+          const x = x0 + (x1 - x0) * (i / (coils * 2));
+          ctx.lineTo(x, y + (i % 2 ? -6 : 6));
+        }
+        ctx.lineTo(x1, y); ctx.stroke();
+      });
+
+      PieceKit.mark('얼음 위 물체', () => { drawObject(o, objRight - o.w, ICE_Y - o.h); });
+      PieceKit.mark('얼음 위 추', () => { drawWeights(n, wLeft, ICE_Y); });
+
+      PieceKit.mark('캡션', () => {
+        let text;
+        if (!released) {
+          text = `추 ${n}개를 올렸다. 저울의 받침과 얼음 위 용수철을 한꺼번에 놓는다.`;
+        } else if (n < mass) {
+          text = `추 ${n}개: 저울은 ${o.name} 쪽으로 기울고, 얼음 위에서는 추가 ${o.name}보다 멀리 밀려난다.`;
+        } else {
+          text = `추 ${n}개: 저울이 수평을 지키는 바로 그 개수에서, 얼음 위의 둘도 똑같이 밀려난다.`;
+        }
+        if (captionEl.textContent !== text) captionEl.textContent = text;
+      });
+    },
+  });
+
+  function drawObject(o, x, y) {
+    ctx.fillStyle = o.fill;
+    ctx.beginPath();
+    roundRect(x, y, o.w, o.h, o.round);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(0,0,0,0.25)'; ctx.lineWidth = 1; ctx.stroke();
+  }
+
+  // 추 n개를 (x, 바닥 y) 에서 위로 쌓는다
+  function drawWeights(n, x, bottomY) {
+    for (let i = 0; i < n; i++) {
+      const y = bottomY - (i + 1) * WB.h;
+      ctx.fillStyle = '#b8bcc0';
+      ctx.fillRect(x, y, WB.w, WB.h - 1);
+      ctx.strokeStyle = '#7d8286'; ctx.lineWidth = 1;
+      ctx.strokeRect(x + 0.5, y + 0.5, WB.w - 1, WB.h - 2);
+    }
+  }
+
+  function roundRect(x, y, w, h, r) {
+    r = Math.min(r, w / 2, h / 2);
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+})();
+</script>
+</body>
+</html>

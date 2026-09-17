@@ -238,12 +238,16 @@
         {
           "id": "inertial-vs-gravitational-mass",
           "name": "관성 질량과 중력 질량",
-          "desc": "서로 다른 정의가 같은 값을 주는 것"
+          "desc": "서로 다른 정의가 같은 값을 주는 것",
+          "simId": "aperi21:inertial-vs-gravitational-mass",
+          "labUrl": "piece-lab/inertial-vs-gravitational-mass/index.html"
         },
         {
           "id": "normal-force",
           "name": "수직항력",
-          "desc": "접촉면이 수직으로 미는 힘"
+          "desc": "접촉면이 수직으로 미는 힘",
+          "simId": "aperi21:normal-force",
+          "labUrl": "piece-lab/normal-force/index.html"
         },
         {
           "id": "apparent-weight",
@@ -262,12 +266,16 @@
         {
           "id": "kinetic-friction",
           "name": "운동 마찰력",
-          "desc": "미끄러지는 동안의 마찰"
+          "desc": "미끄러지는 동안의 마찰",
+          "simId": "aperi21:kinetic-friction",
+          "labUrl": "piece-lab/kinetic-friction/index.html"
         },
         {
           "id": "angle-of-friction",
           "name": "마찰각",
-          "desc": "미끄러지기 시작하는 경사"
+          "desc": "미끄러지기 시작하는 경사",
+          "simId": "aperi21:angle-of-friction",
+          "labUrl": "piece-lab/angle-of-friction/index.html"
         },
         {
           "id": "inclined-plane",
@@ -279,7 +287,9 @@
         {
           "id": "tension",
           "name": "장력",
-          "desc": "줄이 당기는 힘과 그 전달"
+          "desc": "줄이 당기는 힘과 그 전달",
+          "simId": "aperi21:tension",
+          "labUrl": "piece-lab/tension/index.html"
         },
         {
           "id": "pulley-system",
@@ -291,7 +301,9 @@
         {
           "id": "connected-bodies",
           "name": "연결된 물체",
-          "desc": "함께 움직이는 계의 가속도"
+          "desc": "함께 움직이는 계의 가속도",
+          "simId": "aperi21:connected-bodies",
+          "labUrl": "piece-lab/connected-bodies/index.html"
         },
         {
           "id": "spring-force",
@@ -310,7 +322,9 @@
         {
           "id": "conical-pendulum",
           "name": "원뿔 진자",
-          "desc": "장력과 중력이 만드는 원운동"
+          "desc": "장력과 중력이 만드는 원운동",
+          "simId": "aperi21:conical-pendulum",
+          "labUrl": "piece-lab/conical-pendulum/index.html"
         },
         {
           "id": "banked-curve",
@@ -336,7 +350,9 @@
         {
           "id": "buoyant-force-as-force",
           "name": "부력(힘으로서)",
-          "desc": "유체가 위로 미는 힘"
+          "desc": "유체가 위로 미는 힘",
+          "simId": "aperi21:buoyant-force-as-force",
+          "labUrl": "piece-lab/buoyant-force-as-force/index.html"
         },
         {
           "id": "non-inertial-frame",
@@ -348,7 +364,9 @@
         {
           "id": "fictitious-force",
           "name": "관성력",
-          "desc": "비관성계에서 도입하는 겉보기 힘"
+          "desc": "비관성계에서 도입하는 겉보기 힘",
+          "simId": "aperi21:fictitious-force",
+          "labUrl": "piece-lab/fictitious-force/index.html"
         },
         {
           "id": "coriolis-effect",
@@ -367,7 +385,9 @@
         {
           "id": "equilibrium-of-forces",
           "name": "힘의 평형",
-          "desc": "알짜힘이 0인 상태"
+          "desc": "알짜힘이 0인 상태",
+          "simId": "aperi21:equilibrium-of-forces",
+          "labUrl": "piece-lab/equilibrium-of-forces/index.html"
         },
         {
           "id": "atwood-machine",
@@ -393,7 +413,9 @@
         {
           "id": "youngs-modulus",
           "name": "영률",
-          "desc": "재료가 늘어나는 정도를 정하는 값"
+          "desc": "재료가 늘어나는 정도를 정하는 값",
+          "simId": "aperi21:youngs-modulus",
+          "labUrl": "piece-lab/youngs-modulus/index.html"
         },
         {
           "id": "stress-strain-curve",
@@ -2397,7 +2419,7 @@
   ],
   "summary": {
     "topics": 442,
-    "implemented": 64,
-    "labs": 51
+    "implemented": 75,
+    "labs": 62
   }
 }

@@ -1,0 +1,27 @@
+{
+  "rows": [
+    {
+      "element": "바닥 · 같은 시각 눈금",
+      "vocab": "trajectory + trace (tick)",
+      "status": "있음"
+    },
+    {
+      "element": "끈 · 물체",
+      "vocab": "trajectory + body (rect) + readout (질량)",
+      "status": "있음"
+    },
+    {
+      "element": "당기는 힘",
+      "vocab": "vector (accent · label)",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (text)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "세 줄의 등가속 닫힌 식 — sim"
+  ]
+}
