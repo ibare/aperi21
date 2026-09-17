@@ -276,6 +276,7 @@ topics:
     level: lower
     curricula: [kr, ib, ngss, ap, uk]
     visualNote: 힘을 키우면 가속도가 비례로 커진다
+    sim: aperi21:newtons-second-law
   - id: newtons-third-law
     name: 작용 반작용
     desc: 힘의 쌍과 서로 다른 작용점
@@ -283,6 +284,7 @@ topics:
     level: lower
     curricula: [kr, ib, ngss, ap, uk]
     visualNote: 두 힘이 서로 다른 물체에 걸린다
+    sim: aperi21:newtons-third-law
   - id: net-force
     name: 알짜힘
     desc: 여러 힘의 벡터 합
@@ -290,6 +292,7 @@ topics:
     level: primary
     curricula: [kr, ib, ngss, ap, uk]
     visualNote: 화살표를 모으면 남는 하나가 운동을 정한다
+    sim: aperi21:net-force
   - id: free-body-diagram
     name: 자유물체도
     desc: 한 물체에 작용하는 힘만 분리하기
@@ -318,6 +321,7 @@ topics:
     level: null
     curricula: []
     visualNote: 엘리베이터가 오르내리면 저울 눈금이 달라진다
+    sim: aperi21:apparent-weight
   - id: static-friction
     name: 정지 마찰력
     desc: 움직이기 전까지 버티는 힘
@@ -325,6 +329,7 @@ topics:
     level: lower
     curricula: [kr, ib, ap]
     visualNote: 당기는 힘을 키워도 어느 문턱까지는 버틴다
+    sim: aperi21:static-friction
   - id: kinetic-friction
     name: 운동 마찰력
     desc: 미끄러지는 동안의 마찰
@@ -346,6 +351,7 @@ topics:
     level: primary
     curricula: [kr, ap]
     visualNote: 각을 키우면 면에 나란한 성분이 커진다
+    sim: aperi21:inclined-plane
   - id: tension
     name: 장력
     desc: 줄이 당기는 힘과 그 전달
@@ -381,6 +387,7 @@ topics:
     level: upper
     curricula: [kr, ib, ap, uk]
     visualNote: 줄을 놓으면 원 밖이 아니라 접선으로 날아간다
+    sim: aperi21:centripetal-force
   - id: conical-pendulum
     name: 원뿔 진자
     desc: 장력과 중력이 만드는 원운동
@@ -437,6 +444,7 @@ topics:
     level: null
     curricula: []
     visualNote: 도는 원판 위에서 곧게 던진 공이 휘어 보인다
+    sim: aperi21:coriolis-effect
   - id: impulse-force-relation
     name: 힘과 충격량
     desc: 짧고 큰 힘과 길고 작은 힘
@@ -458,6 +466,7 @@ topics:
     level: upper
     curricula: [ap]
     visualNote: 두 추의 차이가 가속도를 정한다
+    sim: aperi21:atwood-machine
   - id: balance-scale
     name: 수평잡기
     desc: 양팔의 길이와 무게가 함께 정하는 균형
@@ -465,6 +474,7 @@ topics:
     level: primary
     curricula: [kr]
     visualNote: 팔 길이를 바꾸면 기울었다 균형이 잡힌다 — 균형이 깨지고 회복되는 것이 화면에서 일어난다
+    sim: aperi21:balance-scale
   - id: mechanical-advantage
     name: 힘의 이득
     desc: 지레와 빗면이 드는 힘을 줄이는 방식

@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>정지 마찰력</title>
+<style>
+  html, body { margin: 0; background: #fbfaf7; }
+  .piece { width: 820px; margin: 0 auto; font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  canvas { display: block; width: 820px; height: 190px; }
+  .caption { height: 28px; line-height: 28px; font-size: 15px; color: #3b3b3b; text-align: center; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <div class="caption" id="caption"></div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// 화면 크기
+const W = 820, H = 190;
+const canvas = document.getElementById('c');
+const dpr = window.devicePixelRatio || 1;
+canvas.width = W * dpr;
+canvas.height = H * dpr;
+const ctx = canvas.getContext('2d');
+ctx.scale(dpr, dpr);
+const captionEl = document.getElementById('caption');
+
+// 색 — 같은 대상은 같은 색, 강조색(주황)은 "버틸 수 있는 한계" 한 가지 뜻에만
+const INK = '#2b2b2b';       // 당기는 힘
+const FRICTION = '#3a6ea5';  // 마찰력
+const LIMIT = '#d9822b';     // 최대 정지 마찰력(문턱)
+const BOX = '#c9c3b6';
+const FLOOR = '#8a857c';
+
+// 장면 치수
+const FLOOR_Y = 130;
+const BOX_W = 90, BOX_H = 64;
+const BOX_X0 = 190;          // 상자 왼쪽 모서리의 처음 위치
+const PX_PER_FS = 180;       // 최대 정지 마찰력 하나 = 화살표 180px
+const KINETIC_RATIO = 0.7;   // 운동 마찰력 / 최대 정지 마찰력
+
+// 한 주기의 시간 구간 (초)
+const CYCLE = 10;
+const OFFSET = 1.5;          // 도착한 순간 이미 당기는 중이도록 주기 안쪽에서 시작
+const RAMP = 6;              // 0 → 문턱까지 당기는 힘이 커지는 시간
+const SLIDE_END = 9;         // 미끄러짐이 이어지는 끝
+const SLIDE_DIST = 250;      // 미끄러지는 3초 동안 가는 거리(px)
+const SLIDE_ACC = 2 * SLIDE_DIST / ((SLIDE_END - RAMP) ** 2);
+
+// 모든 상태는 t 의 함수 — ?t= 로 연 화면과 실시간 화면이 같다
+function stateAt(t) {
+  const p = ((t + OFFSET) % CYCLE + CYCLE) % CYCLE;
+  let pull, friction, x, moving;
+  if (p < RAMP) {
+    pull = p / RAMP;           // 최대 정지 마찰력 대비 비율
+    friction = pull;           // 정지 상태: 당기는 만큼 맞선다
+    x = 0;
+    moving = false;
+  } else {
+    const tau = Math.min(p, SLIDE_END) - RAMP;
+    pull = 1;                  // 문턱 값에서 그대로 유지
+    friction = KINETIC_RATIO;  // 움직이기 시작하면 마찰이 줄어든다
+    x = 0.5 * SLIDE_ACC * tau * tau;
+    moving = true;
+  }
+  // 주기 끝에서 흐려졌다가 처음 자리에서 다시 나타난다
+  let alpha = 1;
+  if (p > SLIDE_END) alpha = Math.max(0, 1 - (p - SLIDE_END) / 0.6);
+  if (p < 0.4) alpha = p / 0.4;
+  return { p, pull, friction, x, moving, alpha };
+}
+
+function arrow(x1, y, x2, color, width) {
+  const dir = Math.sign(x2 - x1) || 1;
+  const len = Math.abs(x2 - x1);
+  if (len < 1) return;
+  const head = Math.min(12, len);
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = width;
+  ctx.lineCap = 'butt';
+  ctx.beginPath();
+  ctx.moveTo(x1, y);
+  ctx.lineTo(x2 - dir * head, y);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x2, y);
+  ctx.lineTo(x2 - dir * head, y - 6);
+  ctx.lineTo(x2 - dir * head, y + 6);
+  ctx.closePath();
+  ctx.fill();
+}
+
+PieceKit.loop({
+  step(dt, t) { /* 상태는 t 에서 바로 계산하므로 쌓을 것이 없다 */ },
+  draw(t) {
+    const s = stateAt(t);
+    ctx.clearRect(0, 0, W, H);
+
+    PieceKit.mark('바닥', () => {
+      ctx.strokeStyle = FLOOR;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(20, FLOOR_Y);
+      ctx.lineTo(W - 20, FLOOR_Y);
+      ctx.stroke();
+      // 바닥면의 거친 결
+      ctx.lineWidth = 1;
+      for (let gx = 28; gx < W - 20; gx += 14) {
+        ctx.beginPath();
+        ctx.moveTo(gx, FLOOR_Y);
+        ctx.lineTo(gx - 7, FLOOR_Y + 7);
+        ctx.stroke();
+      }
+    });
+
+    ctx.globalAlpha = s.alpha;
+    const bx = BOX_X0 + s.x;
+    const bcx = bx + BOX_W / 2;
+
+    PieceKit.mark('상자', () => {
+      ctx.fillStyle = BOX;
+      ctx.strokeStyle = '#8d8676';
+      ctx.lineWidth = 1.5;
+      ctx.fillRect(bx, FLOOR_Y - BOX_H, BOX_W, BOX_H);
+      ctx.strokeRect(bx + 0.75, FLOOR_Y - BOX_H + 0.75, BOX_W - 1.5, BOX_H - 1.5);
+    });
+
+    // 마찰 화살표가 붙는 높이 — 바닥 결 아래
+    const FY = FLOOR_Y + 22;
+
+    PieceKit.mark('마찰 한계 표시', () => {
+      const tip = bcx - PX_PER_FS;
+      // 정지해 있는 동안 마찰이 한계에 가까워질수록 또렷해진다
+      const near = s.moving ? 0.55 : 0.35 + 0.65 * Math.pow(s.friction, 3);
+      ctx.save();
+      ctx.globalAlpha = s.alpha * near;
+      ctx.strokeStyle = LIMIT;
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(bcx, FY);
+      ctx.lineTo(tip, FY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(tip, FY - 11);
+      ctx.lineTo(tip, FY + 11);
+      ctx.stroke();
+      ctx.fillStyle = LIMIT;
+      ctx.font = '12px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText('버틸 수 있는 한계', Math.max(60, tip), FY + 15);
+      ctx.restore();
+    });
+
+    PieceKit.mark('마찰력 화살표', () => {
+      arrow(bcx, FY, bcx - s.friction * PX_PER_FS, FRICTION, 5);
+    });
+
+    PieceKit.mark('당기는 힘 화살표', () => {
+      const y = FLOOR_Y - BOX_H / 2;
+      arrow(bx + BOX_W, y, bx + BOX_W + s.pull * PX_PER_FS, INK, 5);
+    });
+
+    ctx.globalAlpha = 1;
+
+    PieceKit.mark('캡션', () => {
+      captionEl.textContent = s.moving
+        ? '한계를 넘는 순간 버티지 못하고 미끄러진다'
+        : '당기는 만큼 마찰도 똑같이 커지며 버틴다';
+      captionEl.style.opacity = String(s.alpha);
+    });
+  },
+});
+</script>
+</body>
+</html>

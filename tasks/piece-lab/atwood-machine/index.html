@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>애트우드 기계</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #2b2b2b;
+    --muted: #8a867e;
+    --heavy: #3d6fb6;
+    --light: #b9b3a8;
+    --rope: #5a5650;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 8px 0; }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { min-height: 1.5em; margin: 6px 16px 0; font-size: 15px; line-height: 1.5; }
+  .control { display: flex; align-items: center; gap: 10px; margin: 8px 16px 0;
+    font-size: 13px; color: var(--muted); }
+  .control input { flex: 0 1 220px; }
+  .control output { font-variant-numeric: tabular-nums; color: var(--ink); min-width: 4em; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c" width="860" height="360"></canvas>
+  <div class="caption" id="caption"></div>
+  <label class="control">
+    <span>오른쪽 기계의 두 추 차이</span>
+    <input id="diff" type="range" min="0" max="2" step="0.1" value="1">
+    <output id="diffout">1.0 kg</output>
+  </label>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+  // 물리 값
+  const G = 9.8;             // 중력 가속도 (m/s²)
+  const TOTAL = 5.0;         // 두 기계 모두 두 추 질량의 합 (kg)
+  const DIFF_LEFT = 0.5;     // 왼쪽 기계의 차이 (고정, kg)
+  const DIFF_DEFAULT = 1.0;  // 오른쪽 기계의 차이 기본값 (kg)
+  const DROP = 1.6;          // 무거운 추가 내려오는 거리 (m)
+  const HOLD = 1.8;          // 둘 다 닿은 뒤 멈춰 보여 주는 시간 (s)
+  const STROBE = 0.1;        // 자취 간격 (s)
+  const LEAD = 0.2;          // 첫 화면이 이미 움직이는 중이도록 앞당기는 시간 (s)
+
+  // 화면 배치
+  const W = 860, H = 360;
+  const PPM = 130;                         // 1 m 당 픽셀
+  const FLOOR_Y = 320;
+  const START_BOTTOM_Y = FLOOR_Y - DROP * PPM;
+  const PULLEY_Y = 40, PULLEY_R = 34;
+  const MACHINE_X = [250, 610];            // 두 도르래 중심
+  const BASE_SIDE = 46;                    // 3.0 kg 추의 한 변 (px)
+  const TRAIL_OFFSET = 44;                 // 무거운 추 왼쪽 자취열까지 거리 (px)
+
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  ctx.scale(dpr, dpr);
+
+  const css = getComputedStyle(document.documentElement);
+  const C = {
+    bg: css.getPropertyValue('--bg').trim(),
+    ink: css.getPropertyValue('--ink').trim(),
+    muted: css.getPropertyValue('--muted').trim(),
+    heavy: css.getPropertyValue('--heavy').trim(),
+    light: css.getPropertyValue('--light').trim(),
+    rope: css.getPropertyValue('--rope').trim(),
+  };
+  const FONT = '-apple-system, "Apple SD Gothic Neo", sans-serif';
+
+  const slider = document.getElementById('diff');
+  const out = document.getElementById('diffout');
+  const captionEl = document.getElementById('caption');
+
+  // 누적 상태: 조절기 값과 지금 주기가 시작된 시각
+  const state = { diff: DIFF_DEFAULT, cycleStart: -LEAD, lastT: 0 };
+
+  slider.addEventListener('input', () => {
+    if (PieceKit.frozen) return;
+    state.diff = Math.round(Number(slider.value) * 10) / 10;
+    out.textContent = state.diff.toFixed(1) + ' kg';
+    state.cycleStart = state.lastT; // 두 기계를 모두 출발 높이부터 다시 놓는다
+  });
+
+  function diffRight() { return PieceKit.frozen ? DIFF_DEFAULT : state.diff; }
+  function masses(diff) { return { heavy: (TOTAL + diff) / 2, light: (TOTAL - diff) / 2 }; }
+  function accel(diff) { return diff * G / TOTAL; }
+  function landTime(a) { return a > 0 ? Math.sqrt(2 * DROP / a) : Infinity; }
+  function fallen(a, tau) { return Math.min(DROP, 0.5 * a * tau * tau); }
+  function side(m) { return BASE_SIDE * Math.cbrt(m / 3.0); }
+
+  function drawBlock(cx, bottomY, m, color) {
+    const s = side(m);
+    ctx.fillStyle = color;
+    ctx.fillRect(cx - s / 2, bottomY - s, s, s);
+    ctx.fillStyle = color === C.light ? C.ink : '#ffffff';
+    ctx.font = '11px ' + FONT;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(m.toFixed(2), cx, bottomY - s / 2);
+  }
+
+  function drawTrail(x, a, tau, tLand, heavyMass) {
+    ctx.fillStyle = C.heavy;
+    ctx.globalAlpha = 0.45;
+    const half = side(heavyMass) / 2;
+    const until = a > 0 ? Math.min(tau, tLand) : 0;
+    for (let k = 0; k * STROBE <= until + 1e-9; k++) {
+      const y = START_BOTTOM_Y + fallen(a, k * STROBE) * PPM - half;
+      ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function drawPulley(cx, d) {
+    ctx.strokeStyle = C.rope; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, PULLEY_Y); ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx, PULLEY_Y, PULLEY_R, 0, Math.PI * 2);
+    ctx.fillStyle = C.bg; ctx.fill(); ctx.stroke();
+    // 줄이 움직인 만큼 도르래가 돈다 (무거운 쪽이 왼쪽이라 반시계)
+    const angle = -(d * PPM) / PULLEY_R;
+    ctx.beginPath();
+    ctx.moveTo(cx, PULLEY_Y);
+    ctx.lineTo(cx + Math.cos(angle) * PULLEY_R, PULLEY_Y + Math.sin(angle) * PULLEY_R);
+    ctx.stroke();
+    ctx.fillStyle = C.rope;
+    ctx.beginPath(); ctx.arc(cx, PULLEY_Y, 3, 0, Math.PI * 2); ctx.fill();
+  }
+
+  function drawRopes(cx, heavyBottom, lightBottom, m) {
+    ctx.strokeStyle = C.rope; ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(cx - PULLEY_R, PULLEY_Y); ctx.lineTo(cx - PULLEY_R, heavyBottom - side(m.heavy));
+    ctx.moveTo(cx + PULLEY_R, PULLEY_Y); ctx.lineTo(cx + PULLEY_R, lightBottom - side(m.light));
+    ctx.stroke();
+  }
+
+  PieceKit.loop({
+    step(dt, t) { state.lastT = t; },
+    draw(t) {
+      const dL = DIFF_LEFT, dR = diffRight();
+      const mL = masses(dL), mR = masses(dR);
+      const aL = accel(dL), aR = accel(dR);
+      const tL = landTime(aL), tR = landTime(aR);
+      const cycle = Math.max(tL, isFinite(tR) ? tR : 0) + HOLD;
+      const start = PieceKit.frozen ? -LEAD : state.cycleStart;
+      let tau = (t - start) % cycle;
+      if (tau < 0) tau += cycle;
+
+      const fallL = fallen(aL, tau), fallR = fallen(aR, tau);
+      const xL = MACHINE_X[0], xR = MACHINE_X[1];
+
+      ctx.clearRect(0, 0, W, H);
+
+      PieceKit.mark('바닥', () => {
+        ctx.strokeStyle = C.muted; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(60, FLOOR_Y + 0.5); ctx.lineTo(W - 60, FLOOR_Y + 0.5); ctx.stroke();
+      });
+
+      PieceKit.mark('차이 이름표', () => {
+        ctx.fillStyle = C.muted;
+        ctx.font = '13px ' + FONT;
+        ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        ctx.fillText('두 추의 차이 ' + dL.toFixed(1) + ' kg', xL, FLOOR_Y + 12);
+        ctx.fillText('두 추의 차이 ' + dR.toFixed(1) + ' kg', xR, FLOOR_Y + 12);
+      });
+
+      PieceKit.mark('출발 높이', () => {
+        ctx.strokeStyle = C.muted; ctx.globalAlpha = 0.5; ctx.lineWidth = 1;
+        ctx.setLineDash([4, 5]);
+        const yL = START_BOTTOM_Y - side(mL.heavy) / 2 + 0.5;
+        const yR = START_BOTTOM_Y - side(mR.heavy) / 2 + 0.5;
+        ctx.beginPath();
+        ctx.moveTo(xL - PULLEY_R - TRAIL_OFFSET - 16, yL); ctx.lineTo(xL - PULLEY_R + 30, yL);
+        ctx.moveTo(xR - PULLEY_R - TRAIL_OFFSET - 16, yR); ctx.lineTo(xR - PULLEY_R + 30, yR);
+        ctx.stroke();
+        ctx.setLineDash([]); ctx.globalAlpha = 1;
+      });
+
+      PieceKit.mark('0.1초 간격 자취(왼쪽 기계)', () => {
+        drawTrail(xL - PULLEY_R - TRAIL_OFFSET, aL, tau, tL, mL.heavy);
+      });
+
+      PieceKit.mark('0.1초 간격 자취(오른쪽 기계)', () => {
+        drawTrail(xR - PULLEY_R - TRAIL_OFFSET, aR, tau, tR, mR.heavy);
+      });
+
+      PieceKit.mark('줄', () => {
+        drawRopes(xL, START_BOTTOM_Y + fallL * PPM, FLOOR_Y - fallL * PPM, mL);
+        drawRopes(xR, START_BOTTOM_Y + fallR * PPM, FLOOR_Y - fallR * PPM, mR);
+      });
+
+      PieceKit.mark('도르래', () => {
+        drawPulley(xL, fallL);
+        drawPulley(xR, fallR);
+      });
+
+      PieceKit.mark('무거운 추', () => {
+        drawBlock(xL - PULLEY_R, START_BOTTOM_Y + fallL * PPM, mL.heavy, C.heavy);
+        drawBlock(xR - PULLEY_R, START_BOTTOM_Y + fallR * PPM, mR.heavy, C.heavy);
+      });
+
+      PieceKit.mark('가벼운 추', () => {
+        drawBlock(xL + PULLEY_R, FLOOR_Y - fallL * PPM, mL.light, C.light);
+        drawBlock(xR + PULLEY_R, FLOOR_Y - fallR * PPM, mR.light, C.light);
+      });
+
+      PieceKit.mark('캡션', () => {
+        const ratio = (dR / dL).toFixed(1);
+        let text;
+        if (aR === 0) {
+          text = '오른쪽 두 추의 차이가 0 — 합은 5 kg 그대로인데 추가 움직이지 않는다';
+        } else if (tau < Math.min(tL, tR)) {
+          text = dR === dL
+            ? '합도 차이도 같다 — 두 자취열의 점 간격이 똑같이 벌어진다'
+            : '합은 둘 다 5 kg, 차이는 ' + ratio + '배 — 오른쪽 점 간격이 왼쪽의 ' + ratio + '배로 벌어진다';
+        } else if (tau < Math.max(tL, tR)) {
+          text = (tR < tL ? '오른쪽' : '왼쪽') + ' 추가 먼저 닿았다 — ' +
+                 (tR < tL ? '왼쪽' : '오른쪽') + '은 같은 0.1초에 더 짧게 내려오는 중이다';
+        } else {
+          text = '1.6 m 를 내려오는 데 왼쪽 ' + tL.toFixed(2) + '초, 오른쪽 ' + tR.toFixed(2) + '초';
+        }
+        if (captionEl.textContent !== text) captionEl.textContent = text;
+      });
+    },
+  });
+</script>
+</body>
+</html>

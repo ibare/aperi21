@@ -248,6 +248,86 @@ export function registerAperi21Bundles(): void {
     return registerBundle('aperi21:uniform-circular-motion', m.uniformCircularMotionBundle, caps.capabilities);
   });
 
+  registerBundleLoader('aperi21:newtons-second-law', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-newtons-second-law'),
+      import('./capabilities/mechanics/newtons-second-law.generated.js'),
+    ]);
+    return registerBundle('aperi21:newtons-second-law', m.newtonsSecondLawBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:newtons-third-law', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-newtons-third-law'),
+      import('./capabilities/mechanics/newtons-third-law.generated.js'),
+    ]);
+    return registerBundle('aperi21:newtons-third-law', m.newtonsThirdLawBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:net-force', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-net-force'),
+      import('./capabilities/mechanics/net-force.generated.js'),
+    ]);
+    return registerBundle('aperi21:net-force', m.netForceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:static-friction', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-static-friction'),
+      import('./capabilities/mechanics/static-friction.generated.js'),
+    ]);
+    return registerBundle('aperi21:static-friction', m.staticFrictionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:inclined-plane', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-inclined-plane'),
+      import('./capabilities/mechanics/inclined-plane.generated.js'),
+    ]);
+    return registerBundle('aperi21:inclined-plane', m.inclinedPlaneBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:apparent-weight', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-apparent-weight'),
+      import('./capabilities/mechanics/apparent-weight.generated.js'),
+    ]);
+    return registerBundle('aperi21:apparent-weight', m.apparentWeightBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:atwood-machine', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-atwood-machine'),
+      import('./capabilities/mechanics/atwood-machine.generated.js'),
+    ]);
+    return registerBundle('aperi21:atwood-machine', m.atwoodMachineBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:centripetal-force', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-centripetal-force'),
+      import('./capabilities/mechanics/centripetal-force.generated.js'),
+    ]);
+    return registerBundle('aperi21:centripetal-force', m.centripetalForceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:coriolis-effect', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-coriolis-effect'),
+      import('./capabilities/mechanics/coriolis-effect.generated.js'),
+    ]);
+    return registerBundle('aperi21:coriolis-effect', m.coriolisEffectBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:balance-scale', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-balance-scale'),
+      import('./capabilities/mechanics/balance-scale.generated.js'),
+    ]);
+    return registerBundle('aperi21:balance-scale', m.balanceScaleBundle, caps.capabilities);
+  });
+
   registerBundleLoader('aperi21:uniform-motion', async () => {
     const [m, caps] = await Promise.all([
       import('@aperi21/sim-uniform-motion'),

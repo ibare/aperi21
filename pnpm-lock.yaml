@@ -153,18 +153,33 @@ importers:
       '@aperi21/sim-apparent-brightness':
         specifier: workspace:*
         version: link:../../sims/astro/apparent-brightness
+      '@aperi21/sim-apparent-weight':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/apparent-weight
+      '@aperi21/sim-atwood-machine':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/atwood-machine
       '@aperi21/sim-average-acceleration':
         specifier: workspace:*
         version: link:../../sims/kinematics/average-acceleration
       '@aperi21/sim-average-velocity':
         specifier: workspace:*
         version: link:../../sims/kinematics/average-velocity
+      '@aperi21/sim-balance-scale':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/balance-scale
       '@aperi21/sim-beats':
         specifier: workspace:*
         version: link:../../sims/waves/beats
+      '@aperi21/sim-centripetal-force':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/centripetal-force
       '@aperi21/sim-coordinate-choice':
         specifier: workspace:*
         version: link:../../sims/kinematics/coordinate-choice
+      '@aperi21/sim-coriolis-effect':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/coriolis-effect
       '@aperi21/sim-current-magnetic-field':
         specifier: workspace:*
         version: link:../../sims/em/current-magnetic-field
@@ -186,12 +201,24 @@ importers:
       '@aperi21/sim-heat-conduction':
         specifier: workspace:*
         version: link:../../sims/thermal/heat-conduction
+      '@aperi21/sim-inclined-plane':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/inclined-plane
       '@aperi21/sim-inertial-frame':
         specifier: workspace:*
         version: link:../../sims/mechanics/inertial-frame
       '@aperi21/sim-lenz-law':
         specifier: workspace:*
         version: link:../../sims/em/lenz-law
+      '@aperi21/sim-net-force':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/net-force
+      '@aperi21/sim-newtons-second-law':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/newtons-second-law
+      '@aperi21/sim-newtons-third-law':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/newtons-third-law
       '@aperi21/sim-pendulum-isochronism':
         specifier: workspace:*
         version: link:../../sims/oscillation/pendulum-isochronism
@@ -216,6 +243,9 @@ importers:
       '@aperi21/sim-river-crossing':
         specifier: workspace:*
         version: link:../../sims/kinematics/river-crossing
+      '@aperi21/sim-static-friction':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/static-friction
       '@aperi21/sim-stopping-distance':
         specifier: workspace:*
         version: link:../../sims/kinematics/stopping-distance
@@ -801,7 +831,88 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/apparent-weight:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/atwood-machine:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/balance-scale:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/centripetal-force:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/coriolis-effect:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/inclined-plane:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/mechanics/inertial-frame:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/net-force:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/newtons-second-law:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/newtons-third-law:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -815,6 +926,15 @@ importers:
       '@aperi21/plugin-mechanics':
         specifier: workspace:*
         version: link:../../../packages/plugin-mechanics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/static-friction:
+    devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../../../packages/schema

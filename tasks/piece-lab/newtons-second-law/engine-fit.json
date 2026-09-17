@@ -1,0 +1,42 @@
+{
+  "rows": [
+    {
+      "element": "줄 이름",
+      "vocab": "readout (world · font text · chip false)",
+      "status": "있음"
+    },
+    {
+      "element": "선로",
+      "vocab": "trajectory (2점 · width 1 · muted)",
+      "status": "있음"
+    },
+    {
+      "element": "1초 간격 잔상",
+      "vocab": "body (rect · fill none · outline role · opacity)",
+      "status": "있음",
+      "note": "지난 정수 초의 자리는 sim 이 t 에서 계산한다"
+    },
+    {
+      "element": "수레",
+      "vocab": "body (rect) + body (circle 바퀴 ×2)",
+      "status": "있음",
+      "note": "rect 에 모서리 둥글림이 없다 — 각진 수레가 된다. 주장과 무관"
+    },
+    {
+      "element": "미는 힘",
+      "vocab": "vector (from · delta · width)",
+      "status": "있음"
+    },
+    {
+      "element": "속도 막대",
+      "vocab": "body (rect · outline background) — 다 찬 칸 / 채우는 중인 칸은 opacity 로",
+      "status": "있음",
+      "note": "칸 경계를 바탕색 선으로 가르는 것은 outline background 가 한다"
+    }
+  ],
+  "outside": [
+    "세 줄이 같은 축척·같은 출발선을 공유하는 배치 — sim 이 줄 높이를 정한다",
+    "반복 주기(밀기 4 s + 멈춘 모습 1.4 s)와 도착 시각 — timeline phases + startAt",
+    "원본 판단 거리 — 1배 줄의 초반 잔상이 겹쳐 지저분하다 (에이전트 자기 신고)"
+  ]
+}

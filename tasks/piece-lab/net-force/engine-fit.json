@@ -1,0 +1,34 @@
+{
+  "rows": [
+    {
+      "element": "물체",
+      "vocab": "body (circle)",
+      "status": "있음"
+    },
+    {
+      "element": "작용하는 힘 화살표",
+      "vocab": "vector ×3 (opacity 로 진하기 낮춤)",
+      "status": "있음",
+      "note": "끝과 끝으로 미끄러지는 자리는 sim 이 timeline 진행도로 보간한다"
+    },
+    {
+      "element": "알짜힘 화살표",
+      "vocab": "vector (colorRole accent · delta 를 진행도로 늘림)",
+      "status": "있음"
+    },
+    {
+      "element": "지나온 자리 점",
+      "vocab": "trace (dot · age 생략)",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (timeline phases.caption 또는 cases — 조합 셋마다 문장이 다르면 cases)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "주기마다 속도·위치 적분을 초기화 — 모든 것이 주기 안 시각의 닫힌 식이면 상태가 필요 없다. 이관 때 닫힌 식으로 옮기는 것은 sim",
+    "움직임 전체가 화면 안에 들도록 출발점 맞추기 — sim 이 고정 boundsHint 와 출발점을 고른다"
+  ]
+}

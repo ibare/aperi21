@@ -1,0 +1,141 @@
+{
+  "id": "apparent-weight",
+  "claim": "엘리베이터 안 저울 눈금은 빨리 움직일 때가 아니라 속도가 바뀌는 동안에만 평소 눈금에서 벗어난다",
+  "verb": "속도가 바뀌는 동안에만 벗어난다",
+  "probeTimes": [0.6, 2, 3.6, 5.6, 7, 8.6],
+  "elements": [
+    {
+      "mark": "승강로",
+      "what": "엘리베이터가 오르내리는 통로의 두 벽, 바닥, 벽의 층 표시",
+      "physical": "정지한 기준틀(건물)",
+      "drawing": "옅은 선, 벽 바깥의 짧은 눈금",
+      "motion": "static",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "엘리베이터",
+      "what": "승강로 안에서 실제로 위아래로 이동하는 칸과 매단 줄",
+      "physical": "엘리베이터의 위치 (주기 안 시각의 닫힌 식)",
+      "drawing": "채운 사각형과 테두리, 옅은 줄",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "저울",
+      "what": "칸 바닥의 체중계",
+      "physical": "사람을 받치는 저울",
+      "drawing": "둥근 모서리 사각형",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "사람",
+      "what": "저울 위에 선 사람",
+      "physical": "질량 60 kg 인 사람",
+      "drawing": "채운 도형(머리·몸·다리)",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "속도 화살표",
+      "what": "칸 오른쪽의 세로 화살표와 '속도' 글자",
+      "physical": "엘리베이터 속도 (위가 양, 최대 1.96 m/s)",
+      "drawing": "선 + 삼각 머리, 길이는 속도에 비례, 정지 시 글자만",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "연결선",
+      "what": "칸 안 저울에서 눈금판으로 이어지는 점선",
+      "physical": "눈금판이 그 저울의 확대임을 잇는 표시",
+      "drawing": "옅은 점선, 끝점이 칸을 따라 움직임",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "눈금판",
+      "what": "확대한 저울 눈금판 (30~90 kg, 2 kg 간격, 10 kg 마다 숫자)",
+      "physical": "저울 눈금의 눈금",
+      "drawing": "채운 원판, 선 눈금, 숫자",
+      "motion": "static",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "평소 눈금 표시",
+      "what": "60 kg 자리 바깥의 점선 표시와 '평소' 글자",
+      "physical": "정지했을 때의 눈금 60 kg",
+      "drawing": "점선 + 텍스트",
+      "motion": "static",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "벗어난 만큼",
+      "what": "눈금판 테두리에서 평소 표시와 바늘 사이를 채우는 강조색 호",
+      "physical": "겉보기 무게 - 평소 무게 (ma/g kg)",
+      "drawing": "굵은 호, 유일한 강조색",
+      "motion": "integrated",
+      "state": "바늘 위치를 따른다",
+      "interaction": null
+    },
+    {
+      "mark": "바늘",
+      "what": "눈금판의 바늘",
+      "physical": "저울 눈금 = m(g+a)/g kg — 목표값 72/60/48 kg",
+      "drawing": "굵은 선 + 중심 점",
+      "motion": "integrated",
+      "state": "바늘 위치와 각속도 (감쇠 스프링 ω=14, ζ=0.7 로 목표 눈금을 따라감)",
+      "interaction": null
+    },
+    {
+      "mark": "눈금 숫자",
+      "what": "눈금판 아래의 'NN kg' 숫자",
+      "physical": "바늘 위치를 정수 kg 로 반올림 (체중계 표시 방식)",
+      "drawing": "텍스트",
+      "motion": "integrated",
+      "state": "바늘 위치를 따른다",
+      "interaction": null
+    },
+    {
+      "mark": "캡션",
+      "what": "아래 한 줄 캡션",
+      "physical": "지금 구간(속도가 붙는 중/같은 속도/줄어드는 중/정지)과 눈금의 상태",
+      "drawing": "텍스트",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    }
+  ],
+  "controls": [],
+  "hidden": [
+    "가속도 화살표 — 그리면 '가속도가 눈금을 정한다'는 답을 먼저 보여 줘 독자가 속도 화살표와 눈금판을 비교하는 일을 빼앗는다. 캡션이 '속도가 붙는/줄어드는' 으로만 말한다",
+    "힘 화살표(중력·수직항력) — 눈금판이 이미 수직항력의 크기이고, 화살표를 더하면 같은 양이 두 번 그려진다. 힘 분석은 문단의 몫",
+    "공식 N = m(g+a) — 정의·공식은 문단의 몫",
+    "엘리베이터 높이 수치(최대 5.88 m) — 주장과 무관",
+    "속도 수치 1.96 m/s 와 가속도 1.96 m/s² — 화살표 길이로 충분, 숫자를 늘리면 눈금 숫자와 경쟁한다"
+  ],
+  "timeline": [
+    { "t": 0, "what": "바닥에서 올라가기 시작. 속도 화살표가 자라고 바늘이 60 에서 72 kg 로 올라가며 강조 호가 생긴다" },
+    { "t": 1, "what": "속도가 1.96 m/s 에 닿아 같은 속도로 올라간다. 칸은 계속 오르고 화살표는 가장 긴데 바늘은 60 kg 로 돌아가 호가 사라진다" },
+    { "t": 3, "what": "위층에 가까워 속도가 줄어든다. 화살표가 짧아지고 바늘은 48 kg, 호는 평소 표시의 왼쪽" },
+    { "t": 4, "what": "위에 멈춰 있다. 화살표 없음, 바늘 60 kg" },
+    { "t": 5, "what": "내려가기 시작. 아래 화살표가 자라고 바늘은 48 kg" },
+    { "t": 6, "what": "같은 속도로 내려간다. 아래 화살표 가장 길고 바늘 60 kg" },
+    { "t": 8, "what": "바닥에 가까워 속도가 줄어든다. 내려가는 중인데도 바늘은 72 kg" },
+    { "t": 9, "what": "바닥에 멈춰 있다. 바늘 60 kg. t=10 에서 반복" }
+  ],
+  "engineWish": [
+    "구간별 운동(가속-등속-감속-정지)을 표로 주면 a·v·y 를 닫힌 식으로 돌려주는 운동 프로필 — 이번에도 8 구간을 손으로 적분해 적었다",
+    "원형 눈금판(범위·눈금 간격·기준 표시·바늘·기준과 바늘 사이 호) — 계기판 형태는 속력계·온도계·전압계 등에서 반복된다",
+    "측정값을 따라가는 감쇠 바늘(목표값 → 2차 감쇠 적분) — 계기의 관성을 흉내 내는 일",
+    "CSS 변수에서 장면 색을 읽어 캔버스에 쓰는 테마 연결과 devicePixelRatio 대응 캔버스 준비",
+    "시각 구간 → 캡션 문구 표"
+  ]
+}

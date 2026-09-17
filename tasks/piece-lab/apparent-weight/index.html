@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>겉보기 무게</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #2b2a28;
+    --faint: #b9b5ad;
+    --panel: #efece6;
+    --accent: #d2562b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1b19;
+      --ink: #e6e3dc;
+      --faint: #5e5a53;
+      --panel: #2a2926;
+      --accent: #f07a4c;
+    }
+  }
+  html, body { margin: 0; background: var(--bg); }
+  .piece { max-width: 900px; margin: 0 auto; }
+  canvas { display: block; width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<div class="piece"><canvas id="c"></canvas></div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// ── 물리 설정 ─────────────────────────────────────────────
+// 몸무게 60 kg, 가속도 크기 0.2g → 눈금 72 kg / 60 kg / 48 kg
+const G = 9.8;          // m/s²
+const MASS = 60;        // kg (평소 눈금)
+const A = 0.2 * G;      // 1.96 m/s², 가속·감속 구간의 가속도 크기
+const V = A * 1.0;      // 1초 가속 뒤 도달하는 속력 1.96 m/s
+const RISE = 3 * V;     // 한 번 오르내리는 높이 5.88 m
+const PERIOD = 10;      // 초
+
+// 주기 안의 시각 tm 에서 가속도·속도·높이 (닫힌 식 — 누적 오차 없음)
+function motion(t) {
+  const tm = ((t % PERIOD) + PERIOD) % PERIOD;
+  let a = 0, v = 0, y = 0, s;
+  if (tm < 1) { s = tm; a = A; v = A * s; y = 0.5 * A * s * s; }
+  else if (tm < 3) { s = tm - 1; v = V; y = 0.5 * A + V * s; }
+  else if (tm < 4) { s = tm - 3; a = -A; v = V - A * s; y = 0.5 * A + 2 * V + V * s - 0.5 * A * s * s; }
+  else if (tm < 5) { y = RISE; }
+  else if (tm < 6) { s = tm - 5; a = -A; v = -A * s; y = RISE - 0.5 * A * s * s; }
+  else if (tm < 8) { s = tm - 6; v = -V; y = RISE - 0.5 * A - V * s; }
+  else if (tm < 9) { s = tm - 8; a = A; v = -V + A * s; y = RISE - 0.5 * A - 2 * V - V * s + 0.5 * A * s * s; }
+  else { y = 0; }
+  return { tm, a, v, y };
+}
+
+// 저울이 받치는 힘을 kg 눈금으로: m(g + a)/g
+const readingOf = (a) => MASS * (G + a) / G;
+
+function captionOf(tm) {
+  if (tm < 1) return '올라가기 시작해 속도가 붙는 동안 — 눈금이 평소보다 크다';
+  if (tm < 3) return '같은 속도로 올라가는 동안 — 눈금은 평소와 같다';
+  if (tm < 4) return '멈추려고 속도가 줄어드는 동안 — 눈금이 평소보다 작다';
+  if (tm < 5) return '멈춰 있다 — 평소 눈금';
+  if (tm < 6) return '내려가기 시작해 속도가 붙는 동안 — 눈금이 평소보다 작다';
+  if (tm < 8) return '같은 속도로 내려가는 동안 — 눈금은 평소와 같다';
+  if (tm < 9) return '멈추려고 속도가 줄어드는 동안 — 눈금이 평소보다 크다';
+  return '멈춰 있다 — 평소 눈금';
+}
+
+// ── 바늘: 실제 저울처럼 감쇠 스프링으로 목표 눈금을 따라간다 (적분 상태) ──
+const OMEGA = 14, ZETA = 0.7;
+const needle = { x: MASS, u: 0 };
+
+// ── 캔버스 ───────────────────────────────────────────────
+const W = 860, H = 300;
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const dpr = Math.max(1, Math.round(window.devicePixelRatio || 1));
+canvas.width = W * dpr; canvas.height = H * dpr;
+ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+const css = getComputedStyle(document.documentElement);
+const C = {
+  bg: css.getPropertyValue('--bg').trim(),
+  ink: css.getPropertyValue('--ink').trim(),
+  faint: css.getPropertyValue('--faint').trim(),
+  panel: css.getPropertyValue('--panel').trim(),
+  accent: css.getPropertyValue('--accent').trim(),
+};
+const FONT = '"Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+
+// 배치
+const SHAFT = { x: 200, w: 150, top: 12, bottom: 256 };
+const CAR = { w: 124, h: 104 };
+const TRAVEL_PX = (SHAFT.bottom - SHAFT.top) - CAR.h - 12; // 128 px
+const PX_PER_M = TRAVEL_PX / RISE;
+const ARROW_PX_PER_MS = 34;
+const DIAL = { cx: 590, cy: 138, r: 108, min: 30, max: 90, sweep: 240 };
+
+function dialAngle(kg) {
+  const f = (kg - DIAL.min) / (DIAL.max - DIAL.min);
+  const start = (90 + (360 - DIAL.sweep) / 2) * Math.PI / 180; // 왼쪽 아래에서 시계 방향
+  return start + f * DIAL.sweep * Math.PI / 180;
+}
+
+function arrow(x, y0, y1, color, width) {
+  const dir = Math.sign(y1 - y0);
+  const head = Math.min(9, Math.abs(y1 - y0));
+  ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = width;
+  ctx.beginPath(); ctx.moveTo(x, y0); ctx.lineTo(x, y1 - dir * head * 0.6); ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x, y1);
+  ctx.lineTo(x - 5.5, y1 - dir * head);
+  ctx.lineTo(x + 5.5, y1 - dir * head);
+  ctx.closePath(); ctx.fill();
+}
+
+PieceKit.loop({
+  step(dt, t) {
+    const target = readingOf(motion(t).a);
+    const acc = OMEGA * OMEGA * (target - needle.x) - 2 * ZETA * OMEGA * needle.u;
+    needle.u += acc * dt;
+    needle.x += needle.u * dt;
+  },
+
+  draw(t) {
+    const m = motion(t);
+    ctx.fillStyle = C.bg;
+    ctx.fillRect(0, 0, W, H);
+
+    const carBottom = SHAFT.bottom - 6 - m.y * PX_PER_M;
+    const carTop = carBottom - CAR.h;
+    const carX = SHAFT.x + (SHAFT.w - CAR.w) / 2;
+
+    PieceKit.mark('승강로', () => {
+      ctx.strokeStyle = C.faint; ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(SHAFT.x, SHAFT.top); ctx.lineTo(SHAFT.x, SHAFT.bottom);
+      ctx.moveTo(SHAFT.x + SHAFT.w, SHAFT.top); ctx.lineTo(SHAFT.x + SHAFT.w, SHAFT.bottom);
+      ctx.moveTo(SHAFT.x - 14, SHAFT.bottom); ctx.lineTo(SHAFT.x + SHAFT.w + 14, SHAFT.bottom);
+      ctx.stroke();
+      // 벽의 층 표시 — 칸이 벽을 지나가는 것으로 움직임이 보인다
+      ctx.lineWidth = 1.5;
+      for (let yy = SHAFT.bottom - 20; yy > SHAFT.top; yy -= 20) {
+        ctx.beginPath();
+        ctx.moveTo(SHAFT.x - 10, yy); ctx.lineTo(SHAFT.x, yy);
+        ctx.moveTo(SHAFT.x + SHAFT.w, yy); ctx.lineTo(SHAFT.x + SHAFT.w + 10, yy);
+        ctx.stroke();
+      }
+    });
+
+    PieceKit.mark('엘리베이터', () => {
+      // 매단 줄
+      ctx.strokeStyle = C.faint; ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(SHAFT.x + SHAFT.w / 2, SHAFT.top - 12);
+      ctx.lineTo(SHAFT.x + SHAFT.w / 2, carTop);
+      ctx.stroke();
+      ctx.fillStyle = C.panel;
+      ctx.fillRect(carX, carTop, CAR.w, CAR.h);
+      ctx.strokeStyle = C.ink; ctx.lineWidth = 2;
+      ctx.strokeRect(carX, carTop, CAR.w, CAR.h);
+    });
+
+    const scaleW = 44, scaleH = 9;
+    const scaleX = carX + CAR.w / 2 - scaleW / 2;
+    const scaleY = carBottom - 2 - scaleH;
+
+    PieceKit.mark('저울', () => {
+      ctx.fillStyle = C.bg;
+      ctx.strokeStyle = C.ink; ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.roundRect(scaleX, scaleY, scaleW, scaleH, 2);
+      ctx.fill(); ctx.stroke();
+    });
+
+    PieceKit.mark('사람', () => {
+      const cx = carX + CAR.w / 2;
+      const feet = scaleY;
+      ctx.fillStyle = C.ink; ctx.strokeStyle = C.ink;
+      ctx.lineCap = 'round';
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.moveTo(cx - 6, feet - 1); ctx.lineTo(cx - 5, feet - 30);
+      ctx.moveTo(cx + 6, feet - 1); ctx.lineTo(cx + 5, feet - 30);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.roundRect(cx - 11, feet - 62, 22, 36, 7);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(cx, feet - 72, 9, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.lineCap = 'butt';
+    });
+
+    PieceKit.mark('속도 화살표', () => {
+      const ax = SHAFT.x + SHAFT.w + 36;
+      const ay = carTop + CAR.h / 2;
+      const len = -m.v * ARROW_PX_PER_MS; // 위쪽이 음의 y
+      if (Math.abs(len) > 1.5) arrow(ax, ay, ay + len, C.ink, 2.5);
+      ctx.fillStyle = C.ink;
+      ctx.font = `13px ${FONT}`;
+      ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      ctx.fillText('속도', ax + 12, ay);
+    });
+
+    PieceKit.mark('연결선', () => {
+      ctx.strokeStyle = C.faint; ctx.lineWidth = 1;
+      ctx.setLineDash([3, 4]);
+      ctx.beginPath();
+      ctx.moveTo(scaleX + scaleW, scaleY + scaleH / 2);
+      ctx.lineTo(DIAL.cx - DIAL.r - 18, DIAL.cy);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    });
+
+    PieceKit.mark('눈금판', () => {
+      ctx.fillStyle = C.panel;
+      ctx.beginPath(); ctx.arc(DIAL.cx, DIAL.cy, DIAL.r + 12, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = C.ink; ctx.fillStyle = C.ink;
+      ctx.font = `12px ${FONT}`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      for (let kg = DIAL.min; kg <= DIAL.max; kg += 2) {
+        const ang = dialAngle(kg);
+        const major = kg % 10 === 0;
+        const r0 = DIAL.r - (major ? 14 : 7);
+        ctx.lineWidth = major ? 2 : 1;
+        ctx.beginPath();
+        ctx.moveTo(DIAL.cx + Math.cos(ang) * r0, DIAL.cy + Math.sin(ang) * r0);
+        ctx.lineTo(DIAL.cx + Math.cos(ang) * DIAL.r, DIAL.cy + Math.sin(ang) * DIAL.r);
+        ctx.stroke();
+        if (major) {
+          const rl = DIAL.r - 28;
+          ctx.fillText(String(kg), DIAL.cx + Math.cos(ang) * rl, DIAL.cy + Math.sin(ang) * rl);
+        }
+      }
+    });
+
+    PieceKit.mark('평소 눈금 표시', () => {
+      const ang = dialAngle(MASS);
+      ctx.strokeStyle = C.ink; ctx.lineWidth = 2;
+      ctx.setLineDash([4, 3]);
+      ctx.beginPath();
+      ctx.moveTo(DIAL.cx + Math.cos(ang) * (DIAL.r + 2), DIAL.cy + Math.sin(ang) * (DIAL.r + 2));
+      ctx.lineTo(DIAL.cx + Math.cos(ang) * (DIAL.r + 20), DIAL.cy + Math.sin(ang) * (DIAL.r + 20));
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = C.ink;
+      ctx.font = `12px ${FONT}`;
+      ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+      ctx.fillText('평소', DIAL.cx + 8, DIAL.cy - DIAL.r - 12);
+    });
+
+    PieceKit.mark('벗어난 만큼', () => {
+      const a0 = dialAngle(MASS), a1 = dialAngle(needle.x);
+      if (Math.abs(a1 - a0) < 0.004) return;
+      ctx.strokeStyle = C.accent; ctx.lineWidth = 10; ctx.lineCap = 'butt';
+      ctx.beginPath();
+      ctx.arc(DIAL.cx, DIAL.cy, DIAL.r + 6, Math.min(a0, a1), Math.max(a0, a1));
+      ctx.stroke();
+    });
+
+    PieceKit.mark('바늘', () => {
+      const ang = dialAngle(needle.x);
+      ctx.strokeStyle = C.ink; ctx.lineWidth = 3; ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(DIAL.cx - Math.cos(ang) * 14, DIAL.cy - Math.sin(ang) * 14);
+      ctx.lineTo(DIAL.cx + Math.cos(ang) * (DIAL.r - 4), DIAL.cy + Math.sin(ang) * (DIAL.r - 4));
+      ctx.stroke();
+      ctx.lineCap = 'butt';
+      ctx.fillStyle = C.ink;
+      ctx.beginPath(); ctx.arc(DIAL.cx, DIAL.cy, 6, 0, Math.PI * 2); ctx.fill();
+    });
+
+    PieceKit.mark('눈금 숫자', () => {
+      ctx.fillStyle = C.ink;
+      ctx.font = `600 22px ${FONT}`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(`${Math.round(needle.x)} kg`, DIAL.cx, DIAL.cy + 58);
+    });
+
+    PieceKit.mark('캡션', () => {
+      ctx.fillStyle = C.ink;
+      ctx.font = `15px ${FONT}`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(captionOf(m.tm), W / 2, 284);
+    });
+  },
+});
+</script>
+</body>
+</html>

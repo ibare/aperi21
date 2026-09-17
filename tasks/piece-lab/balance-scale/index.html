@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>수평잡기</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #2b2b2b;
+    --soft: #9a968d;
+    --faint: #d9d5cc;
+    --weight: #5b6f86;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 8px 0 12px; }
+  canvas { display: block; width: 100%; height: auto; touch-action: none; }
+  .caption { min-height: 1.5em; margin: 4px 16px 0; font-size: 15px; line-height: 1.5;
+    text-align: center; color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="stage" width="860" height="300" aria-label="양팔 저울"></canvas>
+  <p class="caption" id="caption"></p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 물리 설정 ───────────────────────────────────────────
+  // 저울대 각도 θ: 양수면 오른쪽이 내려간다.
+  // 받침점이 무게중심보다 위에 있는 저울이라 기울면 되돌리는 힘(복원 토크)이 생긴다.
+  // 그래서 양쪽 토크가 같으면 수평에서 멈추고, 다르면 그 차이만큼 기운 채 멈춘다.
+  const G = 1;               // 중력 세기 (단위 토크 기준)
+  const M_HEAVY = 2;         // 왼쪽 추 무게 (블록 2개)
+  const M_LIGHT = 1;         // 오른쪽 추 무게 (블록 1개)
+  const X_HEAVY = 2;         // 왼쪽 추 거리 (눈금 칸)
+  const K_RESTORE = 8;       // 복원 토크 세기
+  const INERTIA = 1.3;       // 회전 관성
+  const DAMP = 3.2;          // 감쇠
+  const MAX_TILT = 0.4;      // 받침대에 닿는 한계 각도 (라디안)
+  const NOTCHES = 5;
+
+  // ── 자동 진행 대본: 가벼운 추의 거리 ─────────────────────
+  const PERIOD = 20;
+  const script = [ // [시작 시각, 끝 시각, 시작 거리, 끝 거리, 장면]
+    [0,    1.5,  2, 2, 'near'],
+    [1.5,  5,    2, 4, 'outward'],
+    [5,    9,    4, 4, 'level'],
+    [9,    10.5, 4, 5, 'over'],
+    [10.5, 12.5, 5, 5, 'overHold'],
+    [12.5, 14,   5, 4, 'back'],
+    [14,   17,   4, 4, 'level'],
+    [17,   19.5, 4, 2, 'inward'],
+    [19.5, 20,   2, 2, 'near'],
+  ];
+  const ease = (u) => u * u * (3 - 2 * u);
+  function scripted(t) {
+    const tp = ((t % PERIOD) + PERIOD) % PERIOD;
+    for (const [a, b, x0, x1, scene] of script) {
+      if (tp >= a && tp < b) {
+        const u = b > a ? ease((tp - a) / (b - a)) : 1;
+        return { x: x0 + (x1 - x0) * u, scene };
+      }
+    }
+    return { x: 2, scene: 'near' };
+  }
+
+  function netTorque(xLight, theta) {
+    return G * (M_LIGHT * xLight - M_HEAVY * X_HEAVY) * Math.cos(theta);
+  }
+  function equilibrium(xLight) {
+    return Math.atan2(G * (M_LIGHT * xLight - M_HEAVY * X_HEAVY), K_RESTORE);
+  }
+
+  // ── 상태 (프레임 사이에 쌓인다) ─────────────────────────
+  const state = {
+    theta: equilibrium(2), // 도착한 순간 이미 기운 채로 있다
+    omega: 0,
+    xLight: 2,
+    scene: 'near',
+    manual: false,         // 독자가 추를 끌어 본 뒤로는 대본을 멈춘다
+    dragging: false,
+    dragX: 2,
+  };
+
+  // ── 화면 ────────────────────────────────────────────────
+  const canvas = document.getElementById('stage');
+  const ctx = canvas.getContext('2d');
+  const captionEl = document.getElementById('caption');
+  const W = 860, H = 300;
+  const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const PIVOT = { x: W / 2, y: 140 };
+  const UNIT = 66;           // 눈금 한 칸의 픽셀 길이
+  const HALF = UNIT * (NOTCHES + 0.4);
+  const BLOCK = 34;
+  const css = getComputedStyle(document.documentElement);
+  const C = {
+    ink: css.getPropertyValue('--ink').trim(),
+    soft: css.getPropertyValue('--soft').trim(),
+    faint: css.getPropertyValue('--faint').trim(),
+    weight: css.getPropertyValue('--weight').trim(),
+  };
+
+  // 저울대 좌표(오른쪽 +, 위 +)를 화면 좌표로
+  function beamPoint(s, up) {
+    const c = Math.cos(state.theta), sn = Math.sin(state.theta);
+    return { x: PIVOT.x + s * c + up * sn, y: PIVOT.y + s * sn - up * c };
+  }
+
+  function drawBlocks(s, count) {
+    ctx.save();
+    ctx.translate(PIVOT.x, PIVOT.y);
+    ctx.rotate(state.theta);
+    ctx.fillStyle = C.weight;
+    for (let i = 0; i < count; i++) {
+      const y = -4 - BLOCK * (i + 1) - i * 3;
+      ctx.fillRect(s - BLOCK / 2, y, BLOCK, BLOCK);
+    }
+    ctx.restore();
+  }
+
+  const CAPTIONS = {
+    near: '가벼운 추가 가까이 있어 무거운 쪽으로 기울어 있다',
+    outward: '가벼운 추를 바깥으로 옮기자 저울대가 일어선다',
+    settling: '수평을 찾아간다',
+    level: '두 배 멀리 두니 무게가 절반이어도 수평이다',
+    over: '조금 더 밀자 이번에는 가벼운 쪽으로 기운다',
+    overHold: '너무 멀리 두면 가벼운 쪽이 내려간다',
+    back: '두 배 거리로 되돌리자 수평이 돌아온다',
+    inward: '가까이 당기자 다시 무거운 쪽으로 기운다',
+  };
+  function captionText() {
+    const deg = Math.abs(state.theta) * 180 / Math.PI;
+    if (state.manual) {
+      if (deg < 1) return '양쪽이 수평을 이루었다';
+      return state.theta < 0 ? '무거운 쪽으로 기울어 있다' : '가벼운 쪽으로 기울어 있다';
+    }
+    if (state.scene === 'level' || state.scene === 'back') {
+      return deg < 1.5 ? CAPTIONS.level : (state.scene === 'back' ? CAPTIONS.back : CAPTIONS.settling);
+    }
+    return CAPTIONS[state.scene];
+  }
+
+  // ── 조작: 가벼운 추 끌기 ─────────────────────────────────
+  function toBeamS(ev) {
+    const r = canvas.getBoundingClientRect();
+    const px = (ev.clientX - r.left) * (W / r.width);
+    const py = (ev.clientY - r.top) * (H / r.height);
+    const dx = px - PIVOT.x, dy = py - PIVOT.y;
+    return { s: dx * Math.cos(state.theta) + dy * Math.sin(state.theta), px, py };
+  }
+  canvas.addEventListener('pointerdown', (ev) => {
+    if (PieceKit.frozen) return;
+    const { s } = toBeamS(ev);
+    if (Math.abs(s - state.xLight * UNIT) < BLOCK) {
+      state.dragging = true; state.manual = true;
+      canvas.setPointerCapture(ev.pointerId);
+    }
+  });
+  canvas.addEventListener('pointermove', (ev) => {
+    if (PieceKit.frozen) return;
+    const { s } = toBeamS(ev);
+    const near = Math.abs(s - state.xLight * UNIT) < BLOCK;
+    canvas.style.cursor = state.dragging ? 'grabbing' : (near ? 'grab' : 'default');
+    if (!state.dragging) return;
+    state.dragX = Math.max(0.5, Math.min(NOTCHES, s / UNIT));
+  });
+  const release = () => { state.dragging = false; };
+  canvas.addEventListener('pointerup', release);
+  canvas.addEventListener('pointercancel', release);
+
+  PieceKit.loop({
+    step(dt, t) {
+      if (state.manual && !PieceKit.frozen) {
+        state.xLight = state.dragX;
+      } else {
+        const sc = scripted(t);
+        state.xLight = sc.x;
+        state.scene = sc.scene;
+      }
+      const tau = netTorque(state.xLight, state.theta)
+        - K_RESTORE * Math.sin(state.theta)
+        - DAMP * state.omega;
+      state.omega += (tau / INERTIA) * dt;
+      state.theta += state.omega * dt;
+      if (state.theta > MAX_TILT) { state.theta = MAX_TILT; state.omega = 0; }
+      if (state.theta < -MAX_TILT) { state.theta = -MAX_TILT; state.omega = 0; }
+    },
+    draw(t) {
+      ctx.clearRect(0, 0, W, H);
+
+      PieceKit.mark('수평 기준선', () => {
+        ctx.save();
+        ctx.strokeStyle = C.faint; ctx.lineWidth = 1; ctx.setLineDash([6, 6]);
+        ctx.beginPath();
+        ctx.moveTo(PIVOT.x - HALF - 20, PIVOT.y); ctx.lineTo(PIVOT.x + HALF + 20, PIVOT.y);
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      PieceKit.mark('받침대', () => {
+        ctx.save();
+        ctx.fillStyle = C.soft;
+        ctx.beginPath();
+        ctx.moveTo(PIVOT.x, PIVOT.y + 4);
+        ctx.lineTo(PIVOT.x - 34, PIVOT.y + 120);
+        ctx.lineTo(PIVOT.x + 34, PIVOT.y + 120);
+        ctx.closePath(); ctx.fill();
+        ctx.fillRect(PIVOT.x - 120, PIVOT.y + 120, 240, 6);
+        ctx.restore();
+      });
+
+      PieceKit.mark('저울대', () => {
+        const a = beamPoint(-HALF, 0), b = beamPoint(HALF, 0);
+        ctx.save();
+        ctx.strokeStyle = C.ink; ctx.lineWidth = 7; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        ctx.beginPath(); ctx.arc(PIVOT.x, PIVOT.y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = css.getPropertyValue('--bg').trim(); ctx.fill();
+        ctx.restore();
+      });
+
+      PieceKit.mark('거리 눈금', () => {
+        ctx.save();
+        ctx.strokeStyle = C.soft; ctx.lineWidth = 1.5;
+        for (let side of [-1, 1]) {
+          for (let i = 1; i <= NOTCHES; i++) {
+            const p = beamPoint(side * i * UNIT, -5);
+            const q = beamPoint(side * i * UNIT, -14);
+            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+          }
+        }
+        ctx.restore();
+      });
+
+      PieceKit.mark('무거운 추', () => drawBlocks(-X_HEAVY * UNIT, M_HEAVY));
+      PieceKit.mark('가벼운 추', () => drawBlocks(state.xLight * UNIT, M_LIGHT));
+
+      PieceKit.mark('캡션', () => {
+        const text = captionText();
+        if (captionEl.textContent !== text) captionEl.textContent = text;
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

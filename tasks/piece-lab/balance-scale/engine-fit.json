@@ -1,0 +1,49 @@
+{
+  "rows": [
+    {
+      "element": "수평 기준선",
+      "vocab": "trajectory (dashed · opacity)",
+      "status": "있음"
+    },
+    {
+      "element": "받침대",
+      "vocab": "region (3점) + body (rect)",
+      "status": "있음"
+    },
+    {
+      "element": "저울대",
+      "vocab": "constraint (rigid_rod) 또는 trajectory (width) + body (circle · outline background 받침점 구멍)",
+      "status": "있음"
+    },
+    {
+      "element": "거리 눈금",
+      "vocab": "trace (tick · direction 저울대 법선)",
+      "status": "있음"
+    },
+    {
+      "element": "추 블록",
+      "vocab": "body (rect · orientation)",
+      "status": "있음"
+    },
+    {
+      "element": "가벼운 추 끌기",
+      "vocab": "point-drag (binds pos/held · handle)",
+      "status": "있음",
+      "note": "snapTo 는 선언이라 도는 저울대를 따라가지 못한다. 끌린 자리를 저울대 위로 투영하는 것은 sim 의 step 이 한다"
+    },
+    {
+      "element": "한 번 끌면 대본을 멈추기",
+      "vocab": "heldPath + sim 의 상태 깃발",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (cases — 수평인지는 상태(각 1.5° 미만))",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "토크·복원 토크·감쇠로 적분하는 저울대 각 — sim 의 step, 시작 상태는 preroll",
+    "거리 대본 2→4→5→4→2 칸 — timeline phases"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "rows": [
+    {
+      "element": "승강로",
+      "vocab": "trajectory (벽 선) + trace (tick)",
+      "status": "있음"
+    },
+    {
+      "element": "엘리베이터 · 저울 · 사람",
+      "vocab": "body (rect) + body (custom path)",
+      "status": "있음",
+      "note": "모서리 둥근 저울은 각진 rect 가 된다"
+    },
+    {
+      "element": "속도 화살표",
+      "vocab": "vector + readout (정지 시 글자)",
+      "status": "있음"
+    },
+    {
+      "element": "연결선",
+      "vocab": "trajectory (dashed · opacity)",
+      "status": "있음"
+    },
+    {
+      "element": "눈금판 · 바늘 · 눈금 숫자",
+      "vocab": "scale (dial · range · tickAt · labelAt · value · digits 0 · unit)",
+      "status": "있음"
+    },
+    {
+      "element": "평소 눈금 표시 · 벗어난 만큼",
+      "vocab": "scale.origin (평소 눈금 60 에서 지금 값까지 부채꼴)",
+      "status": "수정 필요",
+      "note": "origin 을 주면 부채꼴과 함께 ±차이 글자(+12 kg)가 **꺼질 수 없게** 붙는다 (scale.ts deltaY). 원본은 수를 더 늘리지 않으려 차이를 호로만 보였다. 또 원본은 테두리 위 굵은 호, 엔진은 안쪽 부채꼴이다 — 모양 차이는 받아들일 만하나 수가 느는 것은 주장에 걸린다"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (timeline phases.caption)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "가속-등속-감속-정지 8 구간의 a·v·y 닫힌 식 — sim 의 계산",
+    "목표 눈금을 감쇠하며 따라가는 바늘(ω 14 · ζ 0.7) — sim 의 step. 시각의 함수로 옮기면 preroll 없이 된다"
+  ]
+}

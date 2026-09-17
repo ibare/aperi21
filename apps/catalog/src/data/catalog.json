@@ -210,17 +210,23 @@
         {
           "id": "newtons-second-law",
           "name": "가속도 법칙",
-          "desc": "알짜힘·질량·가속도의 관계"
+          "desc": "알짜힘·질량·가속도의 관계",
+          "simId": "aperi21:newtons-second-law",
+          "labUrl": "piece-lab/newtons-second-law/index.html"
         },
         {
           "id": "newtons-third-law",
           "name": "작용 반작용",
-          "desc": "힘의 쌍과 서로 다른 작용점"
+          "desc": "힘의 쌍과 서로 다른 작용점",
+          "simId": "aperi21:newtons-third-law",
+          "labUrl": "piece-lab/newtons-third-law/index.html"
         },
         {
           "id": "net-force",
           "name": "알짜힘",
-          "desc": "여러 힘의 벡터 합"
+          "desc": "여러 힘의 벡터 합",
+          "simId": "aperi21:net-force",
+          "labUrl": "piece-lab/net-force/index.html"
         },
         {
           "id": "free-body-diagram",
@@ -240,12 +246,16 @@
         {
           "id": "apparent-weight",
           "name": "겉보기 무게",
-          "desc": "가속하는 엘리베이터 안의 저울"
+          "desc": "가속하는 엘리베이터 안의 저울",
+          "simId": "aperi21:apparent-weight",
+          "labUrl": "piece-lab/apparent-weight/index.html"
         },
         {
           "id": "static-friction",
           "name": "정지 마찰력",
-          "desc": "움직이기 전까지 버티는 힘"
+          "desc": "움직이기 전까지 버티는 힘",
+          "simId": "aperi21:static-friction",
+          "labUrl": "piece-lab/static-friction/index.html"
         },
         {
           "id": "kinetic-friction",
@@ -260,7 +270,9 @@
         {
           "id": "inclined-plane",
           "name": "빗면",
-          "desc": "중력을 면에 나란한 성분과 수직 성분으로"
+          "desc": "중력을 면에 나란한 성분과 수직 성분으로",
+          "simId": "aperi21:inclined-plane",
+          "labUrl": "piece-lab/inclined-plane/index.html"
         },
         {
           "id": "tension",
@@ -285,7 +297,9 @@
         {
           "id": "centripetal-force",
           "name": "구심력",
-          "desc": "원운동을 유지시키는 힘의 정체"
+          "desc": "원운동을 유지시키는 힘의 정체",
+          "simId": "aperi21:centripetal-force",
+          "labUrl": "piece-lab/centripetal-force/index.html"
         },
         {
           "id": "conical-pendulum",
@@ -325,7 +339,9 @@
         {
           "id": "coriolis-effect",
           "name": "코리올리 효과",
-          "desc": "회전 기준틀에서 휘는 경로"
+          "desc": "회전 기준틀에서 휘는 경로",
+          "simId": "aperi21:coriolis-effect",
+          "labUrl": "piece-lab/coriolis-effect/index.html"
         },
         {
           "id": "impulse-force-relation",
@@ -340,12 +356,16 @@
         {
           "id": "atwood-machine",
           "name": "애트우드 기계",
-          "desc": "두 추가 도르래로 연결된 계"
+          "desc": "두 추가 도르래로 연결된 계",
+          "simId": "aperi21:atwood-machine",
+          "labUrl": "piece-lab/atwood-machine/index.html"
         },
         {
           "id": "balance-scale",
           "name": "수평잡기",
-          "desc": "양팔의 길이와 무게가 함께 정하는 균형"
+          "desc": "양팔의 길이와 무게가 함께 정하는 균형",
+          "simId": "aperi21:balance-scale",
+          "labUrl": "piece-lab/balance-scale/index.html"
         },
         {
           "id": "mechanical-advantage",
@@ -2357,7 +2377,7 @@
   ],
   "summary": {
     "topics": 442,
-    "implemented": 44,
-    "labs": 31
+    "implemented": 54,
+    "labs": 41
   }
 }

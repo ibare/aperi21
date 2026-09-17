@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>알짜힘</title>
+<style>
+  html, body { margin: 0; background: #fbfaf7; }
+  .piece { max-width: 860px; margin: 0 auto; font-family: system-ui, -apple-system, "Apple SD Gothic Neo", sans-serif; }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { min-height: 1.6em; padding: 6px 12px 10px; font-size: 15px; color: #333; text-align: center; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="scene"></canvas>
+  <div class="caption" id="caption"></div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // 논리 크기 — 컨테이너 폭에 맞춰 CSS 로 늘고 줄어든다
+  const W = 860, H = 360;
+  const S = 1.6; // 월드 1 단위(= 1 N 길이)가 화면에서 차지하는 px
+  const canvas = document.getElementById('scene');
+  const captionEl = document.getElementById('caption');
+  const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  // 색 — 힘은 모두 같은 색, 강조색은 알짜힘 하나에만
+  const COLOR_FORCE = '#4a6076';
+  const COLOR_NET = '#d9480f';
+  const COLOR_BODY = '#2b2b2b';
+  const COLOR_TRAIL = '#9a958c';
+
+  // 힘 조합 [크기(뉴턴), 방향(도, 수학 좌표 — 위가 +)]. 화면에서 1 N = S px.
+  // 셋 다 가장 센 힘의 방향과 알짜힘의 방향이 눈에 띄게 어긋나도록 골랐다.
+  const CONFIGS = [
+    [[120, 0], [100, 115], [70, 245]],
+    [[115, 180], [90, 60], [50, -70]],
+    [[105, -30], [90, 100], [45, 190]],
+  ];
+  const MASS = 1;            // kg — 화면에는 두지 않는다
+  const ACCEL_SCALE = 0.15;  // 가속도(월드 단위/s²) = 알짜힘(N)/질량 × 이 값 — 모든 조합에 같게
+
+  // 한 주기의 시간표 (초)
+  const SLIDE2 = [0, 1.1];     // 둘째 힘이 첫째 힘 끝으로
+  const SLIDE3 = [1.1, 2.2];   // 셋째 힘이 둘째 힘 끝으로
+  const GROW = [2.2, 3.0];     // 알짜힘 화살표가 처음에서 끝으로 뻗는다
+  const RELEASE = 3.0;         // 물체가 움직이기 시작
+  const FADE = [7.8, 8.4];     // 다음 조합으로 넘어가기 전 흐려진다
+  const CYCLE = 8.4;
+  const DOT_EVERY = 0.3;       // 같은 시간 간격마다 자리 점
+
+  const toVec = ([m, deg]) => {
+    const a = deg * Math.PI / 180;
+    return { x: m * Math.cos(a), y: m * Math.sin(a) };
+  };
+  const add = (a, b) => ({ x: a.x + b.x, y: a.y + b.y });
+  const scale = (a, s) => ({ x: a.x * s, y: a.y * s });
+  const lerp = (a, b, u) => ({ x: a.x + (b.x - a.x) * u, y: a.y + (b.y - a.y) * u });
+  const clamp01 = (u) => Math.max(0, Math.min(1, u));
+  const progress = ([s, e], local) => clamp01((local - s) / (e - s));
+  // 시작부터 이미 움직이는 감속 곡선 — 도착한 순간 정지 화면이 아니게
+  const easeOut = (u) => Math.sin(u * Math.PI / 2);
+  const easeInOut = (u) => 0.5 - 0.5 * Math.cos(u * Math.PI);
+
+  function prepare(index) {
+    const forces = CONFIGS[index].map(toVec);
+    const net = forces.reduce(add, { x: 0, y: 0 });
+    const accel = scale(net, ACCEL_SCALE / MASS);
+    const moveTime = FADE[1] - RELEASE;
+    const travel = scale(accel, 0.5 * moveTime * moveTime);
+    // 화살표 사슬이 물체와 함께 움직여도 화면 안에 있도록 출발점을 잡는다
+    const offsets = [
+      { x: 0, y: 0 }, forces[0], forces[1], forces[2],
+      add(forces[0], forces[1]), net,
+    ];
+    const pts = offsets.concat(offsets.map((o) => add(o, travel)));
+    const xs = pts.map((p) => p.x), ys = pts.map((p) => p.y);
+    const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
+    const cy = (Math.min(...ys) + Math.max(...ys)) / 2;
+    return { forces, net, accel, start: { x: -cx, y: -cy } };
+  }
+
+  // 월드(가운데 원점, 위가 +) → 캔버스
+  const sx = (p) => W / 2 + p.x * S;
+  const sy = (p) => H / 2 - p.y * S;
+
+  const state = { cycle: -1, cfg: null, pos: null, vel: null, dots: [], dotClock: 0 };
+
+  function reset(cycle) {
+    state.cycle = cycle;
+    state.cfg = prepare(cycle % CONFIGS.length);
+    state.pos = { ...state.cfg.start };
+    state.vel = { x: 0, y: 0 };
+    state.dots = [{ ...state.cfg.start }];
+    state.dotClock = 0;
+  }
+
+  function localTime(t) {
+    const cycle = Math.floor(t / CYCLE);
+    return { cycle, local: t - cycle * CYCLE };
+  }
+
+  function arrow(from, to, color, width, alpha) {
+    const dx = to.x - from.x, dy = to.y - from.y;
+    const len = Math.hypot(dx, dy);
+    if (len < 0.5) return;
+    const ux = dx / len, uy = dy / len;
+    const head = Math.min(10, len * 0.45); // 월드 단위
+    const base = { x: to.x - ux * head, y: to.y - uy * head };
+    ctx.save();
+    ctx.globalAlpha *= alpha;
+    ctx.strokeStyle = color; ctx.fillStyle = color;
+    ctx.lineWidth = width; ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(sx(from), sy(from));
+    ctx.lineTo(sx(base), sy(base));
+    ctx.stroke();
+    const px = -uy, py = ux, hw = head * 0.5 + width * 0.2;
+    ctx.beginPath();
+    ctx.moveTo(sx(to), sy(to));
+    ctx.lineTo(sx({ x: base.x + px * hw, y: base.y + py * hw }), sy({ x: base.x + px * hw, y: base.y + py * hw }));
+    ctx.lineTo(sx({ x: base.x - px * hw, y: base.y - py * hw }), sy({ x: base.x - px * hw, y: base.y - py * hw }));
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+
+  PieceKit.loop({
+    step(dt, t) {
+      const { cycle, local } = localTime(t);
+      if (cycle !== state.cycle) reset(cycle);
+      if (local < RELEASE) return;
+      // 알짜힘만이 속도를 바꾼다 — 속도는 쌓이고, 자리는 속도로 쌓인다
+      state.vel = add(state.vel, scale(state.cfg.accel, dt));
+      state.pos = add(state.pos, scale(state.vel, dt));
+      state.dotClock += dt;
+      if (state.dotClock >= DOT_EVERY - 1e-9) {
+        state.dotClock -= DOT_EVERY;
+        state.dots.push({ ...state.pos });
+      }
+    },
+
+    draw(t) {
+      const { cycle, local } = localTime(t);
+      if (cycle !== state.cycle) reset(cycle);
+      const { forces, net } = state.cfg;
+      const origin = state.pos;
+
+      ctx.clearRect(0, 0, W, H);
+      ctx.save();
+      ctx.globalAlpha = 1 - easeInOut(progress(FADE, local));
+
+      PieceKit.mark('지나온 자리 점', () => {
+        ctx.fillStyle = COLOR_TRAIL;
+        for (const d of state.dots) {
+          ctx.beginPath();
+          ctx.arc(sx(d), sy(d), 3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+
+      PieceKit.mark('물체', () => {
+        ctx.fillStyle = COLOR_BODY;
+        ctx.beginPath();
+        ctx.arc(sx(origin), sy(origin), 15, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      PieceKit.mark('작용하는 힘 화살표', () => {
+        // 첫째 힘은 제자리, 둘째·셋째 힘은 앞 힘의 끝으로 미끄러져 간다
+        const u2 = easeOut(progress(SLIDE2, local));
+        const u3 = easeOut(progress(SLIDE3, local));
+        const tail1 = origin;
+        const tail2 = add(origin, lerp({ x: 0, y: 0 }, forces[0], u2));
+        const tail3 = add(origin, lerp({ x: 0, y: 0 }, add(forces[0], forces[1]), u3));
+        // 알짜힘이 모습을 드러낸 뒤에는 한발 물러난다 (색은 그대로, 진하기만)
+        const back = 1 - 0.55 * easeInOut(progress(GROW, local));
+        arrow(tail1, add(tail1, forces[0]), COLOR_FORCE, 3, back);
+        arrow(tail2, add(tail2, forces[1]), COLOR_FORCE, 3, back);
+        arrow(tail3, add(tail3, forces[2]), COLOR_FORCE, 3, back);
+      });
+
+      PieceKit.mark('알짜힘 화살표', () => {
+        const g = easeInOut(progress(GROW, local));
+        if (g <= 0) return;
+        arrow(origin, add(origin, scale(net, g)), COLOR_NET, 4.5, 1);
+      });
+
+      ctx.restore();
+
+      PieceKit.mark('캡션', () => {
+        let text;
+        if (local < GROW[0]) text = '세 힘을 끝과 끝으로 이어 붙인다';
+        else if (local < RELEASE) text = '처음과 끝을 잇는 화살표 하나가 남는다';
+        else text = '물체는 가장 센 힘이 아니라 이 화살표 쪽으로 점점 빨라진다';
+        if (captionEl.textContent !== text) captionEl.textContent = text;
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>구심력</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #2b2f36;
+    --faint: #b9bcc2;
+    --ball: #2f4f6f;
+    --force: #d9542b;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; }
+  canvas { display: block; width: 100%; height: 300px; }
+  .bar { display: flex; align-items: center; gap: 12px; padding: 6px 4px 10px; }
+  .caption { flex: 1; font-size: 15px; line-height: 1.4; min-height: 21px; }
+  button { font: inherit; font-size: 14px; padding: 5px 12px; border-radius: 6px;
+    border: 1px solid #c9ccd2; background: #fff; color: var(--ink); cursor: pointer; }
+  button:disabled { opacity: 0.4; cursor: default; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="cv"></canvas>
+  <div class="bar">
+    <div class="caption" id="caption"></div>
+    <button id="release" type="button">지금 놓기</button>
+  </div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  const cv = document.getElementById('cv');
+  const ctx = cv.getContext('2d');
+  const captionEl = document.getElementById('caption');
+  const releaseBtn = document.getElementById('release');
+  const css = getComputedStyle(document.documentElement);
+  const C = {
+    ink: css.getPropertyValue('--ink').trim(),
+    faint: css.getPropertyValue('--faint').trim(),
+    ball: css.getPropertyValue('--ball').trim(),
+    force: css.getPropertyValue('--force').trim(),
+  };
+
+  // 장면 상수 (화면 픽셀 단위)
+  const H = 300;
+  const R = 62;                 // 줄 길이 = 원 궤도 반지름
+  const PERIOD = 2.4;           // 한 바퀴 걸리는 시간 (초)
+  const OMEGA = 2 * Math.PI / PERIOD;  // 반시계 방향 각속도
+  const SPEED = OMEGA * R;      // 공의 속력 (px/s)
+  const HOLD = 3.0;             // 줄에 묶여 도는 시간
+  const FLY = 1.5;              // 놓인 뒤 날아가는 시간
+  const FADE_IN = 0.25;
+  const BALL_R = 9;
+
+  let W = 720;
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    W = cv.clientWidth || 720;
+    cv.width = Math.round(W * dpr);
+    cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // 상태 — step 에서만 바뀐다. 중심 기준 좌표(위쪽이 +y)로 보관한다.
+  const S = {
+    theta: Math.PI / 4, // 줄에 묶인 공의 각 (줄이 있을 때만 의미)
+    attached: true,
+    phaseStart: 0,      // 지금 단계가 시작된 시각
+    releasePos: null,   // 놓인 순간 공 위치
+    releaseVel: null,   // 놓인 순간 공 속도
+    pos: { x: 0, y: 0 },
+    wantRelease: false, // 버튼 입력 (다음 step 에서 반영)
+  };
+  S.pos = { x: R * Math.cos(S.theta), y: R * Math.sin(S.theta) };
+
+  function release(t) {
+    S.attached = false;
+    S.phaseStart = t;
+    S.releasePos = { x: S.pos.x, y: S.pos.y };
+    // 반시계 회전의 접선 방향 = 반지름 방향을 90° 돌린 것
+    S.releaseVel = { x: -SPEED * Math.sin(S.theta), y: SPEED * Math.cos(S.theta) };
+  }
+
+  releaseBtn.addEventListener('click', () => {
+    if (PieceKit.frozen) return;
+    if (S.attached) S.wantRelease = true;
+  });
+
+  PieceKit.loop({
+    step(dt, t) {
+      // 각은 줄이 없는 동안에도 흘러, 다시 묶일 때 놓는 각도가 주기마다 달라진다
+      S.theta += OMEGA * dt;
+      if (S.attached) {
+        S.pos.x = R * Math.cos(S.theta);
+        S.pos.y = R * Math.sin(S.theta);
+        const manual = S.wantRelease && !PieceKit.frozen;
+        S.wantRelease = false;
+        if (manual || t + dt - S.phaseStart >= HOLD - 1e-9) release(t + dt);
+      } else {
+        S.pos.x += S.releaseVel.x * dt;
+        S.pos.y += S.releaseVel.y * dt;
+        if (t + dt - S.phaseStart >= FLY - 1e-9) {
+          S.attached = true;
+          S.phaseStart = t + dt;
+          S.pos.x = R * Math.cos(S.theta);
+          S.pos.y = R * Math.sin(S.theta);
+        }
+      }
+    },
+
+    draw(t) {
+      const cx = W / 2, cy = H / 2;
+      const X = (p) => cx + p.x;
+      const Y = (p) => cy - p.y;
+      const since = t - S.phaseStart;
+      ctx.clearRect(0, 0, W, H);
+
+      PieceKit.mark('원 궤도', () => {
+        ctx.save();
+        ctx.strokeStyle = C.faint;
+        ctx.lineWidth = 1;
+        ctx.setLineDash([2, 5]);
+        ctx.beginPath();
+        ctx.arc(cx, cy, R, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      if (!S.attached) {
+        const fade = Math.min(1, (FLY - since) / 0.3);
+
+        PieceKit.mark('바깥 방향 점선', () => {
+          // 흔한 예상(반지름 바깥으로 튀어 나감)을 비교용으로만 흐리게 둔다
+          const p = S.releasePos;
+          const len = Math.hypot(p.x, p.y);
+          const ux = p.x / len, uy = p.y / len;
+          const reach = SPEED * FLY;
+          ctx.save();
+          ctx.globalAlpha = 0.9 * fade;
+          ctx.strokeStyle = C.faint;
+          ctx.lineWidth = 1.5;
+          ctx.setLineDash([6, 6]);
+          ctx.beginPath();
+          ctx.moveTo(X(p), Y(p));
+          ctx.lineTo(X({ x: p.x + ux * reach, y: p.y + uy * reach }),
+                     Y({ x: p.x + ux * reach, y: p.y + uy * reach }));
+          ctx.stroke();
+          ctx.restore();
+        });
+
+        PieceKit.mark('날아간 자취', () => {
+          ctx.save();
+          ctx.globalAlpha = 0.55 * fade;
+          ctx.strokeStyle = C.ball;
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.moveTo(X(S.releasePos), Y(S.releasePos));
+          ctx.lineTo(X(S.pos), Y(S.pos));
+          ctx.stroke();
+          ctx.restore();
+        });
+      }
+
+      PieceKit.mark('줄', () => {
+        if (!S.attached) return;
+        ctx.save();
+        ctx.globalAlpha = Math.min(1, since / FADE_IN);
+        ctx.strokeStyle = C.ink;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(X(S.pos), Y(S.pos));
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      PieceKit.mark('회전 중심', () => {
+        ctx.save();
+        ctx.fillStyle = C.ink;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+
+      PieceKit.mark('당기는 힘', () => {
+        if (!S.attached) return;
+        // 공에서 중심 쪽으로 향하는 화살표 (길이는 일정 — 크기가 아니라 방향이 주장)
+        const len = Math.hypot(S.pos.x, S.pos.y);
+        const ux = -S.pos.x / len, uy = -S.pos.y / len;
+        const start = { x: S.pos.x + ux * (BALL_R + 2), y: S.pos.y + uy * (BALL_R + 2) };
+        const end = { x: S.pos.x + ux * 40, y: S.pos.y + uy * 40 };
+        const ex = X(end), ey = Y(end);
+        const ang = Math.atan2(-(uy), ux);
+        ctx.save();
+        ctx.globalAlpha = Math.min(1, since / FADE_IN);
+        ctx.strokeStyle = C.force;
+        ctx.fillStyle = C.force;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(X(start), Y(start));
+        ctx.lineTo(ex - Math.cos(ang) * 6, ey - Math.sin(ang) * 6);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(ex, ey);
+        ctx.lineTo(ex - Math.cos(ang - 0.45) * 11, ey - Math.sin(ang - 0.45) * 11);
+        ctx.lineTo(ex - Math.cos(ang + 0.45) * 11, ey - Math.sin(ang + 0.45) * 11);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      });
+
+      PieceKit.mark('공', () => {
+        ctx.save();
+        ctx.globalAlpha = S.attached ? Math.min(1, since / FADE_IN) : 1;
+        ctx.fillStyle = C.ball;
+        ctx.beginPath();
+        ctx.arc(X(S.pos), Y(S.pos), BALL_R, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+
+      PieceKit.mark('캡션', () => {
+        const text = S.attached
+          ? '줄이 공을 매 순간 중심 쪽으로 당겨, 곧게 가려는 공의 방향을 꺾는다'
+          : '줄을 놓자 공은 바깥(점선)이 아니라 놓인 순간의 접선을 따라 곧게 날아간다';
+        if (captionEl.textContent !== text) captionEl.textContent = text;
+        releaseBtn.disabled = !S.attached;
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

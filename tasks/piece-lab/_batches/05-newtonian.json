@@ -1,0 +1,17 @@
+{
+  "name": "05-newtonian",
+  "title": "뉴턴 역학 1 — 힘의 법칙·마찰·빗면·엘리베이터·도르래·원운동·회전틀·균형",
+  "record": "tasks/engine-requirements/batches/05-newtonian.md",
+  "pieces": [
+    "newtons-second-law",
+    "newtons-third-law",
+    "net-force",
+    "static-friction",
+    "inclined-plane",
+    "apparent-weight",
+    "atwood-machine",
+    "centripetal-force",
+    "coriolis-effect",
+    "balance-scale"
+  ]
+}

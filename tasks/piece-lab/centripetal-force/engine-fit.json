@@ -1,0 +1,53 @@
+{
+  "rows": [
+    {
+      "element": "원 궤도",
+      "vocab": "trajectory (closed · dashed · muted)",
+      "status": "있음"
+    },
+    {
+      "element": "회전 중심",
+      "vocab": "body (point)",
+      "status": "있음"
+    },
+    {
+      "element": "줄",
+      "vocab": "constraint (string · opacity)",
+      "status": "있음"
+    },
+    {
+      "element": "당기는 힘",
+      "vocab": "vector (accent)",
+      "status": "있음"
+    },
+    {
+      "element": "공",
+      "vocab": "body (circle)",
+      "status": "있음"
+    },
+    {
+      "element": "날아간 자취",
+      "vocab": "trajectory (opacity · fade tail)",
+      "status": "있음"
+    },
+    {
+      "element": "바깥 방향 점선",
+      "vocab": "trajectory (dashed)",
+      "status": "있음"
+    },
+    {
+      "element": "지금 놓기 버튼",
+      "vocab": "—",
+      "status": "없음",
+      "note": "누르면 state 의 값 하나를 바꾸는 단추 조작기가 없다. pinball-launcher 의 trigger 는 세기와 한 몸이고, reset-buttons 는 카메라·상태 되돌리기로 고정이다. 「누르는 순간」 을 state 경로 하나에 적는 단추(이름표는 선언)가 필요하다"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (cases — 묶였는지는 상태)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "묶임 → 놓임 → 다시 묶임 단계와 놓는 각을 주기마다 바꾸기 — timeline + sim"
+  ]
+}

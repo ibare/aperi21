@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>작용 반작용</title>
+<style>
+  :root { --bg: #fbfaf7; --ink: #2b2b2b; --muted: #9a968d; --force: #d9480f; }
+  html, body { margin: 0; background: var(--bg); }
+  .piece { max-width: 900px; margin: 0 auto; font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  canvas { display: block; width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<div class="piece"><canvas id="c"></canvas></div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// 얼음 위 두 사람이 서로 민다.
+// 두 힘은 크기가 같고 방향이 반대지만 각자 다른 사람에게 걸려서 둘 다 밀려난다.
+const W = 820, H = 250;
+const canvas = document.getElementById('c');
+const dpr = window.devicePixelRatio || 1;
+canvas.width = W * dpr; canvas.height = H * dpr;
+const ctx = canvas.getContext('2d');
+ctx.scale(dpr, dpr);
+
+const INK = '#2b2b2b', MUTED = '#9a968d', FORCE = '#d9480f', BG = '#fbfaf7';
+
+// 한 주기 (초)
+const PERIOD = 7.0;
+const OFFSET = 0.5;          // 도착 순간 이미 밀기가 진행 중이도록 주기를 당긴다
+const PUSH_START = 0.2, PUSH_DUR = 1.5;
+const FADE_START = 6.4;
+
+// 두 사람의 질량은 같다. 가속도 크기 A(px/s²) 는 힘의 최대치 / 질량
+const A = 53.3;
+const MID = W / 2, ICE_Y = 196;
+const START_HALF = 40;       // 처음 몸 중심과 가운데 사이 거리
+const MAX_ARROW = 78;        // 힘 최대일 때 화살표 길이
+
+// 주기 안 위상 p 에서의 밀기 진행량
+function pushState(p) {
+  const tau = p - PUSH_START;
+  if (tau <= 0) return { s: 0, f: 0, contact: true };
+  if (tau < PUSH_DUR) {
+    const u = tau / PUSH_DUR;
+    const s = A * PUSH_DUR * PUSH_DUR * (u * u / 4 + (Math.cos(2 * Math.PI * u) - 1) / (8 * Math.PI * Math.PI));
+    const f = Math.sin(Math.PI * u) ** 2;
+    return { s, f, contact: true };
+  }
+  const s1 = A * PUSH_DUR * PUSH_DUR / 4;
+  const v1 = A * PUSH_DUR / 2;
+  return { s: s1 + v1 * (tau - PUSH_DUR), f: 0, contact: false, since: tau - PUSH_DUR };
+}
+
+function phaseOf(t) { return (t + OFFSET) % PERIOD; }
+
+function drawPerson(cx, dir, handX, alpha) {
+  // dir: +1 이면 오른쪽을 본다(왼쪽 사람), -1 이면 왼쪽을 본다
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.strokeStyle = INK; ctx.fillStyle = INK; ctx.lineWidth = 3; ctx.lineCap = 'round';
+  const hipY = ICE_Y - 40, shoulderY = ICE_Y - 92, headY = ICE_Y - 112;
+  // 다리와 날
+  ctx.beginPath();
+  ctx.moveTo(cx - 3, hipY); ctx.lineTo(cx - 10, ICE_Y - 6);
+  ctx.moveTo(cx + 3, hipY); ctx.lineTo(cx + 10, ICE_Y - 6);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(cx - 22, ICE_Y - 3); ctx.lineTo(cx + 22, ICE_Y - 3);
+  ctx.stroke();
+  // 몸통
+  ctx.beginPath();
+  ctx.roundRect(cx - 15, shoulderY - 6, 30, hipY - shoulderY + 10, 10);
+  ctx.fill();
+  // 머리
+  ctx.beginPath();
+  ctx.arc(cx, headY, 13, 0, Math.PI * 2);
+  ctx.fill();
+  // 팔 — 손끝 handX 까지
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.moveTo(cx + dir * 10, shoulderY + 4);
+  ctx.lineTo(handX, shoulderY + 12);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawArrow(x0, y, len, dir) {
+  if (len < 2) return;
+  const x1 = x0 + dir * len;
+  const head = Math.min(14, len * 0.6);
+  // 몸 위에 겹쳐도 보이도록 배경색 테두리를 먼저 깐다
+  for (const [color, width] of [[BG, 9], [FORCE, 4]]) {
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = width; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x1 - dir * head * 0.6, y); ctx.stroke();
+  }
+  ctx.fillStyle = FORCE;
+  ctx.beginPath();
+  ctx.moveTo(x1, y);
+  ctx.lineTo(x1 - dir * head, y - head * 0.55);
+  ctx.lineTo(x1 - dir * head, y + head * 0.55);
+  ctx.closePath(); ctx.fill();
+  // 작용점
+  ctx.beginPath(); ctx.arc(x0, y, 4.5, 0, Math.PI * 2); ctx.fill();
+}
+
+PieceKit.loop({
+  step(dt, t) { /* 위치는 주기 위상의 함수로 정해진다 — 쌓이는 상태 없음 */ },
+  draw(t) {
+    const p = phaseOf(t);
+    const st = pushState(p);
+    const alpha = p > FADE_START ? Math.max(0, 1 - (p - FADE_START) / (PERIOD - FADE_START))
+                : p < PUSH_START ? Math.min(1, 0.35 + p / PUSH_START * 0.65) : 1;
+    const leftX = MID - START_HALF - st.s;
+    const rightX = MID + START_HALF + st.s;
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = BG; ctx.fillRect(0, 0, W, H);
+
+    PieceKit.mark('얼음판', () => {
+      ctx.strokeStyle = MUTED; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(20, ICE_Y); ctx.lineTo(W - 20, ICE_Y); ctx.stroke();
+      // 움직임을 읽을 기준이 되는 고정된 긁힌 자국
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 16; i++) {
+        const x = 50 + i * 48;
+        ctx.beginPath(); ctx.moveTo(x, ICE_Y + 8); ctx.lineTo(x + 14, ICE_Y + 8); ctx.stroke();
+      }
+    });
+
+    PieceKit.mark('처음 선 자리', () => {
+      // 두 사람이 손을 맞대고 섰던 자리 — 둘 다 여기서 밀려났음을 읽는 기준
+      ctx.fillStyle = MUTED;
+      for (const x of [MID - START_HALF, MID + START_HALF]) {
+        ctx.beginPath();
+        ctx.moveTo(x, ICE_Y + 2); ctx.lineTo(x - 6, ICE_Y + 12); ctx.lineTo(x + 6, ICE_Y + 12);
+        ctx.closePath(); ctx.fill();
+      }
+    });
+
+    // 손끝: 닿아 있는 동안은 가운데에서 만나고, 떨어진 뒤에는 팔을 거둔다
+    let leftHand, rightHand;
+    if (st.contact) {
+      leftHand = MID - 2; rightHand = MID + 2;
+    } else {
+      const k = Math.max(0, 1 - st.since / 0.35);
+      const reach0 = START_HALF + A * PUSH_DUR * PUSH_DUR / 4 - 2;
+      const reach = 22 + (reach0 - 22) * k;
+      leftHand = leftX + reach; rightHand = rightX - reach;
+    }
+
+    PieceKit.mark('왼쪽 사람', () => drawPerson(leftX, +1, leftHand, alpha));
+    PieceKit.mark('오른쪽 사람', () => drawPerson(rightX, -1, rightHand, alpha));
+
+    const arrowY = ICE_Y - 64;
+    const len = st.f * MAX_ARROW;
+    PieceKit.mark('왼쪽 사람이 받는 힘', () => {
+      if (len < 2) return;
+      drawArrow(leftX, arrowY, len, -1);
+      ctx.globalAlpha = Math.min(1, st.f * 3);
+      ctx.fillStyle = FORCE; ctx.font = '600 14px sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText('왼쪽 사람이 받는 힘', leftX - MAX_ARROW, arrowY - 16);
+      ctx.globalAlpha = 1;
+    });
+    PieceKit.mark('오른쪽 사람이 받는 힘', () => {
+      if (len < 2) return;
+      drawArrow(rightX, arrowY, len, +1);
+      ctx.globalAlpha = Math.min(1, st.f * 3);
+      ctx.fillStyle = FORCE; ctx.font = '600 14px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('오른쪽 사람이 받는 힘', rightX + MAX_ARROW, arrowY - 16);
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('캡션', () => {
+      let text;
+      if (p < PUSH_START) text = '두 사람이 얼음 위에서 손바닥을 맞댄다';
+      else if (st.contact) text = '서로 민다 — 크기는 같고 방향은 반대인 두 힘이 각자 다른 사람에게 걸린다';
+      else text = '두 힘이 서로 지워지지 않았다 — 두 사람 모두 밀려나 멀어진다';
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = INK; ctx.font = '15px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(text, W / 2, H - 14);
+    });
+  },
+});
+</script>
+</body>
+</html>

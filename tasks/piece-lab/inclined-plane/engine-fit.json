@@ -1,0 +1,45 @@
+{
+  "rows": [
+    {
+      "element": "빗면",
+      "vocab": "region (3점 · fillOpacity)",
+      "status": "있음",
+      "note": "surface incline 도 있으나 채움 삼각형 모양은 region 이 맞다"
+    },
+    {
+      "element": "기울기 각",
+      "vocab": "sector (fillOpacity 0 · rimWidth) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "물체",
+      "vocab": "body (rect · orientation)",
+      "status": "있음"
+    },
+    {
+      "element": "분해 보조선",
+      "vocab": "trajectory (dashed · width 1)",
+      "status": "있음"
+    },
+    {
+      "element": "중력 · 수직 성분 · 나란한 성분",
+      "vocab": "vector ×3 (width 로 굵기 · 나란한 성분만 accent · label)",
+      "status": "있음",
+      "note": "vector-decomposition(03)과 같은 조합이다"
+    },
+    {
+      "element": "기울기 슬라이더",
+      "vocab": "slider (range [5,70] · step 1 · digits 0) + heldPath",
+      "status": "있음",
+      "note": "손 뗀 뒤 3 s 기다렸다 1 s 에 걸쳐 돌아가는 것은 sim 의 step"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (text)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "면 방향·법선 좌표계와 성분 계산 — sim"
+  ]
+}

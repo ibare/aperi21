@@ -1,0 +1,39 @@
+{
+  "rows": [
+    {
+      "element": "바닥",
+      "vocab": "trajectory (2점) + trace (tick · direction 사선)",
+      "status": "있음"
+    },
+    {
+      "element": "상자",
+      "vocab": "body (rect)",
+      "status": "있음"
+    },
+    {
+      "element": "마찰 한계 표시",
+      "vocab": "trajectory (dashed · opacity) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "마찰력 화살표",
+      "vocab": "vector (colorRole primary)",
+      "status": "있음"
+    },
+    {
+      "element": "당기는 힘 화살표",
+      "vocab": "vector (colorRole ink)",
+      "status": "있음",
+      "note": "같은 축척은 sim 이 한 상수로 둔다"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (cases — 놓쳤는지는 상태)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "당기는 힘 증가 · 한계 초과 · 운동 마찰 전환 — sim 의 물리",
+    "원본 판단 거리 — 당김(먹)·마찰(파랑)·한계(주황) 세 색. 한계 표시가 강조색을 가져가도 되는지 (S-piece 강조색은 한 뜻)"
+  ]
+}
