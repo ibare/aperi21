@@ -216,6 +216,38 @@ export function registerAperi21Bundles(): void {
     return registerBundle('aperi21:tangential-normal-acceleration', m.tangentialNormalAccelerationBundle, caps.capabilities);
   });
 
+  registerBundleLoader('aperi21:reference-frame', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-reference-frame'),
+      import('./capabilities/kinematics/reference-frame.generated.js'),
+    ]);
+    return registerBundle('aperi21:reference-frame', m.referenceFrameBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:gravitational-acceleration', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-gravitational-acceleration'),
+      import('./capabilities/kinematics/gravitational-acceleration.generated.js'),
+    ]);
+    return registerBundle('aperi21:gravitational-acceleration', m.gravitationalAccelerationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:trajectory-equation', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-trajectory-equation'),
+      import('./capabilities/kinematics/trajectory-equation.generated.js'),
+    ]);
+    return registerBundle('aperi21:trajectory-equation', m.trajectoryEquationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:uniform-circular-motion', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-uniform-circular-motion'),
+      import('./capabilities/kinematics/uniform-circular-motion.generated.js'),
+    ]);
+    return registerBundle('aperi21:uniform-circular-motion', m.uniformCircularMotionBundle, caps.capabilities);
+  });
+
   registerBundleLoader('aperi21:uniform-motion', async () => {
     const [m, caps] = await Promise.all([
       import('@aperi21/sim-uniform-motion'),

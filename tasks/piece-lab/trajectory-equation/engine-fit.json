@@ -1,0 +1,40 @@
+{
+  "rows": [
+    {
+      "element": "지면",
+      "vocab": "trajectory (2점)",
+      "status": "있음"
+    },
+    {
+      "element": "경로",
+      "vocab": "trajectory (points 를 s 까지)",
+      "status": "있음"
+    },
+    {
+      "element": "시각 눈금",
+      "vocab": "trace (dot) 또는 body (point) + readout ×7 (opacity ← 지우개 위치)",
+      "status": "있음",
+      "note": "지우개가 지나간 눈금의 옅기는 sim 이 인스턴스마다 opacity 로 준다"
+    },
+    {
+      "element": "지우개",
+      "vocab": "trajectory (세로선) + region (띠 · fillOpacity)",
+      "status": "있음",
+      "note": "원본의 「뒤쪽으로 흐려지는 띠」는 그라데이션이다. region 은 단색이라 띠 몇 겹으로 근사한다 — 결은 주장이 아니라 relative-velocity 때와 같이 뺄 수 있는지부터 본다"
+    },
+    {
+      "element": "공",
+      "vocab": "body (circle · 경로와 같은 colorRole)",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef + TimelinePhase.caption",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "포물선 x(t), y(t) 샘플 — sim",
+    "한 바퀴 10초의 구간(날기 · 지우기 · 머묾) — TimelineDef.phases"
+  ]
+}

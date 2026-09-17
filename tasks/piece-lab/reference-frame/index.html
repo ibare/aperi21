@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>기준틀</title>
+<style>
+  html, body { margin: 0; background: #fbfaf7; }
+  #wrap { max-width: 900px; margin: 0 auto; }
+  canvas { display: block; width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<div id="wrap"><canvas id="c"></canvas></div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// 논리 좌표: 전체 860 × 270. 왼쪽 판(땅 기준) 0~420, 오른쪽 판(기차 기준) 440~860.
+const W = 860, H = 270, PANEL_W = 420, GAP = 20, PANEL_H = 240;
+
+// 운동 상수 (화면 단위: 픽셀, 초)
+const V = 110;             // 기차 속력
+const PERIOD = 3.6;        // 한 번의 낙하가 되풀이되는 주기
+const OFFSET = 1.1;        // t=0 에 이미 낙하 중이도록 주기 위상을 민다
+const RELEASE = 0.4;       // 주기 안에서 공을 놓는 시각
+const FALL = 1.2;          // 낙하 시간
+const HAND_Y = 88;         // 손(놓는 높이)
+const FLOOR_Y = 200;       // 기차 바닥
+const BALL_R = 6;
+const DROP = FLOOR_Y - BALL_R - HAND_Y;
+const G = 2 * DROP / (FALL * FALL);
+const CAR_LEN = 340;
+const CAR_TOP = 40;
+const CAR_SPACING = V * PERIOD;   // 396 — 한 주기에 기차가 가는 거리 = 칸 간격
+const HAND_IN_CAR = 80;           // 칸 왼쪽 끝에서 손까지
+const RIDER_IN_CAR = 58;
+const GROUND_HAND_AT_RELEASE = 120; // 땅 판에서 놓는 순간 손의 x
+const TRAIN_CAR_X = 40;             // 기차 판에서 칸 왼쪽 끝 (고정)
+const POLE_SPACING = 90;
+const TRACE_DT = 0.1;               // 자취 점 간격(초)
+
+const INK = '#2b2b2b', CAR = '#6d6a64', CAR_FILL = '#f1eee7', GROUND = '#8a857b',
+      POLE = '#b7b1a5', BALL = '#d0533a', LABEL = '#55524c';
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let scale = 1;
+function resize() {
+  const cssW = canvas.parentElement.clientWidth || W;
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.round(cssW * dpr);
+  canvas.height = Math.round(cssW * H / W * dpr);
+  scale = canvas.width / W;
+}
+resize();
+window.addEventListener('resize', resize);
+
+function mod(a, m) { return ((a % m) + m) % m; }
+
+// 주기 안 시각과 공의 상태 — 모두 t 의 함수
+function phase(t) {
+  const tc = mod(t + OFFSET, PERIOD);
+  const s = Math.min(Math.max(tc - RELEASE, 0), FALL); // 놓은 뒤 흐른 시간 (착지 후 고정)
+  const y = HAND_Y + 0.5 * G * s * s;
+  // 손에 쥔 공은 주기 초반에 나타나고, 바닥의 공과 자취는 주기 끝에 사라진다
+  let alpha = 1;
+  if (tc < 0.3) alpha = tc / 0.3;
+  else if (tc > 3.2) alpha = Math.max(0, (PERIOD - tc) / 0.4);
+  return { tc, s, y, alpha, released: tc >= RELEASE };
+}
+
+function clipPanel(x0, fn) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(x0, 0, PANEL_W, PANEL_H);
+  ctx.clip();
+  ctx.translate(x0, 0);
+  fn();
+  ctx.restore();
+}
+
+function drawGroundLine() {
+  ctx.strokeStyle = GROUND; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(0, 216); ctx.lineTo(PANEL_W, 216); ctx.stroke();
+}
+function drawPoles(shift) {
+  ctx.strokeStyle = POLE; ctx.lineWidth = 3;
+  for (let x = mod(shift, POLE_SPACING) - POLE_SPACING; x < PANEL_W + POLE_SPACING; x += POLE_SPACING) {
+    ctx.beginPath(); ctx.moveTo(x, 216); ctx.lineTo(x, 150); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x - 8, 156); ctx.lineTo(x + 8, 156); ctx.stroke();
+  }
+}
+function drawCar(cx) {
+  ctx.fillStyle = CAR_FILL;
+  ctx.fillRect(cx, CAR_TOP, CAR_LEN, FLOOR_Y - CAR_TOP);
+  ctx.strokeStyle = CAR; ctx.lineWidth = 2;
+  ctx.strokeRect(cx, CAR_TOP, CAR_LEN, FLOOR_Y - CAR_TOP);
+  ctx.fillStyle = CAR;
+  for (const wx of [cx + 50, cx + CAR_LEN - 50]) {
+    ctx.beginPath(); ctx.arc(wx, 208, 8, 0, Math.PI * 2); ctx.fill();
+  }
+}
+function drawRider(cx) {
+  const bx = cx + RIDER_IN_CAR, hx = cx + HAND_IN_CAR;
+  ctx.strokeStyle = INK; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.arc(bx, 112, 9, 0, Math.PI * 2); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(bx, 121); ctx.lineTo(bx, 168);
+  ctx.moveTo(bx, 168); ctx.lineTo(bx - 9, FLOOR_Y);
+  ctx.moveTo(bx, 168); ctx.lineTo(bx + 9, FLOOR_Y);
+  ctx.moveTo(bx, 132); ctx.lineTo(hx, HAND_Y + BALL_R + 2);
+  ctx.stroke();
+}
+function drawBall(x, y, a) {
+  ctx.globalAlpha = a;
+  ctx.fillStyle = BALL;
+  ctx.beginPath(); ctx.arc(x, y, BALL_R, 0, Math.PI * 2); ctx.fill();
+  ctx.globalAlpha = 1;
+}
+// 자취: 놓은 뒤 TRACE_DT 마다 공이 있던 자리. xOf(s) 가 관찰자에 따른 가로 위치.
+function drawTrace(p, xOf) {
+  if (!p.released) return;
+  ctx.fillStyle = BALL;
+  ctx.globalAlpha = 0.45 * p.alpha;
+  for (let k = 0; k * TRACE_DT <= p.s + 1e-9; k++) {
+    const s = k * TRACE_DT;
+    ctx.beginPath(); ctx.arc(xOf(s), HAND_Y + 0.5 * G * s * s, 3, 0, Math.PI * 2); ctx.fill();
+  }
+  ctx.globalAlpha = 0.3 * p.alpha;
+  ctx.strokeStyle = BALL; ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  const n = 40;
+  for (let i = 0; i <= n; i++) {
+    const s = p.s * i / n;
+    const x = xOf(s), y = HAND_Y + 0.5 * G * s * s;
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  ctx.globalAlpha = 1;
+}
+
+PieceKit.loop({
+  step(dt, t) { /* 모든 상태가 t 의 함수라 쌓을 것이 없다 */ },
+  draw(t) {
+    const p = phase(t);
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    ctx.fillStyle = '#fbfaf7';
+    ctx.fillRect(0, 0, W, H);
+
+    // ── 왼쪽: 땅에 서서 본 화면 (땅이 멈춰 있다) ──
+    const groundHandX = GROUND_HAND_AT_RELEASE + V * (p.tc - RELEASE);
+    const groundCarX = groundHandX - HAND_IN_CAR;
+    clipPanel(0, () => {
+      PieceKit.mark('땅에서 본 땅과 전봇대', () => { drawPoles(30); drawGroundLine(); });
+      PieceKit.mark('땅에서 본 기차', () => {
+        for (const i of [-1, 0, 1]) { drawCar(groundCarX + i * CAR_SPACING); drawRider(groundCarX + i * CAR_SPACING); }
+      });
+      PieceKit.mark('땅에서 본 공의 자취', () => {
+        drawTrace(p, s => GROUND_HAND_AT_RELEASE + V * s);
+      });
+      PieceKit.mark('땅에서 본 공', () => {
+        // 공은 기차와 같은 가로 속력을 지니므로 놓기 전·낙하 중·착지 후 모두 손의 가로 위치에 있다
+        drawBall(groundHandX, p.y, p.alpha);
+      });
+    });
+
+    // ── 오른쪽: 기차에 타고 본 화면 (기차가 멈춰 있다) ──
+    clipPanel(PANEL_W + GAP, () => {
+      PieceKit.mark('기차에서 본 땅과 전봇대', () => { drawPoles(30 - V * t); drawGroundLine(); });
+      PieceKit.mark('기차에서 본 기차', () => { drawCar(TRAIN_CAR_X); drawRider(TRAIN_CAR_X); });
+      PieceKit.mark('기차에서 본 공의 자취', () => {
+        drawTrace(p, () => TRAIN_CAR_X + HAND_IN_CAR);
+      });
+      PieceKit.mark('기차에서 본 공', () => {
+        drawBall(TRAIN_CAR_X + HAND_IN_CAR, p.y, p.alpha);
+      });
+    });
+
+    PieceKit.mark('판 이름표', () => {
+      ctx.fillStyle = LABEL;
+      ctx.font = '600 14px system-ui, -apple-system, sans-serif';
+      ctx.textBaseline = 'top';
+      ctx.fillText('땅에 서서 보면', PANEL_W - 110, 12);
+      ctx.fillText('기차에 타고 보면', PANEL_W + GAP + PANEL_W - 124, 12);
+    });
+    PieceKit.mark('판 경계', () => {
+      ctx.strokeStyle = '#dcd8cf'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(PANEL_W + GAP / 2, 8); ctx.lineTo(PANEL_W + GAP / 2, PANEL_H - 8); ctx.stroke();
+    });
+    PieceKit.mark('캡션', () => {
+      ctx.fillStyle = INK;
+      ctx.font = '15px system-ui, -apple-system, sans-serif';
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.fillText('같은 공 하나가 땅에서 보면 휘어지며, 기차에서 보면 곧게 떨어진다', W / 2, PANEL_H + 16);
+      ctx.textAlign = 'left';
+    });
+  },
+});
+</script>
+</body>
+</html>

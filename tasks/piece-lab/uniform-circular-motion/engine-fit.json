@@ -1,0 +1,48 @@
+{
+  "rows": [
+    {
+      "element": "원 궤도",
+      "vocab": "trajectory (closed · width 1 · colorRole muted)",
+      "status": "있음"
+    },
+    {
+      "element": "지나온 자리의 속도 화살표",
+      "vocab": "vector (colorRole accent · opacity) × 최대 12",
+      "status": "있음"
+    },
+    {
+      "element": "물체의 속도 화살표",
+      "vocab": "vector (colorRole accent · width)",
+      "status": "있음"
+    },
+    {
+      "element": "물체",
+      "vocab": "body (circle)",
+      "status": "있음"
+    },
+    {
+      "element": "한 점에 모은 지난 속도 화살표",
+      "vocab": "vector (같은 옅기) × 최대 12",
+      "status": "있음"
+    },
+    {
+      "element": "한 점에 모은 지금 속도 화살표",
+      "vocab": "vector + body (point 꼬리)",
+      "status": "있음"
+    },
+    {
+      "element": "모은 곳 안내글",
+      "vocab": "readout (world · font text)",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (text)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "30° 마다의 잔상 개수·옅기 — sim 이 t 에서 계산",
+    "판단 거리 — 「한 점에 모은 속도 화살표」 판은 03 의 tangential-normal-acceleration 이 이미 쓴 장치이고, centripetal-acceleration 도 같은 원운동의 속도 방향 변화를 다룬다. 주장(길이는 그대로 방향만 바뀐다)은 다르지만 장면이 겹친다"
+  ]
+}

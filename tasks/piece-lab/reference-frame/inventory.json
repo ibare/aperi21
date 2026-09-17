@@ -1,0 +1,127 @@
+{
+  "id": "reference-frame",
+  "claim": "기차 안에서 놓은 같은 공의 낙하가 땅에 선 사람에게는 휘어진 길로, 기차에 탄 사람에게는 곧은 길로 그려진다",
+  "verb": "휘어진다 (한쪽 판에서) / 곧게 떨어진다 (다른 쪽 판에서)",
+  "probeTimes": [0, 0.4, 0.6, 1.8],
+  "elements": [
+    {
+      "mark": "땅에서 본 땅과 전봇대",
+      "what": "왼쪽 판의 땅 선과 전봇대",
+      "physical": "땅 기준틀 — 이 판에서 멈춰 있는 것",
+      "drawing": "가로 선 + 일정 간격의 세로 선",
+      "motion": "static",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "땅에서 본 기차",
+      "what": "왼쪽 판에서 오른쪽으로 달리는 기차 칸과 탄 사람",
+      "physical": "속력 V 로 움직이는 기차(관찰자 B 의 기준틀)",
+      "drawing": "채운 사각형 칸 + 바퀴 원 + 선으로 그린 사람. 칸 간격이 한 주기 이동 거리와 같아 되풀이가 이어진다",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "땅에서 본 공의 자취",
+      "what": "땅 기준으로 공이 지나간 길",
+      "physical": "땅 기준틀에서의 공 위치 (가로 등속 + 세로 가속)",
+      "drawing": "0.1초 간격 점 + 옅은 곡선. 땅에 고정되어 기차가 지나가도 남는다",
+      "motion": "time-function",
+      "state": "none (놓은 뒤 흐른 시간에서 매 프레임 다시 계산)",
+      "interaction": null
+    },
+    {
+      "mark": "땅에서 본 공",
+      "what": "왼쪽 판의 공",
+      "physical": "기차 안에서 놓은 공",
+      "drawing": "채운 원",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "기차에서 본 땅과 전봇대",
+      "what": "오른쪽 판에서 왼쪽으로 흘러가는 땅과 전봇대",
+      "physical": "기차 기준틀에서 속력 -V 로 움직이는 땅",
+      "drawing": "가로 선 + 흘러가는 세로 선",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "기차에서 본 기차",
+      "what": "오른쪽 판에 멈춰 있는 기차 칸과 탄 사람",
+      "physical": "기차 기준틀 — 이 판에서 멈춰 있는 것",
+      "drawing": "채운 사각형 칸 + 바퀴 원 + 선으로 그린 사람",
+      "motion": "static",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "기차에서 본 공의 자취",
+      "what": "기차 기준으로 공이 지나간 길",
+      "physical": "기차 기준틀에서의 공 위치 (세로 가속만)",
+      "drawing": "0.1초 간격 점 + 옅은 곧은 선. 점 간격이 아래로 갈수록 벌어진다",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "기차에서 본 공",
+      "what": "오른쪽 판의 공",
+      "physical": "왼쪽 판과 같은 공, 같은 순간",
+      "drawing": "채운 원 (왼쪽 판과 같은 색)",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "판 이름표",
+      "what": "두 판이 각각 누구의 눈인지 적은 글",
+      "physical": "관찰자(기준틀)의 이름",
+      "drawing": "텍스트",
+      "motion": "static",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "판 경계",
+      "what": "두 판 사이의 가는 세로 선",
+      "physical": "없음 — 두 기준틀을 가르는 표시",
+      "drawing": "선",
+      "motion": "static",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "캡션",
+      "what": "조각 아래 한 줄",
+      "physical": "주장",
+      "drawing": "텍스트",
+      "motion": "static",
+      "state": "none",
+      "interaction": null
+    }
+  ],
+  "controls": [],
+  "hidden": [
+    "기차 속력·중력 가속도·낙하 시간의 숫자 — 주장은 길의 모양이지 값이 아니다. 화면 단위 값이라 실제 단위로 옮겨 적으면 오히려 거짓 정밀도가 된다",
+    "속도 벡터 분해 화살표 — 가로 속도가 더해진다는 설명은 문단의 몫이고, 화면은 결과인 길의 모양만 보인다",
+    "좌표축·격자 — 두 판의 '멈춰 있는 것'(땅/기차)이 이미 기준 역할을 한다"
+  ],
+  "timeline": [
+    { "t": 0, "what": "공이 떨어지는 중. 왼쪽은 기차와 함께 오른쪽으로 밀리며 휘는 점 자취, 오른쪽은 손 바로 아래로 곧은 점 자취" },
+    { "t": 0.4, "what": "낙하 막바지. 왼쪽 자취는 뚜렷한 곡선, 오른쪽은 점 간격만 벌어지는 곧은 선" },
+    { "t": 0.6, "what": "공이 바닥에 닿음. 두 판 모두 공은 칸 바닥의 같은 자리(손 아래)에 있다" },
+    { "t": 1.8, "what": "왼쪽: 기차는 계속 달려 나가고 휘어진 자취만 땅에 남는다. 오른쪽: 곧은 자취가 칸 안에 그대로 있고 땅이 흘러간다" },
+    { "t": 2.1, "what": "자취와 바닥의 공이 옅어진다" },
+    { "t": 2.5, "what": "다음 칸의 사람이 공을 쥐고 나타나고, t=2.9 에 다시 놓는다 (주기 3.6초)" }
+  ],
+  "engineWish": [
+    "한 사건을 여러 기준틀로 동시에 그리는 틀 — 사건은 한 번 정의하고, 판마다 '무엇이 멈춰 있나'(좌표 변환)만 바꾸는 구조",
+    "자취(시간 간격 점 + 곡선)를 해석식 x(s), y(s) 로부터 그리는 공용 그리기 — 적분 상태 없이 t 로 재현 가능",
+    "주기 되풀이 시 이음매 가리기(칸 간격 = 한 주기 이동거리, 나타남/옅어짐 알파)를 매번 손으로 맞췄다",
+    "판 자르기(clip + translate)와 논리 좌표 → 컨테이너 너비 배율 맞춤"
+  ]
+}

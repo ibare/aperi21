@@ -45,6 +45,7 @@ topics:
     level: upper
     curricula: [ib]
     visualNote: 같은 사건이 보는 사람에 따라 곧은 낙하로도 포물선으로도 그려진다
+    sim: aperi21:reference-frame
   - id: coordinate-choice
     name: 좌표계 선택
     desc: 축을 어디에 두느냐가 식을 바꾸는 방식
@@ -136,18 +137,12 @@ topics:
     sim: aperi21:vertical-throw
   - id: gravitational-acceleration
     name: 중력 가속도
-    desc: 질량과 무관한 낙하 가속도
+    desc: 속도가 0인 순간에도 멈추지 않는 가속
     domain: kinematics
     level: lower
     curricula: [kr]
-    visualNote: 무거운 것과 가벼운 것이 같이 닿는다
-  - id: fall-with-air-resistance
-    name: 저항이 있는 낙하
-    desc: 속도에 의존하는 저항과 그 결과
-    domain: kinematics
-    level: upper
-    curricula: [ib]
-    visualNote: 저항이 붙으면 가속이 점점 줄어든다
+    visualNote: 꼭대기에서 속도가 0이 되어도 속도는 같은 시간마다 같은 몫씩 계속 바뀐다
+    sim: aperi21:gravitational-acceleration
   - id: terminal-velocity
     name: 종단 속도
     desc: 저항과 중력이 균형에 이르는 속도
@@ -214,6 +209,7 @@ topics:
     level: upper
     curricula: [kr, ib, ap]
     visualNote: 시간을 지우면 경로만 남는다
+    sim: aperi21:trajectory-equation
   - id: uniform-circular-motion
     name: 등속 원운동
     desc: 속력이 일정한 원 궤도
@@ -221,6 +217,7 @@ topics:
     level: upper
     curricula: [kr, ib, ap, uk]
     visualNote: 속력은 그대로인데 방향이 쉬지 않고 바뀐다
+    sim: aperi21:uniform-circular-motion
   - id: centripetal-acceleration
     name: 구심 가속도
     desc: 방향만 바뀌는 운동의 가속도

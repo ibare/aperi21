@@ -1,0 +1,56 @@
+{
+  "rows": [
+    {
+      "element": "땅",
+      "vocab": "trajectory (2점 · width 1)",
+      "status": "있음"
+    },
+    {
+      "element": "공",
+      "vocab": "body (circle)",
+      "status": "있음"
+    },
+    {
+      "element": "공의 속도 화살표",
+      "vocab": "vector (width)",
+      "status": "있음",
+      "note": "속도 0 근처에서 점으로 바꾸는 것은 sim 이 고른다. 짧은 화살표의 머리 비율이 35% 로 고정인 것은 03 에서 모은 입력과 같다"
+    },
+    {
+      "element": "공에 다음 순간 더해질 속도 변화",
+      "vocab": "vector (colorRole accent · 짧게)",
+      "status": "있음"
+    },
+    {
+      "element": "속도 0 기준선",
+      "vocab": "trajectory (2점 · width 1 · colorRole muted)",
+      "status": "있음"
+    },
+    {
+      "element": "0.2초마다 찍힌 속도 화살표",
+      "vocab": "vector × 칸 수",
+      "status": "있음",
+      "note": "몇 칸이 보이는지는 timeline 진행도에서 sim 이 계산"
+    },
+    {
+      "element": "0.2초마다 더해진 속도 변화",
+      "vocab": "vector (colorRole accent) × 칸 수",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef + TimelinePhase.caption",
+      "status": "있음",
+      "note": "올라감 / 꼭대기 / 내려옴 / 착지 뒤 가 시각으로 갈린다"
+    },
+    {
+      "element": "0.5배 느린 재생",
+      "vocab": "TimelinePhase.timeScale",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "연직 투상의 물리(v = v0 − g t) — sim",
+    "착지 뒤 정지 화면 — 시간표의 마지막 단계"
+  ]
+}

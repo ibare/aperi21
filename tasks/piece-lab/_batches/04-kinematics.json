@@ -1,0 +1,11 @@
+{
+  "name": "04-kinematics",
+  "title": "운동학 마무리 4 — 기준틀·중력 가속도·궤적·원운동",
+  "record": "tasks/engine-requirements/batches/04-kinematics.md",
+  "pieces": [
+    "reference-frame",
+    "gravitational-acceleration",
+    "trajectory-equation",
+    "uniform-circular-motion"
+  ]
+}

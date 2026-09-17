@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>등속 원운동</title>
+<style>
+  html, body { margin: 0; background: #fbfaf7; }
+  .piece { max-width: 900px; margin: 0 auto; font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; color: #222; }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { margin: 4px 16px 12px; font-size: 15px; line-height: 1.5; color: #333; min-height: 1.5em; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="stage" width="840" height="300"></canvas>
+  <p class="caption" id="caption"></p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // 논리 좌표 (캔버스 한 칸 = 1 논리 픽셀)
+  const W = 840, H = 300;
+  const canvas = document.getElementById('stage');
+  const ctx = canvas.getContext('2d');
+  const captionEl = document.getElementById('caption');
+
+  const dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+
+  // 색 — 같은 대상은 같은 색. 강조색은 "속도 화살표" 한 가지 뜻에만 쓴다.
+  const COLOR = {
+    track: '#cfcac0',
+    body: '#2b2b2b',
+    velocity: '#d9480f',
+    note: '#8a857c',
+  };
+
+  // 운동
+  const PERIOD = 4;                 // 한 바퀴 4 초
+  const OMEGA = 2 * Math.PI / PERIOD;
+  const STAMPS_PER_TURN = 12;       // 30° 마다 화살표를 남긴다
+  const STAMP_DT = PERIOD / STAMPS_PER_TURN;
+  const START_OFFSET = 1.4;         // 도착한 순간 이미 몇 개가 남아 있도록 앞당긴 시각
+
+  // 배치
+  const ORBIT = { cx: 230, cy: 150, r: 112 };
+  const FAN = { cx: 620, cy: 150 };
+  const V_LEN = 74;                 // 속도 화살표 길이 — 어느 순간에도 이 값 하나
+
+  const angleAt = (tau) => OMEGA * tau;                        // 반시계 방향
+  const posAt = (th) => ({ x: ORBIT.cx + ORBIT.r * Math.cos(th), y: ORBIT.cy - ORBIT.r * Math.sin(th) });
+  const velDir = (th) => ({ x: -Math.sin(th), y: -Math.cos(th) }); // 화면 좌표에서 접선 방향
+
+  function arrow(x0, y0, dx, dy, len, alpha, width) {
+    const x1 = x0 + dx * len, y1 = y0 + dy * len;
+    const head = 11, spread = 0.42;
+    const a = Math.atan2(dy, dx);
+    ctx.globalAlpha = alpha;
+    ctx.strokeStyle = COLOR.velocity;
+    ctx.fillStyle = COLOR.velocity;
+    ctx.lineWidth = width;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(x0, y0);
+    ctx.lineTo(x1 - Math.cos(a) * head * 0.6, y1 - Math.sin(a) * head * 0.6);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x1 - head * Math.cos(a - spread), y1 - head * Math.sin(a - spread));
+    ctx.lineTo(x1 - head * Math.cos(a + spread), y1 - head * Math.sin(a + spread));
+    ctx.closePath();
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+
+  // 지금까지 남긴 화살표들 — 저장하지 않고 t 에서 바로 계산한다 (?t= 로 연 화면과 같게)
+  function stampsAt(tau) {
+    const kNow = Math.floor(tau / STAMP_DT + 1e-9);
+    const list = [];
+    for (let k = Math.max(0, kNow - (STAMPS_PER_TURN - 1)); k <= kNow; k++) {
+      const age = tau - k * STAMP_DT;
+      list.push({ th: angleAt(k * STAMP_DT), alpha: 0.5 * (1 - age / PERIOD) + 0.08 });
+    }
+    return list;
+  }
+
+  PieceKit.loop({
+    step() { /* 모든 상태가 t 의 함수라 쌓을 것이 없다 */ },
+    draw(t) {
+      const tau = t + START_OFFSET;
+      const th = angleAt(tau);
+      const p = posAt(th);
+      const v = velDir(th);
+      const stamps = stampsAt(tau);
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+
+      PieceKit.mark('원 궤도', () => {
+        ctx.strokeStyle = COLOR.track;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(ORBIT.cx, ORBIT.cy, ORBIT.r, 0, Math.PI * 2);
+        ctx.stroke();
+      });
+
+      PieceKit.mark('지나온 자리의 속도 화살표', () => {
+        for (const s of stamps) {
+          const sp = posAt(s.th), sv = velDir(s.th);
+          arrow(sp.x, sp.y, sv.x, sv.y, V_LEN, s.alpha * 0.7, 2);
+        }
+      });
+
+      PieceKit.mark('물체의 속도 화살표', () => {
+        arrow(p.x, p.y, v.x, v.y, V_LEN, 1, 3);
+      });
+
+      PieceKit.mark('물체', () => {
+        ctx.fillStyle = COLOR.body;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 9, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      PieceKit.mark('한 점에 모은 지난 속도 화살표', () => {
+        for (const s of stamps) {
+          const sv = velDir(s.th);
+          arrow(FAN.cx, FAN.cy, sv.x, sv.y, V_LEN, s.alpha, 2);
+        }
+      });
+
+      PieceKit.mark('한 점에 모은 지금 속도 화살표', () => {
+        arrow(FAN.cx, FAN.cy, v.x, v.y, V_LEN, 1, 3);
+        ctx.fillStyle = COLOR.body;
+        ctx.beginPath();
+        ctx.arc(FAN.cx, FAN.cy, 3, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      PieceKit.mark('모은 곳 안내글', () => {
+        ctx.fillStyle = COLOR.note;
+        ctx.font = '13px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('같은 화살표를 한 점에 모아 놓으면', FAN.cx, H - 22);
+      });
+
+      PieceKit.mark('캡션', () => {
+        const text = '화살표의 길이는 그대로이고, 방향만 쉬지 않고 돌아간다.';
+        if (captionEl.textContent !== text) captionEl.textContent = text;
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

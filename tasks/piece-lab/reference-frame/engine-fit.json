@@ -1,0 +1,71 @@
+{
+  "rows": [
+    {
+      "element": "땅에서 본 땅과 전봇대",
+      "vocab": "trajectory (땅 선) + trace (shape tick · direction [0,1])",
+      "status": "있음"
+    },
+    {
+      "element": "땅에서 본 기차",
+      "vocab": "body (rect ×2 · outline none) + body (circle 바퀴) + trajectory (사람 선)",
+      "status": "있음",
+      "note": "칸이 되풀이되는 자리는 sim 이 주기로 계산해 낸다"
+    },
+    {
+      "element": "땅에서 본 공의 자취",
+      "vocab": "trace (dot · age 생략) + trajectory (opacity)",
+      "status": "있음"
+    },
+    {
+      "element": "땅에서 본 공",
+      "vocab": "body (circle)",
+      "status": "있음"
+    },
+    {
+      "element": "기차에서 본 땅과 전봇대",
+      "vocab": "trajectory + trace (tick)",
+      "status": "있음",
+      "note": "흘러가는 전봇대 자리는 sim 이 나머지 연산으로 낸다 — 기준틀이 둘로 고정이라 relative-velocity 의 「세계 좌표 주기 배경」까지는 필요 없다"
+    },
+    {
+      "element": "기차에서 본 기차",
+      "vocab": "body + trajectory",
+      "status": "있음"
+    },
+    {
+      "element": "기차에서 본 공의 자취",
+      "vocab": "trace (dot) + trajectory (opacity)",
+      "status": "있음"
+    },
+    {
+      "element": "기차에서 본 공",
+      "vocab": "body (circle · 같은 colorRole)",
+      "status": "있음"
+    },
+    {
+      "element": "판 이름표",
+      "vocab": "readout (world · font text)",
+      "status": "있음"
+    },
+    {
+      "element": "판 경계",
+      "vocab": "trajectory (2점 · width 1)",
+      "status": "있음"
+    },
+    {
+      "element": "두 판 가르기 (판 밖으로 나간 기차·전봇대를 자름)",
+      "vocab": "—",
+      "status": "없음",
+      "note": "두 판을 한 월드에 나란히 두면, 땅 판에서 오른쪽으로 달려 나간 기차 칸이 판 경계를 넘어 옆 판 위에 그려진다. 점·눈금은 sim 이 판 밖 것을 빼면 되지만 **경계에 걸친 사각형은 반만 그릴 방법이 없다.** 원본은 판마다 clip 을 걸었다. 영역 하나를 자르는 선언(판·뷰 영역)이 필요하다 — coordinate-choice 의 두 패널, tangential-normal-acceleration 의 모음판도 같은 배치지만 거기서는 경계를 넘는 것이 없어 드러나지 않았다"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (text)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "갈릴레이 변환(땅 판 = 기차 판 + 기차 속도 × t) — sim 의 계산",
+    "시작 위상 1.1초 — BundleSchema.startAt"
+  ]
+}

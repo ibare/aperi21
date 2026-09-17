@@ -180,6 +180,9 @@ importers:
       '@aperi21/sim-gas-pressure':
         specifier: workspace:*
         version: link:../../sims/thermal/gas-pressure
+      '@aperi21/sim-gravitational-acceleration':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/gravitational-acceleration
       '@aperi21/sim-heat-conduction':
         specifier: workspace:*
         version: link:../../sims/thermal/heat-conduction
@@ -204,6 +207,9 @@ importers:
       '@aperi21/sim-ramp-energy':
         specifier: workspace:*
         version: link:../../sims/mechanics/ramp-energy
+      '@aperi21/sim-reference-frame':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/reference-frame
       '@aperi21/sim-relative-velocity':
         specifier: workspace:*
         version: link:../../sims/kinematics/relative-velocity
@@ -219,6 +225,12 @@ importers:
       '@aperi21/sim-terminal-velocity':
         specifier: workspace:*
         version: link:../../sims/kinematics/terminal-velocity
+      '@aperi21/sim-trajectory-equation':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/trajectory-equation
+      '@aperi21/sim-uniform-circular-motion':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/uniform-circular-motion
       '@aperi21/sim-uniform-motion':
         specifier: workspace:*
         version: link:../../sims/kinematics/uniform-motion
@@ -621,6 +633,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/kinematics/gravitational-acceleration:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/kinematics/position-time-graph:
     devDependencies:
       '@aperi21/schema':
@@ -644,6 +665,15 @@ importers:
       '@aperi21/plugin-mechanics':
         specifier: workspace:*
         version: link:../../../packages/plugin-mechanics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/kinematics/reference-frame:
+    devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../../../packages/schema
@@ -691,6 +721,24 @@ importers:
         version: 5.9.3
 
   sims/kinematics/terminal-velocity:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/kinematics/trajectory-equation:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/kinematics/uniform-circular-motion:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*

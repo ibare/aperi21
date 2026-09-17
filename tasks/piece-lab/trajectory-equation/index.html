@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>궤적 방정식</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #2b2b2b;
+    --muted: #8a8780;
+    --body: #2f6fb3;
+    --ground: #b9b4a8;
+    --eraser: #d9d4c8;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); }
+  .piece { max-width: 900px; margin: 0 auto; font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  canvas { display: block; width: 100%; height: 280px; }
+  .caption { min-height: 1.6em; padding: 6px 16px 10px; font-size: 15px; line-height: 1.5; color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="stage"></canvas>
+  <div class="caption" id="caption"></div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// 궤적 방정식 — 시각 눈금을 지워도 경로는 그대로 남는다.
+// 모든 화면 상태는 t 에서 곧바로 계산한다 (쌓이는 상태 없음).
+
+const canvas = document.getElementById('stage');
+const ctx = canvas.getContext('2d');
+const captionEl = document.getElementById('caption');
+const css = getComputedStyle(document.documentElement);
+const C = {
+  bg: css.getPropertyValue('--bg').trim(),
+  ink: css.getPropertyValue('--ink').trim(),
+  muted: css.getPropertyValue('--muted').trim(),
+  body: css.getPropertyValue('--body').trim(),
+  ground: css.getPropertyValue('--ground').trim(),
+  eraser: css.getPropertyValue('--eraser').trim(),
+};
+
+// 물리 — 처음 속력 20 m/s, 발사각 50°, g = 9.8 m/s²
+const V0 = 20;
+const ANGLE = 50 * Math.PI / 180;
+const G = 9.8;
+const VX = V0 * Math.cos(ANGLE);
+const VY = V0 * Math.sin(ANGLE);
+const T_FLIGHT = 2 * VY / G;          // 약 3.13 s
+const RANGE = VX * T_FLIGHT;          // 약 40.2 m
+const H_MAX = VY * VY / (2 * G);      // 약 12.0 m
+const TICK = 0.5;                     // 시각 눈금 간격 (s)
+const TICKS = [];
+for (let k = 0; k * TICK <= T_FLIGHT + 1e-9; k++) TICKS.push(k * TICK);
+
+const posAt = (s) => ({ x: VX * s, y: VY * s - 0.5 * G * s * s });
+
+// 시간표 — 한 바퀴 PERIOD 초. 도착 순간 이미 날고 있도록 OFFSET 만큼 앞당긴다.
+const PERIOD = 10;
+const OFFSET = 1.2;
+const LAND_HOLD_END = 4.2;   // 착지 후 잠깐 멈춤
+const ERASE_START = 4.2;
+const ERASE_END = 6.0;       // 지우개가 왼쪽에서 오른쪽으로 지나감
+const FADE_START = 9.0;      // 경로가 사라지고 다시 시작
+const ERASE_FADE_M = 2.5;    // 지우개가 지나간 뒤 눈금이 사라지는 거리 (m)
+
+const phase = (t) => ((t + OFFSET) % PERIOD + PERIOD) % PERIOD;
+const clamp01 = (v) => Math.max(0, Math.min(1, v));
+const ease = (u) => u * u * (3 - 2 * u);
+
+// 지우개의 x 위치 (m). 지나가기 전이면 -무한, 지나간 뒤면 +무한.
+function eraserX(p) {
+  if (p < ERASE_START) return -Infinity;
+  if (p >= ERASE_END) return Infinity;
+  const u = ease((p - ERASE_START) / (ERASE_END - ERASE_START));
+  return -ERASE_FADE_M + u * (RANGE + 2 * ERASE_FADE_M);
+}
+
+let W = 0, H = 0, scale = 1, ox = 0, oy = 0;
+function layout() {
+  const dpr = window.devicePixelRatio || 1;
+  const cw = canvas.clientWidth || 840;
+  const ch = canvas.clientHeight || 280;
+  if (canvas.width !== Math.round(cw * dpr) || canvas.height !== Math.round(ch * dpr)) {
+    canvas.width = Math.round(cw * dpr);
+    canvas.height = Math.round(ch * dpr);
+  }
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  W = cw; H = ch;
+  const padX = 48, padTop = 44, padBottom = 34;
+  scale = Math.min((W - 2 * padX) / RANGE, (H - padTop - padBottom) / H_MAX);
+  ox = (W - RANGE * scale) / 2;
+  oy = H - padBottom;
+}
+const sx = (x) => ox + x * scale;
+const sy = (y) => oy - y * scale;
+
+PieceKit.loop({
+  step(dt, t) { /* 상태는 t 에서 곧바로 계산하므로 쌓을 것이 없다 */ },
+  draw(t) {
+    layout();
+    const p = phase(t);
+    const s = Math.min(p, T_FLIGHT);                 // 공이 지금까지 날아간 시간
+    const pathAlpha = p < FADE_START ? 1 : 1 - clamp01((p - FADE_START) / 0.8);
+    const ex = eraserX(p);
+
+    ctx.fillStyle = C.bg;
+    ctx.fillRect(0, 0, W, H);
+
+    PieceKit.mark('지면', () => {
+      ctx.strokeStyle = C.ground;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(sx(-1.5), sy(0));
+      ctx.lineTo(sx(RANGE + 1.5), sy(0));
+      ctx.stroke();
+    });
+
+    PieceKit.mark('경로', () => {
+      if (pathAlpha <= 0) return;
+      ctx.globalAlpha = pathAlpha;
+      ctx.strokeStyle = C.body;
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      const n = 120;
+      for (let i = 0; i <= n; i++) {
+        const q = posAt(s * i / n);
+        if (i === 0) ctx.moveTo(sx(q.x), sy(q.y)); else ctx.lineTo(sx(q.x), sy(q.y));
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('시각 눈금', () => {
+      ctx.font = '13px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      for (const tk of TICKS) {
+        if (tk > s + 1e-9) break;
+        const q = posAt(tk);
+        // 지우개가 지나간 거리만큼 사라진다
+        const a = clamp01((q.x - ex) / ERASE_FADE_M + 1) * (ex === Infinity ? 0 : 1);
+        const alpha = Math.min(a, pathAlpha);
+        if (alpha <= 0) continue;
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = C.muted;
+        ctx.beginPath();
+        ctx.arc(sx(q.x), sy(q.y), 4, 0, Math.PI * 2);
+        ctx.fill();
+        const label = (tk === 0 ? '0' : tk.toFixed(1)) + '초';
+        ctx.fillText(label, sx(q.x), sy(q.y) - 9);
+      }
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('지우개', () => {
+      if (!(ex > -Infinity && ex < Infinity)) return;
+      const x = sx(ex);
+      const band = ERASE_FADE_M * scale;
+      const grad = ctx.createLinearGradient(x - band, 0, x, 0);
+      grad.addColorStop(0, 'rgba(0,0,0,0)');
+      grad.addColorStop(1, C.eraser);
+      ctx.globalAlpha = 0.35;
+      ctx.fillStyle = grad;
+      ctx.fillRect(x - band, 8, band, sy(0) - 8);
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = C.eraser;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x, 8);
+      ctx.lineTo(x, sy(0));
+      ctx.stroke();
+    });
+
+    PieceKit.mark('공', () => {
+      if (p >= ERASE_START) return;              // 지우기 전에 공은 퇴장한다
+      const q = posAt(s);
+      const a = p < T_FLIGHT ? 1 : 1 - clamp01((p - T_FLIGHT) / (LAND_HOLD_END - T_FLIGHT));
+      ctx.globalAlpha = a;
+      ctx.fillStyle = C.body;
+      ctx.beginPath();
+      ctx.arc(sx(q.x), sy(q.y), 7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('캡션', () => {
+      let text;
+      if (p < T_FLIGHT) text = '공은 시각마다 한 점씩 지나간다';
+      else if (p < ERASE_START) text = '지나간 점마다 시각이 붙어 있다';
+      else if (p < ERASE_END) text = '시각을 지운다';
+      else if (p < FADE_START) text = '시각이 없어도 경로는 그대로 남는다';
+      else text = '';
+      if (captionEl.textContent !== text) captionEl.textContent = text;
+    });
+  },
+});
+</script>
+</body>
+</html>

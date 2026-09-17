@@ -10,7 +10,9 @@
         {
           "id": "reference-frame",
           "name": "기준틀",
-          "desc": "관찰자에 따라 달라지는 운동 기술"
+          "desc": "관찰자에 따라 달라지는 운동 기술",
+          "simId": "aperi21:reference-frame",
+          "labUrl": "piece-lab/reference-frame/index.html"
         },
         {
           "id": "coordinate-choice",
@@ -92,12 +94,9 @@
         {
           "id": "gravitational-acceleration",
           "name": "중력 가속도",
-          "desc": "질량과 무관한 낙하 가속도"
-        },
-        {
-          "id": "fall-with-air-resistance",
-          "name": "저항이 있는 낙하",
-          "desc": "속도에 의존하는 저항과 그 결과"
+          "desc": "속도가 0인 순간에도 멈추지 않는 가속",
+          "simId": "aperi21:gravitational-acceleration",
+          "labUrl": "piece-lab/gravitational-acceleration/index.html"
         },
         {
           "id": "terminal-velocity",
@@ -150,12 +149,16 @@
         {
           "id": "trajectory-equation",
           "name": "궤적 방정식",
-          "desc": "시간을 소거해 얻은 경로의 식"
+          "desc": "시간을 소거해 얻은 경로의 식",
+          "simId": "aperi21:trajectory-equation",
+          "labUrl": "piece-lab/trajectory-equation/index.html"
         },
         {
           "id": "uniform-circular-motion",
           "name": "등속 원운동",
-          "desc": "속력이 일정한 원 궤도"
+          "desc": "속력이 일정한 원 궤도",
+          "simId": "aperi21:uniform-circular-motion",
+          "labUrl": "piece-lab/uniform-circular-motion/index.html"
         },
         {
           "id": "centripetal-acceleration",
@@ -2353,8 +2356,8 @@
     }
   ],
   "summary": {
-    "topics": 443,
-    "implemented": 40,
-    "labs": 27
+    "topics": 442,
+    "implemented": 44,
+    "labs": 31
   }
 }
