@@ -1,0 +1,133 @@
+{
+  "id": "color-addition",
+  "claim": "빛은 겹치는 자리에서 더해진다 — 빨강과 초록이 겹치면 노랑, 세 빛이 모두 겹치면 흰색이 된다",
+  "verb": "더해진다",
+  "probeTimes": [0, 1.45, 3.95, 6.45, 11.45],
+  "elements": [
+    {
+      "mark": "검은 막",
+      "what": "왼쪽의 검은 사각 영역",
+      "physical": "빛이 비치는 어두운 스크린 (빛이 없으면 검다)",
+      "drawing": "검정 채움",
+      "motion": "static",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "빨간 빛",
+      "what": "빨간 원판",
+      "physical": "스크린에 비친 빨간 빛의 둥근 자국",
+      "drawing": "경계가 날카로운 원 채움, 가산 합성(lighter)",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": "끌어서 옮길 수 있다"
+    },
+    {
+      "mark": "초록 빛",
+      "what": "초록 원판",
+      "physical": "스크린에 비친 초록 빛의 둥근 자국",
+      "drawing": "경계가 날카로운 원 채움, 가산 합성(lighter)",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": "끌어서 옮길 수 있다"
+    },
+    {
+      "mark": "파란 빛",
+      "what": "파란 원판",
+      "physical": "스크린에 비친 파란 빛의 둥근 자국",
+      "drawing": "경계가 날카로운 원 채움, 가산 합성(lighter)",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": "끌어서 옮길 수 있다"
+    },
+    {
+      "mark": "고리",
+      "what": "스크린 가운데의 작은 흰 고리",
+      "physical": "색을 읽는 스크린 위 한 점",
+      "drawing": "검은 테를 두른 흰 원 윤곽선",
+      "motion": "static",
+      "state": "none",
+      "interaction": "끌어서 옮길 수 있다"
+    },
+    {
+      "mark": "빨강 몫",
+      "what": "오른쪽 첫 번째 네모 (아래 글자 '빨강')",
+      "physical": "고리 자리에 닿는 빨간 빛 (닿으면 빨강, 안 닿으면 검정)",
+      "drawing": "네모 채움 + 회색 테 + 글자",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "초록 몫",
+      "what": "오른쪽 두 번째 네모 (아래 글자 '초록')",
+      "physical": "고리 자리에 닿는 초록 빛",
+      "drawing": "네모 채움 + 회색 테 + 글자",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "파랑 몫",
+      "what": "오른쪽 세 번째 네모 (아래 글자 '파랑')",
+      "physical": "고리 자리에 닿는 파란 빛",
+      "drawing": "네모 채움 + 회색 테 + 글자",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "더하기 기호",
+      "what": "네모 사이의 '+' 두 개와 '=' 하나",
+      "physical": "세 몫을 더해 한 색이 된다는 관계",
+      "drawing": "회색 텍스트",
+      "motion": "static",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "고리 자리의 색",
+      "what": "맨 오른쪽 큰 네모 (아래 글자 '고리 자리')",
+      "physical": "세 몫을 채널마다 더한 색 = 스크린의 고리 자리에 보이는 색",
+      "drawing": "네모 채움 + 회색 테 + 글자",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    },
+    {
+      "mark": "캡션",
+      "what": "그림 아래 한 줄 문장",
+      "physical": "고리 자리에 닿은 빛의 조합과 그 결과 색",
+      "drawing": "DOM 텍스트, 고리 자리의 실제 포함 여부(8가지)에서 고른다",
+      "motion": "time-function",
+      "state": "none",
+      "interaction": null
+    }
+  ],
+  "controls": [
+    { "what": "빛 원판 끌기", "effect": "누른 원판을 옮긴다. 누르는 순간 자동 진행이 멈추고 손으로 놓은 자리를 유지한다" },
+    { "what": "고리 끌기", "effect": "색을 읽는 자리를 옮긴다. 오른쪽 몫·합 네모와 캡션이 그 자리를 따른다" }
+  ],
+  "hidden": [
+    "빛의 세기(밝기) 수치 — 원판은 켜짐/꺼짐 두 값이라 수치가 주장에 보태는 것이 없다",
+    "파장·스펙트럼 — 눈의 세 원추세포 이야기는 문단의 몫이고, 이 조각은 겹침이 더하기라는 것만 보인다",
+    "빨강+파랑(자홍) 조합의 자동 진행 구간 — 순서상 한 번에 빛 하나만 드나들게 해서 빠졌지만, 세 빛이 모두 들어온 구간에 스크린 위에 자홍 영역이 보인다",
+    "원판 가장자리의 부드러운 감쇠 — 넣으면 고리가 경계에 걸릴 때 몫이 어중간해져 캡션과 어긋난다"
+  ],
+  "timeline": [
+    { "t": 0, "what": "빨간 빛이 고리를 덮고 있고, 초록 원판이 고리 쪽으로 들어오는 중" },
+    { "t": 1.45, "what": "빨강과 초록이 고리에서 겹쳐 노랑. 오른쪽: 빨강+초록+검정=노랑" },
+    { "t": 3.95, "what": "파랑까지 들어와 세 빛이 모두 겹친 가운데가 흰색. 스크린에 노랑·청록·자홍·흰색이 모두 보인다" },
+    { "t": 6.45, "what": "빨강이 빠져 고리 자리는 초록+파랑=청록" },
+    { "t": 8.95, "what": "초록도 빠져 파랑만" },
+    { "t": 11.45, "what": "세 빛이 모두 비켜나 고리 자리는 검다 — 더할 빛이 없다" },
+    { "t": 13.95, "what": "빨강이 다시 들어와 빨강만. 15초 주기로 반복" }
+  ],
+  "engineWish": [
+    "키프레임 순서표(상태 목록 + 구간 길이 + 이동 시간 + 이징)로 위치를 t 의 함수로 만드는 도우미 — 매번 구간 계산을 다시 짠다",
+    "자동 진행 ↔ 손 조작 전환(누르는 순간 현재 자동 상태를 복사, frozen 일 때 무시)을 조각마다 다시 짠다",
+    "캔버스 논리 좌표 ↔ 포인터 좌표 변환과 dpr 처리",
+    "상태 조합 → 캡션 문장 표를 두고 화면 상태에서 캡션을 뽑는 캡션 슬롯 (마지막 값과 같으면 안 건드림)",
+    "가산 합성으로 겹치는 빛(색 채널 더하기)을 그리는 도구 — globalCompositeOperation 은 캔버스에 묶여 있어 SVG·DOM 으로 옮기면 다시 짜야 한다"
+  ]
+}

@@ -496,6 +496,78 @@ export function registerAperi21Bundles(): void {
     return registerBundle('aperi21:conical-pendulum', m.conicalPendulumBundle, caps.capabilities);
   });
 
+  registerBundleLoader('aperi21:energy-flow-diagram', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-energy-flow-diagram'),
+      import('./capabilities/mechanics/energy-flow-diagram.generated.js'),
+    ]);
+    return registerBundle('aperi21:energy-flow-diagram', m.energyFlowDiagramBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:phase-space', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-phase-space'),
+      import('./capabilities/oscillation/phase-space.generated.js'),
+    ]);
+    return registerBundle('aperi21:phase-space', m.phaseSpaceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:tidal-force', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-tidal-force'),
+      import('./capabilities/astro/tidal-force.generated.js'),
+    ]);
+    return registerBundle('aperi21:tidal-force', m.tidalForceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:bernoullis-principle', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-bernoullis-principle'),
+      import('./capabilities/fluids/bernoullis-principle.generated.js'),
+    ]);
+    return registerBundle('aperi21:bernoullis-principle', m.bernoullisPrincipleBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:maxwell-boltzmann-distribution', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-maxwell-boltzmann-distribution'),
+      import('./capabilities/thermal/maxwell-boltzmann-distribution.generated.js'),
+    ]);
+    return registerBundle('aperi21:maxwell-boltzmann-distribution', m.maxwellBoltzmannDistributionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:interference', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-interference'),
+      import('./capabilities/waves/interference.generated.js'),
+    ]);
+    return registerBundle('aperi21:interference', m.interferenceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:color-addition', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-color-addition'),
+      import('./capabilities/optics/color-addition.generated.js'),
+    ]);
+    return registerBundle('aperi21:color-addition', m.colorAdditionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:field-lines', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-field-lines'),
+      import('./capabilities/em/field-lines.generated.js'),
+    ]);
+    return registerBundle('aperi21:field-lines', m.fieldLinesBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:spacetime-diagram', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-spacetime-diagram'),
+      import('./capabilities/modern/spacetime-diagram.generated.js'),
+    ]);
+    return registerBundle('aperi21:spacetime-diagram', m.spacetimeDiagramBundle, caps.capabilities);
+  });
+
   registerBundleLoader('aperi21:uniform-motion', async () => {
     const [m, caps] = await Promise.all([
       import('@aperi21/sim-uniform-motion'),

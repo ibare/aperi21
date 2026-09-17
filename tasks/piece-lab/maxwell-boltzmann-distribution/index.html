@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>맥스웰-볼츠만 분포</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #2b303a;
+    --muted: #6b7380;
+    --accent: #d9480f;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 12px 16px 14px; box-sizing: border-box; }
+  canvas { display: block; width: 100%; }
+  .row { display: flex; align-items: center; gap: 12px; margin-top: 6px; font-size: 14px; }
+  .row input { flex: 0 1 260px; accent-color: var(--ink); }
+  .row .val { font-variant-numeric: tabular-nums; min-width: 64px; }
+  .caption { margin-top: 8px; font-size: 15px; line-height: 1.5; min-height: 3em; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <div class="row">
+    <label for="temp">온도</label>
+    <input id="temp" type="range" min="300" max="1200" step="10" value="300">
+    <span class="val" id="tempVal">300 K</span>
+  </div>
+  <div class="caption" id="caption"></div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // 물리 상수 — 질소 분자(N2)
+  const K_B = 1.380649e-23;
+  const MASS = 28 * 1.66054e-27;
+  const T0 = 300;           // 기준 온도(K)
+  const T_HOT = 1200;       // 자동 진행의 높은 온도(K)
+  const VP0 = Math.sqrt(2 * K_B * T0 / MASS); // 300 K 최빈 속력(m/s)
+
+  const N = 500;            // 분자 수
+  const V_MAX = 2500;       // 가로 끝 속력(m/s)
+
+  const COL_BG = '#fbfaf7';
+  const COL_INK = '#2b303a';
+  const COL_MOLECULE = '#8a93a1';
+  const COL_GHOST = '#a3abb7';
+  const COL_ACCENT = '#d9480f'; // 뜻은 하나: 따라가는 분자
+
+  // ---- 수학 ----
+  function erf(x) {
+    const s = x < 0 ? -1 : 1; x = Math.abs(x);
+    const p = 0.3275911, a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741, a4 = -1.453152027, a5 = 1.061405429;
+    const tt = 1 / (1 + p * x);
+    const y = 1 - (((((a5 * tt + a4) * tt) + a3) * tt + a2) * tt + a1) * tt * Math.exp(-x * x);
+    return s * y;
+  }
+  // x = v / vp 에 대한 누적 분포
+  const cdf = (x) => erf(x) - (2 / Math.sqrt(Math.PI)) * x * Math.exp(-x * x);
+  // 속력 밀도 f(v) (1/(m/s))
+  const pdf = (v, vp) => { const x = v / vp; return (4 / Math.sqrt(Math.PI)) * x * x * Math.exp(-x * x) / vp; };
+  function invCdf(q) {
+    let lo = 0, hi = 6;
+    for (let i = 0; i < 50; i++) { const m = (lo + hi) / 2; if (cdf(m) < q) lo = m; else hi = m; }
+    return (lo + hi) / 2;
+  }
+
+  // ---- 분자: 300 K 에서의 속력을 층별 추출(오름차순) ----
+  const base = new Float64Array(N);
+  for (let i = 0; i < N; i++) {
+    let q = (i + PieceKit.random()) / N;
+    q = Math.min(1 - 1e-6, Math.max(1e-6, q));
+    base[i] = invCdf(q) * VP0;
+  }
+  // 따라가는 분자 셋: 느린 쪽 · 가운데 · 빠른 쪽
+  const TRACKED = [Math.floor(N * 0.15), Math.floor(N * 0.5), Math.floor(N * 0.9)];
+  const isTracked = new Uint8Array(N); TRACKED.forEach(i => isTracked[i] = 1);
+
+  // 각 분자의 높이 비율 u(0~1): 곡선 아래를 고르게 채우도록 황금비 수열 + 작은 난수.
+  // 화면 위치 = (속력, u × 그 속력에서의 곡선 높이) — 곡선이 낮아지면 분자도 함께 내려앉는다.
+  const heightFrac = new Float64Array(N);
+  const GOLD = 0.6180339887;
+  for (let i = 0; i < N; i++) {
+    const g = (i * GOLD + 0.31) % 1;
+    heightFrac[i] = Math.min(0.97, Math.max(0.03, g + (PieceKit.random() - 0.5) * 0.04));
+  }
+
+  // ---- 온도: 자동 진행 ----
+  const PERIOD = 12;
+  const smooth = (u) => u * u * (3 - 2 * u);
+  function autoTemp(t) {
+    const s = ((t % PERIOD) + PERIOD) % PERIOD;
+    if (s < 3.5) return T0 + (T_HOT - T0) * smooth(s / 3.5);
+    if (s < 6.5) return T_HOT;
+    if (s < 10) return T_HOT - (T_HOT - T0) * smooth((s - 6.5) / 3.5);
+    return T0;
+  }
+
+  // ---- 상태 ----
+  let T = autoTemp(0);
+  let dir = 0;           // +1 데우는 중, -1 식히는 중, 0 멈춤
+  let manual = false, manualT = T0;
+
+  const slider = document.getElementById('temp');
+  const tempVal = document.getElementById('tempVal');
+  const captionEl = document.getElementById('caption');
+  slider.addEventListener('input', () => {
+    if (PieceKit.frozen) return;
+    manual = true; manualT = Number(slider.value);
+  });
+
+  PieceKit.loop({
+    step(dt, t) {
+      const prevT = T;
+      if (manual && !PieceKit.frozen) {
+        T += (manualT - T) * (1 - Math.exp(-dt * 5));
+        if (Math.abs(manualT - T) < 0.5) T = manualT;
+      } else {
+        T = autoTemp(t);
+      }
+      const dT = T - prevT;
+      dir = Math.abs(dT) > 1e-6 ? (dT > 0 ? 1 : -1) : 0;
+    },
+    draw(t) {
+      const cv = document.getElementById('c');
+      const cssW = cv.clientWidth || 720;
+      const padL = 20, padR = 20;
+      const plotW = cssW - padL - padR;
+      const plotH = Math.round(Math.min(230, Math.max(150, plotW * 0.26)));
+      const H = plotH * 0.92;                       // 300 K 봉우리 높이(px)
+      const hOf = (v, vpc) => H * pdf(v, vpc) / pdf(VP0, VP0);
+      const topPad = 8;
+      const baseY = topPad + plotH;
+      const stripTop = baseY + 30;
+      const stripGap = 10;
+      const cssH = stripTop + TRACKED.length * stripGap + 6;
+      const dpr = window.devicePixelRatio || 1;
+      if (cv.width !== Math.round(cssW * dpr) || cv.height !== Math.round(cssH * dpr)) {
+        cv.width = Math.round(cssW * dpr); cv.height = Math.round(cssH * dpr);
+        cv.style.height = cssH + 'px';
+      }
+      const g = cv.getContext('2d');
+      g.setTransform(dpr, 0, 0, dpr, 0, 0);
+      g.fillStyle = COL_BG; g.fillRect(0, 0, cssW, cssH);
+
+      const xOfV = (v) => padL + (v / V_MAX) * plotW;
+      const s = Math.sqrt(T / T0);
+      const vp = VP0 * s;
+
+      // 속력 축
+      PieceKit.mark('속력 축', () => {
+        g.strokeStyle = COL_INK; g.lineWidth = 1;
+        g.beginPath(); g.moveTo(padL, baseY + 0.5); g.lineTo(padL + plotW, baseY + 0.5); g.stroke();
+        g.fillStyle = '#6b7380'; g.font = '11px -apple-system, "Apple SD Gothic Neo", sans-serif';
+        g.textBaseline = 'top';
+        for (let v = 0; v <= 2000; v += 500) {
+          const x = xOfV(v);
+          g.beginPath(); g.moveTo(x + 0.5, baseY); g.lineTo(x + 0.5, baseY + 4); g.stroke();
+          g.textAlign = v === 0 ? 'left' : 'center';
+          g.fillText(String(v), v === 0 ? x : x, baseY + 6);
+        }
+        g.textAlign = 'right';
+        g.fillText('속력 (m/s)', padL + plotW, baseY + 6);
+      });
+
+      const curve = (vpc) => {
+        g.beginPath();
+        for (let px = 0; px <= plotW; px += 2) {
+          const v = (px / plotW) * V_MAX;
+          const y = baseY - hOf(v, vpc);
+          if (px === 0) g.moveTo(padL + px, y); else g.lineTo(padL + px, y);
+        }
+        g.stroke();
+      };
+
+      // 300 K 분포 (점선) — 비교 기준
+      PieceKit.mark('300 K 분포 곡선(점선)', () => {
+        g.strokeStyle = COL_GHOST; g.lineWidth = 1.2; g.setLineDash([4, 4]);
+        curve(VP0);
+        g.setLineDash([]);
+      });
+
+      // 분자 더미
+      const r = 2.4;
+      const molX = (i) => xOfV(Math.min(V_MAX, base[i] * s));
+      const molY = (i) => baseY - heightFrac[i] * hOf(Math.min(V_MAX, base[i] * s), vp);
+      PieceKit.mark('분자', () => {
+        g.fillStyle = COL_MOLECULE;
+        g.beginPath();
+        for (let i = 0; i < N; i++) {
+          if (isTracked[i]) continue;
+          const x = molX(i), y = molY(i);
+          g.moveTo(x + r, y); g.arc(x, y, r, 0, Math.PI * 2);
+        }
+        g.fill();
+      });
+
+      // 지금 온도의 분포 곡선
+      PieceKit.mark('지금 온도의 분포 곡선', () => {
+        g.strokeStyle = COL_INK; g.lineWidth = 1.4;
+        curve(vp);
+      });
+
+      // 따라가는 분자 (더미 안)
+      PieceKit.mark('따라가는 분자', () => {
+        g.fillStyle = COL_ACCENT;
+        for (const i of TRACKED) {
+          const x = molX(i), y = molY(i);
+          g.beginPath(); g.arc(x, y, r + 0.8, 0, Math.PI * 2); g.fill();
+        }
+      });
+
+      // 따라가는 분자의 이동: 300 K 때 속력 → 지금 속력
+      PieceKit.mark('따라가는 분자의 이동', () => {
+        TRACKED.forEach((i, k) => {
+          const y = stripTop + k * stripGap;
+          const x0 = xOfV(base[i]), x1 = xOfV(Math.min(V_MAX, base[i] * s));
+          g.strokeStyle = COL_ACCENT; g.lineWidth = 1.5;
+          g.beginPath(); g.moveTo(x0, y); g.lineTo(x1, y); g.stroke();
+          g.lineWidth = 1.2;
+          g.fillStyle = COL_BG;
+          g.beginPath(); g.arc(x0, y, 3, 0, Math.PI * 2); g.fill(); g.stroke();
+          g.fillStyle = COL_ACCENT;
+          g.beginPath(); g.arc(x1, y, 3.2, 0, Math.PI * 2); g.fill();
+        });
+      });
+
+      // 온도 조작기 표시
+      PieceKit.mark('온도 조작기', () => {
+        const Tr = Math.round(T);
+        if (!manual || PieceKit.frozen) slider.value = String(Math.round(T / 10) * 10);
+        tempVal.textContent = Tr + ' K';
+      });
+
+      // 캡션
+      PieceKit.mark('캡션', () => {
+        const Tr = Math.round(T);
+        let text;
+        if (dir > 0) {
+          text = '데우는 중 — 모든 분자가 같은 배율로 빨라진다. 빠른 분자일수록 더 멀리 밀려나, 같은 500개가 더 넓게 퍼지고 봉우리는 내려앉는다.';
+        } else if (dir < 0) {
+          text = '식히는 중 — 모든 분자가 같은 배율로 느려진다. 빠른 분자일수록 더 많이 끌려와, 더미가 좁게 모이며 다시 솟는다.';
+        } else if (Tr <= T0) {
+          text = '300 K — 분자 500개가 각자 속력 자리에 놓여 있다. 봉우리는 좁고 높으며, 빠른 쪽 꼬리가 길게 끌린다.';
+        } else {
+          text = Tr + ' K — 같은 500개가 300 K 때(점선)보다 오른쪽으로 넓게 퍼졌고, 봉우리는 그만큼 낮아졌다.';
+        }
+        if (captionEl.textContent !== text) captionEl.textContent = text;
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

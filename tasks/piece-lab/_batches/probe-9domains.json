@@ -1,0 +1,17 @@
+{
+  "name": "probe-9domains",
+  "title": "표현력 검증 — 9개 분야 × 5, 턴마다 분야당 1개 (2026-09-17 확정)",
+  "rule": "턴 n 은 각 분야의 n 번째를 만든다. 한 턴에 새 부족 종류가 0 인 분야는 다음 턴부터 뺀다. 장부: tasks/engine-requirements/gap-ledger.md",
+  "domains": {
+    "energy-momentum": ["energy-flow-diagram", "potential-energy-curve", "work-by-variable-force", "center-of-mass-motion", "two-dimensional-collision"],
+    "rotation-oscillation": ["phase-space", "gyroscopic-precession", "normal-modes", "resonance", "moment-of-inertia"],
+    "gravitation": ["tidal-force", "hr-diagram", "moon-phases", "keplers-second-law", "lagrange-points"],
+    "fluids": ["bernoullis-principle", "lift-force", "poiseuille-flow", "capillary-action", "stability-of-floating-body"],
+    "thermodynamics": ["maxwell-boltzmann-distribution", "carnot-cycle", "thermal-convection", "phase-diagram", "diffusion"],
+    "waves-acoustics": ["interference", "longitudinal-wave", "huygens-principle", "standing-wave", "refraction-of-waves"],
+    "optics": ["color-addition", "thin-film-interference", "polarization", "youngs-double-slit", "total-internal-reflection"],
+    "electromagnetism": ["field-lines", "equipotential-surface", "electromagnetic-wave", "rc-circuit", "charged-particle-in-magnetic-field"],
+    "modern-physics": ["spacetime-diagram", "atomic-orbital", "double-slit-with-electrons", "hydrogen-spectrum", "radioactive-decay"]
+  },
+  "excluded": {}
+}

@@ -695,6 +695,7 @@ topics:
     level: upper
     curricula: [ib, ngss]
     visualNote: 갈래가 갈릴 때 어디서 새는지 굵기로 보인다
+    sim: aperi21:energy-flow-diagram
   # ── 회전과 진동
   - id: torque
     name: 돌림힘
@@ -887,6 +888,7 @@ topics:
     level: null
     curricula: []
     visualNote: 위치와 운동량 평면에 그린 궤적이 닫히거나 감긴다
+    sim: aperi21:phase-space
   - id: nonlinear-oscillation
     name: 비선형 진동
     desc: 복원력이 비례를 벗어날 때
@@ -1000,6 +1002,7 @@ topics:
     level: null
     curricula: []
     visualNote: 가까운 쪽과 먼 쪽의 차이가 양쪽으로 늘린다
+    sim: aperi21:tidal-force
   - id: roche-limit
     name: 로슈 한계
     desc: 조석력이 천체를 부수는 거리
@@ -1307,6 +1310,7 @@ topics:
     level: upper
     curricula: [ap]
     visualNote: 빨라지는 자리에서 압력이 내려간다
+    sim: aperi21:bernoullis-principle
   - id: venturi-effect
     name: 벤투리 효과
     desc: 좁아진 곳에서 낮아지는 압력
@@ -1538,6 +1542,7 @@ topics:
     level: null
     curricula: []
     visualNote: 온도를 올리면 분포가 넓어지고 오른쪽으로 밀린다
+    sim: aperi21:maxwell-boltzmann-distribution
   - id: mean-free-path
     name: 평균 자유 행로
     desc: 충돌과 충돌 사이의 거리
@@ -1756,6 +1761,7 @@ topics:
     level: upper
     curricula: [kr, ib, ap, uk]
     visualNote: 두 파원이 만드는 줄무늬가 물 위에 뜬다
+    sim: aperi21:interference
   - id: standing-wave
     name: 정상파
     desc: 마디와 배가 고정되는 파동
@@ -2210,6 +2216,7 @@ topics:
     level: lower
     curricula: [kr]
     visualNote: 세 빛이 겹치는 자리마다 다른 색이 나타난다
+    sim: aperi21:color-addition
   - id: object-color
     name: 물체의 색
     desc: 물체가 되쏘는 빛이 정하는 색
@@ -2267,6 +2274,7 @@ topics:
     level: lower
     curricula: [kr, ib, ngss, ap, uk]
     visualNote: 선이 촘촘한 곳이 센 곳이다
+    sim: aperi21:field-lines
   - id: field-of-dipole
     name: 쌍극자의 전기장
     desc: 가까운 두 반대 전하
@@ -2833,6 +2841,7 @@ topics:
     level: upper
     curricula: [ib]
     visualNote: 세계선의 기울기가 속도로 읽힌다
+    sim: aperi21:spacetime-diagram
   - id: light-cone
     name: 광원뿔
     desc: 인과가 닿는 영역

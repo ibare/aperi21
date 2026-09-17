@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>위상 공간</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #2b2b2b;
+    --faint: #b9b5ac;
+    --accent: #d9480f;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 12px 16px; box-sizing: border-box; }
+  canvas { display: block; width: 100%; height: auto; }
+  .row { display: flex; align-items: center; gap: 16px; margin-top: 6px; flex-wrap: wrap; }
+  .caption { flex: 1 1 360px; font-size: 15px; line-height: 1.5; min-height: 1.5em; }
+  label { font-size: 13px; color: #6b675f; display: flex; align-items: center; gap: 8px; }
+  input[type=range] { width: 160px; }
+  .val { font-variant-numeric: tabular-nums; min-width: 3.2em; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="cv" width="880" height="340"></canvas>
+  <div class="row">
+    <div class="caption" id="caption"></div>
+    <label>마찰 <input id="fric" type="range" min="0" max="0.8" step="0.05" value="0.40"><span class="val" id="fricVal">0.40</span></label>
+  </div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ---- 물리 설정 (진자: θ'' = -ω0² sinθ - γ θ') ----
+  const W0 = 2;                 // 고유 각진동수 (작은 진폭 주기 π 초)
+  const W0SQ = W0 * W0;
+  const OMEGA_MAX = 5.2;        // 세로 범위 (넘어감 경계 최고 각속도는 2·W0 = 4)
+  const DEFAULT_FRIC = 0.4;
+  const CYCLE = 16;             // 무리를 다시 풀어 놓는 주기 (초)
+  const LEAD = 1.5;             // 도착 순간 이미 진행 중이도록 앞당긴 시간
+  const N = 520;
+  const TRAIL = 10;
+  const SUB = 4;
+
+  const cv = document.getElementById('cv');
+  const ctx = cv.getContext('2d');
+  const captionEl = document.getElementById('caption');
+  const fricEl = document.getElementById('fric');
+  const fricValEl = document.getElementById('fricVal');
+
+  const CSS_W = 880, CSS_H = 340;
+  const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  cv.width = CSS_W * dpr; cv.height = CSS_H * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const INK = '#2b2b2b', FAINT = '#cfcac0', SEP = '#9d978b', ACCENT = '#d9480f', LABEL = '#8a857b';
+
+  // ---- 화면 배치 ----
+  const PEND = { cx: 120, cy: 165, L: 105 };             // 진자 그림
+  const PLANE = { x0: 250, x1: 866, y0: 14, y1: 312 };   // 위상 평면
+  const px = th => PLANE.x0 + (th + Math.PI) / (2 * Math.PI) * (PLANE.x1 - PLANE.x0);
+  const py = om => (PLANE.y0 + PLANE.y1) / 2 - om / OMEGA_MAX * (PLANE.y1 - PLANE.y0) / 2;
+
+  const wrap = th => {
+    th = (th + Math.PI) % (2 * Math.PI);
+    if (th < 0) th += 2 * Math.PI;
+    return th - Math.PI;
+  };
+
+  // ---- 상태 ----
+  const th = new Float64Array(N), om = new Float64Array(N);
+  const hTh = new Float32Array(N * TRAIL), hOm = new Float32Array(N * TRAIL);
+  let hHead = 0, hCount = 0;
+  let tr = { th: 0, om: 0 };
+  let trPath = [];
+  let cycleIndex = -1;
+  let cycleAge = 0;
+
+  function friction() {
+    if (PieceKit.frozen) return DEFAULT_FRIC;
+    return parseFloat(fricEl.value);
+  }
+
+  function seed() {
+    for (let i = 0; i < N; i++) {
+      th[i] = -Math.PI + 2 * Math.PI * PieceKit.random();
+      om[i] = (2 * PieceKit.random() - 1) * OMEGA_MAX * 0.95;
+    }
+    hHead = 0; hCount = 0;
+    // 추적 상태: 바닥에서 크게 밀어 꼭대기 가까이 올라갔다가 붙잡히게 한다
+    tr = { th: 0, om: 4.5 };
+    trPath = [[tr.th, tr.om]];
+    cycleAge = 0;
+  }
+
+  function advance(dt, g) {
+    const h = dt / SUB;
+    for (let s = 0; s < SUB; s++) {
+      for (let i = 0; i < N; i++) {
+        om[i] += (-W0SQ * Math.sin(th[i]) - g * om[i]) * h;
+        th[i] = wrap(th[i] + om[i] * h);
+      }
+      tr.om += (-W0SQ * Math.sin(tr.th) - g * tr.om) * h;
+      tr.th = wrap(tr.th + tr.om * h);
+    }
+    for (let i = 0; i < N; i++) {
+      hTh[hHead * N + i] = th[i];
+      hOm[hHead * N + i] = om[i];
+    }
+    hHead = (hHead + 1) % TRAIL;
+    hCount = Math.min(TRAIL, hCount + 1);
+    trPath.push([tr.th, tr.om]);
+    cycleAge += dt;
+  }
+
+  // 앞당긴 시간만큼 미리 흘려 둔다
+  seed();
+  cycleIndex = 0;
+  for (let k = 0; k < Math.round(LEAD * 60); k++) advance(1 / 60, DEFAULT_FRIC);
+
+  fricEl.addEventListener('input', () => {
+    fricValEl.textContent = parseFloat(fricEl.value).toFixed(2);
+  });
+
+  // ---- 에너지 고리 (마찰이 없을 때 상태가 머무는 선) ----
+  function energyCurve(E, sign) {
+    const pts = [];
+    const M = 240;
+    let seg = [];
+    for (let k = 0; k <= M; k++) {
+      const a = -Math.PI + 2 * Math.PI * k / M;
+      const v = 2 * (E + W0SQ * Math.cos(a));
+      if (v < 0) { if (seg.length > 1) pts.push(seg); seg = []; continue; }
+      seg.push([a, sign * Math.sqrt(v)]);
+    }
+    if (seg.length > 1) pts.push(seg);
+    return pts;
+  }
+  function closedLoop(E) {
+    // -W0² < E < W0² : 가운데를 둘러싸는 닫힌 고리
+    const aMax = Math.acos(-E / W0SQ);
+    const M = 160, pts = [];
+    for (let k = 0; k <= M; k++) {
+      const a = -aMax + 2 * aMax * k / M;
+      pts.push([a, Math.sqrt(Math.max(0, 2 * (E + W0SQ * Math.cos(a))))]);
+    }
+    for (let k = M; k >= 0; k--) {
+      const a = -aMax + 2 * aMax * k / M;
+      pts.push([a, -Math.sqrt(Math.max(0, 2 * (E + W0SQ * Math.cos(a))))]);
+    }
+    return pts;
+  }
+  function strokePts(pts, close) {
+    ctx.beginPath();
+    pts.forEach((p, i) => i ? ctx.lineTo(px(p[0]), py(p[1])) : ctx.moveTo(px(p[0]), py(p[1])));
+    if (close) ctx.closePath();
+    ctx.stroke();
+  }
+
+  function drawContours() {
+    PieceKit.mark('에너지 고리', () => {
+      ctx.strokeStyle = FAINT; ctx.lineWidth = 1;
+      for (const f of [-0.8, -0.5, -0.15, 0.25, 0.65]) strokePts(closedLoop(f * W0SQ), true);
+      for (const E of [1.45 * W0SQ, 2.3 * W0SQ]) {
+        for (const sgn of [1, -1]) for (const seg of energyCurve(E, sgn)) strokePts(seg, false);
+      }
+    });
+    PieceKit.mark('넘어감 경계', () => {
+      ctx.strokeStyle = SEP; ctx.lineWidth = 1.2;
+      ctx.setLineDash([4, 4]);
+      for (const sgn of [1, -1]) for (const seg of energyCurve(W0SQ, sgn)) strokePts(seg, false);
+      ctx.setLineDash([]);
+    });
+  }
+
+  function drawAxesNames() {
+    PieceKit.mark('평면 축 이름', () => {
+      ctx.fillStyle = LABEL; ctx.font = '12px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'right'; ctx.textBaseline = 'top';
+      ctx.fillText('각도 →', PLANE.x1, PLANE.y1 + 6);
+      ctx.save();
+      ctx.translate(PLANE.x0 - 8, PLANE.y0);
+      ctx.rotate(-Math.PI / 2);
+      ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+      ctx.fillText('각속도 →', 0, 0);
+      ctx.restore();
+      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      ctx.fillText('거꾸로 섬', PLANE.x0 + 4, PLANE.y1 + 6);
+      ctx.fillText('바닥', px(0), PLANE.y1 + 6);
+    });
+  }
+
+  function cloudAlpha() {
+    const fadeOut = Math.min(1, Math.max(0, (CYCLE - cycleAge) / 0.8));
+    const fadeIn = Math.min(1, cycleAge / 0.5);
+    return Math.min(fadeOut, fadeIn);
+  }
+
+  function drawCloud() {
+    PieceKit.mark('상태점 무리', () => {
+      const a = cloudAlpha();
+      ctx.lineWidth = 1.2;
+      for (let i = 0; i < N; i++) {
+        // 짧은 잔상: 오래된 것부터 새것으로
+        let prevX = null, prevY = null, prevTh = null;
+        for (let k = hCount - 1; k >= 0; k--) {
+          const idx = ((hHead - 1 - k) % TRAIL + TRAIL) % TRAIL;
+          const t0 = hTh[idx * N + i], o0 = hOm[idx * N + i];
+          const x = px(t0), y = py(o0);
+          if (prevX !== null && Math.abs(t0 - prevTh) < Math.PI) {
+            ctx.strokeStyle = `rgba(43,43,43,${(0.35 * a * (1 - k / TRAIL)).toFixed(3)})`;
+            ctx.beginPath(); ctx.moveTo(prevX, prevY); ctx.lineTo(x, y); ctx.stroke();
+          }
+          prevX = x; prevY = y; prevTh = t0;
+        }
+        ctx.fillStyle = `rgba(43,43,43,${(0.8 * a).toFixed(3)})`;
+        ctx.beginPath(); ctx.arc(px(th[i]), py(om[i]), 1.7, 0, 2 * Math.PI); ctx.fill();
+      }
+    });
+  }
+
+  function drawTracked() {
+    const a = cloudAlpha();
+    PieceKit.mark('추적 상태의 궤적', () => {
+      ctx.strokeStyle = ACCENT; ctx.globalAlpha = 0.85 * a; ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      for (let k = 0; k < trPath.length; k++) {
+        const [t0, o0] = trPath[k];
+        if (k === 0 || Math.abs(t0 - trPath[k - 1][0]) > Math.PI) ctx.moveTo(px(t0), py(o0));
+        else ctx.lineTo(px(t0), py(o0));
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    });
+    PieceKit.mark('추적 상태점', () => {
+      ctx.globalAlpha = a;
+      ctx.fillStyle = ACCENT; ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(px(tr.th), py(tr.om), 5, 0, 2 * Math.PI); ctx.fill(); ctx.stroke();
+      ctx.globalAlpha = 1;
+    });
+  }
+
+  function drawPendulum() {
+    PieceKit.mark('진자', () => {
+      const a = cloudAlpha();
+      const { cx, cy, L } = PEND;
+      ctx.strokeStyle = FAINT; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(cx, cy, L, 0, 2 * Math.PI); ctx.stroke();
+      ctx.fillStyle = INK;
+      ctx.fillRect(cx - 14, cy - 2, 28, 4);
+      const bx = cx + L * Math.sin(tr.th), by = cy + L * Math.cos(tr.th);
+      ctx.globalAlpha = a;
+      ctx.strokeStyle = INK; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(bx, by); ctx.stroke();
+      ctx.fillStyle = ACCENT;
+      ctx.beginPath(); ctx.arc(bx, by, 9, 0, 2 * Math.PI); ctx.fill();
+      ctx.globalAlpha = 1;
+    });
+  }
+
+  function captionText(g) {
+    if (g === 0) return '마찰이 없으면 상태점은 제가 선 고리를 따라 돌 뿐, 안쪽 고리로 옮겨 가지 않는다.';
+    const settled = Math.abs(tr.om) < 0.3 && Math.abs(tr.th) < 0.12;
+    if (settled) return '고리를 하나씩 가로지른 상태점이 바닥 한 점에 감겨 들어 멈췄다.';
+    return '마찰이 에너지를 빼는 만큼 상태점이 고리를 가로질러 바닥 한 점으로 감겨 든다.';
+  }
+
+  PieceKit.loop({
+    step(dt, t) {
+      const ci = Math.floor((t + LEAD) / CYCLE);
+      if (ci !== cycleIndex) { cycleIndex = ci; seed(); }
+      advance(dt, friction());
+    },
+    draw(t) {
+      ctx.clearRect(0, 0, CSS_W, CSS_H);
+      ctx.fillStyle = '#fbfaf7'; ctx.fillRect(0, 0, CSS_W, CSS_H);
+      drawContours();
+      drawAxesNames();
+      drawCloud();
+      drawTracked();
+      drawPendulum();
+      PieceKit.mark('캡션', () => {
+        const g = friction();
+        const txt = captionText(g);
+        if (captionEl.textContent !== txt) captionEl.textContent = txt;
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

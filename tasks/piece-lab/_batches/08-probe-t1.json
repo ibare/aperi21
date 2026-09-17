@@ -1,0 +1,16 @@
+{
+  "name": "08-probe-t1",
+  "title": "표현력 검증 턴 1 — 9개 분야 각 1번",
+  "record": "tasks/engine-requirements/gap-ledger.md",
+  "pieces": [
+    "energy-flow-diagram",
+    "phase-space",
+    "tidal-force",
+    "bernoullis-principle",
+    "maxwell-boltzmann-distribution",
+    "interference",
+    "color-addition",
+    "field-lines",
+    "spacetime-diagram"
+  ]
+}

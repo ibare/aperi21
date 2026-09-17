@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>전기력선</title>
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --ink: #2c2a27;
+    --grain: #a0764a;
+    --muted: #6b665e;
+  }
+  html, body { margin: 0; background: var(--paper); }
+  body { font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; color: var(--ink); }
+  figure { margin: 0 auto; max-width: 900px; padding: 12px 16px 16px; box-sizing: border-box; }
+  canvas { display: block; width: 100%; height: auto; touch-action: none; }
+  figcaption { margin-top: 8px; font-size: 15px; line-height: 1.5; color: var(--muted); min-height: 1.5em; }
+</style>
+</head>
+<body>
+<figure>
+  <canvas id="scene" width="840" height="340"></canvas>
+  <figcaption id="caption"></figcaption>
+</figure>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 무대 ────────────────────────────────────────────────
+  const W = 840, H = 340;
+  const canvas = document.getElementById('scene');
+  const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  const captionEl = document.getElementById('caption');
+  const css = getComputedStyle(document.documentElement);
+  const INK = css.getPropertyValue('--ink').trim();
+  const GRAIN = css.getPropertyValue('--grain').trim();
+  const PAPER = css.getPropertyValue('--paper').trim();
+
+  // ── 전하 ────────────────────────────────────────────────
+  // 긴 대전 막대의 단면(2차원 장): 세기가 거리에 반비례하므로
+  // 선을 전하량에 비례한 개수로 고르게 내보내면 선의 촘촘함이 세기와 정확히 비례한다.
+  const LINES_PER_Q = 12;
+  const plus = { x: 300, y: 170, q: 2 };
+  const minus = { x: 0, y: 0, q: -1 };
+
+  // 음전하의 자동 경로: 양전하 둘레를 느리게 돈다 (주기 18초)
+  const PERIOD = 18;
+  function autoPath(t) {
+    const a = -0.9 + (2 * Math.PI * t) / PERIOD;
+    return { x: 505 + 160 * Math.cos(a), y: 170 + 110 * Math.sin(a) };
+  }
+  Object.assign(minus, autoPath(0));
+
+  function field(x, y) {
+    let ex = 0, ey = 0;
+    for (const c of [plus, minus]) {
+      const dx = x - c.x, dy = y - c.y;
+      const r2 = dx * dx + dy * dy + 1e-6;
+      ex += (c.q * dx) / r2;
+      ey += (c.q * dy) / r2;
+    }
+    return { ex, ey };
+  }
+
+  // ── 떠밀리는 알갱이 ───────────────────────────────────────
+  // 끈적한 매질 속 대전 알갱이: 속도가 장의 세기에 비례한다.
+  const MOBILITY = 2600;      // px/s 당 장 세기
+  const MAX_SPEED = 420;      // 전하 바로 곁의 발산만 막는다
+  const STREAK_TIME = 0.17;   // 꼬리 길이 = 속도 × 이 시간
+  const N_GRAINS = 950;
+  const grains = [];
+  function spawn(g, age) {
+    g.x = PieceKit.random() * W;
+    g.y = PieceKit.random() * H;
+    g.life = 1.6 + PieceKit.random() * 2.4;
+    g.age = age;
+  }
+  for (let i = 0; i < N_GRAINS; i++) {
+    const g = {};
+    spawn(g, 0);
+    g.age = PieceKit.random() * g.life; // 도착한 순간 이미 흐르는 중
+    grains.push(g);
+  }
+  function velocity(x, y) {
+    const { ex, ey } = field(x, y);
+    let vx = MOBILITY * ex, vy = MOBILITY * ey;
+    const s = Math.hypot(vx, vy);
+    if (s > MAX_SPEED) { vx *= MAX_SPEED / s; vy *= MAX_SPEED / s; }
+    return { vx, vy };
+  }
+
+  // ── 끌기 (조작기) ─────────────────────────────────────────
+  let held = false;
+  let holdX = 0, holdY = 0;
+  function toScene(ev) {
+    const r = canvas.getBoundingClientRect();
+    return { x: ((ev.clientX - r.left) / r.width) * W, y: ((ev.clientY - r.top) / r.height) * H };
+  }
+  canvas.addEventListener('pointerdown', (ev) => {
+    if (PieceKit.frozen) return;
+    const p = toScene(ev);
+    if (Math.hypot(p.x - minus.x, p.y - minus.y) < 26) {
+      held = true;
+      holdX = p.x; holdY = p.y;
+      canvas.setPointerCapture(ev.pointerId);
+    }
+  });
+  canvas.addEventListener('pointermove', (ev) => {
+    if (PieceKit.frozen) return;
+    const p = toScene(ev);
+    if (held) {
+      holdX = Math.min(W - 14, Math.max(14, p.x));
+      holdY = Math.min(H - 14, Math.max(14, p.y));
+    }
+    canvas.style.cursor = held || Math.hypot(p.x - minus.x, p.y - minus.y) < 26 ? 'grab' : 'default';
+  });
+  const release = () => { held = false; };
+  canvas.addEventListener('pointerup', release);
+  canvas.addEventListener('pointercancel', release);
+
+  // 음전하가 양전하에 겹치지 않게
+  function keepApart(p) {
+    const dx = p.x - plus.x, dy = p.y - plus.y;
+    const d = Math.hypot(dx, dy);
+    const MIN = 44;
+    if (d < MIN) {
+      const k = MIN / (d || 1);
+      return { x: plus.x + (d ? dx : MIN) * (d ? k : 1), y: plus.y + (d ? dy * k : 0) };
+    }
+    return p;
+  }
+
+  // ── 전기력선 추적 ─────────────────────────────────────────
+  function traceLines() {
+    const n = Math.round(plus.q * LINES_PER_Q);
+    const lines = [];
+    const STEP = 2.5, MAX_STEPS = 1100, START_R = 9;
+    for (let i = 0; i < n; i++) {
+      const a = (2 * Math.PI * (i + 0.5)) / n;
+      let x = plus.x + START_R * Math.cos(a);
+      let y = plus.y + START_R * Math.sin(a);
+      const pts = [x, y];
+      for (let s = 0; s < MAX_STEPS; s++) {
+        let f = field(x, y);
+        let m = Math.hypot(f.ex, f.ey) || 1;
+        const mx = x + (0.5 * STEP * f.ex) / m;
+        const my = y + (0.5 * STEP * f.ey) / m;
+        f = field(mx, my);
+        m = Math.hypot(f.ex, f.ey) || 1;
+        x += (STEP * f.ex) / m;
+        y += (STEP * f.ey) / m;
+        pts.push(x, y);
+        if (Math.hypot(x - minus.x, y - minus.y) < 7) { pts.push(minus.x, minus.y); break; }
+        if (x < -30 || x > W + 30 || y < -30 || y > H + 30) break;
+      }
+      lines.push(pts);
+    }
+    return lines;
+  }
+
+  // ── 시간 ────────────────────────────────────────────────
+  PieceKit.loop({
+    step(dt, t) {
+      const target = held && !PieceKit.frozen ? keepApart({ x: holdX, y: holdY }) : autoPath(t);
+      if (held && !PieceKit.frozen) {
+        minus.x = target.x; minus.y = target.y;
+      } else {
+        const k = 1 - Math.exp(-dt / 0.5);
+        const next = keepApart({ x: minus.x + (target.x - minus.x) * k, y: minus.y + (target.y - minus.y) * k });
+        minus.x = next.x; minus.y = next.y;
+      }
+
+      for (const g of grains) {
+        // 2단 룽게-쿠타
+        const v1 = velocity(g.x, g.y);
+        const v2 = velocity(g.x + 0.5 * dt * v1.vx, g.y + 0.5 * dt * v1.vy);
+        g.x += dt * v2.vx;
+        g.y += dt * v2.vy;
+        g.age += dt;
+        const intoSink = Math.hypot(g.x - minus.x, g.y - minus.y) < 9;
+        const out = g.x < -10 || g.x > W + 10 || g.y < -10 || g.y > H + 10;
+        if (g.age > g.life || intoSink || out) spawn(g, 0);
+      }
+    },
+
+    draw(t) {
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.fillStyle = PAPER;
+      ctx.fillRect(0, 0, W, H);
+
+      PieceKit.mark('떠밀리는 알갱이', () => {
+        ctx.strokeStyle = GRAIN;
+        ctx.lineCap = 'round';
+        ctx.lineWidth = 1.6;
+        for (const g of grains) {
+          const fadeIn = Math.min(1, g.age / 0.35);
+          const fadeOut = Math.min(1, (g.life - g.age) / 0.35);
+          const alpha = Math.max(0, Math.min(fadeIn, fadeOut));
+          if (alpha <= 0) continue;
+          const { vx, vy } = velocity(g.x, g.y);
+          const len = Math.min(60, Math.hypot(vx, vy) * STREAK_TIME);
+          const s = Math.hypot(vx, vy) || 1;
+          ctx.globalAlpha = 0.75 * alpha;
+          ctx.beginPath();
+          if (len < 1.2) {
+            ctx.arc(g.x, g.y, 0.8, 0, Math.PI * 2);
+            ctx.fillStyle = GRAIN;
+            ctx.fill();
+          } else {
+            ctx.moveTo(g.x, g.y);
+            ctx.lineTo(g.x - (vx / s) * len, g.y - (vy / s) * len);
+            ctx.stroke();
+          }
+        }
+        ctx.globalAlpha = 1;
+      });
+
+      PieceKit.mark('전기력선', () => {
+        ctx.strokeStyle = INK;
+        ctx.lineWidth = 1.15;
+        ctx.globalAlpha = 0.9;
+        for (const pts of traceLines()) {
+          ctx.beginPath();
+          ctx.moveTo(pts[0], pts[1]);
+          for (let i = 2; i < pts.length; i += 2) ctx.lineTo(pts[i], pts[i + 1]);
+          ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+      });
+
+      PieceKit.mark('양전하', () => {
+        ctx.beginPath();
+        ctx.arc(plus.x, plus.y, 11, 0, Math.PI * 2);
+        ctx.fillStyle = INK;
+        ctx.fill();
+        ctx.strokeStyle = PAPER;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(plus.x - 5, plus.y); ctx.lineTo(plus.x + 5, plus.y);
+        ctx.moveTo(plus.x, plus.y - 5); ctx.lineTo(plus.x, plus.y + 5);
+        ctx.stroke();
+      });
+
+      PieceKit.mark('음전하', () => {
+        ctx.beginPath();
+        ctx.arc(minus.x, minus.y, 9, 0, Math.PI * 2);
+        ctx.fillStyle = PAPER;
+        ctx.fill();
+        ctx.strokeStyle = INK;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(minus.x - 4.5, minus.y); ctx.lineTo(minus.x + 4.5, minus.y);
+        ctx.stroke();
+      });
+
+      PieceKit.mark('캡션', () => {
+        const text = '선이 몰린 곳을 지나는 알갱이는 빨라지고, 선이 성긴 곳에서는 느려진다';
+        if (captionEl.textContent !== text) captionEl.textContent = text;
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

@@ -177,12 +177,18 @@ importers:
       '@aperi21/sim-beats':
         specifier: workspace:*
         version: link:../../sims/waves/beats
+      '@aperi21/sim-bernoullis-principle':
+        specifier: workspace:*
+        version: link:../../sims/fluids/bernoullis-principle
       '@aperi21/sim-buoyant-force-as-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/buoyant-force-as-force
       '@aperi21/sim-centripetal-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/centripetal-force
+      '@aperi21/sim-color-addition':
+        specifier: workspace:*
+        version: link:../../sims/optics/color-addition
       '@aperi21/sim-conical-pendulum':
         specifier: workspace:*
         version: link:../../sims/mechanics/conical-pendulum
@@ -207,12 +213,18 @@ importers:
       '@aperi21/sim-drag-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/drag-force
+      '@aperi21/sim-energy-flow-diagram':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/energy-flow-diagram
       '@aperi21/sim-equilibrium-of-forces':
         specifier: workspace:*
         version: link:../../sims/mechanics/equilibrium-of-forces
       '@aperi21/sim-fictitious-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/fictitious-force
+      '@aperi21/sim-field-lines':
+        specifier: workspace:*
+        version: link:../../sims/em/field-lines
       '@aperi21/sim-free-body-diagram':
         specifier: workspace:*
         version: link:../../sims/mechanics/free-body-diagram
@@ -240,12 +252,18 @@ importers:
       '@aperi21/sim-inertial-vs-gravitational-mass':
         specifier: workspace:*
         version: link:../../sims/mechanics/inertial-vs-gravitational-mass
+      '@aperi21/sim-interference':
+        specifier: workspace:*
+        version: link:../../sims/waves/interference
       '@aperi21/sim-kinetic-friction':
         specifier: workspace:*
         version: link:../../sims/mechanics/kinetic-friction
       '@aperi21/sim-lenz-law':
         specifier: workspace:*
         version: link:../../sims/em/lenz-law
+      '@aperi21/sim-maxwell-boltzmann-distribution':
+        specifier: workspace:*
+        version: link:../../sims/thermal/maxwell-boltzmann-distribution
       '@aperi21/sim-mechanical-advantage':
         specifier: workspace:*
         version: link:../../sims/mechanics/mechanical-advantage
@@ -267,6 +285,9 @@ importers:
       '@aperi21/sim-pendulum-isochronism':
         specifier: workspace:*
         version: link:../../sims/oscillation/pendulum-isochronism
+      '@aperi21/sim-phase-space':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/phase-space
       '@aperi21/sim-position-time-graph':
         specifier: workspace:*
         version: link:../../sims/kinematics/position-time-graph
@@ -291,6 +312,9 @@ importers:
       '@aperi21/sim-river-crossing':
         specifier: workspace:*
         version: link:../../sims/kinematics/river-crossing
+      '@aperi21/sim-spacetime-diagram':
+        specifier: workspace:*
+        version: link:../../sims/modern/spacetime-diagram
       '@aperi21/sim-spring-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/spring-force
@@ -312,6 +336,9 @@ importers:
       '@aperi21/sim-terminal-velocity':
         specifier: workspace:*
         version: link:../../sims/kinematics/terminal-velocity
+      '@aperi21/sim-tidal-force':
+        specifier: workspace:*
+        version: link:../../sims/astro/tidal-force
       '@aperi21/sim-trajectory-equation':
         specifier: workspace:*
         version: link:../../sims/kinematics/trajectory-equation
@@ -567,6 +594,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/astro/tidal-force:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/electronics/dc-circuit:
     devDependencies:
       '@aperi21/plugin-circuit':
@@ -594,6 +630,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/em/field-lines:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/em/lenz-law:
     devDependencies:
       '@aperi21/schema':
@@ -614,6 +659,15 @@ importers:
       vitest:
         specifier: ^2.1.9
         version: 2.1.9(jsdom@25.0.1)
+
+  sims/fluids/bernoullis-principle:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
 
   sims/fluids/laminar-vs-turbulent:
     devDependencies:
@@ -993,6 +1047,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/energy-flow-diagram:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/mechanics/equilibrium-of-forces:
     devDependencies:
       '@aperi21/schema':
@@ -1194,6 +1257,24 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/modern/spacetime-diagram:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/color-addition:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/optics/ray-tracing:
     devDependencies:
       '@aperi21/plugin-optics':
@@ -1210,6 +1291,15 @@ importers:
         version: 2.1.9(jsdom@25.0.1)
 
   sims/oscillation/pendulum-isochronism:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/phase-space:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1248,6 +1338,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/thermal/maxwell-boltzmann-distribution:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/waves/beats:
     devDependencies:
       '@aperi21/schema':
@@ -1258,6 +1357,15 @@ importers:
         version: 5.9.3
 
   sims/waves/doppler-effect:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/waves/interference:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*

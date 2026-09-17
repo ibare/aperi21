@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>간섭</title>
+<style>
+  :root {
+    --종이: #f6f5f1;
+    --글: #2b2a28;
+    --강조: #d9531e;
+  }
+  html, body { margin: 0; background: var(--종이); color: var(--글); }
+  body { font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .조각 { max-width: 900px; margin: 0 auto; padding: 12px 0; }
+  canvas { display: block; width: 100%; height: auto; border-radius: 6px; }
+  .캡션 { margin: 10px 4px 0; font-size: 15px; line-height: 1.5; min-height: 1.5em; }
+</style>
+</head>
+<body>
+<div class="조각">
+  <canvas id="수면" width="860" height="340"></canvas>
+  <p class="캡션" id="캡션"></p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 장면 상수 (화면 좌표 px, 시간 s) ──
+  const W = 860, H = 340;
+  const 파장 = 56;            // 물결 한 마루에서 다음 마루까지
+  const 속력 = 110;           // 물결이 번지는 빠르기
+  const 각진동수 = 2 * Math.PI * 속력 / 파장;
+  const 파수 = 2 * Math.PI / 파장;
+  const 주기 = 20;            // 한 바퀴 이야기의 길이
+  const 켜짐 = 1;             // 둘째 파원이 물결을 내기 시작하는 시각
+  const 꺼짐 = 12;            // 둘째 파원이 멈추는 시각
+  const 첫째 = { x: 300, y: H / 2 - 75 };
+  const 둘째 = { x: 300, y: H / 2 + 75 };
+
+  // 둘째 파원에서 화면의 가장 먼 모서리까지 — 물결이 화면을 다 덮는 데 걸리는 거리
+  const 가장먼거리 = Math.max(
+    Math.hypot(둘째.x, 둘째.y), Math.hypot(W - 둘째.x, 둘째.y),
+    Math.hypot(둘째.x, H - 둘째.y), Math.hypot(W - 둘째.x, H - 둘째.y));
+  const 다덮음 = 켜짐 + (가장먼거리 + 파장 * 0.25) / 속력;
+  const 다빠짐 = 꺼짐 + (가장먼거리 + 파장 * 0.25) / 속력;
+
+  // 높이장은 절반 해상도로 계산해 늘려 그린다
+  const 칸 = 2;
+  const GW = W / 칸, GH = H / 칸;
+  const 판 = document.createElement('canvas');
+  판.width = GW; 판.height = GH;
+  const 판ctx = 판.getContext('2d');
+  const 그림 = 판ctx.createImageData(GW, GH);
+
+  // 파원까지 거리는 시간과 무관하므로 미리 계산
+  const r1 = new Float32Array(GW * GH), r2 = new Float32Array(GW * GH);
+  const a1 = new Float32Array(GW * GH), a2 = new Float32Array(GW * GH);
+  for (let j = 0; j < GH; j++) {
+    for (let i = 0; i < GW; i++) {
+      const x = (i + 0.5) * 칸, y = (j + 0.5) * 칸, k = j * GW + i;
+      r1[k] = Math.hypot(x - 첫째.x, y - 첫째.y);
+      r2[k] = Math.hypot(x - 둘째.x, y - 둘째.y);
+      a1[k] = 1 / Math.sqrt(1 + r1[k] / 40);
+      a2[k] = 1 / Math.sqrt(1 + r2[k] / 40);
+    }
+  }
+
+  // 물결 앞머리·꼬리를 반 파장에 걸쳐 부드럽게
+  const 가장자리 = (d) => {
+    const u = Math.min(1, Math.max(0, d / (파장 * 0.5) + 0.5));
+    return u * u * (3 - 2 * u);
+  };
+
+  const canvas = document.getElementById('수면');
+  const ctx = canvas.getContext('2d');
+  const 캡션 = document.getElementById('캡션');
+
+  // 수면 색: 한 가지 물빛의 명암만. 마루는 밝게, 골은 어둡게, 가만한 수면은 중간.
+  const 가만 = [92, 128, 150];
+  const 마루 = [214, 232, 240];
+  const 골 = [18, 38, 56];
+
+  function 둘째앞머리(s) { return s < 켜짐 ? -Infinity : (s - 켜짐) * 속력; }
+  function 둘째꼬리(s) { return s < 꺼짐 ? -Infinity : (s - 꺼짐) * 속력; }
+
+  PieceKit.loop({
+    step() { /* 모든 상태는 t 의 함수 — 쌓이는 것이 없다 */ },
+    draw(t) {
+      const s = ((t % 주기) + 주기) % 주기;
+      const 앞 = 둘째앞머리(s), 꼬리 = 둘째꼬리(s);
+
+      PieceKit.mark('수면', () => {
+        const d = 그림.data;
+        const 위상 = 각진동수 * t;
+        for (let k = 0; k < r1.length; k++) {
+          let h = a1[k] * Math.sin(파수 * r1[k] - 위상);
+          if (앞 > -Infinity) {
+            const 덮임 = 가장자리(앞 - r2[k]) * (꼬리 > -Infinity ? 1 - 가장자리(꼬리 - r2[k]) : 1);
+            if (덮임 > 0) h += 덮임 * a2[k] * Math.sin(파수 * r2[k] - 위상);
+          }
+          const v = Math.tanh(h * 0.9);
+          const 끝 = v >= 0 ? 마루 : 골, w = Math.abs(v), o = k * 4;
+          d[o]     = 가만[0] + (끝[0] - 가만[0]) * w;
+          d[o + 1] = 가만[1] + (끝[1] - 가만[1]) * w;
+          d[o + 2] = 가만[2] + (끝[2] - 가만[2]) * w;
+          d[o + 3] = 255;
+        }
+        판ctx.putImageData(그림, 0, 0);
+        ctx.imageSmoothingEnabled = true;
+        ctx.drawImage(판, 0, 0, W, H);
+      });
+
+      const 파원점 = (p, 내는중) => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+        if (내는중) {
+          ctx.fillStyle = '#d9531e';
+          ctx.fill();
+        } else {
+          ctx.lineWidth = 2;
+          ctx.strokeStyle = '#d9531e';
+          ctx.stroke();
+        }
+      };
+      PieceKit.mark('첫째 파원', () => 파원점(첫째, true));
+      PieceKit.mark('둘째 파원', () => 파원점(둘째, s >= 켜짐 && s < 꺼짐));
+
+      PieceKit.mark('캡션', () => {
+        let 말;
+        if (s < 켜짐 || s >= 다빠짐) 말 = '파원 하나뿐인 물에서는 어디든 출렁인다';
+        else if (s < 다덮음 && s < 꺼짐) 말 = '둘째 물결이 닿는 곳마다 잠잠한 줄이 생긴다';
+        else if (s < 꺼짐) 말 = '두 물결이 겹친 수면에 잠잠한 줄이 자리를 지킨다';
+        else 말 = '둘째 파원이 멈추자, 그 물결이 빠져나간 곳부터 다시 출렁인다';
+        if (캡션.textContent !== 말) 캡션.textContent = 말;
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

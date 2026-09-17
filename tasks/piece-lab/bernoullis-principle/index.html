@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>베르누이 원리</title>
+<style>
+  :root {
+    --ink: #1f2328;
+    --muted: #6b7178;
+    --paper: #ffffff;
+  }
+  html, body { margin: 0; background: var(--paper); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 12px 16px 10px; box-sizing: border-box; }
+  .caption { min-height: 1.5em; font-size: 15px; line-height: 1.5; margin: 0 0 6px; }
+  canvas { display: block; width: 100%; height: auto; }
+  .ctl { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .ctl input { flex: 0 1 220px; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <p class="caption" id="caption"></p>
+  <canvas id="c" width="860" height="290"></canvas>
+  <label class="ctl">좁은 곳의 굵기
+    <input id="throat" type="range" min="0.36" max="1" step="0.01" value="0.55">
+  </label>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// 벤투리관: 부피 흐름량이 일정한 이상 유체. 관 굵기 w(x) 에서 속도 u = u0·W0/w,
+// 압력 수두 = 합 수두 − 속도 수두. 모든 길이는 캔버스 픽셀.
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+const capEl = document.getElementById('caption');
+const slider = document.getElementById('throat');
+
+const W = 860, Hc = 290;
+const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+cv.width = W * dpr; cv.height = Hc * dpr;
+ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+const CY = 240;            // 관 중심선
+const W0 = 60;             // 입구 관 굵기
+const X_IN = 30, X_OUT = 830;
+const XC = 430;            // 목 중심
+const PLATEAU = 60, RAMP = 170;
+const TOTAL_HEAD = 205;    // 중심선에서 합 수준선까지
+const VH0 = 16;            // 입구 속도 수두
+const U0 = 58;             // 입구 유속 (px/s)
+const RELEASE = 0.3;       // 물감 띠를 흘려 넣는 간격 (s)
+const STATIONS = Array.from({ length: 9 }, (_, i) => 70 + i * 90);
+const TUBE_W = 14, TUBE_TOP = CY - TOTAL_HEAD - 8;
+
+const BLUE_H = 208;
+const AMBER = '#e39a2d';
+
+let manual = false;
+slider.addEventListener('input', () => { manual = true; });
+
+function autoRatio(t) {
+  return 0.67 + 0.31 * Math.cos(2 * Math.PI * (t + 5) / 16);
+}
+let ratio = autoRatio(0);
+
+function bump(x) {
+  const d = Math.abs(x - XC);
+  if (d <= PLATEAU) return 1;
+  if (d >= PLATEAU + RAMP) return 0;
+  const s = 1 - (d - PLATEAU) / RAMP;
+  return s * s * (3 - 2 * s);
+}
+function width(x) { return W0 * (1 - (1 - ratio) * bump(x)); }
+function speed(x) { return U0 * W0 / width(x); }
+function velHead(x) { const k = W0 / width(x); return VH0 * k * k; }
+function presHead(x) { return TOTAL_HEAD - velHead(x); }
+
+// 압력 수두 → 물 명암 (높을수록 짙다)
+const HP_MAX = TOTAL_HEAD - VH0;
+const HP_MIN = TOTAL_HEAD - VH0 / (0.36 * 0.36);
+function waterColor(hp) {
+  const f = Math.max(0, Math.min(1, (hp - HP_MIN) / (HP_MAX - HP_MIN)));
+  const L = 84 - 40 * f;
+  const S = 55 + 15 * f;
+  return `hsl(${BLUE_H}, ${S}%, ${L}%)`;
+}
+
+// 물감 띠: 같은 시간 간격으로 흘려 넣은 물의 단면.
+// 지금 관 모양에서 목 중심까지 걸리는 시간 τ(x) 로 자리를 정한다.
+// 띠 간격 = 그 자리 유속 × RELEASE 가 언제나 성립해, 간격이 곧 지금의 빠르기다.
+// (관 모양이 바뀐 이력을 적분하면 고른 관에서도 간격이 들쭉날쭉 남아 화면이 거짓말을 한다)
+function stripPositions(t) {
+  const xs = [];
+  let tau = 0;
+  const taus = [];
+  for (let x = X_IN; x <= X_OUT; x += 2) {
+    taus.push(tau);
+    tau += 2 / speed(x + 1);
+  }
+  const iC = Math.round((XC - X_IN) / 2);
+  const off = taus[iC];
+  let prev = Math.floor((taus[0] - off - t) / RELEASE);
+  for (let i = 1; i < taus.length; i++) {
+    const cur = Math.floor((taus[i] - off - t) / RELEASE);
+    if (cur !== prev) {
+      const target = (Math.max(cur, prev)) * RELEASE + t + off;
+      const f = (target - taus[i - 1]) / (taus[i] - taus[i - 1]);
+      xs.push(X_IN + (i - 1 + f) * 2);
+      prev = cur;
+    }
+  }
+  return xs;
+}
+
+function captionFor(r) {
+  if (r >= 0.95) return '굵기가 고르면 물의 빠르기도 고르고, 물기둥 높이도 어디서나 같다.';
+  return '좁은 곳에서 물이 빨라지고, 빨라진 만큼 그 위 물기둥(압력)이 내려간다.';
+}
+
+PieceKit.loop({
+  step(dt, t) {
+    if (PieceKit.frozen || !manual) ratio = autoRatio(t);
+    else ratio = parseFloat(slider.value);
+  },
+  draw(t) {
+    if (PieceKit.frozen || !manual) slider.value = ratio.toFixed(2);
+    capEl.textContent = captionFor(ratio);
+    ctx.clearRect(0, 0, W, Hc);
+
+    const totalY = CY - TOTAL_HEAD;
+
+    PieceKit.mark('관 속 물의 압력 명암', () => {
+      for (let x = X_IN; x < X_OUT; x += 2) {
+        const w = width(x + 1);
+        ctx.fillStyle = waterColor(presHead(x + 1));
+        ctx.fillRect(x, CY - w / 2, 2.2, w);
+      }
+    });
+
+    PieceKit.mark('물감 띠', () => {
+      ctx.strokeStyle = 'rgba(31,35,40,0.55)';
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      for (const x of stripPositions(t)) {
+        const w = width(x);
+        ctx.moveTo(x, CY - w / 2 + 1);
+        ctx.lineTo(x, CY + w / 2 - 1);
+      }
+      ctx.stroke();
+    });
+
+    PieceKit.mark('관 벽', () => {
+      ctx.strokeStyle = '#3a3f45';
+      ctx.lineWidth = 2;
+      for (const sgn of [-1, 1]) {
+        ctx.beginPath();
+        for (let x = X_IN; x <= X_OUT; x += 2) {
+          const y = CY + sgn * width(x) / 2;
+          if (x === X_IN) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+    });
+
+    PieceKit.mark('속도로 바뀐 몫', () => {
+      ctx.fillStyle = AMBER;
+      ctx.globalAlpha = 0.85;
+      for (const x of STATIONS) {
+        const top = totalY;
+        const bottom = CY - presHead(x);
+        ctx.fillRect(x - TUBE_W / 2 + 2, top, TUBE_W - 4, bottom - top);
+      }
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('물기둥', () => {
+      for (const x of STATIONS) {
+        const hp = presHead(x);
+        const wallY = CY - width(x) / 2;
+        ctx.fillStyle = waterColor(hp);
+        ctx.fillRect(x - TUBE_W / 2 + 2, CY - hp, TUBE_W - 4, wallY - (CY - hp) + 1);
+      }
+    });
+
+    PieceKit.mark('물기둥 유리관', () => {
+      ctx.strokeStyle = '#8a9097';
+      ctx.lineWidth = 1.2;
+      for (const x of STATIONS) {
+        const wallY = CY - width(x) / 2;
+        ctx.beginPath();
+        ctx.moveTo(x - TUBE_W / 2 + 1, TUBE_TOP); ctx.lineTo(x - TUBE_W / 2 + 1, wallY);
+        ctx.moveTo(x + TUBE_W / 2 - 1, TUBE_TOP); ctx.lineTo(x + TUBE_W / 2 - 1, wallY);
+        ctx.stroke();
+      }
+    });
+
+    PieceKit.mark('합 수준선', () => {
+      ctx.strokeStyle = '#3a3f45';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([5, 4]);
+      ctx.beginPath();
+      ctx.moveTo(STATIONS[0] - 20, totalY);
+      ctx.lineTo(STATIONS[STATIONS.length - 1] + 20, totalY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    });
+
+    PieceKit.mark('이름표', () => {
+      ctx.font = '12px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#3a3f45';
+      ctx.textAlign = 'left';
+      ctx.fillText('두 몫의 합은 어디서나 이 높이', STATIONS[0] - 20, totalY - 14);
+      // 목 물기둥 옆에 두 몫의 이름을 붙인다
+      const xs = STATIONS[4] + TUBE_W / 2 + 8;
+      const topW = CY - presHead(STATIONS[4]);
+      const midAmber = (totalY + topW) / 2;
+      if (topW - totalY > 22) {
+        ctx.fillStyle = '#9a6412';
+        ctx.fillText('속도 몫', xs, midAmber);
+      }
+      ctx.fillStyle = '#2d5d8a';
+      ctx.fillText('압력 몫', xs, topW + 14);
+    });
+  },
+});
+</script>
+</body>
+</html>

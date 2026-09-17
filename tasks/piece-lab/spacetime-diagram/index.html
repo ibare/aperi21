@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>시공간 도표</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #26262b;
+    --faint: #a9a9b2;
+    --accent: #e0612a;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 8px 0; }
+  canvas { display: block; width: 100%; height: 340px; }
+  .bar { display: flex; align-items: center; gap: 12px; padding: 6px 12px 0; font-size: 14px; }
+  .caption { flex: 1; min-height: 1.4em; }
+  .ctl { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+  .ctl input { width: 160px; accent-color: var(--ink); }
+  .ctl output { display: inline-block; min-width: 8.5em; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <div class="bar">
+    <div class="caption" id="caption"></div>
+    <label class="ctl">관찰자 속도
+      <input id="speed" type="range" min="-0.8" max="0.8" step="0.01" value="0.6">
+      <output id="speedOut"></output>
+    </label>
+  </div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const captionEl = document.getElementById('caption');
+  const slider = document.getElementById('speed');
+  const speedOut = document.getElementById('speedOut');
+
+  const css = getComputedStyle(document.documentElement);
+  const BG = css.getPropertyValue('--bg').trim();
+  const INK = css.getPropertyValue('--ink').trim();
+  const FAINT = css.getPropertyValue('--faint').trim();
+  const ACCENT = css.getPropertyValue('--accent').trim();
+
+  // 좌표: x 는 공간, ct 는 시간(빛의 속도 = 1). 화면 세로 절반이 ct 3.6.
+  const CT_HALF = 3.6;
+  // 정지한 쪽에서 같은 순간(ct = 0)에 일어난 세 사건
+  const EVENTS = [
+    { name: '왼쪽', x: -2.4 },
+    { name: '가운데', x: 0 },
+    { name: '오른쪽', x: 2.4 },
+  ];
+
+  // 자동 진행: 한 장면 7초. [0,1.5) 속도 바꾸기, [1.5,1.8) 지금을 아래로, [1.8,6.3) 훑기, [6.3,7) 머물기
+  const SCENE = 7;
+  const SPEEDS = [0.6, -0.6, 0];
+  const OFFSET = 3.5; // 도착한 순간 이미 훑는 중
+  const ease = (u) => u <= 0 ? 0 : u >= 1 ? 1 : u * u * (3 - 2 * u);
+  const lerp = (a, b, u) => a + (b - a) * u;
+  const quant = (b) => Math.abs(b) < 0.005 ? 0 : b;
+
+  // 훑는 폭: 지금 선이 x = 0 을 지나는 높이(c0)의 범위
+  const sweepRange = (beta) => Math.abs(beta) * 2.4 + 0.7;
+
+  function autoState(t) {
+    const T = t + OFFSET;
+    const k = Math.floor(T / SCENE);
+    const u = T - k * SCENE;
+    const n = SPEEDS.length;
+    const cur = SPEEDS[((k % n) + n) % n];
+    const prev = SPEEDS[(((k - 1) % n) + n) % n];
+    const rPrev = sweepRange(prev), rCur = sweepRange(cur);
+    let beta, c0, changing = false, sweeping = false;
+    if (u < 1.5) {
+      beta = lerp(prev, cur, ease(u / 1.5));
+      changing = prev !== cur;
+      c0 = lerp(rPrev, 0, ease(u / 0.5));
+    } else if (u < 1.8) {
+      beta = cur;
+      c0 = lerp(0, -rCur, ease((u - 1.5) / 0.3));
+    } else if (u < 6.3) {
+      beta = cur;
+      c0 = lerp(-rCur, rCur, (u - 1.8) / 4.5);
+      sweeping = true;
+    } else {
+      beta = cur;
+      c0 = rCur;
+    }
+    return { beta, c0, changing, sweeping, target: cur };
+  }
+
+  // 조작 상태 (프레임 사이에 쌓임)
+  const manual = { on: false, beta: 0.6, target: 0.6, since: 0 };
+  let lastT = 0;
+  slider.addEventListener('input', () => {
+    if (PieceKit.frozen) return;
+    const v = Math.round(parseFloat(slider.value) * 100) / 100;
+    if (!manual.on) {
+      manual.on = true;
+      manual.beta = autoState(lastT).beta;
+      manual.since = lastT;
+    }
+    manual.target = v;
+  });
+
+  function manualState(t) {
+    const u = ((t - manual.since) % 6 + 6) % 6;
+    const r = sweepRange(manual.beta);
+    const c0 = u < 4.5 ? lerp(-r, r, u / 4.5) : r;
+    return { beta: manual.beta, c0, changing: manual.beta !== manual.target, sweeping: u < 4.5, target: manual.target };
+  }
+
+  function state(t) {
+    return (manual.on && !PieceKit.frozen) ? manualState(t) : autoState(t);
+  }
+
+  // 캔버스 크기
+  let W = 860, H = 340, S = H / 2 / CT_HALF;
+  function fit() {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    W = Math.max(320, rect.width); H = 340;
+    S = H / 2 / CT_HALF;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  const X = (x) => W / 2 + x * S;
+  const Y = (ct) => H / 2 - ct * S;
+  const XMAX = () => W / 2 / S;
+
+  function lineThrough(x0, ct0, slopeCtPerX) {
+    const xm = XMAX();
+    ctx.beginPath();
+    ctx.moveTo(X(-xm), Y(ct0 + slopeCtPerX * (-xm - x0)));
+    ctx.lineTo(X(xm), Y(ct0 + slopeCtPerX * (xm - x0)));
+  }
+
+  function label(text, px, py, color, align) {
+    ctx.fillStyle = color;
+    ctx.font = '12px -apple-system, "Apple SD Gothic Neo", sans-serif';
+    ctx.textAlign = align || 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, px, py);
+  }
+
+  function speedText(b) {
+    const q = quant(b);
+    if (q === 0) return '정지 0.00c';
+    return (q > 0 ? '오른쪽 ' : '왼쪽 ') + Math.abs(q).toFixed(2) + 'c';
+  }
+
+  function captionFor(s) {
+    if (s.changing) return '속도가 바뀌는 중 — 세계선이 기우는 만큼 동시선도 같은 쪽으로 기운다';
+    const q = quant(s.beta);
+    if (q === 0) return '정지한 관찰자 — 세 사건이 한꺼번에 ‘지금’에 닿는다';
+    const side = q > 0 ? '오른쪽' : '왼쪽';
+    return `${side}으로 ${Math.abs(q).toFixed(2)}c — 동시선이 기울어 ${side} 사건부터 차례로 ‘지금’에 닿는다`;
+  }
+
+  PieceKit.loop({
+    step(dt, t) {
+      lastT = t;
+      if (manual.on && !PieceKit.frozen) {
+        const d = manual.target - manual.beta;
+        manual.beta += d * Math.min(1, dt * 5);
+        if (Math.abs(manual.target - manual.beta) < 0.002) manual.beta = manual.target;
+      }
+    },
+    draw(t) {
+      const s = state(t);
+      const beta = s.beta;
+      const q = quant(beta);
+      if (canvas.width === 0 || Math.abs(canvas.getBoundingClientRect().width - W) > 1) fit();
+      ctx.clearRect(0, 0, W, H);
+
+      PieceKit.mark('시간과 공간 방향', () => {
+        label('시간 ↑', 10, 14, FAINT);
+        label('공간 →', W - 10, H - 12, FAINT, 'right');
+      });
+
+      PieceKit.mark('빛의 세계선', () => {
+        ctx.save();
+        ctx.strokeStyle = FAINT; ctx.lineWidth = 1; ctx.setLineDash([4, 5]);
+        lineThrough(0, 0, 1); ctx.stroke();
+        lineThrough(0, 0, -1); ctx.stroke();
+        ctx.restore();
+        label('빛', X(CT_HALF - 0.3) + 8, Y(CT_HALF - 0.3), FAINT);
+        label('빛', X(-(CT_HALF - 0.3)) - 8, Y(CT_HALF - 0.3), FAINT, 'right');
+      });
+
+      // 관찰자 위치: 세계선 x = β·ct 와 지금 선 ct = c0 + β x 의 교점
+      const g2 = 1 / (1 - beta * beta);
+      const oCt = s.c0 * g2;
+      const oX = beta * oCt;
+
+      // 기운 각: 두 선이 만나는 관찰자 점에서, 세계선은 세로(아래)로부터, 동시선은 가로로부터 같은 각.
+      // 두 호가 같은 사분면에 생겨 빛의 선을 가운데 두고 마주 접히는 것이 보인다.
+      PieceKit.mark('기운 각', () => {
+        if (Math.abs(beta) < 0.02 || Math.abs(oCt) > CT_HALF - 0.9) return;
+        const a = Math.atan(Math.abs(beta));
+        const r = 44;
+        const cx = X(oX), cy = Y(oCt);
+        const down = Math.PI / 2; // 캔버스 각도: 0 = 오른쪽, π/2 = 아래
+        const side = beta > 0 ? Math.PI : 0; // 오른쪽으로 가면 왼쪽 아래, 왼쪽으로 가면 오른쪽 아래 사분면
+        ctx.save();
+        ctx.strokeStyle = FAINT; ctx.lineWidth = 1; ctx.setLineDash([2, 3]);
+        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx, cy + r + 14); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + Math.cos(side) * (r + 14), cy); ctx.stroke();
+        ctx.setLineDash([]); ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        if (beta > 0) ctx.arc(cx, cy, r, down, down + a); else ctx.arc(cx, cy, r, down - a, down);
+        ctx.stroke();
+        ctx.beginPath();
+        if (beta > 0) ctx.arc(cx, cy, r, Math.PI - a, Math.PI); else ctx.arc(cx, cy, r, 0, a);
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      PieceKit.mark('관찰자의 세계선', () => {
+        const top = CT_HALF + 1, bot = -CT_HALF - 1;
+        ctx.save();
+        ctx.strokeStyle = INK; ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(X(beta * bot), Y(bot));
+        ctx.lineTo(X(beta * oCt), Y(Math.min(oCt, top)));
+        ctx.stroke();
+        ctx.lineWidth = 1.2; ctx.setLineDash([3, 4]);
+        if (oCt < top) {
+          ctx.beginPath();
+          ctx.moveTo(X(oX), Y(oCt));
+          ctx.lineTo(X(beta * top), Y(top));
+          ctx.stroke();
+        }
+        ctx.restore();
+        label('관찰자', X(beta * (-CT_HALF + 0.35)) + 10, Y(-CT_HALF + 0.35), INK);
+      });
+
+      PieceKit.mark('관찰자의 지금', () => {
+        ctx.save();
+        ctx.strokeStyle = ACCENT; ctx.lineWidth = 2.5;
+        lineThrough(0, s.c0, beta); ctx.stroke();
+        ctx.restore();
+        // 이름표: 선이 올라가는 쪽 끝에, 위쪽 '빛' 이름표보다 낮게
+        const up = beta >= 0 ? 1 : -1;
+        let lx = up * (XMAX() - 0.2);
+        const lim = CT_HALF - 0.9;
+        if (Math.abs(s.c0 + beta * lx) > lim && beta !== 0) {
+          lx = (Math.sign(s.c0 + beta * lx) * lim - s.c0) / beta;
+        }
+        label('관찰자의 지금', X(lx) - up * 4, Y(s.c0 + beta * lx) - 12, ACCENT, up > 0 ? 'right' : 'left');
+        if (Math.abs(oCt) < CT_HALF + 0.2) {
+          ctx.fillStyle = ACCENT;
+          ctx.beginPath(); ctx.arc(X(oX), Y(oCt), 6, 0, Math.PI * 2); ctx.fill();
+        }
+      });
+
+      // 사건: 지금 선이 지나갔으면(관찰자에게 이미 일어났으면) 채운다
+      const lit = EVENTS.map((e) => s.c0 + q * e.x >= -1e-9);
+      const order = EVENTS.map((e) => {
+        const te = -q * e.x; // 관찰자 시각의 순서를 정하는 값 (γ 배는 순서에 무관)
+        return 1 + EVENTS.filter((o) => -q * o.x < te - 1e-9).length;
+      });
+      EVENTS.forEach((e, i) => {
+        PieceKit.mark(`${e.name} 사건`, () => {
+          const px = X(e.x), py = Y(0);
+          const since = s.c0 + q * e.x; // 지금 선이 지난 뒤 흐른 양
+          if (s.sweeping && lit[i] && since < 0.5) {
+            ctx.save();
+            ctx.strokeStyle = INK; ctx.globalAlpha = 1 - since / 0.5; ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.arc(px, py, 7 + since * 40, 0, Math.PI * 2); ctx.stroke();
+            ctx.restore();
+          }
+          ctx.save();
+          ctx.lineWidth = 2; ctx.strokeStyle = INK; ctx.fillStyle = lit[i] ? INK : BG;
+          ctx.beginPath(); ctx.arc(px, py, 7, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+          ctx.restore();
+          if (lit[i]) {
+            ctx.font = 'bold 13px -apple-system, "Apple SD Gothic Neo", sans-serif';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+            ctx.lineWidth = 4; ctx.strokeStyle = BG; ctx.lineJoin = 'round';
+            ctx.strokeText(`${order[i]}번째`, px, py + 30);
+            ctx.fillStyle = INK;
+            ctx.fillText(`${order[i]}번째`, px, py + 30);
+          }
+        });
+      });
+
+      PieceKit.mark('캡션', () => {
+        captionEl.textContent = captionFor(s);
+      });
+      PieceKit.mark('속도 조작기', () => {
+        if (document.activeElement !== slider || PieceKit.frozen) slider.value = String(quant(beta).toFixed(2));
+        speedOut.textContent = speedText(beta);
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

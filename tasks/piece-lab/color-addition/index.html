@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>빛의 합성</title>
+<style>
+  html, body { margin: 0; background: #17171b; color: #d8d8de; }
+  body { font-family: system-ui, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 880px; margin: 0 auto; padding: 12px 0; }
+  canvas { display: block; width: 100%; height: auto; touch-action: none; }
+  .caption { min-height: 1.6em; margin: 8px 12px 0; font-size: 16px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="stage"></canvas>
+  <div class="caption" id="caption"></div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// 화면 크기 (논리 좌표)
+const W = 880, H = 310;
+const STAGE_W = 590;                 // 검은 막(빛이 비치는 곳) 폭
+const C = { x: STAGE_W / 2, y: H / 2 }; // 표시한 자리의 기본 위치
+const R = 64;                        // 빛 원판 반지름
+const IN_D = 28;                     // 자리에 들어와 있을 때 중심까지 거리
+const OUT_D = 88;                    // 자리에서 비켜 있을 때 중심까지 거리
+
+const canvas = document.getElementById('stage');
+const ctx = canvas.getContext('2d');
+const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+canvas.width = W * dpr; canvas.height = H * dpr;
+ctx.scale(dpr, dpr);
+const captionEl = document.getElementById('caption');
+
+// 세 빛: 방향은 120도 간격
+const LIGHTS = [
+  { key: 'r', name: '빨강', mark: '빨간 빛', color: '#ff0000', rgb: [1, 0, 0], ang: -Math.PI / 2 },
+  { key: 'g', name: '초록', mark: '초록 빛', color: '#00ff00', rgb: [0, 1, 0], ang: Math.PI / 6 },
+  { key: 'b', name: '파랑', mark: '파란 빛', color: '#0000ff', rgb: [0, 0, 1], ang: Math.PI * 5 / 6 },
+];
+
+// 자동 진행 순서: 한 번에 빛 하나만 드나든다.
+// 구간 k 의 시작에 이동(MOVE 초), 나머지는 멈춰 있다.
+const SEG = 2.5, MOVE = 0.9, OFFSET = 0.25, PERIOD = SEG * 6;
+// 각 구간 끝의 상태 (빨강, 초록, 파랑 이 자리에 들어와 있는지)
+const STATES = [
+  [1, 0, 0], // 시작 직전: 빨강만
+  [1, 1, 0], // 초록이 들어온다
+  [1, 1, 1], // 파랑이 들어온다
+  [0, 1, 1], // 빨강이 나간다
+  [0, 0, 1], // 초록이 나간다
+  [0, 0, 0], // 파랑이 나간다
+  [1, 0, 0], // 빨강이 들어온다
+];
+function smooth(u) { u = Math.min(1, Math.max(0, u)); return u * u * (3 - 2 * u); }
+
+function autoPositions(t) {
+  let tau = (t + OFFSET) % PERIOD;
+  const k = Math.floor(tau / SEG);
+  const u = smooth((tau - k * SEG) / MOVE);
+  return LIGHTS.map((L, i) => {
+    const a = STATES[k][i], b = STATES[k + 1][i];
+    const inside = a + (b - a) * u;
+    const d = OUT_D + (IN_D - OUT_D) * inside;
+    return { x: C.x + d * Math.cos(L.ang), y: C.y + d * Math.sin(L.ang) };
+  });
+}
+
+// 독자가 끌어 옮기면 그때부터 손으로 놓은 자리를 쓴다
+let manual = null;       // { lights: [{x,y}...], probe: {x,y} }
+let drag = null;         // { kind: 'light'|'probe', i, dx, dy }
+
+function current(t) {
+  if (manual && !PieceKit.frozen) return manual;
+  return { lights: autoPositions(t), probe: { x: C.x, y: C.y } };
+}
+
+// 표시한 자리에 각 빛이 닿는지: 원판 경계는 날카롭다(0 또는 1)
+function reach(scene) {
+  return scene.lights.map(p => (Math.hypot(p.x - scene.probe.x, p.y - scene.probe.y) <= R ? 1 : 0));
+}
+
+const CAPTIONS = {
+  '000': '고리 자리에는 빛이 하나도 닿지 않아 검다',
+  '100': '고리 자리에는 빨간 빛만 닿아 빨갛다',
+  '010': '고리 자리에는 초록 빛만 닿아 초록이다',
+  '001': '고리 자리에는 파란 빛만 닿아 파랗다',
+  '110': '빨강과 초록이 고리 자리에서 더해져 노랑이 된다',
+  '011': '초록과 파랑이 고리 자리에서 더해져 청록이 된다',
+  '101': '빨강과 파랑이 고리 자리에서 더해져 자홍이 된다',
+  '111': '세 빛이 고리 자리에서 모두 더해져 흰색이 된다',
+};
+
+function drawTile(x, y, s, fill, label) {
+  ctx.fillStyle = fill;
+  ctx.fillRect(x, y, s, s);
+  ctx.strokeStyle = '#55555e';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(x + 0.5, y + 0.5, s - 1, s - 1);
+  ctx.fillStyle = '#9a9aa4';
+  ctx.font = '13px system-ui, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText(label, x + s / 2, y + s + 8);
+}
+
+let lastCaption = '';
+let lastT = 0;
+
+PieceKit.loop({
+  step(dt, t) { /* 자동 진행 위치는 t 의 함수라 쌓이는 상태가 없다 */ },
+  draw(t) {
+    lastT = t;
+    const scene = current(t);
+    const on = reach(scene);
+    ctx.clearRect(0, 0, W, H);
+
+    PieceKit.mark('검은 막', () => {
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, STAGE_W, H);
+    });
+
+    // 빛은 가산 합성으로 겹친다
+    ctx.save();
+    ctx.beginPath(); ctx.rect(0, 0, STAGE_W, H); ctx.clip();
+    ctx.globalCompositeOperation = 'lighter';
+    LIGHTS.forEach((L, i) => {
+      PieceKit.mark(L.mark, () => {
+        const p = scene.lights[i];
+        ctx.fillStyle = L.color;
+        ctx.beginPath(); ctx.arc(p.x, p.y, R, 0, Math.PI * 2); ctx.fill();
+      });
+    });
+    ctx.restore();
+
+    PieceKit.mark('고리', () => {
+      const p = scene.probe;
+      ctx.lineWidth = 3; ctx.strokeStyle = '#000';
+      ctx.beginPath(); ctx.arc(p.x, p.y, 9, 0, Math.PI * 2); ctx.stroke();
+      ctx.lineWidth = 1.5; ctx.strokeStyle = '#ffffff';
+      ctx.beginPath(); ctx.arc(p.x, p.y, 9, 0, Math.PI * 2); ctx.stroke();
+    });
+
+    // 오른쪽: 고리 자리에 닿는 세 몫과 그 합
+    const s = 44, big = 64, gap = 22;
+    const total = s * 3 + big + gap * 3;
+    const x0 = STAGE_W + (W - STAGE_W - total) / 2;
+    const yTile = H / 2 - s / 2 - 10;
+    const yBig = H / 2 - big / 2 - 10;
+    LIGHTS.forEach((L, i) => {
+      PieceKit.mark(L.name + ' 몫', () => {
+        drawTile(x0 + i * (s + gap), yTile, s, on[i] ? L.color : '#000', L.name);
+      });
+    });
+    PieceKit.mark('더하기 기호', () => {
+      ctx.fillStyle = '#9a9aa4';
+      ctx.font = '20px system-ui, sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      for (let i = 0; i < 3; i++) {
+        ctx.fillText(i < 2 ? '+' : '=', x0 + i * (s + gap) + s + gap / 2, H / 2 - 10);
+      }
+    });
+    const x = x0 + 3 * (s + gap);
+    PieceKit.mark('고리 자리의 색', () => {
+      const rgb = [0, 0, 0];
+      LIGHTS.forEach((L, i) => { for (let c = 0; c < 3; c++) rgb[c] = Math.min(1, rgb[c] + on[i] * L.rgb[c]); });
+      drawTile(x, yBig, big, `rgb(${rgb[0] * 255},${rgb[1] * 255},${rgb[2] * 255})`, '고리 자리');
+    });
+
+    PieceKit.mark('캡션', () => {
+      const text = CAPTIONS[on.join('')];
+      if (text !== lastCaption) { captionEl.textContent = text; lastCaption = text; }
+    });
+  },
+});
+
+// 조작: 빛 원판이나 고리를 끌어 옮긴다
+function toLocal(e) {
+  const r = canvas.getBoundingClientRect();
+  return { x: (e.clientX - r.left) * W / r.width, y: (e.clientY - r.top) * H / r.height };
+}
+canvas.addEventListener('pointerdown', e => {
+  if (PieceKit.frozen) return;
+  const m = toLocal(e);
+  if (m.x > STAGE_W) return;
+  const scene = manual || { lights: autoPositions(lastT), probe: { x: C.x, y: C.y } };
+  if (Math.hypot(m.x - scene.probe.x, m.y - scene.probe.y) <= 14) {
+    drag = { kind: 'probe', dx: scene.probe.x - m.x, dy: scene.probe.y - m.y };
+  } else {
+    let best = -1, bestD = Infinity;
+    scene.lights.forEach((p, i) => {
+      const d = Math.hypot(m.x - p.x, m.y - p.y);
+      if (d <= R && d < bestD) { best = i; bestD = d; }
+    });
+    if (best < 0) return;
+    drag = { kind: 'light', i: best, dx: scene.lights[best].x - m.x, dy: scene.lights[best].y - m.y };
+  }
+  manual = { lights: scene.lights.map(p => ({ x: p.x, y: p.y })), probe: { x: scene.probe.x, y: scene.probe.y } };
+  canvas.setPointerCapture(e.pointerId);
+});
+canvas.addEventListener('pointermove', e => {
+  if (!drag || !manual) return;
+  const m = toLocal(e);
+  const nx = Math.min(STAGE_W, Math.max(0, m.x + drag.dx));
+  const ny = Math.min(H, Math.max(0, m.y + drag.dy));
+  if (drag.kind === 'probe') { manual.probe.x = nx; manual.probe.y = ny; }
+  else { manual.lights[drag.i].x = nx; manual.lights[drag.i].y = ny; }
+});
+function endDrag() { drag = null; }
+canvas.addEventListener('pointerup', endDrag);
+canvas.addEventListener('pointercancel', endDrag);
+</script>
+</body>
+</html>

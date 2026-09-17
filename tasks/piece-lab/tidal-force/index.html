@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>조석력</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #2f3a46;
+    --muted: #7a818a;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 8px 0; }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { min-height: 2.8em; margin: 6px 12px 0; font-size: 15px; line-height: 1.45; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c" width="860" height="300"></canvas>
+  <p class="caption" id="caption"></p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 색: 같은 대상은 같은 색, 강조색은 "천체를 잇는 직선 위 양 끝 먼지" 한 가지 뜻 ──
+  const COL = {
+    bg: '#fbfaf7',
+    dust: '#3d4b5c',
+    body: '#5d636d',
+    field: '#7f95ad',
+    ghost: '#9aa3ad',
+    frame: '#c9cdd2',
+    label: '#7a818a',
+    accent: '#d9480f',
+  };
+
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const captionEl = document.getElementById('caption');
+  const W = canvas.width, H = canvas.height;
+
+  // ── 물리 (세계 단위) : 천체는 원점, 먼지 구름은 -x 쪽에서 정지 상태로 놓아 준다 ──
+  const D0 = 460;          // 처음 중심 거리
+  const R0 = 30;           // 먼지 구름 반지름
+  const T_FF = 7.2;        // 중심이 천체까지 떨어지는 시간
+  const GM = (Math.PI / 2) ** 2 * D0 ** 3 / (2 * T_FF * T_FF);
+  const DT = 1 / 60;
+
+  // ── 한 바퀴의 시간 구성 (실시간 기준) ──
+  const PREROLL = 1.0;     // 도착한 순간 이미 떨어지는 중이도록 미리 흘려 둔 물리 시간
+  const FULL = 4.6;        // 보통 빠르기로 떨어지는 구간
+  const SLOW = 1.6;        // 가장 늘어난 모습을 느리게 보여 주는 구간
+  const SLOW_RATE = 0.3;
+  const FADE = 0.4;
+  const CYCLE = FULL + SLOW + FADE;
+
+  // 먼지 입자의 처음 상대 위치 (0: 천체 쪽 끝, 1: 반대쪽 끝, 나머지: 원판 안에 고르게)
+  const N = 170;
+  const offsets = [{ x: R0, y: 0 }, { x: -R0, y: 0 }];
+  for (let i = 2; i < N; i++) {
+    const r = R0 * Math.sqrt(PieceKit.random());
+    const a = PieceKit.random() * Math.PI * 2;
+    offsets.push({ x: r * Math.cos(a), y: r * Math.sin(a) });
+  }
+  // 조석 잔차장 흐름 무늬의 위상 (결정적)
+  const streakSeeds = [];
+  for (let i = 0; i < 400; i++) streakSeeds.push(PieceKit.random());
+
+  let center, dust, rc;
+
+  function accel(x, y) {
+    const r2 = x * x + y * y;
+    const r = Math.sqrt(r2);
+    const k = -GM / (r2 * r);
+    return [k * x, k * y];
+  }
+  function stepBody(p, h) {
+    const [ax, ay] = accel(p.x, p.y);
+    p.vx += ax * h; p.vy += ay * h;
+    p.x += p.vx * h; p.y += p.vy * h;
+  }
+  function physics(h) {
+    stepBody(center, h);
+    for (const p of dust) stepBody(p, h);
+  }
+  function reset() {
+    center = { x: -D0, y: 0, vx: 0, vy: 0 };
+    dust = offsets.map(o => ({ x: -D0 + o.x, y: o.y, vx: 0, vy: 0 }));
+    rc = 0;
+    const n = Math.round(PREROLL / DT);
+    for (let i = 0; i < n; i++) physics(DT);
+  }
+  reset();
+
+  // ── 화면 배치 ──
+  const LEFT = { x0: 0, x1: 540, bodyX: 490, cy: 150, scale: 0.95, bodyR: 30 };
+  const RIGHT = { x0: 552, x1: 860, y0: 14, y1: 286, zoom: 1.4 };
+  RIGHT.cx = RIGHT.x0 + 132;   // 천체 쪽(오른쪽)이 더 많이 늘어나므로 중심을 왼쪽으로 치우친다
+  RIGHT.cy = (RIGHT.y0 + RIGHT.y1) / 2;
+
+  const toLeft = (x, y) => [LEFT.bodyX + x * LEFT.scale, LEFT.cy + y * LEFT.scale];
+  const toRight = (dx, dy) => [RIGHT.cx + dx * RIGHT.zoom, RIGHT.cy + dy * RIGHT.zoom];
+
+  function alpha() {
+    return rc > FULL + SLOW ? Math.max(0, 1 - (rc - FULL - SLOW) / FADE) : 1;
+  }
+
+  // ── 그리기 ──
+  function drawLeft(a) {
+    PieceKit.mark('천체의 중력장', () => {
+      // 세기 ∝ 1/r² 를 그대로 음영의 짙기로
+      const img = ctx.createRadialGradient(LEFT.bodyX, LEFT.cy, LEFT.bodyR, LEFT.bodyX, LEFT.cy, 520);
+      const stops = 14;
+      for (let i = 0; i <= stops; i++) {
+        const f = i / stops;
+        const r = LEFT.bodyR + f * (520 - LEFT.bodyR);
+        const gEnd = (LEFT.bodyR / 520) ** 2;
+        const g = ((LEFT.bodyR / r) ** 2 - gEnd) / (1 - gEnd);
+        img.addColorStop(f, `rgba(127,149,173,${(0.42 * g).toFixed(4)})`);
+      }
+      ctx.fillStyle = img;
+      ctx.fillRect(0, 0, W, H);
+    });
+    PieceKit.mark('천체', () => {
+      ctx.fillStyle = COL.body;
+      ctx.beginPath(); ctx.arc(LEFT.bodyX, LEFT.cy, LEFT.bodyR, 0, Math.PI * 2); ctx.fill();
+    });
+    PieceKit.mark('확대 구역 표시', () => {
+      const [cx, cy] = toLeft(center.x, center.y);
+      const hw = (RIGHT.cx - RIGHT.x0) / RIGHT.zoom * LEFT.scale;
+      const hwR = (RIGHT.x1 - RIGHT.cx) / RIGHT.zoom * LEFT.scale;
+      const hh = (RIGHT.cy - RIGHT.y0) / RIGHT.zoom * LEFT.scale;
+      const L = 10;
+      ctx.strokeStyle = COL.frame; ctx.lineWidth = 1.5; ctx.globalAlpha = a;
+      const corners = [[cx - hw, cy - hh, 1, 1], [cx + hwR, cy - hh, -1, 1], [cx - hw, cy + hh, 1, -1], [cx + hwR, cy + hh, -1, -1]];
+      for (const [x, y, sx, sy] of corners) {
+        ctx.beginPath(); ctx.moveTo(x + sx * L, y); ctx.lineTo(x, y); ctx.lineTo(x, y + sy * L); ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    });
+    PieceKit.mark('먼지 구름', () => {
+      ctx.fillStyle = COL.dust; ctx.globalAlpha = a;
+      for (let i = 2; i < dust.length; i++) {
+        const [x, y] = toLeft(dust[i].x, dust[i].y);
+        if (x > LEFT.x1) continue;
+        ctx.fillRect(x - 1, y - 1, 2, 2);
+      }
+      ctx.globalAlpha = 1;
+    });
+    PieceKit.mark('양 끝 먼지', () => {
+      ctx.fillStyle = COL.accent; ctx.globalAlpha = a;
+      for (let i = 0; i < 2; i++) {
+        const [x, y] = toLeft(dust[i].x, dust[i].y);
+        ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    });
+  }
+
+  function drawRight(a, t) {
+    // 확대 화면은 왼쪽 음영 위에 놓인 따로 된 바탕
+    ctx.fillStyle = COL.bg;
+    ctx.fillRect(RIGHT.x0, RIGHT.y0, RIGHT.x1 - RIGHT.x0, RIGHT.y1 - RIGHT.y0);
+    ctx.save();
+    ctx.beginPath(); ctx.rect(RIGHT.x0, RIGHT.y0, RIGHT.x1 - RIGHT.x0, RIGHT.y1 - RIGHT.y0); ctx.clip();
+
+    PieceKit.mark('조석 잔차장', () => {
+      // 각 자리의 끌림에서 구름 중심의 끌림을 뺀 것 — 함께 떨어지는 눈에 남는 힘
+      const [gcx, gcy] = accel(center.x, center.y);
+      const step = 24;
+      let k = 0;
+      ctx.lineCap = 'round';
+      for (let py = RIGHT.y0 + step / 2; py < RIGHT.y1; py += step) {
+        for (let px = RIGHT.x0 + step / 2; px < RIGHT.x1; px += step) {
+          const seed = streakSeeds[k++ % streakSeeds.length];
+          const dx = (px - RIGHT.cx) / RIGHT.zoom, dy = (py - RIGHT.cy) / RIGHT.zoom;
+          const wx = center.x + dx, wy = center.y + dy;
+          if (wx * wx + wy * wy < (LEFT.bodyR / LEFT.scale) ** 2) continue;
+          const [gx, gy] = accel(wx, wy);
+          const rx = gx - gcx, ry = gy - gcy;
+          const m = Math.hypot(rx, ry);
+          if (m < 1e-6) continue;
+          const s = Math.min(1, Math.sqrt(m / 40));
+          const len = 4 + 12 * s;
+          const ux = rx / m, uy = ry / m;
+          // 흐르는 방향으로 짧은 획이 미끄러진다
+          const ph = ((t * 0.9 + seed) % 1);
+          const hx = px + ux * (ph - 0.5) * step * 0.7, hy = py + uy * (ph - 0.5) * step * 0.7;
+          const fade = Math.sin(Math.PI * ph);
+          ctx.strokeStyle = COL.field;
+          ctx.globalAlpha = a * (0.1 + 0.75 * s) * fade;
+          ctx.lineWidth = 1.6;
+          ctx.beginPath(); ctx.moveTo(hx - ux * len / 2, hy - uy * len / 2); ctx.lineTo(hx + ux * len / 2, hy + uy * len / 2); ctx.stroke();
+        }
+      }
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('고르게 끌렸다면 있었을 자리', () => {
+      ctx.strokeStyle = COL.ghost; ctx.lineWidth = 1.2; ctx.setLineDash([4, 4]); ctx.globalAlpha = a;
+      ctx.beginPath(); ctx.arc(RIGHT.cx, RIGHT.cy, R0 * RIGHT.zoom, 0, Math.PI * 2); ctx.stroke();
+      ctx.setLineDash([]); ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('확대한 먼지 구름', () => {
+      ctx.fillStyle = COL.dust; ctx.globalAlpha = a;
+      for (let i = 2; i < dust.length; i++) {
+        const [x, y] = toRight(dust[i].x - center.x, dust[i].y - center.y);
+        ctx.beginPath(); ctx.arc(x, y, 1.7, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('확대한 양 끝 먼지와 벗어난 거리', () => {
+      ctx.strokeStyle = COL.accent; ctx.fillStyle = COL.accent; ctx.globalAlpha = a; ctx.lineWidth = 2;
+      for (let i = 0; i < 2; i++) {
+        const [hx, hy] = toRight(offsets[i].x, offsets[i].y);
+        const [x, y] = toRight(dust[i].x - center.x, dust[i].y - center.y);
+        ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(x, y); ctx.stroke();
+        ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    });
+
+    ctx.restore();
+
+    PieceKit.mark('확대 화면 테두리와 이름', () => {
+      ctx.strokeStyle = COL.frame; ctx.lineWidth = 1;
+      ctx.strokeRect(RIGHT.x0 + 0.5, RIGHT.y0 + 0.5, RIGHT.x1 - RIGHT.x0 - 1, RIGHT.y1 - RIGHT.y0 - 1);
+      ctx.fillStyle = COL.label; ctx.font = '13px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textBaseline = 'top';
+      ctx.fillText('구름과 함께 떨어지며 본 모습', RIGHT.x0 + 10, RIGHT.y0 + 8);
+    });
+  }
+
+  let lastCaption = '';
+  function updateCaption() {
+    // 캡션은 화면에 실제로 벌어진 늘어남을 재서 고른다
+    const near = dust[0].x - center.x, far = center.x - dust[1].x;
+    const stretched = Math.min(near, far) / R0 > 1.08;
+    const text = stretched
+      ? '구름과 함께 떨어지며 보면, 천체 쪽 끝은 앞으로 달아나고 반대쪽 끝은 뒤로 처진다 — 구름이 양쪽으로 늘어난다.'
+      : '먼지 구름 전체가 천체로 떨어진다. 천체에 가까운 쪽일수록 조금 더 세게 끌린다.';
+    if (text !== lastCaption) { captionEl.textContent = text; lastCaption = text; }
+  }
+
+  PieceKit.loop({
+    step(dt) {
+      rc += dt;
+      if (rc >= CYCLE) { reset(); return; }
+      if (rc <= FULL) physics(dt);
+      else if (rc <= FULL + SLOW) physics(dt * SLOW_RATE);
+      // 사라지는 동안에는 멈춘 채로 흐려진다
+    },
+    draw(t) {
+      ctx.fillStyle = COL.bg;
+      ctx.fillRect(0, 0, W, H);
+      const a = alpha();
+      drawLeft(a);
+      drawRight(a, t);
+      updateCaption();
+    },
+  });
+})();
+</script>
+</body>
+</html>

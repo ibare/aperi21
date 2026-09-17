@@ -554,7 +554,9 @@
         {
           "id": "energy-flow-diagram",
           "name": "에너지 흐름도",
-          "desc": "갈래의 굵기로 나타낸 에너지의 행방"
+          "desc": "갈래의 굵기로 나타낸 에너지의 행방",
+          "simId": "aperi21:energy-flow-diagram",
+          "labUrl": "piece-lab/energy-flow-diagram/index.html"
         }
       ]
     },
@@ -696,7 +698,9 @@
         {
           "id": "phase-space",
           "name": "위상 공간",
-          "desc": "위치-속도 평면에서 본 운동"
+          "desc": "위치-속도 평면에서 본 운동",
+          "simId": "aperi21:phase-space",
+          "labUrl": "piece-lab/phase-space/index.html"
         },
         {
           "id": "nonlinear-oscillation",
@@ -782,7 +786,9 @@
         {
           "id": "tidal-force",
           "name": "조석력",
-          "desc": "중력의 차이가 만드는 늘어남"
+          "desc": "중력의 차이가 만드는 늘어남",
+          "simId": "aperi21:tidal-force",
+          "labUrl": "piece-lab/tidal-force/index.html"
         },
         {
           "id": "roche-limit",
@@ -1008,7 +1014,9 @@
         {
           "id": "bernoullis-principle",
           "name": "베르누이 원리",
-          "desc": "속도와 압력의 교환"
+          "desc": "속도와 압력의 교환",
+          "simId": "aperi21:bernoullis-principle",
+          "labUrl": "piece-lab/bernoullis-principle/index.html"
         },
         {
           "id": "venturi-effect",
@@ -1180,7 +1188,9 @@
         {
           "id": "maxwell-boltzmann-distribution",
           "name": "맥스웰-볼츠만 분포",
-          "desc": "분자 속력의 분포"
+          "desc": "분자 속력의 분포",
+          "simId": "aperi21:maxwell-boltzmann-distribution",
+          "labUrl": "piece-lab/maxwell-boltzmann-distribution/index.html"
         },
         {
           "id": "mean-free-path",
@@ -1341,7 +1351,9 @@
         {
           "id": "interference",
           "name": "간섭",
-          "desc": "두 파원이 만드는 무늬"
+          "desc": "두 파원이 만드는 무늬",
+          "simId": "aperi21:interference",
+          "labUrl": "piece-lab/interference/index.html"
         },
         {
           "id": "standing-wave",
@@ -1672,7 +1684,9 @@
         {
           "id": "color-addition",
           "name": "빛의 합성",
-          "desc": "세 색의 빛이 겹쳐 만드는 색"
+          "desc": "세 색의 빛이 겹쳐 만드는 색",
+          "simId": "aperi21:color-addition",
+          "labUrl": "piece-lab/color-addition/index.html"
         },
         {
           "id": "object-color",
@@ -1718,7 +1732,9 @@
         {
           "id": "field-lines",
           "name": "전기력선",
-          "desc": "장을 그리는 규약과 그 뜻"
+          "desc": "장을 그리는 규약과 그 뜻",
+          "simId": "aperi21:field-lines",
+          "labUrl": "piece-lab/field-lines/index.html"
         },
         {
           "id": "field-of-dipole",
@@ -2127,7 +2143,9 @@
         {
           "id": "spacetime-diagram",
           "name": "시공간 도표",
-          "desc": "세계선과 동시선"
+          "desc": "세계선과 동시선",
+          "simId": "aperi21:spacetime-diagram",
+          "labUrl": "piece-lab/spacetime-diagram/index.html"
         },
         {
           "id": "light-cone",
@@ -2419,7 +2437,7 @@
   ],
   "summary": {
     "topics": 442,
-    "implemented": 75,
-    "labs": 62
+    "implemented": 84,
+    "labs": 71
   }
 }
