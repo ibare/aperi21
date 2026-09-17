@@ -55,7 +55,7 @@ circuit `['circuitElement','wire','terminal']`.
   붙인 기준 알파(강조 상태 × `opacity`)가 지워진다 — 잔상이 옅어지지 않는데 예외도 없고
   타입도 통과한다. 한계: plugin 렌더러는 host 에 의존하지 않아 이 헬퍼를 쓸 수 없고
   `applyBaseMeta` 도 부르지 않는다. 그래서 plugin 프리미티브(`ray` 등)는 `opacity` ·
-  `highlight` 를 따르지 않는다.
+  `highlight` · `clip` 을 따르지 않는다.
 - **`rc.store` 를 쓰는 어휘는 순서에 기대지 않는다.** 서로 참조하는 어휘는 어느
   쪽이 먼저 돌아도 되도록 **빈 상태를 만들 수 있어야** 한다.
 - **캔버스 껍데기는 러너가 만든다.** 렌더러가 컨테이너를 만들거나 비우지 않는다.

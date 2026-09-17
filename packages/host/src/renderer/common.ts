@@ -37,6 +37,18 @@ export function applyBaseMeta(rc: RenderContext, p: Primitive): void {
   c.save();
   (c as AlphaContext)[BASE_ALPHA] = baseAlpha(p);
   setAlpha(c, 1);
+  if (p.clip) {
+    // 이 save 안에서 자르므로 finalizeBaseMeta 의 restore 가 함께 푼다. 월드 y 가 위라
+    // 화면으로 옮기면 위아래가 뒤집힌다 — 모서리를 다시 세운다.
+    const [ax, ay] = rc.toScreen(p.clip.min);
+    const [bx, by] = rc.toScreen(p.clip.max);
+    c.beginPath();
+    c.rect(Math.min(ax, bx), Math.min(ay, by), Math.abs(bx - ax), Math.abs(by - ay));
+    c.clip();
+    // clip() 은 경로를 비우지 않는다. beginPath 없이 moveTo 부터 긋는 렌더러가 오면
+    // 이 사각형이 그 렌더러의 선·채움에 섞인다.
+    c.beginPath();
+  }
   switch (p.highlight ?? 'normal') {
     case 'focused':
       c.shadowColor = rc.theme.resolveColor('accent', 'strong');

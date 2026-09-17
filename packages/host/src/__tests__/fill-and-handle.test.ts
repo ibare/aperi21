@@ -106,3 +106,22 @@ describe('point-drag.handle', () => {
     expect(calls).toContain('stroke');
   });
 });
+
+describe('BaseMeta.clip', () => {
+  it('생략하면 자르지 않는다', () => {
+    const calls: string[] = [];
+    renderRegion(makeRc(calls), square({}));
+    expect(calls).not.toContain('clip');
+  });
+
+  it('선언하면 그리기 전에 자르고, 자른 뒤 경로를 비운다', () => {
+    const calls: string[] = [];
+    renderRegion(makeRc(calls), square({ clip: { min: [0, 0], max: [0.5, 1] } }));
+    const clip = calls.indexOf('clip');
+    expect(clip).toBeGreaterThan(-1);
+    expect(calls[clip - 1]).toBe('rect');
+    expect(calls[clip + 1]).toBe('beginPath');
+    expect(clip).toBeLessThan(calls.indexOf('fill'));
+    expect(calls.filter((c) => c === 'save').length).toBe(calls.filter((c) => c === 'restore').length);
+  });
+});
