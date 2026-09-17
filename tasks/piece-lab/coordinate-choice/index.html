@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>좌표계 선택</title>
+<style>
+  html, body { margin: 0; background: #fbfaf7; }
+  .piece { max-width: 840px; margin: 0 auto; font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { margin: 6px 16px 12px; font-size: 15px; line-height: 1.5; color: #3a3a38; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <p class="caption">같은 미끄럼을 두 벌의 축으로 본다 — 빗면을 따라 축을 두면 그림자 하나가 제자리에 멈춘다.</p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// 좌표계 선택 — 같은 운동, 다른 축. 모든 위치는 t 의 함수라 누적 상태가 없다.
+const W = 840, H = 260;
+const canvas = document.getElementById('c');
+const dpr = window.devicePixelRatio || 1;
+canvas.width = W * dpr; canvas.height = H * dpr;
+const ctx = canvas.getContext('2d');
+
+const COLOR = {
+  body: '#d0542a',      // 물체와 그 그림자·발자국 (같은 대상 = 같은 색)
+  slope: '#e7e3da',
+  slopeEdge: '#9c978c',
+  axis: '#55534e',
+  guide: 'rgba(208,84,42,0.45)',
+};
+
+// 물리 — 마찰 없는 빗면
+const THETA = 20 * Math.PI / 180;
+const G = 9.8;
+const A = G * Math.sin(THETA);        // 빗면 방향 가속도 (m/s²)
+const PX_PER_M = 30;
+const D0 = 15;                        // 출발 위치 (빗면을 따라 px)
+const D_END = 285;                    // 도착 위치
+const T_SLIDE = Math.sqrt(2 * ((D_END - D0) / PX_PER_M) / A); // ≈ 2.317 s
+const T_HOLD = 0.8, T_FADE = 0.48;
+const PERIOD = T_SLIDE + T_HOLD + T_FADE; // ≈ 3.6 s
+const PHASE0 = 0.6;                   // 도착한 순간 이미 미끄러지는 중
+const STAMP_DT = 0.25;                // 발자국 간격 (s)
+const BLOCK = 22;
+
+const c = Math.cos(THETA), s = Math.sin(THETA);
+const U = { x: c, y: s };             // 빗면 아래 방향 (캔버스 좌표)
+const N_UP = { x: s, y: -c };         // 빗면에서 바깥(위) 방향
+const TOP = { x: 70, y: 70 };         // 빗면 꼭대기 (패널 내부 좌표)
+const LEN = 300;
+const BOT = { x: TOP.x + LEN * c, y: TOP.y + LEN * s };
+
+// 왼쪽 패널 — 수평·수직 축
+const LX_AXIS_Y = BOT.y + 40;
+const LY_AXIS_X = 30;
+// 오른쪽 패널 — 빗면 축 (빗면과 나란히 40px 아래) · 빗면에 수직인 축
+const R_OFF = 40;
+const RX0 = { x: TOP.x - R_OFF * s, y: TOP.y + R_OFF * c };
+const RY_ALONG = 320;
+const RY_BASE = { x: RX0.x + RY_ALONG * c, y: RX0.y + RY_ALONG * s };
+
+function phaseOf(t) {
+  const p = (t + PHASE0) % PERIOD;
+  return p < 0 ? p + PERIOD : p;
+}
+function alongAt(tau) {               // 빗면을 따라 간 거리 (px)
+  const tt = Math.min(Math.max(tau, 0), T_SLIDE);
+  return D0 + 0.5 * A * tt * tt * PX_PER_M;
+}
+function blockCenter(d) {
+  return { x: TOP.x + d * U.x + (BLOCK / 2) * N_UP.x, y: TOP.y + d * U.y + (BLOCK / 2) * N_UP.y };
+}
+// 투영
+const projX = p => ({ x: p.x, y: LX_AXIS_Y });
+const projY = p => ({ x: LY_AXIS_X, y: p.y });
+function projXp(p) {
+  const k = (p.x - RX0.x) * U.x + (p.y - RX0.y) * U.y;
+  return { x: RX0.x + k * U.x, y: RX0.y + k * U.y };
+}
+function projYp(p) {
+  const k = (p.x - RY_BASE.x) * N_UP.x + (p.y - RY_BASE.y) * N_UP.y;
+  return { x: RY_BASE.x + k * N_UP.x, y: RY_BASE.y + k * N_UP.y };
+}
+
+function arrow(x0, y0, x1, y1, label, lx, ly) {
+  ctx.strokeStyle = COLOR.axis; ctx.fillStyle = COLOR.axis; ctx.lineWidth = 1.4;
+  ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
+  const ang = Math.atan2(y1 - y0, x1 - x0);
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x1 - 8 * Math.cos(ang - 0.4), y1 - 8 * Math.sin(ang - 0.4));
+  ctx.lineTo(x1 - 8 * Math.cos(ang + 0.4), y1 - 8 * Math.sin(ang + 0.4));
+  ctx.closePath(); ctx.fill();
+  ctx.font = 'italic 15px Georgia, serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(label, lx, ly);
+}
+function tick(p, dir, alpha) {        // dir: 축 방향 단위벡터, 눈금은 그에 수직
+  ctx.strokeStyle = COLOR.body; ctx.globalAlpha = alpha; ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(p.x - 6 * dir.y, p.y + 6 * dir.x);
+  ctx.lineTo(p.x + 6 * dir.y, p.y - 6 * dir.x);
+  ctx.stroke(); ctx.globalAlpha = 1;
+}
+function dot(p, alpha) {
+  ctx.fillStyle = COLOR.body; ctx.globalAlpha = alpha;
+  ctx.beginPath(); ctx.arc(p.x, p.y, 5, 0, Math.PI * 2); ctx.fill();
+  ctx.globalAlpha = 1;
+}
+function dashed(a, b, alpha) {
+  ctx.strokeStyle = COLOR.guide; ctx.globalAlpha = alpha; ctx.lineWidth = 1;
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+  ctx.setLineDash([]); ctx.globalAlpha = 1;
+}
+function inPanel(ox, fn) { ctx.save(); ctx.translate(ox, 0); fn(); ctx.restore(); }
+
+PieceKit.loop({
+  step(dt, t) { /* 모든 상태가 t 의 함수 — 쌓을 것이 없다 */ },
+  draw(t) {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+
+    const ph = phaseOf(t);
+    const alpha = ph > T_SLIDE + T_HOLD ? Math.max(0, 1 - (ph - T_SLIDE - T_HOLD) / T_FADE) : 1;
+    const cur = blockCenter(alongAt(ph));
+    const stamps = [];
+    for (let k = 0; k * STAMP_DT <= Math.min(ph, T_SLIDE) + 1e-9; k++) stamps.push(blockCenter(alongAt(k * STAMP_DT)));
+
+    PieceKit.mark('빗면', () => {
+      for (const ox of [0, 420]) inPanel(ox, () => {
+        ctx.fillStyle = COLOR.slope; ctx.strokeStyle = COLOR.slopeEdge; ctx.lineWidth = 1.2;
+        // 얇은 판 — 오른쪽 x′ 축(빗면 40px 아래)과 채움이 겹치지 않게 두께 14px
+        const TH = 14;
+        ctx.beginPath(); ctx.moveTo(TOP.x, TOP.y); ctx.lineTo(BOT.x, BOT.y);
+        ctx.lineTo(BOT.x - TH * N_UP.x, BOT.y - TH * N_UP.y); ctx.lineTo(TOP.x - TH * N_UP.x, TOP.y - TH * N_UP.y);
+        ctx.closePath(); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(TOP.x, TOP.y); ctx.lineTo(BOT.x, BOT.y); ctx.stroke();
+      });
+    });
+
+    PieceKit.mark('수평·수직 축', () => {
+      inPanel(0, () => {
+        arrow(LY_AXIS_X - 10, LX_AXIS_Y, 405, LX_AXIS_Y, 'x', 405, LX_AXIS_Y + 16);
+        arrow(LY_AXIS_X, LX_AXIS_Y + 10, LY_AXIS_X, 30, 'y', LY_AXIS_X + 14, 32);
+      });
+    });
+
+    PieceKit.mark('빗면 축', () => {
+      inPanel(420, () => {
+        const a0 = { x: RX0.x - 25 * U.x, y: RX0.y - 25 * U.y };
+        const a1 = { x: RX0.x + 350 * U.x, y: RX0.y + 350 * U.y };
+        arrow(a0.x, a0.y, a1.x, a1.y, 'x′', a1.x - 14, a1.y + 16);
+        const b0 = { x: RY_BASE.x - 10 * N_UP.x, y: RY_BASE.y - 10 * N_UP.y };
+        const b1 = { x: RY_BASE.x + 120 * N_UP.x, y: RY_BASE.y + 120 * N_UP.y };
+        arrow(b0.x, b0.y, b1.x, b1.y, 'y′', b1.x + 14, b1.y + 4);
+      });
+    });
+
+    PieceKit.mark('투영선', () => {
+      inPanel(0, () => { dashed(cur, projX(cur), alpha); dashed(cur, projY(cur), alpha); });
+      inPanel(420, () => { dashed(cur, projXp(cur), alpha); dashed(cur, projYp(cur), alpha); });
+    });
+
+    PieceKit.mark('시간 발자국', () => {
+      inPanel(0, () => {
+        for (const p of stamps) { tick(projX(p), { x: 1, y: 0 }, 0.55 * alpha); tick(projY(p), { x: 0, y: -1 }, 0.55 * alpha); }
+      });
+      inPanel(420, () => {
+        for (const p of stamps) { tick(projXp(p), U, 0.55 * alpha); tick(projYp(p), N_UP, 0.55 * alpha); }
+      });
+    });
+
+    PieceKit.mark('그림자', () => {
+      inPanel(0, () => { dot(projX(cur), alpha); dot(projY(cur), alpha); });
+      inPanel(420, () => { dot(projXp(cur), alpha); dot(projYp(cur), alpha); });
+    });
+
+    PieceKit.mark('물체', () => {
+      for (const ox of [0, 420]) inPanel(ox, () => {
+        ctx.save();
+        ctx.translate(cur.x, cur.y); ctx.rotate(THETA);
+        ctx.globalAlpha = alpha; ctx.fillStyle = COLOR.body;
+        ctx.fillRect(-BLOCK / 2, -BLOCK / 2, BLOCK, BLOCK);
+        ctx.restore();
+      });
+    });
+  },
+});
+</script>
+</body>
+</html>

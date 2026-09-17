@@ -1,0 +1,46 @@
+{
+  "id": "tangential-normal-acceleration",
+  "claim": "가속도의 속도 방향 몫은 속도 화살을 늘이거나 줄이기만 하고, 수직 몫은 길이를 그대로 둔 채 돌리기만 한다 — 비스듬한 가속도는 두 몫으로 갈려 두 일을 함께 한다",
+  "verb": "속도 화살이 늘어난다 / 돈다 / 늘어나면서 돈다 (가속도가 두 몫으로 갈린다)",
+  "probeTimes": [1, 2.6, 4.6, 6.8, 8.8, 11],
+  "elements": [
+    { "mark": "지나는 길", "what": "물체가 한 바퀴 도는 닫힌 경로", "physical": "궤적", "drawing": "옅은 회색 실선(미리 적분한 표에서)", "motion": "static", "state": "none", "interaction": null },
+    { "mark": "속도 화살", "what": "물체에서 뻗은 검은 화살", "physical": "속도 벡터 (길이 ∝ 속력)", "drawing": "굵은 선 + 삼각 머리", "motion": "integrated", "state": "none (시작 시 한 번 적분한 프레임 표를 t 로 조회)", "interaction": null },
+    { "mark": "가속도 화살", "what": "속도 화살 끝에서 나온 얇은 회색 화살과 평행사변형 점선", "physical": "전체 가속도 = 두 몫의 합", "drawing": "얇은 선 화살 + 점선 보조선, 두 몫이 모두 있을 때만", "motion": "integrated", "state": "none", "interaction": null },
+    { "mark": "속력 몫", "what": "속도 화살 끝에서 속도 방향(앞/뒤)으로 난 주황 화살과 '속력 몫' 글자", "physical": "접선 가속도", "drawing": "굵은 선 화살 + 글자", "motion": "integrated", "state": "none", "interaction": null },
+    { "mark": "방향 몫", "what": "속도 화살 끝에서 옆(도는 쪽)으로 난 청록 화살과 '방향 몫' 글자", "physical": "법선 가속도", "drawing": "굵은 선 화살 + 글자", "motion": "integrated", "state": "none", "interaction": null },
+    { "mark": "물체", "what": "길 위를 달리는 검은 점", "physical": "움직이는 물체의 위치", "drawing": "채운 원", "motion": "integrated", "state": "none", "interaction": null },
+    { "mark": "모음판 이름", "what": "오른쪽 판 위의 짧은 회색 글", "physical": "없음 (판이 무엇인지 알리는 이름)", "drawing": "텍스트", "motion": "static", "state": "none", "interaction": null },
+    { "mark": "같은 길이 원", "what": "오른쪽 판 원점을 중심으로 지금 속력을 반지름으로 한 점선 원", "physical": "현재 속력(속도 화살 길이)", "drawing": "점선 원", "motion": "integrated", "state": "none", "interaction": null },
+    { "mark": "화살 끝 자취", "what": "모은 속도 화살 끝이 최근 2.5초 동안 지나온 흐려지는 선", "physical": "속도 벡터 끝의 자취(속도 공간의 궤적)", "drawing": "투명도가 점점 옅어지는 선분들", "motion": "integrated", "state": "none (프레임 표의 지난 칸을 읽음)", "interaction": null },
+    { "mark": "모은 속도 화살", "what": "오른쪽 판 한 점에서 뻗은 검은 화살", "physical": "같은 속도 벡터를 꼬리를 고정해 옮긴 것", "drawing": "굵은 선 화살 + 원점 점", "motion": "integrated", "state": "none", "interaction": null },
+    { "mark": "모음판 가속도 화살", "what": "모은 속도 화살 끝의 전체 가속도와 평행사변형", "physical": "전체 가속도", "drawing": "얇은 회색 화살 + 점선", "motion": "integrated", "state": "none", "interaction": null },
+    { "mark": "모음판 속력 몫", "what": "모은 속도 화살 끝에서 반지름 방향으로 난 주황 화살", "physical": "접선 가속도 (화살 끝을 원 밖/안으로 민다)", "drawing": "굵은 선 화살", "motion": "integrated", "state": "none", "interaction": null },
+    { "mark": "모음판 방향 몫", "what": "모은 속도 화살 끝에서 원을 따라 난 청록 화살", "physical": "법선 가속도 (화살 끝을 원을 따라 민다)", "drawing": "굵은 선 화살", "motion": "integrated", "state": "none", "interaction": null },
+    { "mark": "캡션", "what": "그림 아래 한 줄", "physical": "지금 구간에서 벌어지는 일", "drawing": "DOM 텍스트, 구간이 바뀔 때만 교체", "motion": "time-function", "state": "직전 구간 종류(같으면 다시 쓰지 않음)", "interaction": null }
+  ],
+  "controls": [],
+  "hidden": [
+    "숫자 값(속력·가속도 크기) — 주장은 비율이 아니라 '늘어난다/돈다'의 구별이라, 숫자가 동사를 대신하지 않게 뺐다",
+    "곡률 반지름·중심 — 방향 몫을 v²/r 로 읽게 만드는 것은 문단의 몫",
+    "가속도가 0인 구간 — 세 번째 경우(아무 일 없음)는 주장을 흐리므로 경로 설계에서 뺐다"
+  ],
+  "timeline": [
+    { "t": -0.8, "what": "(한 바퀴 시작) 곧은 길에서 빨라진다 — 속력 몫만, 모음판 화살 끝이 반지름 방향으로 밖으로 나간다. t=0 은 이 구간 한가운데" },
+    { "t": 1.4, "what": "같은 빠르기로 돈다 — 방향 몫만, 모음판 화살 끝이 점선 원 위를 미끄러진다" },
+    { "t": 3.4, "what": "느려지며 돈다 — 두 몫, 화살 끝이 원 안으로 파고들며 돈다" },
+    { "t": 5.6, "what": "빨라지며 돈다 — 두 몫, 화살 끝이 원 밖으로 나가며 돈다" },
+    { "t": 7.8, "what": "같은 빠르기로 돈다 — 방향 몫만" },
+    { "t": 9.8, "what": "곧은 길에서 느려진다 — 속력 몫만(뒤로), 화살이 줄어들기만 한다" },
+    { "t": 12.0, "what": "뒤 반 바퀴: 앞 반 바퀴를 180° 돌린 같은 여섯 구간" },
+    { "t": 24.8, "what": "한 바퀴(25.6초)가 끝나 처음 구간으로 이어진다 — 경로가 닫혀 있어 끊김 없음" }
+  ],
+  "engineWish": [
+    "가속도를 (속력 몫, 방향 몫)으로 정해 적분하고 닫힌 경로가 되도록 대칭으로 이어 붙이는 '구간 대본 → 프레임 표' 적분기",
+    "벡터를 다른 벡터 끝에 붙이고 두 성분 + 합 + 평행사변형 점선으로 쪼개 그리는 분해 그리기",
+    "같은 벡터를 '물체에 붙은 것'과 '한 점에 모은 판(속도 공간)' 두 곳에 같은 배율로 함께 그리는 연결",
+    "적분 경로의 경계 상자에 맞춰 영역 안에 자동으로 배치(화살 여백 포함)",
+    "t 로 조회하는 과거 자취(흐려지는 꼬리)",
+    "구간 종류가 바뀔 때만 캡션을 갈아 끼우는 캡션 슬롯"
+  ]
+}

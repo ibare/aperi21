@@ -16,10 +16,15 @@
   "dependencies": {
     "@aperi21/host": "workspace:*",
     "@aperi21/schema": "workspace:*",
+    "@aperi21/sim-acceleration-time-graph": "workspace:*",
     "@aperi21/sim-angular-acceleration": "workspace:*",
     "@aperi21/sim-apparent-brightness": "workspace:*",
+    "@aperi21/sim-average-acceleration": "workspace:*",
+    "@aperi21/sim-average-velocity": "workspace:*",
     "@aperi21/sim-beats": "workspace:*",
+    "@aperi21/sim-coordinate-choice": "workspace:*",
     "@aperi21/sim-current-magnetic-field": "workspace:*",
+    "@aperi21/sim-direction-of-acceleration": "workspace:*",
     "@aperi21/sim-doppler-effect": "workspace:*",
     "@aperi21/sim-free-fall": "workspace:*",
     "@aperi21/sim-gas-pressure": "workspace:*",
@@ -32,10 +37,15 @@
     "@aperi21/sim-radius-of-curvature": "workspace:*",
     "@aperi21/sim-ramp-energy": "workspace:*",
     "@aperi21/sim-relative-velocity": "workspace:*",
+    "@aperi21/sim-river-crossing": "workspace:*",
     "@aperi21/sim-stopping-distance": "workspace:*",
+    "@aperi21/sim-tangential-normal-acceleration": "workspace:*",
     "@aperi21/sim-terminal-velocity": "workspace:*",
     "@aperi21/sim-uniform-motion": "workspace:*",
-    "@aperi21/sim-vector-addition": "workspace:*"
+    "@aperi21/sim-uniformly-accelerated-motion": "workspace:*",
+    "@aperi21/sim-vector-addition": "workspace:*",
+    "@aperi21/sim-vector-decomposition": "workspace:*",
+    "@aperi21/sim-vertical-throw": "workspace:*"
   },
   "devDependencies": {
     "@aperi21/plugin-circuit": "workspace:*",

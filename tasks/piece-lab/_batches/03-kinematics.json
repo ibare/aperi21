@@ -1,0 +1,17 @@
+{
+  "name": "03-kinematics",
+  "title": "운동학 10 — 평균·방향·넓이·성분·경로",
+  "record": "tasks/engine-requirements/batches/03-kinematics.md",
+  "pieces": [
+    "coordinate-choice",
+    "average-velocity",
+    "average-acceleration",
+    "direction-of-acceleration",
+    "uniformly-accelerated-motion",
+    "acceleration-time-graph",
+    "vertical-throw",
+    "vector-decomposition",
+    "river-crossing",
+    "tangential-normal-acceleration"
+  ]
+}

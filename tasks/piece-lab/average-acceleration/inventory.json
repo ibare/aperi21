@@ -1,0 +1,43 @@
+{
+  "id": "average-acceleration",
+  "claim": "도중에 속도가 어떻게 변했든, 같은 시간 동안 처음과 끝 속도가 같으면 평균 가속도(속도-시간 그래프에서 처음과 끝을 잇는 기울기)는 같다.",
+  "verb": "겹친다 — 따로 움직이던 두 차의 처음-지금 기울기선이 끝 시각에 하나로 겹친다",
+  "probeTimes": [1.2, 3, 4.6, 6.5],
+  "elements": [
+    { "mark": "도로", "what": "두 차가 달리는 두 차로와 출발선", "physical": "위치의 기준", "drawing": "옅은 선", "motion": "static", "state": "none", "interaction": null },
+    { "mark": "차 가", "what": "고르게 가속하는 차와 이름표 '가'", "physical": "등가속도 운동하는 물체 (v = 10 + 2t)", "drawing": "둥근 사각형 채움 + 텍스트", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "차 나", "what": "늦췄다가 몰아서 가속하는 차와 이름표 '나'", "physical": "가속도가 변하는 물체 (v = 10 + 2t − 8 sin(πt/5))", "drawing": "둥근 사각형 채움 + 텍스트", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "가의 속도 화살표", "what": "차 가 위의 화살표와 속력 값", "physical": "차 가의 순간 속도", "drawing": "굵은 선 화살표(길이 ∝ 속도) + 소수 한 자리 텍스트", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "나의 속도 화살표", "what": "차 나 위의 화살표와 속력 값", "physical": "차 나의 순간 속도", "drawing": "굵은 선 화살표(길이 ∝ 속도) + 소수 한 자리 텍스트", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "속도-시간 축", "what": "그래프의 세로(속도)·가로(시간) 축과 10, 20, 0, 5 s 눈금", "physical": "속도-시간 평면", "drawing": "선 + 텍스트", "motion": "static", "state": "none", "interaction": null },
+    { "mark": "가의 속도 곡선", "what": "지금까지 그려진 차 가의 속도-시간 곡선(직선)", "physical": "v_가(t)", "drawing": "선, 0 부터 지금 시각까지 해석식으로 다시 그림", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "나의 속도 곡선", "what": "지금까지 그려진 차 나의 속도-시간 곡선", "physical": "v_나(t)", "drawing": "선, 0 부터 지금 시각까지 해석식으로 다시 그림", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "가의 처음-지금 기울기선", "what": "출발점과 차 가의 지금 점을 잇는 점선", "physical": "0 부터 지금까지 차 가의 평균 가속도", "drawing": "차 가 색 점선, 달리는 중에만 — 가는 등가속도라 자기 곡선(직선)과 포개져 사실상 보이지 않는다. 이것이 대조 기준이 된다", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "나의 처음-지금 기울기선", "what": "출발점과 차 나의 지금 점을 잇는 점선", "physical": "0 부터 지금까지 차 나의 평균 가속도", "drawing": "차 나 색 점선, 달리는 중에만", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "평균 가속도 기울기선", "what": "끝 시각에 하나로 겹친 기울기선과 '기울기 2 m/s²'", "physical": "0~5 s 평균 가속도 (두 차 공통)", "drawing": "강조색 굵은 실선 + 텍스트, 0.4초 동안 나타남", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "속도 변화와 걸린 시간", "what": "기울기선 아래 직각 점선과 '5 s 동안', '+10 m/s'", "physical": "Δt = 5 s, Δv = 10 m/s", "drawing": "잉크색 점선 + 텍스트, 기울기선보다 0.3초 늦게 나타남", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "캡션", "what": "그림 아래 한 줄 캡션", "physical": "없음", "drawing": "DOM 텍스트, 달리는 중/끝난 뒤 두 문장 중 하나", "motion": "time-function", "state": "none", "interaction": null }
+  ],
+  "controls": [],
+  "hidden": [
+    "차의 위치 값 — 계산은 하지만 숫자로 두지 않는다. 두 차가 서로 다른 곳에 도착한다는 것은 도로 위 위치로 보이고, 이동 거리는 평균 가속도 주장과 무관해 숫자를 두면 시선이 갈라진다",
+    "순간 가속도(곡선의 접선) — 평균과 순간의 구분은 다른 조각의 주장이다",
+    "끝나기 전의 기울기 값 숫자 — 동사는 선이 겹치는 것이어야 하며 숫자가 같아지는 것으로 대신하지 않는다"
+  ],
+  "timeline": [
+    { "t": 0, "what": "두 차가 10 m/s 화살표를 달고 출발선에서 이미 움직이기 시작, 그래프는 (0, 10) 한 점에서 시작" },
+    { "t": 1.2, "what": "차 나는 속도를 늦춰 화살표가 짧아지고 곡선이 아래로 꺾임. 두 점선 기울기선이 벌어짐(가는 위로, 나는 아래로)" },
+    { "t": 3, "what": "차 나가 다시 가속하기 시작하지만 아직 뒤처짐. 나의 기울기선은 여전히 가보다 낮음" },
+    { "t": 4.6, "what": "차 나가 몰아서 가속해 화살표가 가와 거의 같아지고, 두 기울기선이 거의 포개짐" },
+    { "t": 5, "what": "두 차 모두 20 m/s. 두 점선이 강조색 실선 하나로 바뀌어 겹침, '기울기 2 m/s²' 표시" },
+    { "t": 5.3, "what": "직각 점선과 '5 s 동안', '+10 m/s' 가 나타남. 차는 서로 다른 곳에 멈춘 채 머무름" },
+    { "t": 8.5, "what": "처음으로 되돌아가 다시 출발 (주기 8.5 s)" }
+  ],
+  "engineWish": [
+    "속도-시간 평면 좌표계: 물리 단위 → 픽셀 변환, 최소 눈금(값 몇 개만), 축 이름. 매 조각마다 gx/gy 를 다시 짰다",
+    "해석식 f(t) 를 0 부터 지금까지 그리는 '자라는 곡선' 과 두 점을 잇는 할선(기울기선) 어휘",
+    "물체 위에 붙는 벡터 화살표(길이 ∝ 크기, 값 라벨 선택) — 도로의 물체와 그래프의 곡선이 같은 색·같은 정체를 공유하는 연결",
+    "주기(달림 → 머묾 → 되감기) 타임라인과 '끝난 뒤 k 초에 나타남' 같은 등장 곡선. sinceEnd 류 계산을 조각마다 반복함",
+    "Δt·Δv 직각 표시(기울기 삼각형) — 기울기를 말하는 모든 조각이 쓸 것"
+  ]
+}

@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>접선·법선 가속도</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #1f2430;
+    --path: #d9d6cf;
+    --muted: #8a8780;
+    --speed: #d2691e;   /* 속력을 바꾸는 몫 — 이 뜻에만 쓴다 */
+    --turn: #2a7f9e;    /* 방향을 바꾸는 몫 — 이 뜻에만 쓴다 */
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 8px 0 12px; }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { min-height: 1.6em; margin: 6px 16px 0; font-size: 15px; line-height: 1.5;
+    text-align: center; transition: opacity .25s; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="scene"></canvas>
+  <div class="caption" id="caption"></div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ---------- 모델: 가속도를 두 몫(속력 몫 aT, 방향 몫 aN)으로 직접 정하고 적분한다 ----------
+  const FPS = 60;
+  const V0 = 50, V1 = 130;                 // 모델 단위 속력
+  const Q = Math.PI / 4;                   // 한 구간에서 도는 각
+  // 반 바퀴 = 여섯 구간. 뒤 반 바퀴는 앞 반 바퀴를 180° 돌린 것이라 길이 닫힌다.
+  const HALF = [
+    { f: 132, dv: V1 - V0, turn: 0, kind: 'straightUp' },
+    { f: 120, dv: 0,       turn: Q, kind: 'turn' },
+    { f: 132, dv: V0 - V1, turn: Q, kind: 'slowTurn' },
+    { f: 132, dv: V1 - V0, turn: Q, kind: 'fastTurn' },
+    { f: 120, dv: 0,       turn: Q, kind: 'turn' },
+    { f: 132, dv: V0 - V1, turn: 0, kind: 'straightDown' },
+  ];
+  const PHASES = HALF.concat(HALF);
+  const N = PHASES.reduce((s, p) => s + p.f, 0);      // 한 바퀴 프레임 수
+  const START = 48;                                    // t=0 에 이미 0.8 초 달리고 있다
+
+  const CAPTION = {
+    straightUp:   '곧게 가며 빨라진다 — 가속도가 모두 속력 몫이라, 속도 화살은 늘어나기만 한다',
+    turn:         '같은 빠르기로 돈다 — 가속도가 모두 방향 몫이라, 속도 화살은 길이 그대로 돌기만 한다',
+    slowTurn:     '느려지며 돈다 — 가속도가 두 몫으로 갈려, 속도 화살이 줄어들면서 돈다',
+    fastTurn:     '빨라지며 돈다 — 가속도가 두 몫으로 갈려, 속도 화살이 늘어나면서 돈다',
+    straightDown: '곧게 가며 느려진다 — 속력 몫이 뒤를 향해, 속도 화살은 줄어들기만 한다',
+  };
+
+  // 프레임별 상태 표 (한 번만 적분). 속력·방향은 구간 안에서 정확히 선형, 위치는 잘게 나눠 적분.
+  const T = new Array(N);
+  {
+    let x = 0, y = 0, h = 0, i = 0;
+    const SUB = 24;
+    for (const p of PHASES) {
+      const aT = p.dv / (p.f / FPS);
+      const w = p.turn / (p.f / FPS);
+      const vStart = p.dv > 0 ? V0 : p.dv < 0 ? V1 : V1;
+      for (let k = 0; k < p.f; k++, i++) {
+        const v = vStart + aT * (k / FPS);
+        T[i] = { x, y, h, v, aT, aN: v * w, kind: p.kind };
+        for (let s = 0; s < SUB; s++) {
+          const tm = (k + (s + 0.5) / SUB) / FPS;
+          const vm = vStart + aT * tm, hm = h + w * (tm - k / FPS);
+          const dt = 1 / FPS / SUB;
+          x += vm * Math.cos(hm) * dt; y += vm * Math.sin(hm) * dt;
+        }
+        h += w / FPS;
+      }
+    }
+    // 적분 오차로 남은 미세한 틈을 고르게 나눠 없앤다
+    for (let j = 0; j < N; j++) { T[j].x -= x * j / N; T[j].y -= y * j / N; }
+  }
+
+  // ---------- 화면 배치 ----------
+  const W = 860, H = 330;
+  const TRACK = { x0: 10, x1: 610, y0: 6, y1: 324 };
+  const HODO = { cx: 722, cy: 172, r: 96 };
+  const VLEN = 84;                          // V1 일 때 속도 화살 길이(px)
+  let AMAX = 0;
+  for (const s of T) AMAX = Math.max(AMAX, Math.hypot(s.aT, s.aN));
+  const ALEN = 62;                          // 가장 큰 가속도일 때 화살 길이(px)
+  const vs = VLEN / V1, as = ALEN / AMAX;
+
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  for (const s of T) { minX = Math.min(minX, s.x); maxX = Math.max(maxX, s.x); minY = Math.min(minY, s.y); maxY = Math.max(maxY, s.y); }
+  const PADX = 85, PADY = 46;   // 곧은 길의 화살은 가로로 뻗고, 굽은 길의 방향 몫은 안쪽을 향하므로 세로 여백은 작게
+  const fit = Math.min((TRACK.x1 - TRACK.x0 - 2 * PADX) / (maxX - minX), (TRACK.y1 - TRACK.y0 - 2 * PADY) / (maxY - minY));
+  const ox = (TRACK.x0 + TRACK.x1) / 2 - fit * (minX + maxX) / 2;
+  const oy = (TRACK.y0 + TRACK.y1) / 2 - fit * (minY + maxY) / 2;
+  const P = (s) => [ox + fit * s.x, oy + fit * s.y];
+  const HODO_VS = HODO.r / V1 * 0.95;
+
+  const canvas = document.getElementById('scene');
+  const ctx = canvas.getContext('2d');
+  const captionEl = document.getElementById('caption');
+  const css = getComputedStyle(document.documentElement);
+  const C = (n) => css.getPropertyValue(n).trim();
+  const COL = { ink: C('--ink'), path: C('--path'), muted: C('--muted'), speed: C('--speed'), turn: C('--turn') };
+
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    const cw = canvas.clientWidth || W;
+    canvas.width = Math.round(cw * dpr);
+    canvas.height = Math.round(cw * H / W * dpr);
+    ctx.setTransform(canvas.width / W, 0, 0, canvas.height / H, 0, 0);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function arrow(x, y, dx, dy, color, width, head) {
+    const L = Math.hypot(dx, dy);
+    if (L < 0.8) return;
+    const ux = dx / L, uy = dy / L;
+    const hl = Math.min(head, L * 0.6);
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = width; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + dx - ux * hl * 0.7, y + dy - uy * hl * 0.7); ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x + dx, y + dy);
+    ctx.lineTo(x + dx - ux * hl - uy * hl * 0.5, y + dy - uy * hl + ux * hl * 0.5);
+    ctx.lineTo(x + dx - ux * hl + uy * hl * 0.5, y + dy - uy * hl - ux * hl * 0.5);
+    ctx.closePath(); ctx.fill();
+  }
+
+  // 가속도 두 몫을 속도 화살 끝에 붙여 그린다 — 속력 몫은 화살을 늘이고/줄이고, 방향 몫은 옆으로 민다
+  function parts(names, tipX, tipY, s) {
+    const ux = Math.cos(s.h), uy = Math.sin(s.h);        // 속도 방향
+    const nx = -uy, ny = ux;                              // 도는 쪽(화면 시계 방향)
+    const tx = ux * s.aT * as, ty = uy * s.aT * as;
+    const qx = nx * s.aN * as, qy = ny * s.aN * as;
+    PieceKit.mark(names.total, () => {
+      if (Math.abs(s.aT) * as < 1 || s.aN * as < 1) return;   // 한 몫뿐이면 합은 그 몫과 같다
+      ctx.setLineDash([3, 4]); ctx.strokeStyle = COL.muted; ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(tipX + tx, tipY + ty); ctx.lineTo(tipX + tx + qx, tipY + ty + qy);
+      ctx.moveTo(tipX + qx, tipY + qy); ctx.lineTo(tipX + tx + qx, tipY + ty + qy);
+      ctx.stroke(); ctx.setLineDash([]);
+      arrow(tipX, tipY, tx + qx, ty + qy, COL.muted, 1.5, 8);
+    });
+    PieceKit.mark(names.speed, () => {
+      // 뒤를 향하면 속도 화살 위에 겹치므로 도는 쪽 반대편으로 조금 비켜 그린다 (길이·방향은 그대로)
+      const off = s.aT < 0 ? 7 : 0;
+      arrow(tipX - nx * off, tipY - ny * off, tx, ty, COL.speed, 3.5, 11);
+      if (names.label && Math.abs(s.aT) * as > 6) {
+        ctx.fillStyle = COL.speed; ctx.font = '13px sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        const lx = tipX + tx + ux * 22 * Math.sign(s.aT) - nx * (14 + off), ly = tipY + ty + uy * 22 * Math.sign(s.aT) - ny * (14 + off);
+        ctx.fillText('속력 몫', lx, ly);
+      }
+    });
+    PieceKit.mark(names.turn, () => {
+      arrow(tipX, tipY, qx, qy, COL.turn, 3.5, 11);
+      if (names.label && s.aN * as > 6) {
+        ctx.fillStyle = COL.turn; ctx.font = '13px sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('방향 몫', tipX + qx + nx * 16, tipY + qy + ny * 16);
+      }
+    });
+  }
+
+  let lastKind = null;
+
+  PieceKit.loop({
+    step() { /* 상태는 모두 프레임 표에서 t 로 찾는다 — 쌓이는 것 없음 */ },
+    draw(t) {
+      const idx = ((Math.round(t * FPS) + START) % N + N) % N;
+      const s = T[idx];
+      ctx.clearRect(0, 0, W, H);
+
+      // ----- 왼쪽: 길 위의 물체 -----
+      PieceKit.mark('지나는 길', () => {
+        ctx.strokeStyle = COL.path; ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let j = 0; j <= N; j += 2) { const [x, y] = P(T[j % N]); j ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+        ctx.closePath(); ctx.stroke();
+      });
+      const [bx, by] = P(s);
+      const vx = Math.cos(s.h) * s.v * vs, vy = Math.sin(s.h) * s.v * vs;
+      PieceKit.mark('속도 화살', () => arrow(bx, by, vx, vy, COL.ink, 3, 12));
+      parts({ total: '가속도 화살', speed: '속력 몫', turn: '방향 몫', label: true }, bx + vx, by + vy, s);
+      PieceKit.mark('물체', () => {
+        ctx.fillStyle = COL.ink; ctx.beginPath(); ctx.arc(bx, by, 7, 0, Math.PI * 2); ctx.fill();
+      });
+
+      // ----- 오른쪽: 속도 화살만 한 점에 모은 판 -----
+      PieceKit.mark('모음판 이름', () => {
+        ctx.fillStyle = COL.muted; ctx.font = '13px sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        ctx.fillText('속도 화살을 한 점에 모아 보면', HODO.cx, 6);
+      });
+      PieceKit.mark('같은 길이 원', () => {
+        ctx.setLineDash([2, 5]); ctx.strokeStyle = COL.muted; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.arc(HODO.cx, HODO.cy, s.v * HODO_VS, 0, Math.PI * 2); ctx.stroke();
+        ctx.setLineDash([]);
+      });
+      PieceKit.mark('화살 끝 자취', () => {
+        const K = 150;
+        for (let k = K; k > 0; k -= 2) {
+          const a = T[(idx - k + N) % N], b = T[(idx - k + 2 + N) % N];
+          ctx.strokeStyle = COL.ink; ctx.globalAlpha = 0.5 * (1 - k / K); ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(HODO.cx + Math.cos(a.h) * a.v * HODO_VS, HODO.cy + Math.sin(a.h) * a.v * HODO_VS);
+          ctx.lineTo(HODO.cx + Math.cos(b.h) * b.v * HODO_VS, HODO.cy + Math.sin(b.h) * b.v * HODO_VS);
+          ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+      });
+      const hx = Math.cos(s.h) * s.v * HODO_VS, hy = Math.sin(s.h) * s.v * HODO_VS;
+      PieceKit.mark('모은 속도 화살', () => {
+        arrow(HODO.cx, HODO.cy, hx, hy, COL.ink, 3, 12);
+        ctx.fillStyle = COL.ink; ctx.beginPath(); ctx.arc(HODO.cx, HODO.cy, 3.5, 0, Math.PI * 2); ctx.fill();
+      });
+      parts({ total: '모음판 가속도 화살', speed: '모음판 속력 몫', turn: '모음판 방향 몫', label: false }, HODO.cx + hx, HODO.cy + hy, s);
+
+      PieceKit.mark('캡션', () => {
+        if (s.kind !== lastKind) { captionEl.textContent = CAPTION[s.kind]; lastKind = s.kind; }
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

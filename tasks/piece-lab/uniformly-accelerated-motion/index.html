@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>등가속도 운동</title>
+<style>
+  html, body { margin: 0; background: #fbfaf7; }
+  .piece { max-width: 840px; margin: 0 auto; }
+  canvas { display: block; width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<div class="piece"><canvas id="c"></canvas></div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// 화면 크기 (논리 좌표)
+const W = 840, H = 262;
+
+// 운동 — 처음 속도가 있고 가속도가 일정하다 (단위: 논리 픽셀, 초)
+const V0 = 70;        // 처음 속도
+const A = 110;        // 가속도
+const T = 0.5;        // 자리를 찍는 시간 간격
+const N = 6;          // 찍는 간격 수
+const MOVE = N * T;   // 움직이는 시간
+const DROP = 0.35;    // 간격 막대가 사다리로 내려가는 시간
+const CYCLE = 6.2;    // 한 바퀴
+const FADE = 0.5;     // 바퀴 끝에서 흐려지는 시간
+const OFFSET = 0.3;   // 도착한 순간 이미 움직이고 있도록
+
+// 배치
+const X0 = 40;
+const TRACK_Y = 50;
+const SEG_Y = 70;
+const LADDER_Y0 = 100;
+const ROW = 20;
+const BAR_H = 12;
+
+// 색 — 같은 대상은 같은 색, 강조색은 '앞 간격보다 늘어난 몫' 하나에만
+const INK = '#2f3b4c';
+const TRACK = '#c9c4b8';
+const BODY = '#8a97a8';
+const EXTRA = '#e07b39';
+const TEXT = '#3a3a3a';
+
+const canvas = document.getElementById('c');
+const dpr = window.devicePixelRatio || 1;
+canvas.width = W * dpr;
+canvas.height = H * dpr;
+const ctx = canvas.getContext('2d');
+
+function pos(s) {
+  const u = Math.max(0, Math.min(MOVE, s));
+  return X0 + V0 * u + 0.5 * A * u * u;
+}
+function gap(n) { // n 번째 간격 (1부터)
+  return pos(n * T) - pos((n - 1) * T);
+}
+function clamp01(v) { return Math.max(0, Math.min(1, v)); }
+function ease(p) { return p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; }
+
+// 막대 하나: 앞 간격 길이까지는 몸통, 넘는 부분은 늘어난 몫
+function barParts(x, y, len, prevLen) {
+  const bodyLen = prevLen == null ? len : Math.min(len, prevLen);
+  const extraLen = prevLen == null ? 0 : Math.max(0, len - prevLen);
+  return { x, y, bodyLen, extraLen };
+}
+
+PieceKit.loop({
+  step(dt, t) { /* 모든 상태는 t 의 함수라 쌓을 것이 없다 */ },
+  draw(t) {
+    const tl = (t + OFFSET) % CYCLE;
+    const s = Math.min(tl, MOVE);
+    const alpha = tl > CYCLE - FADE ? clamp01((CYCLE - tl) / FADE) : 1;
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fbfaf7';
+    ctx.fillRect(0, 0, W, H);
+
+    PieceKit.mark('선로', () => {
+      ctx.strokeStyle = TRACK;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(X0 - 16, TRACK_Y);
+      ctx.lineTo(W - 24, TRACK_Y);
+      ctx.stroke();
+    });
+
+    ctx.globalAlpha = alpha;
+
+    // 지금 그려야 할 막대들 모으기
+    const bars = [];
+    // 1) 선로 아래에서 자라는 간격 (현재 구간)
+    if (tl < MOVE) {
+      const k = Math.floor(s / T);
+      const start = pos(k * T);
+      const len = pos(s) - start;
+      const prev = k >= 1 ? gap(k) : null;
+      bars.push(barParts(start, SEG_Y, len, prev));
+    }
+    // 2) 다 벌어진 간격 — 사다리로 내려가는 중이거나 이미 내려간 것
+    for (let n = 1; n <= N; n++) {
+      if (tl < n * T) break;
+      const p = ease(clamp01((tl - n * T) / DROP));
+      const fromX = pos((n - 1) * T), fromY = SEG_Y;
+      const toX = X0, toY = LADDER_Y0 + (n - 1) * ROW;
+      const x = fromX + (toX - fromX) * p;
+      const y = fromY + (toY - fromY) * p;
+      bars.push(barParts(x, y, gap(n), n >= 2 ? gap(n - 1) : null));
+    }
+
+    PieceKit.mark('간격 막대', () => {
+      ctx.fillStyle = BODY;
+      for (const b of bars) {
+        if (b.bodyLen > 0) ctx.fillRect(b.x, b.y, b.bodyLen, BAR_H);
+      }
+    });
+
+    PieceKit.mark('늘어난 몫', () => {
+      ctx.fillStyle = EXTRA;
+      for (const b of bars) {
+        if (b.extraLen > 0) ctx.fillRect(b.x + b.bodyLen, b.y, b.extraLen, BAR_H);
+      }
+    });
+
+    PieceKit.mark('찍힌 자리', () => {
+      ctx.strokeStyle = INK;
+      ctx.lineWidth = 1.5;
+      for (let k = 0; k <= N; k++) {
+        if (k * T > tl) break;
+        const x = pos(k * T);
+        ctx.beginPath();
+        ctx.moveTo(x, TRACK_Y - 9);
+        ctx.lineTo(x, TRACK_Y + 9);
+        ctx.stroke();
+      }
+    });
+
+    PieceKit.mark('물체', () => {
+      ctx.fillStyle = INK;
+      ctx.beginPath();
+      ctx.arc(pos(s), TRACK_Y, 8, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    ctx.globalAlpha = 1;
+
+    PieceKit.mark('캡션', () => {
+      const text = tl < 1.0
+        ? '같은 시간마다 물체가 있던 자리를 찍는다'
+        : '같은 시간 동안 간 거리가 매번 같은 만큼씩 늘어난다';
+      ctx.fillStyle = TEXT;
+      ctx.font = '16px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillText(text, X0 - 16, H - 14);
+    });
+  },
+});
+</script>
+</body>
+</html>

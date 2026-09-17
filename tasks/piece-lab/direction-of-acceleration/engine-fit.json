@@ -1,0 +1,46 @@
+{
+  "rows": [
+    {
+      "element": "바닥선",
+      "vocab": "trajectory (2점 · width 1)",
+      "status": "있음"
+    },
+    {
+      "element": "출발선",
+      "vocab": "trajectory (2점) 또는 trace (tick)",
+      "status": "있음"
+    },
+    {
+      "element": "지나간 자리",
+      "vocab": "trace (shape dot · age 생략)",
+      "status": "있음",
+      "note": "0.5 초마다의 자리는 sim 이 t 에서 다시 계산해 marks 로 낸다"
+    },
+    {
+      "element": "공",
+      "vocab": "body (shape circle)",
+      "status": "있음"
+    },
+    {
+      "element": "속도 화살표",
+      "vocab": "vector (label 속도 · labelSide)",
+      "status": "있음",
+      "note": "짧아지면 이름을 숨기는 것은 sim 이 label 을 빼서 한다. 캔버스 끝에서 이름이 잘리지 않게 당기는 것은 vector.label 에 없다(readout.clamp 만 있음) — 이 조각의 배치에서는 오른쪽 여백으로 피할 수 있어 수정 필요로 올리지 않는다"
+    },
+    {
+      "element": "가속도 화살표",
+      "vocab": "vector (colorRole accent · label 가속도)",
+      "status": "있음",
+      "note": "고정 44px 은 boundsHint 가 고정이라 월드 길이로 준다"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef + TimelinePhase.caption",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "멈춘 순간에서 끊고 되감는 주기 — TimelineDef.phases 로 되고, 멈추는 시각(4초)은 sim 의 물리",
+    "도착 위상 1.5 초 — BundleSchema.startAt"
+  ]
+}

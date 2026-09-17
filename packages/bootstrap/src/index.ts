@@ -136,6 +136,86 @@ export function registerAperi21Bundles(): void {
     return registerBundle('aperi21:position-time-graph', m.positionTimeGraphBundle, caps.capabilities);
   });
 
+  registerBundleLoader('aperi21:coordinate-choice', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-coordinate-choice'),
+      import('./capabilities/kinematics/coordinate-choice.generated.js'),
+    ]);
+    return registerBundle('aperi21:coordinate-choice', m.coordinateChoiceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:average-velocity', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-average-velocity'),
+      import('./capabilities/kinematics/average-velocity.generated.js'),
+    ]);
+    return registerBundle('aperi21:average-velocity', m.averageVelocityBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:average-acceleration', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-average-acceleration'),
+      import('./capabilities/kinematics/average-acceleration.generated.js'),
+    ]);
+    return registerBundle('aperi21:average-acceleration', m.averageAccelerationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:direction-of-acceleration', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-direction-of-acceleration'),
+      import('./capabilities/kinematics/direction-of-acceleration.generated.js'),
+    ]);
+    return registerBundle('aperi21:direction-of-acceleration', m.directionOfAccelerationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:uniformly-accelerated-motion', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-uniformly-accelerated-motion'),
+      import('./capabilities/kinematics/uniformly-accelerated-motion.generated.js'),
+    ]);
+    return registerBundle('aperi21:uniformly-accelerated-motion', m.uniformlyAcceleratedMotionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:acceleration-time-graph', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-acceleration-time-graph'),
+      import('./capabilities/kinematics/acceleration-time-graph.generated.js'),
+    ]);
+    return registerBundle('aperi21:acceleration-time-graph', m.accelerationTimeGraphBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:vertical-throw', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-vertical-throw'),
+      import('./capabilities/kinematics/vertical-throw.generated.js'),
+    ]);
+    return registerBundle('aperi21:vertical-throw', m.verticalThrowBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:vector-decomposition', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-vector-decomposition'),
+      import('./capabilities/kinematics/vector-decomposition.generated.js'),
+    ]);
+    return registerBundle('aperi21:vector-decomposition', m.vectorDecompositionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:river-crossing', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-river-crossing'),
+      import('./capabilities/kinematics/river-crossing.generated.js'),
+    ]);
+    return registerBundle('aperi21:river-crossing', m.riverCrossingBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:tangential-normal-acceleration', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-tangential-normal-acceleration'),
+      import('./capabilities/kinematics/tangential-normal-acceleration.generated.js'),
+    ]);
+    return registerBundle('aperi21:tangential-normal-acceleration', m.tangentialNormalAccelerationBundle, caps.capabilities);
+  });
+
   registerBundleLoader('aperi21:uniform-motion', async () => {
     const [m, caps] = await Promise.all([
       import('@aperi21/sim-uniform-motion'),

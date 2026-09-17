@@ -20,12 +20,16 @@
         {
           "id": "coordinate-choice",
           "name": "좌표계 선택",
-          "desc": "축을 어디에 두느냐가 식을 바꾸는 방식"
+          "desc": "축을 어디에 두느냐가 식을 바꾸는 방식",
+          "simId": "aperi21:coordinate-choice",
+          "labUrl": "piece-lab/coordinate-choice/index.html"
         },
         {
           "id": "average-velocity",
           "name": "평균 속도",
-          "desc": "구간 전체를 대표하는 속도"
+          "desc": "구간 전체를 대표하는 속도",
+          "simId": "aperi21:average-velocity",
+          "labUrl": "piece-lab/average-velocity/index.html"
         },
         {
           "id": "instantaneous-velocity",
@@ -40,7 +44,9 @@
         {
           "id": "average-acceleration",
           "name": "평균 가속도",
-          "desc": "속도 변화의 비율"
+          "desc": "속도 변화의 비율",
+          "simId": "aperi21:average-acceleration",
+          "labUrl": "piece-lab/average-acceleration/index.html"
         },
         {
           "id": "instantaneous-acceleration",
@@ -50,7 +56,9 @@
         {
           "id": "direction-of-acceleration",
           "name": "가속도의 방향",
-          "desc": "속도와 같은 방향인지 반대인지가 정하는 것"
+          "desc": "속도와 같은 방향인지 반대인지가 정하는 것",
+          "simId": "aperi21:direction-of-acceleration",
+          "labUrl": "piece-lab/direction-of-acceleration/index.html"
         },
         {
           "id": "uniform-motion",
@@ -62,7 +70,9 @@
         {
           "id": "uniformly-accelerated-motion",
           "name": "등가속도 운동",
-          "desc": "가속도가 일정한 운동의 세 식"
+          "desc": "가속도가 일정한 운동의 세 식",
+          "simId": "aperi21:uniformly-accelerated-motion",
+          "labUrl": "piece-lab/uniformly-accelerated-motion/index.html"
         },
         {
           "id": "position-time-graph",
@@ -81,7 +91,9 @@
         {
           "id": "acceleration-time-graph",
           "name": "가속도-시간 그래프",
-          "desc": "넓이가 속도 변화인 표현"
+          "desc": "넓이가 속도 변화인 표현",
+          "simId": "aperi21:acceleration-time-graph",
+          "labUrl": "piece-lab/acceleration-time-graph/index.html"
         },
         {
           "id": "free-fall",
@@ -93,7 +105,9 @@
         {
           "id": "vertical-throw",
           "name": "연직 투상",
-          "desc": "올라갔다 내려오는 운동의 대칭"
+          "desc": "올라갔다 내려오는 운동의 대칭",
+          "simId": "aperi21:vertical-throw",
+          "labUrl": "piece-lab/vertical-throw/index.html"
         },
         {
           "id": "gravitational-acceleration",
@@ -115,7 +129,9 @@
         {
           "id": "vector-decomposition",
           "name": "벡터의 성분 분해",
-          "desc": "한 벡터를 축 방향으로 나누기"
+          "desc": "한 벡터를 축 방향으로 나누기",
+          "simId": "aperi21:vector-decomposition",
+          "labUrl": "piece-lab/vector-decomposition/index.html"
         },
         {
           "id": "vector-addition",
@@ -134,7 +150,9 @@
         {
           "id": "river-crossing",
           "name": "강 건너기",
-          "desc": "두 속도의 합성이 만드는 경로"
+          "desc": "두 속도의 합성이 만드는 경로",
+          "simId": "aperi21:river-crossing",
+          "labUrl": "piece-lab/river-crossing/index.html"
         },
         {
           "id": "projectile-motion",
@@ -186,7 +204,9 @@
         {
           "id": "tangential-normal-acceleration",
           "name": "접선·법선 가속도",
-          "desc": "속력 변화와 방향 변화의 분리"
+          "desc": "속력 변화와 방향 변화의 분리",
+          "simId": "aperi21:tangential-normal-acceleration",
+          "labUrl": "piece-lab/tangential-normal-acceleration/index.html"
         },
         {
           "id": "radius-of-curvature",
@@ -2689,7 +2709,7 @@
   ],
   "summary": {
     "topics": 514,
-    "implemented": 30,
-    "labs": 17
+    "implemented": 40,
+    "labs": 27
   }
 }

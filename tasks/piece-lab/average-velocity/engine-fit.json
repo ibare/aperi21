@@ -1,0 +1,63 @@
+{
+  "rows": [
+    {
+      "element": "구간 띠",
+      "vocab": "region (points 4개 · fillOpacity)",
+      "status": "있음"
+    },
+    {
+      "element": "축",
+      "vocab": "vector ×2 + readout (눈금 숫자) + trace (tick)",
+      "status": "있음",
+      "note": "graph 는 쓰지 않는다 — graph 는 화면 카드라 월드에 있는 띠·직선·곁 도로와 같은 좌표를 공유하지 못한다"
+    },
+    {
+      "element": "도로",
+      "vocab": "trajectory (2점 · width · opacity) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "위치 안내선",
+      "vocab": "trajectory (lineStyle dashed · width 1)",
+      "status": "있음"
+    },
+    {
+      "element": "위치-시간 곡선",
+      "vocab": "trajectory (points 240)",
+      "status": "있음",
+      "note": "모서리 둥글리기는 sim 이 표본을 만들 때 한다"
+    },
+    {
+      "element": "기울기 삼각형",
+      "vocab": "trajectory (3점 · width 1)",
+      "status": "있음"
+    },
+    {
+      "element": "두 끝을 잇는 직선",
+      "vocab": "trajectory (colorRole accent) + trajectory (연장 · opacity)",
+      "status": "있음",
+      "note": "가운데 진하고 양옆 옅은 것은 인스턴스 둘. focus fade 로 한 인스턴스로도 되지만 경계가 또렷해야 하므로 둘이 맞다"
+    },
+    {
+      "element": "구간 양 끝 점",
+      "vocab": "body (shape circle)",
+      "status": "있음"
+    },
+    {
+      "element": "변위 화살표",
+      "vocab": "vector (from · delta)",
+      "status": "있음",
+      "note": "짧을 때 점 둘로 바꾸는 것은 sim 이 고른다"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef + TimelinePhase.caption",
+      "status": "수정 필요",
+      "note": "캡션 슬롯(CaptionSlotDef)은 messages 키 하나만 싣고 값을 끼울 vars 가 없다 (timeline.ts captionPrimitive). 문장 안에 지금 값이 들어가야 하는 캡션은 슬롯을 못 쓰고 scene 의 readout 으로 우회해야 한다 — 그러면 \"캡션은 슬롯 하나\" 를 엔진이 지켜 주지 못한다. 이 조각의 캡션은 \"위치 변화 ÷ 시간 = 평균 속도\" 에 지금 구간의 값 셋이 들어간다"
+    }
+  ],
+  "outside": [
+    "구간 끝을 움직이는 일정표 — TimelineDef.phases + span 으로 되고, 끝 시각·시작 시각을 어떤 곡선으로 옮길지는 sim",
+    "반올림한 값끼리 산수가 맞게 하는 표기 — 원본에서 7.9 ≠ 8 어긋남이 있었다. 표시 자릿수에서 역산하는 것은 sim 의 몫(유효숫자는 주장의 일부 — 엔진이 자동으로 줄이지 않는다)"
+  ]
+}

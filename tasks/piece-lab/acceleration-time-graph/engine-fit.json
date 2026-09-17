@@ -1,0 +1,63 @@
+{
+  "rows": [
+    {
+      "element": "시간 축",
+      "vocab": "trajectory (width 1) + trace (tick) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "가속도 선",
+      "vocab": "trajectory (계단 꺾은선 · width) + readout (구간 값)",
+      "status": "있음"
+    },
+    {
+      "element": "지금 시각 선",
+      "vocab": "trajectory (2점 · width 1 · colorRole muted)",
+      "status": "있음"
+    },
+    {
+      "element": "채워지는 넓이",
+      "vocab": "region (points 4개 · fillOpacity)",
+      "status": "있음"
+    },
+    {
+      "element": "떠난 넓이 자리",
+      "vocab": "trajectory (closed · lineStyle dashed)",
+      "status": "있음",
+      "note": "region.outline 은 실선만 긋는다. 점선 윤곽은 trajectory 로 따로 긋는다"
+    },
+    {
+      "element": "옮겨지는 넓이 칸",
+      "vocab": "region + readout (world · +2 m/s) · 축 아래 칸은 trajectory (closed · dashed)",
+      "status": "있음",
+      "note": "호 경로는 sim 이 timeline.span 진행도로 계산"
+    },
+    {
+      "element": "속도 변화 막대",
+      "vocab": "region (칸마다 · outline 네 변) + trajectory (바닥선) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "깎이는 넓이",
+      "vocab": "region + (빗금)",
+      "status": "없음",
+      "note": "region 은 단색 채움이다. 흰 빗금(해칭) 채움이 없다. 빗금은 \"축 아래 넓이 = 빼는 몫\" 을 색이 아니라 결로 가르는 장치라 색으로 대신하면 S-piece(색으로 설명하지 않는다)에 걸린다. 대안은 점선 윤곽 + 옅은 채움만으로 가르는 것 — 올릴지 원본을 바꿀지 결정 필요"
+    },
+    {
+      "element": "속도 변화 값",
+      "vocab": "readout (world · mono)",
+      "status": "있음",
+      "note": "바뀌는 시점(칸이 완전히 내려앉은 뒤)은 sim"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef + TimelinePhase.caption",
+      "status": "있음",
+      "note": "다섯 문장이 모두 시각으로 갈린다"
+    }
+  ],
+  "outside": [
+    "넓이 칸의 이륙·호·착지·깎기 연출 — 진행도는 TimelineFrame 이 주고 모양 보간은 sim",
+    "공통 값 포매터(부호·단위) — 문자열은 sim 이 만들어 readout.vars 로 넘긴다"
+  ]
+}

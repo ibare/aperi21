@@ -1,0 +1,40 @@
+{
+  "rows": [
+    {
+      "element": "선로",
+      "vocab": "trajectory (2점 · width 1)",
+      "status": "있음"
+    },
+    {
+      "element": "찍힌 자리",
+      "vocab": "trace (shape tick · direction [0,1])",
+      "status": "있음"
+    },
+    {
+      "element": "물체",
+      "vocab": "body (shape circle)",
+      "status": "있음"
+    },
+    {
+      "element": "간격 막대",
+      "vocab": "body (shape rect · outline none) 또는 region",
+      "status": "있음",
+      "note": "자라는 중·사다리로 내려가는 중의 위치 보간은 sim. 폭은 상수이고 위치만 옮긴다 — 엔진이 크기를 건드리는 전이를 기본으로 두면 안 된다 (uniform-motion 과 같은 요구)"
+    },
+    {
+      "element": "늘어난 몫",
+      "vocab": "body (rect · colorRole accent · outline none)",
+      "status": "있음",
+      "note": "몸통과 늘어난 몫을 인스턴스 둘로 가른다 — 색이 인스턴스 단위라서"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef + TimelinePhase.caption",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "간격 막대를 선로에서 사다리로 옮기는 경로와 쌓는 자리 — sim",
+    "한 바퀴가 끝에서 흐려지는 시계 — TimelineDef.phases 의 마지막 단계에서 opacity 를 sim 이 준다 (uniform-motion 과 같다)"
+  ]
+}

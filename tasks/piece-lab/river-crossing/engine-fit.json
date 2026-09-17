@@ -1,0 +1,67 @@
+{
+  "rows": [
+    {
+      "element": "강둑",
+      "vocab": "region ×2 (opaque)",
+      "status": "있음"
+    },
+    {
+      "element": "물살",
+      "vocab": "region (물 바탕) + trace (shape tick · direction [1,0])",
+      "status": "있음",
+      "note": "줄무늬 위치를 t 로 흘리고 폭을 넘으면 되돌리는 것은 sim 이 marks 로 낸다. relative-velocity 의 \"세계 좌표 주기 배경\" 과 달리 이 조각은 기준틀이 고정이라 sim 의 나머지 연산으로 충분하다"
+    },
+    {
+      "element": "맞은편 지점",
+      "vocab": "trajectory (2점) + readout (world · font text)",
+      "status": "있음"
+    },
+    {
+      "element": "출발 지점",
+      "vocab": "trajectory (2점)",
+      "status": "있음"
+    },
+    {
+      "element": "뱃머리만의 경로",
+      "vocab": "trajectory (lineStyle dashed · opacity)",
+      "status": "있음"
+    },
+    {
+      "element": "물에 대한 배",
+      "vocab": "body (custom · fill none · outline role · opacity · orientation)",
+      "status": "있음",
+      "note": "free-fall 에서 올린 fill/outline 이 custom 에도 걸린다 (body.ts custom 분기)"
+    },
+    {
+      "element": "떠밀린 거리",
+      "vocab": "trajectory (2점 · width · colorRole accent)",
+      "status": "있음"
+    },
+    {
+      "element": "배의 자취",
+      "vocab": "trajectory (2점)",
+      "status": "있음"
+    },
+    {
+      "element": "배",
+      "vocab": "body (custom · customPath · orientation)",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef.cases (도착) + text",
+      "status": "수정 필요",
+      "note": "캡션 슬롯(CaptionSlotDef)은 messages 키 하나만 싣고 값을 끼울 vars 가 없다 (timeline.ts captionPrimitive). 문장 안에 지금 값이 들어가야 하는 캡션은 슬롯을 못 쓰고 scene 의 readout 으로 우회해야 한다 — 그러면 \"캡션은 슬롯 하나\" 를 엔진이 지켜 주지 못한다. 도착 문장 \"맞은편보다 30.0 m 하류에 닿았다\" 의 값이 뱃머리 각도에 따라 바뀐다"
+    },
+    {
+      "element": "뱃머리 방향 슬라이더",
+      "vocab": "slider (binds value · range [-45,45] · unit °)",
+      "status": "수정 필요",
+      "note": "slider 에 step 이 없어 5° 간격으로 붙지 않고, 값 표시가 toFixed(2) 로 고정이라 \"-30.00 °\" 로 뜬다 (slider.ts:144). 02 에서 모은 입력 \"slider 값 숨김(5조각)\" 과 같은 뿌리 — 자릿수·간격·표시 여부가 선언에 없다"
+    }
+  ],
+  "outside": [
+    "건너기 경과 시간 tau 의 누적과 슬라이더를 움직이면 처음부터 — sim 의 step (heldPath 로 잡힘을 읽는다)",
+    "재생 배속(화면 1초 = 물리 4초) — sim 의 상수"
+  ]
+}

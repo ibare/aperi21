@@ -144,18 +144,33 @@ importers:
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../schema
+      '@aperi21/sim-acceleration-time-graph':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/acceleration-time-graph
       '@aperi21/sim-angular-acceleration':
         specifier: workspace:*
         version: link:../../sims/kinematics/angular-acceleration
       '@aperi21/sim-apparent-brightness':
         specifier: workspace:*
         version: link:../../sims/astro/apparent-brightness
+      '@aperi21/sim-average-acceleration':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/average-acceleration
+      '@aperi21/sim-average-velocity':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/average-velocity
       '@aperi21/sim-beats':
         specifier: workspace:*
         version: link:../../sims/waves/beats
+      '@aperi21/sim-coordinate-choice':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/coordinate-choice
       '@aperi21/sim-current-magnetic-field':
         specifier: workspace:*
         version: link:../../sims/em/current-magnetic-field
+      '@aperi21/sim-direction-of-acceleration':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/direction-of-acceleration
       '@aperi21/sim-doppler-effect':
         specifier: workspace:*
         version: link:../../sims/waves/doppler-effect
@@ -192,18 +207,33 @@ importers:
       '@aperi21/sim-relative-velocity':
         specifier: workspace:*
         version: link:../../sims/kinematics/relative-velocity
+      '@aperi21/sim-river-crossing':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/river-crossing
       '@aperi21/sim-stopping-distance':
         specifier: workspace:*
         version: link:../../sims/kinematics/stopping-distance
+      '@aperi21/sim-tangential-normal-acceleration':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/tangential-normal-acceleration
       '@aperi21/sim-terminal-velocity':
         specifier: workspace:*
         version: link:../../sims/kinematics/terminal-velocity
       '@aperi21/sim-uniform-motion':
         specifier: workspace:*
         version: link:../../sims/kinematics/uniform-motion
+      '@aperi21/sim-uniformly-accelerated-motion':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/uniformly-accelerated-motion
       '@aperi21/sim-vector-addition':
         specifier: workspace:*
         version: link:../../sims/kinematics/vector-addition
+      '@aperi21/sim-vector-decomposition':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/vector-decomposition
+      '@aperi21/sim-vertical-throw':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/vertical-throw
     devDependencies:
       '@aperi21/plugin-circuit':
         specifier: workspace:*
@@ -516,6 +546,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/kinematics/acceleration-time-graph:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/kinematics/angular-acceleration:
     devDependencies:
       '@aperi21/plugin-mechanics':
@@ -528,7 +567,43 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/kinematics/average-acceleration:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/kinematics/average-velocity:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/kinematics/centripetal-acceleration:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/kinematics/coordinate-choice:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/kinematics/direction-of-acceleration:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -588,7 +663,25 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/kinematics/river-crossing:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/kinematics/stopping-distance:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/kinematics/tangential-normal-acceleration:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -615,6 +708,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/kinematics/uniformly-accelerated-motion:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/kinematics/vector-addition:
     devDependencies:
       '@aperi21/schema':
@@ -624,7 +726,25 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/kinematics/vector-decomposition:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/kinematics/velocity-time-graph:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/kinematics/vertical-throw:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*

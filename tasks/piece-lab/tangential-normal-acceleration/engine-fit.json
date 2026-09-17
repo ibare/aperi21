@@ -1,0 +1,82 @@
+{
+  "rows": [
+    {
+      "element": "지나는 길",
+      "vocab": "trajectory (closed · width 1 · colorRole muted)",
+      "status": "있음"
+    },
+    {
+      "element": "속도 화살",
+      "vocab": "vector (colorRole ink · width)",
+      "status": "있음"
+    },
+    {
+      "element": "가속도 화살",
+      "vocab": "vector (width 1 · colorRole muted) + trajectory (평행사변형 · dashed)",
+      "status": "있음"
+    },
+    {
+      "element": "속력 몫",
+      "vocab": "vector (colorRole accent · label)",
+      "status": "있음",
+      "note": "labelSide auto 가 화살이 도는 대로 이름을 옮긴다"
+    },
+    {
+      "element": "방향 몫",
+      "vocab": "vector (다른 colorRole · label)",
+      "status": "있음",
+      "note": "두 몫에 다른 색을 쓰는 것은 \"같은 대상 같은 색\" 이지 색으로 설명하는 것이 아니다 — 이름이 함께 붙는다"
+    },
+    {
+      "element": "물체",
+      "vocab": "body (point 또는 circle)",
+      "status": "있음"
+    },
+    {
+      "element": "모음판 이름",
+      "vocab": "readout (world · font text)",
+      "status": "있음"
+    },
+    {
+      "element": "같은 길이 원",
+      "vocab": "trajectory (closed · points 원 · lineStyle dashed)",
+      "status": "있음"
+    },
+    {
+      "element": "화살 끝 자취",
+      "vocab": "trajectory (fade tail)",
+      "status": "있음",
+      "note": "tail 은 점 순서로 옅어진다. 최근 2.5 초 분량의 점만 sim 이 내면 시간 기준과 같다"
+    },
+    {
+      "element": "모은 속도 화살",
+      "vocab": "vector + body (point)",
+      "status": "있음"
+    },
+    {
+      "element": "모음판 가속도 화살",
+      "vocab": "vector + trajectory (dashed)",
+      "status": "있음"
+    },
+    {
+      "element": "모음판 속력 몫",
+      "vocab": "vector (accent)",
+      "status": "있음"
+    },
+    {
+      "element": "모음판 방향 몫",
+      "vocab": "vector",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef + TimelinePhase.caption",
+      "status": "있음",
+      "note": "여섯 구간이 시각으로 갈린다 — 이웃 단계가 같은 키면 다시 페이드하지 않는 규칙이 \"구간이 바뀔 때만 교체\" 와 같다"
+    }
+  ],
+  "outside": [
+    "구간 대본을 적분한 프레임 표 — sim 의 물리 (plugin-mechanics 로 올릴지는 두 번째 사용처가 나올 때)",
+    "물체 위 화살과 모음판 화살을 같은 배율로 잇는 배치 — 한 월드에 두면 상수를 공유할 일이 없다"
+  ]
+}

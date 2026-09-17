@@ -58,6 +58,7 @@ topics:
     curricula: []
     visual: "yes"
     visualNote: 축을 어디에 두느냐로 같은 운동의 식이 달라진다
+    sim: aperi21:coordinate-choice
   - id: average-velocity
     name: 평균 속도
     desc: 구간 전체를 대표하는 속도
@@ -66,6 +67,7 @@ topics:
     curricula: [kr, ib, ngss, ap, uk]
     visual: "yes"
     visualNote: 구간을 바꾸면 대표값이 달라지는 것이 그래프에 보인다
+    sim: aperi21:average-velocity
   - id: instantaneous-velocity
     name: 순간 속도
     desc: 구간을 0으로 줄인 극한
@@ -90,6 +92,7 @@ topics:
     curricula: [ib, ap, uk]
     visual: "yes"
     visualNote: 속도-시간 그래프의 기울기로 나타난다
+    sim: aperi21:average-acceleration
   - id: instantaneous-acceleration
     name: 순간 가속도
     desc: 속도의 순간 변화율
@@ -106,6 +109,7 @@ topics:
     curricula: [kr]
     visual: "yes"
     visualNote: 속도와 같은 방향이면 빨라지고 반대면 느려진다
+    sim: aperi21:direction-of-acceleration
   - id: uniform-motion
     name: 등속 운동
     desc: 속도가 변하지 않는 운동
@@ -123,6 +127,7 @@ topics:
     curricula: [kr, ib, ap, uk]
     visual: "yes"
     visualNote: 같은 시간에 벌어지는 간격이 일정하게 늘어난다
+    sim: aperi21:uniformly-accelerated-motion
   - id: position-time-graph
     name: 위치-시간 그래프
     desc: 기울기가 속도인 표현
@@ -150,6 +155,7 @@ topics:
     curricula: [ib, ap]
     visual: "yes"
     visualNote: 넓이가 속도 변화로 쌓인다
+    sim: aperi21:acceleration-time-graph
   - id: free-fall
     name: 자유 낙하
     desc: 중력만 받는 연직 운동
@@ -167,6 +173,7 @@ topics:
     curricula: []
     visual: "yes"
     visualNote: 올라갈 때와 내려올 때가 거울처럼 겹친다
+    sim: aperi21:vertical-throw
   - id: gravitational-acceleration
     name: 중력 가속도
     desc: 질량과 무관한 낙하 가속도
@@ -200,6 +207,7 @@ topics:
     curricula: [ap, uk]
     visual: "yes"
     visualNote: 한 화살표가 두 축 방향으로 갈라진다
+    sim: aperi21:vector-decomposition
   - id: vector-addition
     name: 벡터의 합성
     desc: 꼬리와 머리를 잇는 덧셈
@@ -226,6 +234,7 @@ topics:
     curricula: []
     visual: "yes"
     visualNote: 뱃머리를 어디로 두느냐로 도착점이 달라진다
+    sim: aperi21:river-crossing
   - id: projectile-motion
     name: 포물선 운동
     desc: 수평·연직 성분의 독립
@@ -306,6 +315,7 @@ topics:
     curricula: []
     visual: "yes"
     visualNote: 가속도가 속력을 바꾸는 몫과 방향을 바꾸는 몫으로 갈린다
+    sim: aperi21:tangential-normal-acceleration
   - id: radius-of-curvature
     name: 곡률 반지름
     desc: 곡선이 국소적으로 닮은 원

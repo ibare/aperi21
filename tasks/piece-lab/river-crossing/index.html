@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>강 건너기</title>
+<style>
+  :root {
+    --bank: #d9d2c0;
+    --water: #cfe0ea;
+    --streak: #ffffff;
+    --boat: #2b3440;
+    --accent: #d2552b;
+    --ink: #2b3440;
+    --muted: #6b7682;
+    --bg: #fbfaf7;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; }
+  canvas { display: block; width: 100%; height: 280px; }
+  .caption { min-height: 1.5em; margin: 10px 4px 6px; font-size: 15px; line-height: 1.5; }
+  .controls { display: flex; align-items: center; gap: 12px; margin: 0 4px 8px; font-size: 13px; color: var(--muted); }
+  .controls input { flex: 0 1 240px; }
+  .controls output { min-width: 7em; color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <p class="caption" id="caption"></p>
+  <div class="controls">
+    <label for="heading">뱃머리 방향</label>
+    <input id="heading" type="range" min="-45" max="45" step="5" value="0">
+    <output id="headingOut">정면</output>
+  </div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// ── 물리 값 (실제 단위) ──
+const RIVER_WIDTH = 60;   // 강폭 m
+const BOAT_SPEED = 3;     // 물에 대한 배의 빠르기 m/s
+const FLOW_SPEED = 1.5;   // 물살 m/s
+const PLAYBACK = 4;       // 화면 1초 = 물리 4초
+const HOLD = 2;           // 도착 뒤 머무는 화면 시간(초)
+const START_TAU = 1.5;    // 도착한 순간 이미 건너는 중이도록 시작 위상
+
+// ── 화면 배치 ──
+const H = 280;
+const BANK_H = 30;
+const RIVER_TOP = BANK_H;
+const RIVER_BOTTOM = H - BANK_H;
+const PX_PER_M = (RIVER_BOTTOM - RIVER_TOP) / RIVER_WIDTH;
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const captionEl = document.getElementById('caption');
+const slider = document.getElementById('heading');
+const sliderOut = document.getElementById('headingOut');
+
+const cssCache = {};
+function getCss(name) {
+  if (!(name in cssCache)) cssCache[name] = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  return cssCache[name];
+}
+
+// 물살 줄무늬: 초기 위치만 난수, 이후 위치는 t 의 함수
+const STREAKS = [];
+for (let i = 0; i < 46; i++) {
+  STREAKS.push({
+    x0: PieceKit.random(),
+    y: RIVER_TOP + 8 + PieceKit.random() * (RIVER_BOTTOM - RIVER_TOP - 16),
+    len: 10 + PieceKit.random() * 16,
+  });
+}
+
+// ── 상태 ──
+const state = {
+  headingDeg: 0,   // 0 = 건너편 정면, + = 하류 쪽, − = 상류 쪽
+  tau: START_TAU,  // 이번 건너기가 시작된 뒤 흐른 화면 시간
+};
+
+function headingLabel(deg) {
+  if (deg === 0) return '정면';
+  return (deg < 0 ? '상류 쪽 ' : '하류 쪽 ') + Math.abs(deg) + '°';
+}
+
+slider.addEventListener('input', () => {
+  if (PieceKit.frozen) return;
+  state.headingDeg = Number(slider.value);
+  sliderOut.textContent = headingLabel(state.headingDeg);
+  state.tau = 0;
+});
+
+function crossing(deg) {
+  const th = deg * Math.PI / 180;
+  const vx = FLOW_SPEED + BOAT_SPEED * Math.sin(th); // 물살 방향(오른쪽) 성분
+  const vy = BOAT_SPEED * Math.cos(th);              // 건너는 성분
+  const T = RIVER_WIDTH / vy;                        // 물리 초
+  return { th, vx, vy, T, screenT: T / PLAYBACK, drift: vx * T };
+}
+
+PieceKit.loop({
+  step(dt) {
+    const deg = PieceKit.frozen ? 0 : state.headingDeg;
+    const c = crossing(deg);
+    state.tau += dt;
+    if (state.tau >= c.screenT + HOLD) state.tau = 0;
+  },
+  draw(t) {
+    const W = canvas.clientWidth || 800;
+    const dpr = window.devicePixelRatio || 1;
+    if (canvas.width !== Math.round(W * dpr) || canvas.height !== Math.round(H * dpr)) {
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+
+    const deg = PieceKit.frozen ? 0 : state.headingDeg;
+    const c = crossing(deg);
+    const simT = Math.min(state.tau, c.screenT) * PLAYBACK; // 물리 경과 시간
+    const arrived = state.tau >= c.screenT;
+
+    const startX = Math.round(W * 0.24);
+    const startY = RIVER_BOTTOM;
+    const X = (m) => startX + m * PX_PER_M;
+    const Y = (m) => startY - m * PX_PER_M;
+
+    // 물에 대한 배(유령) 위치와 실제 배 위치, 단위 m
+    const ghostX = BOAT_SPEED * Math.sin(c.th) * simT;
+    const ghostY = BOAT_SPEED * Math.cos(c.th) * simT;
+    const pushed = FLOW_SPEED * simT;
+    const boatX = ghostX + pushed;
+    const boatY = ghostY;
+
+    PieceKit.mark('강둑', () => {
+      ctx.fillStyle = getCss('--bank');
+      ctx.fillRect(0, 0, W, BANK_H);
+      ctx.fillRect(0, RIVER_BOTTOM, W, BANK_H);
+    });
+
+    PieceKit.mark('물살', () => {
+      ctx.fillStyle = getCss('--water');
+      ctx.fillRect(0, RIVER_TOP, W, RIVER_BOTTOM - RIVER_TOP);
+      ctx.strokeStyle = getCss('--streak');
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+      const span = W + 60;
+      const shift = FLOW_SPEED * PLAYBACK * PX_PER_M * t;
+      for (const s of STREAKS) {
+        const x = ((s.x0 * span + shift) % span) - 30;
+        ctx.beginPath();
+        ctx.moveTo(x, s.y);
+        ctx.lineTo(x + s.len, s.y);
+        ctx.stroke();
+      }
+    });
+
+    PieceKit.mark('맞은편 지점', () => {
+      const x = X(0), y = RIVER_TOP;
+      ctx.strokeStyle = getCss('--muted');
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(x, y - 12); ctx.lineTo(x, y + 2);
+      ctx.stroke();
+      ctx.fillStyle = getCss('--muted');
+      ctx.font = '12px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText('맞은편', x - 6, y - 10);
+    });
+
+    PieceKit.mark('출발 지점', () => {
+      ctx.strokeStyle = getCss('--muted');
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(X(0), RIVER_BOTTOM - 2); ctx.lineTo(X(0), RIVER_BOTTOM + 12);
+      ctx.stroke();
+    });
+
+    PieceKit.mark('뱃머리만의 경로', () => {
+      // 물이 멈춰 있었다면 갔을 길: 뱃머리 방향 직선 (점선)
+      const endX = BOAT_SPEED * Math.sin(c.th) * c.T;
+      ctx.strokeStyle = getCss('--boat');
+      ctx.globalAlpha = 0.35;
+      ctx.setLineDash([4, 5]);
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(X(0), Y(0));
+      ctx.lineTo(X(endX), Y(RIVER_WIDTH));
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('물에 대한 배', () => {
+      ctx.globalAlpha = 0.35;
+      drawBoat(X(ghostX), Y(ghostY), c.th, false);
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('떠밀린 거리', () => {
+      if (pushed <= 0) return;
+      const y = Y(boatY) + 13; // 선체 중간 높이
+      ctx.strokeStyle = getCss('--accent');
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(X(ghostX), y);
+      ctx.lineTo(X(boatX), y);
+      ctx.stroke();
+    });
+
+    PieceKit.mark('배의 자취', () => {
+      ctx.strokeStyle = getCss('--boat');
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(X(0), Y(0));
+      ctx.lineTo(X(boatX), Y(boatY));
+      ctx.stroke();
+    });
+
+    PieceKit.mark('배', () => {
+      drawBoat(X(boatX), Y(boatY), c.th, true);
+    });
+
+    PieceKit.mark('캡션', () => {
+      let text;
+      if (!arrived) {
+        text = deg === 0
+          ? '뱃머리는 맞은편을 향하지만, 배는 물살에 떠밀려 비스듬히 건넌다.'
+          : '뱃머리가 향한 곳과 배가 가는 곳이 다르다 — 물살이 배를 떠민다.';
+      } else {
+        const off = c.drift;
+        if (Math.abs(off) < 0.05) text = '맞은편에 닿았다.';
+        else text = '맞은편보다 ' + Math.abs(off).toFixed(1) + ' m ' + (off > 0 ? '하류' : '상류') + '에 닿았다.';
+      }
+      if (captionEl.textContent !== text) captionEl.textContent = text;
+    });
+
+    if (PieceKit.frozen) {
+      slider.value = '0';
+      sliderOut.textContent = headingLabel(0);
+    }
+  },
+});
+
+function drawBoat(x, y, th, filled) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(th); // 0 = 위쪽(건너편)
+  ctx.beginPath();
+  // 기준점 = 뱃머리 끝 (도착하면 뱃머리가 둑에 닿는다)
+  ctx.moveTo(0, 0);
+  ctx.quadraticCurveTo(7, 10, 6, 26);
+  ctx.lineTo(-6, 26);
+  ctx.quadraticCurveTo(-7, 10, 0, 0);
+  ctx.closePath();
+  if (filled) {
+    ctx.fillStyle = getCss('--boat');
+    ctx.fill();
+  } else {
+    ctx.strokeStyle = getCss('--boat');
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+</script>
+</body>
+</html>

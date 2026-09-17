@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>벡터의 성분 분해</title>
+<style>
+  html, body { margin: 0; background: #ffffff; }
+  body { font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  #wrap { max-width: 900px; margin: 0 auto; }
+  canvas { display: block; width: 100%; height: 340px; touch-action: none; }
+</style>
+</head>
+<body>
+<div id="wrap"><canvas id="c"></canvas></div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+
+  // 색 — 원래 화살표 하나, 성분 둘은 같은 색(뜻: "성분")
+  const INK = '#1f2328';
+  const PART = '#d9480f';
+  const GUIDE = '#9aa1a9';
+  const AXIS = '#c9ced4';
+  const TEXT = '#3b4148';
+
+  const PERIOD = 8;
+  // 주기마다 바뀌는 원래 화살표: 각도(도), 길이(최대 반지름 대비 비율)
+  const VECTORS = [
+    { deg: 35, len: 0.92 },
+    { deg: 64, len: 0.80 },
+    { deg: 138, len: 0.90 },
+    { deg: 16, len: 0.96 },
+  ];
+
+  let W = 0, H = 340, dpr = 1;
+  function resize() {
+    dpr = window.devicePixelRatio || 1;
+    W = canvas.clientWidth || 720;
+    H = canvas.clientHeight || 340;
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function origin() { return { x: W / 2, y: H - 46 }; }
+  function maxR() { return Math.min(H - 96, W / 2 - 40); }
+
+  const clamp01 = (x) => Math.max(0, Math.min(1, x));
+  const ease = (x) => { x = clamp01(x); return x * x * (3 - 2 * x); };
+  const seg = (u, a, b) => ease((u - a) / (b - a));
+
+  // 독자가 끝점을 끌어 정한 화살표 (화면 좌표 기준 성분, 픽셀). 없으면 자동 목록.
+  let userVec = null;
+  let dragging = false;
+  let lastTip = null;
+
+  function vecOf(i) {
+    const v = VECTORS[((i % VECTORS.length) + VECTORS.length) % VECTORS.length];
+    const r = v.len * maxR();
+    const a = v.deg * Math.PI / 180;
+    return { x: r * Math.cos(a), y: r * Math.sin(a) }; // y 는 위쪽이 양수
+  }
+
+  // t 에서 모든 화면 상태를 계산한다 (누적 상태 없음)
+  function stateAt(t) {
+    const cycle = Math.floor(t / PERIOD);
+    const u = t - cycle * PERIOD;
+    const useUser = userVec && !PieceKit.frozen;
+    let v;
+    if (useUser) {
+      v = userVec;
+    } else if (u >= 7) {
+      // 다음 화살표로 돌며 옮겨 간다 (각도·길이 보간)
+      const k = seg(u, 7, 8);
+      const a = vecOf(cycle), b = vecOf(cycle + 1);
+      const aa = Math.atan2(a.y, a.x), ab = Math.atan2(b.y, b.x);
+      const ra = Math.hypot(a.x, a.y), rb = Math.hypot(b.x, b.y);
+      const ang = aa + (ab - aa) * k, r = ra + (rb - ra) * k;
+      v = { x: r * Math.cos(ang), y: r * Math.sin(ang) };
+    } else {
+      v = vecOf(cycle);
+    }
+    // split: 0 = 성분 끝이 원래 끝점에 겹침, 1 = 축 위로 내려앉음
+    const split = u < 6 ? seg(u, 0.4, 2.4) : 1 - seg(u, 6.0, 6.9);
+    // chain: 세로 성분의 꼬리가 원점에서 가로 성분 끝으로 옮겨 간 정도
+    const chain = u < 6 ? seg(u, 3.4, 4.9) : 1 - seg(u, 6.0, 6.6);
+    let caption;
+    if (u < 0.4 || u >= 7) caption = '비스듬한 화살표 하나';
+    else if (u < 3.4) caption = '끝점에서 두 축으로 곧게 내려가며, 화살표가 가로·세로 둘로 갈라진다';
+    else if (u < 6.0) caption = '갈라진 둘을 이어 붙이면 원래 화살표의 끝점에 정확히 닿는다';
+    else caption = '둘이 다시 하나로 합쳐진다';
+    return { v, split, chain, caption };
+  }
+
+  function toScreen(p) { const o = origin(); return { x: o.x + p.x, y: o.y - p.y }; }
+
+  function arrow(from, to, color, width) {
+    const dx = to.x - from.x, dy = to.y - from.y;
+    const L = Math.hypot(dx, dy);
+    if (L < 0.5) return;
+    const ux = dx / L, uy = dy / L;
+    const head = Math.min(14, L * 0.45);
+    const bx = to.x - ux * head, by = to.y - uy * head;
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.lineWidth = width;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(from.x, from.y);
+    ctx.lineTo(bx, by);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(to.x, to.y);
+    ctx.lineTo(bx - uy * head * 0.45, by + ux * head * 0.45);
+    ctx.lineTo(bx + uy * head * 0.45, by - ux * head * 0.45);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  PieceKit.loop({
+    step(dt, t) { /* 모든 상태가 t 의 함수라 전진할 것이 없다 */ },
+    draw(t) {
+      const s = stateAt(t);
+      const O = toScreen({ x: 0, y: 0 });
+      const tip = toScreen(s.v);
+      const footX = toScreen({ x: s.v.x, y: 0 });
+      const footY = toScreen({ x: 0, y: s.v.y });
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+
+      PieceKit.mark('두 축', () => {
+        const R = maxR() + 20;
+        ctx.strokeStyle = AXIS;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(O.x - R, O.y); ctx.lineTo(O.x + R, O.y);
+        ctx.moveTo(O.x, O.y + 14); ctx.lineTo(O.x, O.y - R);
+        ctx.stroke();
+      });
+
+      PieceKit.mark('끝점에서 축으로 내린 수선', () => {
+        const a = clamp01(s.split * 1.6) * (1 - s.chain * 0.6);
+        if (a <= 0) return;
+        ctx.save();
+        ctx.globalAlpha = a;
+        ctx.strokeStyle = GUIDE;
+        ctx.lineWidth = 1.2;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(tip.x, tip.y); ctx.lineTo(footX.x, footX.y);
+        ctx.moveTo(tip.x, tip.y); ctx.lineTo(footY.x, footY.y);
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      PieceKit.mark('원래 화살표', () => {
+        arrow(O, tip, INK, 3.5);
+      });
+
+      // 가로 성분: 끝이 원래 끝점에서 수선을 따라 x 축 위 발까지 내려온다
+      const xEnd = { x: tip.x + (footX.x - tip.x) * s.split, y: tip.y + (footX.y - tip.y) * s.split };
+      PieceKit.mark('가로 성분 화살표', () => {
+        if (s.split <= 0.001) return;
+        arrow(O, xEnd, PART, 3);
+      });
+
+      // 세로 성분: 끝이 원래 끝점에서 y 축 위 발까지 내려오고, 이어 붙일 때는 통째로 옆으로 옮겨 간다
+      PieceKit.mark('세로 성분 화살표', () => {
+        if (s.split <= 0.001) return;
+        const yEnd = { x: tip.x + (footY.x - tip.x) * s.split, y: tip.y + (footY.y - tip.y) * s.split };
+        const shift = (footX.x - O.x) * s.chain;
+        arrow({ x: O.x + shift, y: O.y }, { x: yEnd.x + shift, y: yEnd.y }, PART, 3);
+      });
+
+      PieceKit.mark('끝점 손잡이', () => {
+        if (PieceKit.frozen) return;
+        ctx.strokeStyle = INK;
+        ctx.globalAlpha = dragging ? 0.5 : 0.18;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(tip.x, tip.y, 11, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      });
+
+      PieceKit.mark('캡션', () => {
+        ctx.fillStyle = TEXT;
+        ctx.font = '15px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+        ctx.textBaseline = 'top';
+        ctx.fillText(s.caption, 16, 14);
+      });
+
+      lastTip = tip;
+    },
+  });
+
+  // 조작기 — 원래 화살표의 끝점을 끌어 각도·길이를 바꾼다
+  function local(e) {
+    const r = canvas.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  }
+  function setFromPointer(p) {
+    const O = origin();
+    let x = p.x - O.x, y = O.y - p.y;
+    const R = maxR();
+    const L = Math.hypot(x, y);
+    if (L > R) { x *= R / L; y *= R / L; }
+    if (y < -20) y = -20;
+    userVec = { x, y };
+  }
+  canvas.addEventListener('pointerdown', (e) => {
+    if (PieceKit.frozen || !lastTip) return;
+    const p = local(e);
+    if (Math.hypot(p.x - lastTip.x, p.y - lastTip.y) > 24) return;
+    dragging = true;
+    canvas.setPointerCapture(e.pointerId);
+    setFromPointer(p);
+  });
+  canvas.addEventListener('pointermove', (e) => {
+    if (!dragging) {
+      if (lastTip) {
+        const p = local(e);
+        canvas.style.cursor = Math.hypot(p.x - lastTip.x, p.y - lastTip.y) <= 24 ? 'grab' : 'default';
+      }
+      return;
+    }
+    setFromPointer(local(e));
+  });
+  const end = () => { dragging = false; };
+  canvas.addEventListener('pointerup', end);
+  canvas.addEventListener('pointercancel', end);
+})();
+</script>
+</body>
+</html>

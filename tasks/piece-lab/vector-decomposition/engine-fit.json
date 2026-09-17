@@ -1,0 +1,50 @@
+{
+  "rows": [
+    {
+      "element": "두 축",
+      "vocab": "trajectory (2점 ×2 · width 1 · colorRole muted)",
+      "status": "있음"
+    },
+    {
+      "element": "끝점에서 축으로 내린 수선",
+      "vocab": "trajectory (lineStyle dashed · opacity ← timeline)",
+      "status": "있음"
+    },
+    {
+      "element": "원래 화살표",
+      "vocab": "vector (width · colorRole ink)",
+      "status": "있음"
+    },
+    {
+      "element": "가로 성분 화살표",
+      "vocab": "vector (colorRole accent)",
+      "status": "있음"
+    },
+    {
+      "element": "세로 성분 화살표",
+      "vocab": "vector (colorRole accent)",
+      "status": "있음",
+      "note": "가로 성분 끝으로 미끄러지는 from 보간은 sim"
+    },
+    {
+      "element": "끝점 손잡이",
+      "vocab": "point-drag 가 그리는 손잡이",
+      "status": "수정 필요",
+      "note": "point-drag 는 손잡이를 ui.text 채움 + ui.onSelected 테두리의 원으로 코드에 박아 그린다 (point-drag.ts:88-93). 이 조각은 옅은 원 테두리만 원한다 — 02 이관에서도 두 조각이 같은 자리를 걸렸다(손잡이 모양이 코드에 박힘)"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (anchor screen top-left) + TimelinePhase.caption",
+      "status": "있음"
+    },
+    {
+      "element": "끝점 끌기",
+      "vocab": "point-drag (binds pos · held)",
+      "status": "있음",
+      "note": "놓은 뒤 자동 목록으로 돌아갈지 독자의 화살표를 유지할지는 sim 이 held 로 판단"
+    }
+  ],
+  "outside": [
+    "각도 목록 35°·64°·138°·16° 를 돌리는 주기 — TimelineDef.phases + sim"
+  ]
+}

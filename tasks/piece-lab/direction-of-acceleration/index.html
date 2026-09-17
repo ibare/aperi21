@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>가속도의 방향</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #2b2b2b;
+    --faint: #b9b5ab;
+    --ball: #3f6d8f;
+    --accel: #d4572a;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 12px 16px; box-sizing: border-box; }
+  canvas { display: block; width: 100%; height: 220px; }
+  .caption { min-height: 1.6em; margin: 6px 0 0; font-size: 15px; line-height: 1.6; text-align: center; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="stage"></canvas>
+  <p class="caption" id="caption"></p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// 물리 설정 — 두 공은 초속도·가속도 크기가 같고, 가속도 방향만 다르다.
+const V0 = 4;          // 초속도 (m/s), 오른쪽
+const A = 1;           // 가속도 크기 (m/s²)
+const T_RUN = V0 / A;  // 반대쪽 공이 멈출 때까지 걸리는 시간 = 4 s
+const T_HOLD = 1.5;    // 멈춘 모습을 보여 주는 시간
+const PERIOD = T_RUN + T_HOLD;
+const PHASE = 1.5;     // 도착한 순간 이미 진행 중이도록 앞당긴 위상
+const STROBE = 0.5;    // 지나간 자리를 찍는 간격 (s)
+const FADE = 0.35;     // 되감을 때 흐려졌다 돌아오는 시간
+
+const canvas = document.getElementById('stage');
+const ctx = canvas.getContext('2d');
+const captionEl = document.getElementById('caption');
+const css = getComputedStyle(document.documentElement);
+const COLOR = {
+  ink: css.getPropertyValue('--ink').trim(),
+  faint: css.getPropertyValue('--faint').trim(),
+  ball: css.getPropertyValue('--ball').trim(),
+  accel: css.getPropertyValue('--accel').trim(),
+};
+
+const H = 220;
+let W = 860;
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  W = canvas.clientWidth || 860;
+  canvas.width = Math.round(W * dpr);
+  canvas.height = Math.round(H * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resize();
+window.addEventListener('resize', resize);
+
+// 레인: 가속도 부호만 다르다
+const LANES = [
+  { sign: +1, y: 78 },
+  { sign: -1, y: 178 },
+];
+
+const V_PX = 14;        // 속도 화살표: 1 m/s 당 픽셀
+const A_PX = 44;        // 가속도 화살표 길이 (크기 1 m/s², 고정)
+const LEFT = 100;
+const BALL_R = 11;
+
+// 같은 방향 공이 T_RUN 동안 가는 거리가 트랙 끝에 오도록 축척을 정한다.
+function layout() {
+  const maxDist = V0 * T_RUN + 0.5 * A * T_RUN * T_RUN; // 24 m
+  const maxArrow = (V0 + A * T_RUN) * V_PX;             // 8 m/s 화살표
+  const track = W - LEFT - maxArrow - BALL_R - 3 - 50;
+  return { scale: track / maxDist };
+}
+
+// 운동 — 시간의 해석적 함수
+function runTime(local) { return Math.min(local, T_RUN); }
+function pos(sign, s) { return V0 * s + 0.5 * sign * A * s * s; }
+function vel(sign, s) { return V0 + sign * A * s; }
+
+function arrow(x1, y, x2, color, width) {
+  const dir = Math.sign(x2 - x1);
+  const len = Math.abs(x2 - x1);
+  if (len < 1) return;
+  const head = Math.min(9, len);
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = width;
+  ctx.beginPath();
+  ctx.moveTo(x1, y);
+  ctx.lineTo(x2 - dir * head * 0.8, y);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x2, y);
+  ctx.lineTo(x2 - dir * head, y - head * 0.55);
+  ctx.lineTo(x2 - dir * head, y + head * 0.55);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function label(text, x, y, color, align) {
+  ctx.fillStyle = color;
+  ctx.font = '13px -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+  ctx.textAlign = align;
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, x, y);
+}
+
+function captionFor(local) {
+  if (local < 1.0) return '두 공은 같은 빠르기로 출발하고, 같은 크기의 가속도를 받는다';
+  if (local < T_RUN) return '속도와 같은 쪽으로 밀리는 공은 빨라지고, 반대쪽으로 밀리는 공은 느려진다';
+  return '반대쪽으로 밀린 공은 결국 멈춰 섰다';
+}
+
+PieceKit.loop({
+  step(dt, t) {
+    // 상태 없음 — 모든 것이 t 의 함수다.
+  },
+  draw(t) {
+    const local = ((t + PHASE) % PERIOD + PERIOD) % PERIOD;
+    const s = runTime(local);
+    const { scale } = layout();
+    let alpha = 1;
+    if (local < FADE) alpha = local / FADE;
+    else if (local > PERIOD - FADE) alpha = (PERIOD - local) / FADE;
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = css.getPropertyValue('--bg').trim();
+    ctx.fillRect(0, 0, W, H);
+
+    for (const lane of LANES) {
+      const groundY = lane.y + BALL_R + 4;
+
+      PieceKit.mark('바닥선', () => {
+        ctx.globalAlpha = 1;
+        ctx.strokeStyle = COLOR.faint;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(LEFT - 16, groundY);
+        ctx.lineTo(W - 8, groundY);
+        ctx.stroke();
+      });
+
+      PieceKit.mark('출발선', () => {
+        ctx.globalAlpha = 1;
+        ctx.strokeStyle = COLOR.ink;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(LEFT, groundY - 6);
+        ctx.lineTo(LEFT, groundY + 6);
+        ctx.stroke();
+      });
+
+      PieceKit.mark('지나간 자리', () => {
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = COLOR.ball;
+        for (let k = 0; k * STROBE <= s + 1e-9; k++) {
+          const x = LEFT + pos(lane.sign, k * STROBE) * scale;
+          ctx.beginPath();
+          ctx.arc(x, groundY, 3.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+
+      const bx = LEFT + pos(lane.sign, s) * scale;
+      const v = vel(lane.sign, s);
+
+      PieceKit.mark('공', () => {
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = COLOR.ball;
+        ctx.beginPath();
+        ctx.arc(bx, lane.y, BALL_R, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      PieceKit.mark('속도 화살표', () => {
+        ctx.globalAlpha = alpha;
+        const x1 = bx + BALL_R + 3;
+        const x2 = x1 + v * V_PX;
+        arrow(x1, lane.y, x2, COLOR.ink, 2.5);
+        if (v * V_PX > 30) label('속도', x2 + 6, lane.y, COLOR.ink, 'left');
+      });
+
+      PieceKit.mark('가속도 화살표', () => {
+        ctx.globalAlpha = alpha;
+        const ay = lane.y - BALL_R - 16;
+        arrow(bx, ay, bx + lane.sign * A_PX, COLOR.accel, 2.5);
+        label('가속도', bx + lane.sign * (A_PX + 6), ay, COLOR.accel, lane.sign > 0 ? 'left' : 'right');
+      });
+    }
+    ctx.globalAlpha = 1;
+
+    PieceKit.mark('캡션', () => {
+      const text = captionFor(local);
+      if (captionEl.textContent !== text) captionEl.textContent = text;
+    });
+  },
+});
+</script>
+</body>
+</html>

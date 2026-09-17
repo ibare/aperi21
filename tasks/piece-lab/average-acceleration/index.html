@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>평균 가속도</title>
+<style>
+  html, body { margin: 0; background: #fbfaf7; }
+  .piece { max-width: 900px; margin: 0 auto; font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; color: #2b2b2b; }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { min-height: 2.8em; padding: 6px 16px 10px; font-size: 15px; line-height: 1.45; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="scene" width="880" height="270"></canvas>
+  <div class="caption" id="caption"></div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// 평균 가속도 — 가는 길이 달라도 처음과 끝 속도가 같으면 기울기는 하나로 겹친다.
+const W = 880, H = 270;
+const canvas = document.getElementById('scene');
+const captionEl = document.getElementById('caption');
+const dpr = window.devicePixelRatio || 1;
+canvas.width = W * dpr;
+canvas.height = H * dpr;
+const ctx = canvas.getContext('2d');
+ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+const INK = '#2b2b2b';
+const FAINT = '#b9b4aa';
+const COLOR_A = '#3b6ea5';   // 차 가
+const COLOR_B = '#4f9467';   // 차 나
+const ACCENT = '#d9822b';    // 평균 가속도 한 가지 뜻에만
+
+const RUN = 5;      // 달리는 시간 (초)
+const HOLD = 3.5;   // 끝난 뒤 머무는 시간
+const PERIOD = RUN + HOLD;
+const V0 = 10, V1 = 20;
+const A_AVG = (V1 - V0) / RUN; // 2 m/s²
+const DIP = -8; // 차 나가 처음에 속도를 늦추는 정도
+
+// 차 가: 고르게 가속
+const vA = (s) => V0 + A_AVG * s;
+const xA = (s) => V0 * s + 0.5 * A_AVG * s * s;
+// 차 나: 늦췄다가 몰아서 가속 — 처음(10)과 끝(20) 속도는 차 가와 같다
+const vB = (s) => V0 + A_AVG * s + DIP * Math.sin(Math.PI * s / RUN);
+const xB = (s) => V0 * s + 0.5 * A_AVG * s * s + DIP * (RUN / Math.PI) * (1 - Math.cos(Math.PI * s / RUN));
+
+// 도로 좌표
+const ROAD_X0 = 70, ROAD_SCALE = 3.6; // 1 m = 3.6 px
+const LANE_A = 95, LANE_B = 200;
+const ARROW_SCALE = 3; // 1 m/s = 3 px
+const roadX = (m) => ROAD_X0 + m * ROAD_SCALE;
+
+// 그래프 좌표
+const G_X0 = 480, G_Y0 = 235, G_TX = 60, G_VY = 9.5; // 1초 = 60px, 1 m/s = 9.5px
+const gx = (s) => G_X0 + s * G_TX;
+const gy = (v) => G_Y0 - v * G_VY;
+
+function phase(t) {
+  const c = ((t % PERIOD) + PERIOD) % PERIOD;
+  return Math.min(c, RUN);
+}
+function sinceEnd(t) {
+  const c = ((t % PERIOD) + PERIOD) % PERIOD;
+  return c - RUN; // 음수면 달리는 중
+}
+
+function arrow(x, y, len, color) {
+  ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + len - 8, y); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x + len, y); ctx.lineTo(x + len - 10, y - 6); ctx.lineTo(x + len - 10, y + 6); ctx.closePath(); ctx.fill();
+}
+function car(xFront, laneY, color) {
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.roundRect(xFront - 34, laneY - 9, 34, 18, 5);
+  ctx.fill();
+}
+function curve(fn, s, color) {
+  ctx.strokeStyle = color; ctx.lineWidth = 2.5; ctx.setLineDash([]);
+  ctx.beginPath();
+  const n = Math.max(1, Math.ceil(s / 0.02));
+  for (let i = 0; i <= n; i++) {
+    const u = s * i / n;
+    if (i === 0) ctx.moveTo(gx(u), gy(fn(u))); else ctx.lineTo(gx(u), gy(fn(u)));
+  }
+  ctx.stroke();
+}
+function chord(fn, s, color, width, dash) {
+  ctx.strokeStyle = color; ctx.lineWidth = width; ctx.setLineDash(dash);
+  ctx.beginPath(); ctx.moveTo(gx(0), gy(fn(0))); ctx.lineTo(gx(s), gy(fn(s))); ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+PieceKit.loop({
+  step(dt, t) { /* 모든 상태는 t 의 함수 — 쌓이는 것 없음 */ },
+  draw(t) {
+    const s = phase(t);
+    const after = sinceEnd(t);
+    const done = after >= 0;
+    ctx.clearRect(0, 0, W, H);
+    ctx.font = '14px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+
+    PieceKit.mark('도로', () => {
+      ctx.strokeStyle = FAINT; ctx.lineWidth = 1;
+      for (const y of [LANE_A, LANE_B]) {
+        ctx.beginPath(); ctx.moveTo(ROAD_X0 - 30, y + 14); ctx.lineTo(roadX(85), y + 14); ctx.stroke();
+      }
+      ctx.beginPath(); ctx.moveTo(roadX(0), LANE_A - 45); ctx.lineTo(roadX(0), LANE_B + 14); ctx.stroke();
+    });
+
+    PieceKit.mark('차 가', () => {
+      car(roadX(xA(s)), LANE_A, COLOR_A);
+      ctx.fillStyle = COLOR_A; ctx.fillText('가', ROAD_X0 - 30, LANE_A + 5);
+    });
+    PieceKit.mark('차 나', () => {
+      car(roadX(xB(s)), LANE_B, COLOR_B);
+      ctx.fillStyle = COLOR_B; ctx.fillText('나', ROAD_X0 - 30, LANE_B + 5);
+    });
+
+    PieceKit.mark('가의 속도 화살표', () => {
+      arrow(roadX(xA(s)) - 17, LANE_A - 30, vA(s) * ARROW_SCALE, COLOR_A);
+      ctx.fillStyle = COLOR_A;
+      ctx.fillText(vA(s).toFixed(1) + ' m/s', roadX(xA(s)) - 17 + vA(s) * ARROW_SCALE + 6, LANE_A - 25);
+    });
+    PieceKit.mark('나의 속도 화살표', () => {
+      arrow(roadX(xB(s)) - 17, LANE_B - 30, vB(s) * ARROW_SCALE, COLOR_B);
+      ctx.fillStyle = COLOR_B;
+      ctx.fillText(vB(s).toFixed(1) + ' m/s', roadX(xB(s)) - 17 + vB(s) * ARROW_SCALE + 6, LANE_B - 25);
+    });
+
+    PieceKit.mark('속도-시간 축', () => {
+      ctx.strokeStyle = INK; ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.moveTo(G_X0, gy(23)); ctx.lineTo(G_X0, G_Y0); ctx.lineTo(gx(5.4), G_Y0); ctx.stroke();
+      ctx.fillStyle = INK;
+      ctx.textAlign = 'right';
+      ctx.fillText('20', G_X0 - 6, gy(20) + 5);
+      ctx.fillText('10', G_X0 - 6, gy(10) + 5);
+      ctx.fillText('속도', G_X0 - 6, gy(23) + 5);
+      ctx.textAlign = 'center';
+      ctx.fillText('0', gx(0), G_Y0 + 18);
+      ctx.fillText('5 s', gx(5), G_Y0 + 18);
+      ctx.textAlign = 'left';
+      ctx.fillText('시간', gx(5.4) + 6, G_Y0 + 5);
+      ctx.strokeStyle = FAINT; ctx.lineWidth = 1;
+      for (const v of [10, 20]) { ctx.beginPath(); ctx.moveTo(G_X0 - 3, gy(v)); ctx.lineTo(G_X0 + 3, gy(v)); ctx.stroke(); }
+      ctx.beginPath(); ctx.moveTo(gx(5), G_Y0 - 3); ctx.lineTo(gx(5), G_Y0 + 3); ctx.stroke();
+    });
+
+    PieceKit.mark('가의 속도 곡선', () => { curve(vA, s, COLOR_A); });
+    PieceKit.mark('나의 속도 곡선', () => { curve(vB, s, COLOR_B); });
+
+    PieceKit.mark('가의 처음-지금 기울기선', () => {
+      if (s > 0.05 && !done) chord(vA, s, COLOR_A, 1.5, [6, 5]);
+    });
+    PieceKit.mark('나의 처음-지금 기울기선', () => {
+      if (s > 0.05 && !done) chord(vB, s, COLOR_B, 1.5, [6, 5]);
+    });
+
+    PieceKit.mark('평균 가속도 기울기선', () => {
+      if (!done) return;
+      const k = Math.min(1, after / 0.4);
+      ctx.globalAlpha = k;
+      chord(vA, RUN, ACCENT, 3.5, []);
+      ctx.fillStyle = ACCENT;
+      ctx.textAlign = 'right';
+      ctx.fillText('기울기 2 m/s²', gx(2.5) - 8, gy(15) - 8);
+      ctx.textAlign = 'left';
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('속도 변화와 걸린 시간', () => {
+      if (!done) return;
+      const k = Math.min(1, Math.max(0, (after - 0.3) / 0.4));
+      ctx.globalAlpha = k;
+      ctx.strokeStyle = INK; ctx.fillStyle = INK; ctx.lineWidth = 1; ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(gx(0), gy(10)); ctx.lineTo(gx(5), gy(10)); ctx.lineTo(gx(5), gy(20)); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.textAlign = 'center';
+      ctx.fillText('5 s 동안', gx(4.2), gy(10) + 18);
+      ctx.textAlign = 'left';
+      ctx.fillText('+10 m/s', gx(5) + 8, gy(15) + 5);
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('캡션', () => {
+      const text = done
+        ? '5초 뒤 둘 다 20 m/s — 가는 동안은 달랐어도, 처음과 끝을 잇는 기울기는 하나로 겹친다.'
+        : '둘 다 10 m/s 로 출발한다. 가는 고르게, 나는 늦췄다가 몰아서 속도를 올린다.';
+      if (captionEl.textContent !== text) captionEl.textContent = text;
+    });
+  },
+});
+</script>
+</body>
+</html>

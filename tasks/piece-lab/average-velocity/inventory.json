@@ -1,0 +1,40 @@
+{
+  "id": "average-velocity",
+  "claim": "평균 속도는 구간의 두 끝만 잇는 직선의 기울기라서, 같은 운동이라도 구간 끝을 옮기면 그 직선이 기울어 대표값이 달라진다.",
+  "verb": "기운다",
+  "probeTimes": [0.5, 3, 7.5, 12.5],
+  "elements": [
+    { "mark": "구간 띠", "what": "지금 고른 시간 구간 [시작, 끝] 을 덮는 옅은 띠", "physical": "평균을 내는 시간 구간", "drawing": "채움 사각형", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "축", "what": "시간 가로축·위치 세로축과 눈금 숫자", "physical": "시간 (s), 위치 (m)", "drawing": "선 + 텍스트", "motion": "static", "state": "none", "interaction": null },
+    { "mark": "도로", "what": "그래프 왼쪽의 세로 도로, 위치축과 같은 눈금", "physical": "물체가 실제로 움직이는 직선 경로", "drawing": "굵은 반투명 선 + 텍스트", "motion": "static", "state": "none", "interaction": null },
+    { "mark": "위치 안내선", "what": "구간 양 끝 점에서 도로까지 가로로 잇는 점선", "physical": "구간 시작·끝 시각의 위치를 도로 위로 옮김", "drawing": "점선", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "위치-시간 곡선", "what": "0~10초 운동 전체의 위치 그래프 (앞으로 달림 → 멈춤 → 되돌아옴)", "physical": "위치 x(t)", "drawing": "굵은 꺾은선 (240 표본)", "motion": "static", "state": "none", "interaction": null },
+    { "mark": "기울기 삼각형", "what": "두 끝 점 사이의 가로 변(시간 변화)과 세로 변(위치 변화)", "physical": "시간 변화 Δt, 위치 변화 Δx", "drawing": "가는 선", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "두 끝을 잇는 직선", "what": "구간 시작 점과 끝 점을 잇는 강조색 직선, 양옆으로 옅게 조금 연장", "physical": "평균 속도 (직선의 기울기)", "drawing": "강조색 굵은 선 + 옅은 연장선", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "구간 양 끝 점", "what": "곡선 위 구간 시작·끝 시각의 점 둘", "physical": "(시작 시각, 위치), (끝 시각, 위치)", "drawing": "채운 원", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "변위 화살표", "what": "도로 위 시작 위치에서 끝 위치로 향하는 화살표", "physical": "변위 Δx (부호 포함)", "drawing": "선 + 삼각 머리, 짧으면 점 둘", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "캡션", "what": "지금 구간이 어떻게 바뀌는 중인지 + 그 구간의 위치 변화 ÷ 시간 = 평균 속도", "physical": "Δx, Δt, 평균 속도", "drawing": "텍스트 한 줄", "motion": "time-function", "state": "none", "interaction": null }
+  ],
+  "controls": [],
+  "hidden": [
+    "순간 속도(접선) — 두지 않았다. 곡선의 기울기와 직선의 기울기가 한 화면에 겹치면 '대표값' 한 주장이 흐려진다.",
+    "이동 거리(경로 길이) — 되돌아오는 구간에서 변위와 달라지지만, 속력과의 구분은 다른 조각의 주장이다.",
+    "평균 속도로 등속 운동하는 가상의 물체 — 같은 뜻을 두 번 그리게 되어 뺐다."
+  ],
+  "timeline": [
+    { "t": 0, "what": "구간 0~약 1.8초. 직선이 곡선의 가파른 앞부분에 겹쳐 가파르다 (8.0 m/s). 끝 시각이 늦어지기 시작한다." },
+    { "t": 3, "what": "끝 시각이 멈춤 구간으로 들어가며 직선이 눕기 시작한다 (약 5 m/s)." },
+    { "t": 6, "what": "끝 시각이 되돌아오는 구간에 있어 직선이 더 눕는다." },
+    { "t": 7.5, "what": "구간이 0~10초 전체를 덮는다. 직선은 거의 수평 (12.0 m ÷ 10.0 s = 1.2 m/s)." },
+    { "t": 8, "what": "시작 시각이 늦어지기 시작한다. 앞으로 달린 부분이 구간에서 빠지며 직선이 아래로 기운다." },
+    { "t": 12.5, "what": "구간이 되돌아오는 부분만 남아 직선이 아래로 기울고 변위 화살표가 아래를 향한다 (음수)." },
+    { "t": 13.2, "what": "구간이 처음(0~1.5초)으로 돌아가며 직선이 다시 가파르게 선다. 16초 주기로 반복." }
+  ],
+  "engineWish": [
+    "위치-시간 그래프 좌표 변환(px/py)과 눈금 축 — 운동학 조각마다 다시 짠다.",
+    "구간 [a, b] 를 시간의 함수로 움직이는 부드러운 일정표(ease 단계 나열).",
+    "꺾인 운동을 모서리만 둥글리는 함수(상자 평균) — 직선 부분 값을 보존해 표의 수와 화면의 수가 맞는다.",
+    "화면에 쓴 반올림 값끼리 산수가 맞도록 다시 계산하는 수 표기 도우미.",
+    "그래프 세로축과 같은 눈금을 공유하는 곁 도로(물리 공간) — 그래프와 실제 운동을 잇는 관용구."
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "rows": [
+    {
+      "element": "빗면",
+      "vocab": "region (points 4개 · fillOpacity) + trajectory (윗변 · width)",
+      "status": "있음",
+      "note": "기울인 얇은 판은 다각형 네 점으로 된다. 두 패널은 한 월드에 나란히 놓는다"
+    },
+    {
+      "element": "물체",
+      "vocab": "body (shape rect · size [w,h] · orientation)",
+      "status": "있음",
+      "note": "rect 는 둘레 기본값이 line 이라 채움만 원하면 outline none 을 준다"
+    },
+    {
+      "element": "수평·수직 축",
+      "vocab": "vector (from · delta · headSize · width 1) + readout (world · italic · font text)",
+      "status": "있음",
+      "note": "position-time-graph 와 같이 축은 화살촉 달린 선이라 vector 다. 기울임 글자는 readout.italic 이 읽는다 (readout.ts:25)"
+    },
+    {
+      "element": "빗면 축",
+      "vocab": "vector ×2 + readout (italic · x′ y′)",
+      "status": "있음",
+      "note": "방향만 다르다"
+    },
+    {
+      "element": "투영선",
+      "vocab": "trajectory (2점 · lineStyle dashed · opacity)",
+      "status": "있음"
+    },
+    {
+      "element": "그림자",
+      "vocab": "body (shape point 또는 circle 작게)",
+      "status": "있음"
+    },
+    {
+      "element": "시간 발자국",
+      "vocab": "trace (shape tick · marks[].direction · age 생략)",
+      "status": "있음",
+      "note": "축마다 방향이 달라 marks[].direction (02 에서 올림) 을 쓴다. 발자국 자리 계산은 sim"
+    }
+  ],
+  "outside": [
+    "투영·빗면 좌표 변환 — sim 의 계산 (x′ = x cosθ + y sinθ). 기울어진 축 어휘를 따로 세울 이유는 없다: 원점·방향 벡터·이름이면 vector + readout 조합이다",
+    "원본 판단 거리 — y′ 축의 겹친 발자국이 그림자 점에 가려 \"멈춘다\" 가 점이 안 움직이는 것으로만 드러난다 (에이전트 자기 신고). 이관 전에 원본을 고칠지 정해야 한다"
+  ]
+}

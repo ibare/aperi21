@@ -1,0 +1,55 @@
+{
+  "rows": [
+    {
+      "element": "땅",
+      "vocab": "surface (ground) 또는 trajectory (짧은 2점)",
+      "status": "있음",
+      "note": "짧은 선분이라 trajectory 가 맞다 — surface ground 는 무한 평면"
+    },
+    {
+      "element": "같은 높이 잇는 선",
+      "vocab": "trajectory (2점 · lineStyle dashed · opacity ← timeline)",
+      "status": "있음"
+    },
+    {
+      "element": "올라갈 때 도장",
+      "vocab": "body (circle · opacity) + body (circle · fill none · outline role) + vector",
+      "status": "있음",
+      "note": "반투명 채움 + 또렷한 테두리는 body 둘로 겹친다(opacity 가 인스턴스 전체에 걸리므로). 화살표는 3 px per m/s — boundsHint 고정이라 월드 길이"
+    },
+    {
+      "element": "꼭대기 도장",
+      "vocab": "body ×2",
+      "status": "있음"
+    },
+    {
+      "element": "내려올 때 도장",
+      "vocab": "body ×2 + vector",
+      "status": "있음"
+    },
+    {
+      "element": "거울 사본",
+      "vocab": "body ×2 + vector (delta 길이 v·cos(πu)) · opacity",
+      "status": "있음",
+      "note": "뒤집히는 길이·건너가는 위치는 sim 이 timeline 진행도로 계산"
+    },
+    {
+      "element": "공",
+      "vocab": "body (circle)",
+      "status": "있음"
+    },
+    {
+      "element": "공의 속도 화살표",
+      "vocab": "vector",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (text)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "도장을 왼쪽·가운데·오른쪽 칸으로 밀어내는 배치와 짝 맞추기 — sim"
+  ]
+}
