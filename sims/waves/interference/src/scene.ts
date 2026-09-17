@@ -3,18 +3,16 @@
 // ========================================================================
 // 그리지 않는다, 선언한다.
 //
-// 자유 렌더를 쓰지 않는다. 수면은 스칼라 장인데 그것을 칠하는 어휘가 없어
-// **`region` 칸 격자**로 근사한다 — 칸마다 그 자리 높이를 한 색의 빛의 양
-// (`luminance`)으로 준다. 마루는 옅게, 골은 짙게, 가만한 수면은 중간 짙기다.
+// 자유 렌더를 쓰지 않는다. 수면은 스칼라 장이라 **`scalarField` 하나**로 선언한다 —
+// 원본처럼 2 월드 칸 격자에서 높이를 계산하고, 렌더러가 이미지 한 장으로 부드럽게 늘려 그린다.
 // 두 파원은 `body` 원이고, 켜짐 · 꺼짐은 색이 아니라 채움 · 테두리로 가른다.
-// NOTES 「어휘 부족」.
 // ========================================================================
 
 import type {
   Body,
   EnvironmentDef,
   Primitive,
-  Region,
+  ScalarField,
   SceneGraph,
   StageDef,
   TimelineFrame,
@@ -29,58 +27,33 @@ import {
   SOURCE_2,
   SOURCE_RADIUS,
   TONE_GAIN,
-  TONE_MID,
-  TONE_SPAN_CREST,
-  TONE_SPAN_TROUGH,
   WATER_H,
   WATER_W,
   WAVE_SPEED,
 } from './schema';
 import type { InterferenceState } from './state';
 
+/** 수면 격자 가로 · 세로 칸 수. 원본 2 px 칸 그대로 430 × 170. */
+const COLS = Math.round(WATER_W / CELL);
+const ROWS = Math.round(WATER_H / CELL);
+
 /**
- * 칸끼리 겹치는 폭(월드). 이음매에 바탕이 실금으로 비치지 않게 칸을 조금 키운다.
- * 칸이 단색 불투명 채움이라 겹친 곳이 짙어지지 않는다 — 나중 칸이 덮는다.
+ * 칸 가운데에서 두 파원까지 거리 — 시간과 무관한 고정 기하라 한 번만 계산한다.
+ * 순서는 `scalarField.values` 와 같다: 행 우선, 첫 행이 월드 위쪽.
+ * 모듈 상수다 — 인스턴스 상태가 아니라 선언에서 나온 고정 기하다 (원칙 6).
  */
-const CELL_OVERLAP = 0.8;
-
-/** 칸 하나 — 기하는 시간과 무관하므로 한 번만 만든다. */
-interface Cell {
-  id: string;
-  points: readonly Vec2[];
-  r1: number;
-  r2: number;
-}
-
-function buildCells(): readonly Cell[] {
-  const cols = Math.ceil(WATER_W / CELL);
-  const rows = Math.ceil(WATER_H / CELL);
-  const out: Cell[] = [];
-  for (let j = 0; j < rows; j++) {
-    for (let i = 0; i < cols; i++) {
-      const x0 = i * CELL;
-      const y0 = j * CELL;
-      const x1 = Math.min(WATER_W, x0 + CELL + CELL_OVERLAP);
-      const y1 = Math.min(WATER_H, y0 + CELL + CELL_OVERLAP);
-      const center: Vec2 = [x0 + CELL / 2, y0 + CELL / 2];
-      out.push({
-        id: `water-${i}-${j}`,
-        points: [
-          [x0, y0],
-          [x1, y0],
-          [x1, y1],
-          [x0, y1],
-        ],
-        r1: distance(center, SOURCE_1),
-        r2: distance(center, SOURCE_2),
-      });
+function buildDistances(source: Vec2): Float32Array {
+  const out = new Float32Array(COLS * ROWS);
+  for (let j = 0; j < ROWS; j++) {
+    const y = WATER_H - (j + 0.5) * CELL;
+    for (let i = 0; i < COLS; i++) {
+      out[j * COLS + i] = distance([(i + 0.5) * CELL, y], source);
     }
   }
   return out;
 }
-
-/** 모듈 상수다 — 인스턴스 상태가 아니라 선언에서 나온 고정 기하다 (원칙 6). */
-const CELLS = buildCells();
+const R1 = buildDistances(SOURCE_1);
+const R2 = buildDistances(SOURCE_2);
 
 export function scene(params: {
   state: InterferenceState;
@@ -101,21 +74,26 @@ export function scene(params: {
 
   // ---- 수면 ----
   // 합만 그린다. 두 물결을 따로 그리거나 다른 색으로 칠하지 않는다 — 같은 물이다.
-  // 마디선도 긋지 않는다. 잠잠한 자리는 늘 중간 짙기로 남아 멈춰 보인다.
-  for (const cell of CELLS) {
-    const v = Math.tanh(heightAt(cell.r1, cell.r2, timeline.t, front, tail) * TONE_GAIN);
-    const water: Region = {
-      type: 'region',
-      id: cell.id,
-      points: cell.points,
-      // 단색으로 꽉 채운다. 알파로 섞으면 칸 가장자리의 안티에일리어싱이 바탕을
-      // 비쳐 격자 무늬가 생긴다 — 톤은 알파가 아니라 `luminance` 로 준다.
-      fillOpacity: 1,
-      luminance: TONE_MID - (v >= 0 ? TONE_SPAN_CREST : TONE_SPAN_TROUGH) * v,
-      style: { colorRole: 'secondary', emphasis: 'strong' },
-    };
-    out.push(water);
+  // 마디선도 긋지 않는다. 잠잠한 자리는 늘 바탕 그대로 남아 멈춰 보인다.
+  // 값은 tanh 로 누른 높이(−1 ~ 1). 발산형이라 0 이 바탕이고, 마루 · 골 모두 같은 물빛
+  // (`secondary`)으로 짙어진다 — 한 가지 물빛만 쓴다. 마루와 골을 두 색으로 가르지 않는다.
+  // 대신 마루 · 골의 명암 차이는 없어진다. NOTES 「수면 색」.
+  const values = new Array<number>(COLS * ROWS);
+  for (let k = 0; k < values.length; k++) {
+    values[k] = Math.tanh(heightAt(R1[k]!, R2[k]!, timeline.t, front, tail) * TONE_GAIN);
   }
+  const water: ScalarField = {
+    type: 'scalarField',
+    id: 'water',
+    min: [0, 0],
+    max: [WATER_W, WATER_H],
+    cols: COLS,
+    rows: ROWS,
+    values,
+    range: [-1, 1],
+    colors: { low: 'secondary', high: 'secondary' },
+  };
+  out.push(water);
 
   // ---- 파원 ----
   // 강조색은 「파원」 한 뜻에만. 둘은 같은 대상이라 같은 색이고, 물결을 내는지는

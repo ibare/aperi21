@@ -3,15 +3,16 @@
 // ========================================================================
 // 그리지 않는다, 선언한다.
 //
-// 자유 렌더를 쓰지 않는다. 에너지 고리 · 넘어감 경계 · 잔상 · 추적 궤적 · 진자
-// 원과 막대는 `trajectory`, 무리의 점은 `particleSystem`, 추적 점 · 추 · 받침은
-// `body`, 축 이름은 `readout` 이다. 어휘가 모자라 근사한 자리는 NOTES 「어휘 부족」.
+// 자유 렌더를 쓰지 않는다. 에너지 고리와 무리 잔상은 선 묶음 `lineSet`, 넘어감 경계 ·
+// 추적 궤적 · 진자 원과 막대는 `trajectory`, 무리의 점은 `particleSystem`, 추적 점 · 추 ·
+// 받침은 `body`, 축 이름은 `readout` 이다. 어휘가 모자라 근사한 자리는 NOTES 「어휘 부족」.
 // ========================================================================
 
 import type {
   Body,
   Bounds,
   EnvironmentDef,
+  LineSet,
   ParticleSystem,
   Primitive,
   Readout,
@@ -98,33 +99,34 @@ function closedLoop(E: number): Vec2[] {
   return pts;
 }
 
-/** 정적 선은 한 번만 계산한다. */
-const CONTOURS: readonly Trajectory[] = (() => {
+/**
+ * 정적 선은 한 번만 계산한다. 에너지 고리(닫힌 고리 · 넘어가는 물결)는 굵기 · 색이 같아
+ * 선 묶음 하나다. 닫힌 고리는 첫 점을 끝에 한 번 더 붙여 닫는다.
+ */
+const ENERGY_LINES: LineSet = (() => {
+  const lines: Vec2[][] = [];
+  for (const f of CLOSED_LOOP_FRACTIONS) {
+    const loop = closedLoop(f * W0SQ);
+    lines.push([...loop, loop[0]!]);
+  }
+  for (const f of OPEN_CURVE_FRACTIONS) {
+    for (const sign of [1, -1] as const) lines.push(...energyBranch(f * W0SQ, sign));
+  }
+  return {
+    type: 'lineSet',
+    id: 'energy-loops',
+    lines,
+    width: FAINT_WIDTH_PX,
+    style: { colorRole: 'muted', emphasis: 'subtle' },
+  };
+})();
+
+/**
+ * 넘어감 경계 — 꼭대기까지 겨우 올라가는 에너지. 안쪽은 흔들림, 바깥은 넘어감.
+ * 점선이라 `trajectory` 로 둔다 (`lineSet` 은 선 무늬를 고르지 않는다).
+ */
+const SEPARATRIX: readonly Trajectory[] = (() => {
   const out: Trajectory[] = [];
-  CLOSED_LOOP_FRACTIONS.forEach((f, i) => {
-    out.push({
-      type: 'trajectory',
-      id: `loop-${i}`,
-      points: closedLoop(f * W0SQ),
-      closed: true,
-      width: FAINT_WIDTH_PX,
-      style: { colorRole: 'muted', emphasis: 'subtle' },
-    });
-  });
-  OPEN_CURVE_FRACTIONS.forEach((f, i) => {
-    for (const sign of [1, -1] as const) {
-      energyBranch(f * W0SQ, sign).forEach((seg, j) => {
-        out.push({
-          type: 'trajectory',
-          id: `wave-${i}-${sign > 0 ? 'up' : 'down'}-${j}`,
-          points: seg,
-          width: FAINT_WIDTH_PX,
-          style: { colorRole: 'muted', emphasis: 'subtle' },
-        });
-      });
-    }
-  });
-  // 넘어감 경계 — 꼭대기까지 겨우 올라가는 에너지. 안쪽은 흔들림, 바깥은 넘어감.
   for (const sign of [1, -1] as const) {
     energyBranch(W0SQ, sign).forEach((seg, j) => {
       out.push({
@@ -187,7 +189,7 @@ export function scene(params: {
   const out: Primitive[] = [];
 
   // ---- 에너지 고리 · 넘어감 경계 ----
-  out.push(...CONTOURS);
+  out.push(ENERGY_LINES, ...SEPARATRIX);
 
   // ---- 평면 축 이름 ----
   const axis = (id: string, pos: Vec2, key: Parameters<typeof text>[0], align: Readout['align']): Readout => ({
@@ -208,25 +210,32 @@ export function scene(params: {
 
   if (alpha > 0) {
     // ---- 상태점 무리: 짧은 잔상 ----
-    // 걸음마다 쌓인 고리 버퍼를 오래된 것부터 잇는다. 잔상은 머리 쪽이 짙다.
+    // 걸음마다 쌓인 고리 버퍼를 선분 하나씩 선 묶음에 담는다. 원본처럼 선분마다 짙기가
+    // 다르다 — 새 자리로 들어오는 선분일수록 짙다(1 − k/걸음 수). 가장자리를 건너는 선분은
+    // 건너뛴다(감기는 축). 렌더러가 짙기 단계마다 경로 하나로 긋는다.
     const { histTh, histOm, histHead, histCount } = state;
+    const trailLines: Vec2[][] = [];
+    const trailOpacities: number[] = [];
+    const histAt = (k: number, i: number): number =>
+      ((((histHead - 1 - k) % TRAIL_TICKS) + TRAIL_TICKS) % TRAIL_TICKS) * CLOUD_COUNT + i;
     for (let i = 0; i < CLOUD_COUNT; i++) {
-      const seq: PhaseState[] = [];
-      for (let k = histCount - 1; k >= 0; k--) {
-        const idx = (((histHead - 1 - k) % TRAIL_TICKS) + TRAIL_TICKS) % TRAIL_TICKS;
-        seq.push({ th: histTh[idx * CLOUD_COUNT + i]!, om: histOm[idx * CLOUD_COUNT + i]! });
+      for (let k = histCount - 2; k >= 0; k--) {
+        const a = histAt(k + 1, i);
+        const b = histAt(k, i);
+        if (Math.abs(histTh[b]! - histTh[a]!) >= Math.PI) continue;
+        trailLines.push([planePos(histTh[a]!, histOm[a]!), planePos(histTh[b]!, histOm[b]!)]);
+        trailOpacities.push(1 - k / TRAIL_TICKS);
       }
-      splitAtWrap(seq).forEach((points, j) => {
-        out.push({
-          type: 'trajectory',
-          id: `trail-${i}-${j}`,
-          points,
-          width: CLOUD_TRAIL_WIDTH_PX,
-          opacity: CLOUD_TRAIL_ALPHA * alpha,
-          style: { colorRole: 'ink', emphasis: 'strong', fade: 'tail' },
-        });
-      });
     }
+    out.push({
+      type: 'lineSet',
+      id: 'cloud-trails',
+      lines: trailLines,
+      opacities: trailOpacities,
+      width: CLOUD_TRAIL_WIDTH_PX,
+      opacity: CLOUD_TRAIL_ALPHA * alpha,
+      style: { colorRole: 'ink', emphasis: 'strong' },
+    } satisfies LineSet);
 
     // ---- 상태점 무리: 점 ----
     const positions: Vec2[] = [];

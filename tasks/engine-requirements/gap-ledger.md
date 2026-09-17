@@ -105,3 +105,28 @@
   이번 턴의 우회 조각(간섭 · 베르누이 · 전기력선 · 위상 공간 · 조석력 · 에너지 흐름도)을 새 어휘로 되돌린다.
 - **선언 수 측정:** 한 프레임 선언 수를 `pnpm budget` 에 숫자로만 보고한다. 기준값은 데이터가 쌓인 뒤 정한다.
 
+
+### 묶음 그리기 뒤 (2026-09-17, 턴 1 과 턴 2 사이)
+
+엔진에 `particleSystem` 확장(`opacities` · `shape` · `showParticles` · `trailStyle`), 새 어휘 `scalarField` · `lineSet` 을 넣고
+우회 조각 6 개를 되돌렸다. 위치 이력 잔상 `trails` 는 넣었다가 사용처가 없어 같은 날 지웠다(원칙 4).
+
+| id | 상태 | 근거 |
+|---|---|---|
+| G29 | 해결됨 | interference · bernoullis-principle 이 `scalarField` 하나로 칠한다 |
+| G30 | 일부 해결 | 발산형 · 순차형은 들어왔다. 한 역할 안에서 음 · 양을 가르는 것은 G54 |
+| G31 | 일부 해결 | tidal-force 의 방사형 음영은 `scalarField` 로 풀림. energy-flow-diagram 의 한 방향 옅어짐(`region` 그라데이션)은 남음 |
+| G32 | 일부 해결 | 입자별 투명도는 `opacities`. 입자별 색은 남음(종류마다 인스턴스 하나) |
+| G37 | 해결됨 | phase-space 가 선분별 짙기가 필요해 `lineSet` + `opacities` 로 풀었다 (`trails` 는 불필요) |
+| G40 | 해결됨 (주장) | field-lines 가 `trailStyle` · `showParticles:false` 로 원본과 같은 꼬리 |
+| G41 | 해결됨 | tidal-force 흐름 획 · field-lines 전기력선 · phase-space 고리가 `lineSet` |
+| G43 | 해결됨 | tidal-force · energy-flow-diagram 이 `shape:'square'` |
+| G51 | 일부 해결 | 첫 프레임 선언 수: interference 8210→3 · field-lines 980→8 · phase-space 544→15 · bernoullis-principle 480→81 · tidal-force 215→19 · energy-flow-diagram 70→62. 값 배열(간섭 73100 · 위상 공간 선분 약 4700)은 매 프레임 새로 만들고, 실시간 프레임률은 미측정 |
+
+되돌리기에서 드러난 새 부족 (측정값에는 넣지 않는다 — 턴이 아니라 엔진 작업의 결과):
+
+| id | 부족 | 영향 | 조각 |
+|---|---|---|---|
+| G52 | `trailStyle.maxLength` 가 화면 px 뿐이라 월드 단위 꼬리 상한을 선언하지 못한다 — 넘기는 속도를 줄여 우회 | 근사 | field-lines |
+| G53 | `opacities` 를 8 단계로 반올림해 1/16 미만이 그려지지 않는다 — 가장 옅은 끝이 잘린다 | 근사 | tidal-force |
+| G54 | `scalarField` 발산형에서 같은 역할을 양쪽에 주면 음 · 양이 같은 짙기라 부호가 갈리지 않는다(물결 띠가 반 파장 간격으로 보임). 한 역할 안에서 음 · 양을 짙기 · 결로 가르는 사상이 없다 | 근사 | interference |

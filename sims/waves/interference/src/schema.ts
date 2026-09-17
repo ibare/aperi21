@@ -40,10 +40,10 @@ export const SOURCE_2: Vec2 = [300, WATER_H / 2 - 75];
 export const SOURCE_RADIUS = 6;
 
 /**
- * 수면을 칸으로 나눈 한 칸의 크기(월드). 원본은 2 px 칸으로 계산해 부드럽게 늘려
- * 그렸다. 칸마다 `region` 하나라 이 값이 곧 그리는 개수를 정한다 — NOTES 「어휘 부족」.
+ * 수면 높이를 계산하는 격자 한 칸의 크기(월드). 원본 2 px 칸 그대로다 — 860 × 340 수면이
+ * 430 × 170 칸. `scalarField` 하나로 그려 칸 수가 선언 개수를 늘리지 않는다.
  */
-export const CELL = 6;
+export const CELL = 2;
 
 // ------------------------------------------------------------------------
 // 시간표 — 원본 상수에서 단계 길이를 계산해 선언에 넣는다
@@ -85,15 +85,6 @@ export const SCENE_BOUNDS = { minX: 0, maxX: WATER_W, minY: -44, maxY: WATER_H }
 
 /** 명암 누름 계수. tanh(h · k) — 파원 근처가 하얗게 타지 않게. 원본 0.9. */
 export const TONE_GAIN = 0.9;
-/**
- * 가만한 수면(높이 0)의 빛의 양(`luminance`). 바탕 → 물빛 사이를 **선형광**으로 섞으므로
- * 화면에서 가운데 톤으로 보이는 값이 0.5 보다 크다. 원본의 가만한 톤이 짙어 그쪽으로 더 옮겼다.
- */
-export const TONE_MID = 0.75;
-/** 마루(높이 +1)가 가만한 톤에서 옅어지는 폭. 선형광이라 옅은 쪽 폭이 넓다. */
-export const TONE_SPAN_CREST = 0.62;
-/** 골(높이 −1)이 가만한 톤에서 짙어지는 폭. 1 에 닿으면 물빛 그대로다. */
-export const TONE_SPAN_TROUGH = 0.25;
 
 // ------------------------------------------------------------------------
 // 문안
@@ -156,8 +147,7 @@ export const interferenceSchema: BundleSchema = {
   canvas: { height: 420, minHeight: 360 },
 
   /**
-   * 수면(`region` 칸) 위에 파원(`body`)이 와야 한다. 기본 층은 매질을 물체 **위**에
-   * 덮으므로(S-render) 파원이 물에 잠긴다 — scene 에 쓴 순서대로 그린다.
+   * 수면(`scalarField`) 위에 파원(`body`)이 와야 한다. scene 에 쓴 순서대로 그린다.
    */
   drawOrder: 'scene',
 

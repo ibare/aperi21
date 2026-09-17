@@ -5,7 +5,7 @@
 //
 //   줄기 · 열 갈래 · 빛 갈래 · 마디   region (채움 다각형, 곡선은 점으로 표본)
 //   흩어지는 꼬리                     region 여러 장 — 아래로 갈수록 옅게 (그라데이션 근사)
-//   에너지 알갱이                     particleSystem — 색 · 투명도 묶음마다 한 인스턴스
+//   에너지 알갱이                     particleSystem — 색(종류)마다 한 인스턴스, 투명도는 알갱이마다
 //   단계 이름 · 갈래 값               readout
 //
 // 색 세 가지, 각각 한 뜻 — 줄기(muted) = 아직 쓰이지 않은 에너지, 열(negative 옅게) =
@@ -43,10 +43,8 @@ import type { EnergyFlowDiagramState } from './state';
 const CURVE_STEPS = 24;
 /** 꼬리 그라데이션을 나누는 장 수. */
 const TAIL_SLICES = 14;
-/** 알갱이 투명도 묶음 수. 인스턴스 하나가 알파 하나라 이만큼으로 나눈다. */
-const ALPHA_LEVELS = 5;
-/** 알갱이 반지름(화면 px). 원본은 2 px 네모. */
-const DOT_RADIUS_PX = 1;
+/** 알갱이 반변(화면 px). 원본의 2 px 네모 — `shape: 'square'` 는 크기를 반변으로 쓴다. */
+const DOT_HALF_PX = 1;
 
 /**
  * 색의 옅기(`luminance`, 빛의 양). 원본의 색을 테마 역할에서 섞어 얻는다.
@@ -209,30 +207,31 @@ export function scene(params: {
   out.push(rect('node-line', lineX - nodeWidth / 2, y0, nodeWidth, (f.atHome + f.lineHeat) * unit, ink));
   out.push(rect('node-bulb', bulbX - nodeWidth / 2, y0, nodeWidth, f.atHome * unit, ink));
 
-  // ---- 에너지 알갱이 — 종류 × 투명도 묶음 ----
-  const buckets = new Map<string, Vec2[]>();
+  // ---- 에너지 알갱이 — 종류(색)마다 한 묶음, 투명도는 알갱이마다 연속값 ----
+  const buckets = new Map<DotKind, { positions: Vec2[]; opacities: number[] }>();
   for (const d of state.dots) {
     const p = dotPlace(d, t, r, brs);
     if (!p || p.alpha <= 0) continue;
-    const level = Math.max(1, Math.ceil(p.alpha * ALPHA_LEVELS));
-    const k = `${p.kind}:${level}`;
-    const list = buckets.get(k);
-    if (list) list.push(p.pos);
-    else buckets.set(k, [p.pos]);
+    let bucket = buckets.get(p.kind);
+    if (!bucket) {
+      bucket = { positions: [], opacities: [] };
+      buckets.set(p.kind, bucket);
+    }
+    bucket.positions.push(p.pos);
+    bucket.opacities.push(p.alpha);
   }
   for (const kind of DOT_KINDS) {
-    for (let level = 1; level <= ALPHA_LEVELS; level++) {
-      const positions = buckets.get(`${kind}:${level}`);
-      if (!positions) continue;
-      out.push({
-        type: 'particleSystem',
-        id: `dots-${kind}-${level}`,
-        positions,
-        sizes: DOT_RADIUS_PX,
-        opacity: (level - 0.5) / ALPHA_LEVELS,
-        ...dotLook(kind),
-      });
-    }
+    const bucket = buckets.get(kind);
+    if (!bucket) continue;
+    out.push({
+      type: 'particleSystem',
+      id: `dots-${kind}`,
+      positions: bucket.positions,
+      opacities: bucket.opacities,
+      sizes: DOT_HALF_PX,
+      shape: 'square',
+      ...dotLook(kind),
+    });
   }
 
   // ---- 단계 이름 ----

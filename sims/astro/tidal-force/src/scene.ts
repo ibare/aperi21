@@ -8,22 +8,23 @@
 // 같은 입자 상태를 좌표만 바꿔 그린다. 판 단위 좌표계가 없어 인스턴스마다 옮긴다
 // (NOTES G10).
 //
-// 어휘로 근사한 둘 (NOTES 「어휘 부족」):
-// - 천체 중력장의 1/r² 음영 → 동심 원판(`region`) 누적 알파
-// - 조석 잔차장의 흐르는 획 → 획마다 `trace` tick 인스턴스 하나
+// 묶음으로 그리는 둘 (NOTES 「쓴 어휘」):
+// - 천체 중력장의 1/r² 음영 → `scalarField` 순차형 하나 (캔버스 격자에 세기를 적는다)
+// - 조석 잔차장의 흐르는 획 → `lineSet` 하나 (획마다 선 하나 · 선별 불투명도)
 // ========================================================================
 
 import type {
   Body,
   EnvironmentDef,
+  LineSet,
   ParticleSystem,
   Primitive,
   Readout,
   Region,
+  ScalarField,
   SceneGraph,
   StageDef,
   TimelineFrame,
-  Trace,
   Trajectory,
   Vec2,
   ViewDef,
@@ -34,26 +35,33 @@ import type { TidalForceState } from './state';
 
 // ---- 원본 상수 (px) ----
 
-/** 중력장 음영 — 가장 짙은 알파와 번지는 끝 반지름. */
+/**
+ * 중력장 음영 — 원본의 가장 짙은 알파와 번지는 끝 반지름.
+ *
+ * `scalarField` 는 값을 바탕 → 역할 색으로 **선형광에서** 섞는다. 원본은 옅은 색을 알파
+ * 0.42 × 세기로 화면값에서 겹쳤다. 바탕 대비 밝기를 맞춰 보면 섞는 비율이 세기의 0.40~0.45 배라
+ * (기본 밝은 테마, 세기 1 → 0.05) 값의 범위 끝을 1 / 0.42 로 두면 짙기의 떨어짐이 원본과 같다.
+ */
 const FIELD_ALPHA = 0.42;
 const FIELD_REACH = 520;
 /** 원본 방사형 그라데이션의 색 정지점 수 — 정지점 사이는 선형이다. */
 const FIELD_STOPS = 14;
-/** 음영을 근사하는 동심 원판 수와 원판 둘레의 꼭짓점 수. */
-const FIELD_BANDS = 56;
-const DISC_SIDES = 96;
+/** 음영 격자 한 칸의 크기(원본 px). 렌더러가 칸 사이를 부드럽게 잇는다. */
+const FIELD_CELL = 4;
 /**
- * 중력장 음영과 조석 잔차장은 같은 대상(중력)이라 같은 색이다. 원본의 옅은 푸른 회색에
- * 짙기가 가장 가까운 것이 `secondary` 의 `subtle` 이다 — `strong` 은 원본보다 짙고 채도가 높아
- * 흐름 무늬가 먼지와 강조색을 누른다 (NOTES G08).
+ * 중력장 음영과 조석 잔차장은 같은 대상(중력)이라 같은 색 역할 `secondary` 다.
+ *
+ * 흐름 무늬는 원본의 옅은 푸른 회색에 짙기가 가장 가까운 `subtle` 이다 — `strong` 은 원본보다
+ * 짙고 채도가 높아 먼지와 강조색을 누른다 (NOTES G08). 음영(`scalarField`)은 강조 단계를 받지
+ * 않고 바탕 → `secondary` 로 섞으므로, 짙기는 값의 범위로 맞춘다 (`FIELD_ALPHA` 참고).
  */
-const FIELD_EMPHASIS = 'subtle' as const;
+const STREAK_EMPHASIS = 'subtle' as const;
 
 /** 꺾쇠 한 팔 길이 · 굵기. */
 const BRACKET_ARM = 10;
 const BRACKET_WIDTH_PX = 1.5;
-/** 왼쪽 먼지 — 원본 2 × 2 px 사각 점과 넓이가 같은 원. */
-const LEFT_DUST_PX = 1.13;
+/** 왼쪽 먼지 — 원본 2 × 2 px 사각 점. `square` 의 크기는 반변이다. */
+const LEFT_DUST_HALF_PX = 1;
 /** 양 끝 먼지 반지름 — 왼쪽 3, 오른쪽 4 (원본 px = 월드). */
 const LEFT_END_R = 3;
 const RIGHT_END_R = 4;
@@ -96,46 +104,51 @@ function circle(cx: number, cy: number, r: number, sides: number): Vec2[] {
   return pts;
 }
 
-// ---- 중력장 음영 — 동심 원판 ----
+// ---- 중력장 음영 — 스칼라 장 ----
 
-/** 원본 그라데이션의 알파(반지름 r px). 정지점 사이 선형 보간. */
-function fieldAlpha(r: number): number {
+/**
+ * 원본 그라데이션의 세기 0~1 (반지름 r px). 1/r² 를 천체 표면 1 · 번지는 끝 0 으로 맞추고,
+ * 원본처럼 정지점 사이는 선형 보간한다. 천체 안은 1, 끝 밖은 0.
+ */
+function fieldStrength(r: number): number {
   const span = FIELD_REACH - LEFT.bodyR;
   const gEnd = (LEFT.bodyR / FIELD_REACH) ** 2;
-  const stopAlpha = (i: number): number => {
+  const stop = (i: number): number => {
     const rr = LEFT.bodyR + (i / FIELD_STOPS) * span;
-    return FIELD_ALPHA * (((LEFT.bodyR / rr) ** 2 - gEnd) / (1 - gEnd));
+    return ((LEFT.bodyR / rr) ** 2 - gEnd) / (1 - gEnd);
   };
   const f = Math.min(1, Math.max(0, (r - LEFT.bodyR) / span)) * FIELD_STOPS;
   const i = Math.min(FIELD_STOPS - 1, Math.floor(f));
-  return stopAlpha(i) + (stopAlpha(i + 1) - stopAlpha(i)) * (f - i);
+  return stop(i) + (stop(i + 1) - stop(i)) * (f - i);
 }
 
 /**
- * 바깥 원판부터 안으로 겹친다. 같은 색을 겹친 알파는 1 − Π(1 − aⱼ) 이므로, 띠마다
- * 목표 알파가 되도록 원판 하나의 알파를 거꾸로 푼다. 반지름은 알파가 고르게 줄도록
- * 제곱근 간격으로 잡는다 — 짙기가 빨리 변하는 천체 곁에 띠가 촘촘하다.
+ * 원본 캔버스 전체를 덮는 세기 격자. 천체가 움직이지 않으므로 한 번만 만든다.
+ * 원본도 캔버스 전체를 그라데이션으로 칠했다 — 끝 밖은 값 0 이라 바탕색이다.
  */
-const FIELD_DISCS: readonly Region[] = (() => {
-  const out: Region[] = [];
-  let covered = 0;
-  for (let k = 0; k < FIELD_BANDS; k++) {
-    const outer = LEFT.bodyR + (FIELD_REACH - LEFT.bodyR) * (1 - k / FIELD_BANDS) ** 2;
-    const inner = LEFT.bodyR + (FIELD_REACH - LEFT.bodyR) * (1 - (k + 1) / FIELD_BANDS) ** 2;
-    const target = fieldAlpha((outer + inner) / 2);
-    const a = target <= covered ? 0 : 1 - (1 - target) / (1 - covered);
-    covered = target;
-    if (a <= 0) continue;
-    out.push({
-      type: 'region',
-      id: `field-${k}`,
-      points: circle(LEFT.bodyX, LEFT.cy, outer, DISC_SIDES),
-      fillOpacity: a,
-      clip: CANVAS_CLIP,
-      style: { colorRole: 'secondary', emphasis: FIELD_EMPHASIS },
-    });
+const FIELD: ScalarField = (() => {
+  const cols = Math.round(CANVAS_W / FIELD_CELL);
+  const rows = Math.round(CANVAS_H / FIELD_CELL);
+  const values: number[] = [];
+  // 행 우선, 첫 행이 월드 위쪽 = 원본 화면 위쪽.
+  for (let row = 0; row < rows; row++) {
+    const py = (row + 0.5) * FIELD_CELL;
+    for (let col = 0; col < cols; col++) {
+      const px = (col + 0.5) * FIELD_CELL;
+      values.push(fieldStrength(Math.hypot(px - LEFT.bodyX, py - LEFT.cy)));
+    }
   }
-  return out;
+  return {
+    type: 'scalarField',
+    id: 'gravity-shade',
+    min: w(0, CANVAS_H),
+    max: w(CANVAS_W, 0),
+    cols,
+    rows,
+    values,
+    range: [0, 1 / FIELD_ALPHA],
+    colors: { high: 'secondary' },
+  };
 })();
 
 export function scene(params: {
@@ -159,7 +172,7 @@ export function scene(params: {
   // ================= 왼쪽 판 — 정지틀 =================
 
   // 천체의 중력장 — 세기 ∝ 1/r² 를 음영의 짙기로.
-  out.push(...FIELD_DISCS);
+  out.push(FIELD);
 
   const body: Body = {
     type: 'body',
@@ -213,7 +226,8 @@ export function scene(params: {
       type: 'particleSystem',
       id: 'dust-left',
       positions,
-      sizes: LEFT_DUST_PX,
+      sizes: LEFT_DUST_HALF_PX,
+      shape: 'square',
       opacity: a,
       clip: CANVAS_CLIP,
       style: { colorRole: 'ink', emphasis: 'medium' },
@@ -252,10 +266,14 @@ export function scene(params: {
 
   // 조석 잔차장 — 각 자리의 끌림에서 구름 중심의 끌림을 뺀 것. 함께 떨어지는 눈에 남는 힘.
   // 방향은 획이 흐르는 쪽, 세기는 획의 길이 · 짙기. 위상은 화면 시각에서 돈다.
+  // 획 하나가 선 하나다 — 길이는 선의 두 끝, 짙기는 선별 불투명도에 담아 묶음 하나로 넘긴다.
+  // 흐려지는 단계의 `a` 는 묶음 전체에 한 번 건다.
   {
     const [gcx, gcy] = gravityAt(gm, cx, cy);
     const t = screenClock(timeline);
     const bodyR2 = (LEFT.bodyR / LEFT.scale) ** 2;
+    const lines: Vec2[][] = [];
+    const opacities: number[] = [];
     let k = 0;
     for (let py = RIGHT.y0 + STREAK_STEP / 2; py < RIGHT.y1; py += STREAK_STEP) {
       for (let px = RIGHT.x0 + STREAK_STEP / 2; px < RIGHT.x1; px += STREAK_STEP) {
@@ -275,23 +293,25 @@ export function scene(params: {
         const uy = ry / m;
         const ph = (t * STREAK_RATE + seed) % 1;
         const fade = Math.sin(Math.PI * ph);
-        const alpha = a * (STREAK_MIN_ALPHA + STREAK_GAIN_ALPHA * s) * fade;
-        if (alpha <= 0.004) continue;
         const slide = (ph - 0.5) * STREAK_STEP * STREAK_SLIDE;
-        const streak: Trace = {
-          type: 'trace',
-          id: `streak-${k}`,
-          marks: [{ pos: w(px + ux * slide, py + uy * slide), direction: [ux, -uy] }],
-          shape: 'tick',
-          size: STREAK_MIN_LEN + STREAK_GAIN_LEN * s,
-          width: STREAK_WIDTH_PX,
-          opacity: alpha,
-          clip: RIGHT_CLIP,
-          style: { colorRole: 'secondary', emphasis: FIELD_EMPHASIS },
-        };
-        out.push(streak);
+        const hx = px + ux * slide;
+        const hy = py + uy * slide;
+        const half = (STREAK_MIN_LEN + STREAK_GAIN_LEN * s) / 2;
+        lines.push([w(hx - ux * half, hy - uy * half), w(hx + ux * half, hy + uy * half)]);
+        opacities.push((STREAK_MIN_ALPHA + STREAK_GAIN_ALPHA * s) * fade);
       }
     }
+    const streaks: LineSet = {
+      type: 'lineSet',
+      id: 'tidal-streaks',
+      lines,
+      opacities,
+      width: STREAK_WIDTH_PX,
+      opacity: a,
+      clip: RIGHT_CLIP,
+      style: { colorRole: 'secondary', emphasis: STREAK_EMPHASIS },
+    };
+    out.push(streaks);
   }
 
   // 고르게 끌렸다면 있었을 자리 — 늘어남은 비교 대상이 있어야 보인다.

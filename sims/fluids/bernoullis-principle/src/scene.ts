@@ -3,7 +3,7 @@
 // ========================================================================
 // 그리지 않는다, 선언한다. 자유 렌더 계층을 쓰지 않는다.
 //
-// 관 속 압력 명암(region 띠) · 물감 띠(trajectory) · 관 벽(trajectory) · 속도 몫과
+// 관 속 압력 명암(scalarField) · 물감 띠(trajectory) · 관 벽(trajectory) · 속도 몫과
 // 물기둥(region) · 유리관(trajectory) · 합 수준선(trajectory 점선) · 이름표(readout).
 // 겹침은 원본의 그리는 순서 그대로다 (`drawOrder: 'scene'`).
 // ========================================================================
@@ -12,6 +12,7 @@ import type {
   EnvironmentDef,
   Primitive,
   Region,
+  ScalarField,
   SceneGraph,
   StageDef,
   TimelineFrame,
@@ -68,6 +69,43 @@ function water(id: string, points: Vec2[], hp: number): Region {
   };
 }
 
+/**
+ * 관 속 물의 압력 명암 — 관을 감싸는 사각형 격자 하나(`scalarField` 순차형, `secondary`).
+ *
+ * 칸 값은 물기둥과 같은 `shadeOf` 에 **그 칸이 관 속에 든 비율**을 곱한 것이다. 장은 사각형이고
+ * 관은 굽으므로 관 밖 칸은 0 — 순차형의 0 은 테마 바탕이고 이 장이 맨 아래 층이라 바탕과 구별되지
+ * 않는다. 벽에 걸친 칸은 비율만큼 바탕과 섞여(빛의 양으로 섞으므로 면적 가중과 같다) 테두리가
+ * 계단 없이 벽 선 아래로 들어간다. 가로는 원본 띠 간격(2 px), 세로는 1 px 칸이다.
+ */
+function pressureField(ratio: number): ScalarField {
+  const L = LAYOUT;
+  const top = L.cyPx - L.w0Px / 2;
+  const cols = Math.round((L.xOutPx - L.xInPx) / L.shadeColPx);
+  const rows = Math.round(L.w0Px / L.shadeRowPx);
+  const values: number[] = new Array(cols * rows);
+  for (let c = 0; c < cols; c++) {
+    const xc = L.xInPx + (c + 0.5) * L.shadeColPx;
+    const half = tubeWidth(xc, ratio) / 2;
+    const shade = shadeOf(pressureHead(xc, ratio));
+    for (let r = 0; r < rows; r++) {
+      const y0 = top + r * L.shadeRowPx;
+      const inside = Math.max(0, Math.min(y0 + L.shadeRowPx, L.cyPx + half) - Math.max(y0, L.cyPx - half));
+      values[r * cols + c] = shade * (inside / L.shadeRowPx);
+    }
+  }
+  return {
+    type: 'scalarField',
+    id: 'shade',
+    min: w(L.xInPx, top + L.w0Px),
+    max: w(L.xOutPx, top),
+    cols,
+    rows,
+    values,
+    range: [0, 1],
+    colors: { high: 'secondary' },
+  };
+}
+
 function line(id: string, points: Vec2[], widthPx: number, style: Trajectory['style']): Trajectory {
   return { type: 'trajectory', id, points, width: widthPx, style };
 }
@@ -89,12 +127,7 @@ export function scene(params: {
   const out: Primitive[] = [];
 
   // ---- 관 속 물의 압력 명암 ----
-  // 2 px 폭 세로 띠를 관 굵기만큼 이어 붙인다. 파랑 한 색, 농도만 바뀐다.
-  for (let x = L.xInPx; x < L.xOutPx; x += L.shadeStepPx) {
-    const wd = tubeWidth(x + 1, ratio);
-    const fill = Math.min(L.shadeFillPx, L.xOutPx - x);
-    out.push(water(`shade-${x}`, rectPx(x, CY - wd / 2, fill, wd), pressureHead(x + 1, ratio)));
-  }
+  out.push(pressureField(ratio));
 
   // ---- 물감 띠 ----
   // 같은 시간 간격으로 흘려 넣은 물의 단면. 띠 사이가 벌어진 곳이 물이 빨리 지나가는 곳이다.

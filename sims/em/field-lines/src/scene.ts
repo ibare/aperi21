@@ -3,8 +3,8 @@
 // ========================================================================
 // 그리지 않는다, 선언한다. 자유 렌더 계층을 쓰지 않는다.
 //
-// - 떠밀리는 알갱이 950개 → 알갱이마다 두 점 `trajectory`(꼬리). 수명 페이드는 `opacity`.
-// - 전기력선 24가닥 → `trajectory`. 매 프레임 음전하 자리에서 다시 추적한다.
+// - 떠밀리는 알갱이 950개 → `particleSystem` 하나(꼬리만). 수명 페이드는 `opacities`.
+// - 전기력선 24가닥 → `lineSet` 하나. 매 프레임 음전하 자리에서 다시 추적한다.
 // - 양전하 → `body` 원 + 바탕색 십자(`region` opaque).
 // - 음전하 → 바탕색 원(`region` opaque) + 먹색 고리 · 가로선(`trajectory`).
 //
@@ -14,6 +14,8 @@
 import type {
   Body,
   Bounds,
+  LineSet,
+  ParticleSystem,
   Primitive,
   Region,
   SceneGraph,
@@ -41,6 +43,8 @@ const CIRCLE_SAMPLES = 40;
 const GRAIN_WIDTH = 1.6;
 /** 꼬리가 이보다 짧으면 점으로 그린다(px) — 원본 그대로. */
 const DOT_BELOW = 1.2;
+/** 점으로 그릴 때 넘기는 꼬리 길이(px). 둥근 끝이 반지름 0.8 의 점을 만든다. */
+const DOT_LEN = 0.01;
 /** 캡션 띠(px). 원본 figcaption 이 캔버스 아래 따로 있던 자리다. */
 const CAPTION_BAND = 40;
 
@@ -78,46 +82,58 @@ export function scene(params: { state: FieldLinesState }): SceneGraph {
   // ---- 떠밀리는 알갱이 ----
   // 빠르기가 곧 그 자리의 세기다. 꼬리 길이로 빠르기를 새겨 정지 화면에서도 읽힌다.
   //
-  // 알갱이 하나가 두 점짜리 `trajectory` 하나다. 무리 어휘 `particleSystem` 은 꼬리의
-  // 알파(0.3) · 굵기(1px) · 길이(속도 × 0.085초)가 고정이고 입자마다 알파가 없으며
-  // 머리 점을 늘 짙게 찍어, 빠른 꼬리는 사라지고 느린 점이 더 짙게 남았다 — 주장이
-  // 뒤집혀 보였다 (NOTES.md 「어휘 부족」).
-  state.grains.forEach((g, i) => {
+  // 무리 하나가 `particleSystem` 하나다. 머리 점은 찍지 않는다(`showParticles: false`) —
+  // 원본은 꼬리만 그렸고, 짙은 머리 점이 느린 알갱이를 도드라지게 해 주장을 뒤집었다.
+  // 수명 페이드는 입자별 `opacities`, 꼬리 알파 0.75 는 `trailStyle.opacity` 가 곱한다.
+  //
+  // 길이 상한 60 은 원본 px(= 월드 단위)다. `trailStyle.maxLength` 는 화면 px 라 배율을 따라
+  // 어긋나므로, 넘기는 속도를 상한 길이에 맞게 줄여 월드 단위로 자른다. 꼬리가 1.2 보다
+  // 짧으면 아주 짧은 획(`DOT_LEN`)을 넘겨 둥근 끝의 점만 남긴다 — 원본의 점과 같다. 길이 0 의
+  // 선분은 캔버스가 잘라낼 수 있어 0 을 넘기지 않는다.
+  const positions: Vec2[] = [];
+  const velocities: Vec2[] = [];
+  const opacities: number[] = [];
+  for (const g of state.grains) {
     const fadeIn = Math.min(1, g.age / GRAINS.fade);
     const fadeOut = Math.min(1, (g.life - g.age) / GRAINS.fade);
-    const alpha = Math.max(0, Math.min(fadeIn, fadeOut));
-    if (alpha <= 0) return;
     const { vx, vy } = grainVelocity(minus, g.x, g.y);
-    const s = Math.hypot(vx, vy) || 1;
-    const len = Math.min(GRAINS.streakMax, Math.hypot(vx, vy) * GRAINS.streakTime);
-    const head = toWorld(g.x, g.y);
-    const tail = len < DOT_BELOW ? head : toWorld(g.x - (vx / s) * len, g.y - (vy / s) * len);
-    const streak: Trajectory = {
-      type: 'trajectory',
-      id: `grain-${i}`,
-      points: [tail, head],
-      width: GRAIN_WIDTH,
-      opacity: GRAINS.alpha * alpha,
-      clip: STAGE_CLIP,
-      style: { colorRole: 'accent', emphasis: 'strong' },
-    };
-    out.push(streak);
-  });
+    const s = Math.hypot(vx, vy);
+    const len = s * GRAINS.streakTime;
+    const drawn = len < DOT_BELOW ? DOT_LEN : Math.min(GRAINS.streakMax, len);
+    const ux = s > 0 ? vx / s : 1;
+    const uy = s > 0 ? vy / s : 0;
+    positions.push(toWorld(g.x, g.y));
+    // 넘기는 속도 × `seconds` = 그릴 길이. 월드 y 가 위라 세로 부호가 뒤집힌다.
+    const v = drawn / GRAINS.streakTime;
+    velocities.push([ux * v, -uy * v]);
+    opacities.push(Math.max(0, Math.min(fadeIn, fadeOut)));
+  }
+  const grains: ParticleSystem = {
+    type: 'particleSystem',
+    id: 'grains',
+    positions,
+    velocities,
+    opacities,
+    trail: true,
+    showParticles: false,
+    trailStyle: { seconds: GRAINS.streakTime, width: GRAIN_WIDTH, opacity: GRAINS.alpha },
+    clip: STAGE_CLIP,
+    style: { colorRole: 'accent', emphasis: 'strong' },
+  };
+  out.push(grains);
 
   // ---- 전기력선 ----
   // 방향 화살촉은 두지 않는다 — 방향은 알갱이 흐름이 보여 주고, 주장은 촘촘함이다.
-  traceFieldLines(minus).forEach((pts, i) => {
-    const line: Trajectory = {
-      type: 'trajectory',
-      id: `field-line-${i}`,
-      points: pts.map((p) => toWorld(p.x, p.y)),
-      width: LINE_WIDTH,
-      opacity: LINE_OPACITY,
-      clip: STAGE_CLIP,
-      style: { colorRole: 'ink', emphasis: 'strong' },
-    };
-    out.push(line);
-  });
+  const fieldLines: LineSet = {
+    type: 'lineSet',
+    id: 'field-lines',
+    lines: traceFieldLines(minus).map((pts) => pts.map((p) => toWorld(p.x, p.y))),
+    width: LINE_WIDTH,
+    opacity: LINE_OPACITY,
+    clip: STAGE_CLIP,
+    style: { colorRole: 'ink', emphasis: 'strong' },
+  };
+  out.push(fieldLines);
 
   // ---- 양전하 ----
   const plus: Body = {
