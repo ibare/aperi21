@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>도르래</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #2b2b2b;
+    --muted: #6f6c66;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 8px 0; }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { margin: 6px 12px 0; font-size: 15px; line-height: 1.5; min-height: 1.5em; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="stage"></canvas>
+  <p class="caption" id="caption"></p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  // 논리 좌표 900 × 330. 화면 폭에 맞춰 늘거나 준다.
+  const W = 900, H = 330;
+  const canvas = document.getElementById('stage');
+  const captionEl = document.getElementById('caption');
+  const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+
+  const COLOR = {
+    ink: '#2b2b2b',
+    muted: '#6f6c66',
+    ceiling: '#9a958c',
+    rope: '#a07e55',
+    ropeMark: '#5e4630',
+    sheave: '#e4e0d8',
+    sheaveEdge: '#55524c',
+    load: '#7d8793',
+    loadGhost: '#b9b4ab',
+    accent: '#d2552a', // 뜻은 하나: 손이 당겨 낸 줄의 길이
+  };
+
+  // 물리 설정 — 짐 무게, 올리는 높이, 화면 축척(1 m = 50 px, 가로·세로 같은 축척)
+  const WEIGHT_N = 40;
+  const RISE_M = 1;
+  const PX_PER_M = 50;
+
+  const CEIL_Y = 30;
+  const FIX_CY = 70;        // 고정 도르래 중심 높이
+  const R = 13;             // 도르래 반지름
+  const FLOOR_Y = 296;
+  const LOAD_H = 36;
+  const LOAD_TOP0 = FLOOR_Y - 4 - LOAD_H; // 처음 짐 윗면
+  const HOOK = 32;          // 움직도르래 중심 ~ 짐 윗면
+  const HAND_GAP = 22;      // 줄이 도르래를 떠난 곳 ~ 손 처음 자리
+
+  // 세 장치: 받치는 줄 가닥 수 1, 2, 4
+  const panels = [
+    { n: 1, x0: 0,   w: 232, loadX: 47 },
+    { n: 2, x0: 232, w: 262, loadX: 50 },
+    { n: 4, x0: 494, w: 406, loadX: 71 },
+  ];
+
+  // 시간 → 짐이 오른 높이(m). 8초 주기: 오르기 4.5초 · 멈춤 2초 · 내리기 1.5초.
+  // 도착한 순간 이미 오르는 중이도록 0.8초 앞당겨 시작한다.
+  const PERIOD = 8, T_RISE = 4.5, T_HOLD_END = 6.5, LEAD = 0.8;
+  function phaseOf(t) { return (t + LEAD) % PERIOD; }
+  function riseAt(t) {
+    const u = phaseOf(t);
+    if (u < T_RISE) return RISE_M * (1 - Math.cos(Math.PI * u / T_RISE)) / 2;
+    if (u < T_HOLD_END) return RISE_M;
+    return RISE_M * (1 + Math.cos(Math.PI * (u - T_HOLD_END) / (PERIOD - T_HOLD_END))) / 2;
+  }
+
+  // 줄 경로: 한쪽 끝(묶인 끝)에서 손까지 선분·호의 목록.
+  // 줄은 늘어나지 않으므로 묶인 끝에서 잰 길이가 곧 줄의 재료 좌표다.
+  function line(x1, y1, x2, y2) { return { kind: 'line', x1, y1, x2, y2, len: Math.hypot(x2 - x1, y2 - y1) }; }
+  // over: 위로 감아 넘는 호(시계 방향), 아니면 아래로 감는 호
+  function arc(cx, cy, a0, a1, sheave) { return { kind: 'arc', cx, cy, a0, a1, len: Math.abs(a1 - a0) * R, sheave }; }
+
+  function geometry(p, riseM) {
+    const risePx = riseM * PX_PER_M;
+    const loadTop = LOAD_TOP0 - risePx;
+    const ym = loadTop - HOOK;
+    const segs = [];
+    const fixed = [], moving = [];
+    let exitX;
+    if (p.n === 1) {
+      const fx = 60;
+      fixed.push({ x: fx, y: FIX_CY, over: true });
+      segs.push(line(fx - R, loadTop, fx - R, FIX_CY));
+      segs.push(arc(fx, FIX_CY, Math.PI, 1.5 * Math.PI, fixed[0]));
+      exitX = fx;
+    } else if (p.n === 2) {
+      const mx = 50, fx = 76;
+      moving.push({ x: mx, y: ym, over: false });
+      fixed.push({ x: fx, y: FIX_CY, over: true });
+      segs.push(line(mx - R, CEIL_Y, mx - R, ym));
+      segs.push(arc(mx, ym, Math.PI, 0, moving[0]));
+      segs.push(line(mx + R, ym, mx + R, FIX_CY));
+      segs.push(arc(fx, FIX_CY, Math.PI, 1.5 * Math.PI, fixed[0]));
+      exitX = fx;
+    } else {
+      const m1 = 45, f1 = 71, m2 = 97, f2 = 123;
+      moving.push({ x: m1, y: ym, over: false }, { x: m2, y: ym, over: false });
+      fixed.push({ x: f1, y: FIX_CY, over: true }, { x: f2, y: FIX_CY, over: true });
+      segs.push(line(m1 - R, CEIL_Y, m1 - R, ym));
+      segs.push(arc(m1, ym, Math.PI, 0, moving[0]));
+      segs.push(line(m1 + R, ym, m1 + R, FIX_CY));
+      segs.push(arc(f1, FIX_CY, Math.PI, 2 * Math.PI, fixed[0]));
+      segs.push(line(f1 + R, FIX_CY, f1 + R, ym));
+      segs.push(arc(m2, ym, Math.PI, 0, moving[1]));
+      segs.push(line(m2 + R, ym, m2 + R, FIX_CY));
+      segs.push(arc(f2, FIX_CY, Math.PI, 1.5 * Math.PI, fixed[1]));
+      exitX = f2;
+    }
+    const exitY = FIX_CY - R;
+    const hand0 = exitX + HAND_GAP;
+    const pulledM = p.n * riseM;          // 줄은 늘지 않으므로 받치는 가닥이 짧아진 만큼 손 쪽으로 나온다
+    const handX = hand0 + pulledM * PX_PER_M;
+    segs.push(line(exitX, exitY, handX, exitY));
+
+    // 각 도르래에 줄이 닿기 시작하는 곳까지의 길이 → 회전각 계산에 쓴다
+    let s = 0;
+    for (const seg of segs) {
+      if (seg.kind === 'arc') seg.sheave.contactS = s;
+      s += seg.len;
+    }
+    return { segs, fixed, moving, loadTop, ym, exitX, exitY, hand0, handX, pulledM, riseM };
+  }
+
+  // 올라가기 전의 기하 — 도르래 회전각의 기준
+  const base = panels.map(p => geometry(p, 0));
+
+  function sheaveAngle(sheave, baseSheave) {
+    // 닿는 곳까지의 길이가 줄어든 만큼 줄이 도르래 위를 손 쪽으로 지나갔다
+    const travel = baseSheave.contactS - sheave.contactS;
+    return (sheave.over ? 1 : -1) * travel / R;
+  }
+
+  function tracePath(segs) {
+    ctx.beginPath();
+    const first = segs[0];
+    ctx.moveTo(first.x1, first.y1);
+    for (const seg of segs) {
+      if (seg.kind === 'line') ctx.lineTo(seg.x2, seg.y2);
+      else ctx.arc(seg.cx, seg.cy, R, seg.a0, seg.a1, seg.a1 < seg.a0);
+    }
+  }
+
+  function drawSheave(x, y, angle) {
+    ctx.beginPath();
+    ctx.arc(x, y, R, 0, 2 * Math.PI);
+    ctx.fillStyle = COLOR.sheave; ctx.fill();
+    ctx.lineWidth = 1.5; ctx.strokeStyle = COLOR.sheaveEdge; ctx.stroke();
+    ctx.lineWidth = 1.5;
+    for (let k = 0; k < 3; k++) {
+      const a = angle + k * 2 * Math.PI / 3;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + Math.cos(a) * (R - 3), y + Math.sin(a) * (R - 3));
+      ctx.stroke();
+    }
+    ctx.beginPath();
+    ctx.arc(x, y, 2.2, 0, 2 * Math.PI);
+    ctx.fillStyle = COLOR.sheaveEdge; ctx.fill();
+  }
+
+  function arrow(x1, y, x2, color, width) {
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = width;
+    ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x2 - 8, y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x2, y); ctx.lineTo(x2 - 10, y - 5.5); ctx.lineTo(x2 - 10, y + 5.5); ctx.closePath(); ctx.fill();
+  }
+
+  const fmt = v => v.toFixed(2);
+
+  function captionAt(t) {
+    const u = phaseOf(t);
+    if (u < T_RISE) return '세 짐이 똑같이 오르는 동안, 받치는 줄이 많은 쪽일수록 손은 약하게 당기며 더 멀리 물러난다.';
+    if (u < T_HOLD_END) return '같은 1.00 m를 올리려고 당겨 낸 줄: 1.00 m, 2.00 m, 4.00 m.';
+    return '짐을 내려놓고 다시 올린다.';
+  }
+
+  PieceKit.loop({
+    step(dt, t) { /* 모든 상태는 t 의 함수라 쌓을 것이 없다 */ },
+    draw(t) {
+      const riseM = riseAt(t);
+      const geos = panels.map(p => geometry(p, riseM));
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = '#fbfaf7';
+      ctx.fillRect(0, 0, W, H);
+      ctx.textBaseline = 'middle';
+
+      const inPanel = (p, fn) => { ctx.save(); ctx.translate(p.x0, 0); fn(); ctx.restore(); };
+
+      PieceKit.mark('천장과 바닥', () => {
+        panels.forEach((p, i) => inPanel(p, () => {
+          ctx.fillStyle = COLOR.ceiling;
+          ctx.fillRect(12, CEIL_Y - 6, geos[i].exitX + R + 2 - 12, 6);
+          ctx.strokeStyle = COLOR.ceiling; ctx.lineWidth = 1.5;
+          ctx.beginPath(); ctx.moveTo(8, FLOOR_Y); ctx.lineTo(p.w - 12, FLOOR_Y); ctx.stroke();
+        }));
+      });
+
+      PieceKit.mark('짐의 처음 자리', () => {
+        panels.forEach(p => inPanel(p, () => {
+          ctx.setLineDash([4, 4]);
+          ctx.strokeStyle = COLOR.loadGhost; ctx.lineWidth = 1.2;
+          ctx.strokeRect(p.loadX - 25, LOAD_TOP0, 50, LOAD_H);
+          ctx.setLineDash([]);
+        }));
+      });
+
+      PieceKit.mark('고정 도르래', () => {
+        panels.forEach((p, i) => inPanel(p, () => {
+          geos[i].fixed.forEach((f, k) => {
+            ctx.strokeStyle = COLOR.sheaveEdge; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(f.x, CEIL_Y); ctx.lineTo(f.x, f.y); ctx.stroke();
+            drawSheave(f.x, f.y, sheaveAngle(f, base[i].fixed[k]));
+          });
+        }));
+      });
+
+      PieceKit.mark('줄', () => {
+        panels.forEach((p, i) => inPanel(p, () => {
+          const g = geos[i];
+          ctx.lineCap = 'butt'; ctx.lineJoin = 'round';
+          tracePath(g.segs);
+          ctx.strokeStyle = COLOR.rope; ctx.lineWidth = 3.2; ctx.stroke();
+          // 줄 무늬: 묶인 끝에서부터 잰 길이에 고정 → 줄이 도르래를 타고 흘러가는 것이 보인다
+          tracePath(g.segs);
+          ctx.setLineDash([3, 9]);
+          ctx.lineDashOffset = 0;
+          ctx.strokeStyle = COLOR.ropeMark; ctx.lineWidth = 3.2; ctx.stroke();
+          ctx.setLineDash([]);
+        }));
+      });
+
+      PieceKit.mark('움직도르래', () => {
+        panels.forEach((p, i) => inPanel(p, () => {
+          const g = geos[i];
+          if (g.moving.length === 0) return;
+          const xs = g.moving.map(m => m.x);
+          ctx.strokeStyle = COLOR.sheaveEdge; ctx.lineWidth = 2;
+          if (xs.length > 1) {
+            ctx.beginPath(); ctx.moveTo(xs[0], g.ym); ctx.lineTo(xs[xs.length - 1], g.ym); ctx.stroke();
+          }
+          ctx.beginPath(); ctx.moveTo(p.loadX, g.ym); ctx.lineTo(p.loadX, g.loadTop); ctx.stroke();
+          g.moving.forEach((m, k) => drawSheave(m.x, m.y, sheaveAngle(m, base[i].moving[k])));
+        }));
+      });
+
+      PieceKit.mark('짐', () => {
+        panels.forEach((p, i) => inPanel(p, () => {
+          const g = geos[i];
+          ctx.fillStyle = COLOR.load;
+          ctx.fillRect(p.loadX - 25, g.loadTop, 50, LOAD_H);
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '600 13px -apple-system, "Apple SD Gothic Neo", sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(WEIGHT_N + ' N', p.loadX, g.loadTop + LOAD_H / 2 + 1);
+        }));
+      });
+
+      PieceKit.mark('오른 높이', () => {
+        panels.forEach((p, i) => inPanel(p, () => {
+          const g = geos[i];
+          const x = p.loadX + 33;
+          ctx.strokeStyle = COLOR.ink; ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.moveTo(x - 3, LOAD_TOP0); ctx.lineTo(x + 3, LOAD_TOP0);
+          ctx.moveTo(x, LOAD_TOP0); ctx.lineTo(x, g.loadTop);
+          ctx.moveTo(x - 3, g.loadTop); ctx.lineTo(x + 3, g.loadTop);
+          ctx.stroke();
+          ctx.fillStyle = COLOR.ink;
+          ctx.font = '13px -apple-system, "Apple SD Gothic Neo", sans-serif';
+          ctx.textAlign = 'left';
+          ctx.fillText('오른 높이', x + 7, LOAD_TOP0 + 12);
+          ctx.fillText(fmt(g.riseM) + ' m', x + 7, LOAD_TOP0 + 28);
+        }));
+      });
+
+      PieceKit.mark('당긴 줄 길이', () => {
+        panels.forEach((p, i) => inPanel(p, () => {
+          const g = geos[i];
+          const y = g.exitY - 16;
+          ctx.strokeStyle = COLOR.accent; ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(g.hand0, y - 4); ctx.lineTo(g.hand0, y + 4);
+          ctx.moveTo(g.hand0, y); ctx.lineTo(g.handX, y);
+          ctx.moveTo(g.handX, y - 4); ctx.lineTo(g.handX, y + 4);
+          ctx.stroke();
+          ctx.fillStyle = COLOR.accent;
+          ctx.font = '600 13px -apple-system, "Apple SD Gothic Neo", sans-serif';
+          ctx.textAlign = 'left';
+          ctx.fillText('당긴 줄 ' + fmt(g.pulledM) + ' m', g.hand0, y - 12);
+        }));
+      });
+
+      PieceKit.mark('손', () => {
+        panels.forEach((p, i) => inPanel(p, () => {
+          const g = geos[i];
+          ctx.fillStyle = COLOR.ink;
+          ctx.beginPath();
+          ctx.roundRect(g.handX - 2, g.exitY - 8, 12, 16, 4);
+          ctx.fill();
+        }));
+      });
+
+      PieceKit.mark('당기는 힘', () => {
+        panels.forEach((p, i) => inPanel(p, () => {
+          const g = geos[i];
+          const F = WEIGHT_N / p.n;
+          const len = 12 + F * 1.8; // 40 N → 84 px, 20 N → 48 px, 10 N → 30 px
+          const x1 = g.handX + 12;
+          const y = g.exitY + 22;
+          arrow(x1, y, x1 + len, COLOR.ink, 3);
+          ctx.fillStyle = COLOR.ink;
+          ctx.font = '13px -apple-system, "Apple SD Gothic Neo", sans-serif';
+          ctx.textAlign = 'left';
+          ctx.fillText('힘 ' + F + ' N', x1, y + 17);
+        }));
+      });
+
+      PieceKit.mark('받치는 줄 가닥 수', () => {
+        panels.forEach(p => inPanel(p, () => {
+          ctx.fillStyle = COLOR.muted;
+          ctx.font = '14px -apple-system, "Apple SD Gothic Neo", sans-serif';
+          ctx.textAlign = 'left';
+          ctx.fillText('짐을 받치는 줄 ' + p.n + '가닥', 12, FLOOR_Y + 18);
+        }));
+      });
+
+      captionEl.textContent = captionAt(t);
+    },
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "06-newtonian",
+  "title": "뉴턴 역학 2 — 자유물체도·도르래·탄성력·연직 원운동·공기 저항·비관성계·충격량·지레·응력-변형률·경사진 커브",
+  "record": "tasks/engine-requirements/batches/06-newtonian.md",
+  "pieces": [
+    "free-body-diagram",
+    "pulley-system",
+    "spring-force",
+    "vertical-loop",
+    "drag-force",
+    "non-inertial-frame",
+    "impulse-force-relation",
+    "mechanical-advantage",
+    "stress-strain-curve",
+    "banked-curve"
+  ]
+}

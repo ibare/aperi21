@@ -1,0 +1,49 @@
+{
+  "id": "free-body-diagram",
+  "claim": "한 물체만 떼어 내면 그 물체가 받는 힘만 따라 나오고, 같은 접촉면의 맞은편 힘과 닿지 않은 물체의 힘은 제자리에 남는다.",
+  "verb": "따라 나온다",
+  "probeTimes": [0, 1.4, 5, 13.4, 22.4],
+  "elements": [
+    { "mark": "바닥", "what": "왼쪽 칸 아래의 바닥 선과 빗금", "physical": "책상을 받치는 바닥", "drawing": "굵은 선 + 옅은 빗금", "motion": "static", "state": "none", "interaction": null },
+    { "mark": "빈 자리", "what": "떼어 낸 물체가 있던 자리의 점선 윤곽", "physical": "떼어 낸 물체의 원래 위치", "drawing": "점선 윤곽, 떼어 내기 시작하면 나타남", "motion": "time-function", "state": "none (주기 안의 시각에서 계산)", "interaction": null },
+    { "mark": "책상", "what": "상판과 다리 둘", "physical": "책상 (4.0 kg)", "drawing": "채운 사각형 + 윤곽선. 차례가 되면 오른쪽 칸으로 옮겨짐", "motion": "time-function", "state": "none", "interaction": "누르면 책상을 떼어 낸다" },
+    { "mark": "책", "what": "책상 위의 책", "physical": "책 (1.2 kg)", "drawing": "채운 사각형 + 쪽 선 두 줄. 차례가 되면 오른쪽 칸으로 옮겨짐", "motion": "time-function", "state": "none", "interaction": "누르면 책을 떼어 낸다" },
+    { "mark": "컵", "what": "책 위의 손잡이 달린 컵", "physical": "컵 (0.3 kg)", "drawing": "채운 사다리꼴 + 손잡이 곡선. 차례가 되면 오른쪽 칸으로 옮겨짐", "motion": "time-function", "state": "none", "interaction": "누르면 컵을 떼어 낸다" },
+    { "mark": "힘: 지구가 컵을 당김", "what": "컵 가운데에서 아래로 향한 화살표", "physical": "컵의 무게 2.94 N", "drawing": "점(작용점) + 선 + 삼각 머리. 컵 차례면 강조색으로 컵과 함께 이동, 아니면 먹색 → 떼어 내는 동안 흐려짐", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "힘: 책이 컵을 받침", "what": "컵 바닥에서 위로 향한 화살표", "physical": "책이 컵에 주는 수직항력 2.94 N", "drawing": "위와 같음", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "힘: 컵이 책을 누름", "what": "책 윗면에서 아래로 향한 화살표", "physical": "컵이 책에 주는 수직항력 2.94 N (컵의 무게가 아니다)", "drawing": "위와 같음", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "힘: 지구가 책을 당김", "what": "책 가운데에서 아래로 향한 화살표", "physical": "책의 무게 11.76 N", "drawing": "위와 같음", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "힘: 책상이 책을 받침", "what": "책 아랫면에서 위로 향한 화살표", "physical": "책상이 책에 주는 수직항력 14.7 N", "drawing": "위와 같음", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "힘: 책이 책상을 누름", "what": "책상 윗면에서 아래로 향한 화살표", "physical": "책이 책상에 주는 수직항력 14.7 N", "drawing": "위와 같음", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "힘: 지구가 책상을 당김", "what": "상판 가운데에서 아래로 향한 긴 화살표", "physical": "책상의 무게 39.2 N", "drawing": "위와 같음", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "힘: 바닥이 왼쪽 다리를 받침", "what": "왼쪽 다리 발치에서 위로 향한 화살표", "physical": "바닥이 왼쪽 다리에 주는 수직항력 26.95 N", "drawing": "위와 같음", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "힘: 바닥이 오른쪽 다리를 받침", "what": "오른쪽 다리 발치에서 위로 향한 화살표", "physical": "바닥이 오른쪽 다리에 주는 수직항력 26.95 N", "drawing": "위와 같음", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "힘 이름표", "what": "떼어 낸 물체의 화살표 옆에 붙는 '누가 어떻게' 글자", "physical": "각 힘을 주는 상대 물체", "drawing": "강조색 텍스트, 도착 뒤 나타나고 돌려놓기 전에 사라짐", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "캡션", "what": "조각 아래 한 줄 글", "physical": "지금 떼어 내는 물체와 그 물체가 받는 힘의 목록", "drawing": "DOM 텍스트", "motion": "time-function", "state": "none", "interaction": null }
+  ],
+  "controls": [
+    { "kind": "click", "target": "왼쪽 장면의 컵·책·책상", "effect": "누른 물체를 곧바로 떼어 내기 시작하고, 이후 자동 순서(책 → 컵 → 책상)를 이어 간다", "frozen": "PieceKit.frozen 이면 무시" }
+  ],
+  "hidden": [
+    "힘의 크기 숫자 — 주장은 '어느 힘이 따라 나오는가'이지 크기가 아니다. 숫자가 붙으면 평형 계산으로 읽힌다.",
+    "화살표 길이는 크기에 비례하지 않는다 (14 + 13·√F 픽셀) — 책상 무게(39.2 N)와 컵 무게(2.94 N)를 한 화면에 담고 컵의 짧은 화살표도 읽히게 하기 위해. 크기 순서는 지킨다.",
+    "컵·책·책상이 지구를 당기는 힘, 다리가 바닥을 누르는 힘 — 지구와 바닥은 떼어 낼 물체가 아니므로 받는 힘을 그리지 않는다.",
+    "합력 0 표시 — 평형은 다른 조각의 주장이다."
+  ],
+  "timeline": [
+    { "t": 0, "what": "세 물체가 쌓여 있고 화살표 아홉 개가 얽혀 있다. 책이 받는 세 화살표만 강조색." },
+    { "t": 0.4, "what": "책이 복사되듯 들려 오른쪽 칸으로 옮겨지기 시작. 강조색 화살표 셋이 함께 움직이고 나머지는 흐려지며 제자리에 남는다. 원래 자리에 점선 윤곽." },
+    { "t": 2.4, "what": "책이 오른쪽 칸에 도착. 이름표 '지구가 당김·책상이 받침·컵이 누름'이 나타난다. 같은 접촉면의 '책이 컵을 받침'은 왼쪽에 남아 있다." },
+    { "t": 6.9, "what": "책이 제자리로 돌아간다." },
+    { "t": 8.4, "what": "컵 차례. 컵과 화살표 둘이 떼어져 나온다 (지구가 당김·책이 받침)." },
+    { "t": 17.4, "what": "책상 차례. 화살표 넷이 따라 나오고, 컵의 화살표는 하나도 따라오지 않는다." },
+    { "t": 26.4, "what": "다시 책부터 반복." }
+  ],
+  "engineWish": [
+    "힘 화살표를 '받는 물체'에 붙여 선언하면 그 물체를 옮길 때 자동으로 함께 옮겨지는 부착 관계 (지금은 on 필드로 손수 오프셋을 더함).",
+    "같은 모양을 채움/점선 윤곽 두 벌로 그리는 '빈 자리' 그리기 — 모양 함수를 스타일만 바꿔 재사용.",
+    "구간 시간표(대기·이동·유지·복귀)와 이징을 선언으로 적는 순서 진행기 — 대상 목록을 돌며 같은 시간표를 반복.",
+    "이름표 자리 잡기 — 화살표 끝 근처에 겹치지 않게 놓는 일을 좌표로 손수 적었다.",
+    "캔버스 논리 좌표 ↔ 누른 위치 변환과 물체 적중 판정."
+  ]
+}

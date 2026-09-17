@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>탄성력</title>
+<style>
+  html, body { margin: 0; background: #ffffff; }
+  body { font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; color: #1f2430; }
+  .piece { max-width: 900px; margin: 0 auto; }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { min-height: 1.6em; padding: 6px 16px 12px; font-size: 16px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="scene"></canvas>
+  <div class="caption" id="caption"></div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// 탄성력 — 늘인 길이만큼 되돌리는 힘이 커진다.
+// 모든 움직임은 시각 t 의 함수다. 쌓이는 상태가 없다.
+
+const W = 860, H = 270;
+const canvas = document.getElementById('scene');
+const ctx = canvas.getContext('2d');
+const captionEl = document.getElementById('caption');
+const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+canvas.width = W * dpr;
+canvas.height = H * dpr;
+canvas.style.aspectRatio = W + ' / ' + H;
+ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+// ── 배치 ──
+const WALL_X = 60;          // 벽 면
+const NATURAL_X = 320;      // 원래 길이일 때 물체 왼쪽 면
+const UNIT = 100;           // 늘임 한 칸 = 100px
+const STEPS = 4;            // 네 칸까지 늘인다
+const BLOCK_W = 50, BLOCK_H = 50;
+const SPRING_Y = 95;        // 용수철 · 물체 중심 높이
+const LIVE_ARROW_Y = 42;    // 지금 힘 화살표 높이
+const GHOST_Y0 = 182, GHOST_DY = 22; // 남겨 둔 화살표 줄
+// 힘의 축척: 늘임 1칸의 힘 = 화살표 100px. 그래서 화살표 끝은 언제나 원래 길이 선에 닿는다.
+const FORCE_PX_PER_UNIT = UNIT;
+
+// ── 색 ──
+const INK = '#1f2430';
+const MUTED = '#8a90a0';
+const SPRING = '#4a6fa5';
+const FORCE = '#e0582b';    // 강조색은 되돌리는 힘에만 쓴다
+
+// ── 시간표 (한 주기) ──
+const MOVE = 0.9, HOLD = 0.9, STEP = MOVE + HOLD;
+const FINAL_HOLD = 1.3, RETURN = 1.5, REST = 0.5;
+const PULL_END = STEPS * STEP;                    // 7.2
+const RETURN_START = PULL_END + FINAL_HOLD;       // 8.5
+const PERIOD = RETURN_START + RETURN + REST;      // 10.5
+const OFFSET = 0.45;  // 도착한 순간 이미 첫 칸을 당기는 중
+
+const ease = (u) => u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+const clamp01 = (u) => Math.max(0, Math.min(1, u));
+
+// 시각 t 에서의 장면 상태
+function sceneAt(t) {
+  const c = ((t + OFFSET) % PERIOD + PERIOD) % PERIOD;
+  let stretch, phase, holdIndex = 0, ghostAlpha = 1, ghostsShown = 0;
+  if (c < PULL_END) {
+    const i = Math.floor(c / STEP);           // 0..3
+    const local = c - i * STEP;
+    if (local < MOVE) {
+      stretch = i + ease(local / MOVE);
+      phase = 'move';
+      ghostsShown = i;
+    } else {
+      stretch = i + 1;
+      phase = 'hold';
+      holdIndex = i + 1;
+      ghostsShown = i + 1;
+    }
+  } else if (c < RETURN_START) {
+    stretch = STEPS; phase = 'final'; ghostsShown = STEPS; holdIndex = STEPS;
+  } else if (c < RETURN_START + RETURN) {
+    const u = (c - RETURN_START) / RETURN;
+    stretch = STEPS * (1 - ease(u));
+    phase = 'return'; ghostsShown = STEPS;
+    ghostAlpha = 1 - clamp01(u * 1.4);
+  } else {
+    stretch = 0; phase = 'rest'; ghostsShown = 0;
+  }
+  // 자국은 멈춘 순간에 0.2초 동안 떠오른다
+  let newestAlpha = 1;
+  if (phase === 'hold') {
+    const local = c - (holdIndex - 1) * STEP - MOVE;
+    newestAlpha = clamp01(local / 0.2);
+  }
+  return { c, stretch, phase, holdIndex, ghostsShown, ghostAlpha, newestAlpha };
+}
+
+// ── 그리기 도구 ──
+function arrowLeft(xTail, y, len, alpha, width) {
+  if (len < 1) return;
+  const head = Math.min(14, len * 0.6);
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.strokeStyle = FORCE;
+  ctx.fillStyle = FORCE;
+  ctx.lineWidth = width;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(xTail, y);
+  ctx.lineTo(xTail - len + head * 0.8, y);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(xTail - len, y);
+  ctx.lineTo(xTail - len + head, y - head * 0.5);
+  ctx.lineTo(xTail - len + head, y + head * 0.5);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+function captionFor(s) {
+  switch (s.phase) {
+    case 'move': return s.ghostsShown === 0 ? '한 칸 늘인다' : '한 칸 더 늘인다';
+    case 'hold': return s.holdIndex === 1
+      ? '1칸 늘이면 되돌리는 힘은 1만큼'
+      : s.holdIndex + '칸 늘이면 되돌리는 힘도 ' + s.holdIndex + '배';
+    case 'final': return '늘인 길이와 되돌리는 힘이 같은 비율로 커졌다';
+    case 'return': return '줄여 주면 되돌리는 힘도 함께 줄어든다';
+    default: return '원래 길이에서는 되돌리는 힘이 없다';
+  }
+}
+
+let lastCaption = null;
+
+PieceKit.loop({
+  step(dt, t) { /* 상태는 t 의 함수라 쌓을 것이 없다 */ },
+  draw(t) {
+    const s = sceneAt(t);
+    const blockX = NATURAL_X + s.stretch * UNIT;   // 물체 왼쪽 면
+    ctx.clearRect(0, 0, W, H);
+
+    PieceKit.mark('벽', () => {
+      ctx.fillStyle = '#d9dce3';
+      ctx.fillRect(WALL_X - 18, SPRING_Y - 60, 18, 120);
+      ctx.strokeStyle = MUTED;
+      ctx.lineWidth = 1;
+      for (let y = SPRING_Y - 56; y < SPRING_Y + 60; y += 12) {
+        ctx.beginPath();
+        ctx.moveTo(WALL_X - 18, y + 10);
+        ctx.lineTo(WALL_X - 6, y - 2);
+        ctx.stroke();
+      }
+      ctx.strokeStyle = INK;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(WALL_X, SPRING_Y - 60);
+      ctx.lineTo(WALL_X, SPRING_Y + 60);
+      ctx.stroke();
+    });
+
+    PieceKit.mark('원래 길이 선', () => {
+      ctx.save();
+      ctx.strokeStyle = MUTED;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(NATURAL_X, 20);
+      ctx.lineTo(NATURAL_X, H - 8);
+      ctx.stroke();
+      ctx.restore();
+      ctx.fillStyle = MUTED;
+      ctx.font = '13px sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText('원래 길이', NATURAL_X - 6, 30);
+    });
+
+    PieceKit.mark('늘임 눈금', () => {
+      const y = SPRING_Y + BLOCK_H / 2 + 14;
+      ctx.strokeStyle = MUTED;
+      ctx.fillStyle = MUTED;
+      ctx.lineWidth = 1;
+      ctx.font = '13px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.beginPath();
+      ctx.moveTo(NATURAL_X, y);
+      ctx.lineTo(NATURAL_X + STEPS * UNIT, y);
+      ctx.stroke();
+      for (let i = 0; i <= STEPS; i++) {
+        const x = NATURAL_X + i * UNIT;
+        ctx.beginPath();
+        ctx.moveTo(x, y - 4);
+        ctx.lineTo(x, y + 4);
+        ctx.stroke();
+        if (i > 0) ctx.fillText(i + '칸', x, y + 18);
+      }
+    });
+
+    PieceKit.mark('용수철', () => {
+      const x0 = WALL_X, x1 = blockX;
+      const lead = 14;                 // 양 끝 곧은 부분
+      const coils = 14;
+      const amp = 14;
+      const span = x1 - x0 - 2 * lead;
+      ctx.strokeStyle = SPRING;
+      ctx.lineWidth = 2.5;
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+      ctx.moveTo(x0, SPRING_Y);
+      ctx.lineTo(x0 + lead, SPRING_Y);
+      const n = coils * 2;
+      for (let k = 1; k <= n; k++) {
+        const x = x0 + lead + span * (k - 0.5) / n;
+        ctx.lineTo(x, SPRING_Y + (k % 2 ? -amp : amp));
+      }
+      ctx.lineTo(x1 - lead, SPRING_Y);
+      ctx.lineTo(x1, SPRING_Y);
+      ctx.stroke();
+    });
+
+    PieceKit.mark('물체', () => {
+      ctx.fillStyle = '#3a4150';
+      ctx.fillRect(blockX, SPRING_Y - BLOCK_H / 2, BLOCK_W, BLOCK_H);
+    });
+
+    PieceKit.mark('손잡이', () => {
+      const x = blockX + BLOCK_W;
+      ctx.strokeStyle = INK;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x, SPRING_Y);
+      ctx.lineTo(x + 26, SPRING_Y);
+      ctx.stroke();
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(x + 34, SPRING_Y, 8, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = MUTED;
+      ctx.font = '13px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('당김', x + 34, SPRING_Y - 16);
+    });
+
+    PieceKit.mark('되돌리는 힘', () => {
+      const len = s.stretch * FORCE_PX_PER_UNIT;
+      arrowLeft(blockX, LIVE_ARROW_Y, len, 1, 4);
+      if (len > 40) {
+        ctx.fillStyle = FORCE;
+        ctx.font = '14px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('되돌리는 힘', blockX + 6, LIVE_ARROW_Y + 5);
+      }
+    });
+
+    PieceKit.mark('남겨 둔 힘 화살표', () => {
+      for (let i = 1; i <= s.ghostsShown; i++) {
+        const y = GHOST_Y0 + (i - 1) * GHOST_DY;
+        const a = (i === s.ghostsShown && s.phase === 'hold' ? s.newestAlpha : 1) * s.ghostAlpha * 0.55;
+        arrowLeft(NATURAL_X + i * UNIT, y, i * FORCE_PX_PER_UNIT, a, 3);
+      }
+    });
+
+    const cap = captionFor(s);
+    PieceKit.mark('캡션', () => {
+      if (cap !== lastCaption) { captionEl.textContent = cap; lastCaption = cap; }
+    });
+  },
+});
+</script>
+</body>
+</html>

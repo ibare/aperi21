@@ -1,0 +1,44 @@
+{
+  "rows": [
+    {
+      "element": "기준틀 이름",
+      "vocab": "readout (world · font text)",
+      "status": "있음"
+    },
+    {
+      "element": "길 · 길가 눈금 (두 판)",
+      "vocab": "trajectory + trace (tick)",
+      "status": "있음"
+    },
+    {
+      "element": "버스 (두 판)",
+      "vocab": "body (rect) + body (circle 바퀴) + trajectory (살)",
+      "status": "있음",
+      "note": "rect 에 모서리 둥글림 없음"
+    },
+    {
+      "element": "공이 놓였던 지점 (두 판)",
+      "vocab": "trace (tick · 같은 colorRole) + trajectory (dashed)",
+      "status": "있음"
+    },
+    {
+      "element": "공 (두 판)",
+      "vocab": "body (circle)",
+      "status": "있음"
+    },
+    {
+      "element": "두 판 가르기",
+      "vocab": "BaseMeta.clip",
+      "status": "있음",
+      "note": "버스 안 판의 길 눈금이 흘러 판 경계를 넘는다"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (timeline phases.caption)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "버스 가속과 버스 기준 좌표 변환 — sim. 기준틀 둘 고정이라 관점 패널 어휘는 불필요(reference-frame · coriolis-effect 와 같은 판단)"
+  ]
+}

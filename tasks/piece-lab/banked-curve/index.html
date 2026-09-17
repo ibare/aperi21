@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>경사진 커브</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #2b2a27;
+    --muted: #8a867d;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 880px; margin: 0 auto; padding: 8px 0; }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { min-height: 1.6em; font-size: 16px; line-height: 1.6; padding: 4px 12px 0; }
+  .controls { display: flex; align-items: center; gap: 12px; padding: 6px 12px 0;
+    font-size: 14px; color: var(--muted); }
+  .controls input[type=range] { flex: 0 1 280px; }
+  .controls output { font-variant-numeric: tabular-nums; min-width: 4.2em; color: var(--ink); }
+  .controls button { font: inherit; font-size: 13px; padding: 2px 10px; border: 1px solid #c9c5bc;
+    background: transparent; color: var(--ink); border-radius: 4px; cursor: pointer; }
+  .controls button[hidden] { display: none; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="cv" width="880" height="340"></canvas>
+  <div class="caption" id="caption"></div>
+  <div class="controls">
+    <label for="angle">경사각</label>
+    <input id="angle" type="range" min="0" max="50" step="0.1" value="0">
+    <output id="angleOut">0.0°</output>
+    <button id="auto" hidden>자동으로 보기</button>
+  </div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(function () {
+  // ── 물리 상수 ──────────────────────────────────────────────
+  const G = 9.8;            // 중력 가속도 (m/s²)
+  const V = 15;             // 차의 빠르기 (m/s)
+  const R0 = 40;            // 길 가운데 반지름 (m)
+  const HALF_W = 6;         // 길 너비의 절반 (m) → 34 m ~ 46 m
+  const R_IN = R0 - HALF_W, R_OUT = R0 + HALF_W;
+  const THETA_MATCH = Math.atan(V * V / (R0 * G)) * 180 / Math.PI; // 맞춘 각
+  const TIME_SCALE = 2;     // 화면 1초 = 물리 2초 (한 바퀴 16.8초 → 8.4초)
+  const SUB = 4;            // RK4 부분 단계
+
+  const ATTEMPTS = [0, 15, 45, THETA_MATCH];
+  const T_TILT = 0.8, T_FLY = 0.45, T_HOLD = 0.7, T_HOLD_LAP = 1.2;
+
+  const fmtDeg = (d) => d.toFixed(1) + '°';
+
+  // ── 원뿔면 위 마찰 없는 질점 ────────────────────────────────
+  // 높이 z = (r - R0)·tanθ,  각운동량 L = r²φ̇ 보존
+  // r̈ (1 + k²) = L²/r³ − g k
+  function accel(r, k, L) { return (L * L / (r * r * r) - G * k) / (1 + k * k); }
+  function rk4(s, k, h) {
+    const L = s.L;
+    const f = (r, rd) => [rd, accel(r, k, L), L / (r * r)];
+    const a = f(s.r, s.rd);
+    const b = f(s.r + a[0] * h / 2, s.rd + a[1] * h / 2);
+    const c = f(s.r + b[0] * h / 2, s.rd + b[1] * h / 2);
+    const d = f(s.r + c[0] * h, s.rd + c[1] * h);
+    s.r += h / 6 * (a[0] + 2 * b[0] + 2 * c[0] + d[0]);
+    s.rd += h / 6 * (a[1] + 2 * b[1] + 2 * c[1] + d[1]);
+    s.phi += h / 6 * (a[2] + 2 * b[2] + 2 * c[2] + d[2]);
+  }
+  function freshCar() { return { r: R0, rd: 0, phi: 0, L: R0 * V, x: 0, y: 0, vx: 0, vy: 0 }; }
+  function syncXY(s) {
+    // 위에서 본 평면 좌표 (m). 출발점은 중심의 아래쪽, 오른쪽으로 달린다.
+    const psi = Math.PI / 2 - s.phi;
+    const vphi = s.L / s.r;
+    s.x = s.r * Math.cos(psi); s.y = s.r * Math.sin(psi);
+    // 속도 = ṙ r̂ + vφ φ̂,  ψ 가 줄어드는 방향이 앞
+    s.vx = s.rd * Math.cos(psi) + vphi * Math.sin(psi);
+    s.vy = s.rd * Math.sin(psi) - vphi * Math.cos(psi);
+  }
+  function physStep(s, deg, dtReal) {
+    const k = Math.tan(deg * Math.PI / 180);
+    const h = dtReal * TIME_SCALE / SUB;
+    for (let i = 0; i < SUB; i++) rk4(s, k, h);
+    syncXY(s);
+  }
+  // 결과를 미리 계산한다 (캡션이 결과를 앞질러 말하지 않도록 결과만 알아 둔다)
+  function predict(deg) {
+    const s = freshCar();
+    for (let i = 0; i < 60 * 12; i++) {
+      physStep(s, deg, 1 / 60);
+      if (s.r > R_OUT) return 'out';
+      if (s.r < R_IN) return 'in';
+      if (s.phi >= 2 * Math.PI) return 'round';
+    }
+    return 'round';
+  }
+
+  // ── 상태 ───────────────────────────────────────────────────
+  const st = {
+    manual: false,
+    idx: 0,                  // 자동 시도 번호
+    phase: 'run',            // tilt | run | fly | hold
+    phaseT: 0,
+    deg: ATTEMPTS[0],
+    fromDeg: ATTEMPTS[0],
+    toDeg: ATTEMPTS[0],
+    car: freshCar(),
+    outcome: predict(ATTEMPTS[0]),
+    exitSide: null,
+    trail: [],
+    past: [],                // { deg, pts }
+    alpha: 1,
+  };
+  syncXY(st.car);
+  st.trail.push([st.car.x, st.car.y]);
+
+  function startRun(deg) {
+    st.phase = 'run'; st.phaseT = 0; st.deg = deg;
+    st.car = freshCar(); syncXY(st.car);
+    st.trail = [[st.car.x, st.car.y]];
+    st.outcome = predict(deg);
+    st.exitSide = null; st.alpha = 1;
+  }
+  function startTilt(to, clearPast) {
+    if (st.trail.length > 1) st.past.push({ deg: st.deg, pts: st.trail });
+    if (clearPast) st.past = [];
+    st.trail = [];
+    st.phase = 'tilt'; st.phaseT = 0; st.fromDeg = st.deg; st.toDeg = to;
+    st.car = freshCar(); syncXY(st.car); st.alpha = 1;
+    st.outcome = predict(to);
+  }
+  function afterAttempt() {
+    if (st.manual) { startTilt(st.deg, true); return; }
+    const last = st.idx === ATTEMPTS.length - 1;
+    st.idx = last ? 0 : st.idx + 1;
+    startTilt(ATTEMPTS[st.idx], last);
+  }
+
+  function step(dt) {
+    st.phaseT += dt;
+    if (st.phase === 'tilt') {
+      const u = Math.min(1, st.phaseT / T_TILT);
+      const e = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+      st.deg = st.fromDeg + (st.toDeg - st.fromDeg) * e;
+      if (u >= 1) { st.deg = st.toDeg; startRun(st.toDeg); }
+      return;
+    }
+    if (st.phase === 'run') {
+      physStep(st.car, st.deg, dt);
+      st.trail.push([st.car.x, st.car.y]);
+      if (st.car.r > R_OUT || st.car.r < R_IN) {
+        st.exitSide = st.car.r > R_OUT ? 'out' : 'in';
+        st.phase = 'fly'; st.phaseT = 0;
+      } else if (st.car.phi >= 2 * Math.PI) {
+        st.phase = 'hold'; st.phaseT = 0;
+      }
+      return;
+    }
+    if (st.phase === 'fly') {
+      // 길을 벗어난 뒤: 붙잡아 주는 면이 없으니 수평으로 곧게 나아가며 흐려진다
+      const c = st.car;
+      c.x += c.vx * dt * TIME_SCALE; c.y += c.vy * dt * TIME_SCALE;
+      st.trail.push([c.x, c.y]);
+      st.alpha = Math.max(0, 1 - st.phaseT / T_FLY);
+      if (st.phaseT >= T_FLY) { st.phase = 'hold'; st.phaseT = 0; }
+      return;
+    }
+    if (st.phase === 'hold') {
+      const lim = st.exitSide ? T_HOLD : T_HOLD_LAP;
+      if (st.phaseT >= lim) afterAttempt();
+    }
+  }
+
+  // ── 조작기 ─────────────────────────────────────────────────
+  const slider = document.getElementById('angle');
+  const out = document.getElementById('angleOut');
+  const autoBtn = document.getElementById('auto');
+  const caption = document.getElementById('caption');
+  slider.addEventListener('input', () => {
+    if (PieceKit.frozen) return;
+    st.manual = true; autoBtn.hidden = false;
+    st.past = [];
+    startTilt(parseFloat(slider.value), true);
+    st.fromDeg = st.deg = st.toDeg; st.phaseT = T_TILT; // 바로 출발
+  });
+  autoBtn.addEventListener('click', () => {
+    if (PieceKit.frozen) return;
+    st.manual = false; autoBtn.hidden = true;
+    st.idx = 0; st.past = [];
+    startTilt(ATTEMPTS[0], true);
+  });
+  if (PieceKit.frozen) slider.disabled = true;
+
+  // ── 그리기 ─────────────────────────────────────────────────
+  const cv = document.getElementById('cv');
+  const W = 880, H = 340;
+  const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  cv.width = W * dpr; cv.height = H * dpr;
+  const ctx = cv.getContext('2d');
+
+  const COL = {
+    road: '#dcd8cf', roadEdge: '#a29d92', ink: '#2b2a27', muted: '#8a867d',
+    car: '#2f5d8a', carPast: 'rgba(47,93,138,0.28)', accent: '#c8642a',
+  };
+  const FONT = '"Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+
+  function arrow(x1, y1, x2, y2, color, width, dashed) {
+    const len = Math.hypot(x2 - x1, y2 - y1);
+    if (len < 1) return;
+    const ux = (x2 - x1) / len, uy = (y2 - y1) / len;
+    const head = Math.min(9, len * 0.5);
+    ctx.save();
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = width;
+    if (dashed) ctx.setLineDash([5, 4]);
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2 - ux * head * 0.8, y2 - uy * head * 0.8); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - ux * head - uy * head * 0.5, y2 - uy * head + ux * head * 0.5);
+    ctx.lineTo(x2 - ux * head + uy * head * 0.5, y2 - uy * head - ux * head * 0.5);
+    ctx.closePath(); ctx.fill();
+    ctx.restore();
+  }
+  function text(str, x, y, color, align, size) {
+    ctx.fillStyle = color; ctx.font = (size || 13) + 'px ' + FONT;
+    ctx.textAlign = align || 'left'; ctx.textBaseline = 'middle';
+    ctx.fillText(str, x, y);
+  }
+
+  // 단면도: 왼쪽이 원의 중심 쪽
+  const SEC = { cx: 205, cy: 190, pxm: 15, fs: 8.5 }; // fs: 1 m/s² 당 화살표 px
+
+  function drawSection() {
+    const th = st.deg * Math.PI / 180;
+    const k = Math.tan(th);
+    const c = st.car;
+    const onRoad = st.phase !== 'fly' && !(st.phase === 'hold' && st.exitSide);
+    const toPx = (r) => [SEC.cx + (r - R0) * SEC.pxm, SEC.cy - (r - R0) * k * SEC.pxm];
+    const [ix, iy] = toPx(R_IN), [ox, oy] = toPx(R_OUT);
+
+    PieceKit.mark('기울어진 길 단면', () => {
+      ctx.save();
+      ctx.fillStyle = COL.road;
+      ctx.beginPath();
+      ctx.moveTo(ix, iy); ctx.lineTo(ox, oy); ctx.lineTo(ox, 300); ctx.lineTo(ix, 300); ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = COL.roadEdge; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(ix, iy); ctx.lineTo(ox, oy); ctx.stroke();
+      ctx.restore();
+    });
+
+    PieceKit.mark('경사각 표시', () => {
+      ctx.save();
+      ctx.strokeStyle = COL.muted; ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(ix, iy); ctx.lineTo(ix + 70, iy); ctx.stroke();
+      ctx.setLineDash([]);
+      if (st.deg > 0.05) {
+        ctx.beginPath(); ctx.arc(ix, iy, 52, -th, 0); ctx.stroke();
+      }
+      ctx.restore();
+      text(fmtDeg(st.deg), ix + 4, iy + 14, COL.ink, 'left', 13);
+    });
+
+    PieceKit.mark('중심 쪽 표시', () => {
+      arrow(60, 312, 22, 312, COL.muted, 1.2);
+      text('원의 중심 쪽', 66, 312, COL.muted, 'left', 12);
+    });
+
+    if (!onRoad && st.phase !== 'tilt') {
+      PieceKit.mark('차 (단면)', () => {
+        text('길을 벗어났다', SEC.cx, 40, COL.muted, 'center', 13);
+      });
+      return;
+    }
+
+    const rShow = Math.max(R_IN, Math.min(R_OUT, c.r));
+    const [px, py] = toPx(rShow);
+    const nx = -Math.sin(th), ny = -Math.cos(th); // 면에 수직, 위·안쪽 (화면 좌표)
+    const carH = 16, carW = 30;
+    const mx = px + nx * carH / 2, my = py + ny * carH / 2;
+
+    PieceKit.mark('차 (단면)', () => {
+      ctx.save();
+      ctx.translate(mx, my); ctx.rotate(-th);
+      ctx.fillStyle = COL.car;
+      ctx.fillRect(-carW / 2, -carH / 2, carW, carH);
+      ctx.restore();
+    });
+
+    const vphi = c.L / c.r;
+    const need = vphi * vphi / c.r;                           // 원을 유지하려면 필요한 안쪽 가속도
+    const N = G * Math.cos(th) + Math.sin(th) * need;          // 수직항력 (질량당)
+    const Nin = N * Math.sin(th);                              // 그 안쪽 성분
+
+    PieceKit.mark('무게', () => {
+      arrow(mx, my, mx, my + G * SEC.fs, COL.ink, 2);
+      text('무게', mx + 8, my + G * SEC.fs - 8, COL.muted, 'left', 12);
+    });
+    const nEx = mx + nx * N * SEC.fs, nEy = my + ny * N * SEC.fs;
+    PieceKit.mark('길이 미는 힘', () => {
+      arrow(mx, my, nEx, nEy, COL.ink, 2);
+      text('길이 미는 힘', (mx + nEx) / 2 + 10, (my + nEy) / 2, COL.muted, 'left', 12);
+    });
+    const needY = 40, inY = 68;
+    PieceKit.mark('돌기에 필요한 만큼', () => {
+      ctx.save();
+      ctx.strokeStyle = COL.ink; ctx.lineWidth = 1.2;
+      const x2 = mx - need * SEC.fs;
+      ctx.beginPath();
+      ctx.moveTo(mx, needY - 6); ctx.lineTo(mx, needY + 6);
+      ctx.moveTo(mx, needY); ctx.lineTo(x2, needY);
+      ctx.moveTo(x2, needY - 6); ctx.lineTo(x2, needY + 6);
+      ctx.stroke();
+      ctx.restore();
+      text('돌기에 필요한 만큼', mx + 10, needY, COL.muted, 'left', 12);
+    });
+    PieceKit.mark('안쪽으로 미는 몫', () => {
+      ctx.save();
+      ctx.strokeStyle = COL.muted; ctx.lineWidth = 1; ctx.setLineDash([2, 3]);
+      ctx.beginPath(); ctx.moveTo(nEx, nEy); ctx.lineTo(nEx, inY); ctx.stroke();
+      ctx.restore();
+      if (Nin * SEC.fs < 1) {
+        ctx.save(); ctx.fillStyle = COL.accent;
+        ctx.beginPath(); ctx.arc(mx, inY, 3, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+      } else {
+        arrow(mx, inY, mx - Nin * SEC.fs, inY, COL.accent, 3);
+      }
+      text('길이 안쪽으로 미는 몫', mx + 10, inY, COL.accent, 'left', 12);
+    });
+  }
+
+  // 위에서 본 길
+  const TOP = { cx: 640, cy: 158, pxm: 3.2 };
+  function tp(x, y) { return [TOP.cx + x * TOP.pxm, TOP.cy + y * TOP.pxm]; }
+
+  function drawTop() {
+    PieceKit.mark('위에서 본 둥근 길', () => {
+      ctx.save();
+      ctx.fillStyle = COL.road;
+      ctx.beginPath();
+      ctx.arc(TOP.cx, TOP.cy, R_OUT * TOP.pxm, 0, Math.PI * 2);
+      ctx.arc(TOP.cx, TOP.cy, R_IN * TOP.pxm, 0, Math.PI * 2, true);
+      ctx.fill('evenodd');
+      ctx.strokeStyle = COL.roadEdge; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(TOP.cx, TOP.cy, R_OUT * TOP.pxm, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(TOP.cx, TOP.cy, R_IN * TOP.pxm, 0, Math.PI * 2); ctx.stroke();
+      ctx.fillStyle = COL.muted;
+      ctx.beginPath(); ctx.arc(TOP.cx, TOP.cy, 2.5, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    });
+
+    PieceKit.mark('이전 시도의 자취', () => {
+      for (const p of st.past) {
+        ctx.save();
+        ctx.strokeStyle = COL.carPast; ctx.lineWidth = 2;
+        ctx.beginPath();
+        p.pts.forEach(([x, y], i) => { const [a, b] = tp(x, y); i ? ctx.lineTo(a, b) : ctx.moveTo(a, b); });
+        ctx.stroke();
+        ctx.restore();
+        const [lx, ly] = tp(...p.pts[p.pts.length - 1]);
+        text(fmtDeg(p.deg), lx + 6, ly - 8, COL.muted, 'left', 12);
+      }
+    });
+
+    PieceKit.mark('차의 자취', () => {
+      if (st.trail.length < 2) return;
+      ctx.save();
+      ctx.strokeStyle = COL.car; ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      st.trail.forEach(([x, y], i) => { const [a, b] = tp(x, y); i ? ctx.lineTo(a, b) : ctx.moveTo(a, b); });
+      ctx.stroke();
+      ctx.restore();
+    });
+
+    PieceKit.mark('차 (위)', () => {
+      const c = st.car;
+      const [a, b] = tp(c.x, c.y);
+      ctx.save();
+      ctx.globalAlpha = st.alpha;
+      ctx.translate(a, b); ctx.rotate(Math.atan2(c.vy, c.vx));
+      ctx.fillStyle = COL.car;
+      ctx.fillRect(-9, -5, 18, 10);
+      ctx.restore();
+    });
+  }
+
+  function captionText() {
+    const d = fmtDeg(st.deg);
+    if (st.phase === 'tilt') return '길을 ' + fmtDeg(st.toDeg) + '로 기울인다';
+    if (st.outcome === 'round') return '기울기 ' + d + ' — 마찰 없이도 차가 원을 따라 돈다';
+    if (st.deg < 0.05) return '기울기 ' + d + ' — 빙판 위의 차는 곧게 나아가 바깥으로 미끄러져 나간다';
+    if (st.outcome === 'out') return '기울기 ' + d + ' — 안쪽으로 미는 몫이 모자라 바깥으로 밀려난다';
+    return '기울기 ' + d + ' — 안쪽으로 미는 몫이 넘쳐 안쪽으로 미끄러져 내려간다';
+  }
+
+  function draw() {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    drawSection();
+    drawTop();
+    const cap = captionText();
+    PieceKit.mark('캡션', () => { if (caption.textContent !== cap) caption.textContent = cap; });
+    if (!st.manual || PieceKit.frozen) {
+      const v = st.deg.toFixed(1);
+      if (slider.value !== v) slider.value = v;
+    }
+    out.textContent = fmtDeg(st.deg);
+  }
+
+  PieceKit.loop({ step: (dt) => step(dt), draw });
+})();
+</script>
+</body>
+</html>

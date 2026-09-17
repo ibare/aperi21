@@ -1,0 +1,44 @@
+{
+  "rows": [
+    {
+      "element": "벽 · 처음 길이",
+      "vocab": "body (rect) + trace (tick) + trajectory (dashed) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "막대",
+      "vocab": "body (rect ×2)",
+      "status": "있음"
+    },
+    {
+      "element": "당기는 힘",
+      "vocab": "vector",
+      "status": "있음"
+    },
+    {
+      "element": "남은 늘어남 (막대 괄호)",
+      "vocab": "dimension (text) 또는 trajectory (accent) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "곡선 축",
+      "vocab": "trajectory (꺾인 선) + readout",
+      "status": "있음",
+      "note": "graph 는 화면 카드라 막대와 같은 판에 월드로 그린다"
+    },
+    {
+      "element": "지나온 곡선 · 남은 늘어남 선분 · 지금 점",
+      "vocab": "trajectory (width) + trajectory (accent) + body (circle)",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (timeline phases.caption)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "재료 모형(탄성 → 소성, 남은 변형률) — sim step",
+    "두 번 당기기 주기 — timeline"
+  ]
+}

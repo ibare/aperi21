@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>응력-변형률 곡선</title>
+<style>
+  html, body { margin: 0; background: #fbfaf7; }
+  .piece { max-width: 900px; margin: 0 auto; }
+  canvas { display: block; width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<div class="piece"><canvas id="c"></canvas></div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// 논리 좌표 860 x 300 에 그리고, 컨테이너 너비에 맞춰 늘린다.
+const W = 860, H = 300;
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const dpr = Math.max(1, window.devicePixelRatio || 1);
+canvas.width = W * dpr;
+canvas.height = H * dpr;
+
+const 색 = {
+  바탕: '#fbfaf7',
+  먹: '#2b2b2b',
+  흐린먹: '#9a978f',
+  막대: '#4f6f8f',
+  강조: '#d9480f', // 뜻 하나: 힘을 빼도 남은 늘어남
+};
+
+// ── 재료 모형 (단위는 임의, 탄성 구간을 눈에 보이게 과장) ──
+const E = 2.0;        // 탄성 기울기
+const 항복변형률 = 0.5; // 곡선이 꺾이는 곳
+const 항복응력 = E * 항복변형률;
+const 굳음폭 = 0.85, 굳음길이 = 1.6;
+
+// 한 번도 넘어 보지 않은 막대가 따르는 곡선
+function 뼈대곡선(e) {
+  if (e <= 항복변형률) return E * e;
+  return 항복응력 + 굳음폭 * (1 - Math.exp(-(e - 항복변형률) / 굳음길이));
+}
+
+// ── 한 바퀴 일정 (τ 초) ──
+const 주기 = 17;
+const 시작어긋남 = 0.8; // 도착한 순간 이미 당기는 중
+const 새막대시각 = 16.4;
+const 작은당김 = 0.4, 큰당김 = 5.0;
+
+const ease = (x) => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
+
+// 상태: 지금 변형률, 응력, 남은 변형률, 지나온 점들
+const 상태 = { e: 0, s: 0, 남은: 0, 놓기시작응력: 0, 자취: [], 열쇠: null };
+
+function 새막대() {
+  상태.e = 0; 상태.s = 0; 상태.남은 = 0; 상태.놓기시작응력 = 0;
+  상태.자취 = [[0, 0]];
+}
+
+// 늘인 만큼(변형률)을 정해 주면 응력과 남은 변형률이 따라온다
+function 당긴다(e) {
+  const 탄성으로 = E * (e - 상태.남은);
+  const 곡선 = 뼈대곡선(e);
+  let s;
+  if (탄성으로 <= 곡선) {
+    s = Math.max(0, 탄성으로);
+  } else {
+    s = 곡선;
+    상태.남은 = e - s / E; // 꺾인 곡선 위: 남는 늘어남이 자란다
+  }
+  상태.e = e; 상태.s = s;
+}
+
+// 힘을 정해 주면(놓는 중) 곧은 선으로 내려온다
+function 놓는다(s) {
+  상태.s = s;
+  상태.e = 상태.남은 + s / E;
+}
+
+function τ의(t) { return ((t + 시작어긋남) % 주기 + 주기) % 주기; }
+
+function 진행(t) {
+  const τ = τ의(t);
+  const 바퀴 = Math.floor((t + 시작어긋남) / 주기);
+  const 열쇠 = 바퀴 * 2 + (τ >= 새막대시각 ? 1 : 0);
+  if (열쇠 !== 상태.열쇠) { 상태.열쇠 = 열쇠; 새막대(); }
+
+  if (τ < 2.0) {
+    당긴다(작은당김 * ease(τ / 2.0));
+    상태.놓기시작응력 = 상태.s;
+  } else if (τ < 2.6) {
+    상태.놓기시작응력 = 상태.s;
+  } else if (τ < 4.2) {
+    놓는다(상태.놓기시작응력 * (1 - ease((τ - 2.6) / 1.6)));
+  } else if (τ < 5.0) {
+    놓는다(0);
+  } else if (τ < 10.0) {
+    당긴다(큰당김 * ease((τ - 5.0) / 5.0));
+    상태.놓기시작응력 = 상태.s;
+  } else if (τ < 10.6) {
+    상태.놓기시작응력 = 상태.s;
+  } else if (τ < 12.2) {
+    놓는다(상태.놓기시작응력 * (1 - ease((τ - 10.6) / 1.6)));
+  } else if (τ < 새막대시각) {
+    놓는다(0);
+  } else {
+    // 새 막대: 아무것도 하지 않은 채 들어온다
+  }
+
+  const 끝 = 상태.자취[상태.자취.length - 1];
+  if (Math.abs(끝[0] - 상태.e) > 1e-4 || Math.abs(끝[1] - 상태.s) > 1e-4) {
+    상태.자취.push([상태.e, 상태.s]);
+  }
+}
+
+진행(0);
+
+// ── 화면 배치 ──
+const 벽X = 40, 막대Y = 150, 처음길이 = 170, 변형률당픽셀 = 30, 막대두께 = 26;
+const 곡선 = { x0: 470, y0: 250, 너비: 360, 높이: 190, e최대: 5.6, s최대: 2.1 };
+const cx = (e) => 곡선.x0 + (e / 곡선.e최대) * 곡선.너비;
+const cy = (s) => 곡선.y0 - (s / 곡선.s최대) * 곡선.높이;
+
+function 캡션(τ) {
+  if (τ < 2.6) return '조금만 당긴다';
+  if (τ < 5.0) return '놓으면 올라간 선을 따라 내려와 처음 길이로 돌아온다';
+  if (τ < 10.6) return 상태.e <= 항복변형률 ? '이번엔 더 멀리 당긴다'
+    : '곡선이 꺾인 뒤로는 힘을 조금만 더해도 훨씬 많이 늘어난다';
+  if (τ < 15.5) return '놓아도 곡선을 되짚지 않고 곧게 내려와, 늘어난 채로 남는다';
+  return '새 막대로 다시';
+}
+
+function 장면투명도(τ) {
+  if (τ >= 15.5 && τ < 새막대시각) return 1 - ease((τ - 15.5) / 0.9);
+  if (τ >= 새막대시각) return ease((τ - 새막대시각) / 0.6);
+  return 1;
+}
+
+function 남은늘어남투명도(τ) {
+  if (τ < 12.0) return 0;
+  if (τ < 새막대시각) return ease((τ - 12.0) / 0.5);
+  return 0;
+}
+
+function 화살표(x1, y, x2, 굵기) {
+  ctx.beginPath();
+  ctx.moveTo(x1, y); ctx.lineTo(x2 - 9, y);
+  ctx.lineWidth = 굵기; ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x2, y); ctx.lineTo(x2 - 12, y - 7); ctx.lineTo(x2 - 12, y + 7);
+  ctx.closePath(); ctx.fill();
+}
+
+PieceKit.loop({
+  step(dt, t) { 진행(t + dt); },
+  draw(t) {
+    const τ = τ의(t);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = 색.바탕; ctx.fillRect(0, 0, W, H);
+    ctx.font = '14px system-ui, -apple-system, "Apple SD Gothic Neo", sans-serif';
+    ctx.textBaseline = 'middle';
+
+    const a = 장면투명도(τ);
+    const 남a = 남은늘어남투명도(τ);
+    const 막대길이 = 처음길이 + 상태.e * 변형률당픽셀;
+    const 끝X = 벽X + 막대길이;
+    const 두께 = 막대두께 / Math.sqrt(1 + 0.12 * 상태.e);
+
+    PieceKit.mark('벽', () => {
+      ctx.fillStyle = 색.먹;
+      ctx.fillRect(벽X - 10, 막대Y - 50, 10, 100);
+      ctx.strokeStyle = 색.흐린먹; ctx.lineWidth = 1;
+      for (let i = 0; i < 6; i++) {
+        const y = 막대Y - 50 + i * 18;
+        ctx.beginPath(); ctx.moveTo(벽X - 10, y + 12); ctx.lineTo(벽X - 22, y); ctx.stroke();
+      }
+    });
+
+    PieceKit.mark('처음 길이 표시', () => {
+      const x = 벽X + 처음길이;
+      ctx.strokeStyle = 색.흐린먹; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(x, 막대Y - 44); ctx.lineTo(x, 막대Y + 44); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = 색.흐린먹; ctx.textAlign = 'center';
+      ctx.fillText('처음 길이', x, 막대Y + 58);
+    });
+
+    ctx.globalAlpha = a;
+
+    PieceKit.mark('막대', () => {
+      ctx.fillStyle = 색.막대;
+      ctx.fillRect(벽X, 막대Y - 두께 / 2, 막대길이, 두께);
+      // 잡는 손잡이
+      ctx.fillRect(끝X, 막대Y - 20, 12, 40);
+    });
+
+    PieceKit.mark('당기는 힘 화살표', () => {
+      const 길이 = (상태.s / 곡선.s최대) * 55;
+      if (길이 < 3) return;
+      ctx.strokeStyle = 색.먹; ctx.fillStyle = 색.먹;
+      화살표(끝X + 16, 막대Y, 끝X + 16 + 길이 + 10, 2.5);
+    });
+
+    PieceKit.mark('남은 늘어남 (막대)', () => {
+      if (남a <= 0) return;
+      const x1 = 벽X + 처음길이, x2 = 끝X;
+      const y = 막대Y - 40;
+      ctx.save();
+      ctx.globalAlpha = a * 남a;
+      ctx.strokeStyle = 색.강조; ctx.fillStyle = 색.강조; ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(x1, y + 8); ctx.lineTo(x1, y); ctx.lineTo(x2, y); ctx.lineTo(x2, y + 8);
+      ctx.stroke();
+      ctx.textAlign = 'center';
+      ctx.fillText('남은 늘어남', (x1 + x2) / 2, y - 14);
+      ctx.restore();
+    });
+
+    ctx.globalAlpha = 1;
+
+    PieceKit.mark('곡선 축', () => {
+      ctx.strokeStyle = 색.흐린먹; ctx.fillStyle = 색.흐린먹; ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(곡선.x0, 곡선.y0 - 곡선.높이 - 12);
+      ctx.lineTo(곡선.x0, 곡선.y0);
+      ctx.lineTo(곡선.x0 + 곡선.너비 + 12, 곡선.y0);
+      ctx.stroke();
+      ctx.textAlign = 'left';
+      ctx.fillText('응력', 곡선.x0 + 8, 곡선.y0 - 곡선.높이 - 8);
+      ctx.textAlign = 'right';
+      ctx.fillText('변형률', 곡선.x0 + 곡선.너비 + 12, 곡선.y0 + 18);
+      ctx.textAlign = 'center';
+      ctx.fillText('0', 곡선.x0 - 10, 곡선.y0 + 12);
+    });
+
+    ctx.globalAlpha = a;
+
+    PieceKit.mark('지나온 곡선', () => {
+      const p = 상태.자취;
+      ctx.strokeStyle = 색.먹; ctx.lineWidth = 2.5; ctx.lineJoin = 'round';
+      ctx.beginPath();
+      ctx.moveTo(cx(p[0][0]), cy(p[0][1]));
+      for (let i = 1; i < p.length; i++) ctx.lineTo(cx(p[i][0]), cy(p[i][1]));
+      ctx.stroke();
+    });
+
+    PieceKit.mark('남은 늘어남 (곡선)', () => {
+      if (남a <= 0) return;
+      ctx.save();
+      ctx.globalAlpha = a * 남a;
+      ctx.strokeStyle = 색.강조; ctx.lineWidth = 5; ctx.lineCap = 'butt';
+      ctx.beginPath();
+      ctx.moveTo(cx(0), 곡선.y0); ctx.lineTo(cx(상태.남은), 곡선.y0);
+      ctx.stroke();
+      ctx.restore();
+    });
+
+    PieceKit.mark('지금 상태 점', () => {
+      ctx.fillStyle = 색.막대;
+      ctx.beginPath(); ctx.arc(cx(상태.e), cy(상태.s), 6.5, 0, Math.PI * 2); ctx.fill();
+    });
+
+    ctx.globalAlpha = 1;
+
+    PieceKit.mark('캡션', () => {
+      ctx.fillStyle = 색.먹; ctx.textAlign = 'left';
+      ctx.font = '16px system-ui, -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.fillText(캡션(τ), 벽X - 20, 280);
+    });
+  },
+});
+</script>
+</body>
+</html>

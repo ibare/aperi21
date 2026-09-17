@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>힘의 이득</title>
+<style>
+  html, body { margin: 0; background: #ffffff; }
+  body { font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; color: #2a2a2a; }
+  .piece { max-width: 860px; margin: 0 auto; padding: 12px 0; }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { margin: 6px 16px 0; font-size: 15px; line-height: 1.5; min-height: 1.5em; text-align: center; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <p class="caption" id="caption"></p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// 힘의 이득 — 같은 상자를 같은 높이로 올리는 세 가지 방법.
+// 손 쪽(힘·민 거리)은 강조색 한 가지, 상자는 세 칸 모두 같은 색.
+(function () {
+  const W = 860, H = 310;
+  const canvas = document.getElementById('c');
+  const captionEl = document.getElementById('caption');
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  // 색
+  const INK = '#2a2a2a';
+  const MUTED = '#8a8a8a';
+  const GROUND = '#b9b4aa';
+  const BOX = '#c9a877';
+  const BOX_EDGE = '#8c6f45';
+  const HAND = '#d9480f'; // 강조색: 손이 주는 힘과 손이 민 거리에만
+
+  // 물리 값 — 화면 숫자와 같은 값
+  const WEIGHT_N = 120;      // 상자 무게
+  const RISE_M = 0.5;        // 올리는 높이
+  const PX_PER_M = 100;
+  const RISE = RISE_M * PX_PER_M;   // 50px
+  const FORCE_PX_PER_N = 80 / 120;  // 힘 화살표 길이
+  const GROUND_Y = 250;
+  const TOP_Y = GROUND_Y - RISE;
+  const BOX_S = 36;
+
+  const tools = [
+    { name: '그대로 들기', cx: 145, ratio: 1 },
+    { name: '지레 (팔 길이 1 : 2)', cx: 430, ratio: 2 },
+    { name: '빗면 (길이가 높이의 4배)', cx: 715, ratio: 4 },
+  ];
+
+  // 시간 — 한 바퀴 6.5초. t=0 에 이미 올라가는 중이도록 0.8초 앞당긴다.
+  const CYCLE = 6.5, LIFT = 4.0, HOLD_END = 5.5, OFFSET = 0.8;
+  const smooth = (x) => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
+  function phaseAt(t) {
+    const tau = ((t + OFFSET) % CYCLE + CYCLE) % CYCLE;
+    if (tau < LIFT) return { p: smooth(tau / LIFT), fade: 1, stage: 'lift' };
+    if (tau < HOLD_END) return { p: 1, fade: 1, stage: 'hold' };
+    const r = (tau - HOLD_END) / (CYCLE - HOLD_END);
+    return { p: 1 - smooth(r), fade: 1 - smooth(r * 1.6), stage: 'return' };
+  }
+
+  // 그리기 도구
+  function arrow(x1, y1, x2, y2, color, width) {
+    const a = Math.atan2(y2 - y1, x2 - x1);
+    const head = 9;
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = width;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2 - Math.cos(a) * head * 0.8, y2 - Math.sin(a) * head * 0.8);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - Math.cos(a - 0.45) * head, y2 - Math.sin(a - 0.45) * head);
+    ctx.lineTo(x2 - Math.cos(a + 0.45) * head, y2 - Math.sin(a + 0.45) * head);
+    ctx.closePath();
+    ctx.fill();
+  }
+  function band(x1, y1, x2, y2, alpha) {
+    if (Math.hypot(x2 - x1, y2 - y1) < 0.5) return;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.strokeStyle = HAND; ctx.lineWidth = 6; ctx.lineCap = 'butt';
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    // 출발점 표시
+    const a = Math.atan2(y2 - y1, x2 - x1);
+    const nx = -Math.sin(a) * 7, ny = Math.cos(a) * 7;
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(x1 - nx, y1 - ny); ctx.lineTo(x1 + nx, y1 + ny); ctx.stroke();
+    ctx.restore();
+  }
+  function hand(x, y) {
+    ctx.fillStyle = HAND;
+    ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fill();
+  }
+  function box(x, y, angle) { // (x, y) = 상자 밑면 가운데
+    ctx.save();
+    ctx.translate(x, y); ctx.rotate(angle || 0);
+    ctx.fillStyle = BOX; ctx.strokeStyle = BOX_EDGE; ctx.lineWidth = 1.5;
+    ctx.fillRect(-BOX_S / 2, -BOX_S, BOX_S, BOX_S);
+    ctx.strokeRect(-BOX_S / 2, -BOX_S, BOX_S, BOX_S);
+    ctx.fillStyle = INK; ctx.font = '11px sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(WEIGHT_N + ' N', 0, -BOX_S / 2);
+    ctx.restore();
+  }
+  function fmt(m) { return m.toFixed(2); }
+
+  function drawScene(t) {
+    const { p, fade, stage } = phaseAt(t);
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, H);
+
+    PieceKit.mark('바닥', () => {
+      ctx.strokeStyle = GROUND; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(10, GROUND_Y); ctx.lineTo(W - 10, GROUND_Y); ctx.stroke();
+    });
+
+    PieceKit.mark('같은 높이 선', () => {
+      ctx.save();
+      ctx.strokeStyle = MUTED; ctx.lineWidth = 1; ctx.setLineDash([5, 5]);
+      ctx.beginPath(); ctx.moveTo(10, TOP_Y); ctx.lineTo(W - 10, TOP_Y); ctx.stroke();
+      ctx.restore();
+      ctx.fillStyle = MUTED; ctx.font = '12px sans-serif';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+      ctx.fillText('같은 높이 0.5 m', 12, TOP_Y - 3);
+    });
+
+    // ── 1. 그대로 들기 ──
+    {
+      const cx = tools[0].cx;
+      const boxY = GROUND_Y - RISE * p;
+      const handY = boxY - BOX_S - 60;
+      const handY0 = GROUND_Y - BOX_S - 60;
+      PieceKit.mark('그대로 들기: 손이 민 거리', () => band(cx + 22, handY0, cx + 22, handY, fade));
+      PieceKit.mark('그대로 들기: 밧줄', () => {
+        ctx.strokeStyle = MUTED; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(cx, boxY - BOX_S); ctx.lineTo(cx, handY); ctx.stroke();
+      });
+      PieceKit.mark('그대로 들기: 상자', () => box(cx, boxY, 0));
+      PieceKit.mark('그대로 들기: 손', () => hand(cx, handY));
+      PieceKit.mark('그대로 들기: 손의 힘', () =>
+        arrow(cx, handY - 8, cx, handY - 8 - WEIGHT_N / tools[0].ratio * FORCE_PX_PER_N, HAND, 3));
+    }
+
+    // ── 2. 지레 ──
+    {
+      const cx = tools[1].cx;
+      const L1 = 70, L2 = 140;
+      const d0 = RISE * 2 / 3;                 // 시작 때 상자 끝이 받침점보다 낮은 정도
+      const pivotX = cx - 35, pivotY = GROUND_Y - d0;
+      const vb = d0 - RISE * p;                // 상자 끝의 받침점 기준 세로 위치(아래 +)
+      const s = vb / L1;
+      const c = Math.sqrt(1 - s * s);
+      const bx = pivotX - L1 * c, by = pivotY + vb;
+      const hx = pivotX + L2 * c, hy = pivotY - 2 * vb;
+      const hy0 = pivotY - 2 * d0;
+      PieceKit.mark('지레: 손이 민 거리', () => band(pivotX + L2 + 18, hy0, pivotX + L2 + 18, hy, fade));
+      PieceKit.mark('지레: 받침점', () => {
+        ctx.fillStyle = '#9d9790';
+        ctx.beginPath();
+        ctx.moveTo(pivotX, pivotY); ctx.lineTo(pivotX - 14, GROUND_Y); ctx.lineTo(pivotX + 14, GROUND_Y);
+        ctx.closePath(); ctx.fill();
+      });
+      PieceKit.mark('지레: 막대', () => {
+        ctx.strokeStyle = '#5b554d'; ctx.lineWidth = 5; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(hx, hy); ctx.stroke();
+      });
+      PieceKit.mark('지레: 상자', () => box(bx, by - 3, 0));
+      PieceKit.mark('지레: 손', () => hand(hx, hy - 8));
+      PieceKit.mark('지레: 손의 힘', () => {
+        const len = WEIGHT_N / tools[1].ratio * FORCE_PX_PER_N;
+        arrow(hx, hy - 16 - len, hx, hy - 16, HAND, 3);
+      });
+    }
+
+    // ── 3. 빗면 ──
+    {
+      const cx = tools[2].cx;
+      const Ls = RISE * 4;                         // 빗면 길이 200px = 2.0 m
+      const run = Math.sqrt(Ls * Ls - RISE * RISE);
+      const fx = cx - run / 2, fy = GROUND_Y;
+      const tx = cx + run / 2, ty = TOP_Y;
+      const ux = run / Ls, uy = -RISE / Ls;
+      const nx = uy, ny = -ux;                     // 빗면에서 위로 향하는 수직
+      const ang = Math.atan2(uy, ux);
+      const sPos = Ls * p;
+      const at = (sv, off) => [fx + ux * sv + nx * off, fy + uy * sv + ny * off];
+      const HB = BOX_S / 2 + 8;                    // 상자 가운데에서 손까지
+      PieceKit.mark('빗면: 비탈', () => {
+        ctx.fillStyle = '#e4dfd6'; ctx.strokeStyle = GROUND; ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(fx, fy); ctx.lineTo(tx, ty); ctx.lineTo(tx + 38, ty); ctx.lineTo(tx + 38, GROUND_Y);
+        ctx.closePath(); ctx.fill(); ctx.stroke();
+      });
+      PieceKit.mark('빗면: 손이 민 거리', () => {
+        const a = at(-HB, BOX_S + 12), b = at(sPos - HB, BOX_S + 12);
+        band(a[0], a[1], b[0], b[1], fade);
+      });
+      PieceKit.mark('빗면: 상자', () => { const q = at(sPos, 0); box(q[0], q[1], ang); });
+      const hp = at(sPos - HB, BOX_S / 2);
+      PieceKit.mark('빗면: 손', () => hand(hp[0], hp[1]));
+      PieceKit.mark('빗면: 손의 힘', () => {
+        const len = WEIGHT_N / tools[2].ratio * FORCE_PX_PER_N;
+        const tip = at(sPos - HB - 9, BOX_S / 2), tail = at(sPos - HB - 9 - len, BOX_S / 2);
+        arrow(tail[0], tail[1], tip[0], tip[1], HAND, 3);
+      });
+    }
+
+    PieceKit.mark('도구별 힘과 민 거리', () => {
+      ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+      for (const tool of tools) {
+        ctx.fillStyle = INK; ctx.font = '13px sans-serif';
+        ctx.fillText(tool.name, tool.cx, 274);
+        const f = WEIGHT_N / tool.ratio;
+        const dist = RISE_M * tool.ratio * p;
+        ctx.font = '13px sans-serif';
+        ctx.fillStyle = HAND;
+        ctx.fillText('손의 힘 ' + f + ' N  ·  민 거리 ' + fmt(dist) + ' m', tool.cx, 296);
+      }
+    });
+
+    const text = stage === 'lift'
+      ? '같은 상자를 같은 높이까지 올리는 동안, 힘이 작은 쪽일수록 손은 더 긴 거리를 민다'
+      : '힘이 절반이면 두 배, 4분의 1이면 네 배 긴 거리를 밀어야 같은 높이에 닿았다';
+    PieceKit.mark('캡션', () => { if (captionEl.textContent !== text) captionEl.textContent = text; });
+  }
+
+  PieceKit.loop({
+    step() { /* 모든 상태는 t 의 함수 — 쌓이는 것 없음 */ },
+    draw(t) { drawScene(t); },
+  });
+})();
+</script>
+</body>
+</html>

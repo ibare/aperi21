@@ -1,0 +1,38 @@
+{
+  "rows": [
+    {
+      "element": "벽",
+      "vocab": "body (rect) + trace (tick 빗금) + trajectory",
+      "status": "있음"
+    },
+    {
+      "element": "원래 길이 선 · 늘임 눈금",
+      "vocab": "trajectory (dashed) + trace (tick) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "용수철",
+      "vocab": "constraint (spring · coils · from/to)",
+      "status": "있음",
+      "note": "감은 수 고정, 간격이 길이를 따라 벌어진다 — 렌더러가 그렇게 긋는다"
+    },
+    {
+      "element": "물체 · 손잡이",
+      "vocab": "body (rect · circle fill none) + trajectory",
+      "status": "있음"
+    },
+    {
+      "element": "되돌리는 힘 · 남겨 둔 힘",
+      "vocab": "vector (accent · opacity)",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (timeline phases.caption)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "한 칸씩 당기고 멈추는 10.5 s 주기 — timeline"
+  ]
+}

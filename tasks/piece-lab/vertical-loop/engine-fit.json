@@ -1,0 +1,43 @@
+{
+  "rows": [
+    {
+      "element": "레일",
+      "vocab": "trajectory (closed)",
+      "status": "있음"
+    },
+    {
+      "element": "꼭대기 최소 속력 기준",
+      "vocab": "vector (dashed) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "떨어진 공의 궤적",
+      "vocab": "trajectory (dashed)",
+      "status": "있음"
+    },
+    {
+      "element": "레일을 떠난 지점",
+      "vocab": "body (circle · fill none · outline role) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "레일이 미는 힘 · 속력",
+      "vocab": "vector (label)",
+      "status": "있음"
+    },
+    {
+      "element": "공 · 이름표",
+      "vocab": "body (circle) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (timeline phases.caption 또는 cases)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "수직항력 0 순간 감지와 레일 운동 → 포물선 전환, 미리 적분한 표 — sim",
+    "자연 주기에 맞춘 되풀이 — timeline"
+  ]
+}

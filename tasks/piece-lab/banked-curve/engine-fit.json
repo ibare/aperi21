@@ -1,0 +1,60 @@
+{
+  "rows": [
+    {
+      "element": "기울어진 길 단면 · 경사각 표시",
+      "vocab": "region + trajectory (dashed) + sector (fillOpacity 0 · rimWidth) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "중심 쪽 표시",
+      "vocab": "vector + readout",
+      "status": "있음"
+    },
+    {
+      "element": "차 (단면 · 위)",
+      "vocab": "body (rect · orientation · opacity)",
+      "status": "있음"
+    },
+    {
+      "element": "무게 · 길이 미는 힘 · 안쪽 몫",
+      "vocab": "vector (같은 배율 · accent) + trajectory (dashed 투영)",
+      "status": "있음"
+    },
+    {
+      "element": "돌기에 필요한 만큼",
+      "vocab": "dimension 또는 trajectory + trace (tick) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "위에서 본 둥근 길 (고리)",
+      "vocab": "body (disc) + body (disc · 바탕색) + trajectory (closed ×2)",
+      "status": "있음",
+      "note": "region 에 구멍이 없어 원판 둘을 겹쳐 고리를 만든다"
+    },
+    {
+      "element": "이전 시도 자취 · 차 자취",
+      "vocab": "trajectory (opacity) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "경사각 조작기",
+      "vocab": "slider (range [0,50] · step 0.1 · digits 1) + heldPath",
+      "status": "있음"
+    },
+    {
+      "element": "자동으로 보기 단추",
+      "vocab": "button",
+      "status": "있음",
+      "note": "05 에서 올린 button"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (cases)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "마찰 없는 경사면 위 차의 RK4 적분과 시도 순환 — sim step",
+    "같은 상태를 단면과 위에서 본 두 칸 — 한 월드에 나란히"
+  ]
+}

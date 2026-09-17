@@ -231,7 +231,9 @@
         {
           "id": "free-body-diagram",
           "name": "자유물체도",
-          "desc": "한 물체에 작용하는 힘만 분리하기"
+          "desc": "한 물체에 작용하는 힘만 분리하기",
+          "simId": "aperi21:free-body-diagram",
+          "labUrl": "piece-lab/free-body-diagram/index.html"
         },
         {
           "id": "inertial-vs-gravitational-mass",
@@ -282,7 +284,9 @@
         {
           "id": "pulley-system",
           "name": "도르래",
-          "desc": "힘의 방향과 크기를 바꾸는 장치"
+          "desc": "힘의 방향과 크기를 바꾸는 장치",
+          "simId": "aperi21:pulley-system",
+          "labUrl": "piece-lab/pulley-system/index.html"
         },
         {
           "id": "connected-bodies",
@@ -292,7 +296,9 @@
         {
           "id": "spring-force",
           "name": "탄성력",
-          "desc": "변형에 비례하는 복원력"
+          "desc": "변형에 비례하는 복원력",
+          "simId": "aperi21:spring-force",
+          "labUrl": "piece-lab/spring-force/index.html"
         },
         {
           "id": "centripetal-force",
@@ -309,17 +315,23 @@
         {
           "id": "banked-curve",
           "name": "경사진 커브",
-          "desc": "마찰 없이도 도는 각도"
+          "desc": "마찰 없이도 도는 각도",
+          "simId": "aperi21:banked-curve",
+          "labUrl": "piece-lab/banked-curve/index.html"
         },
         {
           "id": "vertical-loop",
           "name": "연직 원운동",
-          "desc": "꼭대기에서 떨어지지 않는 최소 속력"
+          "desc": "꼭대기에서 떨어지지 않는 최소 속력",
+          "simId": "aperi21:vertical-loop",
+          "labUrl": "piece-lab/vertical-loop/index.html"
         },
         {
           "id": "drag-force",
           "name": "공기 저항",
-          "desc": "속도의 1차·2차에 비례하는 저항"
+          "desc": "속도의 1차·2차에 비례하는 저항",
+          "simId": "aperi21:drag-force",
+          "labUrl": "piece-lab/drag-force/index.html"
         },
         {
           "id": "buoyant-force-as-force",
@@ -329,7 +341,9 @@
         {
           "id": "non-inertial-frame",
           "name": "비관성계",
-          "desc": "가속하는 기준틀에서의 운동"
+          "desc": "가속하는 기준틀에서의 운동",
+          "simId": "aperi21:non-inertial-frame",
+          "labUrl": "piece-lab/non-inertial-frame/index.html"
         },
         {
           "id": "fictitious-force",
@@ -346,7 +360,9 @@
         {
           "id": "impulse-force-relation",
           "name": "힘과 충격량",
-          "desc": "짧고 큰 힘과 길고 작은 힘"
+          "desc": "짧고 큰 힘과 길고 작은 힘",
+          "simId": "aperi21:impulse-force-relation",
+          "labUrl": "piece-lab/impulse-force-relation/index.html"
         },
         {
           "id": "equilibrium-of-forces",
@@ -370,7 +386,9 @@
         {
           "id": "mechanical-advantage",
           "name": "힘의 이득",
-          "desc": "지레와 빗면이 드는 힘을 줄이는 방식"
+          "desc": "지레와 빗면이 드는 힘을 줄이는 방식",
+          "simId": "aperi21:mechanical-advantage",
+          "labUrl": "piece-lab/mechanical-advantage/index.html"
         },
         {
           "id": "youngs-modulus",
@@ -380,7 +398,9 @@
         {
           "id": "stress-strain-curve",
           "name": "응력-변형률 곡선",
-          "desc": "당길수록 달라지는 재료의 반응"
+          "desc": "당길수록 달라지는 재료의 반응",
+          "simId": "aperi21:stress-strain-curve",
+          "labUrl": "piece-lab/stress-strain-curve/index.html"
         }
       ]
     },
@@ -2377,7 +2397,7 @@
   ],
   "summary": {
     "topics": 442,
-    "implemented": 54,
-    "labs": 41
+    "implemented": 64,
+    "labs": 51
   }
 }

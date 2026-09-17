@@ -1,0 +1,218 @@
+// ========================================================================
+// impulse-force-relation — 선언
+// ========================================================================
+// 질문: 운동량 변화가 같다면, 공을 천천히 멈추게 하는 게 왜 받는 힘을 줄이나.
+//
+// 같은 공 두 개가 같은 속력으로 딱딱한 벽과 푹신한 방석에 닿아 둘 다 멈춘다. 받는 힘은
+// 반사인 모양 F = Fmax·sin(πτ/T) 이고 넓이 2·Fmax·T/π 를 두 줄 같게 두었다 — 오래 걸려
+// 멈추면 힘이 낮게 퍼진다.
+//
+// 원본: tasks/piece-lab/impulse-force-relation (엔진 없이 손으로 짠 것).
+// ========================================================================
+
+import type { BundleSchema, LocalizedText } from '@aperi21/schema';
+
+/** 등록 키 `aperi21:impulse-force-relation` 와 문자 그대로 일치한다 (C4). */
+export const IMPULSE_FORCE_RELATION_ID = 'impulse-force-relation';
+
+// ------------------------------------------------------------------------
+// 물리 값 — 원본 상수 그대로
+// ------------------------------------------------------------------------
+
+/** 공 속력 (원본 화면 px/초 = 월드 단위/초). */
+export const V0 = 100;
+/** 딱딱한 벽에서 멈추는 데 걸리는 시간 (초). */
+export const T_HARD = 0.25;
+/** 방석에서 멈추는 시간 — 기본값 · 범위 · 간격 (초). */
+export const T_SOFT_DEFAULT = 1.5;
+export const T_SOFT_RANGE: readonly [number, number] = [0.25, 2];
+export const T_SOFT_STEP = 0.25;
+/** 한 주기 안에서 부딪히는 시각 (초). 시간표 `approach` 단계의 길이와 같다. */
+export const T_HIT = 1.0;
+/** 한 주기 (초). 시간표 단계 길이의 합과 같다. state 의 주기 안 시각이 여기서 되감긴다. */
+export const CYCLE = 6.5;
+
+// ------------------------------------------------------------------------
+// 배치 — 원본은 876×300 px 캔버스(900 px 창 · 좌우 12 px 여백). 월드 단위 = 원본 px,
+// y 는 위로 뒤집었다 (월드 y = 300 − 원본 y).
+// ------------------------------------------------------------------------
+
+/** 원본 캔버스 가로 · 세로 (px). */
+export const WIDTH = 876;
+export const HEIGHT = 300;
+/** 두 줄 사이 틈 (px). */
+export const LANE_GAP = 28;
+/** 한 줄의 폭 (px). */
+export const LANE_W = (WIDTH - LANE_GAP) / 2;
+/** 두 줄의 왼쪽 끝 x. */
+export const LANE_X: readonly [number, number] = [0, LANE_W + LANE_GAP];
+
+/** 공 반지름 (px). */
+export const R = 18;
+/** 방석 두께 (px). */
+export const CUSHION = 120;
+/** 공 중심 높이 — 원본 y 70. */
+export const BALL_Y = HEIGHT - 70;
+/** 벽 왼쪽 면이 줄 오른쪽 끝에서 들어온 거리 · 벽 두께 · 벽 반높이 (px). */
+export const WALL_INSET = 16;
+export const WALL_THICK = 10;
+export const WALL_HALF = 42;
+/** 방석 반높이 · 결 선 반높이 · 결 선 수(칸 수) (px · 개). */
+export const CUSHION_HALF = 40;
+export const GRAIN_HALF = 38;
+export const GRAIN_CELLS = 6;
+
+/** 속도 화살표 — 공 위로 띄운 거리(R + 12) · 최대 길이 · 굵기. */
+export const VEL_LIFT = R + 12;
+export const VEL_LEN = 60;
+export const VEL_WIDTH = 2.5;
+/** 힘 화살표 — 벽 최대 힘일 때 길이 · 굵기. 두 줄 같은 배율이다. */
+export const FORCE_LEN = 110;
+export const FORCE_WIDTH = 4;
+/** 화살촉 크기 (px). 원본 min(9, 길이·0.6). */
+export const ARROW_HEAD = 9;
+
+/** 힘-시간 곡선 — 줄 왼쪽에서 들어온 거리 · 폭 줄임 · 기준선 높이(원본 y 282) · 벽 최대 높이. */
+export const GRAPH_INSET = 22;
+export const GRAPH_SHRINK = 40;
+export const GRAPH_BASE_Y = HEIGHT - 282;
+export const GRAPH_H = 128;
+/** 곡선 가로축이 담는 접촉 뒤 시간 범위 (초). */
+export const GRAPH_TAU: readonly [number, number] = [-0.25, 2.25];
+/** 곡선을 자르는 마디 수. */
+export const GRAPH_SAMPLES = 80;
+/** 세로축이 기준 높이 위로 더 나가는 길이 (px). */
+export const AXIS_OVERSHOOT = 6;
+
+/**
+ * 고정 경계. 원본 캔버스 전체에 더해 아래로 캡션 · 조절기 줄 자리를 둔다 — 원본은 둘이 캔버스
+ * 밖 DOM 이었다.
+ */
+export const SCENE_BOUNDS = { minX: 0, maxX: WIDTH, minY: -44, maxY: HEIGHT } as const;
+
+// ------------------------------------------------------------------------
+// 문안
+// ------------------------------------------------------------------------
+
+export const impulseForceRelationMessages = Object.freeze({
+  'label.title': { ko: '힘과 충격량', en: 'Force and impulse' },
+  'label.operation': {
+    ko: '짧고 큰 힘과 길고 작은 힘',
+    en: 'A short, large force and a long, small one',
+  },
+  'label.stage': { ko: '벽과 방석', en: 'Wall and cushion' },
+  'label.view': { ko: '나란히', en: 'Side by side' },
+  'label.hard': { ko: '딱딱한 벽', en: 'Hard wall' },
+  'label.soft': { ko: '푹신한 방석', en: 'Soft cushion' },
+  'label.force': { ko: '힘', en: 'force' },
+  'label.time': { ko: '시간', en: 'time' },
+  'label.slider': { ko: '방석에서 멈추는 데 걸리는 시간', en: 'Time to stop on the cushion' },
+  'caption.approach': {
+    ko: '같은 공이 같은 속력으로 벽과 방석을 향해 간다',
+    en: 'Identical balls head for the wall and the cushion at the same speed',
+  },
+  'caption.hardHit': {
+    ko: '벽에 닿은 공은 순식간에 멈추며 큰 힘을 받는다',
+    en: 'The ball at the wall stops in an instant and feels a large force',
+  },
+  'caption.sameShort': {
+    ko: '둘 다 같은 짧은 시간에 멈추며 같은 큰 힘을 받는다',
+    en: 'Both stop in the same short time and feel the same large force',
+  },
+  'caption.softStopping': {
+    ko: '방석에 닿은 공은 아직 멈추는 중 — 힘이 낮게 오래 이어진다',
+    en: 'The ball in the cushion is still stopping — the force stays low for longer',
+  },
+  'caption.sameDone': {
+    ko: '같은 시간에 멈추면 힘도 같다',
+    en: 'Stopping in the same time means the same force',
+  },
+  'caption.done': {
+    ko: '둘 다 멈췄다 — 오래 걸려 멈춘 쪽의 힘이 훨씬 낮았다',
+    en: 'Both have stopped — the one that took longer felt a much lower force',
+  },
+} satisfies Record<string, LocalizedText>);
+
+export type ImpulseForceRelationMessageKey = keyof typeof impulseForceRelationMessages;
+
+/** 선언에서 문안을 꺼낸다. 호출부에 문자열 리터럴을 두지 않기 위한 통로. */
+export const text = (key: ImpulseForceRelationMessageKey): LocalizedText =>
+  impulseForceRelationMessages[key];
+
+/** 캡션 슬롯이 부르는 문안 키. 없는 키를 쓰면 여기서 타입이 막는다. */
+function key(k: ImpulseForceRelationMessageKey): string {
+  return k;
+}
+
+// ------------------------------------------------------------------------
+// BundleSchema
+// ------------------------------------------------------------------------
+
+export const impulseForceRelationSchema: BundleSchema = {
+  id: IMPULSE_FORCE_RELATION_ID,
+  label: text('label.title'),
+  category: 'mechanics',
+  operation: text('label.operation'),
+  timeModel: 'periodic',
+  parameters: [],
+  stages: [
+    {
+      id: 'default',
+      label: text('label.stage'),
+      constants: { v0: V0, tHard: T_HARD },
+    },
+  ],
+  environments: [],
+  views: [{ id: 'default', label: text('label.view'), default: true }],
+
+  /** 원본 캔버스 300 px + 캡션 · 조절기 줄. */
+  canvas: { height: 350, minHeight: 320 },
+
+  /** 겹침이 원본 순서여야 한다 — 벽 · 방석 · 결 · 공 · 속도 · 힘 · 이름 · 축 · 기록. */
+  drawOrder: 'scene',
+
+  /**
+   * 한 주기 6.5 s — 날아간다(approach 1.0) · 벽 쪽이 멈춘다(hardContact 0.25) · 방석 쪽이 마저
+   * 멈추고 두 곡선이 남는다(settle 5.25).
+   *
+   * 도착 순간(t = 0)에 공은 이미 날아가는 중이다 — 원본도 주기 첫머리에서 연다. 그래서 `startAt`
+   * 이 없다.
+   *
+   * 공 · 화살표 · 곡선은 모두 접촉 뒤 시각 τ = u − start('hardContact') 의 닫힌 식이라, 조절기가
+   * 시계를 0 으로 되돌리면 그대로 처음이 된다. 단계는 캡션을 말하지 않는다 — 방석 쪽이 멈추는
+   * 시각(1 + 조절기 값)이 단계로 나뉘지 않아서 문장은 state 로 고른다(아래 `caption.cases`).
+   */
+  timeline: {
+    phases: [
+      { id: 'approach', duration: T_HIT },
+      { id: 'hardContact', duration: T_HARD },
+      { id: 'settle', duration: CYCLE - T_HIT - T_HARD },
+    ],
+  },
+
+  /**
+   * 슬롯 하나. 원본은 그림 아래 왼쪽 정렬 15 px 한 줄이었다.
+   *
+   * 원본은 매 프레임 접촉 뒤 시각과 방석 멈춤 시간을 견줘 문장을 골랐다. 여기서는 physics 가
+   * 같은 비교를 해 state 에 두고, 슬롯은 위에서부터 참인 첫 항목을 쓴다. 아무것도 참이 아니면
+   * (둘 다 멈췄고 방석이 더 오래 걸렸다) 마무리 문장이다.
+   */
+  caption: {
+    anchor: { world: [0, -22] },
+    align: 'left',
+    fontSize: 15,
+    style: { colorRole: 'ink', emphasis: 'strong' },
+    text: key('caption.done'),
+    cases: [
+      { when: 'approaching', text: key('caption.approach') },
+      { when: 'sameShort', text: key('caption.sameShort') },
+      { when: 'hardHit', text: key('caption.hardHit') },
+      { when: 'softStopping', text: key('caption.softStopping') },
+      { when: 'sameDone', text: key('caption.sameDone') },
+    ],
+  },
+
+  // 그리드 · 카메라 버튼은 원본에 없다 — 켜지 않는다.
+
+  messages: impulseForceRelationMessages,
+};

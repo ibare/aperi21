@@ -1,0 +1,49 @@
+{
+  "rows": [
+    {
+      "element": "딱딱한 벽",
+      "vocab": "body (rect)",
+      "status": "있음"
+    },
+    {
+      "element": "방석 (오목하게 눌림)",
+      "vocab": "body (custom path · 곡선) + trajectory (결 선)",
+      "status": "있음"
+    },
+    {
+      "element": "공 (찌그러짐)",
+      "vocab": "body (custom path 타원)",
+      "status": "있음"
+    },
+    {
+      "element": "공의 속도 · 받는 힘",
+      "vocab": "vector (같은 배율)",
+      "status": "있음"
+    },
+    {
+      "element": "줄 이름 · 힘-시간 축",
+      "vocab": "readout + trajectory",
+      "status": "있음"
+    },
+    {
+      "element": "받은 힘의 기록 (자라는 곡선 + 채움)",
+      "vocab": "trajectory + region (fillOpacity)",
+      "status": "있음",
+      "note": "graph 는 화면 카드라 공 아래 월드 자리에 못 붙는다 — trajectory + region 으로 그린다"
+    },
+    {
+      "element": "방석 멈춤 시간 조작기",
+      "vocab": "slider (range [0.25,2] · step 0.25 · digits 2) + restart",
+      "status": "있음",
+      "note": "05 에서 올린 restart 를 쓴다"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (timeline phases.caption)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "접촉 중 힘 곡선의 닫힌 식 — sim"
+  ]
+}

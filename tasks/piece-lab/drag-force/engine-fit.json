@@ -1,0 +1,39 @@
+{
+  "rows": [
+    {
+      "element": "공",
+      "vocab": "body (circle)",
+      "status": "있음"
+    },
+    {
+      "element": "미는 힘 · 저항",
+      "vocab": "vector (같은 배율)",
+      "status": "있음"
+    },
+    {
+      "element": "지난 자리",
+      "vocab": "body (circle · fill none) + trajectory (opacity)",
+      "status": "있음",
+      "note": "0.25 s 마다 기록을 쌓는 것은 step + preroll"
+    },
+    {
+      "element": "저항 막대 (1차 채움 / 2차 빗금)",
+      "vocab": "region (fill solid) + region (fill hatch · 같은 colorRole)",
+      "status": "있음",
+      "note": "03 에서 올린 hatch 가 「같은 대상의 다른 몫」 그대로다"
+    },
+    {
+      "element": "막대 이름 · 미는 힘 기준선 · 바닥",
+      "vocab": "trajectory + readout",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (cases — 속도 단계는 상태)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "공의 운동 적분과 끝에 닿은 뒤 비우기 — sim step"
+  ]
+}

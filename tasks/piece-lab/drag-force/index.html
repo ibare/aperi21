@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>공기 저항</title>
+<style>
+  :root { --ink:#2b2b2b; --soft:#9a9a9a; --bg:#fbfaf7; --drag:#c8553d; }
+  html, body { margin:0; background:var(--bg); color:var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width:900px; margin:0 auto; padding:12px 16px; }
+  canvas { display:block; width:100%; height:auto; }
+  .caption { min-height:1.5em; margin-top:6px; font-size:15px; line-height:1.5; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <div class="caption" id="caption"></div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// ── 물리: 일정한 힘으로 미는 물체, 저항 = 1차 몫(b·v) + 2차 몫(c·v²) ──
+const F = 1;          // 미는 힘
+const M = 0.5;        // 질량
+const B = 0.08;       // 속도에 비례하는 몫의 계수
+const C = 0.04;       // 속도 제곱에 비례하는 몫의 계수
+const PREROLL = 0.5;  // 도착했을 때 이미 달리고 있도록 미리 진행하는 시간
+const STROBE = 0.25;  // 지난 자리를 남기는 간격
+const COURSE = 14.5;  // 한 번 달리는 거리
+const HOLD = 1.2;     // 끝에 닿은 뒤 멈춰 보여 주는 시간
+
+// ── 화면 배치 (논리 좌표) ──
+const W = 860, H = 290;
+const X0 = 40, XEND = 700;             // 공이 달리는 구간
+const PX = (XEND - X0) / COURSE;       // 거리 1 당 픽셀
+const LANE_Y = 48, BALL_R = 11;
+const BASE_Y = 272;                    // 막대 바닥
+const FORCE_PX = 150;                  // 미는 힘 1 의 막대 높이
+const BAR_W = 9;
+const INK = '#2b2b2b', SOFT = '#9a9a9a', DRAG = '#c8553d';
+
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+const dpr = Math.max(1, window.devicePixelRatio || 1);
+cv.width = W * dpr; cv.height = H * dpr;
+ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+const captionEl = document.getElementById('caption');
+
+let s;
+function reset() {
+  s = { x: 0, v: 0, clock: 0, nextStrobe: 0, strobes: [], hold: 0 };
+}
+function lin(v) { return B * v; }
+function quad(v) { return C * v * v; }
+
+function advance(dt) {
+  if (s.hold > 0) {
+    s.hold -= dt;
+    if (s.hold <= 0) reset();
+    return;
+  }
+  const drag = lin(s.v) + quad(s.v);
+  s.v += (F - drag) / M * dt;
+  s.x += s.v * dt;
+  s.clock += dt;
+  if (s.clock >= s.nextStrobe - 1e-9) {
+    s.strobes.push({ x: s.x, v: s.v });
+    s.nextStrobe += STROBE;
+  }
+  if (s.x >= COURSE) { s.x = COURSE; s.hold = HOLD; }
+}
+
+reset();
+for (let i = 0; i < Math.round(PREROLL * 60); i++) advance(1 / 60);
+
+function arrow(x1, y, x2, color, width) {
+  const dir = Math.sign(x2 - x1) || 1;
+  const len = Math.abs(x2 - x1);
+  if (len < 1) return;
+  const head = Math.min(8, len);
+  ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = width;
+  ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x2 - dir * head, y); ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x2, y); ctx.lineTo(x2 - dir * head, y - 5); ctx.lineTo(x2 - dir * head, y + 5);
+  ctx.closePath(); ctx.fill();
+}
+
+function hatchRect(x, y, w, h) {
+  ctx.save();
+  ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip();
+  ctx.strokeStyle = DRAG; ctx.lineWidth = 1;
+  ctx.beginPath();
+  for (let k = -w - h; k < w + h; k += 4) {
+    ctx.moveTo(x + k, y + h); ctx.lineTo(x + k + h, y);
+  }
+  ctx.stroke();
+  ctx.restore();
+  ctx.strokeStyle = DRAG; ctx.lineWidth = 1;
+  ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
+}
+
+const sx = (x) => X0 + x * PX;
+
+PieceKit.loop({
+  step(dt) { advance(dt); },
+  draw() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.font = '13px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+    ctx.textBaseline = 'middle';
+
+    const forceY = BASE_Y - F * FORCE_PX;
+
+    PieceKit.mark('미는 힘 기준선', () => {
+      ctx.strokeStyle = INK; ctx.lineWidth = 1; ctx.setLineDash([5, 4]);
+      ctx.beginPath(); ctx.moveTo(X0 - 10, forceY); ctx.lineTo(XEND + 10, forceY); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = INK; ctx.textAlign = 'left';
+      ctx.fillText('미는 힘', X0 - 10, forceY - 11);
+    });
+
+    PieceKit.mark('바닥선', () => {
+      ctx.strokeStyle = SOFT; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(X0 - 10, BASE_Y + 0.5); ctx.lineTo(XEND + 10, BASE_Y + 0.5); ctx.stroke();
+    });
+
+    PieceKit.mark('지난 자리', () => {
+      ctx.strokeStyle = SOFT; ctx.lineWidth = 1;
+      for (const p of s.strobes) {
+        ctx.beginPath(); ctx.arc(sx(p.x), LANE_Y, BALL_R, 0, Math.PI * 2); ctx.stroke();
+      }
+      // 지난 자리에서 막대로 내려가는 가는 연결선
+      ctx.strokeStyle = 'rgba(154,154,154,0.35)';
+      for (const p of s.strobes) {
+        const top = BASE_Y - (lin(p.v) + quad(p.v)) * FORCE_PX;
+        ctx.beginPath(); ctx.moveTo(sx(p.x), LANE_Y + BALL_R + 2); ctx.lineTo(sx(p.x), top - 3); ctx.stroke();
+      }
+    });
+
+    PieceKit.mark('저항 막대', () => {
+      for (const p of s.strobes) {
+        const hl = lin(p.v) * FORCE_PX, hq = quad(p.v) * FORCE_PX;
+        const x = sx(p.x) - BAR_W / 2;
+        ctx.fillStyle = DRAG;
+        ctx.fillRect(x, BASE_Y - hl, BAR_W, hl);
+        if (hq >= 1) hatchRect(x, BASE_Y - hl - hq, BAR_W, hq);
+      }
+    });
+
+    PieceKit.mark('막대 이름', () => {
+      const p = s.strobes[s.strobes.length - 1];
+      if (!p) return;
+      const hl = lin(p.v) * FORCE_PX, hq = quad(p.v) * FORCE_PX;
+      const bx = sx(p.x) + BAR_W / 2 + 3;
+      const lx = XEND + 24;
+      const yl = BASE_Y - hl / 2;
+      const yq = Math.min(BASE_Y - hl - hq / 2, yl - 20);
+      ctx.strokeStyle = 'rgba(43,43,43,0.4)'; ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(bx, BASE_Y - hl / 2); ctx.lineTo(lx - 4, yl);
+      ctx.moveTo(bx, BASE_Y - hl - hq / 2); ctx.lineTo(lx - 4, yq);
+      ctx.stroke();
+      ctx.fillStyle = INK; ctx.textAlign = 'left';
+      ctx.fillText('속도에 비례', lx, yl);
+      ctx.fillText('속도 제곱에 비례', lx, yq);
+    });
+
+    PieceKit.mark('미는 힘 화살표', () => {
+      const bx = sx(s.x);
+      arrow(bx + BALL_R + 2, LANE_Y, bx + BALL_R + 2 + F * 40, INK, 2);
+    });
+
+    PieceKit.mark('저항 화살표', () => {
+      const bx = sx(s.x);
+      const d = lin(s.v) + quad(s.v);
+      arrow(bx - BALL_R - 2, LANE_Y, bx - BALL_R - 2 - d * 40, DRAG, 2);
+    });
+
+    PieceKit.mark('공', () => {
+      ctx.fillStyle = INK;
+      ctx.beginPath(); ctx.arc(sx(s.x), LANE_Y, BALL_R, 0, Math.PI * 2); ctx.fill();
+    });
+
+    PieceKit.mark('캡션', () => {
+      const l = lin(s.v), q = quad(s.v);
+      let text;
+      if (q < l) text = '느릴 때 저항은 대부분 속도에 비례하는 몫이다';
+      else if (l + q < 0.93 * F) text = '빨라질수록 속도 제곱에 비례하는 몫이 가파르게 불어난다';
+      else text = '저항이 미는 힘에 다가가, 지난 자리 간격이 더 벌어지지 않는다';
+      if (captionEl.textContent !== text) captionEl.textContent = text;
+    });
+  },
+});
+</script>
+</body>
+</html>

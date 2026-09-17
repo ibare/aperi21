@@ -1,0 +1,45 @@
+{
+  "rows": [
+    {
+      "element": "천장 · 바닥 · 짐 처음 자리",
+      "vocab": "body (rect) + trajectory (closed · dashed)",
+      "status": "있음"
+    },
+    {
+      "element": "고정 · 움직도르래",
+      "vocab": "body (circle) + trajectory ×3 (바퀴살)",
+      "status": "있음",
+      "note": "회전각 = 지나간 줄 길이 / 반지름 은 sim"
+    },
+    {
+      "element": "줄 (선분 + 호)",
+      "vocab": "trajectory (호를 점으로 표본)",
+      "status": "있음"
+    },
+    {
+      "element": "줄 무늬가 도르래를 타고 흐름",
+      "vocab": "trajectory (dashed/dotted · 경로를 묶인 끝부터)",
+      "status": "있음",
+      "note": "[2026-09-17 정정] 처음엔 무늬 위상 선언이 없어 「수정 필요」로 판정했으나, 경로를 재료에 붙은 끝(묶인 끝)부터 그으면 무늬가 재료 좌표를 따라 흐른다 — 원본도 lineDashOffset 0. 이관에서 드러나 올렸던 dashOffset 을 되돌렸다"
+    },
+    {
+      "element": "짐",
+      "vocab": "body (rect) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "오른 높이 · 당긴 줄 길이",
+      "vocab": "dimension (text · vars) 또는 trajectory + trace (tick) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "손 · 당기는 힘",
+      "vocab": "body (rect) + vector (label)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "1·2·4 가닥 장치의 줄 길이 보존 — sim",
+    "오르기 · 멈춤 · 내리기 — timeline"
+  ]
+}

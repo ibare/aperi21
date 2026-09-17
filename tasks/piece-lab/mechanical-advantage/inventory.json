@@ -1,0 +1,49 @@
+{
+  "id": "mechanical-advantage",
+  "claim": "같은 상자를 같은 높이까지 올릴 때 지레나 빗면은 드는 힘을 줄여 주지만, 줄어든 만큼 손은 더 긴 거리를 밀어야 한다.",
+  "verb": "힘이 줄어든 만큼 민 거리가 늘어난다",
+  "probeTimes": [0, 1.6, 3.4],
+  "elements": [
+    { "mark": "바닥", "what": "세 칸이 공유하는 바닥 가로선", "physical": "올리기 시작하는 높이(0 m)", "drawing": "회색 선", "motion": "static", "state": "none", "interaction": null },
+    { "mark": "같은 높이 선", "what": "세 칸을 가로지르는 점선과 '같은 높이 0.5 m' 글자", "physical": "세 방법이 모두 도달하는 목표 높이", "drawing": "점선 + 텍스트", "motion": "static", "state": "none", "interaction": null },
+    { "mark": "그대로 들기: 손이 민 거리", "what": "손이 출발점에서 움직인 만큼 자라는 굵은 띠", "physical": "힘 방향으로 손이 움직인 거리 (최대 0.5 m)", "drawing": "강조색 굵은 선 + 출발점 눈금", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "그대로 들기: 밧줄", "what": "상자에서 손까지 곧은 줄", "physical": "밧줄", "drawing": "회색 선", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "그대로 들기: 상자", "what": "120 N 상자", "physical": "무게 120 N 인 물체", "drawing": "채운 사각형 + 텍스트", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "그대로 들기: 손", "what": "밧줄을 당기는 손", "physical": "힘을 주는 지점", "drawing": "강조색 원", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "그대로 들기: 손의 힘", "what": "위로 향한 긴 화살표", "physical": "손의 힘 120 N (길이가 힘에 비례)", "drawing": "강조색 화살표", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "지레: 손이 민 거리", "what": "지레 손 끝 옆에서 아래로 자라는 띠", "physical": "힘 방향(세로)으로 손이 움직인 거리 (최대 1.0 m)", "drawing": "강조색 굵은 선 + 출발점 눈금", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "지레: 받침점", "what": "삼각형 받침", "physical": "지레의 받침점", "drawing": "채운 삼각형", "motion": "static", "state": "none", "interaction": null },
+    { "mark": "지레: 막대", "what": "받침점을 지나 기우는 막대 (상자 쪽 팔 : 손 쪽 팔 = 1 : 2)", "physical": "지레", "drawing": "굵은 선", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "지레: 상자", "what": "짧은 팔 끝에 얹힌 120 N 상자", "physical": "무게 120 N 인 물체", "drawing": "채운 사각형 + 텍스트", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "지레: 손", "what": "긴 팔 끝을 누르는 손", "physical": "힘을 주는 지점", "drawing": "강조색 원", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "지레: 손의 힘", "what": "아래로 향한 화살표 (그대로 들기의 절반 길이)", "physical": "손의 힘 60 N", "drawing": "강조색 화살표", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "빗면: 비탈", "what": "높이 0.5 m, 길이 2.0 m 인 비탈과 위쪽 받침대", "physical": "빗면", "drawing": "채운 다각형", "motion": "static", "state": "none", "interaction": null },
+    { "mark": "빗면: 손이 민 거리", "what": "비탈과 나란히 상자 위쪽에서 자라는 띠", "physical": "빗면 방향으로 손이 움직인 거리 (최대 2.0 m)", "drawing": "강조색 굵은 선 + 출발점 눈금", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "빗면: 상자", "what": "비탈을 따라 기울어 올라가는 120 N 상자", "physical": "무게 120 N 인 물체", "drawing": "회전한 채운 사각형 + 텍스트", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "빗면: 손", "what": "상자 뒤에서 미는 손", "physical": "힘을 주는 지점", "drawing": "강조색 원", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "빗면: 손의 힘", "what": "비탈 방향 짧은 화살표 (그대로 들기의 4분의 1 길이)", "physical": "손의 힘 30 N (마찰 없음)", "drawing": "강조색 화살표", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "도구별 힘과 민 거리", "what": "각 칸 아래 도구 이름과 '손의 힘 ○ N · 민 거리 ○.○○ m'", "physical": "손의 힘(고정)과 지금까지 민 거리(진행)", "drawing": "텍스트", "motion": "time-function", "state": "none", "interaction": null },
+    { "mark": "캡션", "what": "캔버스 아래 한 줄 설명 (올리는 중 / 다 올린 뒤 두 문장이 한 슬롯에서 바뀜)", "physical": "없음", "drawing": "DOM 텍스트", "motion": "time-function", "state": "none", "interaction": null }
+  ],
+  "controls": [],
+  "hidden": [
+    "일(힘 × 거리 = 60 J)의 값 — 세 칸이 같다는 것은 띠 길이와 화살표 길이의 반비례로 보이게 두고, 곱셈과 에너지라는 이름은 문단의 몫으로 남겼다",
+    "마찰 — 빗면의 30 N 은 마찰이 없을 때의 값이다. 마찰을 넣으면 '힘이 줄어든 만큼 거리가 늘어난다'는 한 주장이 흐려진다",
+    "상자 무게 화살표 — 세 상자가 같은 크기·같은 색·같은 120 N 글자라서 따로 그리지 않았다",
+    "지레 손 끝의 실제 호 경로 — 힘이 세로로 작용하므로 민 거리는 세로 거리(1.0 m)로 띠를 그렸다"
+  ],
+  "timeline": [
+    { "t": 0, "what": "세 상자가 이미 바닥에서 조금 떠올라 함께 올라가는 중. 띠들이 막 자라기 시작함" },
+    { "t": 1.6, "what": "세 상자가 같은 높이만큼 올라와 있고, 빗면의 띠가 지레의 두 배, 그대로 들기의 네 배 길이로 자라 있음. 화살표 길이는 반대 순서" },
+    { "t": 3.2, "what": "세 상자 밑면이 같은 높이 점선에 닿음" },
+    { "t": 3.4, "what": "다 올린 상태로 멈춤. 띠 길이 0.5 : 1.0 : 2.0 m, 힘 120 : 60 : 30 N. 캡션이 결과 문장으로 바뀜" },
+    { "t": 4.7, "what": "상자가 내려가며 띠가 옅어짐 (5.7 초에 처음 상태로 돌아가 반복)" }
+  ],
+  "engineWish": [
+    "'힘 방향으로 움직인 거리' 띠 — 출발점을 기억하고 진행에 따라 자라며 되돌아갈 때 옅어지는 선. 도구마다 방향만 달라 매번 다시 짰다",
+    "같은 기준선(바닥·목표 높이)을 여러 칸이 공유하는 나란한 비교 칸 배치",
+    "크기가 물리량에 비례하는 화살표 — 칸들 사이에서 같은 축척(N 당 px)을 보장해 주는 것",
+    "반복 주기(진행 → 멈춤 → 되돌림)와 '도착했을 때 이미 진행 중'인 위상 앞당김",
+    "빗면 좌표(비탈 방향·수직 방향 오프셋)로 물체를 놓고 기울여 그리는 도우미"
+  ]
+}

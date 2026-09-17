@@ -328,6 +328,86 @@ export function registerAperi21Bundles(): void {
     return registerBundle('aperi21:balance-scale', m.balanceScaleBundle, caps.capabilities);
   });
 
+  registerBundleLoader('aperi21:free-body-diagram', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-free-body-diagram'),
+      import('./capabilities/mechanics/free-body-diagram.generated.js'),
+    ]);
+    return registerBundle('aperi21:free-body-diagram', m.freeBodyDiagramBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:pulley-system', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-pulley-system'),
+      import('./capabilities/mechanics/pulley-system.generated.js'),
+    ]);
+    return registerBundle('aperi21:pulley-system', m.pulleySystemBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:spring-force', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-spring-force'),
+      import('./capabilities/mechanics/spring-force.generated.js'),
+    ]);
+    return registerBundle('aperi21:spring-force', m.springForceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:vertical-loop', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-vertical-loop'),
+      import('./capabilities/mechanics/vertical-loop.generated.js'),
+    ]);
+    return registerBundle('aperi21:vertical-loop', m.verticalLoopBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:drag-force', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-drag-force'),
+      import('./capabilities/mechanics/drag-force.generated.js'),
+    ]);
+    return registerBundle('aperi21:drag-force', m.dragForceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:non-inertial-frame', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-non-inertial-frame'),
+      import('./capabilities/mechanics/non-inertial-frame.generated.js'),
+    ]);
+    return registerBundle('aperi21:non-inertial-frame', m.nonInertialFrameBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:impulse-force-relation', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-impulse-force-relation'),
+      import('./capabilities/mechanics/impulse-force-relation.generated.js'),
+    ]);
+    return registerBundle('aperi21:impulse-force-relation', m.impulseForceRelationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:mechanical-advantage', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-mechanical-advantage'),
+      import('./capabilities/mechanics/mechanical-advantage.generated.js'),
+    ]);
+    return registerBundle('aperi21:mechanical-advantage', m.mechanicalAdvantageBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:stress-strain-curve', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-stress-strain-curve'),
+      import('./capabilities/mechanics/stress-strain-curve.generated.js'),
+    ]);
+    return registerBundle('aperi21:stress-strain-curve', m.stressStrainCurveBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:banked-curve', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-banked-curve'),
+      import('./capabilities/mechanics/banked-curve.generated.js'),
+    ]);
+    return registerBundle('aperi21:banked-curve', m.bankedCurveBundle, caps.capabilities);
+  });
+
   registerBundleLoader('aperi21:uniform-motion', async () => {
     const [m, caps] = await Promise.all([
       import('@aperi21/sim-uniform-motion'),

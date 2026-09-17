@@ -300,6 +300,7 @@ topics:
     level: lower
     curricula: [kr, ib, ap, uk]
     visualNote: 한 물체만 떼어 내면 걸린 힘의 목록이 드러난다
+    sim: aperi21:free-body-diagram
   - id: inertial-vs-gravitational-mass
     name: 관성 질량과 중력 질량
     desc: 서로 다른 정의가 같은 값을 주는 것
@@ -366,6 +367,7 @@ topics:
     level: upper
     curricula: [ap]
     visualNote: 줄 가닥을 늘리면 드는 힘이 줄고 당길 거리가 는다
+    sim: aperi21:pulley-system
   - id: connected-bodies
     name: 연결된 물체
     desc: 함께 움직이는 계의 가속도
@@ -380,6 +382,7 @@ topics:
     level: lower
     curricula: [kr, ib, ap, uk]
     visualNote: 늘일수록 되돌리는 힘이 커진다
+    sim: aperi21:spring-force
   - id: centripetal-force
     name: 구심력
     desc: 원운동을 유지시키는 힘의 정체
@@ -402,6 +405,7 @@ topics:
     level: null
     curricula: []
     visualNote: 각을 맞추면 마찰 없이도 돈다
+    sim: aperi21:banked-curve
   - id: vertical-loop
     name: 연직 원운동
     desc: 꼭대기에서 떨어지지 않는 최소 속력
@@ -409,6 +413,7 @@ topics:
     level: null
     curricula: []
     visualNote: 꼭대기에서 최소 속력을 못 넘기면 떨어진다
+    sim: aperi21:vertical-loop
   - id: drag-force
     name: 공기 저항
     desc: 속도의 1차·2차에 비례하는 저항
@@ -416,6 +421,7 @@ topics:
     level: lower
     curricula: [ib, ap, uk]
     visualNote: 빨라질수록 저항이 가파르게 는다
+    sim: aperi21:drag-force
   - id: buoyant-force-as-force
     name: 부력(힘으로서)
     desc: 유체가 위로 미는 힘
@@ -430,6 +436,7 @@ topics:
     level: null
     curricula: []
     visualNote: 버스 안에서 보면 정지한 물체가 저절로 밀린다
+    sim: aperi21:non-inertial-frame
   - id: fictitious-force
     name: 관성력
     desc: 비관성계에서 도입하는 겉보기 힘
@@ -452,6 +459,7 @@ topics:
     level: upper
     curricula: [ngss]
     visualNote: 같은 운동량 변화도 길게 받으면 힘이 작다
+    sim: aperi21:impulse-force-relation
   - id: equilibrium-of-forces
     name: 힘의 평형
     desc: 알짜힘이 0인 상태
@@ -482,6 +490,7 @@ topics:
     level: primary
     curricula: [kr]
     visualNote: 같은 무게를 드는 데 드는 힘이 도구에 따라 달라지는 것이 보인다
+    sim: aperi21:mechanical-advantage
   - id: youngs-modulus
     name: 영률
     desc: 재료가 늘어나는 정도를 정하는 값
@@ -496,6 +505,7 @@ topics:
     level: upper
     curricula: [uk]
     visualNote: 당기다 보면 곡선이 꺾이고 힘을 빼도 되돌아오지 않는다
+    sim: aperi21:stress-strain-curve
   # ── 일·에너지·운동량
   - id: work-by-variable-force
     name: 변하는 힘이 한 일

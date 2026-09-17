@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>연직 원운동</title>
+<style>
+  html, body { margin: 0; background: #ffffff; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; color: #2b2f36; }
+  .piece { max-width: 900px; margin: 0 auto; }
+  canvas { display: block; width: 100%; height: 360px; }
+  .caption { min-height: 1.5em; padding: 6px 12px 10px; font-size: 15px; line-height: 1.5; text-align: center; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <div class="caption" id="caption"></div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// ── 물리 (길이 단위: 공 중심이 도는 원의 반지름 = 1) ─────────────────────
+const PERIOD = 3.0;                // 통과하는 공이 한 바퀴 도는 시간(초)
+// 통과 공: 바닥 속력 제곱 = 6gR  → 꼭대기 속력 제곱 = 2gR (최소 gR 보다 크다)
+// 이탈 공: 바닥 속력 제곱 = 4gR  → cosθ = -2/3 (약 131.8°)에서 수직항력 0
+const V0SQ_PASS = 6, V0SQ_FAIL = 4; // gR 의 배수
+function loopIntegral(k) {         // ∫₀^{2π} dθ / √(k-2+2cosθ)
+  const n = 20000; let s = 0;
+  for (let i = 0; i < n; i++) { const th = (i + 0.5) / n * 2 * Math.PI; s += (2 * Math.PI / n) / Math.sqrt(k - 2 + 2 * Math.cos(th)); }
+  return s;
+}
+const G = (loopIntegral(V0SQ_PASS) / PERIOD) ** 2;
+const CYCLE = 2 * PERIOD;          // 통과 공이 두 바퀴 돌고 제자리 → 이음매 없는 되풀이
+const TABLE_DT = 1 / 240;
+
+// 한 공의 한 순환을 표로 미리 계산한다 (결정적: 같은 t 는 언제나 같은 화면)
+function simulate(v0sq) {
+  const rows = [];
+  let th = 0, onRail = true, sep = null, impact = null;
+  let px = 0, py = 0, pvx = 0, pvy = 0, flightT = 0, left = false;
+  const speedAt = (a) => Math.sqrt(Math.max(0, G * (v0sq - 2 * (1 - Math.cos(a)))));
+  const normalAt = (a) => G * (v0sq - 2 + 3 * Math.cos(a)); // 수직항력/질량
+  const nSteps = Math.round(CYCLE / TABLE_DT);
+  for (let i = 0; i <= nSteps; i++) {
+    const t = i * TABLE_DT;
+    if (onRail) {
+      const v = speedAt(th), N = normalAt(th);
+      rows.push({ x: Math.sin(th), y: -Math.cos(th), vx: Math.cos(th) * v, vy: Math.sin(th) * v, N: Math.max(0, N), rail: true });
+      // RK4 로 θ 전진
+      const f = (a) => speedAt(a);
+      const k1 = f(th), k2 = f(th + k1 * TABLE_DT / 2), k3 = f(th + k2 * TABLE_DT / 2), k4 = f(th + k3 * TABLE_DT);
+      let next = th + (k1 + 2 * k2 + 2 * k3 + k4) * TABLE_DT / 6;
+      if (normalAt(next) <= 0) {
+        // 이 사이에서 수직항력이 0 이 된다 → 정확한 이탈 각에서 떠난다
+        const thS = Math.acos((2 - v0sq) / 3);
+        const vS = speedAt(thS);
+        sep = { t: t + TABLE_DT, x: Math.sin(thS), y: -Math.cos(thS) };
+        px = sep.x; py = sep.y; pvx = Math.cos(thS) * vS; pvy = Math.sin(thS) * vS; flightT = 0;
+        onRail = false;
+      } else th = next;
+    } else if (!impact) {
+      rows.push({ x: px, y: py, vx: pvx, vy: pvy, N: 0, rail: false });
+      // 던져진 운동은 해석해로 다음 점을 구한다
+      flightT += TABLE_DT;
+      const sx = sep.x, sy = sep.y;
+      const s = rows[Math.round(sep.t / TABLE_DT)];
+      const v0x = s ? s.vx : pvx, v0y = s ? s.vy : pvy;
+      px = sx + v0x * flightT; py = sy + v0y * flightT - 0.5 * G * flightT * flightT;
+      pvx = v0x; pvy = v0y - G * flightT;
+      const r = Math.hypot(px, py);
+      if (r < 0.99) left = true;
+      if (left && r >= 1) { px /= r; py /= r; impact = { t: t + TABLE_DT, x: px, y: py }; }
+    } else {
+      rows.push({ x: impact.x, y: impact.y, vx: 0, vy: 0, N: 0, rail: false, rest: true });
+    }
+  }
+  return { rows, sep, impact };
+}
+const PASS = simulate(V0SQ_PASS);
+const FAIL = simulate(V0SQ_FAIL);
+
+function sample(sim, tau) {
+  const f = tau / TABLE_DT, i = Math.floor(f), u = f - i;
+  const a = sim.rows[Math.min(i, sim.rows.length - 1)], b = sim.rows[Math.min(i + 1, sim.rows.length - 1)];
+  if (a.rail !== b.rail || a.rest !== b.rest) return a;
+  const L = (p, q) => p + (q - p) * u;
+  return { x: L(a.x, b.x), y: L(a.y, b.y), vx: L(a.vx, b.vx), vy: L(a.vy, b.vy), N: L(a.N, b.N), rail: a.rail, rest: a.rest };
+}
+
+// ── 그리기 ───────────────────────────────────────────────────────────────
+const COLOR = {
+  rail: '#9aa0a6', ball: '#2b2f36', label: '#5f6670',
+  speed: '#2f6fd6',     // 속력(공의 화살표와 꼭대기 기준 화살표 — 같은 물리량이라 같은 색)
+  normal: '#1f9d74',    // 레일이 미는 힘
+  accent: '#d6453d',    // 강조색: 오직 '레일을 떠난 지점' 하나에만
+  trace: '#8c929a',
+};
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const captionEl = document.getElementById('caption');
+let W = 820, H = 360;
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  W = canvas.clientWidth || 820; H = canvas.clientHeight || 360;
+  canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resize();
+window.addEventListener('resize', resize);
+
+const BALL_R = 10;
+function layout() {
+  const railR = Math.min(118, W * 0.15);
+  const pathR = railR - BALL_R - 1.5;
+  const cy = 30 + 36 + railR;   // 위쪽 기준 화살표 이름표 자리 확보
+  return {
+    railR, pathR, cy,
+    loops: [{ cx: W * 0.28, sim: PASS, name: '빠르게 들어온 공' }, { cx: W * 0.72, sim: FAIL, name: '조금 느리게 들어온 공' }],
+    vScale: 38 / Math.sqrt(G),  // √(gR) → 38px
+    nScale: 14 / G,             // g → 14px
+  };
+}
+
+function arrow(x0, y0, x1, y1, color, dashed) {
+  const dx = x1 - x0, dy = y1 - y0, len = Math.hypot(dx, dy);
+  if (len < 2) return;
+  const ux = dx / len, uy = dy / len, head = Math.min(9, len * 0.45);
+  ctx.save();
+  ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+  if (dashed) ctx.setLineDash([5, 4]);
+  ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1 - ux * head * 0.6, y1 - uy * head * 0.6); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x1 - ux * head - uy * head * 0.5, y1 - uy * head + ux * head * 0.5);
+  ctx.lineTo(x1 - ux * head + uy * head * 0.5, y1 - uy * head - ux * head * 0.5);
+  ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+function text(s, x, y, color, align, size) {
+  ctx.fillStyle = color; ctx.textAlign = align || 'center'; ctx.textBaseline = 'middle';
+  ctx.font = `${size || 13}px -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif`;
+  ctx.fillText(s, x, y);
+}
+
+function draw(t) {
+  const tau = ((t % CYCLE) + CYCLE) % CYCLE;
+  const Lg = layout();
+  ctx.clearRect(0, 0, W, H);
+  const toScreen = (lp, x, y) => [lp.cx + x * Lg.pathR, Lg.cy - y * Lg.pathR];
+  // 순환 끝 0.4초 동안 떨어진 공과 그 흔적을 흐리게 지운다 (통과 공은 이음매가 없다)
+  const fade = Math.min(1, Math.max(0, (CYCLE - tau) / 0.4));
+  const states = Lg.loops.map((lp) => sample(lp.sim, tau));
+
+  PieceKit.mark('레일', () => {
+    ctx.strokeStyle = COLOR.rail; ctx.lineWidth = 3;
+    for (const lp of Lg.loops) { ctx.beginPath(); ctx.arc(lp.cx, Lg.cy, Lg.railR, 0, Math.PI * 2); ctx.stroke(); }
+  });
+
+  PieceKit.mark('꼭대기 최소 속력 기준', () => {
+    for (const lp of Lg.loops) {
+      const y = Lg.cy - Lg.railR - 14;
+      arrow(lp.cx, y, lp.cx - Math.sqrt(G) * Lg.vScale, y, COLOR.speed, true);
+      text('꼭대기에서 필요한 최소 속력', lp.cx, y - 18, COLOR.speed, 'center', 12);
+    }
+  });
+
+  PieceKit.mark('떨어진 공의 궤적', () => {
+    const lp = Lg.loops[1], sim = lp.sim;
+    if (!sim.sep || tau < sim.sep.t) return;
+    const end = sim.impact ? Math.min(tau, sim.impact.t) : tau;
+    ctx.save();
+    ctx.globalAlpha = fade; ctx.strokeStyle = COLOR.trace; ctx.lineWidth = 2; ctx.setLineDash([2, 5]); ctx.lineCap = 'round';
+    ctx.beginPath();
+    for (let s = sim.sep.t; s <= end + 1e-9; s += TABLE_DT * 2) {
+      const p = sample(sim, s), [X, Y] = toScreen(lp, p.x, p.y);
+      if (s === sim.sep.t) ctx.moveTo(X, Y); else ctx.lineTo(X, Y);
+    }
+    ctx.stroke(); ctx.restore();
+  });
+
+  PieceKit.mark('레일을 떠난 지점', () => {
+    const lp = Lg.loops[1], sim = lp.sim;
+    if (!sim.sep || tau < sim.sep.t) return;
+    const [X, Y] = toScreen(lp, sim.sep.x, sim.sep.y);
+    ctx.save(); ctx.globalAlpha = fade;
+    ctx.strokeStyle = COLOR.accent; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(X, Y, BALL_R + 5, 0, Math.PI * 2); ctx.stroke();
+    text('레일을 떠남', X + BALL_R + 12, Y - 12, COLOR.accent, 'left', 13);
+    ctx.restore();
+  });
+
+  PieceKit.mark('레일이 미는 힘 화살표', () => {
+    Lg.loops.forEach((lp, k) => {
+      const s = states[k];
+      if (!s.rail || s.N <= 0) return;
+      const [X, Y] = toScreen(lp, s.x, s.y);
+      const r = Math.hypot(s.x, s.y), len = s.N * Lg.nScale;
+      const ux = -s.x / r, uy = s.y / r; // 화면 좌표에서 원 중심 쪽
+      const x1 = X + ux * (BALL_R + len), y1 = Y + uy * (BALL_R + len);
+      arrow(X + ux * BALL_R, Y + uy * BALL_R, x1, y1, COLOR.normal);
+      if (len > 22) text('레일이 미는 힘', x1 + ux * 12, y1 + uy * 12 + (uy < 0 ? -2 : 2), COLOR.normal, 'center', 12);
+    });
+  });
+
+  PieceKit.mark('속력 화살표', () => {
+    Lg.loops.forEach((lp, k) => {
+      const s = states[k];
+      if (s.rest) return;
+      const [X, Y] = toScreen(lp, s.x, s.y);
+      const alpha = k === 1 ? fade : 1;
+      ctx.save(); ctx.globalAlpha = alpha;
+      arrow(X, Y, X + s.vx * Lg.vScale, Y - s.vy * Lg.vScale, COLOR.speed);
+      ctx.restore();
+    });
+  });
+
+  PieceKit.mark('공', () => {
+    Lg.loops.forEach((lp, k) => {
+      const s = states[k];
+      const [X, Y] = toScreen(lp, s.x, s.y);
+      ctx.save(); ctx.globalAlpha = k === 1 ? fade : 1;
+      ctx.fillStyle = COLOR.ball; ctx.beginPath(); ctx.arc(X, Y, BALL_R, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    });
+  });
+
+  PieceKit.mark('공 이름표', () => {
+    for (const lp of Lg.loops) text(lp.name, lp.cx, Lg.cy + Lg.railR + 22, COLOR.label, 'center', 14);
+  });
+
+  PieceKit.mark('캡션', () => {
+    let msg;
+    if (tau < FAIL.sep.t - 0.3) msg = '두 공 모두 레일에 눌린 채 올라간다 — 높아질수록 느려지고, 레일이 미는 힘도 줄어든다';
+    else if (tau < FAIL.impact.t) msg = '오른쪽 공은 레일이 미는 힘이 0 이 되자 꼭대기에 닿기 전에 레일을 떠나 떨어진다';
+    else msg = '왼쪽 공은 꼭대기에서도 최소 속력보다 빨라, 레일에 눌린 채 계속 돈다';
+    if (captionEl.textContent !== msg) captionEl.textContent = msg;
+  });
+}
+
+PieceKit.loop({
+  step(dt, t) { /* 운동은 미리 계산한 표에서 t 로 읽으므로 쌓이는 상태가 없다 */ },
+  draw(t) { draw(t); },
+});
+</script>
+</body>
+</html>

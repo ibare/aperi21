@@ -168,6 +168,9 @@ importers:
       '@aperi21/sim-balance-scale':
         specifier: workspace:*
         version: link:../../sims/mechanics/balance-scale
+      '@aperi21/sim-banked-curve':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/banked-curve
       '@aperi21/sim-beats':
         specifier: workspace:*
         version: link:../../sims/waves/beats
@@ -189,6 +192,12 @@ importers:
       '@aperi21/sim-doppler-effect':
         specifier: workspace:*
         version: link:../../sims/waves/doppler-effect
+      '@aperi21/sim-drag-force':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/drag-force
+      '@aperi21/sim-free-body-diagram':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/free-body-diagram
       '@aperi21/sim-free-fall':
         specifier: workspace:*
         version: link:../../sims/kinematics/free-fall
@@ -201,6 +210,9 @@ importers:
       '@aperi21/sim-heat-conduction':
         specifier: workspace:*
         version: link:../../sims/thermal/heat-conduction
+      '@aperi21/sim-impulse-force-relation':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/impulse-force-relation
       '@aperi21/sim-inclined-plane':
         specifier: workspace:*
         version: link:../../sims/mechanics/inclined-plane
@@ -210,6 +222,9 @@ importers:
       '@aperi21/sim-lenz-law':
         specifier: workspace:*
         version: link:../../sims/em/lenz-law
+      '@aperi21/sim-mechanical-advantage':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/mechanical-advantage
       '@aperi21/sim-net-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/net-force
@@ -219,6 +234,9 @@ importers:
       '@aperi21/sim-newtons-third-law':
         specifier: workspace:*
         version: link:../../sims/mechanics/newtons-third-law
+      '@aperi21/sim-non-inertial-frame':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/non-inertial-frame
       '@aperi21/sim-pendulum-isochronism':
         specifier: workspace:*
         version: link:../../sims/oscillation/pendulum-isochronism
@@ -228,6 +246,9 @@ importers:
       '@aperi21/sim-projectile-motion':
         specifier: workspace:*
         version: link:../../sims/kinematics/projectile-motion
+      '@aperi21/sim-pulley-system':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/pulley-system
       '@aperi21/sim-radius-of-curvature':
         specifier: workspace:*
         version: link:../../sims/kinematics/radius-of-curvature
@@ -243,12 +264,18 @@ importers:
       '@aperi21/sim-river-crossing':
         specifier: workspace:*
         version: link:../../sims/kinematics/river-crossing
+      '@aperi21/sim-spring-force':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/spring-force
       '@aperi21/sim-static-friction':
         specifier: workspace:*
         version: link:../../sims/mechanics/static-friction
       '@aperi21/sim-stopping-distance':
         specifier: workspace:*
         version: link:../../sims/kinematics/stopping-distance
+      '@aperi21/sim-stress-strain-curve':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/stress-strain-curve
       '@aperi21/sim-tangential-normal-acceleration':
         specifier: workspace:*
         version: link:../../sims/kinematics/tangential-normal-acceleration
@@ -273,6 +300,9 @@ importers:
       '@aperi21/sim-vector-decomposition':
         specifier: workspace:*
         version: link:../../sims/kinematics/vector-decomposition
+      '@aperi21/sim-vertical-loop':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/vertical-loop
       '@aperi21/sim-vertical-throw':
         specifier: workspace:*
         version: link:../../sims/kinematics/vertical-throw
@@ -858,6 +888,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/banked-curve:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/mechanics/centripetal-force:
     devDependencies:
       '@aperi21/schema':
@@ -876,6 +915,33 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/drag-force:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/free-body-diagram:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/impulse-force-relation:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/mechanics/inclined-plane:
     devDependencies:
       '@aperi21/schema':
@@ -886,6 +952,15 @@ importers:
         version: 5.9.3
 
   sims/mechanics/inertial-frame:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/mechanical-advantage:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -921,6 +996,24 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/non-inertial-frame:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/pulley-system:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/mechanics/ramp-energy:
     devDependencies:
       '@aperi21/plugin-mechanics':
@@ -933,7 +1026,34 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/spring-force:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/mechanics/static-friction:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/stress-strain-curve:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/vertical-loop:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*

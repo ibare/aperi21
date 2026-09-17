@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>비관성계</title>
+<style>
+  html, body { margin: 0; background: #fbfaf7; }
+  .piece { max-width: 900px; margin: 0 auto; font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { margin: 6px 16px 10px; min-height: 1.5em; font-size: 15px; color: #33322e; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c" width="860" height="366"></canvas>
+  <p class="caption" id="caption"></p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+// ── 물리 설정 (단위: m, s) ──
+const A = 1.5;            // 버스 가속도
+const BUS_LEN = 10;       // 버스 안쪽 길이
+const BUS_H = 2.6;        // 버스 높이
+const BALL_R = 0.35;      // 공 반지름
+const BALL_START = 5;     // 뒷벽에서 공까지 처음 거리 (공 중심)
+const REAR0 = 1;          // 길 위 버스 뒷벽의 처음 위치
+const POST_GAP = 2;       // 길가 눈금 간격
+
+// ── 한 바퀴의 시간표 ──
+const PERIOD = 5.0;
+const T_GO = 0.5;                                   // 출발
+const T_HIT = T_GO + Math.sqrt(2 * (BALL_START - BALL_R) / A); // 공이 뒷벽에 닿는 순간
+const T_FADE_OUT = 4.2, T_FADE_IN = 4.6;
+const OFFSET = 1.0;                                 // 도착했을 때 이미 출발해 있다
+
+// ── 화면 ──
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+const W = cv.width;
+const PPM = W / 24;       // 세계 -1 m ~ 23 m
+const X0 = -1;
+const VIEWS = [
+  { name: '길에서 본 모습', roadY: 155 },
+  { name: '버스 안에서 본 모습', roadY: 340 },
+];
+const COL = {
+  ink: '#33322e', faint: '#b9b5ab', road: '#8d897f',
+  bus: '#e9ecef', busLine: '#5b6570', window: '#cfd8e0', wheel: '#44484d',
+  ball: '#e0662a',
+};
+const captionEl = document.getElementById('caption');
+
+function phase(t) { return ((t + OFFSET) % PERIOD + PERIOD) % PERIOD; }
+
+// 상태는 모두 t 의 함수 — 적분이 필요 없다
+function stateAt(t) {
+  const tau = phase(t);
+  const dt = Math.max(0, tau - T_GO);
+  const s = 0.5 * A * dt * dt;                      // 버스가 간 거리
+  const ballRel = Math.max(BALL_R, BALL_START - s); // 버스 안에서 공 위치 (뒷벽 기준)
+  let alpha = 1;
+  if (tau > T_FADE_OUT && tau < T_FADE_IN) alpha = 1 - (tau - T_FADE_OUT) / (T_FADE_IN - T_FADE_OUT);
+  if (tau >= T_FADE_IN) alpha = (tau - T_FADE_IN) / (PERIOD - T_FADE_IN);
+  return { tau, s, ballRel, touching: tau >= T_HIT, alpha };
+}
+
+const sx = (xm) => (xm - X0) * PPM;
+
+function drawRoad(v, shift) {
+  const y = v.roadY;
+  ctx.strokeStyle = COL.road; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(0, y + 12); ctx.lineTo(W, y + 12); ctx.stroke();
+  ctx.strokeStyle = COL.faint; ctx.lineWidth = 1.5;
+  for (let p = -20; p <= 60; p += POST_GAP) {
+    if (p === REAR0 + BALL_START) continue;          // 공이 놓인 지점은 따로 그린다
+    const x = sx(p - shift);
+    if (x < -5 || x > W + 5) continue;
+    ctx.beginPath(); ctx.moveTo(x, y + 12); ctx.lineTo(x, y + 22); ctx.stroke();
+  }
+}
+
+function drawSpot(v, shift) {
+  // 공이 처음 놓였던 길 위 지점 — 길에 박힌 표식
+  const x = sx(REAR0 + BALL_START - shift);
+  const y = v.roadY;
+  ctx.strokeStyle = COL.ball; ctx.lineWidth = 1.5;
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath(); ctx.moveTo(x, y + 22); ctx.lineTo(x, y - 2.6 * PPM); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(x, y + 12); ctx.lineTo(x, y + 24); ctx.stroke();
+}
+
+function drawBus(v, rear, s) {
+  const y = v.roadY;
+  const floorY = y - 1.0 * PPM;
+  const left = sx(rear), right = sx(rear + BUS_LEN);
+  const top = floorY - BUS_H * PPM;
+  // 몸체 (옆 단면)
+  ctx.fillStyle = COL.bus; ctx.strokeStyle = COL.busLine; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.roundRect(left - 6, top, right - left + 12, floorY - top + 22, 10);
+  ctx.fill(); ctx.stroke();
+  // 창
+  ctx.fillStyle = COL.window;
+  for (let i = 0; i < 4; i++) {
+    const wx = left + 14 + i * ((right - left - 28) / 4);
+    ctx.fillRect(wx + 4, top + 10, (right - left - 28) / 4 - 8, 0.8 * PPM);
+  }
+  // 바닥
+  ctx.strokeStyle = COL.busLine; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(left, floorY); ctx.lineTo(right, floorY); ctx.stroke();
+  // 바퀴 — 간 거리만큼 돈다
+  const wr = 0.45 * PPM;
+  const ang = s / 0.45;
+  for (const wxm of [rear + 1.8, rear + BUS_LEN - 1.8]) {
+    const cx = sx(wxm), cy = y + 12 - wr;
+    ctx.fillStyle = COL.wheel;
+    ctx.beginPath(); ctx.arc(cx, cy, wr, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#d6d8da'; ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(cx - Math.cos(ang) * wr * 0.7, cy + Math.sin(ang) * wr * 0.7);
+    ctx.lineTo(cx + Math.cos(ang) * wr * 0.7, cy - Math.sin(ang) * wr * 0.7);
+    ctx.stroke();
+  }
+  return floorY;
+}
+
+function drawBall(xm, floorY) {
+  const r = BALL_R * PPM;
+  ctx.fillStyle = COL.ball;
+  ctx.beginPath(); ctx.arc(sx(xm), floorY - r - 1, r, 0, Math.PI * 2); ctx.fill();
+}
+
+function drawLabel(v) {
+  ctx.fillStyle = COL.ink; ctx.font = '600 14px -apple-system, "Apple SD Gothic Neo", sans-serif';
+  ctx.textBaseline = 'top';
+  ctx.fillText(v.name, 12, v.roadY - 150);
+}
+
+function captionFor(st) {
+  if (st.tau < T_GO || st.tau >= T_FADE_IN) return '버스가 서 있다. 공은 바닥 가운데 놓여 있다.';
+  if (!st.touching) return '버스 안에서는 공이 뒤로 밀려 가지만, 길에서 보면 공은 제자리에 남아 있다.';
+  return '뒷벽에 닿고 나서야 공이 버스와 함께 앞으로 간다.';
+}
+
+PieceKit.loop({
+  step(dt, t) { /* 모든 상태가 t 의 함수라 쌓을 것이 없다 */ },
+  draw(t) {
+    const st = stateAt(t);
+    ctx.clearRect(0, 0, W, cv.height);
+    ctx.fillStyle = '#fbfaf7'; ctx.fillRect(0, 0, W, cv.height);
+
+    PieceKit.mark('기준틀 이름', () => { VIEWS.forEach(drawLabel); });
+
+    ctx.save(); ctx.globalAlpha = st.alpha;
+
+    // ── 위: 길에 선 사람의 눈 (길이 멈춰 있다) ──
+    const g = VIEWS[0];
+    PieceKit.mark('길과 길가 눈금 (길에서 본 모습)', () => drawRoad(g, 0));
+    let gFloor;
+    PieceKit.mark('버스 (길에서 본 모습)', () => { gFloor = drawBus(g, REAR0 + st.s, st.s); });
+    PieceKit.mark('공이 놓였던 길 위 지점 (길에서 본 모습)', () => drawSpot(g, 0));
+    PieceKit.mark('공 (길에서 본 모습)', () => drawBall(REAR0 + st.s + st.ballRel, gFloor));
+
+    // ── 아래: 버스에 탄 사람의 눈 (버스가 멈춰 있다) ──
+    const b = VIEWS[1];
+    PieceKit.mark('길과 길가 눈금 (버스 안에서 본 모습)', () => drawRoad(b, st.s));
+    let bFloor;
+    PieceKit.mark('버스 (버스 안에서 본 모습)', () => { bFloor = drawBus(b, REAR0, st.s); });
+    PieceKit.mark('공이 놓였던 길 위 지점 (버스 안에서 본 모습)', () => drawSpot(b, st.s));
+    PieceKit.mark('공 (버스 안에서 본 모습)', () => drawBall(REAR0 + st.ballRel, bFloor));
+
+    ctx.restore();
+
+    PieceKit.mark('캡션', () => { captionEl.textContent = captionFor(st); });
+  },
+});
+</script>
+</body>
+</html>

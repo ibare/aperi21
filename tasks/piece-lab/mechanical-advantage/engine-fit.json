@@ -1,0 +1,43 @@
+{
+  "rows": [
+    {
+      "element": "바닥 · 같은 높이 선",
+      "vocab": "trajectory (dashed) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "손이 민 거리 ×3",
+      "vocab": "trajectory (accent · width) + trace (tick 출발점)",
+      "status": "있음"
+    },
+    {
+      "element": "밧줄 · 지레 막대 · 받침점 · 비탈",
+      "vocab": "trajectory + constraint (rigid_rod) + region",
+      "status": "있음"
+    },
+    {
+      "element": "상자 ×3",
+      "vocab": "body (rect · orientation) + readout",
+      "status": "있음"
+    },
+    {
+      "element": "손 · 손의 힘 ×3",
+      "vocab": "body (circle) + vector (같은 배율)",
+      "status": "있음"
+    },
+    {
+      "element": "도구별 힘과 민 거리",
+      "vocab": "readout (vars)",
+      "status": "있음"
+    },
+    {
+      "element": "캡션",
+      "vocab": "CaptionSlotDef (timeline phases.caption)",
+      "status": "있음"
+    }
+  ],
+  "outside": [
+    "세 도구의 힘·거리 계산과 빗면 위 상자 자리 — sim",
+    "원본 판단 거리 — 빗면 칸에서 다 올린 뒤 상자가 받침대 끝에 떠 보인다 (에이전트 자기 신고)"
+  ]
+}

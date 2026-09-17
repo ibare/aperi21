@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>힘과 충격량</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #2b2b2b;
+    --soft: #8a8a8a;
+    --line: #c9c6bf;
+    --ball: #3f6fb5;
+    --force: #d0582b;
+    --wall: #6b6760;
+    --cushion: #e7d9b8;
+    --cushion-edge: #b9a57a;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 8px 12px 10px; }
+  canvas { display: block; width: 100%; height: 300px; }
+  .bottom { display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; min-height: 30px; }
+  .caption { font-size: 15px; line-height: 1.4; }
+  .control { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--soft);
+    white-space: nowrap; }
+  .control input { width: 130px; accent-color: var(--wall); }
+  .control output { display: inline-block; min-width: 42px; text-align: right; color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <div class="bottom">
+    <div class="caption" id="caption"></div>
+    <label class="control">방석에서 멈추는 데 걸리는 시간
+      <input id="soft" type="range" min="0.25" max="2" step="0.25" value="1.5">
+      <output id="softOut">1.50초</output>
+    </label>
+  </div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 물리 설정 ─────────────────────────────────────────
+  // 두 공은 질량·속력이 같고, 둘 다 완전히 멈춘다 → 운동량 변화가 같다.
+  // 받는 힘은 반사인 모양 F(τ) = Fmax·sin(πτ/T). 넓이 2·Fmax·T/π = m·v0 이 되도록 Fmax 를 정한다.
+  const V0 = 100;          // 공 속력 (화면 px/초)
+  const T_HARD = 0.25;     // 딱딱한 벽에서 멈추는 데 걸리는 시간 (초)
+  const T_SOFT_DEFAULT = 1.5;
+  const T_HIT = 1.0;       // 한 주기 안에서 부딪히는 시각
+  const CYCLE = 6.5;       // 한 주기 길이
+  const R = 18;            // 공 반지름
+  const CUSHION = 120;     // 방석 두께 (px)
+
+  let tSoft = T_SOFT_DEFAULT;
+  let startAt = 0;         // 조작기로 바꾸면 이 시각부터 처음부터 다시
+  let lastT = 0;
+
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const captionEl = document.getElementById('caption');
+  const slider = document.getElementById('soft');
+  const sliderOut = document.getElementById('softOut');
+
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const C = {
+    ink: css('--ink'), soft: css('--soft'), line: css('--line'), ball: css('--ball'),
+    force: css('--force'), wall: css('--wall'), cushion: css('--cushion'), cushionEdge: css('--cushion-edge'),
+  };
+
+  slider.addEventListener('input', () => {
+    if (PieceKit.frozen) return;
+    tSoft = Number(slider.value);
+    sliderOut.textContent = tSoft.toFixed(2) + '초';
+    startAt = lastT;
+  });
+
+  // 접촉 τ 초 뒤의 힘 (최대 힘 기준 1 = 딱딱한 벽의 최대)
+  const fmaxRel = (T) => T_HARD / T;
+  function forceRel(tau, T) {
+    if (tau < 0 || tau > T) return 0;
+    return fmaxRel(T) * Math.sin(Math.PI * tau / T);
+  }
+  // 접촉 τ 초 뒤의 속력 비율 (1 → 0)
+  function speedRel(tau, T) {
+    if (tau <= 0) return 1;
+    if (tau >= T) return 0;
+    return (1 + Math.cos(Math.PI * tau / T)) / 2;
+  }
+  // 접촉 이후 공이 더 나아간 거리 (px)
+  function pushIn(tau, T) {
+    if (tau <= 0) return 0;
+    const s = Math.min(tau, T);
+    return V0 / 2 * (s + T / Math.PI * Math.sin(Math.PI * s / T));
+  }
+
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { w, h };
+  }
+
+  function arrow(x1, y, x2, color, width) {
+    const dir = Math.sign(x2 - x1);
+    const len = Math.abs(x2 - x1);
+    if (len < 2) return;
+    const head = Math.min(9, len * 0.6);
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = width;
+    ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x2 - dir * head, y); ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x2, y);
+    ctx.lineTo(x2 - dir * head, y - head * 0.55);
+    ctx.lineTo(x2 - dir * head, y + head * 0.55);
+    ctx.closePath(); ctx.fill();
+  }
+
+  // 한 줄(벽 또는 방석)을 그린다
+  function drawLane(kind, x0, laneW, local) {
+    const T = kind === 'hard' ? T_HARD : tSoft;
+    const tau = local - T_HIT;
+    const name = kind === 'hard' ? '딱딱한 벽' : '푹신한 방석';
+
+    // ── 위: 공과 벽 ──
+    const yBall = 70;
+    const wallX = x0 + laneW - 16;                      // 벽의 왼쪽 면
+    const faceX = kind === 'hard' ? wallX : wallX - CUSHION; // 공이 처음 닿는 면
+    const d = pushIn(tau, T);
+    const v = speedRel(tau, T);
+    const f = forceRel(tau, T);
+
+    // 공의 오른쪽 끝 위치
+    let ballRight;
+    if (tau < 0) ballRight = faceX + V0 * tau;
+    else ballRight = kind === 'hard' ? faceX : faceX + d;
+    // 딱딱한 벽: 공이 파고들지 못하고 찌그러진다
+    const squash = kind === 'hard' ? Math.min(d, R * 0.7) : 0;
+    const rx = R - squash / 2, ry = R + squash * 0.35;
+    const cx = ballRight - rx;
+
+    PieceKit.mark(kind === 'hard' ? '딱딱한 벽' : '방석', () => {
+      ctx.fillStyle = C.wall;
+      ctx.fillRect(wallX, yBall - 42, 10, 84);
+      if (kind === 'soft') {
+        const compressed = Math.max(0, Math.min(d, CUSHION - 6));
+        const left = faceX + compressed;
+        ctx.fillStyle = C.cushion;
+        ctx.strokeStyle = C.cushionEdge;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        // 공이 누른 자리는 오목하게 들어간다
+        // 방석 면 전체가 함께 눌리고, 공이 닿은 자리만 조금 더 들어간다
+        const edge = faceX + compressed * 0.8;
+        ctx.moveTo(wallX, yBall - 40);
+        ctx.lineTo(edge, yBall - 40);
+        ctx.bezierCurveTo(edge, yBall - 30, left, yBall - R - 4, left, yBall);
+        ctx.bezierCurveTo(left, yBall + R + 4, edge, yBall + 30, edge, yBall + 40);
+        ctx.lineTo(wallX, yBall + 40);
+        ctx.closePath();
+        ctx.fill(); ctx.stroke();
+        // 방석 속 결 (눌리면 촘촘해진다)
+        ctx.strokeStyle = C.cushionEdge; ctx.lineWidth = 1;
+        const n = 6;
+        for (let i = 1; i < n; i++) {
+          const x = left + ((wallX - left) * i) / n;
+          ctx.globalAlpha = 0.5;
+          ctx.beginPath();
+          ctx.moveTo(x, yBall - 38); ctx.lineTo(x, yBall + 38);
+          ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+      }
+    });
+
+    PieceKit.mark('공', () => {
+      ctx.fillStyle = C.ball;
+      ctx.beginPath(); ctx.ellipse(cx, yBall, rx, ry, 0, 0, Math.PI * 2); ctx.fill();
+    });
+
+    PieceKit.mark('공의 속도', () => {
+      if (v > 0.01) arrow(cx - rx, yBall - R - 12, cx - rx + 60 * v, C.ball, 2.5);
+    });
+
+    PieceKit.mark('공이 받는 힘', () => {
+      if (f > 0.004) arrow(cx, yBall, cx - 110 * f, C.force, 4);
+    });
+
+    PieceKit.mark('줄 이름', () => {
+      ctx.fillStyle = C.soft; ctx.font = '13px sans-serif'; ctx.textAlign = 'left';
+      ctx.fillText(name, x0, 18);
+    });
+
+    // ── 아래: 힘-시간 곡선 ──
+    const gx = x0 + 22, gw = laneW - 40;
+    const gy0 = 282, gh = 128;              // 기준선 y, 높이 (딱딱한 벽 최대 = gh)
+    const tauMin = -0.25, tauMax = 2.25;
+    const X = (s) => gx + ((s - tauMin) / (tauMax - tauMin)) * gw;
+    const Y = (fr) => gy0 - fr * gh;
+
+    PieceKit.mark('힘-시간 축', () => {
+      ctx.strokeStyle = C.line; ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(gx, gy0 - gh - 6); ctx.lineTo(gx, gy0); ctx.lineTo(gx + gw, gy0);
+      ctx.stroke();
+      ctx.fillStyle = C.soft; ctx.font = '12px sans-serif';
+      ctx.textAlign = 'right'; ctx.fillText('힘', gx - 5, gy0 - gh + 4);
+      ctx.textAlign = 'right'; ctx.fillText('시간', gx + gw, gy0 + 14);
+    });
+
+    PieceKit.mark('받은 힘의 기록', () => {
+      const now = Math.min(tau, tauMax);
+      if (now <= 0) return;
+      const end = Math.min(now, T);
+      const N = 80;
+      ctx.beginPath();
+      ctx.moveTo(X(0), Y(0));
+      for (let i = 0; i <= N; i++) {
+        const s = (end * i) / N;
+        ctx.lineTo(X(s), Y(forceRel(s, T)));
+      }
+      ctx.lineTo(X(end), Y(0));
+      ctx.closePath();
+      ctx.fillStyle = C.force; ctx.globalAlpha = 0.22; ctx.fill(); ctx.globalAlpha = 1;
+      ctx.strokeStyle = C.force; ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(X(0), Y(0));
+      for (let i = 0; i <= N; i++) {
+        const s = (end * i) / N;
+        ctx.lineTo(X(s), Y(forceRel(s, T)));
+      }
+      if (now > T) ctx.lineTo(X(now), Y(0));
+      ctx.stroke();
+    });
+  }
+
+  function captionFor(local) {
+    const tau = local - T_HIT;
+    const hardOn = tau >= 0 && tau < T_HARD;
+    const softOn = tau >= 0 && tau < tSoft;
+    if (tau < 0) return '같은 공이 같은 속력으로 벽과 방석을 향해 간다';
+    if (hardOn && softOn) {
+      return tSoft > T_HARD
+        ? '벽에 닿은 공은 순식간에 멈추며 큰 힘을 받는다'
+        : '둘 다 같은 짧은 시간에 멈추며 같은 큰 힘을 받는다';
+    }
+    if (softOn) return '방석에 닿은 공은 아직 멈추는 중 — 힘이 낮게 오래 이어진다';
+    if (tSoft === T_HARD) return '같은 시간에 멈추면 힘도 같다';
+    return '둘 다 멈췄다 — 오래 걸려 멈춘 쪽의 힘이 훨씬 낮았다';
+  }
+
+  PieceKit.loop({
+    step(dt, t) { lastT = t; },
+    draw(t) {
+      if (PieceKit.frozen) { tSoft = T_SOFT_DEFAULT; startAt = 0; }
+      lastT = t;
+      const local = (((t - startAt) % CYCLE) + CYCLE) % CYCLE;
+      const { w } = resize();
+      ctx.clearRect(0, 0, w, 300);
+      const gap = 28;
+      const laneW = (w - gap) / 2;
+      drawLane('hard', 0, laneW, local);
+      drawLane('soft', laneW + gap, laneW, local);
+      PieceKit.mark('캡션', () => {
+        const text = captionFor(local);
+        if (captionEl.textContent !== text) captionEl.textContent = text;
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

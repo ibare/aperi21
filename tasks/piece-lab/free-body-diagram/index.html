@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>자유물체도</title>
+<style>
+  html, body { margin: 0; background: #fbfaf7; color: #26241f;
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 860px; margin: 0 auto; padding: 12px 0; }
+  canvas { display: block; width: 100%; aspect-ratio: 860 / 260; cursor: pointer; }
+  .caption { min-height: 1.6em; margin: 8px 16px 0; font-size: 15px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <div class="caption" id="cap"></div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // 논리 좌표는 860 × 260. 왼쪽 절반은 쌓인 장면, 오른쪽 절반은 떼어 낸 물체가 놓이는 자리.
+  const W = 860, H = 260, SHIFT = 430;
+  const canvas = document.getElementById('c');
+  const cap = document.getElementById('cap');
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+
+  const INK = '#26241f', FILL = '#e9e5dc', FAINT = '#b9b3a6', ACCENT = '#d9480f';
+  const G = 9.8, M_CUP = 0.3, M_BOOK = 1.2, M_TABLE = 4.0;
+  const FLOOR_Y = 240;
+
+  // 화살표 길이: 14 + 13·√F — 크기 순서는 지키되, 컵의 작은 힘도 읽히고 책상 무게가 화면을 넘지 않게
+  const len = (F) => 14 + 13 * Math.sqrt(F);
+
+  const NAME = { cup: '컵', book: '책', table: '책상' };
+
+  // on: 힘을 받는 물체, x: 화살표 가로 위치, y0: 꼬리(작용점), dir: +1 아래 / -1 위
+  // lx, ly, la: 떼어 냈을 때 이름표 위치(물체 기준 좌표)
+  const F_TABLE_LEG = (M_TABLE + M_BOOK + M_CUP) * G / 2;
+  const FORCES = [
+    { on: 'cup',   x: 215, y0: 69,  dir: +1, F: M_CUP * G,  label: '지구가 당김', mark: '힘: 지구가 컵을 당김', lx: 224, ly: 114, la: 'left' },
+    { on: 'cup',   x: 201, y0: 94,  dir: -1, F: M_CUP * G,  label: '책이 받침',   mark: '힘: 책이 컵을 받침',   lx: 188, ly: 60,  la: 'right' },
+    { on: 'book',  x: 229, y0: 94,  dir: +1, F: M_CUP * G,  label: '컵이 누름',   mark: '힘: 컵이 책을 누름',   lx: 222, ly: 88,  la: 'right' },
+    { on: 'book',  x: 172, y0: 107, dir: +1, F: M_BOOK * G, label: '지구가 당김', mark: '힘: 지구가 책을 당김', lx: 164, ly: 164, la: 'right' },
+    { on: 'book',  x: 266, y0: 120, dir: -1, F: (M_BOOK + M_CUP) * G, label: '책상이 받침', mark: '힘: 책상이 책을 받침', lx: 274, ly: 60, la: 'left' },
+    { on: 'table', x: 282, y0: 120, dir: +1, F: (M_BOOK + M_CUP) * G, label: '책이 누름', mark: '힘: 책이 책상을 누름', lx: 275, ly: 152, la: 'right' },
+    { on: 'table', x: 215, y0: 126, dir: +1, F: M_TABLE * G, label: '지구가 당김', mark: '힘: 지구가 책상을 당김', lx: 222, ly: 222, la: 'left' },
+    { on: 'table', x: 88,  y0: FLOOR_Y, dir: -1, F: F_TABLE_LEG, label: '바닥이 받침', mark: '힘: 바닥이 왼쪽 다리를 받침', lx: 80, ly: 164, la: 'right' },
+    { on: 'table', x: 342, y0: FLOOR_Y, dir: -1, F: F_TABLE_LEG, label: '바닥이 받침', mark: '힘: 바닥이 오른쪽 다리를 받침', lx: 350, ly: 164, la: 'left' },
+  ];
+
+  const CAPTION_FREE = {
+    cup:   '컵이 받는 힘은 둘 — 지구와 책이 준다. 컵이 책을 누르는 힘은 책 쪽에 남는다.',
+    book:  '책이 받는 힘은 셋 — 지구·책상·컵이 준다. 책이 컵을 받치는 힘은 컵 쪽에 남는다.',
+    table: '책상이 받는 힘은 넷 — 지구·책·바닥 두 곳. 컵은 책상에 닿지 않아 목록에 없다.',
+  };
+
+  // 한 물체의 주기 (초)
+  const P = 9;
+  const T_SEP0 = 1.0, T_SEP1 = 3.0, T_LAB0 = 3.0, T_LAB1 = 3.5, T_RET0 = 7.5, T_RET1 = 9.0;
+
+  // 누적 상태: 지금 떼어 내는 물체와 그 주기 안의 시각. 도착 순간 이미 움직이도록 0.6 초 앞에서 시작.
+  // 첫 순서는 책 — 가장 많이 헷갈리는 물체.
+  const ORDER = ['book', 'cup', 'table'];
+  const state = { k: 0, pt: 0.6 };
+
+  const clamp01 = (v) => Math.max(0, Math.min(1, v));
+  const ease = (v) => { const s = clamp01(v); return s * s * (3 - 2 * s); };
+
+  function phase() {
+    const pt = state.pt;
+    let s; // 0 = 제자리, 1 = 오른쪽으로 떼어 냄
+    if (pt < T_SEP0) s = 0;
+    else if (pt < T_SEP1) s = ease((pt - T_SEP0) / (T_SEP1 - T_SEP0));
+    else if (pt < T_RET0) s = 1;
+    else s = 1 - ease((pt - T_RET0) / (T_RET1 - T_RET0));
+    const lab = pt < T_RET0 ? ease((pt - T_LAB0) / (T_LAB1 - T_LAB0)) : 1 - ease((pt - T_RET0) / 0.4);
+    return { s, lab };
+  }
+
+  function offsetOf(s) {
+    // 옆으로 옮기면서 살짝 들어 올린다
+    return { dx: SHIFT * s, dy: -18 * Math.sin(Math.PI * s) };
+  }
+
+  // ---- 그리기 도구 ----
+  function drawCupShape(dx, dy, style) {
+    ctx.beginPath();
+    ctx.moveTo(193 + dx, 44 + dy); ctx.lineTo(237 + dx, 44 + dy);
+    ctx.lineTo(233 + dx, 94 + dy); ctx.lineTo(197 + dx, 94 + dy); ctx.closePath();
+    applyStyle(style);
+    ctx.beginPath();
+    ctx.moveTo(236 + dx, 54 + dy);
+    ctx.bezierCurveTo(252 + dx, 54 + dy, 252 + dx, 80 + dy, 234 + dx, 80 + dy);
+    ctx.lineWidth = 2; ctx.strokeStyle = style.stroke; ctx.setLineDash(style.dash || []); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+  function drawBookShape(dx, dy, style) {
+    ctx.beginPath(); ctx.rect(150 + dx, 94 + dy, 130, 26); applyStyle(style);
+    if (!style.dash) {
+      ctx.beginPath(); ctx.moveTo(156 + dx, 101 + dy); ctx.lineTo(274 + dx, 101 + dy);
+      ctx.moveTo(156 + dx, 113 + dy); ctx.lineTo(274 + dx, 113 + dy);
+      ctx.lineWidth = 1; ctx.strokeStyle = FAINT; ctx.stroke();
+    }
+  }
+  function drawTableShape(dx, dy, style) {
+    ctx.beginPath();
+    ctx.rect(95 + dx, 120 + dy, 240, 12);
+    ctx.rect(99 + dx, 132 + dy, 8, FLOOR_Y - 132);
+    ctx.rect(323 + dx, 132 + dy, 8, FLOOR_Y - 132);
+    applyStyle(style);
+  }
+  function applyStyle(st) {
+    if (st.fill) { ctx.fillStyle = st.fill; ctx.fill(); }
+    ctx.lineWidth = st.width || 2; ctx.strokeStyle = st.stroke; ctx.setLineDash(st.dash || []); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+  const SHAPE = { cup: drawCupShape, book: drawBookShape, table: drawTableShape };
+
+  function arrow(x, y0, dir, L, color, width, alpha) {
+    const y1 = y0 + dir * L, head = 9;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = width; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x, y0); ctx.lineTo(x, y1 - dir * head * 0.8); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x, y1); ctx.lineTo(x - 5.5, y1 - dir * head); ctx.lineTo(x + 5.5, y1 - dir * head);
+    ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.arc(x, y0, 2.6, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  }
+
+  // ---- 조작: 장면의 물체를 누르면 그 물체를 떼어 낸다 ----
+  const HIT = [
+    { id: 'cup',   x0: 190, x1: 250, y0: 40,  y1: 94 },
+    { id: 'book',  x0: 150, x1: 280, y0: 94,  y1: 120 },
+    { id: 'table', x0: 90,  x1: 340, y0: 120, y1: FLOOR_Y },
+  ];
+  canvas.addEventListener('click', (ev) => {
+    if (PieceKit.frozen) return;
+    const r = canvas.getBoundingClientRect();
+    const x = (ev.clientX - r.left) * W / r.width, y = (ev.clientY - r.top) * H / r.height;
+    for (const h of HIT) {
+      if (x >= h.x0 && x <= h.x1 && y >= h.y0 && y <= h.y1) {
+        state.k = ORDER.indexOf(h.id); state.pt = T_SEP0 - 0.2; return;
+      }
+    }
+  });
+
+  PieceKit.loop({
+    step(dt) {
+      state.pt += dt;
+      if (state.pt >= P) { state.pt -= P; state.k = (state.k + 1) % ORDER.length; }
+    },
+    draw() {
+      const sel = ORDER[state.k];
+      const { s, lab } = phase();
+      const off = offsetOf(s);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+
+      PieceKit.mark('바닥', () => {
+        ctx.beginPath(); ctx.moveTo(30, FLOOR_Y); ctx.lineTo(400, FLOOR_Y);
+        ctx.lineWidth = 2; ctx.strokeStyle = INK; ctx.stroke();
+        ctx.beginPath();
+        for (let x = 36; x < 400; x += 12) { ctx.moveTo(x, FLOOR_Y + 2); ctx.lineTo(x - 8, FLOOR_Y + 10); }
+        ctx.lineWidth = 1; ctx.strokeStyle = FAINT; ctx.stroke();
+      });
+
+      // 떼어 낸 자리의 빈 윤곽
+      PieceKit.mark('빈 자리', () => {
+        if (s <= 0) return;
+        ctx.save(); ctx.globalAlpha = clamp01(s * 3);
+        SHAPE[sel](0, 0, { stroke: FAINT, dash: [5, 4], width: 1.5 });
+        ctx.restore();
+      });
+
+      // 물체 셋: 책상 → 책 → 컵 순서로 쌓아 그린다
+      for (const id of ['table', 'book', 'cup']) {
+        PieceKit.mark(NAME[id], () => {
+          const moving = id === sel && s > 0;
+          const o = moving ? off : { dx: 0, dy: 0 };
+          SHAPE[id](o.dx, o.dy, { fill: FILL, stroke: INK, width: 2 });
+        });
+      }
+
+      // 힘 화살표 아홉 개
+      for (const f of FORCES) {
+        PieceKit.mark(f.mark, () => {
+          const mine = f.on === sel;
+          const o = mine ? off : { dx: 0, dy: 0 };
+          const color = mine ? ACCENT : INK;
+          const alpha = mine ? 1 : 1 - 0.5 * s;
+          arrow(f.x + o.dx, f.y0 + o.dy, f.dir, len(f.F), color, mine ? 3 : 2.2, alpha);
+        });
+      }
+
+      PieceKit.mark('힘 이름표', () => {
+        if (lab <= 0) return;
+        ctx.save();
+        ctx.globalAlpha = lab;
+        ctx.font = '13px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+        ctx.fillStyle = ACCENT; ctx.textBaseline = 'middle';
+        for (const f of FORCES) {
+          if (f.on !== sel) continue;
+          ctx.textAlign = f.la;
+          ctx.fillText(f.label, f.lx + off.dx, f.ly + off.dy);
+        }
+        ctx.restore();
+      });
+
+      PieceKit.mark('캡션', () => {
+        const pt = state.pt;
+        let text;
+        if (pt < T_SEP1) text = `${NAME[sel]}만 떼어 낸다. ${NAME[sel]}이 받는 힘만 따라 나온다.`;
+        else if (pt < T_RET0) text = CAPTION_FREE[sel];
+        else text = `${NAME[sel]}을 제자리에 돌려놓는다.`;
+        if (cap.textContent !== text) cap.textContent = text;
+      });
+    },
+  });
+
+})();
+</script>
+</body>
+</html>
