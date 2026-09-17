@@ -1,4 +1,4 @@
-import type { ColorRole, Primitive, RenderContext } from '@aperi21/schema';
+import type { ColorRole, LightColor, Primitive, RenderContext } from '@aperi21/schema';
 
 type Emphasis = 'strong' | 'medium' | 'subtle';
 
@@ -37,6 +37,8 @@ export function applyBaseMeta(rc: RenderContext, p: Primitive): void {
   c.save();
   (c as AlphaContext)[BASE_ALPHA] = baseAlpha(p);
   setAlpha(c, 1);
+  // 빛을 더해 칠한다(`LightChannel.blend`) — 이 save 안에서만. finalizeBaseMeta 의 restore 가 되돌린다.
+  if ((p as { blend?: 'add' }).blend === 'add') c.globalCompositeOperation = 'lighter';
   if (p.clip) {
     // 이 save 안에서 자르므로 finalizeBaseMeta 의 restore 가 함께 푼다. 월드 y 가 위라
     // 화면으로 옮기면 위아래가 뒤집힌다 — 모서리를 다시 세운다.
@@ -168,16 +170,22 @@ export function luminanceColor(rc: RenderContext, color: string, amount: number)
 }
 
 /**
- * 테마와 무관한 **빛의 세기** 0~1 을 색으로. 테마의 `light.none` 과 `light.full` 을 선형광으로 섞는다.
- * 양 끝을 해석할 수 없으면(hex 가 아니면) 반올림한 끝 색을 준다.
+ * 테마와 무관한 **빛**을 색으로. 세기(0~1)면 무채색, `{ rgb }` 면 성분마다 — 테마의 `light.none` 과
+ * `light.full` 을 선형광으로 섞는다. `additive` 면 빛 없음 오프셋을 빼고 `full × 성분` 만 준다 — 빛을 더해
+ * 칠할 때(`blend: 'add'`) 바탕 몫이 겹칠 때마다 쌓이지 않게. 양 끝을 해석할 수 없으면(hex 가 아니면) 끝 색.
  */
-export function lightColor(rc: RenderContext, amount: number): string {
-  const a = Math.max(0, Math.min(1, amount));
+export function lightColor(rc: RenderContext, light: number | LightColor, additive = false): string {
+  const v: readonly [number, number, number] =
+    typeof light === 'number' ? [light, light, light] : light.rgb;
+  const clamp = (x: number): number => (Number.isFinite(x) ? Math.max(0, Math.min(1, x)) : 0);
   const lo = parseHex(rc.theme.light.none);
   const hi = parseHex(rc.theme.light.full);
-  if (!lo || !hi) return a < 0.5 ? rc.theme.light.none : rc.theme.light.full;
-  const mix = (i: number): number =>
-    linearToSrgb(srgbToLinear(lo[i]!) + (srgbToLinear(hi[i]!) - srgbToLinear(lo[i]!)) * a);
+  if (!lo || !hi) return (v[0] + v[1] + v[2]) / 3 < 0.5 ? rc.theme.light.none : rc.theme.light.full;
+  const mix = (i: number): number => {
+    const top = srgbToLinear(hi[i]!);
+    const base = additive ? 0 : srgbToLinear(lo[i]!);
+    return linearToSrgb(base + (top - base) * clamp(v[i]!));
+  };
   return `rgb(${mix(0)}, ${mix(1)}, ${mix(2)})`;
 }
 
@@ -186,15 +194,17 @@ export function lightColor(rc: RenderContext, amount: number): string {
  * style 이나 colorRole 이 없으면 기본값 (primary, medium) 사용.
  *
  * `luminance` 를 선언했으면 그 빛의 양으로 섞은 색을 준다 — 알파가 아니라 색이다.
- * `light` 를 선언했으면 역할 · 강조 · `luminance` 를 보지 않고 그 빛의 세기의 색을 준다 (장부 G34).
+ * `light` 를 선언했으면 역할 · 강조 · `luminance` 를 보지 않고 그 빛(세기 · 색)의 색을 준다 (장부 G34 · G61).
  */
 export function primitiveColor(
   rc: RenderContext,
   p: Primitive,
   defaults: { role?: ColorRole; emphasis?: Emphasis } = {},
 ): string {
-  const light = (p as { light?: number }).light;
-  if (typeof light === 'number') return lightColor(rc, light);
+  const lp = p as { light?: number | LightColor; blend?: 'add' };
+  if (typeof lp.light === 'number' || (typeof lp.light === 'object' && lp.light !== null)) {
+    return lightColor(rc, lp.light, lp.blend === 'add');
+  }
   const style = (p as { style?: { colorRole?: ColorRole; emphasis?: Emphasis } }).style;
   const role = style?.colorRole ?? defaults.role ?? 'primary';
   const emphasis = style?.emphasis ?? defaults.emphasis ?? 'medium';

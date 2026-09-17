@@ -118,3 +118,75 @@ describe("scalarField colors: 'light' · NaN", () => {
     expect(written[0]![1 * 4 + 3]).toBe(255);
   });
 });
+
+describe('빛의 색 · 더하기 (「빛 색」 트랙, 장부 G33 · G35 · G61)', () => {
+  it('rgb 는 성분마다 섞인다 — 빨간 빛은 빨강 성분이 가장 크다', () => {
+    for (const mode of ['light', 'dark'] as const) {
+      const rc = makeRc(mode);
+      const lin = linearRgbOf(lightColor(rc, { rgb: [1, 0, 0] }))!;
+      expect(lin[0]).toBeGreaterThan(lin[1]);
+      expect(lin[0]).toBeGreaterThan(lin[2]);
+    }
+  });
+
+  it('더하기(additive)는 빛 없음 몫을 빼서 겹칠 때 바탕이 쌓이지 않는다', () => {
+    const rc = makeRc('light');
+    const lin = linearRgbOf(lightColor(rc, { rgb: [0, 0, 0] }, true))!;
+    expect(lin).toEqual([0, 0, 0]);
+  });
+
+  it("blend: 'add' 는 그 프리미티브를 그리는 동안만 lighter 로 칠한다", async () => {
+    const { applyBaseMeta, finalizeBaseMeta } = await import('../index');
+    const stack: string[] = [];
+    const state: { globalCompositeOperation: string } = { globalCompositeOperation: 'source-over' };
+    const ctx = new Proxy(state as unknown as Record<string, unknown>, {
+      get: (t, prop: string | symbol) => {
+        if (prop === 'save') return () => stack.push(String(t.globalCompositeOperation));
+        if (prop === 'restore') return () => { t.globalCompositeOperation = stack.pop(); };
+        return typeof prop === 'string' && prop in t ? t[prop] : () => undefined;
+      },
+      set: (t, prop: string | symbol, v: unknown) => {
+        if (typeof prop === 'string') t[prop] = v;
+        return true;
+      },
+    }) as unknown as CanvasRenderingContext2D;
+    const rc = { ...makeRc('dark'), ctx };
+    const lit: Body = { type: 'body', shape: 'circle', pos: [0, 0], size: 1, light: { rgb: [1, 0, 0] }, blend: 'add' };
+    applyBaseMeta(rc, lit);
+    expect(state.globalCompositeOperation).toBe('lighter');
+    finalizeBaseMeta(rc, lit);
+    expect(state.globalCompositeOperation).toBe('source-over');
+  });
+
+  it("scalarField colors: 'lightRgb' 는 칸마다 세 성분을 칠하고, NaN 성분이 있으면 투명", () => {
+    const original = (globalThis as { OffscreenCanvas?: unknown }).OffscreenCanvas;
+    const written: Uint8ClampedArray[] = [];
+    (globalThis as { OffscreenCanvas?: unknown }).OffscreenCanvas = class {
+      constructor(public width: number, public height: number) {}
+      getContext() {
+        return {
+          createImageData: (w: number, h: number) => ({ data: new Uint8ClampedArray(w * h * 4) }),
+          putImageData: (img: { data: Uint8ClampedArray }) => written.push(img.data),
+        };
+      }
+    };
+    try {
+      renderScalarField(makeRc('light'), {
+        type: 'scalarField',
+        min: [0, 0],
+        max: [2, 1],
+        cols: 2,
+        rows: 1,
+        values: [0, 0, 1, Number.NaN, 0, 0],
+        range: [0, 1],
+        colors: 'lightRgb',
+      });
+      const px = written[0]!;
+      expect(px[2]!).toBeGreaterThan(px[0]!);
+      expect(px[3]).toBe(255);
+      expect(px[7]).toBe(0);
+    } finally {
+      (globalThis as { OffscreenCanvas?: unknown }).OffscreenCanvas = original;
+    }
+  });
+});

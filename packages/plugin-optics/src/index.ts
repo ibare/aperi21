@@ -5,6 +5,7 @@ import { reflect, refract } from './math';
 
 export { traceRay, findImage, reflect, refract };
 export { renderRay, renderOpticalElement };
+export { wavelengthToLinearRgb, spectrumToLinearRgb, VISIBLE_NM, type LinearRgb } from './color';
 
 /**
  * plugin-optics — 광학 도메인 플러그인.

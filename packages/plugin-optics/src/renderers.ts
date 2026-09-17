@@ -1,29 +1,11 @@
 import type { OpticalElement, PrimitiveRenderer, Ray, Vec2 } from '@aperi21/schema';
+import { linearToSrgb, wavelengthToLinearRgb } from './color';
 
-/** 파장(nm)→RGB 근사. Bruton 공식 단순화. */
+/** 파장(nm)→화면 색. 색상 계산은 조각과 같은 `wavelengthToLinearRgb` 한 곳이다. */
 function wavelengthToColor(nm: number): string {
-  let r = 0;
-  let g = 0;
-  let b = 0;
-  if (nm >= 380 && nm < 440) {
-    r = -(nm - 440) / (440 - 380);
-    b = 1;
-  } else if (nm >= 440 && nm < 490) {
-    g = (nm - 440) / (490 - 440);
-    b = 1;
-  } else if (nm >= 490 && nm < 510) {
-    g = 1;
-    b = -(nm - 510) / (510 - 490);
-  } else if (nm >= 510 && nm < 580) {
-    r = (nm - 510) / (580 - 510);
-    g = 1;
-  } else if (nm >= 580 && nm < 645) {
-    r = 1;
-    g = -(nm - 645) / (645 - 580);
-  } else if (nm >= 645 && nm <= 780) {
-    r = 1;
-  }
-  return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+  const [r, g, b] = wavelengthToLinearRgb(nm);
+  const byte = (v: number): number => Math.round(linearToSrgb(v) * 255);
+  return `rgb(${byte(r)}, ${byte(g)}, ${byte(b)})`;
 }
 
 /** 체인 세그먼트 경로 + 옵션 화살촉 + 파장 색상. */

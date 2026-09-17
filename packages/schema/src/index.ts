@@ -107,9 +107,26 @@ export interface LightChannel {
    * 색 역할은 **대상**을 가르고 테마마다 밝기가 뒤집힌다(`ink` 는 라이트에서 짙고 다크에서 밝다).
    * 빛의 밝기 자체가 주장인 그림 — 달의 낮 면 · 스크린에 닿은 빛 — 을 역할로 칠하면 라이트 테마에서
    * 「밝은 곳」 이 어둡게 나온다 (장부 G34, `moon-phases` · `polarization`). 빛은 물리량이라 역할이 아니라
-   * 이 채널로 칠한다. 빛의 **색**(파장 · 합색)은 아직 없다 — 「빛 색」 트랙에서 같은 채널을 넓힌다.
+   * 이 채널로 칠한다.
+   *
+   * **빛의 색**은 `{ rgb }` 로 준다 — 선형광 세 성분, 가득 찬 흰빛이 `[1, 1, 1]`. 성분마다 빛 없음 → 가득 찬 빛을
+   * 섞는다. 파장 · 스펙트럼에서 성분을 얻는 계산은 렌더러가 아니라 조각이 `@aperi21/plugin-optics` 의 순수 함수
+   * (`wavelengthToLinearRgb` · `spectrumToLinearRgb`)로 한다 (장부 G33 · G60 · G61, 「빛 색」 트랙).
    */
-  light?: number;
+  light?: number | LightColor;
+  /**
+   * 겹친 빛을 **더해서** 칠한다. 기본은 없음(위에 덮는다).
+   *
+   * 빨강 빛과 초록 빛이 겹친 자리가 노랑이 되는 것은 빛이 더해지기 때문이다 — 덮어 칠하면 나중 빛만 남는다
+   * (장부 G35, `color-addition`). 빛 없음 바탕 위에서 쓴다. 한계: 캔버스는 **화면값**을 더하므로 원색 1 끼리는
+   * 정확하고 중간 세기끼리는 선형광 합보다 밝다. `light` 가 없으면 역할 색을 더한다.
+   */
+  blend?: 'add';
+}
+
+/** 빛의 색 — 선형광 세 성분. 가득 찬 흰빛이 `[1, 1, 1]`, 0~1 밖은 렌더러가 자른다. */
+export interface LightColor {
+  rgb: readonly [number, number, number];
 }
 
 export interface Body extends BaseMeta, LightChannel {
@@ -322,7 +339,7 @@ export interface ScalarField extends BaseMeta {
   rows: number;
   /**
    * 칸 값. **행 우선, 첫 행이 월드 위쪽(`max[1]`)** 이다 — 화면에서 읽는 순서와 같다.
-   * 길이는 `cols × rows`.
+   * 길이는 `cols × rows` (`colors: 'lightRgb'` 이면 `3 × cols × rows`).
    *
    * `NaN` 인 칸은 **칠하지 않는다**(투명). 원판 · 기울어진 판처럼 사각형이 아닌 영역을 칠할 때
    * 영역 밖 칸을 바탕 값으로 채우면 그 칸이 아래 그림을 가리고, `colors: 'light'` 에서는 어두운
@@ -339,8 +356,12 @@ export interface ScalarField extends BaseMeta {
    *
    * `'light'` 이면 값을 **테마와 무관한 빛의 세기**로 칠한다 — `range[0]` 은 빛 없음, `range[1]` 은
    * 가득 찬 빛. 바탕을 거치지 않아 라이트 · 다크에서 밝은 곳이 늘 밝다 (`LightChannel.light`, 장부 G34).
+   *
+   * `'lightRgb'` 이면 칸마다 **빛의 색**을 칠한다 — `values` 가 칸마다 선형광 세 성분(길이 `3 × cols × rows`,
+   * 가득 찬 흰빛이 `[1, 1, 1]`)이고 `range` 는 쓰지 않는다. 한 성분이라도 `NaN` 이면 그 칸은 투명.
+   * 비누막 반사색 · 파장마다 제 색으로 채운 스펙트럼 (장부 G60 · G61).
    */
-  colors: { low?: ColorRole; high: ColorRole } | 'light';
+  colors: { low?: ColorRole; high: ColorRole } | 'light' | 'lightRgb';
 }
 
 /**
