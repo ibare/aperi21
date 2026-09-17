@@ -8,11 +8,6 @@
       "name": "운동학",
       "topics": [
         {
-          "id": "displacement-vs-distance",
-          "name": "변위와 이동 거리",
-          "desc": "방향을 가진 양과 누적된 양의 차이"
-        },
-        {
           "id": "reference-frame",
           "name": "기준틀",
           "desc": "관찰자에 따라 달라지는 운동 기술"
@@ -32,26 +27,11 @@
           "labUrl": "piece-lab/average-velocity/index.html"
         },
         {
-          "id": "instantaneous-velocity",
-          "name": "순간 속도",
-          "desc": "구간을 0으로 줄인 극한"
-        },
-        {
-          "id": "speed-vs-velocity",
-          "name": "속력과 속도",
-          "desc": "크기만인 양과 방향까지 가진 양"
-        },
-        {
           "id": "average-acceleration",
           "name": "평균 가속도",
           "desc": "속도 변화의 비율",
           "simId": "aperi21:average-acceleration",
           "labUrl": "piece-lab/average-acceleration/index.html"
-        },
-        {
-          "id": "instantaneous-acceleration",
-          "name": "순간 가속도",
-          "desc": "속도의 순간 변화율"
         },
         {
           "id": "direction-of-acceleration",
@@ -185,16 +165,6 @@
           "labUrl": "piece-lab/centripetal-acceleration/index.html"
         },
         {
-          "id": "period-and-frequency",
-          "name": "주기와 진동수",
-          "desc": "한 바퀴에 걸리는 시간과 그 역수"
-        },
-        {
-          "id": "angular-velocity",
-          "name": "각속도",
-          "desc": "단위 시간당 각변위"
-        },
-        {
           "id": "angular-acceleration",
           "name": "각가속도",
           "desc": "각속도의 변화율",
@@ -235,11 +205,6 @@
           "simId": "aperi21:inertial-frame"
         },
         {
-          "id": "inertia",
-          "name": "관성",
-          "desc": "운동 상태를 유지하려는 성질"
-        },
-        {
           "id": "newtons-second-law",
           "name": "가속도 법칙",
           "desc": "알짜힘·질량·가속도의 관계"
@@ -258,11 +223,6 @@
           "id": "free-body-diagram",
           "name": "자유물체도",
           "desc": "한 물체에 작용하는 힘만 분리하기"
-        },
-        {
-          "id": "mass-vs-weight",
-          "name": "질량과 무게",
-          "desc": "물질의 양과 중력이 주는 힘"
         },
         {
           "id": "inertial-vs-gravitational-mass",
@@ -288,11 +248,6 @@
           "id": "kinetic-friction",
           "name": "운동 마찰력",
           "desc": "미끄러지는 동안의 마찰"
-        },
-        {
-          "id": "coefficient-of-friction",
-          "name": "마찰 계수",
-          "desc": "수직항력과 마찰력의 비"
         },
         {
           "id": "angle-of-friction",
@@ -323,11 +278,6 @@
           "id": "spring-force",
           "name": "탄성력",
           "desc": "변형에 비례하는 복원력"
-        },
-        {
-          "id": "hookes-law",
-          "name": "훅 법칙",
-          "desc": "탄성 한계 안에서의 비례 관계"
         },
         {
           "id": "centripetal-force",
@@ -400,11 +350,6 @@
           "desc": "지레와 빗면이 드는 힘을 줄이는 방식"
         },
         {
-          "id": "push-and-pull",
-          "name": "밀기와 당기기",
-          "desc": "힘이 물체의 움직임과 모양을 바꾸는 것"
-        },
-        {
           "id": "youngs-modulus",
           "name": "영률",
           "desc": "재료가 늘어나는 정도를 정하는 값"
@@ -420,11 +365,6 @@
       "id": "energy-momentum",
       "name": "일·에너지·운동량",
       "topics": [
-        {
-          "id": "work",
-          "name": "일",
-          "desc": "힘과 변위의 내적"
-        },
         {
           "id": "work-by-variable-force",
           "name": "변하는 힘이 한 일",
@@ -482,24 +422,9 @@
           "desc": "안정·불안정·중립 평형"
         },
         {
-          "id": "power",
-          "name": "일률",
-          "desc": "단위 시간당 일"
-        },
-        {
           "id": "efficiency",
           "name": "효율",
           "desc": "넣은 것과 얻은 것의 비"
-        },
-        {
-          "id": "momentum",
-          "name": "운동량",
-          "desc": "질량과 속도의 곱"
-        },
-        {
-          "id": "impulse",
-          "name": "충격량",
-          "desc": "힘의 시간 적분"
         },
         {
           "id": "impulse-momentum-theorem",
@@ -527,19 +452,9 @@
           "desc": "붙어서 함께 움직이는 경우"
         },
         {
-          "id": "coefficient-of-restitution",
-          "name": "반발 계수",
-          "desc": "충돌 전후 상대 속도의 비"
-        },
-        {
           "id": "two-dimensional-collision",
           "name": "2차원 충돌",
           "desc": "성분마다 따로 성립하는 보존"
-        },
-        {
-          "id": "center-of-mass",
-          "name": "질량 중심",
-          "desc": "계를 대표하는 점"
         },
         {
           "id": "center-of-mass-motion",
@@ -575,11 +490,6 @@
           "id": "energy-flow-diagram",
           "name": "에너지 흐름도",
           "desc": "갈래의 굵기로 나타낸 에너지의 행방"
-        },
-        {
-          "id": "fuel-energy-density",
-          "name": "연료의 에너지 밀도",
-          "desc": "단위 질량·부피가 내는 에너지"
         }
       ]
     },
@@ -591,11 +501,6 @@
           "id": "torque",
           "name": "돌림힘",
           "desc": "회전을 일으키는 양과 팔 길이"
-        },
-        {
-          "id": "lever-arm",
-          "name": "힘의 팔",
-          "desc": "회전축까지의 수직 거리"
         },
         {
           "id": "moment-of-inertia",
@@ -661,11 +566,6 @@
           "id": "shm-energy",
           "name": "조화 운동의 에너지",
           "desc": "운동 에너지와 퍼텐셜의 교환"
-        },
-        {
-          "id": "phase-and-amplitude",
-          "name": "위상과 진폭",
-          "desc": "같은 진동수의 두 진동을 가르는 것"
         },
         {
           "id": "mass-spring-system",
@@ -755,11 +655,6 @@
           "desc": "거리 제곱에 반비례하는 힘"
         },
         {
-          "id": "gravitational-constant",
-          "name": "중력 상수",
-          "desc": "캐번디시 실험과 그 측정"
-        },
-        {
           "id": "gravitational-field",
           "name": "중력장",
           "desc": "공간에 분포한 중력의 세기"
@@ -818,11 +713,6 @@
           "id": "two-body-problem",
           "name": "이체 문제",
           "desc": "질량 중심 둘레를 도는 두 천체"
-        },
-        {
-          "id": "reduced-mass",
-          "name": "환산 질량",
-          "desc": "이체를 일체로 바꾸는 양"
         },
         {
           "id": "tidal-force",
@@ -988,16 +878,6 @@
       "name": "유체",
       "topics": [
         {
-          "id": "density",
-          "name": "밀도",
-          "desc": "단위 부피당 질량"
-        },
-        {
-          "id": "pressure",
-          "name": "압력",
-          "desc": "단위 면적당 힘"
-        },
-        {
           "id": "pressure-isotropy",
           "name": "압력의 등방성",
           "desc": "방향에 무관하게 같은 크기",
@@ -1146,44 +1026,14 @@
       "name": "열과 통계",
       "topics": [
         {
-          "id": "temperature",
-          "name": "온도",
-          "desc": "열평형이 정의하는 양"
-        },
-        {
           "id": "thermal-equilibrium",
           "name": "열평형",
           "desc": "접촉한 두 계가 도달하는 상태"
         },
         {
-          "id": "zeroth-law",
-          "name": "열역학 제0법칙",
-          "desc": "온도계가 성립하는 근거"
-        },
-        {
-          "id": "temperature-scales",
-          "name": "온도 눈금",
-          "desc": "섭씨·화씨·절대 온도"
-        },
-        {
-          "id": "absolute-zero",
-          "name": "절대 영도",
-          "desc": "도달할 수 없는 하한"
-        },
-        {
-          "id": "heat-vs-temperature",
-          "name": "열과 온도",
-          "desc": "전달되는 에너지와 상태량"
-        },
-        {
           "id": "specific-heat",
           "name": "비열",
           "desc": "물질마다 다른 온도 변화"
-        },
-        {
-          "id": "heat-capacity",
-          "name": "열용량",
-          "desc": "계 전체가 받는 열과 온도 변화"
         },
         {
           "id": "calorimetry",
@@ -1263,11 +1113,6 @@
           "desc": "벽에 부딪는 분자의 운동량"
         },
         {
-          "id": "equipartition-theorem",
-          "name": "등분배 정리",
-          "desc": "자유도마다 나뉘는 에너지"
-        },
-        {
           "id": "maxwell-boltzmann-distribution",
           "name": "맥스웰-볼츠만 분포",
           "desc": "분자 속력의 분포"
@@ -1276,11 +1121,6 @@
           "id": "mean-free-path",
           "name": "평균 자유 행로",
           "desc": "충돌과 충돌 사이의 거리"
-        },
-        {
-          "id": "internal-energy",
-          "name": "내부 에너지",
-          "desc": "계가 담고 있는 미시 에너지"
         },
         {
           "id": "first-law-of-thermodynamics",
@@ -1318,11 +1158,6 @@
           "desc": "방향이 있는 변화"
         },
         {
-          "id": "entropy",
-          "name": "엔트로피",
-          "desc": "경우의 수와 무질서"
-        },
-        {
           "id": "entropy-and-irreversibility",
           "name": "엔트로피와 비가역성",
           "desc": "되돌릴 수 없는 이유"
@@ -1341,11 +1176,6 @@
           "id": "refrigerator-heat-pump",
           "name": "냉장고와 열펌프",
           "desc": "일을 넣어 열을 옮기는 것"
-        },
-        {
-          "id": "third-law",
-          "name": "열역학 제3법칙",
-          "desc": "절대 영도에서의 엔트로피"
         },
         {
           "id": "brownian-motion",
@@ -1424,16 +1254,6 @@
           "desc": "장력·밀도·탄성이 정하는 속도"
         },
         {
-          "id": "wave-equation",
-          "name": "파동 방정식",
-          "desc": "파동을 지배하는 미분 방정식"
-        },
-        {
-          "id": "wave-function-form",
-          "name": "파동의 식",
-          "desc": "위상과 파수의 표현"
-        },
-        {
           "id": "wavefront-and-ray",
           "name": "파면과 광선",
           "desc": "같은 위상의 면과 그 수직선"
@@ -1457,11 +1277,6 @@
           "id": "interference",
           "name": "간섭",
           "desc": "두 파원이 만드는 무늬"
-        },
-        {
-          "id": "path-difference",
-          "name": "경로차",
-          "desc": "무늬의 위치를 정하는 양"
         },
         {
           "id": "standing-wave",
@@ -1508,29 +1323,9 @@
           "desc": "음속을 넘을 때 생기는 원뿔"
         },
         {
-          "id": "mach-number",
-          "name": "마하 수",
-          "desc": "음속에 대한 속도의 비"
-        },
-        {
-          "id": "sound-speed",
-          "name": "음속",
-          "desc": "매질과 온도가 정하는 속도"
-        },
-        {
           "id": "sound-intensity",
           "name": "음의 세기",
           "desc": "거리 제곱에 반비례하는 감쇠"
-        },
-        {
-          "id": "decibel-scale",
-          "name": "데시벨",
-          "desc": "로그로 재는 세기"
-        },
-        {
-          "id": "pitch-loudness-timbre",
-          "name": "높이·크기·음색",
-          "desc": "물리량과 감각의 대응"
         },
         {
           "id": "reflection-of-waves",
@@ -1644,19 +1439,9 @@
           "desc": "확대된 시야와 허상"
         },
         {
-          "id": "mirror-equation",
-          "name": "거울 공식",
-          "desc": "물체 거리·상 거리·초점 거리"
-        },
-        {
           "id": "snells-law",
           "name": "굴절 법칙",
           "desc": "매질에 따른 경로 꺾임"
-        },
-        {
-          "id": "index-of-refraction",
-          "name": "굴절률",
-          "desc": "매질 속 빛의 속도"
         },
         {
           "id": "apparent-depth",
@@ -1705,11 +1490,6 @@
           "desc": "모으는 렌즈와 퍼뜨리는 렌즈"
         },
         {
-          "id": "lens-equation",
-          "name": "렌즈 공식",
-          "desc": "물체·상·초점 거리의 관계"
-        },
-        {
           "id": "magnification",
           "name": "배율",
           "desc": "상의 크기와 물체의 크기"
@@ -1718,11 +1498,6 @@
           "id": "real-vs-virtual-image",
           "name": "실상과 허상",
           "desc": "빛이 실제로 모이는가"
-        },
-        {
-          "id": "lens-maker-equation",
-          "name": "렌즈 제작자 공식",
-          "desc": "곡률과 굴절률이 정하는 초점"
         },
         {
           "id": "lens-combination",
@@ -1861,11 +1636,6 @@
           "desc": "마찰·접촉·유도"
         },
         {
-          "id": "conductor-vs-insulator",
-          "name": "도체와 부도체",
-          "desc": "전하가 움직일 수 있는가"
-        },
-        {
           "id": "coulombs-law",
           "name": "쿨롱 법칙",
           "desc": "전하 사이의 힘"
@@ -1911,16 +1681,6 @@
           "desc": "안과 밖이 다른 이유"
         },
         {
-          "id": "electric-potential",
-          "name": "전위",
-          "desc": "단위 전하당 퍼텐셜 에너지"
-        },
-        {
-          "id": "potential-difference",
-          "name": "전위차",
-          "desc": "두 점 사이의 전위 차이"
-        },
-        {
           "id": "equipotential-surface",
           "name": "등전위면",
           "desc": "전기장과 수직인 면"
@@ -1944,11 +1704,6 @@
           "id": "dielectric",
           "name": "유전체",
           "desc": "분극과 전기장의 약화"
-        },
-        {
-          "id": "capacitance",
-          "name": "전기 용량",
-          "desc": "전하를 저장하는 능력"
         },
         {
           "id": "parallel-plate-capacitor",
@@ -1979,11 +1734,6 @@
           "id": "ohms-law",
           "name": "옴 법칙",
           "desc": "전압·전류·저항"
-        },
-        {
-          "id": "resistivity",
-          "name": "비저항",
-          "desc": "재료가 정하는 저항"
         },
         {
           "id": "resistance-and-geometry",
@@ -2020,11 +1770,6 @@
           "id": "wheatstone-bridge",
           "name": "휘트스톤 브리지",
           "desc": "평형으로 재는 저항"
-        },
-        {
-          "id": "electric-power",
-          "name": "전력",
-          "desc": "소비되는 에너지의 비율"
         },
         {
           "id": "joule-heating",
@@ -2108,11 +1853,6 @@
           "desc": "강자성·상자성·반자성"
         },
         {
-          "id": "magnetic-flux",
-          "name": "자기 선속",
-          "desc": "면을 지나는 자기장의 양"
-        },
-        {
           "id": "faradays-law",
           "name": "패러데이 법칙",
           "desc": "자속 변화가 만드는 기전력"
@@ -2164,11 +1904,6 @@
           "desc": "회전하는 코일과 사인파"
         },
         {
-          "id": "rms-value",
-          "name": "실효값",
-          "desc": "교류를 직류와 견주는 값"
-        },
-        {
           "id": "reactance-and-impedance",
           "name": "리액턴스와 임피던스",
           "desc": "주파수에 의존하는 저항"
@@ -2212,16 +1947,6 @@
           "id": "electromagnetic-wave",
           "name": "전자기파",
           "desc": "전기장과 자기장의 자기 전파"
-        },
-        {
-          "id": "speed-of-light-from-constants",
-          "name": "상수에서 나온 광속",
-          "desc": "유전율과 투자율의 조합"
-        },
-        {
-          "id": "electromagnetic-spectrum",
-          "name": "전자기 스펙트럼",
-          "desc": "파장에 따른 분류"
         },
         {
           "id": "poynting-vector",
@@ -2300,11 +2025,6 @@
           "desc": "에테르가 없다는 증거"
         },
         {
-          "id": "special-relativity-postulates",
-          "name": "특수 상대성 가정",
-          "desc": "광속 불변과 상대성 원리"
-        },
-        {
           "id": "relativity-of-simultaneity",
           "name": "동시성의 상대성",
           "desc": "기준틀마다 다른 '동시'"
@@ -2330,11 +2050,6 @@
           "desc": "시간 지연의 관측 증거"
         },
         {
-          "id": "lorentz-transformation",
-          "name": "로런츠 변환",
-          "desc": "좌표 사이의 변환식"
-        },
-        {
           "id": "relativistic-velocity-addition",
           "name": "속도의 상대론적 덧셈",
           "desc": "광속을 넘지 못하는 합성"
@@ -2355,24 +2070,9 @@
           "desc": "인과가 닿는 영역"
         },
         {
-          "id": "invariant-interval",
-          "name": "불변 간격",
-          "desc": "모든 기준틀에서 같은 양"
-        },
-        {
           "id": "relativistic-momentum",
           "name": "상대론적 운동량",
           "desc": "속도가 커질 때의 발산"
-        },
-        {
-          "id": "mass-energy-equivalence",
-          "name": "질량-에너지 등가",
-          "desc": "E=mc² 의 뜻"
-        },
-        {
-          "id": "rest-energy",
-          "name": "정지 에너지",
-          "desc": "정지한 물체가 가진 에너지"
         },
         {
           "id": "relativistic-doppler",
@@ -2410,11 +2110,6 @@
           "desc": "온도와 최대 파장"
         },
         {
-          "id": "plancks-quantum-hypothesis",
-          "name": "플랑크의 양자 가설",
-          "desc": "에너지가 덩어리라는 가정"
-        },
-        {
           "id": "photoelectric-effect",
           "name": "광전 효과",
           "desc": "빛의 입자성 증거"
@@ -2423,11 +2118,6 @@
           "id": "work-function-and-threshold",
           "name": "일함수와 문턱 진동수",
           "desc": "세기가 아니라 진동수가 정하는 것"
-        },
-        {
-          "id": "photon-energy-momentum",
-          "name": "광자의 에너지와 운동량",
-          "desc": "질량 없는 입자의 양"
         },
         {
           "id": "compton-scattering",
@@ -2455,29 +2145,14 @@
           "desc": "하나씩 보내도 생기는 무늬"
         },
         {
-          "id": "wave-particle-duality",
-          "name": "파동-입자 이중성",
-          "desc": "상보적인 두 기술"
-        },
-        {
           "id": "uncertainty-principle",
           "name": "불확정성 원리",
           "desc": "켤레량의 동시 결정 한계"
         },
         {
-          "id": "energy-time-uncertainty",
-          "name": "에너지-시간 불확정성",
-          "desc": "수명과 선폭의 관계"
-        },
-        {
           "id": "wave-function",
           "name": "파동 함수",
           "desc": "확률 진폭과 그 해석"
-        },
-        {
-          "id": "born-rule",
-          "name": "보른 규칙",
-          "desc": "제곱이 확률이 되는 규약"
         },
         {
           "id": "superposition-quantum",
@@ -2530,11 +2205,6 @@
           "desc": "확률 분포로서의 전자"
         },
         {
-          "id": "quantum-numbers",
-          "name": "양자수",
-          "desc": "상태를 지정하는 네 수"
-        },
-        {
           "id": "pauli-exclusion",
           "name": "파울리 배타 원리",
           "desc": "같은 상태를 못 가짐"
@@ -2570,16 +2240,6 @@
           "desc": "양성자와 중성자"
         },
         {
-          "id": "strong-force",
-          "name": "강한 상호작용",
-          "desc": "핵을 묶는 짧은 거리의 힘"
-        },
-        {
-          "id": "nuclear-binding-energy",
-          "name": "핵결합 에너지",
-          "desc": "질량 결손과 안정성"
-        },
-        {
           "id": "binding-energy-curve",
           "name": "결합 에너지 곡선",
           "desc": "철에서 최대가 되는 이유"
@@ -2593,11 +2253,6 @@
           "id": "decay-types",
           "name": "붕괴의 종류",
           "desc": "알파·베타·감마"
-        },
-        {
-          "id": "half-life",
-          "name": "반감기",
-          "desc": "절반이 되는 데 걸리는 시간"
         },
         {
           "id": "radiometric-dating",
@@ -2620,19 +2275,9 @@
           "desc": "가벼운 핵이 합쳐지며 내는 에너지"
         },
         {
-          "id": "standard-model-overview",
-          "name": "표준 모형",
-          "desc": "기본 입자와 상호작용의 분류"
-        },
-        {
           "id": "antimatter",
           "name": "반물질",
           "desc": "부호가 반대인 짝"
-        },
-        {
-          "id": "neutrino",
-          "name": "중성미자",
-          "desc": "거의 상호작용하지 않는 입자"
         },
         {
           "id": "band-theory",
@@ -2708,7 +2353,7 @@
     }
   ],
   "summary": {
-    "topics": 514,
+    "topics": 443,
     "implemented": 40,
     "labs": 27
   }

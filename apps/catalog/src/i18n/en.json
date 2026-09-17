@@ -8,7 +8,7 @@
   "hero": {
     "title_line1": "Phenomena of the physical world",
     "title_line2": "reshaped into something you can touch.",
-    "description": "A catalog of physics visualizations that embed into generated prose. What is listed here are contexts to mine questions from, not a list of visualizations to build. Only implemented ones carry a marker.",
+    "description": "A catalog of physics visualizations that embed into generated prose. Every topic listed here is meant to be visualized. Only implemented ones carry a marker.",
     "stat_implemented": "implemented",
     "stat_topics": "topics",
     "stat_domains": "{{count}} branches"
@@ -25,7 +25,7 @@
     "back": "← Back to the list",
     "not_found": "Topic not found.",
     "no_sim_title": "No visualization yet",
-    "no_sim_body": "This topic is listed as a context to mine questions from. A visualization is made when a question emerges here that prose cannot carry without a picture."
+    "no_sim_body": "This topic is listed to be visualized. No piece has been implemented for it yet."
   },
   "modal": {
     "close": "Close"

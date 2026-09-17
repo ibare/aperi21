@@ -11,8 +11,9 @@
  * 트리에 살고, 구현된 것만 레지스트리 id 를 단다.** FACET 은 835개 항목 중 137개만
  * `facetId` 를 갖는다. 우리는 `simId` 를 쓴다.
  *
- * 이 목록은 **만들 시각화 목록이 아니다.** 주제 하나가 조각 하나가 되지 않으며,
- * 무엇을 만들지는 원본의 `visual` 판정이 가른다. 사이트도 그렇게 렌더해야 한다.
+ * 원본에 있는 주제는 **모두 시각화할 주제다.** 판정은 분류를 정리할 때 끝내고 시각화하지
+ * 않기로 한 주제는 원본에 남기지 않으므로, 여기서 거르지 않는다 — 구현 대상과 사이트가
+ * 같은 목록을 본다. 다만 주제 하나가 조각 하나가 되는 것은 아니다 (주제와 조각은 N:M).
  *
  * 사용: pnpm catalog:topics
  */
@@ -48,8 +49,6 @@ interface SourceTopic {
   level: string | null;
   /** 근거가 된 계열. 대조 전에는 빈 배열 */
   curricula: string[];
-  /** 'yes' | 'no' | 'unsure'. 구현 대상을 가르는 판정 */
-  visual: string;
   /** 레지스트리 등록 키 **전체**. 있으면 구현된 것이다 */
   sim?: string;
   /** 어느 배치에서 구현됐나. 배치 기록이 있는 것만 */
@@ -98,7 +97,7 @@ for (const t of source.topics) {
   }
   // curricula 가 비어 있어도 좋다. 교육과정 태그는 어느 수준에서 다뤄지는지를
   // 알려 주는 분류이지 모집단의 조건이 아니다 (README 1절). 넣고 빼는 잣대는
-  // visual 하나다.
+  // 분류 정리 때의 판정 하나다 (README 2절).
 }
 
 const byDomain = new Map<string, Topic[]>(source.domains.map((d) => [d.id, []]));
@@ -143,16 +142,9 @@ const catalog = {
 
 writeFileSync(OUT, JSON.stringify(catalog, null, 2) + '\n', 'utf8');
 
-// 판정 현황은 생성물에 싣지 않고 여기서만 알린다 — 사이트가 아직 쓰지 않는 값이다.
-const visual = source.topics.reduce<Record<string, number>>((acc, t) => {
-  acc[t.visual] = (acc[t.visual] ?? 0) + 1;
-  return acc;
-}, {});
 const leveled = source.topics.filter((t) => t.level).length;
 
 process.stdout.write(
   `[catalog] 도메인 ${domains.length} · 주제 ${topics} · 구현 ${implemented} · 자립조각 ${labs} → ${OUT.replace(ROOT + '/', '')}\n` +
-    `[판정] visual ${Object.entries(visual)
-      .map(([k, v]) => `${k} ${v}`)
-      .join(' · ')} · level 채움 ${leveled}/${topics}\n`,
+    `[원본] level 채움 ${leveled}/${topics}\n`,
 );
