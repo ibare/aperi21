@@ -12,6 +12,8 @@ export const DEFAULT_Z_LAYERS: Readonly<Record<string, number>> = {
   vortexField: 0,
   // 10: 구조물
   surface: 10,
+  // 5: 스칼라 장 — 구조물(10) 아래. 장은 무대라 구조물 위로 올라오면 벽과 물체를 칠해 덮는다.
+  scalarField: 5,
   opticalElement: 12,
   wire: 11,
   // 15: 잡아 두는 것 — 물체(40) 아래로 깔려 추에 가린다.
@@ -28,6 +30,8 @@ export const DEFAULT_Z_LAYERS: Readonly<Record<string, number>> = {
   // 자국은 궤적과 같은 층이되 **아래**다. 지나간 자리가 지금 그리는 선을
   // 덮지 않는다.
   trace: 19,
+  // 선 묶음은 궤적과 같은 층 — `trajectory` 여러 개를 한 선언으로 묶은 것이다.
+  lineSet: 20,
   ray: 22,
   // 30: 실
   //

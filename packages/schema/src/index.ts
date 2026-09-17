@@ -243,6 +243,37 @@ export interface ParticleSystem extends BaseMeta {
   sizes?: readonly number[] | number;
   /** 개별 입자의 자취. 속도 반대 방향의 짧은 획이라 속력이 길이로 읽힌다. */
   trail?: boolean;
+  /**
+   * 입자별 불투명도 0~1. 인스턴스 `opacity` 와 곱해진다. 생략하면 모두 1.
+   *
+   * 렌더러는 8 단계로 반올림해 **단계마다 경로 하나**로 그린다 — 입자마다 알파가 달라도
+   * 인스턴스를 쪼개지 않는다 (`energy-flow-diagram` 의 흩어지며 옅어지는 알갱이).
+   * 속도 획(`trail`)에도 같은 값이 걸린다. 반올림하므로 1/16 미만은 그리지 않고, 실제 알파는
+   * 선언값과 최대 1/16 다르다.
+   */
+  opacities?: readonly number[];
+  /** 입자 모양. 기본 `'dot'`(원). `'square'` 는 크기를 반변으로 하는 네모 (`tidal-force` 먼지). */
+  shape?: 'dot' | 'square';
+  /**
+   * 입자 점을 그릴지. 기본 true. false 면 꼬리만 남는다 — 알갱이가 아니라 흐르는 획이 주인
+   * 그림이 쓴다 (`field-lines`).
+   */
+  showParticles?: boolean;
+  /**
+   * 꼬리 모양. 생략한 값은 지금까지의 기본값(0.085 초 · 투명도 0.3 · 가는 선)이다.
+   *
+   * - `seconds` — 속도 획의 길이 = 속도 × 이 시간(초).
+   * - `maxLength` — 속도 획 길이의 상한(**화면 px**). 빠른 입자의 획이 화면을 가로지르지 않게.
+   * - `width` — 꼬리 굵기(**화면 px**).
+   * - `opacity` — 꼬리 불투명도 0~1. 입자별 `opacities` 와 곱해진다.
+   *
+   * 기본값이 선 다발 속 빠른 꼬리를 흐리게 만들어 「선이 몰린 곳이 세다」 가 뒤집혀 보였다
+   * (`field-lines`, 장부 G40).
+   *
+   * 위치 이력 잔상(`trails`)은 2026-09-17 에 넣었다가 같은 날 지웠다 — 쓰려던 `phase-space` 가
+   * 선분마다 짙기가 달라야 해 `lineSet` 을 골랐고 사용처가 남지 않았다 (원칙 4).
+   */
+  trailStyle?: { seconds?: number; maxLength?: number; width?: number; opacity?: number };
   //
   // `colorBy`(`'speed'` 등)와 `tags` 는 2026-09-12 에 지웠다. 렌더러가 읽지
   // 않아 저작자에게 거짓말을 하고 있었고(S-render), 쓸 조각도 없었다 —
@@ -251,6 +282,57 @@ export interface ParticleSystem extends BaseMeta {
   // 둔다. 색이 물리량을 말해야 하는 조각이 나오면 그때 올린다 (원칙 4).
 }
 
+
+/**
+ * 자리마다 값이 있는 **스칼라 장**. 격자 값 배열 하나를 선언하면 렌더러가 작은 이미지 한 장으로
+ * 칠해 월드 사각형에 늘려 그린다 (부드럽게 보간).
+ *
+ * 칸마다 `region` 을 선언하면 프레임마다 선언이 수천 개 생기고 비용이 칸 수에 비례한다 —
+ * 간섭 수면이 8208 칸이었다 (`interference`, 장부 G29 · G51). 「선언은 묶음 하나, 그리기는 한 번」.
+ *
+ * 색은 테마 역할에서 온다. 값이 크기를 **명암**으로 보이는 것이지 대상을 색으로 가르는 것이 아니다.
+ * 두 역할을 쓰는 발산형은 **부호**를 색으로 가르므로, 쓰는 조각이 그 판단을 NOTES 에 적는다 (S-piece).
+ */
+export interface ScalarField extends BaseMeta {
+  type: 'scalarField';
+  /** 월드 사각형의 두 모서리. */
+  min: Vec2;
+  max: Vec2;
+  /** 격자 가로 · 세로 칸 수. */
+  cols: number;
+  rows: number;
+  /**
+   * 칸 값. **행 우선, 첫 행이 월드 위쪽(`max[1]`)** 이다 — 화면에서 읽는 순서와 같다.
+   * 길이는 `cols × rows`.
+   */
+  values: readonly number[];
+  /** 값의 범위. 밖의 값은 끝으로 자른다. */
+  range: readonly [number, number];
+  /**
+   * 색. `high` 만 주면 **순차형** — `range[0]` 은 테마 바탕, `range[1]` 은 `high`.
+   * `low` 도 주면 **발산형** — 범위 가운데가 바탕, 음쪽 끝이 `low`, 양쪽 끝이 `high`.
+   * 바탕이 0 이라 다크 테마에서도 「잠잠한 곳 = 바탕」 이 뒤집히지 않는다 (장부 G30).
+   * 색은 빛의 양(선형광)으로 섞는다 — `luminance` 와 같은 셈.
+   */
+  colors: { low?: ColorRole; high: ColorRole };
+}
+
+/**
+ * 선 묶음. 선 목록 하나를 선언하면 렌더러가 **불투명도 단계마다 경로 하나**로 긋는다.
+ *
+ * `trajectory` 여러 개의 조합으로 되지만, 선이 수백 개면 선언 · 그리기가 선 수에 비례한다 —
+ * 전기력선 꼬리 950 · 조석력 흐름 획 156 (`field-lines` · `tidal-force`, 장부 G41 · G51). 사용자 결정
+ * 「선언은 묶음 하나, 그리기는 한 번」 과 `particleSystem` 이 입자를 한 경로로 묶은 선례를 따른다.
+ */
+export interface LineSet extends BaseMeta {
+  type: 'lineSet';
+  /** 선마다 월드 폴리라인(점 둘 이상). */
+  lines: readonly (readonly Vec2[])[];
+  /** 선별 불투명도 0~1. 인스턴스 `opacity` 와 곱해진다. 생략하면 모두 1. 8 단계로 반올림한다(1/16 미만은 그리지 않음). */
+  opacities?: readonly number[];
+  /** 굵기(**화면 px**). 생략하면 테마의 보통 굵기. */
+  width?: number;
+}
 
 // ========================================================================
 // 5. 코어 프리미티브 — Data Views
@@ -770,6 +852,7 @@ export type Primitive =
   | Region | Stream | Readout | Scale | Sector
   | Dimension
   | VortexField | Filament | Trace
+  | ScalarField | LineSet
   | Event_
   // 도메인
   | Ray | OpticalElement

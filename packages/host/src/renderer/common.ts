@@ -88,6 +88,54 @@ function linearToSrgb(c: number): number {
   return Math.round(Math.max(0, Math.min(1, v)) * 255);
 }
 
+/**
+ * 색 문자열을 **선형광** 0~1 세 성분으로. `#rgb` · `#rrggbb` · `rgb(...)` · `rgba(...)` 를 읽는다
+ * (테마의 `medium` · `subtle` 은 `rgba` 로 온다 — 알파는 버린다). 다른 표기는 null.
+ *
+ * 값을 명암으로 칠하는 어휘(`scalarField`)가 테마 색을 섞을 때 쓴다. 섞기는 선형광에서 한다 —
+ * `luminance` 와 같은 셈이라야 같은 비율이 같은 빛의 양으로 보인다.
+ */
+export function linearRgbOf(color: string): [number, number, number] | null {
+  const hex = parseHex(color);
+  const rgb =
+    hex ??
+    ((): [number, number, number] | null => {
+      const m = /^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)/i.exec(color.trim());
+      return m ? [Number(m[1]) / 255, Number(m[2]) / 255, Number(m[3]) / 255] : null;
+    })();
+  if (!rgb) return null;
+  return [srgbToLinear(rgb[0]), srgbToLinear(rgb[1]), srgbToLinear(rgb[2])];
+}
+
+/** 선형광 한 성분을 화면값 0~255 정수로. */
+export function linearToByte(c: number): number {
+  return linearToSrgb(c);
+}
+
+/** 입자별 · 선별 불투명도를 묶는 단계 수. 단계마다 경로 하나라 그리기 호출이 이 수를 넘지 않는다. */
+export const OPACITY_LEVELS = 8;
+
+/**
+ * 항목별 불투명도를 `OPACITY_LEVELS` 단계로 묶는다. 돌려주는 것은 `[단계 알파, 항목 번호들]` 목록이고
+ * 알파 0 인 항목은 빠진다. `opacities` 를 생략하면 모든 항목이 알파 1 한 단계다.
+ */
+export function opacityBuckets(
+  count: number,
+  opacities: readonly number[] | undefined,
+): { alpha: number; indices: number[] }[] {
+  if (!opacities) return count > 0 ? [{ alpha: 1, indices: Array.from({ length: count }, (_, i) => i) }] : [];
+  const buckets = new Map<number, number[]>();
+  for (let i = 0; i < count; i++) {
+    const a = Math.max(0, Math.min(1, opacities[i] ?? 1));
+    const level = Math.round(a * OPACITY_LEVELS);
+    if (level === 0) continue;
+    const list = buckets.get(level);
+    if (list) list.push(i);
+    else buckets.set(level, [i]);
+  }
+  return [...buckets.entries()].map(([level, indices]) => ({ alpha: level / OPACITY_LEVELS, indices }));
+}
+
 /** `#rgb` · `#rrggbb` 를 0~1 세 성분으로. 다른 표기는 null. */
 function parseHex(color: string): [number, number, number] | null {
   const m = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(color.trim());

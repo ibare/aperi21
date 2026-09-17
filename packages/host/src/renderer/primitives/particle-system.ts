@@ -1,5 +1,5 @@
 import type { ParticleSystem, PrimitiveRenderer } from '@aperi21/schema';
-import { applyBaseMeta, finalizeBaseMeta, primitiveColor, setAlpha } from '../common';
+import { applyBaseMeta, finalizeBaseMeta, opacityBuckets, primitiveColor, setAlpha } from '../common';
 
 /** 입자 하나의 기본 반지름(화면 px). */
 const DEFAULT_SIZE = 3;
@@ -16,54 +16,77 @@ const TRAIL_SECONDS = 0.085;
  *
  * **입자마다 경로를 하나로 모아 한 번에 그린다.** 수백 개를 낱개로 그리면
  * 프레임이 무너진다 — `gas-pressure` 가 손으로 짤 때 발견한 것이고, 승격한다면
- * 그 일괄 처리까지 함께 와야 한다고 적었다.
+ * 그 일괄 처리까지 함께 와야 한다고 적었다. 입자별 불투명도(`opacities`)도 이 원칙을
+ * 지킨다 — 단계로 묶어 단계마다 경로 하나다.
  *
  * `trail` 은 속도 반대 방향의 짧은 획이다. 속력을 공간에 새겨, 정지 화면에서도
  * 빠른 입자와 느린 입자가 갈린다.
  */
 export const renderParticleSystem: PrimitiveRenderer = (rc, p0) => {
   const p = p0 as ParticleSystem;
-  if (p.positions.length === 0) return;
+  const n = p.positions.length;
+  if (n === 0) return;
   applyBaseMeta(rc, p);
   const c = rc.ctx;
   const color = primitiveColor(rc, p, { role: 'primary', emphasis: 'medium' });
   const sizes = p.sizes;
   const sizeAt = (i: number): number =>
     typeof sizes === 'number' ? sizes : Array.isArray(sizes) ? (sizes[i] ?? DEFAULT_SIZE) : DEFAULT_SIZE;
+  const style = p.trailStyle;
+  const trailAlpha = style?.opacity ?? TRAIL_ALPHA;
+  const buckets = opacityBuckets(n, p.opacities);
 
   // 자취 먼저 — 입자 아래로 깔린다.
   if (p.trail && p.velocities) {
     c.strokeStyle = color;
-    c.lineWidth = rc.theme.strokeWidth.thin;
+    c.lineWidth = style?.width ?? rc.theme.strokeWidth.thin;
     c.lineCap = 'round';
-    setAlpha(c, TRAIL_ALPHA);
-    c.beginPath();
-    for (let i = 0; i < p.positions.length; i++) {
-      const pos = p.positions[i]!;
-      const v = p.velocities[i];
-      if (!v) continue;
-      const [sx, sy] = rc.toScreen(pos);
-      const [bx, by] = rc.toScreen([
-        pos[0] - v[0] * TRAIL_SECONDS,
-        pos[1] - v[1] * TRAIL_SECONDS,
-      ]);
-      c.moveTo(bx, by);
-      c.lineTo(sx, sy);
+    c.lineJoin = 'round';
+    const seconds = style?.seconds ?? TRAIL_SECONDS;
+    const maxLength = style?.maxLength;
+    for (const { alpha, indices } of buckets) {
+      setAlpha(c, alpha * trailAlpha);
+      c.beginPath();
+      for (const i of indices) {
+        const pos = p.positions[i]!;
+        const v = p.velocities[i];
+        if (!v) continue;
+        const [sx, sy] = rc.toScreen(pos);
+        let [bx, by] = rc.toScreen([pos[0] - v[0] * seconds, pos[1] - v[1] * seconds]);
+        if (maxLength !== undefined) {
+          const len = Math.hypot(bx - sx, by - sy);
+          if (len > maxLength && len > 0) {
+            bx = sx + ((bx - sx) * maxLength) / len;
+            by = sy + ((by - sy) * maxLength) / len;
+          }
+        }
+        c.moveTo(bx, by);
+        c.lineTo(sx, sy);
+      }
+      c.stroke();
     }
-    c.stroke();
   }
 
-  // 입자 — 경로 하나에 모아 한 번에 채운다.
-  setAlpha(c, 1);
-  c.fillStyle = color;
-  c.beginPath();
-  for (let i = 0; i < p.positions.length; i++) {
-    const [sx, sy] = rc.toScreen(p.positions[i]!);
-    const r = sizeAt(i);
-    c.moveTo(sx + r, sy);
-    c.arc(sx, sy, r, 0, Math.PI * 2);
+  // 입자 — 단계마다 경로 하나에 모아 한 번에 채운다.
+  if (p.showParticles !== false) {
+    c.fillStyle = color;
+    const square = p.shape === 'square';
+    for (const { alpha, indices } of buckets) {
+      setAlpha(c, alpha);
+      c.beginPath();
+      for (const i of indices) {
+        const [sx, sy] = rc.toScreen(p.positions[i]!);
+        const r = sizeAt(i);
+        if (square) {
+          c.rect(sx - r, sy - r, r * 2, r * 2);
+        } else {
+          c.moveTo(sx + r, sy);
+          c.arc(sx, sy, r, 0, Math.PI * 2);
+        }
+      }
+      c.fill();
+    }
   }
-  c.fill();
 
   finalizeBaseMeta(rc, p);
 };

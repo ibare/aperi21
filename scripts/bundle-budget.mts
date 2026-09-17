@@ -224,4 +224,39 @@ function main(): void {
   );
 }
 
+/**
+ * 한 프레임 선언 수 — 조각이 첫 프레임에 만드는 프리미티브 인스턴스 수.
+ *
+ * 러너는 인스턴스마다 렌더러를 부르고 캔버스 상태를 저장 · 복원하므로 프레임 비용이 이 수에 비례한다.
+ * 표현력 검증 턴 1 에서 간섭이 8208 개를 만들었다 (장부 G51). **숫자로만 보고한다** — 기준값은
+ * 데이터가 쌓인 뒤 사용자가 정한다. 실패시키지 않는다.
+ */
+async function reportDeclarations(): Promise<void> {
+  const host = await import('../packages/host/src/index.ts');
+  const rows: { id: string; count: number }[] = [];
+  for (const sim of listSims(ROOT)) {
+    try {
+      const mod = (await import(join(sim.src, 'index.ts'))) as Record<string, unknown>;
+      const bundle = mod[sim.bundleExport] as {
+        schema: { parameters: { id: string; default: number }[]; stages: unknown[]; startAt?: number; timeline?: unknown };
+        initialState: (a: unknown) => unknown;
+        scene: (a: unknown) => readonly unknown[];
+      };
+      const values = Object.fromEntries(bundle.schema.parameters.map((q) => [q.id, q.default]));
+      const stage = bundle.schema.stages[0];
+      const state = host.prerollState(bundle as never, bundle.initialState({ values, stage, environments: [] }), stage as never, []);
+      const t = bundle.schema.startAt ?? 0;
+      const timeline = bundle.schema.timeline ? host.evaluateTimeline(bundle.schema.timeline as never, t) : undefined;
+      const scene = bundle.scene({ state, stage, environments: [], timeline });
+      rows.push({ id: sim.id, count: scene.length });
+    } catch (e) {
+      rows.push({ id: `${sim.id} (측정 실패: ${(e as Error).message.slice(0, 40)})`, count: -1 });
+    }
+  }
+  rows.sort((a, b) => b.count - a.count);
+  console.log('\n한 프레임 선언 수 (첫 프레임 프리미티브 인스턴스, 많은 순 상위 12 — 기준값 없음)');
+  for (const r of rows.slice(0, 12)) console.log('  ' + r.id.padEnd(45) + String(r.count).padStart(7));
+}
+
 main();
+reportDeclarations().catch((e) => console.error('[budget] 선언 수 측정 실패', e));
