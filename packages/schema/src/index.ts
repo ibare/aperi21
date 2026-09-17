@@ -93,7 +93,26 @@ export interface BaseMeta {
 // 1. 코어 프리미티브 — Kinematics & Forces
 // ========================================================================
 
-export interface Body extends BaseMeta {
+/**
+ * 빛의 세기 채널. 색을 `primitiveColor` 로 얻는 어휘(`body` · `trajectory` · `particleSystem` · `lineSet` ·
+ * `region` · `sector`)에만 붙는다 — 다른 렌더러(`graph` · `surface` · plugin)는 이 필드를 구현하지 않으므로
+ * 거기에 붙이면 말없이 무시된다 (S-render). 필요한 어휘가 생기면 렌더러를 구현하며 넓힌다.
+ */
+export interface LightChannel {
+  /**
+   * **테마와 무관한 빛의 세기** 0~1. 주면 `style.colorRole` · `emphasis` · `luminance` 대신
+   * 이 세기의 무채색으로 칠한다 — 0 은 빛이 없음(테마의 `light.none`), 1 은 가득 찬 빛(`light.full`),
+   * 그 사이는 선형광으로 섞는다. `opacity` 는 그대로 곱해진다.
+   *
+   * 색 역할은 **대상**을 가르고 테마마다 밝기가 뒤집힌다(`ink` 는 라이트에서 짙고 다크에서 밝다).
+   * 빛의 밝기 자체가 주장인 그림 — 달의 낮 면 · 스크린에 닿은 빛 — 을 역할로 칠하면 라이트 테마에서
+   * 「밝은 곳」 이 어둡게 나온다 (장부 G34, `moon-phases` · `polarization`). 빛은 물리량이라 역할이 아니라
+   * 이 채널로 칠한다. 빛의 **색**(파장 · 합색)은 아직 없다 — 「빛 색」 트랙에서 같은 채널을 넓힌다.
+   */
+  light?: number;
+}
+
+export interface Body extends BaseMeta, LightChannel {
   type: 'body';
   pos: Vec2;
   shape?: 'point' | 'circle' | 'rect' | 'disc' | 'rod' | 'custom';
@@ -136,7 +155,7 @@ export interface Body extends BaseMeta {
   glow?: boolean;
 }
 
-export interface Trajectory extends BaseMeta {
+export interface Trajectory extends BaseMeta, LightChannel {
   type: 'trajectory';
   points: readonly Vec2[];
   style?: BaseMeta['style'] & {
@@ -235,7 +254,7 @@ export interface Surface extends BaseMeta {
 // 이 조각은 만들 수 없었다"(current-magnetic-field). 필요해지면 그때 정찰이
 // 발견한 모양으로 올린다 (원칙 4).
 
-export interface ParticleSystem extends BaseMeta {
+export interface ParticleSystem extends BaseMeta, LightChannel {
   type: 'particleSystem';
   positions: readonly Vec2[];
   /** 자취를 그릴 때의 속도. `trail` 이 참일 때만 쓴다. */
@@ -304,6 +323,10 @@ export interface ScalarField extends BaseMeta {
   /**
    * 칸 값. **행 우선, 첫 행이 월드 위쪽(`max[1]`)** 이다 — 화면에서 읽는 순서와 같다.
    * 길이는 `cols × rows`.
+   *
+   * `NaN` 인 칸은 **칠하지 않는다**(투명). 원판 · 기울어진 판처럼 사각형이 아닌 영역을 칠할 때
+   * 영역 밖 칸을 바탕 값으로 채우면 그 칸이 아래 그림을 가리고, `colors: 'light'` 에서는 어두운
+   * 사각형이 된다 (`moon-phases` · `polarization`, 장부 G71).
    */
   values: readonly number[];
   /** 값의 범위. 밖의 값은 끝으로 자른다. */
@@ -313,8 +336,11 @@ export interface ScalarField extends BaseMeta {
    * `low` 도 주면 **발산형** — 범위 가운데가 바탕, 음쪽 끝이 `low`, 양쪽 끝이 `high`.
    * 바탕이 0 이라 다크 테마에서도 「잠잠한 곳 = 바탕」 이 뒤집히지 않는다 (장부 G30).
    * 색은 빛의 양(선형광)으로 섞는다 — `luminance` 와 같은 셈.
+   *
+   * `'light'` 이면 값을 **테마와 무관한 빛의 세기**로 칠한다 — `range[0]` 은 빛 없음, `range[1]` 은
+   * 가득 찬 빛. 바탕을 거치지 않아 라이트 · 다크에서 밝은 곳이 늘 밝다 (`LightChannel.light`, 장부 G34).
    */
-  colors: { low?: ColorRole; high: ColorRole };
+  colors: { low?: ColorRole; high: ColorRole } | 'light';
 }
 
 /**
@@ -324,7 +350,7 @@ export interface ScalarField extends BaseMeta {
  * 전기력선 꼬리 950 · 조석력 흐름 획 156 (`field-lines` · `tidal-force`, 장부 G41 · G51). 사용자 결정
  * 「선언은 묶음 하나, 그리기는 한 번」 과 `particleSystem` 이 입자를 한 경로로 묶은 선례를 따른다.
  */
-export interface LineSet extends BaseMeta {
+export interface LineSet extends BaseMeta, LightChannel {
   type: 'lineSet';
   /** 선마다 월드 폴리라인(점 둘 이상). */
   lines: readonly (readonly Vec2[])[];
@@ -406,7 +432,7 @@ export interface Marker extends BaseMeta {
  * `body` 는 원·사각·점·막대뿐이라 "그릇 모양대로 담긴 물" 을 그리지 못하고,
  * `surface` 는 선 하나다.
  */
-export interface Region extends BaseMeta {
+export interface Region extends BaseMeta, LightChannel {
   type: 'region';
   /** 경계 다각형. 월드 좌표. */
   points: readonly Vec2[];
@@ -586,7 +612,7 @@ export interface Scale extends BaseMeta {
  * 점점 빨라지는 것이 주장인 조각에서 눈금이 각도 표시로 읽히면 "같은 시간에 도는
  * 각이 커진다" 가 "눈금이 원래 그렇게 생겼다" 로 뒤집힌다 (`angular-acceleration`).
  */
-export interface Sector extends BaseMeta {
+export interface Sector extends BaseMeta, LightChannel {
   type: 'sector';
   center: Vec2;
   radius: Scalar;
@@ -1720,6 +1746,11 @@ export interface Theme {
   line: string;
   /** 격자. */
   grid: string;
+  /**
+   * 빛의 세기 채널(`LightChannel.light` · `ScalarField.colors: 'light'`)의 양 끝.
+   * **어느 테마에서나 `none` 이 `full` 보다 어둡다** — 테마가 고르는 것은 톤이지 극성이 아니다.
+   */
+  light: { none: string; full: string };
   /** 본문 글꼴 패밀리. */
   fontFamily: string;
   /** 모노 글꼴 패밀리 (숫자·라벨). */

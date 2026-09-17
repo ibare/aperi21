@@ -1,7 +1,7 @@
 import type { ColorRole } from '@aperi21/schema';
 import type { Emphasis } from './types';
 
-/** 6개 colorRole → hex 값. 라이트/다크 공통 팔레트. */
+/** colorRole 전부 → hex 값. 라이트/다크 공통 팔레트. */
 export type ColorPalette = Record<ColorRole, string>;
 
 function hexToRgba(hex: string, alpha: number): string {

@@ -100,9 +100,9 @@ describe('RendererRegistry', () => {
 });
 
 describe('테마 두 축', () => {
-  it('scene 축이 6개 colorRole 전부를 문자열로 반환', () => {
+  it('scene 축이 colorRole 전부를 문자열로 반환', () => {
     const host = createHost({ theme: 'light' });
-    const roles = ['primary', 'secondary', 'accent', 'muted', 'positive', 'negative'] as const;
+    const roles = ['primary', 'secondary', 'accent', 'muted', 'positive', 'negative', 'ink'] as const;
     for (const role of roles) {
       const value = host.theme.scene.resolveColor(role);
       expect(typeof value).toBe('string');

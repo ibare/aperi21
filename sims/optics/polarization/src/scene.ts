@@ -6,9 +6,10 @@
 // 3 차원 장면을 원본과 같은 비스듬 시점으로 투영한 좌표(physics.ts `project`)를 월드 좌표로 쓴다.
 // 겹침은 scene 에 쓴 순서다(`drawOrder: 'scene'`) — 원본 그리기 순서 그대로.
 //
-// 색 — 빛은 모든 구간에서 같은 색(ink) — 진동도, 스크린에 닿은 번짐도 같은 빛이다. 판 · 결 · 축선 · 각도 글자는 회색(muted).
+// 색 — 진동은 모든 구간에서 같은 색(ink). 판 · 결 · 축선 · 각도 글자는 회색(muted).
 // 강조색(accent)은 한 뜻에만 — 독자가 끼우고 돌리는 가운데 판의 축선과 각도 글자.
-// 스크린 번짐은 바탕에서 빛(ink) 쪽으로 밝아지는 명암 한 장(scalarField)이다.
+// 스크린에 닿은 빛은 밝기 자체가 주장이라 역할 색이 아니라 빛의 세기 채널(`colors: 'light'`)로 칠한다 —
+// 두 테마에서 극성이 같다. 진동(전기장)은 대상 그림이라 역할 색(ink)을 쓴다 — 줄기 길이가 진폭이지 밝기가 아니다.
 // ========================================================================
 
 import type {
@@ -235,7 +236,7 @@ function screen(pose: Pose): Primitive[] {
     rows: SCREEN_GRID.rows,
     values: screenValues(relIntensity(pose)),
     range: [0, 1],
-    colors: { high: 'ink' },
+    colors: 'light',
   };
   const edge: Trajectory = {
     type: 'trajectory',

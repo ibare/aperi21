@@ -6,9 +6,8 @@
 // 햇빛(lineSet) · 궤도와 시선(trajectory) · 반쪽 달과 지구 · 강조색 호와 고리(sector) ·
 // 지구에서 본 원판(scalarField) · 칸 이름(readout). 캡션은 선언의 캡션 슬롯이 그린다.
 //
-// 밝기 — 햇빛 받는 면은 **먹(ink)**, 그늘 면은 **바탕**으로 둔다. 테마와 무관한 밝은 색 ·
-// 어두운 색이 없어서(G34) 원본과 같은 다크 테마에서 「밝은 면 = 밝다」 가 서도록 고른 것이다.
-// 라이트 테마에서는 밝기가 뒤집힌다 (NOTES 「어휘 부족」).
+// 밝기 — 달의 낮 면 · 밤 면(반쪽 달 · 원판)은 테마와 무관한 **빛의 세기**(`light`)로 칠한다.
+// 빛이 아닌 것(강조 호 · 궤도 · 시선 · 글자 · 지구)은 역할 색이다.
 // ========================================================================
 
 import type {
@@ -21,7 +20,7 @@ import type {
   Vec2,
   ViewDef,
 } from '@aperi21/schema';
-import { discBrightness, moonAt } from './physics';
+import { NIGHT_LIGHT, discLight, moonAt } from './physics';
 import {
   ARC_GAP,
   DISC_CELLS,
@@ -47,8 +46,6 @@ const ORBIT_WIDTH_PX = 1;
 const SIGHT_WIDTH_PX = 1;
 const ACCENT_WIDTH_PX = 3;
 const ACCENT_DIAMETER_WIDTH_PX = 1.5;
-/** 그늘 반쪽의 윤곽 굵기 — 바탕색 면이 바탕 위에서 반원으로 읽히게. */
-const SHADE_RIM_PX = 1;
 /** 원본 글자 크기(px). */
 const LABEL_FONT_PX = 13;
 /** 원본 글자 기준선(y)에서 13px 글자의 가운데까지. readout 은 가운데에 맞춘다(G16). */
@@ -57,6 +54,8 @@ const BASELINE_TO_MIDDLE = 4.5;
 const ORBIT_SEGMENTS = 180;
 
 const HALF = Math.PI / 2;
+/** 달 둘레 윤곽 굵기(화면 px). */
+const OUTLINE_PX = 1;
 
 function circle(cx: number, cy: number, r: number, n: number): Vec2[] {
   const out: Vec2[] = [];
@@ -70,22 +69,34 @@ function circle(cx: number, cy: number, r: number, n: number): Vec2[] {
 /**
  * 반원 두 개로 나눈 원 — 오른쪽(태양 쪽)이 햇빛 받는 반쪽, 왼쪽이 그늘. 원본의 두 `arc` 채움.
  *
- * 달(`moon`)은 햇빛 받는 반쪽을 먹으로 채우고, 그늘 반쪽은 바탕 그대로 둘레만 긋는다 —
- * 지구에서 본 원판의 그늘이 바탕인 것과 같은 대상 · 같은 색이다. 지구(`earth`)는 원본대로
- * 파랑 두 톤이다.
+ * 달(`moon`)은 **빛의 세기**(`light`)로 칠한다 — 밝기가 주장이라 테마를 따라 뒤집히면 안 된다.
+ * 지구에서 본 원판과 같은 세기다. 지구(`earth`)는 밝기가 주장이 아니라 원본대로 파랑 두 톤(역할 색)이다.
  */
 function halves(id: string, center: Vec2, r: number, body: 'moon' | 'earth', opacity?: number): Sector[] {
-  const base = { type: 'sector' as const, center, radius: r, ...(opacity !== undefined ? { opacity } : {}) };
+  const base = { type: 'sector' as const, center, radius: r, fillOpacity: 1, rimWidth: 0, ...(opacity !== undefined ? { opacity } : {}) };
   if (body === 'earth') {
     return [
-      { ...base, id: `${id}-night`, from: HALF, to: 3 * HALF, fillOpacity: 1, rimWidth: 0, style: { colorRole: 'secondary', emphasis: 'subtle' } },
-      { ...base, id: `${id}-day`, from: -HALF, to: HALF, fillOpacity: 1, rimWidth: 0, style: { colorRole: 'secondary', emphasis: 'strong' } },
+      { ...base, id: `${id}-night`, from: HALF, to: 3 * HALF, style: { colorRole: 'secondary', emphasis: 'subtle' } },
+      { ...base, id: `${id}-day`, from: -HALF, to: HALF, style: { colorRole: 'secondary', emphasis: 'strong' } },
     ];
   }
   return [
-    // 그늘 — 채우지 않고 둘레만 긋는다.
-    { ...base, id: `${id}-night`, from: HALF, to: 3 * HALF, fillOpacity: 0, rimWidth: SHADE_RIM_PX, style: { colorRole: 'muted', emphasis: 'medium' } },
-    { ...base, id: `${id}-day`, from: -HALF, to: HALF, fillOpacity: 1, rimWidth: 0, style: { colorRole: 'ink', emphasis: 'strong' } },
+    { ...base, id: `${id}-night`, from: HALF, to: 3 * HALF, light: NIGHT_LIGHT },
+    { ...base, id: `${id}-day`, from: -HALF, to: HALF, light: 1 },
+    // 둘레 — 빛이 아니다. 라이트 테마에서 가득 찬 빛(흰색)이 미색 바탕에 묻혀 낮 면 경계가 사라지므로
+    // 역할 색 윤곽으로 원을 잡아 준다 (NOTES 「새 부족」).
+    {
+      type: 'sector',
+      id: `${id}-outline`,
+      center,
+      radius: r,
+      from: 0,
+      to: 2 * Math.PI,
+      fillOpacity: 0,
+      rimWidth: OUTLINE_PX,
+      style: { colorRole: 'muted', emphasis: 'medium' },
+      ...(opacity !== undefined ? { opacity } : {}),
+    },
   ];
 }
 
@@ -209,9 +220,9 @@ export function scene(params: {
     max: [VIEW.cx + VIEW.R, VIEW.cy + VIEW.R],
     cols: DISC_CELLS,
     rows: DISC_CELLS,
-    values: discBrightness(theta),
+    values: discLight(theta),
     range: [0, 1],
-    colors: { high: 'ink' },
+    colors: 'light',
   });
 
   // ---- 지구를 향한 반쪽(지구에서) — 왼쪽 칸 강조색 호와 같은 대상 ----

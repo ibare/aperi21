@@ -54,17 +54,20 @@ const uiGeometry = {
 /** 색만 받아 축 하나를 완성한다. 글꼴·치수는 위의 한 벌을 그대로 쓴다. */
 function sceneOf(
   palette: ColorPalette,
-  colors: Pick<SceneTheme, 'background' | 'foreground' | 'muted' | 'line' | 'grid'>,
+  colors: Pick<SceneTheme, 'background' | 'foreground' | 'muted' | 'line' | 'grid' | 'light'>,
 ): SceneTheme {
   return { ...colors, ...typography, ...sceneGeometry, resolveColor: makeResolveColor(palette) };
 }
 
+// 빛의 세기(`light`)는 두 테마에서 극성이 같다 — 빛 없음은 늘 거의 검정, 가득 찬 빛은 늘 거의 흰색.
+// 다크의 빛 없음은 바탕보다 한 단 더 어둡게 두어 「빛이 없는 면」 이 바탕과 갈린다.
 const lightScene = sceneOf(lightPalette, {
   background: '#F5F1E8',
   foreground: '#1A2332',
   muted: '#4A5668',
   line: '#D4CEC2',
   grid: '#E8E2D4',
+  light: { none: '#11151C', full: '#FFFFFF' },
 });
 
 const darkScene = sceneOf(darkPalette, {
@@ -73,6 +76,7 @@ const darkScene = sceneOf(darkPalette, {
   muted: '#B8BFCC',
   line: '#2A3A58',
   grid: '#1A2332',
+  light: { none: '#05080C', full: '#F5F1E8' },
 });
 
 const lightUi: UiTheme = {

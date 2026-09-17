@@ -168,16 +168,33 @@ export function luminanceColor(rc: RenderContext, color: string, amount: number)
 }
 
 /**
+ * 테마와 무관한 **빛의 세기** 0~1 을 색으로. 테마의 `light.none` 과 `light.full` 을 선형광으로 섞는다.
+ * 양 끝을 해석할 수 없으면(hex 가 아니면) 반올림한 끝 색을 준다.
+ */
+export function lightColor(rc: RenderContext, amount: number): string {
+  const a = Math.max(0, Math.min(1, amount));
+  const lo = parseHex(rc.theme.light.none);
+  const hi = parseHex(rc.theme.light.full);
+  if (!lo || !hi) return a < 0.5 ? rc.theme.light.none : rc.theme.light.full;
+  const mix = (i: number): number =>
+    linearToSrgb(srgbToLinear(lo[i]!) + (srgbToLinear(hi[i]!) - srgbToLinear(lo[i]!)) * a);
+  return `rgb(${mix(0)}, ${mix(1)}, ${mix(2)})`;
+}
+
+/**
  * BaseMeta.style.colorRole + emphasis 를 읽어서 실제 색상 문자열로 변환.
  * style 이나 colorRole 이 없으면 기본값 (primary, medium) 사용.
  *
  * `luminance` 를 선언했으면 그 빛의 양으로 섞은 색을 준다 — 알파가 아니라 색이다.
+ * `light` 를 선언했으면 역할 · 강조 · `luminance` 를 보지 않고 그 빛의 세기의 색을 준다 (장부 G34).
  */
 export function primitiveColor(
   rc: RenderContext,
   p: Primitive,
   defaults: { role?: ColorRole; emphasis?: Emphasis } = {},
 ): string {
+  const light = (p as { light?: number }).light;
+  if (typeof light === 'number') return lightColor(rc, light);
   const style = (p as { style?: { colorRole?: ColorRole; emphasis?: Emphasis } }).style;
   const role = style?.colorRole ?? defaults.role ?? 'primary';
   const emphasis = style?.emphasis ?? defaults.emphasis ?? 'medium';

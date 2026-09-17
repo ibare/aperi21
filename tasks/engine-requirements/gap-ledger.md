@@ -212,3 +212,20 @@
 | 광학 | polarization | 2 (G71 · G78) | 0 (기존 G34 재발) | 계속 |
 | 전자기 | electromagnetic-wave | 1 (G79) | 0 | 계속 |
 | 현대물리 | double-slit-with-electrons | 2 (G80 · G81) | 0 | 계속 |
+
+## G34 해결 (2026-09-17, 턴 3 과 턴 4 사이)
+
+사용자 결정으로 G34 를 턴 사이에 먼저 풀었다. 「빛은 테마 색 역할이 아니라 물리량」 (턴 1 뒤 결정)에 따라 **색 역할에 넣지 않고 별도 빛 채널**로 만들었다 —
+처음 계획(ColorRole 에 lit · unlit)은 rule-guard 사전 검토가 그 결정과 어긋난다고 짚어 바꿨다.
+
+- `LightChannel.light` 0~1 — 테마와 무관한 빛의 세기. `body` · `trajectory` · `particleSystem` · `lineSet` · `region` · `sector` 에만 붙는다
+  (처음엔 `BaseMeta` 에 두었다가 이 필드를 그리지 않는 렌더러가 있어 S-render 사후 검증으로 좁혔다).
+- `scalarField.colors: 'light'` — 값을 빛의 세기로. 칸 값 `NaN` 은 칠하지 않는다(모든 모드).
+- 테마 `light: { none, full }` — 어느 테마에서나 `none` 이 `full` 보다 어둡다.
+
+| id | 상태 | 근거 |
+|---|---|---|
+| G34 | 해결됨 | moon-phases · polarization 을 다시 옮겨 라이트 · 다크 모두에서 밝은 곳이 밝다(라이트 강제 촬영으로 확인). color-addition · thin-film-interference 는 빛의 **색**(G33 · G60 · G61)이 남아 빛 색 트랙 대기 그대로 |
+| G71 | 일부 해결 | `NaN` 칸으로 원판 · 기울어진 판 밖을 비운다. 경계가 칸 크기만큼 계단지는 것은 남음 |
+
+재이관에서 드러난 것 (측정값에는 넣지 않는다): 라이트 테마에서 가득 찬 빛(흰색)이 미색 바탕에 묻혀 밝은 면의 윤곽이 사라진다 — moon-phases 는 빛이 아닌 윤곽선을 더해 우회. 턴 4 의 G92 와 같은 종류다.

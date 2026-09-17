@@ -220,9 +220,8 @@ export function screenBox(): { min: Vec2; max: Vec2 } {
 }
 
 /**
- * 스크린 칸 값. 0 = 바탕(판 밖과 어두운 판), 1 = 가장 밝은 빛.
- * 원본은 어두운 판 위에 흰 번짐을 불투명도 r × 그라데이션 세기로 얹는다 — 그 몫이 곧 값이다.
- * 판 자체의 「바탕보다 어두운 칠」 은 역할 색에 없어 바탕으로 둔다(NOTES 「어휘 부족」).
+ * 스크린 칸 값 — 테마와 무관한 빛의 세기. 판 안은 0(빛 없음, 원본의 검은 판)에서 번짐 세기
+ * r × 그라데이션까지, 판 밖은 `NaN`(칠하지 않음). 원본은 검은 판 위에 흰 번짐을 그 불투명도로 얹는다.
  */
 export function screenValues(r: number): number[] {
   const { min, max } = screenBox();
@@ -237,7 +236,7 @@ export function screenValues(r: number): number[] {
       // 투영의 역 — 스크린 평면(z 고정) 위 (x, y).
       const x = (X - Z.screen) / DX;
       const y = Y + x * DY;
-      let v = 0;
+      let v = Number.NaN;
       if (Math.abs(x) <= HALF && Math.abs(y) <= HALF) {
         const s = Math.hypot(X - Z.screen, Y) / GLOW_RADIUS;
         v = r * glowLevel(s);

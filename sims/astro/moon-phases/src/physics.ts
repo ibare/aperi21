@@ -30,19 +30,21 @@ export function overlapFlags(theta: number): { noOverlap: boolean; fullOverlap: 
   return { noOverlap: k < OVERLAP_EDGE.none, fullOverlap: k > OVERLAP_EDGE.full };
 }
 
-/** 원본 색 두 개의 휘도 — 명암 비율을 옮기는 데만 쓰는 수학 상수(원본 sunlit · night 의 녹색 채널 근사). */
-const LIT_LEVEL = 230;
-const DARK_LEVEL = 49;
+/**
+ * 그늘 면의 빛 세기(가득 찬 빛 = 1). 원본 그늘색(#2b3140)과 햇빛 받는 색(#ece6d6)의 **선형광 비**를 옮긴
+ * 것이다 — 녹색 채널 49 · 230 을 감마 2.2 로 풀면 약 0.027 · 0.80, 비는 약 0.03. 테마 토큰 사본이 아니다.
+ */
+export const NIGHT_LIGHT = 0.03;
 
 /**
- * 지구에서 본 달 원판의 **밝기** 격자(0 = 그늘 면, 1 = 햇빛 받는 면). 행 우선, 첫 행이 위.
- * 원판 밖은 0 — 장의 바탕이다. 그늘 면도 바탕과 같다 (원본은 바탕보다 조금 밝은 색, NOTES (a)).
+ * 지구에서 본 달 원판의 **빛 세기** 격자(0 = 빛 없음, 1 = 가득 찬 빛). 행 우선, 첫 행이 위.
+ * 원판 밖은 `NaN` — 칠하지 않는다.
  *
  * 원본 renderMoonDisc 와 같은 셈이다. 시선 방향 d = (cos θ, sin θ), 원판 위 (u, v) 의 표면 법선
  * n = u·r + v·z − w·d 의 태양 방향 성분 nx = u·sin θ − w·cos θ. 명암 경계는 nx ±0.025 안에서
- * smoothstep, 밝은 면은 0.93 + 0.07·nx 로 가장자리 쪽이 조금 어둡다. 원판 테두리는 한 칸 폭으로 흐린다.
+ * smoothstep, 밝은 면은 0.93 + 0.07·nx 로 가장자리 쪽이 조금 어둡다.
  */
-export function discBrightness(theta: number, n: number = DISC_CELLS): number[] {
+export function discLight(theta: number, n: number = DISC_CELLS): number[] {
   const dx = Math.cos(theta);
   const dy = Math.sin(theta);
   const out = new Array<number>(n * n);
@@ -52,8 +54,8 @@ export function discBrightness(theta: number, n: number = DISC_CELLS): number[] 
       const u = ((i + 0.5) / n) * 2 - 1;
       const rr = u * u + v * v;
       const k = j * n + i;
-      if (rr > 1.02) {
-        out[k] = 0;
+      if (rr > 1) {
+        out[k] = Number.NaN;
         continue;
       }
       const w = Math.sqrt(Math.max(0, 1 - rr));
@@ -62,10 +64,8 @@ export function discBrightness(theta: number, n: number = DISC_CELLS): number[] 
       s = s < 0 ? 0 : s > 1 ? 1 : s;
       s = s * s * (3 - 2 * s);
       const shade = 0.93 + 0.07 * Math.max(0, nx);
-      // 원본: 색 = DARK + (LIT·shade − DARK)·s. 밝기 비율 b(0 = 그늘, 1 = 햇빛)로 옮긴다.
-      const b = (s * (LIT_LEVEL * shade - DARK_LEVEL)) / (LIT_LEVEL - DARK_LEVEL);
-      const edge = Math.max(0, Math.min(1, (1 - Math.sqrt(rr)) * (n / 2) + 0.5));
-      out[k] = b * edge;
+      // 원본: 색 = DARK + (LIT·shade − DARK)·s.
+      out[k] = NIGHT_LIGHT + (shade - NIGHT_LIGHT) * s;
     }
   }
   return out;

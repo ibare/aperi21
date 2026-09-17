@@ -39,6 +39,11 @@ export interface SceneTheme {
   line: string;
   /** 격자. */
   grid: string;
+  /**
+   * 빛의 세기 채널의 양 끝. 색 역할과 달리 **어느 테마에서나 `none` 이 `full` 보다 어둡다** —
+   * 빛은 대상이 아니라 물리량이라 테마가 극성을 뒤집으면 「밝은 곳」 이 거짓말이 된다 (장부 G34).
+   */
+  light: { none: string; full: string };
 
   fontFamily: string;
   fontFamilyMono: string;
