@@ -312,3 +312,32 @@
 - 주장이 아직 서지 않는 조각은 모두 **빛의 색** 한 뿌리다: color-addition · thin-film-interference · hydrogen-spectrum (G33 · G35 · G60 · G61).
 - 그 밖의 새 부족은 모두 `근사`다. 턴 3 부터 새 주장 부족이 나오지 않았다.
 - 새 부족 종류 수는 23 → 12 → 15 → 11 → 7 로 줄었지만 0 에 수렴하지 않았다 — 문안 기준이 기존 어휘의 옵션 하나까지 새 id 로 세기 때문이다.
+
+## 빛 색 트랙 (2026-09-17, 검증 뒤)
+
+턴 1 뒤 사용자 결정(빛의 색은 테마 색 역할이 아니라 물리량)으로 미뤄 둔 트랙이다. 검증 요약에서 주장이 서지 않는 조각이 모두 이
+한 뿌리였다. 빛 채널(G34)을 색으로 넓혔다.
+
+- `LightChannel.light` — 세기(0~1) 또는 `{ rgb }`(선형광, 가득 찬 흰빛 = `[1, 1, 1]`).
+- `LightChannel.blend: 'add'` — 겹친 빛을 더해 칠한다(캔버스 `lighter`). 한계: 화면값 합이라 원색 1 끼리만 정확.
+- `scalarField` `colors: 'lightRgb'` — 칸마다 세 성분, `NaN` 투명.
+- `@aperi21/plugin-optics` 순수 함수 `wavelengthToLinearRgb` · `spectrumToLinearRgb`(CIE 1931 근사) — 색 계산은 렌더러가 아니라 조각이
+  이 함수로 한다. 광선 렌더러의 파장색도 같은 함수를 쓴다.
+
+| id | 상태 | 근거 |
+|---|---|---|
+| G33 | 해결됨 | color-addition 의 원색 · 합색, hr-diagram · hydrogen-spectrum · thin-film-interference 의 파장 · 흑체 · 반사색이 두 테마에서 색으로 선다 |
+| G35 | 해결됨 | color-addition 이 `blend: 'add'` 로 겹친 칸 자르기를 지웠다 |
+| G60 | 해결됨 | thin-film-interference 스펙트럼 채움 · hydrogen-spectrum 띠가 `lightRgb` 로 파장마다 제 색 |
+| G61 | 해결됨 | thin-film-interference 막 · 원판 반사색, hr-diagram 흑체색 |
+| G92 | 일부 해결 | hydrogen-spectrum 의 「같은 광자 두 번 선언」 우회가 필요 없어졌다. 흰빛이 라이트 미색 바탕에 묻히는 것은 남음 — color-addition 합 네모(회색 테로 구분), hr-diagram 은 원본처럼 그림 영역에 빛 없음 바탕을 깔았다 |
+
+재이관에서 드러난 부족 (측정값에는 넣지 않는다):
+
+| id | 부족 | 영향 | 조각 |
+|---|---|---|---|
+| G100 | 강조 역할 표지가 빛 색 대상 위에서 묻힐 때 쓸 둘레(바탕 테두리 · 대비)가 없다 — 황토 관찰 고리가 금빛 막 띠 위에서 거의 안 보인다 | 근사 | thin-film-interference |
+| G101 | `lineSet` 에 선마다 다른 빛 색이 없다 — 파장마다 선언을 나눈다 (G32 는 `particleSystem`) | 근사 | hydrogen-spectrum |
+
+판정: 네 조각 모두 다크 · 라이트에서 원본의 색 주장이 선다. 검증에서 주장이 약해졌던 조각(color-addition · thin-film-interference ·
+hydrogen-spectrum)은 이제 모두 섰다.

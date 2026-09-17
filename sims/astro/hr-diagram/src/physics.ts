@@ -1,11 +1,13 @@
 // ========================================================================
 // hr-diagram — 순수 계산
 // ========================================================================
-// 주계열 관계 · 별 진화 경로 · 전향점 질량 · 흑체색 온도. DOM · 캔버스 · 색을 모른다.
+// 주계열 관계 · 별 진화 경로 · 전향점 질량 · 흑체 스펙트럼의 빛 색(선형광 세 성분).
+// DOM · 캔버스 · 테마 색을 모른다.
 // 식과 상수는 원본(tasks/piece-lab/hr-diagram/index.html)을 그대로 옮겼다.
 // ========================================================================
 
 import type { TimelineDef, Vec2 } from '@aperi21/schema';
+import { spectrumToLinearRgb, type LinearRgb } from '@aperi21/plugin-optics';
 import { CANVAS_H, CANVAS_W, CLUSTER, L_AXIS, PLOT, T_AXIS, hrDiagramSchema } from './schema';
 import type { HrDiagramState } from './state';
 
@@ -166,6 +168,72 @@ export function turnoffMass(A: number): number {
 /** 별 반지름(원본 px). 백색왜성은 가장 작게, 나머지는 광도에 따라 1.1~3.6. */
 export function starRadius(st: StarState): number {
   return st.kind === 'wd' ? 1.1 : Math.max(1.1, Math.min(3.6, 1.6 + 0.35 * st.ll));
+}
+
+// ------------------------------------------------------------------------
+// 흑체색 — 표면 온도 → 빛의 색
+// ------------------------------------------------------------------------
+
+/** 플랑크 식의 둘째 복사 상수 hc/k (nm · K). */
+const PLANCK_C2_NM_K = 1.4388e7;
+
+/** 온도 T(K) 흑체의 파장 nm 복사 세기(상대값, 앞 상수는 뺐다). */
+export function planck(nm: number, T: number): number {
+  return 1 / (Math.pow(nm, 5) * (Math.exp(PLANCK_C2_NM_K / (nm * T)) - 1));
+}
+
+/**
+ * log10 온도 → 흑체의 빛 색(선형광). 플랑크 스펙트럼을 눈에 보이는 색으로 옮기고,
+ * **가장 큰 성분이 1** 이 되게 나눈다 — 별의 밝기는 크기가 말하고 색은 온도만 말한다
+ * (원본 흑체 근사식도 가장 큰 성분이 255 였다). 색역 밖 음수 성분은 0 으로 자른다.
+ */
+export function blackbodyRgb(lt: number): LinearRgb {
+  const T = Math.pow(10, lt);
+  const v = spectrumToLinearRgb((nm) => planck(nm, T));
+  const c: [number, number, number] = [Math.max(0, v[0]), Math.max(0, v[1]), Math.max(0, v[2])];
+  const m = Math.max(c[0], c[1], c[2]) || 1;
+  return [c[0] / m, c[1] / m, c[2] / m];
+}
+
+/** 흑체색 한 단계 — 이 log10 온도부터 다음 단계 전까지 이 색으로 칠한다. */
+export interface ColorBin {
+  minLt: number;
+  rgb: LinearRgb;
+}
+
+/** 단계 경계를 찾는 걸음(log10 K). */
+const BIN_WALK = 0.001;
+/** 표시값 차이를 잴 때 쓰는 화면 감마 근사. */
+const DISPLAY_GAMMA = 2.2;
+
+/**
+ * 가로축 범위의 흑체색을 **눈에 띄지 않는 차이**로 묶는다. 낮은 온도부터 걸으며, 단계 시작 색과
+ * 어느 성분이든 표시값(0~1) 차이가 `maxStep` 을 넘으면 새 단계를 연다. 단계 색은 단계 가운데 온도의 색 —
+ * 단계 안 오차는 성분마다 대략 `maxStep / 2` 이하다. 흑체색은 낮은 온도에서 빨리 바뀌어 단계가 좁다.
+ */
+export function blackbodyBins(ltLow: number, ltHigh: number, maxStep: number): ColorBin[] {
+  const disp = (c: LinearRgb): number[] => c.map((x) => Math.pow(x, 1 / DISPLAY_GAMMA));
+  const starts: number[] = [ltLow];
+  let ref = disp(blackbodyRgb(ltLow));
+  const n = Math.round((ltHigh - ltLow) / BIN_WALK);
+  for (let i = 1; i <= n; i++) {
+    const lt = ltLow + i * BIN_WALK;
+    const c = disp(blackbodyRgb(lt));
+    if (Math.max(...c.map((x, k) => Math.abs(x - ref[k]!))) > maxStep) {
+      starts.push(lt);
+      ref = c;
+    }
+  }
+  return starts.map((minLt, i) => {
+    const end = starts[i + 1] ?? ltHigh;
+    return { minLt, rgb: blackbodyRgb((minLt + end) / 2) };
+  });
+}
+
+/** log10 온도가 속한 단계 번호. 범위 밖은 양 끝 단계. */
+export function binIndex(bins: readonly ColorBin[], lt: number): number {
+  for (let i = bins.length - 1; i > 0; i--) if (lt >= bins[i]!.minLt) return i;
+  return 0;
 }
 
 // ------------------------------------------------------------------------

@@ -3,12 +3,12 @@
 // ========================================================================
 // 그리지 않는다, 선언한다. 겹침은 scene 에 쓴 순서(`drawOrder: 'scene'`) — 원본 그리기 순서 그대로.
 //
-// 색 — 원본은 낙차 자국 · 광자 · 섬광 · 쌓인 선을 모두 그 전이의 **파장색**으로 칠했다. 엔진에 빛의 색
-// 어휘가 없어(장부 G60 · G61) 다음처럼 근사한다.
-//   · 띠에 닿아 쌓인 빛과 섬광은 밝기 자체가 주장이라 빛의 세기 채널(`light`)로 칠한다 — 두 테마에서
-//     띠는 늘 어둡고 선은 늘 밝다. 파장의 색은 없다.
-//   · 날아가는 광자와 낙차 자국은 대상 그림이라 먹색(`ink`). 가시광 밖 광자는 회색(`muted`) 속빈 점과 점선.
-//   · 준위 · 글자 · 들뜸 자국은 무채색(`muted`). 강조색은 쓰지 않는다.
+// 색 — 원본대로 낙차 자국 · 광자 · 섬광 · 쌓인 선을 모두 그 전이의 **파장색**으로 칠한다. 「같은 낙차 =
+// 같은 색 = 띠의 선 색」 이 이 연결로 선다. 색은 빛이라 역할이 아니라 빛 채널로 넘긴다.
+//   · 낙차 자국 · 광자 · 섬광 — `light: { rgb }`. 한 선언에 빛이 하나라 **파장마다** 묶어 선언한다.
+//   · 띠 — `scalarField` `colors: 'lightRgb'`. 옅은 무지개 바탕과 쌓인 선을 칸마다 한 색으로 합친다.
+//   · 가시광 밖(자외선 · 적외선) 광자와 그 낙차 자국은 원본처럼 회색 — 빛의 색이 아니라 `muted`.
+//   · 전자 · 준위 · 글자 · 들뜸 자국은 무채색 역할. 강조색은 쓰지 않는다.
 // ========================================================================
 
 import type {
@@ -29,7 +29,8 @@ import {
   levelY,
   photonAlpha,
   photonAt,
-  stripLight,
+  stripColors,
+  wavelengthLight,
 } from './physics';
 import {
   CANVAS,
@@ -45,6 +46,21 @@ import {
   type HydrogenSpectrumMessageKey,
 } from './schema';
 import type { HydrogenSpectrumState } from './state';
+
+/**
+ * 파장마다 묶는다 — 빛 채널은 선언 하나에 색 하나다. 수소 n ≤ 6 의 전이 파장은 반올림해도 서로 다르다.
+ * 키는 반올림한 파장(nm)이라 선언 id 가 전이마다 안정하다.
+ */
+function byWavelength<T extends { l: number }>(items: readonly T[]): [number, T[]][] {
+  const groups = new Map<number, T[]>();
+  for (const it of items) {
+    const k = Math.round(it.l);
+    const g = groups.get(k);
+    if (g) g.push(it);
+    else groups.set(k, [it]);
+  }
+  return [...groups.entries()];
+}
 
 /** 원본 픽셀(y 아래로) → 월드(y 위로). */
 const worldY = (py: number): number => CANVAS.height - py;
@@ -65,11 +81,6 @@ const FLASH = [
   { size: 9, alpha: 0.3 },
   { size: 4, alpha: 0.6 },
 ] as const;
-/**
- * 「가능한 색의 자리」 의 옅은 바탕 빛. 원본은 파장색 무지개를 불투명도 0.07 로 깔았다.
- * 무지개가 없어(장부 G60) 옅은 빛 한 겹으로 띠가 비어 있는 자리임을 남긴다.
- */
-const STRIP_BASE_LIGHT = 0.012;
 /** 글자 크기(화면 px) — 원본 12 px. */
 const LABEL_FONT_PX = 12;
 
@@ -142,15 +153,18 @@ export function scene(params: { state: HydrogenSpectrumState }): SceneGraph {
     } satisfies Trajectory);
   });
 
-  // ── 낙차 자국 — 굵은 선, 0.9 초 동안 옅어짐 ─────────
-  if (s.drops.length > 0) {
+  // ── 낙차 자국 — 굵은 선, 0.9 초 동안 옅어짐. 색은 그 낙차가 낸 광자의 파장색 ──
+  for (const [k, drops] of byWavelength(s.drops)) {
+    const vis = isVisible(drops[0]!.l);
     out.push({
       type: 'lineSet',
-      id: 'drops',
-      lines: s.drops.map((d) => [at(d.x, d.y0), at(d.x, d.y1)]),
-      opacities: s.drops.map((d) => ALPHA.drop * (1 - d.age / MARK_LIFE)),
+      id: `drops-${k}`,
+      lines: drops.map((d) => [at(d.x, d.y0), at(d.x, d.y1)]),
+      opacities: drops.map((d) => ALPHA.drop * (1 - d.age / MARK_LIFE)),
       width: WIDTH.drop,
-      style: { colorRole: 'ink', emphasis: 'strong' },
+      ...(vis
+        ? { light: { rgb: wavelengthLight(drops[0]!.l) } }
+        : { style: { colorRole: 'muted', emphasis: 'strong' } }),
     } satisfies LineSet);
   }
 
@@ -163,7 +177,7 @@ export function scene(params: { state: HydrogenSpectrumState }): SceneGraph {
     style: { colorRole: 'ink', emphasis: 'strong' },
   } satisfies ParticleSystem);
 
-  // ── 스펙트럼 띠 — 가능한 자리의 옅은 바탕 + 쌓인 빛 ──
+  // ── 스펙트럼 띠 — 가능한 자리의 옅은 무지개 + 쌓인 빛의 선, 칸마다 그 파장의 색 ──
   out.push({
     type: 'scalarField',
     id: 'strip',
@@ -171,64 +185,44 @@ export function scene(params: { state: HydrogenSpectrumState }): SceneGraph {
     max: at(STRIP.x1, STRIP.y0),
     cols: STRIP_W,
     rows: 1,
-    values: s.bins.map((amount) => STRIP_BASE_LIGHT + (1 - STRIP_BASE_LIGHT) * stripLight(amount)),
+    values: stripColors(s.bins),
     range: [0, 1],
-    colors: 'light',
+    colors: 'lightRgb',
   } satisfies ScalarField);
 
-  // ── 빛이 닿는 섬광 ─────────────────────────────────
-  if (s.flashes.length > 0) {
+  // ── 빛이 닿는 섬광 — 닿은 광자의 파장색 ─────────────
+  for (const [k, flashes] of byWavelength(s.flashes)) {
+    const rgb = wavelengthLight(flashes[0]!.l);
     FLASH.forEach((f, i) => {
       out.push({
         type: 'particleSystem',
-        id: `flash-${i}`,
-        positions: s.flashes.map((fl) => at(fl.x, fl.y)),
+        id: `flash-${k}-${i}`,
+        positions: flashes.map((fl) => at(fl.x, fl.y)),
         sizes: f.size,
-        opacities: s.flashes.map((fl) => ALPHA.flash * f.alpha * (1 - fl.age / MARK_LIFE)),
-        light: 1,
+        opacities: flashes.map((fl) => ALPHA.flash * f.alpha * (1 - fl.age / MARK_LIFE)),
+        light: { rgb },
       } satisfies ParticleSystem);
     });
   }
 
-  // ── 광자 ─────────────────────────────────────────
-  // 띠 밖에서는 먹색, 띠 위에서는 빛 채널로 한 번 더 긋는다. 라이트 테마의 먹색은 짙어서 어두운 띠
-  // 위에서 사라진다 — 띠에 닿는 광자는 늘 밝아야 「그 자리에 빛이 닿는다」 가 보인다.
-  const visible = s.photons.filter((p) => isVisible(p.l));
-  if (visible.length > 0) {
-    const tails = visible.map((p) => [at(...photonAt(p, Math.max(0, p.s - TAIL_LAG))), at(...photonAt(p, p.s))]);
-    const heads = visible.map((p) => at(...photonAt(p, p.s)));
-    const onStrip = { min: at(STRIP.x0, STRIP.y1), max: at(STRIP.x1, STRIP.y0) };
+  // ── 광자 — 파장색 점과 꼬리 ─────────────────────────
+  // 빛의 색은 라이트 바탕 위에서도 어두운 띠 위에서도 보여서 광자를 한 번만 선언한다(지난 이관의 이중 선언 없음).
+  for (const [k, photons] of byWavelength(s.photons.filter((p) => isVisible(p.l)))) {
+    const rgb = wavelengthLight(photons[0]!.l);
     out.push({
       type: 'lineSet',
-      id: 'photon-tails',
-      lines: tails,
+      id: `photon-tails-${k}`,
+      lines: photons.map((p) => [at(...photonAt(p, Math.max(0, p.s - TAIL_LAG))), at(...photonAt(p, p.s))]),
       opacity: ALPHA.tail,
       width: WIDTH.tail,
-      style: { colorRole: 'ink', emphasis: 'strong' },
+      light: { rgb },
     } satisfies LineSet);
     out.push({
       type: 'particleSystem',
-      id: 'photons',
-      positions: heads,
+      id: `photons-${k}`,
+      positions: photons.map((p) => at(...photonAt(p, p.s))),
       sizes: DOT.photon,
-      style: { colorRole: 'ink', emphasis: 'strong' },
-    } satisfies ParticleSystem);
-    out.push({
-      type: 'lineSet',
-      id: 'photon-tails-on-strip',
-      lines: tails,
-      opacity: ALPHA.tail,
-      width: WIDTH.tail,
-      light: 1,
-      clip: onStrip,
-    } satisfies LineSet);
-    out.push({
-      type: 'particleSystem',
-      id: 'photons-on-strip',
-      positions: heads,
-      sizes: DOT.photon,
-      light: 1,
-      clip: onStrip,
+      light: { rgb },
     } satisfies ParticleSystem);
   }
   s.photons.forEach((p, i) => {

@@ -2,11 +2,14 @@
 // thin-film-interference — 순수 물리
 // ========================================================================
 // 공기 – 비눗물(n = 1.33) – 공기, 수직 입사, 다중 반사 포함 반사율.
-// 반사 스펙트럼을 CIE 1931 색맞춤 함수(Wyman 외 2013 근사)로 적분해 선형 sRGB 로 바꾼다.
+// 반사 스펙트럼을 CIE 1931 색맞춤 함수로 적분한 빛의 색은 `@aperi21/plugin-optics` 의 순수 계산 함수가 주고,
+// 원본이 그 위에 곱한 것(노출 계수 · 가시광 양 끝 어둡게 하기)은 이 조각의 계산이라 여기서 세기로 곱한다.
 // 흘러내리는 막의 두께 모형은 원본 상수 그대로다.
 //
 // 색 공간 변환의 수는 순수 함수의 수학 상수라 색 리터럴이 아니다 (C2 Exception).
 // ========================================================================
+
+import { spectrumToLinearRgb, wavelengthToLinearRgb, type LinearRgb } from '@aperi21/plugin-optics';
 
 import { FILM, PERIOD, PROBE_Y_RANGE, worldY } from './schema';
 import type { ThinFilmInterferenceState } from './state';
@@ -18,7 +21,7 @@ export const N_FILM = 1.33;
 const r = (N_FILM - 1) / (N_FILM + 1);
 /** 반사율 최댓값 (약 7.7%). 스펙트럼은 이것으로 나눠 모양만 보인다. */
 export const R_MAX = (4 * r * r) / Math.pow(1 + r * r, 2);
-/** 두께 → 밝기 표를 만들 범위(nm). */
+/** 두께 → 반사색 표를 만들 범위(nm). */
 export const D_MAX = 1400;
 
 /** 두께 d(nm) · 파장 λ(nm) 에서의 반사율. 위쪽 반사만 위상이 뒤집힌다. */
@@ -27,61 +30,67 @@ export function reflectance(dNm: number, lamNm: number): number {
   return (2 * r * r * (1 - c)) / (1 + r * r * r * r - 2 * r * r * c);
 }
 
-// ---- 색맞춤 함수 → 선형 sRGB ----
+// ---- 빛의 색 ----
 
-const g = (x: number, mu: number, s1: number, s2: number): number => {
-  const t = (x - mu) / (x < mu ? s1 : s2);
-  return Math.exp(-0.5 * t * t);
-};
-const xbar = (l: number): number => 1.056 * g(l, 599.8, 37.9, 31.0) + 0.362 * g(l, 442.0, 16.0, 26.7) - 0.065 * g(l, 501.1, 20.4, 26.2);
-const ybar = (l: number): number => 0.821 * g(l, 568.8, 46.9, 40.5) + 0.286 * g(l, 530.9, 16.3, 31.1);
-const zbar = (l: number): number => 1.217 * g(l, 437.0, 11.8, 36.0) + 0.681 * g(l, 459.0, 26.0, 13.8);
-
-const LAMS: number[] = [];
-for (let l = 380; l <= 780; l += 5) LAMS.push(l);
-const CMF = LAMS.map((l) => [xbar(l), ybar(l), zbar(l)] as const);
-
-function spectrumToLin(fn: (lam: number) => number): [number, number, number] {
-  let X = 0;
-  let Y = 0;
-  let Z = 0;
-  for (let i = 0; i < LAMS.length; i++) {
-    const s = fn(LAMS[i]!);
-    X += s * CMF[i]![0];
-    Y += s * CMF[i]![1];
-    Z += s * CMF[i]![2];
-  }
-  return [
-    3.2406 * X - 1.5372 * Y - 0.4986 * Z,
-    -0.9689 * X + 1.8758 * Y + 0.0415 * Z,
-    0.0557 * X - 0.204 * Y + 1.057 * Z,
-  ];
-}
-
-/** 모든 파장이 그대로 돌아올 때를 흰색으로 맞춘다. */
-const WHITE = spectrumToLin(() => 1);
-/** 반사율이 몇 % 뿐이라 노출을 올려 그린다. 원본 값. */
+/** 반사율이 몇 % 뿐이라 노출을 올려 그린다. 원본 값 — 반사율 최대인 자리가 흰빛의 0.8. */
 const EXPOSURE = 0.8 / R_MAX;
 
+/** 선형광 세 성분에 세기를 곱한다. */
+const scale = (c: LinearRgb, k: number): LinearRgb => [c[0] * k, c[1] * k, c[2] * k];
+
 /**
- * 두께 d 의 반사광이 **화면에 나오는 빛의 양**(0~1).
- *
- * 원본은 채널마다 `EXPOSURE · v / WHITE` 를 0~1 로 자른 뒤 감마를 걸어 색으로 칠했다.
- * 엔진에 계산한 색을 칠할 어휘가 없어, 같은 자른 선형 채널의 상대 휘도만 남긴다
- * (NOTES 「어휘 부족」 — 빛 색 트랙).
+ * 두께 d 의 반사광 색(선형광, 흰빛 = 1). 반사 스펙트럼을 CIE 1931 로 적분하고(모든 파장이 다 돌아오면 흰빛)
+ * 원본 노출 계수를 곱한다. 원본은 채널마다 `EXPOSURE · v / WHITE` 를 0~1 로 자른 뒤 감마를 걸었다 —
+ * 자르기 · 감마는 렌더러가 같은 셈으로 한다.
  */
-function lightAmount(dNm: number): number {
-  const lin = spectrumToLin((l) => reflectance(dNm, l));
-  const ch = lin.map((v, i) => Math.max(0, Math.min(1, (EXPOSURE * v) / WHITE[i]!)));
-  return 0.2126 * ch[0]! + 0.7152 * ch[1]! + 0.0722 * ch[2]!;
+export function reflectedLight(dNm: number): LinearRgb {
+  return scale(
+    spectrumToLinearRgb((l) => reflectance(dNm, l)),
+    EXPOSURE,
+  );
 }
 
-/** 두께 → 빛의 양 표 (1 nm 간격). 선언 상수에서 나온 고정 표라 한 번만 만든다. */
-const LIGHT_LUT = new Float32Array(D_MAX + 1);
-for (let d = 0; d <= D_MAX; d++) LIGHT_LUT[d] = lightAmount(d);
+/** 두께 → 반사색 표 (1 nm 간격, 칸마다 세 성분). 선언 상수에서 나온 고정 표라 모듈 로드 때 한 번 만든다 (원본과 같다). */
+const LIGHT_LUT = new Float32Array((D_MAX + 1) * 3);
+for (let d = 0; d <= D_MAX; d++) {
+  const c = reflectedLight(d);
+  LIGHT_LUT[d * 3] = c[0];
+  LIGHT_LUT[d * 3 + 1] = c[1];
+  LIGHT_LUT[d * 3 + 2] = c[2];
+}
 
-export function lightAt(dNm: number): number {
-  return LIGHT_LUT[Math.max(0, Math.min(D_MAX, Math.round(dNm)))]!;
+/** 두께 d 의 반사색을 표에서 읽어 `out[o..o+2]` 에 적는다. 막 칸 수만큼 부르므로 배열을 만들지 않는다. */
+export function writeLightAt(dNm: number, out: number[], o: number): void {
+  const i = Math.max(0, Math.min(D_MAX, Math.round(dNm))) * 3;
+  out[o] = LIGHT_LUT[i]!;
+  out[o + 1] = LIGHT_LUT[i + 1]!;
+  out[o + 2] = LIGHT_LUT[i + 2]!;
+}
+
+/** 두께 d 의 반사색 (표 조회). 보이는 색 원판은 막과 같은 표를 읽어 둘이 어긋나지 않는다. */
+export function lightAt(dNm: number): LinearRgb {
+  const c: number[] = [0, 0, 0];
+  writeLightAt(dNm, c, 0);
+  return [c[0]!, c[1]!, c[2]!];
+}
+
+/** 화면값(0~1) → 선형광. sRGB 전달 곡선의 역 — 색 공간 변환 상수다. */
+const screenToLinear = (v: number): number => (v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+
+/** 원본 스펙트럼 채움의 불투명도. 어두운 바탕 위라 화면값에 곱해진다. */
+const SPECTRUM_FILL_ALPHA = 0.9;
+
+/**
+ * 스펙트럼 채움의 파장 하나 색 (선형광). 색상은 `wavelengthToLinearRgb` 가 주고, 원본이 따로 곱한 두 가지 —
+ * **가시광 양 끝은 눈에 어둡다**(380~420 · 700~780 nm 에서 0.3 까지)와 화면값 지수 0.8 · 채움 불투명도 0.9 — 는
+ * 이 조각의 계산이라 여기서 세기로 곱한다. 원본은 성분마다 지수를 걸었으나 세기 하나로 곱하므로
+ * 주성분(1 인 성분)은 원본과 같고 섞인 성분은 조금 다르다.
+ */
+export function spectrumBandLight(nm: number): LinearRgb {
+  let f = 1;
+  if (nm < 420) f = 0.3 + (0.7 * (nm - 380)) / 40;
+  else if (nm > 700) f = 0.3 + (0.7 * (780 - nm)) / 80;
+  return scale(wavelengthToLinearRgb(nm), screenToLinear(SPECTRUM_FILL_ALPHA * Math.pow(Math.max(0, f), 0.8)));
 }
 
 // ---- 흘러내리는 막 ----

@@ -42,10 +42,16 @@ export interface Mark {
   age: number;
 }
 
-/** 띠에 닿은 순간의 섬광. */
+/** 낙차 자국 — 그 낙차가 낸 광자의 파장 `l`(nm)을 들고 있어 같은 색으로 칠한다. */
+export interface Drop extends Mark {
+  l: number;
+}
+
+/** 띠에 닿은 순간의 섬광 — 닿은 광자의 파장 `l`(nm). */
 export interface Flash {
   x: number;
   y: number;
+  l: number;
   age: number;
 }
 
@@ -57,7 +63,7 @@ export interface Flash {
 export interface HydrogenSpectrumState {
   electrons: readonly Electron[];
   photons: readonly Photon[];
-  drops: readonly Mark[];
+  drops: readonly Drop[];
   rises: readonly Mark[];
   flashes: readonly Flash[];
   bins: readonly number[];

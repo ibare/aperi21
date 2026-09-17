@@ -3,13 +3,13 @@
 // ========================================================================
 // 그리지 않는다, 선언한다. 자유 렌더 없음.
 //
-// 축(trajectory · lineSet · readout) · 처음 띠(trajectory) · 떠나는 별의 꼬리(lineSet) ·
-// 별 1000개(particleSystem) · 전향점 막대(trajectory). 겹침은 쓴 순서 그대로다
+// 밤하늘(region, 빛 없음) · 축(trajectory · lineSet · readout) · 처음 띠(trajectory) ·
+// 떠나는 별의 꼬리(lineSet, 흑체색) · 별 1000개(particleSystem, 흑체색) · 전향점 막대(trajectory).
+// 빛은 별과 꼬리뿐이고 나머지는 역할 색이다. 겹침은 쓴 순서 그대로다
 // (`drawOrder: 'scene'`).
 // ========================================================================
 
 import type {
-  ColorRole,
   EnvironmentDef,
   LineSet,
   ParticleSystem,
@@ -25,6 +25,9 @@ import type {
 import {
   ageAtProgress,
   at,
+  binIndex,
+  blackbodyBins,
+  type ColorBin,
   msLogL,
   msLogT,
   runProgressAt,
@@ -43,6 +46,7 @@ import {
   PLOT,
   SCENE_BOUNDS,
   TEMP_TICKS,
+  T_AXIS,
   hrDiagramSchema,
   text,
   type HrDiagramMessageKey,
@@ -71,17 +75,14 @@ const TRAIL_MIN = 2;
 const STAR_ALPHA = 0.9;
 
 /**
- * 흑체색을 색 역할 셋으로 근사한다 (NOTES 「어휘 부족」 G32 · 빛 색 트랙).
- * 경계(log10 K): 8000 K 이상은 푸른 흰, 4500 K 미만은 주황 붉은, 그 사이는 흰.
+ * 별 색 = 표면 온도의 흑체색(빛의 색, `light: { rgb }`). 입자별 색이 없어(G32) 가로축 온도 범위를
+ * 눈에 띄지 않는 색 차이로 묶고 단계마다 인스턴스 하나를 둔다. 모든 인스턴스가 공유하는 불변 표라
+ * 모듈에서 한 번 계산한다.
  */
-const COLOR_BINS: readonly { minLt: number; role: ColorRole }[] = [
-  { minLt: Math.log10(8000), role: 'secondary' },
-  { minLt: Math.log10(4500), role: 'ink' },
-  { minLt: -Infinity, role: 'primary' },
-];
+const COLOR_BINS: readonly ColorBin[] = blackbodyBins(T_AXIS.right, T_AXIS.left, CLUSTER.colorStep);
 
 function binOf(lt: number): number {
-  return COLOR_BINS.findIndex((b) => lt >= b.minLt);
+  return binIndex(COLOR_BINS, lt);
 }
 
 const TEMP_TICK_KEYS: Record<(typeof TEMP_TICKS)[number], HrDiagramMessageKey> = {
@@ -135,6 +136,22 @@ export function scene(params: {
   const W = CANVAS_W;
   const H = CANVAS_H;
   const out: Primitive[] = [];
+
+  // ---- 밤하늘: 그림 영역은 빛이 없다 ----
+  // 원본은 흑체색이 읽히게 바탕을 어둡게 했다. 테마 바탕 위에서는 라이트 테마의 흰 별이 미색 바탕에 묻힌다
+  // (G92) — 그림 영역만 빛 없음으로 깐다. 두 테마에서 극성이 같다. 축 글자는 영역 밖 테마 바탕에 남는다.
+  out.push({
+    type: 'region',
+    id: 'sky',
+    points: [
+      at(PLOT.left, PLOT.top),
+      at(W - PLOT.right, PLOT.top),
+      at(W - PLOT.right, H - PLOT.bottom),
+      at(PLOT.left, H - PLOT.bottom),
+    ],
+    light: 0,
+    fillOpacity: 1,
+  });
 
   // ---- 축과 눈금 ----
   const axis: Trajectory = {
@@ -232,25 +249,28 @@ export function scene(params: {
     }
   }
 
+  // 빈 단계는 선언하지 않는다. id 는 단계 번호라 프레임이 바뀌어도 같은 단계는 같은 id 다.
   COLOR_BINS.forEach((bin, b) => {
+    if (trailLines[b]!.length === 0) return;
     const trail: LineSet = {
       type: 'lineSet',
-      id: `trails-${bin.role}`,
+      id: `trails-${b}`,
       lines: trailLines[b]!,
       opacities: trailAlphas[b]!,
       width: TRAIL_WIDTH_PX,
-      style: { colorRole: bin.role, emphasis: 'medium' },
+      light: { rgb: bin.rgb },
     };
     out.push(trail);
   });
   COLOR_BINS.forEach((bin, b) => {
+    if (starPos[b]!.length === 0) return;
     const stars: ParticleSystem = {
       type: 'particleSystem',
-      id: `stars-${bin.role}`,
+      id: `stars-${b}`,
       positions: starPos[b]!,
       sizes: starSize[b]!,
       opacities: starAlpha[b]!,
-      style: { colorRole: bin.role, emphasis: 'medium' },
+      light: { rgb: bin.rgb },
     };
     out.push(stars);
   });

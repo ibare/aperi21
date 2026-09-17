@@ -68,6 +68,23 @@ export const TIMING = {
   firstRestSpan: 1.0,
 } as const;
 
+/**
+ * 원본의 파장 → 색 계산 중 `wavelengthToLinearRgb` 에 없는 부분(원본 `lambdaRGB`).
+ * - 가시광 양 끝을 어둡게 — 380 nm 에서 0.6 → 420 nm 에서 1, 700 nm 에서 1 → 780 nm 에서 0.3(화면값 계수).
+ * - 화면값에 지수 0.8 을 씌운다(중간 성분을 조금 밝게).
+ */
+export const WAVELENGTH_COLOR = {
+  blueEnd: 420,
+  blueFloor: 0.6,
+  redStart: 700,
+  redEnd: 780,
+  redFloor: 0.3,
+  exponent: 0.8,
+} as const;
+
+/** 「가능한 색의 자리」 — 원본은 파장색 무지개를 불투명도 0.07 로 깔았다. */
+export const STRIP_BASE_ALPHA = 0.07;
+
 /** 미리 돌리는 시간(초) — 원본 600 걸음. */
 export const PREROLL_SECONDS = 10;
 
@@ -105,12 +122,12 @@ export const hydrogenSpectrumMessages = Object.freeze({
   'label.visible': { ko: '눈에 보이는 빛', en: 'visible light' },
   'label.ir': { ko: '적외선', en: 'infrared' },
   /**
-   * 고정 한 문장 — 상태와 무관하게 참이라 어느 시각에도 화면과 어긋나지 않는다.
-   * 원본의 「낙차에 맞는 색 하나」 는 화면에 파장색이 없어(장부 G60 · G61) 「낙차가 정한 자리」 로 옮겼다.
+   * 고정 한 문장 — 상태와 무관하게 참이라 어느 시각에도 화면과 어긋나지 않는다. 원본 문장 그대로.
+   * 「낙차에 맞는 색 하나」 는 낙차 자국 · 광자 · 섬광 · 띠의 선이 모두 그 낙차의 파장색이라 화면에서 선다.
    */
   'caption.main': {
-    ko: '전자가 한 계단 내려올 때마다 그 낙차가 정한 자리로 빛이 날아가고, 눈에 보이는 빛은 언제나 같은 몇 자리에만 쌓인다.',
-    en: 'Each time an electron drops a step, light flies to a spot set by that drop, and visible light always piles up in the same few spots.',
+    ko: '전자가 한 계단 내려올 때마다 그 낙차에 맞는 색 하나가 나오고, 눈에 보이는 빛은 언제나 같은 몇 자리에만 쌓인다.',
+    en: 'Each time an electron drops a step, a single color matching that drop comes out, and visible light always piles up in the same few spots.',
   },
 } satisfies Record<string, LocalizedText>);
 

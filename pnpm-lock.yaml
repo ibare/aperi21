@@ -692,6 +692,9 @@ importers:
 
   sims/astro/hr-diagram:
     devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../../../packages/schema
@@ -1490,6 +1493,9 @@ importers:
 
   sims/modern/hydrogen-spectrum:
     devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../../../packages/schema
@@ -1550,6 +1556,9 @@ importers:
 
   sims/optics/thin-film-interference:
     devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../../../packages/schema

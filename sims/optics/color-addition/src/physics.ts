@@ -1,7 +1,7 @@
 // ========================================================================
 // color-addition — 순수 계산
 // ========================================================================
-// 빛의 자리 · 고리 자리에 닿는지 · 겹친 칸의 모양. 캔버스도 색도 모른다.
+// 빛의 자리 · 고리 자리에 닿는지 · 고리 자리에서 더한 빛의 세 성분. 캔버스도 테마 색도 모른다.
 // ========================================================================
 
 import type { Vec2 } from '@aperi21/schema';
@@ -81,7 +81,7 @@ export function reach(lights: readonly Vec2[], probe: Vec2): number[] {
 }
 
 // ------------------------------------------------------------------------
-// 겹친 칸 — 볼록 다각형 자르기
+// 원판 — 막 안으로 자르기 · 고리 자리의 합
 // ------------------------------------------------------------------------
 
 /** 원을 볼록 다각형으로 표본한다(반시계). */
@@ -127,24 +127,23 @@ export function clipConvex(subject: readonly Vec2[], clip: readonly Vec2[]): Vec
 }
 
 /**
- * 겹친 칸. 아래에서 위로 칠할 순서 — 빛 하나 셋, 둘 겹침 셋, 셋 겹침 하나.
- * 위 칸이 아래 칸을 덮으므로 칠이 끝나면 일곱 조합이 제 자리에 남는다.
+ * 막 안으로 자른 빛 원판. 원본은 막 사각형으로 clip 한 뒤 원을 칠했다 — 손으로 막 가장자리까지
+ * 끌면 원판이 오른쪽 몫 네모 쪽으로 넘어가지 않게 같은 자리를 자른다. 겹침은 자르지 않는다 —
+ * 겹친 자리의 색은 렌더러가 빛을 더해(`blend: 'add'`) 만든다.
  */
-export function overlapCells(lights: readonly Vec2[]): { combo: string; points: Vec2[] }[] {
-  const discs = lights.map((p) => clipConvex(circlePolygon(p, R), STAGE_RECT));
-  const cells: { combo: string; points: Vec2[] }[] = [];
-  const push = (on: number[], points: Vec2[]) => {
-    if (points.length >= 3) cells.push({ combo: comboKey(on), points });
-  };
-  push([1, 0, 0], discs[0]!);
-  push([0, 1, 0], discs[1]!);
-  push([0, 0, 1], discs[2]!);
-  const rg = clipConvex(discs[0]!, discs[1]!);
-  push([1, 1, 0], rg);
-  push([0, 1, 1], clipConvex(discs[1]!, discs[2]!));
-  push([1, 0, 1], clipConvex(discs[0]!, discs[2]!));
-  push([1, 1, 1], clipConvex(rg, discs[2]!));
-  return cells;
+export function lightDisc(center: Vec2): Vec2[] {
+  return clipConvex(circlePolygon(center, R), STAGE_RECT);
+}
+
+/**
+ * 고리 자리의 빛 — 닿은 빛의 색을 성분마다 더한다. 원본 `rgb[c] = min(1, rgb[c] + on[i]·L.rgb[c])` 그대로.
+ */
+export function addedLight(on: readonly number[]): [number, number, number] {
+  const rgb: [number, number, number] = [0, 0, 0];
+  LIGHTS.forEach((L, i) => {
+    for (let c = 0; c < 3; c++) rgb[c] = Math.min(1, rgb[c]! + on[i]! * L.rgb[c]!);
+  });
+  return rgb;
 }
 
 const clampStage = (p: Vec2): Vec2 => [

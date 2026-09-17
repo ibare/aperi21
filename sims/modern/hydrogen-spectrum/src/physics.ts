@@ -3,8 +3,10 @@
 // ========================================================================
 // 수소 준위 · 뤼드베리 파장 · 전자 운동 · 광자 비행 · 띠 누적. 원본 index.html 의 `advance` 를
 // 같은 순서 · 같은 난수 호출로 옮겼다. 걸음 안에서는 복사본을 고쳐 새 상태로 돌려준다.
+// 파장 → 빛의 색도 여기서 센다 — 원본 `lambdaRGB` 와 같은 색을 선형광 세 성분으로.
 // ========================================================================
 
+import { wavelengthToLinearRgb, type LinearRgb } from '@aperi21/plugin-optics';
 import {
   DECAY_TAU,
   DT,
@@ -18,11 +20,13 @@ import {
   PHOTON_SPEED,
   SATURATION,
   STRIP,
+  STRIP_BASE_ALPHA,
   STRIP_W,
   TIMING,
   UV_X,
+  WAVELENGTH_COLOR,
 } from './schema';
-import type { Electron, Flash, HydrogenSpectrumState, Mark, Photon } from './state';
+import type { Drop, Electron, Flash, HydrogenSpectrumState, Mark, Photon } from './state';
 
 // ------------------------------------------------------------------------
 // 난수 — mulberry32 (원본 하네스와 같은 식)
@@ -83,8 +87,60 @@ export function photonAlpha(p: Photon): number {
   return isVisible(p.l) ? 1 : Math.max(0, 1 - Math.max(0, p.s - 0.6) / 0.4);
 }
 
-/** 쌓인 양 → 띠의 빛 0~1. */
+/** 쌓인 양 → 선의 불투명도 0~1 (원본 1 − exp(−I / 1.2)). */
 export const stripLight = (amount: number): number => 1 - Math.exp(-amount / SATURATION);
+
+// ------------------------------------------------------------------------
+// 빛의 색
+// ------------------------------------------------------------------------
+
+/** sRGB 전달 곡선 — 색 공간 변환의 수학 상수 (C2 예외). */
+const toScreen = (v: number): number => {
+  const c = Math.max(0, Math.min(1, v));
+  return c <= 0.0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - 0.055;
+};
+const toLinear = (c: number): number => (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+
+/** 원본의 가시광 양 끝 어둡게(화면값 계수). */
+export function edgeFactor(l: number): number {
+  const w = WAVELENGTH_COLOR;
+  if (l < w.blueEnd) return w.blueFloor + ((1 - w.blueFloor) * (l - LAMBDA.min)) / (w.blueEnd - LAMBDA.min);
+  if (l > w.redStart) return w.redFloor + ((1 - w.redFloor) * (w.redEnd - l)) / (w.redEnd - w.redStart);
+  return 1;
+}
+
+/**
+ * 파장 `l` 의 빛 — 원본 `lambdaRGB` 의 색을 화면값 비율 `scale` 만큼 어두운 바탕에 얹은 것을 선형광으로.
+ *
+ * 색상은 `wavelengthToLinearRgb`(원본과 같은 구간 근사)에서 얻고, 원본이 더 한 양 끝 어둡게 · 지수 0.8 은
+ * 여기서 화면값에 씌운다. 원본은 이 화면값 색에 불투명도를 곱해 어두운 바탕에 얹었는데 빛 채널은
+ * 선형광으로 섞으므로, 화면값에서 곱한 뒤 선형광으로 되돌려 넘긴다 (장부 G98).
+ */
+export function wavelengthLight(l: number, scale = 1): LinearRgb {
+  const rgb = wavelengthToLinearRgb(l);
+  const f = edgeFactor(l);
+  const one = (v: number): number =>
+    toLinear(Math.pow(toScreen(v) * f, WAVELENGTH_COLOR.exponent) * Math.max(0, Math.min(1, scale)));
+  return [one(rgb[0]), one(rgb[1]), one(rgb[2])];
+}
+
+/** 띠의 픽셀 열마다 가운데 파장(nm). */
+export const stripWavelength = (i: number): number =>
+  LAMBDA.min + ((i + 0.5) / STRIP_W) * (LAMBDA.max - LAMBDA.min);
+
+/**
+ * 띠의 칸 색(선형광, 열마다 세 성분). 원본은 어두운 바탕 위에 파장색 무지개를 불투명도 0.07 로,
+ * 그 위에 쌓인 선을 불투명도 A 로 겹쳤다 — 같은 파장색 두 겹이라 화면값으로 색 × (0.07 + 0.93 A).
+ */
+export function stripColors(bins: readonly number[]): number[] {
+  const out: number[] = [];
+  for (let i = 0; i < STRIP_W; i++) {
+    const a = stripLight(bins[i] ?? 0);
+    const rgb = wavelengthLight(stripWavelength(i), STRIP_BASE_ALPHA + (1 - STRIP_BASE_ALPHA) * a);
+    out.push(rgb[0], rgb[1], rgb[2]);
+  }
+  return out;
+}
 
 // ------------------------------------------------------------------------
 // 한 걸음
@@ -93,7 +149,7 @@ export const stripLight = (amount: number): number => 1 - Math.exp(-amount / SAT
 interface Work {
   electrons: Electron[];
   photons: Photon[];
-  drops: Mark[];
+  drops: Drop[];
   rises: Mark[];
   flashes: Flash[];
   bins: number[];
@@ -135,7 +191,7 @@ function land(w: Work, e: Electron): void {
   const l = wavelengthNm(e.from, e.to);
   const x = e.x;
   const y = levelY(e.to);
-  w.drops.push({ x, y0: levelY(e.from), y1: y, age: 0 });
+  w.drops.push({ x, y0: levelY(e.from), y1: y, l, age: 0 });
   const ty = STRIP.y0 + 10 + random(w) * (STRIP.y1 - STRIP.y0 - 20);
   const tx = isVisible(l) ? lambdaToX(l) : l < LAMBDA.min ? UV_X : IR_X;
   // 적외선 광자는 가시광 띠를 가로지르지 않도록 띠 위로 휘어 오른쪽으로 나간다
@@ -162,7 +218,7 @@ function hit(w: Work, p: Photon): void {
     if (i < 0 || i >= STRIP_W) continue;
     w.bins[i] = w.bins[i]! + Math.exp(-((i - cx) ** 2) / (2 * HIT_SIGMA * HIT_SIGMA));
   }
-  w.flashes.push({ x: p.x1, y: p.y1, age: 0 });
+  w.flashes.push({ x: p.x1, y: p.y1, l: p.l, age: 0 });
 }
 
 function advance(w: Work, dt: number): void {

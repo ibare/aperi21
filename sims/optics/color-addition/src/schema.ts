@@ -33,11 +33,16 @@ export const OUT_D = 88;
 /** 고리 반지름. */
 export const PROBE_R = 9;
 
-/** 세 빛. 원본은 화면 y 아래 기준 각이다 — 월드(y 위)로 옮기며 부호를 뒤집는다. */
-export const LIGHTS: readonly { key: 'r' | 'g' | 'b'; ang: number }[] = [
-  { key: 'r', ang: Math.PI / 2 },
-  { key: 'g', ang: -Math.PI / 6 },
-  { key: 'b', ang: (-Math.PI * 5) / 6 },
+/**
+ * 세 빛. 원본은 화면 y 아래 기준 각이다 — 월드(y 위)로 옮기며 부호를 뒤집는다.
+ *
+ * `rgb` 는 빛의 색(선형광 세 성분)이다 — 원본의 순수한 빨강 · 초록 · 파랑 `[1,0,0]` 등을 그대로 옮겼다.
+ * 원색이 1 끼리라 더한 값이 노랑 · 청록 · 자홍 · 흰색으로 정확히 나온다.
+ */
+export const LIGHTS: readonly { key: 'r' | 'g' | 'b'; ang: number; rgb: readonly [number, number, number] }[] = [
+  { key: 'r', ang: Math.PI / 2, rgb: [1, 0, 0] },
+  { key: 'g', ang: -Math.PI / 6, rgb: [0, 1, 0] },
+  { key: 'b', ang: (-Math.PI * 5) / 6, rgb: [0, 0, 1] },
 ];
 
 /** 오른쪽 몫 네모 치수. */
@@ -181,7 +186,7 @@ export const colorAdditionSchema: BundleSchema = {
   /** 원본 캔버스 310 + 캡션 한 줄. */
   canvas: { height: 360, minHeight: 320 },
 
-  /** 칸을 겹쳐 칠하는 순서가 곧 색이다 — 먼저 쓴 것이 아래. */
+  /** 검은 막을 먼저 깔고 그 위에 빛을 더한다 — 먼저 쓴 것이 아래. */
   drawOrder: 'scene',
 
   startAt: OFFSET,

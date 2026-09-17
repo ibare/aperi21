@@ -3,12 +3,11 @@
 // ========================================================================
 // 그리지 않는다, 선언한다.
 //
-// 자유 렌더를 쓰지 않는다. 엔진에 **빛의 색**(계산한 색 · 파장의 색)을 칠할 어휘가 없어
-// 원본의 색을 가장 가까운 것으로 근사한다 (NOTES 「어휘 부족」).
+// 자유 렌더를 쓰지 않는다. 빛은 테마 역할이 아니라 **빛 채널**로 칠한다 — 색은 physics 가 계산한 선형광 세 성분.
 //
-// - 비누막 — `scalarField` 하나. 칸 값은 그 자리 반사광의 **빛의 양**이고 색상은 버린다.
-// - 보이는 색 원판 — `body` 의 `luminance` 로 같은 빛의 양만.
-// - 스펙트럼 채움 — 파장마다의 색 대신 한 가지 옅은 면(`region`) + 윤곽선.
+// - 비누막 — `scalarField` `colors: 'lightRgb'`. 칸마다 그 자리 두께의 반사색.
+// - 스펙트럼 채움 — 같은 어휘. 2 nm 띠마다 그 파장의 색, 곡선 위 칸은 `NaN`(투명) + 윤곽선.
+// - 보이는 색 원판 — `body` 의 `light: { rgb }`, 막과 같은 표.
 // ========================================================================
 
 import type {
@@ -25,7 +24,7 @@ import type {
   Vec2,
   ViewDef,
 } from '@aperi21/schema';
-import { filmAge, lightAt, probeYOf, R_MAX, reflectance, thicknessAt } from './physics';
+import { filmAge, lightAt, probeYOf, R_MAX, reflectance, spectrumBandLight, thicknessAt, writeLightAt } from './physics';
 import {
   CANVAS_H,
   FILM,
@@ -43,6 +42,13 @@ import type { ThinFilmInterferenceState } from './state';
 /** 막 격자 — 원본은 막 190 × 246 px 를 픽셀마다 칠했다. 같은 칸 수. */
 const COLS = FILM.w;
 const ROWS = FILM.h;
+
+/** 스펙트럼 채움 — 원본은 2 nm 띠마다 칠했다. 가로 칸 = 띠 수, 세로 칸 = 판 높이(화면 px). */
+const BAND_NM = 2;
+const SPEC_COLS = (SPEC.l1 - SPEC.l0) / BAND_NM;
+const SPEC_ROWS = SPEC.bottom - SPEC.top;
+/** 띠마다의 색은 파장만의 함수라 모듈 로드 때 한 번 만든다. 원본은 띠 가운데 파장(l + 1)의 색. */
+const BAND_LIGHT = Array.from({ length: SPEC_COLS }, (_, i) => spectrumBandLight(SPEC.l0 + i * BAND_NM + BAND_NM / 2));
 
 /** 두께 단면 표본 수. 원본 120 걸음. */
 const PROFILE_STEPS = 120;
@@ -95,14 +101,13 @@ export function scene(params: {
   const thicknessHere = (x: number, y: number): number => thicknessAt(x, y, filmAge(y, u, wipe));
 
   // ---- 비누막 ----
-  // 값은 1 − (빛의 양). 밝은 테마에서 바탕(미색)이 「빛이 다 돌아옴」, 먹이 「빛이 없음」 이 되도록.
-  // 선형광으로 섞으므로 화면 밝기가 빛의 양에 비례한다. 다크 테마에서는 뒤집힌다 (NOTES, 장부 G34).
-  const values = new Array<number>(COLS * ROWS);
+  // 칸마다 그 자리 두께의 반사색 (두께 → 색 표). 빛 채널이라 라이트 · 다크 모두 두께 0 은 검다.
+  const values = new Array<number>(COLS * ROWS * 3);
   for (let j = 0; j < ROWS; j++) {
     const y = (j + 0.5) / ROWS;
     const age = filmAge(y, u, wipe);
     for (let i = 0; i < COLS; i++) {
-      values[j * COLS + i] = 1 - lightAt(thicknessAt((i + 0.5) / COLS, y, age));
+      writeLightAt(thicknessAt((i + 0.5) / COLS, y, age), values, (j * COLS + i) * 3);
     }
   }
   const film: ScalarField = {
@@ -114,7 +119,7 @@ export function scene(params: {
     rows: ROWS,
     values,
     range: [0, 1],
-    colors: { high: 'ink' },
+    colors: 'lightRgb',
   };
   out.push(film);
 
@@ -188,7 +193,7 @@ export function scene(params: {
   out.push(label('profile-title', (THICK.x0 + THICK.x1) / 2, FILM.y - 8, 'center', { text: text('label.thickness') }));
 
   // ---- 되돌아오는 빛 스펙트럼 ----
-  // 원본은 2 nm 띠마다 그 파장의 색으로 채웠다. 파장색 어휘가 없어 한 가지 옅은 면으로 둔다.
+  // 원본은 2 nm 띠마다 그 파장의 색으로 채웠다 — 띠 높이는 띠 가운데 파장의 반사율.
   const py = probeYOf(state);
   const dProbe = thicknessHere(PROBE_X, py);
   const curve: Vec2[] = [];
@@ -196,13 +201,31 @@ export function scene(params: {
     curve.push([specX(l), specY(reflectance(dProbe, l) / R_MAX)]);
   }
   const base = worldY(SPEC.bottom);
-  out.push({
-    type: 'region',
+  const specValues = new Array<number>(SPEC_COLS * SPEC_ROWS * 3).fill(Number.NaN);
+  for (let i = 0; i < SPEC_COLS; i++) {
+    const v = reflectance(dProbe, SPEC.l0 + i * BAND_NM + BAND_NM / 2) / R_MAX;
+    const c = BAND_LIGHT[i]!;
+    for (let j = 0; j < SPEC_ROWS; j++) {
+      // 첫 행이 위. 칸 가운데 높이(0~1)가 띠 높이 아래면 칠한다.
+      if (1 - (j + 0.5) / SPEC_ROWS > v) continue;
+      const o = (j * SPEC_COLS + i) * 3;
+      specValues[o] = c[0];
+      specValues[o + 1] = c[1];
+      specValues[o + 2] = c[2];
+    }
+  }
+  const spectrumFill: ScalarField = {
+    type: 'scalarField',
     id: 'spectrum-fill',
-    points: [[specX(SPEC.l0), base], ...curve, [specX(SPEC.l1), base]],
-    fillOpacity: 0.5,
-    style: { colorRole: 'muted', emphasis: 'medium' },
-  });
+    min: [SPEC.x0, base],
+    max: [SPEC.x1, worldY(SPEC.top)],
+    cols: SPEC_COLS,
+    rows: SPEC_ROWS,
+    values: specValues,
+    range: [0, 1],
+    colors: 'lightRgb',
+  };
+  out.push(spectrumFill);
   out.push({
     type: 'trajectory',
     id: 'spectrum-line',
@@ -271,7 +294,7 @@ export function scene(params: {
     }),
   );
 
-  // ---- 관찰점의 색 ---- 색상 없이 빛의 양만 (막과 같은 사상).
+  // ---- 관찰점의 색 ---- 막과 같은 표에서 읽은 반사색.
   const swatchPos: Vec2 = [SWATCH.x, worldY(SWATCH.y)];
   out.push({
     type: 'body',
@@ -281,8 +304,7 @@ export function scene(params: {
     size: SWATCH.r,
     outline: 'none',
     glow: false,
-    luminance: 1 - lightAt(dProbe),
-    style: { colorRole: 'ink', emphasis: 'strong' },
+    light: { rgb: lightAt(dProbe) },
   });
   out.push({
     type: 'body',

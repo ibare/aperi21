@@ -6,13 +6,14 @@
 // 여기 없는 능력은 이 조각의 번들에 실리지 않는다 (R10).
 
 import type { HostCapabilities } from '@aperi21/host';
-import { renderLineSet, renderParticleSystem, renderReadout, renderTrajectory } from '@aperi21/host';
+import { renderLineSet, renderParticleSystem, renderReadout, renderRegion, renderTrajectory } from '@aperi21/host';
 
 export const capabilities: HostCapabilities = {
   renderers: {
     lineSet: renderLineSet,
     particleSystem: renderParticleSystem,
     readout: renderReadout,
+    region: renderRegion,
     trajectory: renderTrajectory,
   },
 };
