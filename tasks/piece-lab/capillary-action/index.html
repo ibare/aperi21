@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>모세관 현상</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #2b2d31;
+    --sub: #6b6f76;
+    --line: #c9ccd1;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 860px; margin: 0 auto; padding: 8px 12px 12px; }
+  canvas { display: block; width: 100%; height: auto; }
+  .bar { display: flex; align-items: flex-start; gap: 16px; margin-top: 4px; }
+  .caption { flex: 1; min-height: 3em; font-size: 15px; line-height: 1.5; }
+  .seg { display: flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; flex: none; }
+  .seg button { font: inherit; font-size: 14px; border: 0; background: transparent; color: var(--sub);
+    padding: 5px 14px; cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: #2b2d31; color: #fff; }
+  .seg button:disabled { cursor: default; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c" width="820" height="372"></canvas>
+  <div class="bar">
+    <div class="caption" id="caption"></div>
+    <div class="seg" role="group" aria-label="액체">
+      <button data-liquid="water" aria-pressed="true">물</button>
+      <button data-liquid="mercury" aria-pressed="false">수은</button>
+    </div>
+  </div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 물리 상수 (SI) ─────────────────────────────────────────
+  const G = 9.81;
+  const LIQUIDS = {
+    // 표면장력 γ, 접촉각 θ, 밀도 ρ, 점성 μ
+    water:   { gamma: 0.0728, theta: 0,   rho: 1000,  mu: 1.0e-3 },
+    mercury: { gamma: 0.485,  theta: 140, rho: 13534, mu: 1.55e-3 },
+  };
+  const RADII = [0.25e-3, 0.5e-3, 1.0e-3];   // 관 안쪽 반지름
+  const DEPTH = 0.025;                        // 관 아래 끝이 바깥 수면 아래로 잠긴 깊이
+  const PRE_ROLL = 0.08;                      // 도착 순간 이미 오르는 중이도록 (화면 초)
+  const EQ_TOL = 0.02;                        // 평형 판정: 목표 높이와 2% 이내
+
+  // ── 화면 배치 (논리 좌표 820×372) ────────────────────────────
+  const W = 820, H = 372;
+  const PX_PER_MM = 3.37;                     // 높이는 세 관이 같은 축척
+  const Y0 = 242;                             // 바깥 수면
+  const BASIN = { x0: 170, x1: 690, bottom: 336 };
+  const TUBE_X = [270, 430, 590];
+  const TUBE_HALF_W = [7, 14, 28];            // 폭은 과장, 서로의 비는 실제와 같음
+  const TUBE_TOP = 26;
+  const WALL = 3;
+  const mm2px = (m) => m * 1000 * PX_PER_MM;
+
+  const COL_NEUTRAL = [226, 223, 216];  // 대기압
+  const COL_LOW     = [52, 76, 214];    // 강조색: 대기압보다 낮은 압력 — 이 뜻에만 쓴다
+  const COL_HIGH    = [196, 128, 70];   // 대기압보다 높은 압력
+
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const captionEl = document.getElementById('caption');
+  const buttons = [...document.querySelectorAll('.seg button')];
+
+  // ── 상태 ────────────────────────────────────────────────
+  const state = { liquid: 'water', h: [0, 0, 0], simT: 0, pendingLiquid: null };
+
+  function derived(key) {
+    const L = LIQUIDS[key];
+    const cos = Math.cos(L.theta * Math.PI / 180);
+    const pCap = RADII.map(r => 2 * L.gamma * cos / r);       // 메니스커스가 만드는 압력차 크기(부호 포함)
+    const hEq = pCap.map(p => p / (L.rho * G));
+    // 가장 가는 관의 시간상수(기둥 길이는 오른 높이+잠긴 깊이, 내려가면 잠긴 깊이)를 화면 1.6초로 맞춘다
+    const r0 = RADII[0];
+    const tauReal = 8 * L.mu * (Math.max(hEq[0], 0) + DEPTH) / (r0 * r0 * L.rho * G);
+    const slow = tauReal / 1.6;
+    // 색 정규화: 가장 큰 |압력| (가는 관 메니스커스 또는 대야 바닥)
+    const basinDepthM = (BASIN.bottom - Y0) / PX_PER_MM / 1000;
+    const pMax = Math.max(Math.abs(pCap[0]), L.rho * G * basinDepthM);
+    return { ...L, cos, pCap, hEq, slow, pMax };
+  }
+  const D = { water: derived('water'), mercury: derived('mercury') };
+
+  function advance(key, h, dtShow) {
+    const d = D[key];
+    const dtReal = dtShow * d.slow;
+    const N = 40;
+    const sub = dtReal / N;
+    for (let i = 0; i < 3; i++) {
+      const r = RADII[i];
+      for (let k = 0; k < N; k++) {
+        const len = Math.max(h[i] + DEPTH, 0.001);
+        // 메니스커스 압력차 − 기둥 무게, 푸아죄유 저항 (루카스-워시번)
+        const v = r * r * (d.pCap[i] - d.rho * G * h[i]) / (8 * d.mu * len);
+        h[i] += v * sub;
+      }
+    }
+  }
+
+  function reset(key) {
+    state.liquid = key;
+    state.h = [0, 0, 0];
+    state.simT = 0;
+    advance(key, state.h, PRE_ROLL);
+  }
+  reset('water');
+
+  buttons.forEach(b => b.addEventListener('click', () => {
+    if (PieceKit.frozen) return;
+    state.pendingLiquid = b.dataset.liquid;   // 같은 액체를 누르면 다시 담근다
+  }));
+
+  // ── 색 ─────────────────────────────────────────────────
+  function pressureColor(p, pMax) {
+    const s = Math.max(-1, Math.min(1, p / pMax));
+    const a = Math.pow(Math.abs(s), 0.6);
+    const pole = s < 0 ? COL_LOW : COL_HIGH;
+    const c = COL_NEUTRAL.map((n, i) => Math.round(n + (pole[i] - n) * a));
+    return `rgb(${c[0]},${c[1]},${c[2]})`;
+  }
+
+  // 관 안 압력: 관 아래 끝(정수압 ρgd)과 메니스커스 바로 아래(−pCap) 사이 선형
+  function tubePressure(d, i, h, yM) {
+    const pBot = d.rho * G * DEPTH;
+    const pTop = -d.pCap[i];
+    const f = (yM + DEPTH) / (h + DEPTH);
+    return pBot + (pTop - pBot) * f;
+  }
+
+  // ── 그리기 ──────────────────────────────────────────────
+  function setupCanvas() {
+    const cssW = canvas.clientWidth || W;
+    const dpr = (window.devicePixelRatio || 1);
+    const pxW = Math.round(cssW * dpr);
+    const pxH = Math.round(cssW * H / W * dpr);
+    if (canvas.width !== pxW || canvas.height !== pxH) { canvas.width = pxW; canvas.height = pxH; }
+    ctx.setTransform(pxW / W, 0, 0, pxH / H, 0, 0);
+  }
+
+  function meniscusPath(x, w, yh, d) {
+    const R = w / Math.abs(d.cos === 0 ? 1e-6 : d.cos);
+    const s = Math.sqrt(Math.max(R * R - w * w, 0));
+    const bottomY = Y0 + mm2px(DEPTH);
+    ctx.beginPath();
+    ctx.moveTo(x - w, bottomY);
+    if (d.cos >= 0) {
+      // 오목: 곡률 중심이 수면 위
+      const cy = yh - R;
+      ctx.lineTo(x - w, cy + s);
+      ctx.arc(x, cy, R, Math.atan2(s, -w), Math.atan2(s, w), true);
+    } else {
+      // 볼록: 곡률 중심이 수면 아래
+      const cy = yh + R;
+      ctx.lineTo(x - w, cy - s);
+      ctx.arc(x, cy, R, Math.atan2(-s, -w), Math.atan2(-s, w), false);
+    }
+    ctx.lineTo(x + w, bottomY);
+    ctx.closePath();
+  }
+
+  function draw() {
+    setupCanvas();
+    const d = D[state.liquid];
+    PieceKit.mark('배경', () => {
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = '#fbfaf7';
+      ctx.fillRect(0, 0, W, H);
+    });
+
+    PieceKit.mark('대야 액체', () => {
+      const g = ctx.createLinearGradient(0, Y0, 0, BASIN.bottom);
+      const depthM = (BASIN.bottom - Y0) / PX_PER_MM / 1000;
+      for (let k = 0; k <= 6; k++) {
+        g.addColorStop(k / 6, pressureColor(d.rho * G * depthM * k / 6, d.pMax));
+      }
+      ctx.fillStyle = g;
+      ctx.fillRect(BASIN.x0, Y0, BASIN.x1 - BASIN.x0, BASIN.bottom - Y0);
+      ctx.strokeStyle = '#8a8f96';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(BASIN.x0, Y0 - 24); ctx.lineTo(BASIN.x0, BASIN.bottom);
+      ctx.lineTo(BASIN.x1, BASIN.bottom); ctx.lineTo(BASIN.x1, Y0 - 24);
+      ctx.stroke();
+    });
+
+    PieceKit.mark('관 속 액체 기둥', () => {
+      for (let i = 0; i < 3; i++) {
+        const x = TUBE_X[i], w = TUBE_HALF_W[i];
+        const bottomY = Y0 + mm2px(DEPTH);
+        // 관 속 공기 (대야 액체를 지운다)
+        ctx.fillStyle = '#fbfaf7';
+        ctx.fillRect(x - w, TUBE_TOP, 2 * w, bottomY - TUBE_TOP);
+        const h = state.h[i];
+        const yh = Y0 - mm2px(h);
+        const capPx = w * 1.2;
+        const g = ctx.createLinearGradient(0, bottomY, 0, yh - capPx);
+        const span = (h + DEPTH) + capPx / PX_PER_MM / 1000;
+        for (let k = 0; k <= 10; k++) {
+          const yM = -DEPTH + span * k / 10;
+          g.addColorStop(k / 10, pressureColor(tubePressure(d, i, h, Math.min(yM, h)), d.pMax));
+        }
+        ctx.fillStyle = g;
+        meniscusPath(x, w, yh, d);
+        ctx.fill();
+      }
+    });
+
+    PieceKit.mark('유리관', () => {
+      ctx.fillStyle = '#9aa0a8';
+      for (let i = 0; i < 3; i++) {
+        const x = TUBE_X[i], w = TUBE_HALF_W[i];
+        const bottomY = Y0 + mm2px(DEPTH);
+        ctx.fillRect(x - w - WALL, TUBE_TOP, WALL, bottomY - TUBE_TOP);
+        ctx.fillRect(x + w, TUBE_TOP, WALL, bottomY - TUBE_TOP);
+      }
+    });
+
+    PieceKit.mark('바깥 수면 높이', () => {
+      ctx.strokeStyle = '#2b2d31';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([5, 4]);
+      ctx.beginPath();
+      ctx.moveTo(BASIN.x0 - 6, Y0 + 0.5); ctx.lineTo(BASIN.x1 + 6, Y0 + 0.5);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#2b2d31';
+      ctx.font = '13px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('바깥 수면 높이', BASIN.x0 - 12, Y0);
+    });
+
+    PieceKit.mark('기둥 높이 값', () => {
+      ctx.fillStyle = '#6b6f76';
+      ctx.font = '12px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      for (let i = 0; i < 3; i++) {
+        const mm = state.h[i] * 1000;
+        const yh = Y0 - mm2px(state.h[i]);
+        const txt = (mm < 0 ? '−' : '') + Math.abs(mm).toFixed(1) + ' mm';
+        ctx.fillText(txt, TUBE_X[i] + TUBE_HALF_W[i] + WALL + 6, yh);
+      }
+    });
+
+    PieceKit.mark('관 반지름 표시', () => {
+      ctx.fillStyle = '#6b6f76';
+      ctx.font = '12px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const labels = ['반지름 0.25 mm', '반지름 0.5 mm', '반지름 1 mm'];
+      for (let i = 0; i < 3; i++) ctx.fillText(labels[i], TUBE_X[i], BASIN.bottom + 20);
+    });
+
+    PieceKit.mark('압력 색 기준', () => {
+      const x = 732, y1 = 70, y2 = 250;
+      const g = ctx.createLinearGradient(0, y1, 0, y2);
+      for (let k = 0; k <= 10; k++) g.addColorStop(k / 10, pressureColor(-d.pMax + 2 * d.pMax * k / 10, d.pMax));
+      ctx.fillStyle = g;
+      ctx.fillRect(x, y1, 12, y2 - y1);
+      ctx.fillStyle = '#2b2d31';
+      ctx.font = '12px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('압력', x, y1 - 14);
+      ctx.fillStyle = '#6b6f76';
+      ctx.fillText('낮음', x + 18, y1 + 6);
+      ctx.fillText('대기압', x + 18, (y1 + y2) / 2);
+      ctx.fillText('높음', x + 18, y2 - 6);
+      ctx.fillRect(x - 3, (y1 + y2) / 2, 18, 1);
+    });
+
+    PieceKit.mark('캡션', () => {
+      const settled = state.h.every((h, i) => Math.abs(h - d.hEq[i]) <= EQ_TOL * Math.abs(d.hEq[i]));
+      let text;
+      if (state.liquid === 'water') {
+        text = settled
+          ? '관 안에서도 바깥 수면 높이의 압력이 대기압과 같아지자 멈췄다. 가는 관일수록 더 높이 멈춘다.'
+          : '오목한 수면 바로 아래는 대기압보다 압력이 낮다. 물기둥은 제 무게로 그 부족을 메울 때까지 오른다 — 가는 관일수록 부족이 크다.';
+      } else {
+        text = settled
+          ? '수은 면 바로 아래 압력이 바깥 같은 깊이의 압력과 같아지자 멈췄다. 가는 관일수록 더 깊이 멈춘다.'
+          : '볼록한 수은 면 바로 아래는 대기압보다 압력이 높다. 수은은 그 초과분만큼 밀려 내려간다 — 가는 관일수록 초과분이 크다.';
+      }
+      if (captionEl.textContent !== text) captionEl.textContent = text;
+      buttons.forEach(b => {
+        b.setAttribute('aria-pressed', String(b.dataset.liquid === state.liquid));
+        b.disabled = !!PieceKit.frozen;
+      });
+    });
+  }
+
+  PieceKit.loop({
+    step(dt) {
+      if (state.pendingLiquid) { reset(state.pendingLiquid); state.pendingLiquid = null; }
+      state.simT += dt;
+      advance(state.liquid, state.h, dt);
+    },
+    draw,
+  });
+})();
+</script>
+</body>
+</html>

@@ -855,6 +855,7 @@ topics:
     level: upper
     curricula: [ib, uk]
     visualNote: 고유 진동수에 맞추면 진폭이 치솟는다
+    sim: aperi21:resonance
   - id: quality-factor
     name: Q 인자
     desc: 공명의 날카로움
@@ -984,6 +985,7 @@ topics:
     level: upper
     curricula: [kr, ib, ngss]
     visualNote: 같은 시간에 쓸려 나가는 넓이가 같다
+    sim: aperi21:keplers-second-law
   - id: keplers-third-law
     name: 케플러 제3법칙
     desc: 주기와 긴반지름의 관계
@@ -1404,6 +1406,7 @@ topics:
     level: null
     curricula: []
     visualNote: 가는 관일수록 물이 높이 올라간다
+    sim: aperi21:capillary-action
   - id: wetting-and-contact-angle
     name: 젖음과 접촉각
     desc: 액체가 고체 위에 퍼지는 정도
@@ -1454,6 +1457,7 @@ topics:
     level: null
     curricula: []
     visualNote: 압력과 온도를 옮기면 어느 상태에 있는지 자리가 바뀐다
+    sim: aperi21:phase-diagram
   - id: triple-point
     name: 삼중점
     desc: 세 상이 공존하는 조건
@@ -1780,6 +1784,7 @@ topics:
     level: upper
     curricula: [kr, ib, ap, uk]
     visualNote: 마디가 제자리에 박히고 배만 출렁인다
+    sim: aperi21:standing-wave
   - id: harmonics
     name: 배음
     desc: 경계 조건이 정하는 진동수
@@ -2136,6 +2141,7 @@ topics:
     level: upper
     curricula: [kr, ib, ap, uk]
     visualNote: 두 틈에서 나온 빛이 줄무늬를 만든다
+    sim: aperi21:youngs-double-slit
   - id: single-slit-diffraction
     name: 단일 슬릿 회절
     desc: 폭이 만드는 무늬
@@ -2465,6 +2471,7 @@ topics:
     level: upper
     curricula: [kr, ap, uk]
     visualNote: 충전과 방전이 지수 곡선을 그린다
+    sim: aperi21:rc-circuit
   - id: magnetic-field
     name: 자기장
     desc: 자기력의 분포
@@ -3040,6 +3047,7 @@ topics:
     level: upper
     curricula: [kr, ib, ngss, ap, uk]
     visualNote: 이어진 띠가 아니라 몇 개의 선만 나온다
+    sim: aperi21:hydrogen-spectrum
   - id: bohr-model
     name: 보어 모형
     desc: 궤도의 양자화

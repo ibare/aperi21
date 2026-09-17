@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>정상파</title>
+<style>
+  :root {
+    --paper: #faf8f3;
+    --ink: #22221f;
+    --muted: #8a857b;
+  }
+  html, body { margin: 0; background: var(--paper); color: var(--ink); }
+  body { font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 12px 16px; box-sizing: border-box; }
+  canvas { display: block; width: 100%; height: 340px; }
+  .caption { margin: 8px 0 0; min-height: 1.5em; font-size: 15px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="scene"></canvas>
+  <p class="caption" id="caption"></p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 화면 치수 (CSS 픽셀) ──
+  const CSS_H = 340;
+  const MARGIN_L = 56;          // 시간 눈금 글자 자리
+  const MARGIN_R = 16;
+  const STRING_CY = 76;         // 줄 평형선 높이
+  const AMP = 30;               // 성분 파동 하나의 진폭 (픽셀)
+  const TRACE_TOP = 156;        // 시간 자취 무늬 위쪽
+  const TRACE_H = 168;          // 시간 자취 무늬 높이
+  const HISTORY = 4;            // 무늬가 담는 과거 길이 (초)
+
+  // ── 물리 ──
+  const PERIOD = 1.6;           // 진동 주기 (초)
+  const OMEGA = 2 * Math.PI / PERIOD;
+  const WAVELENGTHS = 2.25;     // 화면 폭에 들어가는 파장 수
+  const CYCLE = 18;             // 반대 방향 파동을 넣고 빼는 한 바퀴 (초)
+
+  // 반대 방향(왼쪽으로 가는) 파동의 진폭 비율. 시각 t' 만의 함수라 과거도 그대로 계산된다.
+  const smooth = (u) => u * u * (3 - 2 * u);
+  function leftAmp(tt) {
+    const s = ((tt % CYCLE) + CYCLE) % CYCLE;
+    if (s < 9) return 1;
+    if (s < 10.5) return 1 - smooth((s - 9) / 1.5);
+    if (s < 15) return 0;
+    if (s < 16.5) return smooth((s - 15) / 1.5);
+    return 1;
+  }
+  function phaseOf(tt) {
+    const s = ((tt % CYCLE) + CYCLE) % CYCLE;
+    if (s < 9 || s >= 16.5) return 'standing';
+    if (s < 10.5) return 'removing';
+    if (s < 15) return 'single';
+    return 'adding';
+  }
+
+  // u: 파장 단위 위치(0 ~ WAVELENGTHS). 마디가 가장자리에 붙지 않도록 1/8 파장 밀어 둔다.
+  const kx = (u) => 2 * Math.PI * (u - 0.125);
+  const rightWave = (u, tt) => Math.sin(kx(u) - OMEGA * tt);
+  const leftWave = (u, tt) => Math.sin(kx(u) + OMEGA * tt);
+
+  // ── 색 ── 변위 +: 파랑, 변위 −: 주황, 0: 종이색. 강조색(자홍)은 '마디 위치'에만 쓴다.
+  const PAPER = [250, 248, 243];
+  const POS = [52, 101, 164];
+  const NEG = [214, 140, 64];
+  const ACCENT = '#cd206e';
+  const INK = '#22221f';
+  const COMPONENT = '#b3ada2';
+  const MUTED = '#8a857b';
+
+  const canvas = document.getElementById('scene');
+  const ctx = canvas.getContext('2d');
+  const captionEl = document.getElementById('caption');
+  let cssW = 840;
+  let dpr = 1;
+  let field = null;       // 무늬용 오프스크린 캔버스
+  let fieldImg = null;
+
+  function resize() {
+    dpr = window.devicePixelRatio || 1;
+    cssW = Math.max(320, Math.round(canvas.clientWidth || 840));
+    canvas.width = Math.round(cssW * dpr);
+    canvas.height = Math.round(CSS_H * dpr);
+    const plotW = cssW - MARGIN_L - MARGIN_R;
+    field = document.createElement('canvas');
+    field.width = plotW;
+    field.height = TRACE_H;
+    fieldImg = field.getContext('2d').createImageData(plotW, TRACE_H);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const plotW = () => cssW - MARGIN_L - MARGIN_R;
+  const xOf = (u) => MARGIN_L + (u / WAVELENGTHS) * plotW();
+
+  function drawWave(fn, tt, scale) {
+    const W = plotW();
+    ctx.beginPath();
+    for (let px = 0; px <= W; px += 2) {
+      const u = (px / W) * WAVELENGTHS;
+      const y = STRING_CY - AMP * fn(u, tt) * scale;
+      if (px === 0) ctx.moveTo(MARGIN_L + px, y); else ctx.lineTo(MARGIN_L + px, y);
+    }
+    ctx.stroke();
+  }
+
+  const CAPTIONS = {
+    standing: '반대로 달리는 두 파동이 겹친 줄 — 마디는 제자리에 멈춰 있고, 그 사이 배만 위아래로 흔들린다.',
+    removing: '왼쪽으로 가는 파동이 빠지는 중 — 마디 자리의 세로 빈 줄이 끊기고 사선이 돌아온다.',
+    single: '한 방향 파동만 있으면 마루가 오른쪽으로 흘러가, 멈춰 있는 점이 없다.',
+    adding: '왼쪽으로 가는 파동이 더해지는 중 — 흐르던 사선이 끊기며 마디 자리에 세로 빈 줄이 생기기 시작한다.',
+  };
+
+  PieceKit.loop({
+    step(dt, t) { /* 모든 상태가 t 의 함수라 쌓을 것이 없다 */ },
+    draw(t) {
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.fillStyle = 'rgb(250,248,243)';
+      ctx.fillRect(0, 0, cssW, CSS_H);
+
+      const aL = leftAmp(t);
+      const phase = phaseOf(t);
+
+      PieceKit.mark('오른쪽으로 가는 파동', () => {
+        ctx.strokeStyle = COMPONENT;
+        ctx.lineWidth = 1.25;
+        ctx.setLineDash([]);
+        drawWave(rightWave, t, 1);
+      });
+
+      PieceKit.mark('왼쪽으로 가는 파동', () => {
+        if (aL <= 0.001) return;
+        ctx.strokeStyle = COMPONENT;
+        ctx.lineWidth = 1.25;
+        ctx.setLineDash([5, 4]);
+        drawWave(leftWave, t, aL);
+        ctx.setLineDash([]);
+      });
+
+      PieceKit.mark('합쳐진 줄', () => {
+        ctx.strokeStyle = INK;
+        ctx.lineWidth = 2.5;
+        drawWave((u, tt) => rightWave(u, tt) + aL * leftWave(u, tt), t, 1);
+      });
+
+      PieceKit.mark('마디 위치', () => {
+        if (phase !== 'standing') return;
+        ctx.fillStyle = ACCENT;
+        for (let m = 0; m <= 4; m++) {
+          const u = 0.125 + m * 0.5;
+          ctx.beginPath();
+          ctx.arc(xOf(u), STRING_CY, 4.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+
+      PieceKit.mark('시간 자취 무늬', () => {
+        const W = field.width;
+        const H = field.height;
+        const data = fieldImg.data;
+        for (let r = 0; r < H; r++) {
+          const tt = t - HISTORY * r / (H - 1);   // 맨 위 = 지금, 아래로 갈수록 과거
+          const a = leftAmp(tt);
+          for (let c = 0; c < W; c++) {
+            const u = (c / (W - 1)) * WAVELENGTHS;
+            const v = (rightWave(u, tt) + a * leftWave(u, tt)) / 2;
+            const col = v >= 0 ? POS : NEG;
+            const m = Math.min(1, Math.abs(v));
+            const i = (r * W + c) * 4;
+            data[i] = PAPER[0] + (col[0] - PAPER[0]) * m;
+            data[i + 1] = PAPER[1] + (col[1] - PAPER[1]) * m;
+            data[i + 2] = PAPER[2] + (col[2] - PAPER[2]) * m;
+            data[i + 3] = 255;
+          }
+        }
+        field.getContext('2d').putImageData(fieldImg, 0, 0);
+        ctx.imageSmoothingEnabled = true;
+        ctx.drawImage(field, MARGIN_L, TRACE_TOP, W, H);
+      });
+
+      PieceKit.mark('시간 눈금', () => {
+        ctx.fillStyle = MUTED;
+        ctx.font = '12px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'top';
+        ctx.fillText('지금', MARGIN_L - 8, TRACE_TOP);
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(HISTORY + '초 전', MARGIN_L - 8, TRACE_TOP + TRACE_H);
+      });
+
+      PieceKit.mark('캡션', () => {
+        const text = CAPTIONS[phase];
+        if (captionEl.textContent !== text) captionEl.textContent = text;
+      });
+    },
+  });
+})();
+</script>
+</body>
+</html>

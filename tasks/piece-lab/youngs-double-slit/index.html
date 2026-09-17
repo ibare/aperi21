@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>이중 슬릿 간섭</title>
+<style>
+  :root {
+    --paper: #f7f5f0;
+    --ink: #2b2b2b;
+    --muted: #8f8a80;
+    --accent: #d6452b;
+  }
+  html, body { margin: 0; background: var(--paper); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 12px 16px; box-sizing: border-box; }
+  canvas { display: block; width: 100%; height: auto; }
+  .row { display: flex; align-items: center; gap: 12px; margin-top: 8px; min-height: 32px; }
+  .caption { flex: 1; font-size: 15px; line-height: 1.45; }
+  button { font: inherit; font-size: 14px; padding: 5px 12px; border: 1px solid #c9c4b8;
+    background: #fffdf8; color: var(--ink); border-radius: 6px; cursor: pointer; white-space: nowrap; }
+  button:hover { background: #f0ece2; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c" width="820" height="340"></canvas>
+  <div class="row">
+    <div class="caption" id="caption"></div>
+    <button id="toggle" type="button"></button>
+  </div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 화면 배치 (논리 좌표) ──
+  const W = 820, H = 340;
+  const BARRIER_X = 90;          // 가림벽 중심
+  const BARRIER_T = 6;           // 가림벽 두께
+  const SCREEN_X = 540;          // 스크린 왼쪽 가장자리
+  const SCREEN_W = 16;
+  const PROFILE_X0 = 574;        // 밝기 곡선의 0
+  const PROFILE_SPAN = 220;      // 최대 밝기일 때 곡선이 가는 폭
+  const CY = H / 2;
+  const SLIT_GAP = 110;          // 두 슬릿 중심 사이
+  const SLIT_W = 12;             // 슬릿 폭
+  const SLIT_A_Y = CY - SLIT_GAP / 2;  // 위 슬릿 (늘 열림)
+  const SLIT_B_Y = CY + SLIT_GAP / 2;  // 아래 슬릿 (열고 닫음)
+
+  // ── 파동 ──
+  const LAMBDA = 16;             // 파장(px)
+  const C = 100;                 // 전파 속력(px/s)
+  const K = 2 * Math.PI / LAMBDA;
+  const OMEGA = K * C;
+  const FRONT_W = 28;            // 물결 앞머리가 부드럽게 켜지는 폭(px)
+
+  // 슬릿 하나를 점광원 셋으로 본다 (폭이 파장보다 좁아 넓게 퍼진다)
+  const OFFS = [-SLIT_W / 2, 0, SLIT_W / 2];
+  const sources = [];
+  for (const o of OFFS) sources.push({ slit: 'A', x: BARRIER_X, y: SLIT_A_Y + o });
+  for (const o of OFFS) sources.push({ slit: 'B', x: BARRIER_X, y: SLIT_B_Y + o });
+
+  function ampAt(r) { return Math.sqrt(LAMBDA * 1.5 / Math.max(r, LAMBDA * 0.5)) / OFFS.length; }
+
+  // ── 자동 진행: 18초 주기, 1초에 아래 슬릿을 열고 11초에 닫는다 ──
+  const PERIOD = 18, AUTO_OPEN = 1, AUTO_CLOSE = 11;
+  let manualWindows = null;      // 독자가 누르면 [{on, off}] 로 바뀐다
+
+  function windowsAt(t) {
+    if (manualWindows && !PieceKit.frozen) return manualWindows;
+    const base = Math.floor(t / PERIOD) * PERIOD;
+    return [{ on: base + AUTO_OPEN, off: base + AUTO_CLOSE }];
+  }
+  function shutterOpen(t) {
+    return windowsAt(t).some(w => t >= w.on && t < w.off);
+  }
+  function smooth(x) {
+    const u = Math.min(1, Math.max(0, x / FRONT_W + 0.5));
+    return u * u * (3 - 2 * u);
+  }
+  // 아래 슬릿에서 거리 r 인 곳에 새 물결이 와 있는 정도 (0~1)
+  function actB(t, r) {
+    let a = 0;
+    for (const w of windowsAt(t)) {
+      if (t < w.on) continue;
+      const head = smooth(C * (t - w.on) - r);
+      const tail = w.off === Infinity || t < w.off ? 0 : smooth(C * (t - w.off) - r);
+      a += head * (1 - tail);
+    }
+    return Math.min(1, a);
+  }
+
+  // ── 물결장 격자 (2px 한 칸) ──
+  const CELL = 2;
+  const GW = Math.ceil(SCREEN_X / CELL), GH = Math.ceil(H / CELL);
+  const N = GW * GH;
+  const cellR = sources.map(() => new Float32Array(N));
+  const cellAmp = sources.map(() => new Float32Array(N));
+  const isRight = new Uint8Array(N);
+  for (let j = 0; j < GH; j++) {
+    for (let i = 0; i < GW; i++) {
+      const idx = j * GW + i;
+      const x = (i + 0.5) * CELL, y = (j + 0.5) * CELL;
+      isRight[idx] = x > BARRIER_X + BARRIER_T / 2 ? 1 : 0;
+      sources.forEach((s, si) => {
+        const r = Math.hypot(x - s.x, y - s.y);
+        cellR[si][idx] = r;
+        cellAmp[si][idx] = ampAt(r);
+      });
+    }
+  }
+  const fieldCanvas = document.createElement('canvas');
+  fieldCanvas.width = GW; fieldCanvas.height = GH;
+  const fctx = fieldCanvas.getContext('2d');
+  const fimg = fctx.createImageData(GW, GH);
+
+  // 색: 0 은 종이보다 조금 짙은 바탕, 마루는 밝게, 골은 어둡게 (한 색조)
+  const ZERO = [217, 214, 205], CREST = [252, 251, 247], TROUGH = [88, 95, 108];
+
+  // ── 스크린 위 복소 진폭 (행마다 미리 계산) ──
+  const reA = new Float64Array(H), imA = new Float64Array(H);
+  const rB = [], ampB = [], phB = [];
+  for (let y = 0; y < H; y++) {
+    let ra = 0, ia = 0;
+    const rs = [], as = [], ps = [];
+    for (const s of sources) {
+      const r = Math.hypot(SCREEN_X - s.x, y + 0.5 - s.y);
+      const a = ampAt(r);
+      if (s.slit === 'A') { ra += a * Math.cos(K * r); ia += a * Math.sin(K * r); }
+      else { rs.push(r); as.push(a); ps.push(K * r); }
+    }
+    reA[y] = ra; imA[y] = ia;
+    rB.push(rs); ampB.push(as); phB.push(ps);
+  }
+  const ghost = new Float64Array(H);        // 슬릿 하나일 때
+  const steadyTwo = new Float64Array(H);    // 두 슬릿이 모두 오래 열려 있을 때
+  let IMAX = 0;
+  for (let y = 0; y < H; y++) {
+    let rb = 0, ib = 0;
+    for (let k = 0; k < 3; k++) { rb += ampB[y][k] * Math.cos(phB[y][k]); ib += ampB[y][k] * Math.sin(phB[y][k]); }
+    ghost[y] = reA[y] * reA[y] + imA[y] * imA[y];
+    steadyTwo[y] = (reA[y] + rb) ** 2 + (imA[y] + ib) ** 2;
+    IMAX = Math.max(IMAX, steadyTwo[y]);
+  }
+  // 꺼진 줄: 두 슬릿일 때 극소이면서 슬릿 하나일 때보다 훨씬 어두운 행
+  const darkRows = [];
+  for (let y = 2; y < H - 2; y++) {
+    if (steadyTwo[y] <= steadyTwo[y - 1] && steadyTwo[y] < steadyTwo[y + 1] && steadyTwo[y] < 0.3 * ghost[y]) {
+      darkRows.push(y + 0.5);
+    }
+  }
+
+  // 지금 스크린 밝기와, 아래 슬릿 물결이 스크린에 닿은 정도의 최솟값·최댓값
+  const screenI = new Float64Array(H);
+  let arriveMin = 0, arriveMax = 0;
+  function computeScreen(t) {
+    arriveMin = 1; arriveMax = 0;
+    for (let y = 0; y < H; y++) {
+      let re = reA[y], im = imA[y];
+      let actSum = 0;
+      for (let k = 0; k < 3; k++) {
+        const a = actB(t, rB[y][k]);
+        actSum += a;
+        re += a * ampB[y][k] * Math.cos(phB[y][k]);
+        im += a * ampB[y][k] * Math.sin(phB[y][k]);
+      }
+      const act = actSum / 3;
+      arriveMin = Math.min(arriveMin, act);
+      arriveMax = Math.max(arriveMax, act);
+      screenI[y] = re * re + im * im;
+    }
+  }
+
+  // ── 캔버스 ──
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  canvas.width = W * dpr; canvas.height = H * dpr;
+
+  const captionEl = document.getElementById('caption');
+  const toggleEl = document.getElementById('toggle');
+  let lastT = 0;
+  toggleEl.addEventListener('click', () => {
+    if (PieceKit.frozen) return;
+    const t = lastT;
+    if (!manualWindows) {
+      // 자동 진행에서 넘겨받는다: 지금까지의 창을 그대로 이어 간다
+      manualWindows = windowsAt(t).map(w => ({ on: w.on, off: w.off > t ? Infinity : w.off }))
+        .filter(w => w.on <= t);
+    }
+    if (shutterOpen(t)) {
+      manualWindows.forEach(w => { if (w.off === Infinity) w.off = t; });
+    } else {
+      manualWindows.push({ on: t, off: Infinity });
+    }
+  });
+
+  function drawField(t) {
+    const d = fimg.data;
+    const wt = OMEGA * t;
+    const kxb = K * BARRIER_X;
+    for (let idx = 0; idx < N; idx++) {
+      let u;
+      const i = idx % GW;
+      if (!isRight[idx]) {
+        const x = (i + 0.5) * CELL;
+        u = 0.55 * Math.cos(K * x - wt);
+      } else {
+        u = 0;
+        for (let si = 0; si < 6; si++) {
+          const r = cellR[si][idx];
+          const a = si < 3 ? 1 : actB(t, r);
+          if (a <= 0) continue;
+          u += a * cellAmp[si][idx] * Math.cos(kxb + K * r - wt);
+        }
+        u *= 1.1;
+      }
+      const v = Math.tanh(u * 1.3);
+      const tgt = v >= 0 ? CREST : TROUGH, m = Math.abs(v);
+      const p = idx * 4;
+      d[p] = ZERO[0] + (tgt[0] - ZERO[0]) * m;
+      d[p + 1] = ZERO[1] + (tgt[1] - ZERO[1]) * m;
+      d[p + 2] = ZERO[2] + (tgt[2] - ZERO[2]) * m;
+      d[p + 3] = 255;
+    }
+    fctx.putImageData(fimg, 0, 0);
+    ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(fieldCanvas, 0, 0, GW, GH, 0, 0, SCREEN_X, H);
+  }
+
+  function drawBarrier(t) {
+    const x0 = BARRIER_X - BARRIER_T / 2;
+    ctx.fillStyle = '#3a3a3a';
+    const aTop = SLIT_A_Y - SLIT_W / 2 - 2, aBot = SLIT_A_Y + SLIT_W / 2 + 2;
+    const bTop = SLIT_B_Y - SLIT_W / 2 - 2, bBot = SLIT_B_Y + SLIT_W / 2 + 2;
+    ctx.fillRect(x0, 0, BARRIER_T, aTop);
+    ctx.fillRect(x0, aBot, BARRIER_T, bTop - aBot);
+    ctx.fillRect(x0, bBot, BARRIER_T, H - bBot);
+  }
+
+  function drawShutter(t) {
+    const open = shutterOpen(t);
+    const h = SLIT_W + 10;
+    const y = open ? SLIT_B_Y + SLIT_W / 2 + 4 : SLIT_B_Y - h / 2;
+    ctx.fillStyle = '#3a3a3a';
+    ctx.fillRect(BARRIER_X - BARRIER_T / 2 - 5, y, 5, h);
+  }
+
+  function drawScreen() {
+    for (let y = 0; y < H; y++) {
+      const b = Math.pow(Math.min(1, screenI[y] / IMAX), 0.35);
+      const r = 29 + (255 - 29) * b, g = 31 + (244 - 31) * b, bl = 36 + (214 - 36) * b;
+      ctx.fillStyle = `rgb(${r | 0},${g | 0},${bl | 0})`;
+      ctx.fillRect(SCREEN_X, y, SCREEN_W, 1);
+    }
+  }
+
+  function drawGhost() {
+    ctx.save();
+    ctx.strokeStyle = '#9a968c';
+    ctx.lineWidth = 1.2;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    for (let y = 0; y < H; y++) {
+      const x = PROFILE_X0 + PROFILE_SPAN * ghost[y] / IMAX;
+      if (y === 0) ctx.moveTo(x, y + 0.5); else ctx.lineTo(x, y + 0.5);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#8f8a80';
+    ctx.font = '12px -apple-system, "Apple SD Gothic Neo", sans-serif';
+    // 실선 곡선이 0 가까이 내려가는 꺼진 줄 높이에 붙여 겹치지 않게 한다
+    ctx.textBaseline = 'middle';
+    const ly = Math.round(darkRows[Math.min(1, darkRows.length - 1)] || 20);
+    ctx.fillText('슬릿 하나일 때', PROFILE_X0 + PROFILE_SPAN * ghost[ly] / IMAX + 8, ly);
+    ctx.restore();
+  }
+
+  function drawProfile() {
+    ctx.save();
+    ctx.strokeStyle = '#6b675f';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(PROFILE_X0 + 0.5, 0); ctx.lineTo(PROFILE_X0 + 0.5, H);
+    ctx.stroke();
+    ctx.strokeStyle = '#2b2b2b';
+    ctx.lineWidth = 1.8;
+    ctx.beginPath();
+    for (let y = 0; y < H; y++) {
+      const x = PROFILE_X0 + PROFILE_SPAN * screenI[y] / IMAX;
+      if (y === 0) ctx.moveTo(x, y + 0.5); else ctx.lineTo(x, y + 0.5);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawDarkMarks() {
+    ctx.save();
+    ctx.strokeStyle = '#d6452b';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    for (const y of darkRows) {
+      ctx.moveTo(SCREEN_X - 12, y); ctx.lineTo(SCREEN_X - 2, y);
+      ctx.moveTo(SCREEN_X + SCREEN_W + 2, y); ctx.lineTo(PROFILE_X0 - 2, y);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // 캡션과 표시는 같은 판정(아래 슬릿 물결이 스크린에 닿은 정도)에서 나온다
+  function stateOf(t) {
+    const open = shutterOpen(t);
+    if (open) {
+      if (arriveMax < 0.02) return 'traveling';
+      if (arriveMin < 0.98) return 'arriving';
+      return 'dark';
+    }
+    if (arriveMax >= 0.02) return 'leaving';
+    return 'single';
+  }
+  const CAPTIONS = {
+    single: '위 슬릿 하나로 들어온 빛 — 스크린이 줄 없이 고르게 밝다.',
+    traveling: '아래 슬릿도 열었다 — 두 번째 물결이 스크린 쪽으로 퍼져 간다.',
+    arriving: '두 번째 물결이 닿은 곳부터 스크린에 어두운 줄이 생긴다.',
+    dark: '빛을 하나 더 보탰는데, 표시한 줄은 슬릿 하나일 때보다 오히려 꺼졌다.',
+    leaving: '아래 슬릿을 닫았다 — 남은 물결이 스크린을 지나가면 줄이 사라진다.',
+  };
+
+  PieceKit.loop({
+    step(dt, t) { lastT = t; },
+    draw(t) {
+      lastT = t;
+      computeScreen(t);
+      const state = stateOf(t);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.fillStyle = '#f7f5f0';
+      ctx.fillRect(0, 0, W, H);
+      PieceKit.mark('물결장', () => drawField(t));
+      PieceKit.mark('가림벽', () => drawBarrier(t));
+      PieceKit.mark('아래 슬릿 가림판', () => drawShutter(t));
+      PieceKit.mark('스크린', () => drawScreen());
+      PieceKit.mark('슬릿 하나일 때 밝기 곡선', () => drawGhost());
+      PieceKit.mark('지금 밝기 곡선', () => drawProfile());
+      if (state === 'dark') PieceKit.mark('꺼진 줄 표시', () => drawDarkMarks());
+      PieceKit.mark('캡션', () => { captionEl.textContent = CAPTIONS[state]; });
+      toggleEl.textContent = shutterOpen(t) ? '아래 슬릿 닫기' : '아래 슬릿 열기';
+    },
+  });
+})();
+</script>
+</body>
+</html>

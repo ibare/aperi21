@@ -677,7 +677,9 @@
         {
           "id": "resonance",
           "name": "공명",
-          "desc": "구동 진동수가 고유 진동수에 맞을 때"
+          "desc": "구동 진동수가 고유 진동수에 맞을 때",
+          "simId": "aperi21:resonance",
+          "labUrl": "piece-lab/resonance/index.html"
         },
         {
           "id": "quality-factor",
@@ -777,7 +779,9 @@
         {
           "id": "keplers-second-law",
           "name": "케플러 제2법칙",
-          "desc": "같은 시간에 같은 넓이"
+          "desc": "같은 시간에 같은 넓이",
+          "simId": "aperi21:keplers-second-law",
+          "labUrl": "piece-lab/keplers-second-law/index.html"
         },
         {
           "id": "keplers-third-law",
@@ -1094,7 +1098,9 @@
         {
           "id": "capillary-action",
           "name": "모세관 현상",
-          "desc": "좁은 관에서의 상승과 하강"
+          "desc": "좁은 관에서의 상승과 하강",
+          "simId": "aperi21:capillary-action",
+          "labUrl": "piece-lab/capillary-action/index.html"
         },
         {
           "id": "wetting-and-contact-angle",
@@ -1135,7 +1141,9 @@
         {
           "id": "phase-diagram",
           "name": "상평형 그림",
-          "desc": "압력과 온도가 정하는 상"
+          "desc": "압력과 온도가 정하는 상",
+          "simId": "aperi21:phase-diagram",
+          "labUrl": "piece-lab/phase-diagram/index.html"
         },
         {
           "id": "triple-point",
@@ -1380,7 +1388,9 @@
         {
           "id": "standing-wave",
           "name": "정상파",
-          "desc": "마디와 배가 고정되는 파동"
+          "desc": "마디와 배가 고정되는 파동",
+          "simId": "aperi21:standing-wave",
+          "labUrl": "piece-lab/standing-wave/index.html"
         },
         {
           "id": "harmonics",
@@ -1641,7 +1651,9 @@
         {
           "id": "youngs-double-slit",
           "name": "이중 슬릿 간섭",
-          "desc": "빛의 파동성 증거"
+          "desc": "빛의 파동성 증거",
+          "simId": "aperi21:youngs-double-slit",
+          "labUrl": "piece-lab/youngs-double-slit/index.html"
         },
         {
           "id": "single-slit-diffraction",
@@ -1888,7 +1900,9 @@
         {
           "id": "rc-circuit",
           "name": "RC 회로",
-          "desc": "충전과 방전의 시간 상수"
+          "desc": "충전과 방전의 시간 상수",
+          "simId": "aperi21:rc-circuit",
+          "labUrl": "piece-lab/rc-circuit/index.html"
         },
         {
           "id": "magnetic-field",
@@ -2307,7 +2321,9 @@
         {
           "id": "hydrogen-spectrum",
           "name": "수소 스펙트럼",
-          "desc": "불연속한 선 스펙트럼"
+          "desc": "불연속한 선 스펙트럼",
+          "simId": "aperi21:hydrogen-spectrum",
+          "labUrl": "piece-lab/hydrogen-spectrum/index.html"
         },
         {
           "id": "bohr-model",
@@ -2471,7 +2487,7 @@
   ],
   "summary": {
     "topics": 442,
-    "implemented": 101,
-    "labs": 88
+    "implemented": 109,
+    "labs": 96
   }
 }

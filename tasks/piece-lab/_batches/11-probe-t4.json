@@ -1,0 +1,15 @@
+{
+  "name": "11-probe-t4",
+  "title": "표현력 검증 턴 4 — 8개 분야 각 4번",
+  "record": "tasks/engine-requirements/gap-ledger.md",
+  "pieces": [
+    "resonance",
+    "keplers-second-law",
+    "capillary-action",
+    "phase-diagram",
+    "standing-wave",
+    "youngs-double-slit",
+    "rc-circuit",
+    "hydrogen-spectrum"
+  ]
+}

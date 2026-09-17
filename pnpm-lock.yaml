@@ -186,6 +186,9 @@ importers:
       '@aperi21/sim-buoyant-force-as-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/buoyant-force-as-force
+      '@aperi21/sim-capillary-action':
+        specifier: workspace:*
+        version: link:../../sims/fluids/capillary-action
       '@aperi21/sim-carnot-cycle':
         specifier: workspace:*
         version: link:../../sims/thermal/carnot-cycle
@@ -264,6 +267,9 @@ importers:
       '@aperi21/sim-huygens-principle':
         specifier: workspace:*
         version: link:../../sims/waves/huygens-principle
+      '@aperi21/sim-hydrogen-spectrum':
+        specifier: workspace:*
+        version: link:../../sims/modern/hydrogen-spectrum
       '@aperi21/sim-impulse-force-relation':
         specifier: workspace:*
         version: link:../../sims/mechanics/impulse-force-relation
@@ -279,6 +285,9 @@ importers:
       '@aperi21/sim-interference':
         specifier: workspace:*
         version: link:../../sims/waves/interference
+      '@aperi21/sim-keplers-second-law':
+        specifier: workspace:*
+        version: link:../../sims/astro/keplers-second-law
       '@aperi21/sim-kinetic-friction':
         specifier: workspace:*
         version: link:../../sims/mechanics/kinetic-friction
@@ -321,6 +330,9 @@ importers:
       '@aperi21/sim-pendulum-isochronism':
         specifier: workspace:*
         version: link:../../sims/oscillation/pendulum-isochronism
+      '@aperi21/sim-phase-diagram':
+        specifier: workspace:*
+        version: link:../../sims/thermal/phase-diagram
       '@aperi21/sim-phase-space':
         specifier: workspace:*
         version: link:../../sims/oscillation/phase-space
@@ -348,12 +360,18 @@ importers:
       '@aperi21/sim-ramp-energy':
         specifier: workspace:*
         version: link:../../sims/mechanics/ramp-energy
+      '@aperi21/sim-rc-circuit':
+        specifier: workspace:*
+        version: link:../../sims/em/rc-circuit
       '@aperi21/sim-reference-frame':
         specifier: workspace:*
         version: link:../../sims/kinematics/reference-frame
       '@aperi21/sim-relative-velocity':
         specifier: workspace:*
         version: link:../../sims/kinematics/relative-velocity
+      '@aperi21/sim-resonance':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/resonance
       '@aperi21/sim-river-crossing':
         specifier: workspace:*
         version: link:../../sims/kinematics/river-crossing
@@ -363,6 +381,9 @@ importers:
       '@aperi21/sim-spring-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/spring-force
+      '@aperi21/sim-standing-wave':
+        specifier: workspace:*
+        version: link:../../sims/waves/standing-wave
       '@aperi21/sim-static-friction':
         specifier: workspace:*
         version: link:../../sims/mechanics/static-friction
@@ -414,6 +435,9 @@ importers:
       '@aperi21/sim-vertical-throw':
         specifier: workspace:*
         version: link:../../sims/kinematics/vertical-throw
+      '@aperi21/sim-youngs-double-slit':
+        specifier: workspace:*
+        version: link:../../sims/optics/youngs-double-slit
       '@aperi21/sim-youngs-modulus':
         specifier: workspace:*
         version: link:../../sims/mechanics/youngs-modulus
@@ -654,6 +678,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/astro/keplers-second-law:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/astro/moon-phases:
     devDependencies:
       '@aperi21/schema':
@@ -735,6 +768,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/em/rc-circuit:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/fluids/archimedes-principle:
     devDependencies:
       '@aperi21/schema':
@@ -748,6 +790,15 @@ importers:
         version: 2.1.9(jsdom@25.0.1)
 
   sims/fluids/bernoullis-principle:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/fluids/capillary-action:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1389,6 +1440,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/modern/hydrogen-spectrum:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/modern/spacetime-diagram:
     devDependencies:
       '@aperi21/schema':
@@ -1440,6 +1500,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/optics/youngs-double-slit:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/oscillation/gyroscopic-precession:
     devDependencies:
       '@aperi21/schema':
@@ -1468,6 +1537,15 @@ importers:
         version: 5.9.3
 
   sims/oscillation/phase-space:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/resonance:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1524,6 +1602,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/thermal/phase-diagram:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/thermal/thermal-convection:
     devDependencies:
       '@aperi21/schema':
@@ -1570,6 +1657,15 @@ importers:
         version: 5.9.3
 
   sims/waves/longitudinal-wave:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/waves/standing-wave:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*

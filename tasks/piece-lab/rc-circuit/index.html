@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RC 회로</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #2b2b2b;
+    --muted: #8a8780;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 880px; margin: 0 auto; padding: 8px 0; }
+  canvas { display: block; width: 100%; height: auto; }
+  .bottom { display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding: 6px 8px 0; }
+  .caption { font-size: 15px; line-height: 1.45; min-height: 44px; flex: 1; }
+  .control { display: flex; align-items: center; gap: 8px; font-size: 13px;
+    color: var(--muted); white-space: nowrap; }
+  .control input { width: 110px; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c" width="880" height="300"></canvas>
+  <div class="bottom">
+    <div class="caption" id="caption"></div>
+    <label class="control">저항 R
+      <span>작게</span><input id="r" type="range" min="0" max="2" step="1" value="1"><span>크게</span>
+    </label>
+  </div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 색: 같은 대상은 같은 색, 강조색(주황)은 "남은 차이" 한 가지 뜻에만 ──
+  const INK = '#2b2b2b';
+  const MUTED = '#8a8780';
+  const FAINT = '#e4e1da';
+  const WIRE = '#55524c';
+  const CHARGE = '#2f5d8a';   // 전하와 축전기 전압(= 쌓인 전하)
+  const GAP = '#d9731a';      // 남은 차이 (가려는 값까지 남은 전압)
+
+  const W = 880, H = 300;
+  const canvas = document.getElementById('c');
+  const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const captionEl = document.getElementById('caption');
+  const slider = document.getElementById('r');
+
+  // ── 물리 상태 (전지 전압을 1 로 둔 무차원) ──
+  const TAUS = [0.6, 1.2, 2.4];   // 저항 작게 · 기본 · 크게 에 따른 τ(초)
+  const TAU_DEFAULT = 1.2;
+  const CHARGE_SPAN = 5;          // 5τ 충전 → 5τ 방전 → 되풀이
+  const CYCLE = 10;
+
+  let tauChoice = TAU_DEFAULT;
+  let u = 0;          // 한 주기 안의 위치 (τ 단위)
+  let v = 0;          // 축전기 전압 / 전지 전압
+  let trace = [];     // [{u, v}]
+  let marks = [];     // 매 τ 에 남긴 남은 차이 [{k, v, charging}]
+  let flow = 0;       // 도선 위 전하 점의 누적 이동 거리(px)
+  const DOT_GAP = 22;
+
+  const tau = () => (PieceKit.frozen ? TAU_DEFAULT : tauChoice);
+  const isCharging = (uu) => uu < CHARGE_SPAN;
+  const gapOf = (vv, charging) => (charging ? 1 - vv : vv);
+
+  function resetCycle() {
+    u = 0; v = 0; flow = 0;
+    trace = [{ u: 0, v: 0 }];
+    marks = [{ k: 0, v: 0, charging: true }];
+  }
+
+  // 정확한 지수 갱신으로 전진 (τ 경계에서 끊어 그 순간의 남은 차이를 기록)
+  function advance(dt) {
+    const T = tau();
+    const gapBefore = gapOf(v, isCharging(u));
+    let remain = dt / T;
+    while (remain > 1e-12) {
+      const boundary = Math.floor(u) + 1;
+      const toBoundary = boundary - u;
+      const reach = remain >= toBoundary - 1e-9;   // 부동소수 오차로 경계를 건너뛰지 않게
+      const d = reach ? Math.min(remain, toBoundary) : remain;
+      const decay = Math.exp(-d);
+      v = isCharging(u) ? 1 + (v - 1) * decay : v * decay;
+      remain = reach ? Math.max(0, remain - toBoundary) : 0;
+      if (reach) {
+        u = boundary;
+        if (u >= CYCLE) {
+          u = 0;
+          trace = [];
+          marks = [];
+        }
+        marks.push({ k: u, v, charging: isCharging(u) });
+        trace.push({ u: u === 0 ? 0 : u, v });
+      } else {
+        u += d;
+      }
+    }
+    trace.push({ u, v });
+    // 흐름의 세기 ∝ 남은 차이 / R  (R ∝ τ)
+    const gapAfter = gapOf(v, isCharging(u));
+    const current = 0.5 * (gapBefore + gapAfter) * (TAU_DEFAULT / T);
+    flow = (flow + 150 * current * dt) % DOT_GAP;
+  }
+
+  resetCycle();
+  // 도착한 순간 이미 충전이 진행 중이도록 0.4τ 만큼 미리 흘려 둔다
+  for (let i = 0, n = Math.round(0.4 * TAU_DEFAULT * 60); i < n; i++) advance(1 / 60);
+
+  slider.addEventListener('input', () => {
+    if (PieceKit.frozen) return;
+    tauChoice = TAUS[Number(slider.value)];
+    resetCycle();
+  });
+
+  // ── 회로 기하 ──
+  const A = [96, 50], P = [146, 50], B = [104, 94];
+  const PLATE_TOP = 132, PLATE_BOT = 168, PLATE_L = 285, PLATE_R = 375;
+  const BAT_POS = 150, BAT_NEG = 162;
+  const RES_L = 175, RES_R = 250;
+  const CIRCUIT_SHIFT = 30;   // 전지 이름표가 들어갈 왼쪽 여백
+
+  const chargePath = [[330, PLATE_BOT], [330, 260], [60, 260], [60, BAT_NEG], [60, BAT_POS],
+    [60, 50], A, P, [330, 50], [330, PLATE_TOP]];
+  const dischargePath = [[330, PLATE_TOP], [330, 50], P, B, [104, 260], [330, 260], [330, PLATE_BOT]];
+
+  function pointsAlong(path, offset, spacing) {
+    const out = [];
+    let acc = 0;
+    let next = offset;
+    for (let i = 0; i < path.length - 1; i++) {
+      const [x0, y0] = path[i], [x1, y1] = path[i + 1];
+      const len = Math.hypot(x1 - x0, y1 - y0);
+      while (next <= acc + len) {
+        const f = (next - acc) / len;
+        out.push([x0 + (x1 - x0) * f, y0 + (y1 - y0) * f]);
+        next += spacing;
+      }
+      acc += len;
+    }
+    return out;
+  }
+
+  function line(x0, y0, x1, y1) { ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke(); }
+  function label(text, x, y, align, color, size) {
+    ctx.fillStyle = color; ctx.font = `${size || 12}px -apple-system, "Apple SD Gothic Neo", sans-serif`;
+    ctx.textAlign = align; ctx.textBaseline = 'middle'; ctx.fillText(text, x, y);
+  }
+
+  // ── 그래프 기하 ──
+  const GX0 = 480, GX1 = 860, GY_TOP = 60, GY_BOT = 240;
+  const gx = (uu) => GX0 + (GX1 - GX0) * (uu / CYCLE);
+  const gy = (vv) => GY_BOT - (GY_BOT - GY_TOP) * vv;
+
+  function draw() {
+    const charging = isCharging(u);
+    const gapNow = gapOf(v, charging);
+    ctx.clearRect(0, 0, W, H);
+    ctx.save();
+    ctx.translate(CIRCUIT_SHIFT, 0);
+
+    PieceKit.mark('회로 도선', () => {
+      ctx.strokeStyle = WIRE; ctx.lineWidth = 2; ctx.lineCap = 'round';
+      line(60, 50, 60, BAT_POS); line(60, BAT_NEG, 60, 260);
+      line(60, 50, A[0], 50);
+      line(P[0], 50, RES_L, 50); line(RES_R, 50, 330, 50);
+      line(330, 50, 330, PLATE_TOP); line(330, PLATE_BOT, 330, 260);
+      line(60, 260, 330, 260);
+      line(B[0], B[1], B[0], 260);
+      ctx.fillStyle = WIRE;
+      ctx.beginPath(); ctx.arc(B[0], 260, 3, 0, Math.PI * 2); ctx.fill();
+    });
+
+    PieceKit.mark('전지', () => {
+      ctx.strokeStyle = INK; ctx.lineWidth = 2;
+      line(40, BAT_POS, 80, BAT_POS);
+      ctx.lineWidth = 5; line(50, BAT_NEG, 70, BAT_NEG);
+      label('전지', 30, (BAT_POS + BAT_NEG) / 2, 'right', MUTED);
+    });
+
+    PieceKit.mark('저항', () => {
+      ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.lineJoin = 'round';
+      ctx.beginPath(); ctx.moveTo(RES_L, 50);
+      const n = 6, seg = (RES_R - RES_L) / n;
+      for (let i = 0; i < n; i++) ctx.lineTo(RES_L + seg * (i + 0.5), 50 + (i % 2 ? 8 : -8));
+      ctx.lineTo(RES_R, 50); ctx.stroke();
+      label('저항', (RES_L + RES_R) / 2, 30, 'center', MUTED);
+    });
+
+    PieceKit.mark('스위치', () => {
+      ctx.fillStyle = INK; ctx.strokeStyle = INK; ctx.lineWidth = 2;
+      for (const [x, y] of [A, P, B]) { ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill(); }
+      const to = charging ? A : B;
+      line(P[0], P[1], to[0], to[1]);
+    });
+
+    PieceKit.mark('축전기 극판', () => {
+      ctx.strokeStyle = INK; ctx.lineWidth = 3;
+      line(PLATE_L, PLATE_TOP, PLATE_R, PLATE_TOP);
+      line(PLATE_L, PLATE_BOT, PLATE_R, PLATE_BOT);
+      label('축전기', PLATE_R, PLATE_BOT + 20, 'right', MUTED);
+    });
+
+    PieceKit.mark('극판의 전하', () => {
+      // 극판 사이 안쪽 두 줄: 위 극판 +, 아래 극판 −. 개수 ∝ 쌓인 전하
+      const slots = 10;
+      const filled = v * slots;
+      ctx.strokeStyle = CHARGE; ctx.lineWidth = 1.8;
+      for (let i = 0; i < slots; i++) {
+        const a = Math.max(0, Math.min(1, filled - i));
+        if (a <= 0) continue;
+        ctx.globalAlpha = a;
+        const x = PLATE_L + 5 + i * ((PLATE_R - PLATE_L - 10) / (slots - 1));
+        const yp = PLATE_TOP + 9, yn = PLATE_BOT - 9;
+        line(x - 3.5, yp, x + 3.5, yp); line(x, yp - 3.5, x, yp + 3.5);
+        line(x - 3.5, yn, x + 3.5, yn);
+      }
+      ctx.globalAlpha = 1;
+    });
+
+    PieceKit.mark('흐르는 전하', () => {
+      const path = charging ? chargePath : dischargePath;
+      ctx.fillStyle = CHARGE;
+      for (const [x, y] of pointsAlong(path, flow, DOT_GAP)) {
+        if (charging && x === 60 && y > BAT_POS - 4 && y < BAT_NEG + 4) continue;
+        if (x > PLATE_L && x < PLATE_R && y > PLATE_TOP - 4 && y < PLATE_BOT + 4) continue;
+        ctx.beginPath(); ctx.arc(x, y, 3.2, 0, Math.PI * 2); ctx.fill();
+      }
+    });
+
+    ctx.restore();
+
+    PieceKit.mark('τ 눈금', () => {
+      ctx.strokeStyle = FAINT; ctx.lineWidth = 1;
+      for (let k = 0; k <= CYCLE; k++) line(gx(k), GY_TOP - 6, gx(k), GY_BOT);
+      ctx.strokeStyle = MUTED; line(GX0, GY_BOT, GX1, GY_BOT);
+      for (let k = 1; k <= CYCLE; k++) label(`${k}τ`, gx(k), GY_BOT + 13, 'center', MUTED, 11);
+      label('0', GX0 - 6, GY_BOT, 'right', MUTED, 11);
+      label('충전', gx(2.5), 16, 'center', charging ? INK : MUTED, 12);
+      label('방전', gx(7.5), 16, 'center', charging ? MUTED : INK, 12);
+      label(`τ = ${tau().toFixed(1)}초`, GX1, 16, 'right', MUTED, 12);
+    });
+
+    PieceKit.mark('전지 전압 선', () => {
+      ctx.strokeStyle = MUTED; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+      line(GX0, gy(1), GX1, gy(1)); ctx.setLineDash([]);
+      label('전지 전압', GX0 - 6, gy(1), 'right', MUTED, 11);
+    });
+
+    PieceKit.mark('축전기 전압 곡선', () => {
+      ctx.strokeStyle = CHARGE; ctx.lineWidth = 2.2; ctx.lineJoin = 'round';
+      ctx.beginPath();
+      trace.forEach((p, i) => (i ? ctx.lineTo(gx(p.u), gy(p.v)) : ctx.moveTo(gx(p.u), gy(p.v))));
+      ctx.stroke();
+      ctx.fillStyle = CHARGE;
+      ctx.beginPath(); ctx.arc(gx(u), gy(v), 4, 0, Math.PI * 2); ctx.fill();
+      label('축전기 전압', GX0 - 6, gy(0.5), 'right', CHARGE, 11);
+    });
+
+    PieceKit.mark('지난 τ의 남은 차이', () => {
+      ctx.strokeStyle = GAP; ctx.lineWidth = 2; ctx.globalAlpha = 0.6;
+      for (const m of marks) {
+        const x = gx(m.k), target = m.charging ? 1 : 0;
+        line(x, gy(m.v), x, gy(target));
+        line(x - 4, gy(m.v), x + 4, gy(m.v));
+      }
+      ctx.globalAlpha = 1;
+      // 이웃한 두 τ 의 남은 차이 비
+      for (let i = 1; i < marks.length; i++) {
+        const a = marks[i - 1], b = marks[i];
+        if (a.charging !== b.charging) continue;
+        const y = b.charging ? GY_TOP - 12 : GY_BOT + 32;
+        label('×0.368', (gx(a.k) + gx(b.k)) / 2, y, 'center', GAP, 10.5);
+      }
+    });
+
+    PieceKit.mark('지금 남은 차이', () => {
+      const x = gx(u), target = charging ? 1 : 0;
+      ctx.strokeStyle = GAP; ctx.lineWidth = 3.5;
+      line(x, gy(v), x, gy(target));
+      // 회로 쪽: 저항에 걸린 전압 = 남은 차이. 저항 위 막대 높이로 같은 양을 보인다
+      ctx.lineWidth = 5; ctx.lineCap = 'butt';
+      const barMax = RES_R - RES_L;
+      line(CIRCUIT_SHIFT + RES_L, 68, CIRCUIT_SHIFT + RES_L + barMax * gapNow, 68);
+      ctx.lineCap = 'round';
+    });
+
+    PieceKit.mark('캡션', () => {
+      const text = charging
+        ? '충전 중 — 극판에 쌓인 전하가 거슬러 밀수록 흐름이 잦아들고, 남은 차이는 τ마다 같은 비율로 줄어든다'
+        : '방전 중 — 전하가 빠질수록 밀어내는 힘도 약해져 흐름이 잦아들고, 남은 차이는 τ마다 같은 비율로 줄어든다';
+      if (captionEl.textContent !== text) captionEl.textContent = text;
+    });
+  }
+
+  PieceKit.loop({
+    step(dt) { advance(dt); },
+    draw() { draw(); },
+  });
+})();
+</script>
+</body>
+</html>

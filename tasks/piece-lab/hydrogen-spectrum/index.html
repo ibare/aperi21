@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>수소 스펙트럼</title>
+<style>
+  html, body { margin: 0; background: #0b0c10; }
+  .piece { max-width: 900px; min-width: 720px; margin: 0 auto; padding: 12px 16px 14px; box-sizing: border-box; }
+  canvas { display: block; width: 100%; height: auto; }
+  .caption { margin: 8px 4px 0; color: #c9ced8; font: 15px/1.5 -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+</style>
+</head>
+<body>
+<div class="piece">
+  <canvas id="c"></canvas>
+  <p class="caption" id="caption"></p>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 화면 크기(논리 좌표) ─────────────────────────────
+  const W = 820, H = 270;
+  const canvas = document.getElementById('c');
+  const DPR = 2;
+  canvas.width = W * DPR; canvas.height = H * DPR;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(DPR, DPR);
+
+  // 캡션은 상태와 무관하게 언제나 참인 한 문장 — 화면과 어긋날 수 없다
+  document.getElementById('caption').textContent =
+    '전자가 한 계단 내려올 때마다 그 낙차에 맞는 색 하나가 나오고, 눈에 보이는 빛은 언제나 같은 몇 자리에만 쌓인다.';
+
+  // ── 물리: 수소 에너지 준위와 방출 파장 ─────────────────
+  const N_MAX = 6;
+  const energy = (n) => -13.6 / (n * n);                 // 전자볼트
+  const wavelengthNm = (up, low) => 91.1753 / (1 / (low * low) - 1 / (up * up)); // 뤼드베리 식
+
+  // ── 에너지 계단 좌표 — n=1 과 n=2 사이는 축을 끊는다 ────
+  const LADDER_X0 = 44, LADDER_X1 = 292;
+  const Y_N1 = 250, Y_N2 = 205, Y_ZERO = 18;
+  const BREAK_Y = 228;
+  function levelY(n) {
+    if (n === 1) return Y_N1;
+    const e = energy(n);                                    // -3.4 … 0
+    return Y_N2 + (e - energy(2)) / (0 - energy(2)) * (Y_ZERO - Y_N2);
+  }
+
+  // ── 스펙트럼 띠 좌표 ───────────────────────────────
+  const STRIP_X0 = 372, STRIP_X1 = 770, STRIP_Y0 = 92, STRIP_Y1 = 176;
+  const LAMBDA_MIN = 380, LAMBDA_MAX = 720;
+  const STRIP_W = STRIP_X1 - STRIP_X0;
+  const lambdaToX = (l) => STRIP_X0 + (l - LAMBDA_MIN) / (LAMBDA_MAX - LAMBDA_MIN) * STRIP_W;
+  const UV_X = STRIP_X0 - 34, IR_X = W - 14;
+
+  // 파장 → 색 (가시광 근사)
+  function lambdaRGB(l) {
+    let r = 0, g = 0, b = 0;
+    if (l >= 380 && l < 440) { r = -(l - 440) / 60; b = 1; }
+    else if (l < 490) { g = (l - 440) / 50; b = 1; }
+    else if (l < 510) { g = 1; b = -(l - 510) / 20; }
+    else if (l < 580) { r = (l - 510) / 70; g = 1; }
+    else if (l < 645) { r = 1; g = -(l - 645) / 65; }
+    else if (l <= 780) { r = 1; }
+    let f = 1;
+    if (l < 420) f = 0.6 + 0.4 * (l - 380) / 40;
+    else if (l > 700) f = 0.3 + 0.7 * (780 - l) / 80;
+    const c = (v) => Math.round(255 * Math.pow(v * f, 0.8));
+    return [c(r), c(g), c(b)];
+  }
+  const isVisible = (l) => l >= LAMBDA_MIN && l <= LAMBDA_MAX;
+  const INVISIBLE_RGB = [120, 126, 138];
+  const rgbOf = (l) => isVisible(l) ? lambdaRGB(l) : INVISIBLE_RGB;
+  const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+
+  // ── 상태 ─────────────────────────────────────────
+  const R = () => PieceKit.random();
+  const ELECTRON_COUNT = 6;
+  const electrons = [];
+  for (let i = 0; i < ELECTRON_COUNT; i++) {
+    electrons.push({
+      x: 84 + i * ((LADDER_X1 - 40 - 84) / (ELECTRON_COUNT - 1)),
+      n: 1, from: 1, to: 1,
+      phase: 'rest', timer: 0.1 + R() * 1.0, dur: 0,
+    });
+  }
+  const bins = new Float32Array(STRIP_W);   // 띠에 쌓인 빛의 양 (픽셀 열마다)
+  const photons = [];                        // 날아가는 광자
+  const drops = [];                          // 낙차 자국 (색 = 그 낙차의 광자 색)
+  const rises = [];                          // 들뜸 자국
+  const flashes = [];                        // 띠에 닿은 순간의 섬광
+  const DECAY_TAU = 40;                      // 오래된 빛은 아주 천천히 옅어진다 — 끝없이 포화되지 않게
+
+  function startRise(e) {
+    // 충돌로 들뜨는 위 준위 — n=2 는 드물게, 3~6 은 고르게
+    const up = R() < 0.1 ? 2 : 3 + Math.floor(R() * (N_MAX - 2));
+    e.phase = 'rise'; e.from = e.n; e.to = up; e.timer = 0.2; e.dur = 0.2;
+    rises.push({ x: e.x, y0: levelY(e.from), y1: levelY(up), age: 0 });
+  }
+  function startHold(e) { e.phase = 'hold'; e.timer = 0.2 + R() * 0.45; }
+  function startFall(e) {
+    const low = 1 + Math.floor(R() * (e.n - 1));   // 아래 준위 중 하나
+    e.phase = 'fall'; e.from = e.n; e.to = low; e.timer = 0.22; e.dur = 0.22;
+  }
+  function land(e) {
+    const l = wavelengthNm(e.from, e.to);
+    const x = e.x, y = levelY(e.to);
+    drops.push({ x, y0: levelY(e.from), y1: y, l, age: 0 });
+    let tx, ty = STRIP_Y0 + 10 + R() * (STRIP_Y1 - STRIP_Y0 - 20);
+    if (isVisible(l)) tx = lambdaToX(l);
+    else tx = l < LAMBDA_MIN ? UV_X : IR_X;
+    // 적외선 광자는 가시광 띠를 가로지르지 않도록 띠 위로 휘어 오른쪽으로 나간다
+    const ir = l > LAMBDA_MAX;
+    const cx = ir ? 700 : (x + tx) / 2, cy = ir ? -40 : (y + ty) / 2;
+    const dist = ir ? Math.hypot(cx - x, cy - y) + Math.hypot(tx - cx, ty - cy) : Math.hypot(tx - x, ty - y);
+    photons.push({ x0: x, y0: y, cx, cy, x1: tx, y1: ty, l, s: 0, dur: dist / 520 });
+    e.n = e.to;
+    if (e.n === 1) { e.phase = 'rest'; e.timer = 0.3 + R() * 0.9; }
+    else startHold(e);
+  }
+  function hit(p) {
+    if (!isVisible(p.l)) return;
+    const cx = lambdaToX(p.l) - STRIP_X0;
+    for (let i = Math.floor(cx) - 3; i <= Math.ceil(cx) + 3; i++) {
+      if (i < 0 || i >= STRIP_W) continue;
+      bins[i] += Math.exp(-((i - cx) ** 2) / (2 * 0.8 * 0.8));
+    }
+    flashes.push({ x: p.x1, y: p.y1, l: p.l, age: 0 });
+  }
+
+  function advance(dt) {
+    for (const e of electrons) {
+      e.timer -= dt;
+      if (e.timer > 0) continue;
+      if (e.phase === 'rest') startRise(e);
+      else if (e.phase === 'rise') { e.n = e.to; startHold(e); }
+      else if (e.phase === 'hold') startFall(e);
+      else if (e.phase === 'fall') land(e);
+    }
+    for (let i = photons.length - 1; i >= 0; i--) {
+      const p = photons[i];
+      p.s += dt / p.dur;
+      if (p.s >= 1) { hit(p); photons.splice(i, 1); }
+    }
+    for (const list of [drops, rises, flashes]) {
+      for (let i = list.length - 1; i >= 0; i--) {
+        list[i].age += dt;
+        if (list[i].age > 0.9) list.splice(i, 1);
+      }
+    }
+    const k = Math.exp(-dt / DECAY_TAU);
+    for (let i = 0; i < STRIP_W; i++) bins[i] *= k;
+  }
+
+  // 도착한 순간 이미 진행 중이도록 미리 10초를 돌려 둔다 (결정적: 같은 난수열)
+  for (let i = 0; i < 600; i++) advance(1 / 60);
+
+  // ── 그리기 ────────────────────────────────────────
+  const FONT = '12px -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
+  const LEVEL_COLOR = '#8a93a3';
+  const ELECTRON_COLOR = '#eef1f6';
+
+  // 광자 경로 — 2차 베지에(적외선만 실제로 휘고, 나머지는 제어점이 중점이라 직선)
+  function photonAt(p, s) {
+    const a = (1 - s) * (1 - s), b = 2 * s * (1 - s), c = s * s;
+    return [a * p.x0 + b * p.cx + c * p.x1, a * p.y0 + b * p.cy + c * p.y1];
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#0b0c10';
+    ctx.fillRect(0, 0, W, H);
+
+    PieceKit.mark('에너지 준위', () => {
+      ctx.strokeStyle = LEVEL_COLOR; ctx.lineWidth = 1.2;
+      for (let n = 1; n <= N_MAX; n++) {
+        const y = Math.round(levelY(n)) + 0.5;
+        ctx.beginPath(); ctx.moveTo(LADDER_X0 + 22, y); ctx.lineTo(LADDER_X1, y); ctx.stroke();
+      }
+    });
+
+    PieceKit.mark('준위 번호', () => {
+      ctx.fillStyle = LEVEL_COLOR; ctx.font = FONT; ctx.textBaseline = 'middle'; ctx.textAlign = 'right';
+      for (const n of [1, 2, 3, 4]) ctx.fillText('n=' + n, LADDER_X0 + 16, levelY(n));
+      ctx.fillText('…', LADDER_X0 + 16, levelY(6) - 2);
+    });
+
+    PieceKit.mark('축 끊김 표시', () => {
+      ctx.strokeStyle = LEVEL_COLOR; ctx.lineWidth = 1;
+      const x = LADDER_X0 + 30;
+      ctx.beginPath();
+      ctx.moveTo(x - 6, BREAK_Y + 3); ctx.lineTo(x + 6, BREAK_Y - 1);
+      ctx.moveTo(x - 6, BREAK_Y + 8); ctx.lineTo(x + 6, BREAK_Y + 4);
+      ctx.stroke();
+    });
+
+    PieceKit.mark('들뜸 자국', () => {
+      ctx.setLineDash([2, 3]); ctx.lineWidth = 1;
+      for (const r of rises) {
+        ctx.strokeStyle = `rgba(200,205,215,${0.5 * (1 - r.age / 0.9)})`;
+        ctx.beginPath(); ctx.moveTo(r.x, r.y0); ctx.lineTo(r.x, r.y1); ctx.stroke();
+      }
+      ctx.setLineDash([]);
+    });
+
+    PieceKit.mark('낙차 자국', () => {
+      ctx.lineWidth = 4; ctx.lineCap = 'round';
+      for (const d of drops) {
+        ctx.strokeStyle = rgba(rgbOf(d.l), 0.95 * (1 - d.age / 0.9));
+        ctx.beginPath(); ctx.moveTo(d.x, d.y0); ctx.lineTo(d.x, d.y1); ctx.stroke();
+      }
+      ctx.lineCap = 'butt';
+    });
+
+    PieceKit.mark('전자', () => {
+      ctx.fillStyle = ELECTRON_COLOR;
+      for (const e of electrons) {
+        let y = levelY(e.n);
+        if (e.phase === 'rise' || e.phase === 'fall') {
+          const s = 1 - e.timer / e.dur;
+          const ease = s * s * (3 - 2 * s);
+          y = levelY(e.from) + (levelY(e.to) - levelY(e.from)) * ease;
+        }
+        ctx.beginPath(); ctx.arc(e.x, y, 4, 0, Math.PI * 2); ctx.fill();
+      }
+    });
+
+    PieceKit.mark('가능한 색의 자리', () => {
+      ctx.fillStyle = '#12141a';
+      ctx.fillRect(STRIP_X0, STRIP_Y0, STRIP_W, STRIP_Y1 - STRIP_Y0);
+      for (let i = 0; i < STRIP_W; i++) {
+        const l = LAMBDA_MIN + (i + 0.5) / STRIP_W * (LAMBDA_MAX - LAMBDA_MIN);
+        ctx.fillStyle = rgba(lambdaRGB(l), 0.07);
+        ctx.fillRect(STRIP_X0 + i, STRIP_Y0, 1, STRIP_Y1 - STRIP_Y0);
+      }
+    });
+
+    PieceKit.mark('쌓인 빛의 선', () => {
+      for (let i = 0; i < STRIP_W; i++) {
+        const I = bins[i];
+        if (I < 0.002) continue;
+        const l = LAMBDA_MIN + (i + 0.5) / STRIP_W * (LAMBDA_MAX - LAMBDA_MIN);
+        ctx.fillStyle = rgba(lambdaRGB(l), 1 - Math.exp(-I / 1.2));
+        ctx.fillRect(STRIP_X0 + i, STRIP_Y0, 1, STRIP_Y1 - STRIP_Y0);
+      }
+    });
+
+    PieceKit.mark('빛이 닿는 섬광', () => {
+      for (const f of flashes) {
+        const a = 1 - f.age / 0.9;
+        const g = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, 16);
+        g.addColorStop(0, rgba(lambdaRGB(f.l), 0.9 * a));
+        g.addColorStop(1, rgba(lambdaRGB(f.l), 0));
+        ctx.fillStyle = g;
+        ctx.fillRect(f.x - 16, f.y - 16, 32, 32);
+      }
+    });
+
+    PieceKit.mark('광자', () => {
+      for (const p of photons) {
+        const [x, y] = photonAt(p, p.s);
+        const [tx, ty] = photonAt(p, Math.max(0, p.s - 0.12));
+        const c = rgbOf(p.l);
+        const vis = isVisible(p.l);
+        // 보이지 않는 빛은 띠 밖으로 나가며 옅어진다
+        const a = vis ? 1 : Math.max(0, 1 - Math.max(0, p.s - 0.6) / 0.4);
+        ctx.strokeStyle = rgba(c, 0.45 * a); ctx.lineWidth = 2;
+        if (!vis) ctx.setLineDash([3, 3]);
+        ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(x, y); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.beginPath(); ctx.arc(x, y, 3.2, 0, Math.PI * 2);
+        if (vis) { ctx.fillStyle = rgba(c, a); ctx.fill(); }
+        else { ctx.strokeStyle = rgba(c, a); ctx.lineWidth = 1.2; ctx.stroke(); }
+      }
+    });
+
+    PieceKit.mark('영역 이름', () => {
+      ctx.fillStyle = LEVEL_COLOR; ctx.font = FONT; ctx.textBaseline = 'top';
+      ctx.textAlign = 'center';
+      ctx.fillText('자외선', UV_X, STRIP_Y1 + 8);
+      ctx.fillText('적외선', IR_X - 16, STRIP_Y1 + 8);
+      ctx.fillText('눈에 보이는 빛', (STRIP_X0 + STRIP_X1) / 2, STRIP_Y1 + 8);
+    });
+  }
+
+  PieceKit.loop({
+    step(dt) { advance(dt); },
+    draw() { draw(); },
+  });
+})();
+</script>
+</body>
+</html>

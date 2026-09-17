@@ -704,6 +704,70 @@ export function registerAperi21Bundles(): void {
     return registerBundle('aperi21:double-slit-with-electrons', m.doubleSlitWithElectronsBundle, caps.capabilities);
   });
 
+  registerBundleLoader('aperi21:resonance', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-resonance'),
+      import('./capabilities/oscillation/resonance.generated.js'),
+    ]);
+    return registerBundle('aperi21:resonance', m.resonanceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:keplers-second-law', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-keplers-second-law'),
+      import('./capabilities/astro/keplers-second-law.generated.js'),
+    ]);
+    return registerBundle('aperi21:keplers-second-law', m.keplersSecondLawBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:capillary-action', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-capillary-action'),
+      import('./capabilities/fluids/capillary-action.generated.js'),
+    ]);
+    return registerBundle('aperi21:capillary-action', m.capillaryActionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:phase-diagram', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-phase-diagram'),
+      import('./capabilities/thermal/phase-diagram.generated.js'),
+    ]);
+    return registerBundle('aperi21:phase-diagram', m.phaseDiagramBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:standing-wave', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-standing-wave'),
+      import('./capabilities/waves/standing-wave.generated.js'),
+    ]);
+    return registerBundle('aperi21:standing-wave', m.standingWaveBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:youngs-double-slit', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-youngs-double-slit'),
+      import('./capabilities/optics/youngs-double-slit.generated.js'),
+    ]);
+    return registerBundle('aperi21:youngs-double-slit', m.youngsDoubleSlitBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:rc-circuit', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-rc-circuit'),
+      import('./capabilities/em/rc-circuit.generated.js'),
+    ]);
+    return registerBundle('aperi21:rc-circuit', m.rcCircuitBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:hydrogen-spectrum', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-hydrogen-spectrum'),
+      import('./capabilities/modern/hydrogen-spectrum.generated.js'),
+    ]);
+    return registerBundle('aperi21:hydrogen-spectrum', m.hydrogenSpectrumBundle, caps.capabilities);
+  });
+
   registerBundleLoader('aperi21:uniform-motion', async () => {
     const [m, caps] = await Promise.all([
       import('@aperi21/sim-uniform-motion'),

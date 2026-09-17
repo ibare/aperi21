@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>공명</title>
+<style>
+  :root {
+    --paper: #fbfaf7;
+    --ink: #22262b;
+    --muted: #7a7f86;
+    --accent: #d9622b;
+  }
+  html, body { margin: 0; background: var(--paper); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  .piece { max-width: 900px; margin: 0 auto; padding: 12px 0 10px; }
+  canvas { display: block; width: 100%; }
+  .foot { display: flex; align-items: center; gap: 16px; padding: 6px 24px 0; }
+  .caption { flex: 1; font-size: 15px; line-height: 1.45; margin: 0; }
+  .ctl { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .ctl input { width: 150px; accent-color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="piece" id="piece">
+  <canvas id="cv"></canvas>
+  <div class="foot">
+    <p class="caption">모두 같은 흔들림을 받지만, 고유 진동수가 구동과 맞는 진동자에만 주기마다 흔들림이 쌓인다.</p>
+    <label class="ctl">구동 진동수
+      <input id="drive" type="range" min="6" max="54" step="1" value="30">
+    </label>
+  </div>
+</div>
+<script src="../_harness/piece-kit.js"></script>
+<script>
+(() => {
+  // ── 물리 설정 ─────────────────────────────────────────────
+  // 진동자 i 의 고유 진동수 f_i = 0.4 + i·0.02 Hz (i = 0..60), 가운데(i=30)가 1 Hz.
+  // 구동대(바닥)가 B cos(φ) 로 흔들리고, 진동자는 구동대에 대한 상대 변위 z 로 운동한다.
+  //   z'' + 2γ z' + ω_i² z = Ω² B cos φ   (바닥 가속도의 반작용)
+  const N = 61;
+  const F0 = 0.4, DF = 0.02;
+  const GAMMA = 0.12;          // 감쇠율 [1/s]
+  const B = 2;                 // 구동대 흔들림 진폭 [px]
+  const SUB = 8;               // 한 프레임 안의 적분 잘게 나누기
+  const DEFAULT_DRIVE = 30;    // 기본 구동 진동수 = 진동자 30 의 고유 진동수 (1 Hz)
+
+  const omega = new Float64Array(N);
+  for (let i = 0; i < N; i++) omega[i] = 2 * Math.PI * (F0 + i * DF);
+  const z = new Float64Array(N);
+  const v = new Float64Array(N);
+  let phase = 0;               // 구동 위상 (누적)
+  let driveIdx = DEFAULT_DRIVE;
+
+  // 공명 정상 진폭 ≈ Ω B / (2γ) — 폭포 무늬 밝기의 기준
+  const A_REF = (2 * Math.PI * 1.0) * B / (2 * GAMMA);
+
+  // ── 폭포 무늬(진폭 이력) 버퍼: 가로 = 진동자, 세로 = 시간 ──
+  const ROWS = 110;
+  const ROW_EVERY = 10;        // 10 프레임(1/6 초)마다 한 줄 → 약 18 초 이력
+  const hist = document.createElement('canvas');
+  hist.width = N; hist.height = ROWS;
+  const hctx = hist.getContext('2d');
+  const row = hctx.createImageData(N, 1);
+  let frameCount = 0;
+  // 종이색으로 채워 둔다
+  hctx.fillStyle = '#fbfaf7';
+  hctx.fillRect(0, 0, N, ROWS);
+
+  const slider = document.getElementById('drive');
+  if (PieceKit.frozen) slider.disabled = true;
+  slider.addEventListener('input', () => {
+    if (PieceKit.frozen) return;
+    driveIdx = Number(slider.value);
+  });
+
+  function stepPhysics(dt) {
+    const Om = omega[driveIdx];
+    const h = dt / SUB;
+    for (let s = 0; s < SUB; s++) {
+      const force = Om * Om * B * Math.cos(phase);
+      for (let i = 0; i < N; i++) {
+        const w = omega[i];
+        v[i] += (force - 2 * GAMMA * v[i] - w * w * z[i]) * h;
+        z[i] += v[i] * h;
+      }
+      phase += Om * h;
+    }
+    frameCount++;
+    if (frameCount % ROW_EVERY === 0) pushRow();
+  }
+
+  function pushRow() {
+    // 기존 줄을 한 칸 아래로 밀고 맨 위에 지금 진폭을 쓴다
+    const old = hctx.getImageData(0, 0, N, ROWS - 1);
+    hctx.putImageData(old, 0, 1);
+    const d = row.data;
+    // 종이 (251,250,247) → 잉크 (34,38,43)
+    for (let i = 0; i < N; i++) {
+      const w = omega[i];
+      const amp = Math.sqrt(z[i] * z[i] + (v[i] / w) * (v[i] / w));
+      const k = Math.min(1, amp / A_REF);
+      d[i * 4]     = Math.round(251 + (34 - 251) * k);
+      d[i * 4 + 1] = Math.round(250 + (38 - 250) * k);
+      d[i * 4 + 2] = Math.round(247 + (43 - 247) * k);
+      d[i * 4 + 3] = 255;
+    }
+    hctx.putImageData(row, 0, 0);
+  }
+
+  // 도착했을 때 이미 흔들리고 있도록 1 초 미리 돌려 둔다 (결정적)
+  for (let k = 0; k < 60; k++) stepPhysics(1 / 60);
+
+  // ── 그리기 ───────────────────────────────────────────────
+  const cv = document.getElementById('cv');
+  const ctx = cv.getContext('2d');
+  const H = 296;
+  const BASE_Y = 140;          // 구동대 정지 위치
+  const REST = 70;             // 진동자 정지 높이 (구동대 위)
+  const WF_TOP = 166, WF_H = ROWS;
+  let W = 860, dpr = 1;
+
+  function layout() {
+    const cw = Math.max(320, Math.round(cv.parentElement.clientWidth || 860));
+    const d = window.devicePixelRatio || 1;
+    if (cw !== W || d !== dpr || cv.width !== Math.round(cw * d)) {
+      W = cw; dpr = d;
+      cv.width = Math.round(W * dpr);
+      cv.height = Math.round(H * dpr);
+      cv.style.height = H + 'px';
+    }
+  }
+  const colX = (i) => 24 + (i + 0.5) * ((W - 48) / N);
+
+  function draw() {
+    layout();
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.fillStyle = '#fbfaf7';
+    ctx.fillRect(0, 0, W, H);
+    const pitch = (W - 48) / N;
+    const baseOff = -B * Math.cos(phase);   // 위쪽이 음수
+
+    PieceKit.mark('흔들림 폭', () => {
+      ctx.fillStyle = 'rgba(34,38,43,0.10)';
+      const bw = Math.max(2, pitch * 0.55);
+      for (let i = 0; i < N; i++) {
+        const w = omega[i];
+        const amp = Math.sqrt(z[i] * z[i] + (v[i] / w) * (v[i] / w));
+        const cy = BASE_Y + baseOff - REST;
+        ctx.fillRect(colX(i) - bw / 2, cy - amp, bw, amp * 2);
+      }
+    });
+
+    PieceKit.mark('진동자 막대', () => {
+      ctx.strokeStyle = 'rgba(34,38,43,0.28)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (let i = 0; i < N; i++) {
+        const x = colX(i);
+        ctx.moveTo(x, BASE_Y + baseOff);
+        ctx.lineTo(x, BASE_Y + baseOff - REST - z[i]);
+      }
+      ctx.stroke();
+    });
+
+    PieceKit.mark('진동자 추', () => {
+      ctx.fillStyle = '#22262b';
+      const r = Math.max(2, Math.min(3.2, pitch * 0.32));
+      for (let i = 0; i < N; i++) {
+        ctx.beginPath();
+        ctx.arc(colX(i), BASE_Y + baseOff - REST - z[i], r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    });
+
+    PieceKit.mark('구동대', () => {
+      ctx.strokeStyle = '#d9622b';
+      ctx.lineWidth = 3;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(colX(0) - pitch * 0.5, BASE_Y + baseOff);
+      ctx.lineTo(colX(N - 1) + pitch * 0.5, BASE_Y + baseOff);
+      ctx.stroke();
+    });
+
+    PieceKit.mark('구동 진동수 표시', () => {
+      const x = colX(driveIdx);
+      ctx.fillStyle = '#d9622b';
+      ctx.beginPath();
+      ctx.moveTo(x, BASE_Y + 8);
+      ctx.lineTo(x - 5, BASE_Y + 16);
+      ctx.lineTo(x + 5, BASE_Y + 16);
+      ctx.closePath();
+      ctx.fill();
+      ctx.font = '12px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textBaseline = 'middle';
+      const label = '구동 진동수';
+      const tw = ctx.measureText(label).width;
+      const right = x + 9 + tw < W - 24;
+      ctx.textAlign = right ? 'left' : 'right';
+      ctx.fillText(label, right ? x + 9 : x - 9, BASE_Y + 13);
+    });
+
+    PieceKit.mark('진폭 이력 무늬', () => {
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(hist, 0, 0, N, ROWS, 24, WF_TOP, W - 48, WF_H);
+      ctx.strokeStyle = 'rgba(34,38,43,0.12)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(24.5, WF_TOP + 0.5, W - 49, WF_H - 1);
+    });
+
+    PieceKit.mark('무늬 읽는 법', () => {
+      ctx.fillStyle = '#7a7f86';
+      ctx.font = '11px -apple-system, "Apple SD Gothic Neo", sans-serif';
+      ctx.textBaseline = 'top';
+      const y = WF_TOP + WF_H + 4;
+      ctx.textAlign = 'left';
+      ctx.fillText('← 고유 진동수 낮음', 24, y);
+      ctx.textAlign = 'right';
+      ctx.fillText('고유 진동수 높음 →', W - 24, y);
+      ctx.textAlign = 'center';
+      ctx.fillText('위: 지금 · 아래로 갈수록 지난 흔들림 크기', W / 2, y);
+    });
+  }
+
+  PieceKit.loop({
+    step(dt) { stepPhysics(dt); },
+    draw() { draw(); },
+  });
+})();
+</script>
+</body>
+</html>
