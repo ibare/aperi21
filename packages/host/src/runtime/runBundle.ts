@@ -443,7 +443,12 @@ export function runBundle<T extends BundleState = BundleState>(
         environments: refs.envs,
       });
     }
-    timeEngine.seek(target);
+    // 시계는 **`startAt` 위에** 놓는다. 자유 구현본의 `?t=` 는 "도착한 뒤 흐른 시간" 이라
+    // 도착 순간이 이미 진행 중인 장면이다. `target` 으로 덮어쓰면 앞당김이 지워져
+    // sims 스크린샷이 `startAt` 만큼 이른 장면이 되는데 예외가 없다 — 03 배치 이관
+    // 에이전트 여섯이 각자 손으로 시각을 옮겨 찍었다. 상태 쪽 앞당김(`preroll`)은
+    // 위에서 이미 걸었으므로 여기서 더 걷지 않는다.
+    timeEngine.seek((bundle.schema.startAt ?? 0) + target);
     timeEngine.pause();
   }
 

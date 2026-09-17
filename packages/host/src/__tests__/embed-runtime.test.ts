@@ -396,3 +396,31 @@ describe('destroy 뒷정리', () => {
     expect(() => handle.destroy()).not.toThrow();
   });
 });
+
+describe('검사 시각은 선언의 앞당김 위에 놓인다', () => {
+  it('inspectAt 은 startAt 을 지우지 않는다 — 시간표는 startAt + inspectAt 시각을 본다', () => {
+    // 자유 구현본의 `?t=` 는 도착한 뒤 흐른 시간이다. 러너가 시계를 inspectAt 으로
+    // 덮어쓰면 sims 스크린샷이 startAt 만큼 이른 장면이 된다 — 예외도 안 난다.
+    const seen: number[] = [];
+    const bundle: Bundle<TestState> = {
+      ...makeBundle(),
+      schema: {
+        ...SCHEMA,
+        timeModel: 'periodic',
+        startAt: 1.5,
+        timeline: { phases: [{ id: 'all', duration: 100 }] },
+      },
+      scene: ({ timeline }): SceneGraph => {
+        if (timeline) seen.push(timeline.t);
+        return [];
+      },
+    };
+    const mount = document.createElement('div');
+    document.body.append(mount);
+    const handle = runBundle(bundle, mount, { inspectAt: 2 });
+    raf.tick(3);
+    expect(seen.length).toBeGreaterThan(0);
+    expect(seen.at(-1)).toBeCloseTo(3.5, 6);
+    handle.destroy();
+  });
+});
