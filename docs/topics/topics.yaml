@@ -2929,6 +2929,7 @@ topics:
     level: null
     curricula: []
     visualNote: 간섭계를 돌려도 무늬가 움직이지 않는다
+    sim: aperi21:michelson-morley
   - id: relativity-of-simultaneity
     name: 동시성의 상대성
     desc: 기준틀마다 다른 '동시'
@@ -2936,6 +2937,7 @@ topics:
     level: upper
     curricula: [ib]
     visualNote: 기준틀을 바꾸면 두 사건의 앞뒤가 뒤집힌다
+    sim: aperi21:relativity-of-simultaneity
   - id: time-dilation
     name: 시간 지연
     desc: 운동하는 시계가 느려짐
@@ -2943,6 +2945,7 @@ topics:
     level: upper
     curricula: [kr, ib]
     visualNote: 빠르게 지나가는 시계가 느리게 간다
+    sim: aperi21:time-dilation
   - id: light-clock
     name: 빛 시계
     desc: 시간 지연을 유도하는 사고 실험
@@ -2950,6 +2953,7 @@ topics:
     level: null
     curricula: []
     visualNote: 옆으로 흐르는 빛 시계의 경로가 길어져 느려진다
+    sim: aperi21:light-clock
   - id: length-contraction
     name: 길이 수축
     desc: 운동 방향으로의 수축
@@ -2957,6 +2961,7 @@ topics:
     level: upper
     curricula: [kr, ib]
     visualNote: 진행 방향으로만 짧아진다
+    sim: aperi21:length-contraction
   - id: muon-decay-evidence
     name: 뮤온의 도달
     desc: 시간 지연의 관측 증거
@@ -2964,6 +2969,7 @@ topics:
     level: upper
     curricula: [ib]
     visualNote: 닿을 수 없어야 할 뮤온이 지표에 도달한다
+    sim: aperi21:muon-decay-evidence
   - id: relativistic-velocity-addition
     name: 속도의 상대론적 덧셈
     desc: 광속을 넘지 못하는 합성
@@ -2971,6 +2977,7 @@ topics:
     level: upper
     curricula: [ib]
     visualNote: 더해도 광속을 넘지 못한다
+    sim: aperi21:relativistic-velocity-addition
   - id: twin-paradox
     name: 쌍둥이 역설
     desc: 비대칭을 만드는 가속
@@ -2978,6 +2985,7 @@ topics:
     level: null
     curricula: []
     visualNote: 두 세계선의 길이가 달라 나이가 갈린다
+    sim: aperi21:twin-paradox
   - id: spacetime-diagram
     name: 시공간 도표
     desc: 세계선과 동시선
@@ -2993,6 +3001,7 @@ topics:
     level: upper
     curricula: [ib]
     visualNote: 원뿔 안쪽만 인과가 닿는다
+    sim: aperi21:light-cone
   - id: relativistic-momentum
     name: 상대론적 운동량
     desc: 속도가 커질 때의 발산
@@ -3000,6 +3009,7 @@ topics:
     level: null
     curricula: []
     visualNote: 광속에 다가갈수록 곡선이 위로 치솟는다
+    sim: aperi21:relativistic-momentum
   - id: relativistic-doppler
     name: 상대론적 도플러
     desc: 시간 지연이 더해진 진동수 변화
@@ -3007,6 +3017,7 @@ topics:
     level: null
     curricula: []
     visualNote: 다가오는 빛이 푸르게, 멀어지는 빛이 붉게 밀린다
+    sim: aperi21:relativistic-doppler
   - id: equivalence-principle
     name: 등가 원리
     desc: 가속과 중력의 구별 불가
@@ -3014,6 +3025,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 가속하는 상자 안과 중력장 안이 구별되지 않는다
+    sim: aperi21:equivalence-principle
   - id: gravitational-time-dilation
     name: 중력 시간 지연
     desc: 퍼텐셜에 따른 시계의 차이
@@ -3021,6 +3033,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 높이에 따라 시계가 어긋난다
+    sim: aperi21:gravitational-time-dilation
   - id: gravitational-redshift
     name: 중력 적색 이동
     desc: 빠져나오며 잃는 에너지
@@ -3028,6 +3041,7 @@ topics:
     level: null
     curricula: []
     visualNote: 우물에서 올라온 빛의 파장이 늘어난다
+    sim: aperi21:gravitational-redshift
   - id: light-bending-by-gravity
     name: 빛의 휨
     desc: 질량 근처에서 휘는 경로
@@ -3035,6 +3049,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 질량 근처를 지나는 빛이 휜다
+    sim: aperi21:light-bending-by-gravity
   - id: blackbody-radiation
     name: 흑체 복사
     desc: 고전 이론의 파탄
@@ -3042,6 +3057,7 @@ topics:
     level: lower
     curricula: [ib, uk]
     visualNote: 고전 이론의 곡선이 짧은 파장에서 치솟아 어긋난다
+    sim: aperi21:blackbody-radiation
   - id: wien-displacement-law
     name: 빈 변위 법칙
     desc: 온도와 최대 파장
@@ -3049,6 +3065,7 @@ topics:
     level: upper
     curricula: [ib, uk]
     visualNote: 온도를 올리면 봉우리가 짧은 파장으로 옮겨 간다
+    sim: aperi21:wien-displacement-law
   - id: photoelectric-effect
     name: 광전 효과
     desc: 빛의 입자성 증거
@@ -3056,6 +3073,7 @@ topics:
     level: upper
     curricula: [kr, ib, ngss, ap, uk]
     visualNote: 빛을 세게 해도 안 나오다가 진동수를 올리면 나온다
+    sim: aperi21:photoelectric-effect
   - id: work-function-and-threshold
     name: 일함수와 문턱 진동수
     desc: 세기가 아니라 진동수가 정하는 것
@@ -3063,6 +3081,7 @@ topics:
     level: upper
     curricula: [kr, ib, uk]
     visualNote: 문턱을 넘는 순간부터 전자가 튀어나온다
+    sim: aperi21:work-function-and-threshold
   - id: compton-scattering
     name: 콤프턴 산란
     desc: 광자가 운동량을 가진다는 증거
@@ -3070,6 +3089,7 @@ topics:
     level: upper
     curricula: [ib]
     visualNote: 산란한 광자의 파장이 각도마다 달라진다
+    sim: aperi21:compton-scattering
   - id: pair-production
     name: 쌍생성
     desc: 에너지가 물질이 되는 것
@@ -3077,6 +3097,7 @@ topics:
     level: upper
     curricula: [uk]
     visualNote: 광자가 사라지고 두 입자가 갈라져 나온다
+    sim: aperi21:pair-production
   - id: de-broglie-wavelength
     name: 드브로이 파장
     desc: 물질의 파동성
@@ -3084,6 +3105,7 @@ topics:
     level: upper
     curricula: [kr, ib, ap, uk]
     visualNote: 빠를수록 파장이 짧아진다
+    sim: aperi21:de-broglie-wavelength
   - id: electron-diffraction
     name: 전자 회절
     desc: 물질파의 관측 증거
@@ -3091,6 +3113,7 @@ topics:
     level: upper
     curricula: [kr, ib, uk]
     visualNote: 전자가 만든 고리 무늬가 파동성을 보여 준다
+    sim: aperi21:electron-diffraction
   - id: double-slit-with-electrons
     name: 전자의 이중 슬릿
     desc: 하나씩 보내도 생기는 무늬
@@ -3106,6 +3129,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 한쪽을 좁히면 다른 쪽이 넓어진다
+    sim: aperi21:uncertainty-principle
   - id: wave-function
     name: 파동 함수
     desc: 확률 진폭과 그 해석
@@ -3113,6 +3137,7 @@ topics:
     level: null
     curricula: []
     visualNote: 퍼진 파동의 모양이 있을 곳의 분포를 그린다
+    sim: aperi21:wave-function
   - id: superposition-quantum
     name: 양자 중첩
     desc: 여러 상태의 합으로 있는 것
@@ -3120,6 +3145,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 두 상태가 겹친 채 있다
+    sim: aperi21:superposition-quantum
   - id: measurement-collapse
     name: 측정과 붕괴
     desc: 관측이 상태를 정하는 것
@@ -3127,6 +3153,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 재는 순간 하나로 정해진다
+    sim: aperi21:measurement-collapse
   - id: particle-in-a-box
     name: 무한 우물
     desc: 경계가 만드는 에너지 양자화
@@ -3134,6 +3161,7 @@ topics:
     level: null
     curricula: []
     visualNote: 벽 사이에 정상파처럼 몇 가지 모양만 허용된다
+    sim: aperi21:particle-in-a-box
   - id: finite-well
     name: 유한 우물
     desc: 벽 바깥으로 새는 파동 함수
@@ -3141,6 +3169,7 @@ topics:
     level: null
     curricula: []
     visualNote: 벽 밖으로 파동이 새어 나간다
+    sim: aperi21:finite-well
   - id: quantum-tunneling
     name: 터널 효과
     desc: 장벽을 통과하는 확률
@@ -3148,6 +3177,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 넘을 수 없는 벽을 일부가 지나간다
+    sim: aperi21:quantum-tunneling
   - id: scanning-tunneling-microscope
     name: 주사 터널 현미경
     desc: 터널 전류로 그리는 표면
@@ -3155,6 +3185,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 터널 전류로 원자 하나하나가 그려진다
+    sim: aperi21:scanning-tunneling-microscope
   - id: quantum-harmonic-oscillator
     name: 양자 조화 진동자
     desc: 등간격 준위와 영점 에너지
@@ -3162,6 +3193,7 @@ topics:
     level: null
     curricula: []
     visualNote: 층마다 다른 마디 수의 파동이 쌓인다
+    sim: aperi21:quantum-harmonic-oscillator
   - id: hydrogen-spectrum
     name: 수소 스펙트럼
     desc: 불연속한 선 스펙트럼
@@ -3177,6 +3209,7 @@ topics:
     level: upper
     curricula: [kr, ib, ap, uk]
     visualNote: 허용된 궤도 사이를 건너뛰며 빛이 나온다
+    sim: aperi21:bohr-model
   - id: atomic-orbital
     name: 원자 궤도
     desc: 확률 분포로서의 전자
@@ -3192,6 +3225,7 @@ topics:
     level: null
     curricula: []
     visualNote: 같은 자리에 둘이 못 들어가 위층부터 채운다
+    sim: aperi21:pauli-exclusion
   - id: electron-configuration
     name: 전자 배치
     desc: 주기율표가 나오는 방식
@@ -3199,6 +3233,7 @@ topics:
     level: null
     curricula: []
     visualNote: 껍질이 차례로 차는 것이 보인다
+    sim: aperi21:electron-configuration
   - id: spin
     name: 스핀
     desc: 고전 대응물이 없는 각운동량
@@ -3206,6 +3241,7 @@ topics:
     level: null
     curricula: []
     visualNote: 슈테른-게를라흐에서 두 값만 나온다
+    sim: aperi21:spin
   - id: stern-gerlach
     name: 슈테른-게를라흐 실험
     desc: 갈라지는 원자 빔
@@ -3213,6 +3249,7 @@ topics:
     level: null
     curricula: []
     visualNote: 고르게 퍼질 줄 알았던 빔이 둘로 갈라진다
+    sim: aperi21:stern-gerlach
   - id: zeeman-effect
     name: 제이만 효과
     desc: 자기장이 가르는 준위
@@ -3220,6 +3257,7 @@ topics:
     level: null
     curricula: []
     visualNote: 자기장을 걸면 한 줄이던 선이 갈라진다
+    sim: aperi21:zeeman-effect
   - id: laser-and-stimulated-emission
     name: 레이저와 유도 방출
     desc: 결이 맞는 빛의 증폭
@@ -3227,6 +3265,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 한 광자가 똑같은 광자를 불러 증폭된다
+    sim: aperi21:laser-and-stimulated-emission
   - id: nuclear-structure
     name: 원자핵의 구성
     desc: 양성자와 중성자
@@ -3234,6 +3273,7 @@ topics:
     level: lower
     curricula: [ib, uk]
     visualNote: 양성자와 중성자의 수가 원소와 동위원소를 가른다
+    sim: aperi21:nuclear-structure
   - id: binding-energy-curve
     name: 결합 에너지 곡선
     desc: 철에서 최대가 되는 이유
@@ -3241,6 +3281,7 @@ topics:
     level: upper
     curricula: [ib, ngss, uk]
     visualNote: 철을 꼭짓점으로 분열과 융합의 방향이 갈린다
+    sim: aperi21:binding-energy-curve
   - id: radioactive-decay
     name: 방사성 붕괴
     desc: 반감기와 지수 감소
@@ -3256,6 +3297,7 @@ topics:
     level: lower
     curricula: [ib, ap, uk]
     visualNote: 알파·베타·감마가 종이·알루미늄·납에서 갈린다
+    sim: aperi21:decay-types
   - id: radiometric-dating
     name: 방사성 연대 측정
     desc: 남은 비율로 재는 시간
@@ -3263,6 +3305,7 @@ topics:
     level: lower
     curricula: [uk]
     visualNote: 남은 비율을 읽으면 지난 시간이 나온다
+    sim: aperi21:radiometric-dating
   - id: nuclear-fission
     name: 핵분열
     desc: 무거운 핵이 갈라지며 내는 에너지
@@ -3270,6 +3313,7 @@ topics:
     level: lower
     curricula: [ib, ap, uk]
     visualNote: 무거운 핵이 갈라지며 중성자를 내놓는다
+    sim: aperi21:nuclear-fission
   - id: chain-reaction
     name: 연쇄 반응
     desc: 중성자가 이어가는 분열
@@ -3277,6 +3321,7 @@ topics:
     level: lower
     curricula: [ib, uk]
     visualNote: 하나가 둘을 부르며 걷잡을 수 없이 번진다
+    sim: aperi21:chain-reaction
   - id: nuclear-fusion
     name: 핵융합
     desc: 가벼운 핵이 합쳐지며 내는 에너지
@@ -3284,6 +3329,7 @@ topics:
     level: lower
     curricula: [kr, ib, ngss, ap, uk]
     visualNote: 가벼운 핵이 합쳐지며 질량이 에너지로 바뀐다
+    sim: aperi21:nuclear-fusion
   - id: antimatter
     name: 반물질
     desc: 부호가 반대인 짝
@@ -3291,6 +3337,7 @@ topics:
     level: upper
     curricula: [uk]
     visualNote: 만나면 소멸하며 빛으로 바뀐다
+    sim: aperi21:antimatter
   - id: band-theory
     name: 띠 이론
     desc: 도체·부도체·반도체의 구분
@@ -3298,6 +3345,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 띠 사이의 간격이 도체와 부도체를 가른다
+    sim: aperi21:band-theory
   - id: fermi-level
     name: 페르미 준위
     desc: 전자가 채워진 높이
@@ -3305,6 +3353,7 @@ topics:
     level: null
     curricula: []
     visualNote: 채워진 데까지의 경계가 띠 그림에서 드러난다
+    sim: aperi21:fermi-level
   - id: semiconductor-doping
     name: 도핑
     desc: 불순물이 만드는 n형과 p형
@@ -3312,6 +3361,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 불순물을 넣으면 운반자가 생긴다
+    sim: aperi21:semiconductor-doping
   - id: pn-junction
     name: pn 접합
     desc: 공핍층과 정류
@@ -3319,6 +3369,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 접합면에 공핍층이 생기고 한쪽으로만 흐른다
+    sim: aperi21:pn-junction
   - id: diode-and-led
     name: 다이오드와 LED
     desc: 한 방향 전류와 빛의 방출
@@ -3326,6 +3377,7 @@ topics:
     level: upper
     curricula: [kr, ib, uk]
     visualNote: 방향을 뒤집으면 흐르지 않는다
+    sim: aperi21:diode-and-led
   - id: transistor-principle
     name: 트랜지스터
     desc: 작은 신호가 큰 전류를 제어
@@ -3333,6 +3385,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 작은 신호가 큰 전류를 여닫는다
+    sim: aperi21:transistor-principle
   - id: photovoltaic-effect
     name: 광전지 효과
     desc: 빛이 만드는 전위차
@@ -3340,6 +3393,7 @@ topics:
     level: upper
     curricula: [kr, ngss]
     visualNote: 빛을 쬐면 전압이 생긴다
+    sim: aperi21:photovoltaic-effect
   - id: superconductivity
     name: 초전도
     desc: 저항이 사라지는 상태
@@ -3347,6 +3401,7 @@ topics:
     level: upper
     curricula: [uk]
     visualNote: 임계 온도 아래에서 저항이 뚝 떨어져 사라진다
+    sim: aperi21:superconductivity
   - id: meissner-effect
     name: 마이스너 효과
     desc: 자기장을 밀어내는 초전도체
@@ -3354,6 +3409,7 @@ topics:
     level: null
     curricula: []
     visualNote: 자기장을 밀어내며 자석이 떠오른다
+    sim: aperi21:meissner-effect
   - id: bose-einstein-condensate
     name: 보스-아인슈타인 응축
     desc: 같은 상태로 몰리는 저온의 입자
@@ -3361,6 +3417,7 @@ topics:
     level: null
     curricula: []
     visualNote: 식히면 분포가 한 점으로 무너져 내린다
+    sim: aperi21:bose-einstein-condensate
   - id: scale-of-universe
     name: 우주의 규모
     desc: 원자에서 우주까지 10의 거듭제곱으로 잇는 크기
@@ -3368,6 +3425,7 @@ topics:
     level: lower
     curricula: [kr, ngss]
     visualNote: 배율을 바꾸며 원자에서 우주까지 잇는다
+    sim: aperi21:scale-of-universe
 
   - id: rutherford-scattering
     name: 러더퍼드 산란
@@ -3376,6 +3434,7 @@ topics:
     level: upper
     curricula: [ib, uk]
     visualNote: 알파 입자 대부분이 지나가는데 드물게 크게 꺾인다
+    sim: aperi21:rutherford-scattering
 
   - id: ionizing-radiation
     name: 이온화 복사
@@ -3384,6 +3443,7 @@ topics:
     level: lower
     curricula: [ngss, uk]
     visualNote: 광자 에너지가 문턱을 넘는 순간 결합이 끊어진다
+    sim: aperi21:ionizing-radiation
 
   - id: exchange-particles
     name: 교환 입자
@@ -3392,3 +3452,4 @@ topics:
     level: upper
     curricula: [uk]
     visualNote: 파인만 도형에서 힘이 주고받음으로 그려진다
+    sim: aperi21:exchange-particles

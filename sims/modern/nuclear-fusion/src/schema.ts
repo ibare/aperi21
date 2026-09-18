@@ -1,0 +1,228 @@
+// ========================================================================
+// nuclear-fusion — 선언
+// ========================================================================
+// 질문: 가벼운 핵이 합쳐질 때 나오는 에너지는 어디서 오는가.
+//
+// 답: 중수소(²H)와 삼중수소(³H)가 합쳐져 헬륨-4 와 중성자가 되면, 반응 뒤 질량의 합이
+// 반응 전보다 0.018883 u 작다. 사라진 질량이 날아가는 두 입자의 운동 에너지 17.6 MeV 로
+// 나온다 — 질량이 에너지로 바뀐다.
+//
+// 이웃 `stellar-nucleosynthesis` 는 별 안에서 원소가 겹겹이 쌓이며 곡선을 오르는 것을,
+// `binding-energy-curve` 는 융합 · 분열이 모두 철 쪽으로 곡선을 오르는 것을 보인다.
+// 이 조각은 곡선을 그리지 않는다 — **한 번의 반응에서 저울에 단 질량이 줄어드는 것**을 보인다.
+//
+// 엔진 위에서 바로 만든 조각이다 — 자유 구현 원본이 없다.
+// ========================================================================
+
+import type { BundleSchema, LocalizedText } from '@aperi21/schema';
+
+/** 등록 키 `aperi21:nuclear-fusion` 와 문자 그대로 일치한다 (C4). */
+export const NUCLEAR_FUSION_ID = 'nuclear-fusion';
+
+// ------------------------------------------------------------------------
+// 문안
+// ------------------------------------------------------------------------
+
+export const nuclearFusionMessages = Object.freeze({
+  'label.title': { ko: '핵융합', en: 'Nuclear fusion' },
+  'label.operation': { ko: '가벼운 핵이 합쳐지며 내는 에너지', en: 'Energy released when light nuclei join' },
+  'label.stage': { ko: '중수소-삼중수소 반응', en: 'Deuterium–tritium reaction' },
+  'label.view': { ko: '질량 결손', en: 'Mass defect' },
+
+  /** 막대 이름. 조사가 붙는 말이라 문안이다 (C1 판정 4). */
+  'label.before': { ko: '반응 전', en: 'before' },
+  'label.after': { ko: '반응 뒤', en: 'after' },
+  /** 확대창 이름 — 배율은 선언된 정박값을 그대로 끼운다 (S-piece 유효숫자). */
+  'label.zoom': { ko: '막대 위 끝 ×{z} 확대', en: 'top of the bars, ×{z}' },
+  /** 질량 · 에너지 값. 수는 스테이지 상수의 문자열 그대로다. */
+  'label.mass': { ko: '{m} u', en: '{m} u' },
+  'label.defect': { ko: 'Δm = {m} u', en: 'Δm = {m} u' },
+  'label.energy': { ko: '{e} MeV', en: '{e} MeV' },
+  'label.released': { ko: '→ 에너지 {e} MeV', en: '→ {e} MeV of energy' },
+
+  /** 핵종 기호. 원어로 통용되는 표식이지만 저작자가 바꿀 수 있게 키로 둔다 (C1 판정 3). */
+  'symbol.D': { ko: '²H', en: '²H' },
+  'symbol.T': { ko: '³H', en: '³H' },
+  'symbol.He': { ko: '⁴He', en: '⁴He' },
+  'symbol.n': { ko: 'n', en: 'n' },
+
+  'caption.meet': {
+    ko: '중수소(²H)와 삼중수소(³H)가 부딪쳐 합쳐진다 — 가운데 막대는 두 핵의 질량을 쌓은 것이다.',
+    en: 'Deuterium (²H) and tritium (³H) collide and fuse — the middle bar stacks up the mass of the two nuclei.',
+  },
+  'caption.convert': {
+    ko: '헬륨-4 와 중성자가 튀어 나가는 동안 「반응 뒤」 막대의 위 끝이 사라진다 — 사라진 질량이 두 입자의 운동 에너지가 된다.',
+    en: 'As helium-4 and a neutron fly apart, the top of the “after” bar disappears — the lost mass becomes their kinetic energy.',
+  },
+  'caption.renew': {
+    ko: '다음 중수소와 삼중수소가 제자리에 선다.',
+    en: 'The next deuterium and tritium take their places.',
+  },
+  'caption.defect': {
+    ko: '반응 뒤의 질량 합이 조금 작다 — 온 막대로는 보이지 않는 이 작은 차이가 날아가는 두 입자의 에너지로 나왔다.',
+    en: 'The mass after the reaction is slightly smaller — a difference too small to see on the full bars, and it came out as the energy of the two flying particles.',
+  },
+} satisfies Record<string, LocalizedText>);
+
+export type NuclearFusionMessageKey = keyof typeof nuclearFusionMessages;
+
+/** 선언에서 문안을 꺼낸다. 호출부에 문자열 리터럴을 두지 않기 위한 유일한 통로. */
+export const text = (key: NuclearFusionMessageKey): LocalizedText => nuclearFusionMessages[key];
+
+/** 시간표 · 캡션 슬롯이 부르는 문안 키. 없는 키를 쓰면 여기서 타입이 막는다. */
+function key(k: NuclearFusionMessageKey): string {
+  return k;
+}
+
+// ------------------------------------------------------------------------
+// 물리 — 스테이지 상수의 기본값 (원칙 2). 질량은 원자 질량(u), 소수 여섯째 자리.
+// ------------------------------------------------------------------------
+
+/**
+ * 반응 D + T → ⁴He + n 의 선언값. 화면에 띄우는 수는 모두 여기의 문자열 그대로다 —
+ * 계산해 반올림하지 않는다 (S-piece 유효숫자). 합 · 결손 · 에너지는 사이 관계가 있어
+ * `physics.readConstants` 가 검사한다 (장부 G143).
+ */
+export const DEFAULTS = {
+  /** 중수소 ²H 원자 질량(u). */
+  massD: 2.014102,
+  /** 삼중수소 ³H 원자 질량(u). */
+  massT: 3.016049,
+  /** 헬륨-4 원자 질량(u). */
+  massHe: 4.002603,
+  /** 중성자 질량(u). */
+  massN: 1.008665,
+  /** 반응 전 합 = massD + massT. 띄우는 정박값. */
+  sumBefore: 5.030151,
+  /** 반응 뒤 합 = massHe + massN. 띄우는 정박값. */
+  sumAfter: 5.011268,
+  /** 질량 결손 = sumBefore − sumAfter. 띄우는 정박값. */
+  massDefect: 0.018883,
+  /** 1 u 의 정지 에너지(MeV) — c² 을 u → MeV 로 옮긴 값. */
+  uToMeV: 931.494,
+  /** 나오는 에너지 ≈ massDefect × uToMeV. 띄우는 정박값(MeV). */
+  energyMeV: 17.6,
+  /** 헬륨-4 · 중성자가 나눠 가진 운동 에너지(MeV). 운동량이 같아 질량에 반비례한다. */
+  energyHeMeV: 3.5,
+  energyNMeV: 14.1,
+  /**
+   * 확대창 배율. 결손은 합의 0.4 % 라 온 막대에서는 1 px 도 안 된다 — 위 끝을 이만큼 키워
+   * 보인다. 화면에 「×100」 으로 알린다 (장부 지시: 작은 효과를 키운 배율은 이름 붙여 선언).
+   */
+  zoomFactor: 100,
+} as const;
+
+export type NuclearFusionConstantKey = keyof typeof DEFAULTS;
+
+// ------------------------------------------------------------------------
+// 배치 — 월드 단위는 임의. 반응은 왼쪽, 온 막대는 가운데, 확대창은 오른쪽.
+// ------------------------------------------------------------------------
+
+export const LAYOUT = {
+  /** 반응 — 두 핵이 만나는 자리와 처음 자리. */
+  meet: [-3.6, 1.0] as const,
+  dStartX: -5.6,
+  tStartX: -2.0,
+  /** 만나는 순간 두 핵 중심 사이 거리(월드). */
+  contactGap: 0.52,
+  /** 튀어 나가는 방향(도, 월드 +x 에서 반시계). 중성자와 헬륨은 정반대로 간다. */
+  neutronDirDeg: 150,
+  /** 중성자가 `fly` 시작부터 `hold` 끝까지 가는 거리(월드). 헬륨은 속력 비만큼 짧게 간다. */
+  neutronTravel: 1.8,
+  /** 에너지 화살표 — 1 MeV 의 길이(월드). 화살표 길이가 곧 그 입자가 받은 에너지다. */
+  arrowPerMeV: 0.085,
+
+  /** 온 막대 — 바닥 높이 · 1 u 의 높이 · 두 막대의 가로 구간. */
+  barBaseY: -1.0,
+  barPerU: 0.62,
+  barBefore: [-0.75, -0.15] as const,
+  barAfter: [0.15, 0.75] as const,
+
+  /** 확대창 — 월드 사각형 · 창 안 두 막대의 가로 구간 · 반응 전 막대 위의 여유(월드). */
+  zoomMin: [2.0, -0.6] as const,
+  zoomMax: [5.6, 2.0] as const,
+  zoomBefore: [2.2, 3.5] as const,
+  zoomAfter: [3.8, 5.1] as const,
+  zoomHeadroom: 0.42,
+  /** 결손 치수선의 가로 자리(월드) — 반응 뒤 막대 오른쪽. */
+  defectX: 5.35,
+} as const;
+
+/**
+ * 고정 경계. 반응 · 막대 · 확대창 · 이름표가 들어가게 처음부터 잡는다 (원칙 6). 아래로 캡션
+ * 두 줄 자리를 더 잡는다 — 캡션 슬롯은 프레이밍 여백으로 잡히지 않는다 (장부 G24).
+ */
+export const SCENE_BOUNDS = { minX: -6.7, maxX: 7.5, minY: -2.1, maxY: 2.8 } as const;
+
+// ------------------------------------------------------------------------
+// BundleSchema
+// ------------------------------------------------------------------------
+
+export const nuclearFusionSchema: BundleSchema = {
+  id: NUCLEAR_FUSION_ID,
+  label: text('label.title'),
+  category: 'modern',
+  operation: text('label.operation'),
+  timeModel: 'periodic',
+
+  // 조작기가 없다. 질량은 자연이 정한 값이라 끌어 바꾸면 거짓 반응이 된다.
+  parameters: [],
+  stages: [
+    {
+      id: 'd-t',
+      label: text('label.stage'),
+      constants: { ...DEFAULTS },
+    },
+  ],
+  environments: [],
+  views: [{ id: 'mass-defect', label: text('label.view'), default: true }],
+
+  /** 가로로 넓다 — 반응 · 온 막대 · 확대창이 나란하다. 세로는 온 막대 높이와 캡션 두 줄. */
+  canvas: { height: 340, minHeight: 320 },
+
+  /** 쓴 순서대로 겹친다 — 막대 면 위에 경계 · 글자, 핵자 위에 이름표. */
+  drawOrder: 'scene',
+
+  /** 도착한 순간 두 핵이 이미 다가가는 중이다 (S-piece). */
+  startAt: 0.3,
+
+  /**
+   * 한 주기 — 9.3 초.
+   *
+   * - `approach` — ²H 와 ³H 가 양쪽에서 다가간다. 가운데 「반응 전」 막대가 두 질량을 쌓아 서 있다.
+   * - `close` — 두 핵이 맞닿고 이름표 · 질량 글자가 물러난다. 다가가는 움직임은 `approach` 와 이어진 한 번의 이징이다.
+   * - `fuse` — 두 핵이 한 덩이로 합쳐진다. 「반응 뒤」 막대가 **같은 높이**로 나타나고, 확대창에서 그 위 끝
+   *   (반응 전과의 차이)이 강조색이다.
+   * - `fly` — ⁴He 와 n 이 반대로 튀어 나가고 강조색 에너지 화살표가 자란다. 같은 동안 확대창의 강조색 위 끝이
+   *   **줄어들어 사라진다** — 질량이 에너지로 바뀐다.
+   * - `reveal` — 비어 버린 자리에 결손 치수선 · 「Δm」 · 「→ 에너지 17.6 MeV」 가 뜬다.
+   * - `hold` — 두 입자는 계속 날아가고 그림이 머문다.
+   * - `clear` — 반응 뒤의 것이 물러난다.
+   * - `renew` — 다음 주기의 ²H · ³H 가 제자리에 선다.
+   */
+  timeline: {
+    phases: [
+      { id: 'approach', duration: 1.7, caption: key('caption.meet') },
+      { id: 'close', duration: 0.3, caption: key('caption.meet') },
+      { id: 'fuse', duration: 0.5, ease: 'smooth', caption: key('caption.meet') },
+      { id: 'fly', duration: 2.0, ease: 'smooth', caption: key('caption.convert') },
+      { id: 'reveal', duration: 0.6, ease: 'smooth', caption: key('caption.defect') },
+      { id: 'hold', duration: 3.0, caption: key('caption.defect') },
+      { id: 'clear', duration: 0.6, caption: key('caption.defect') },
+      { id: 'renew', duration: 0.6, caption: key('caption.renew') },
+    ],
+  },
+
+  /** 슬롯 하나. 값이 끼지 않는 문장뿐이다 — 수는 그림 속 이름표가 말한다. */
+  caption: {
+    anchor: { screen: 'bottom-left', offset: [4, -4] },
+    align: 'left',
+    fontSize: 14,
+    wrapWidth: 820,
+    style: { colorRole: 'ink', emphasis: 'strong' },
+  },
+
+  // 그리드 · 카메라 단추 · 제목 · 범례 없음(기본). 읽을 것은 막대 위 끝의 차이다 (S-piece).
+
+  messages: nuclearFusionMessages,
+};

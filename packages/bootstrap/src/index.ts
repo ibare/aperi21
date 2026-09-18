@@ -824,6 +824,494 @@ export function registerAperi21Bundles(): void {
     return registerBundle('aperi21:radioactive-decay', m.radioactiveDecayBundle, caps.capabilities);
   });
 
+  registerBundleLoader('aperi21:time-dilation', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-time-dilation'),
+      import('./capabilities/modern/time-dilation.generated.js'),
+    ]);
+    return registerBundle('aperi21:time-dilation', m.timeDilationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:equivalence-principle', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-equivalence-principle'),
+      import('./capabilities/modern/equivalence-principle.generated.js'),
+    ]);
+    return registerBundle('aperi21:equivalence-principle', m.equivalencePrincipleBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:photoelectric-effect', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-photoelectric-effect'),
+      import('./capabilities/modern/photoelectric-effect.generated.js'),
+    ]);
+    return registerBundle('aperi21:photoelectric-effect', m.photoelectricEffectBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:de-broglie-wavelength', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-de-broglie-wavelength'),
+      import('./capabilities/modern/de-broglie-wavelength.generated.js'),
+    ]);
+    return registerBundle('aperi21:de-broglie-wavelength', m.deBroglieWavelengthBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:bohr-model', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-bohr-model'),
+      import('./capabilities/modern/bohr-model.generated.js'),
+    ]);
+    return registerBundle('aperi21:bohr-model', m.bohrModelBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:nuclear-structure', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-nuclear-structure'),
+      import('./capabilities/modern/nuclear-structure.generated.js'),
+    ]);
+    return registerBundle('aperi21:nuclear-structure', m.nuclearStructureBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:band-theory', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-band-theory'),
+      import('./capabilities/modern/band-theory.generated.js'),
+    ]);
+    return registerBundle('aperi21:band-theory', m.bandTheoryBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:scale-of-universe', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-scale-of-universe'),
+      import('./capabilities/modern/scale-of-universe.generated.js'),
+    ]);
+    return registerBundle('aperi21:scale-of-universe', m.scaleOfUniverseBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:relativity-of-simultaneity', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-relativity-of-simultaneity'),
+      import('./capabilities/modern/relativity-of-simultaneity.generated.js'),
+    ]);
+    return registerBundle('aperi21:relativity-of-simultaneity', m.relativityOfSimultaneityBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:light-bending-by-gravity', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-light-bending-by-gravity'),
+      import('./capabilities/modern/light-bending-by-gravity.generated.js'),
+    ]);
+    return registerBundle('aperi21:light-bending-by-gravity', m.lightBendingByGravityBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:blackbody-radiation', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-blackbody-radiation'),
+      import('./capabilities/modern/blackbody-radiation.generated.js'),
+    ]);
+    return registerBundle('aperi21:blackbody-radiation', m.blackbodyRadiationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:particle-in-a-box', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-particle-in-a-box'),
+      import('./capabilities/modern/particle-in-a-box.generated.js'),
+    ]);
+    return registerBundle('aperi21:particle-in-a-box', m.particleInABoxBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:rutherford-scattering', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-rutherford-scattering'),
+      import('./capabilities/modern/rutherford-scattering.generated.js'),
+    ]);
+    return registerBundle('aperi21:rutherford-scattering', m.rutherfordScatteringBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:nuclear-fission', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-nuclear-fission'),
+      import('./capabilities/modern/nuclear-fission.generated.js'),
+    ]);
+    return registerBundle('aperi21:nuclear-fission', m.nuclearFissionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:superconductivity', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-superconductivity'),
+      import('./capabilities/modern/superconductivity.generated.js'),
+    ]);
+    return registerBundle('aperi21:superconductivity', m.superconductivityBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:michelson-morley', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-michelson-morley'),
+      import('./capabilities/modern/michelson-morley.generated.js'),
+    ]);
+    return registerBundle('aperi21:michelson-morley', m.michelsonMorleyBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:gravitational-time-dilation', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-gravitational-time-dilation'),
+      import('./capabilities/modern/gravitational-time-dilation.generated.js'),
+    ]);
+    return registerBundle('aperi21:gravitational-time-dilation', m.gravitationalTimeDilationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:compton-scattering', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-compton-scattering'),
+      import('./capabilities/modern/compton-scattering.generated.js'),
+    ]);
+    return registerBundle('aperi21:compton-scattering', m.comptonScatteringBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:uncertainty-principle', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-uncertainty-principle'),
+      import('./capabilities/modern/uncertainty-principle.generated.js'),
+    ]);
+    return registerBundle('aperi21:uncertainty-principle', m.uncertaintyPrincipleBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:stern-gerlach', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-stern-gerlach'),
+      import('./capabilities/modern/stern-gerlach.generated.js'),
+    ]);
+    return registerBundle('aperi21:stern-gerlach', m.sternGerlachBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:decay-types', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-decay-types'),
+      import('./capabilities/modern/decay-types.generated.js'),
+    ]);
+    return registerBundle('aperi21:decay-types', m.decayTypesBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:semiconductor-doping', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-semiconductor-doping'),
+      import('./capabilities/modern/semiconductor-doping.generated.js'),
+    ]);
+    return registerBundle('aperi21:semiconductor-doping', m.semiconductorDopingBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:length-contraction', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-length-contraction'),
+      import('./capabilities/modern/length-contraction.generated.js'),
+    ]);
+    return registerBundle('aperi21:length-contraction', m.lengthContractionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:gravitational-redshift', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-gravitational-redshift'),
+      import('./capabilities/modern/gravitational-redshift.generated.js'),
+    ]);
+    return registerBundle('aperi21:gravitational-redshift', m.gravitationalRedshiftBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:pair-production', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-pair-production'),
+      import('./capabilities/modern/pair-production.generated.js'),
+    ]);
+    return registerBundle('aperi21:pair-production', m.pairProductionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:quantum-tunneling', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-quantum-tunneling'),
+      import('./capabilities/modern/quantum-tunneling.generated.js'),
+    ]);
+    return registerBundle('aperi21:quantum-tunneling', m.quantumTunnelingBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:laser-and-stimulated-emission', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-laser-and-stimulated-emission'),
+      import('./capabilities/modern/laser-and-stimulated-emission.generated.js'),
+    ]);
+    return registerBundle('aperi21:laser-and-stimulated-emission', m.laserAndStimulatedEmissionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:binding-energy-curve', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-binding-energy-curve'),
+      import('./capabilities/modern/binding-energy-curve.generated.js'),
+    ]);
+    return registerBundle('aperi21:binding-energy-curve', m.bindingEnergyCurveBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:bose-einstein-condensate', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-bose-einstein-condensate'),
+      import('./capabilities/modern/bose-einstein-condensate.generated.js'),
+    ]);
+    return registerBundle('aperi21:bose-einstein-condensate', m.boseEinsteinCondensateBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:relativistic-velocity-addition', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-relativistic-velocity-addition'),
+      import('./capabilities/modern/relativistic-velocity-addition.generated.js'),
+    ]);
+    return registerBundle('aperi21:relativistic-velocity-addition', m.relativisticVelocityAdditionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:ionizing-radiation', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-ionizing-radiation'),
+      import('./capabilities/modern/ionizing-radiation.generated.js'),
+    ]);
+    return registerBundle('aperi21:ionizing-radiation', m.ionizingRadiationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:wave-function', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-wave-function'),
+      import('./capabilities/modern/wave-function.generated.js'),
+    ]);
+    return registerBundle('aperi21:wave-function', m.waveFunctionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:pauli-exclusion', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-pauli-exclusion'),
+      import('./capabilities/modern/pauli-exclusion.generated.js'),
+    ]);
+    return registerBundle('aperi21:pauli-exclusion', m.pauliExclusionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:antimatter', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-antimatter'),
+      import('./capabilities/modern/antimatter.generated.js'),
+    ]);
+    return registerBundle('aperi21:antimatter', m.antimatterBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:pn-junction', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-pn-junction'),
+      import('./capabilities/modern/pn-junction.generated.js'),
+    ]);
+    return registerBundle('aperi21:pn-junction', m.pnJunctionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:light-cone', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-light-cone'),
+      import('./capabilities/modern/light-cone.generated.js'),
+    ]);
+    return registerBundle('aperi21:light-cone', m.lightConeBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:wien-displacement-law', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-wien-displacement-law'),
+      import('./capabilities/modern/wien-displacement-law.generated.js'),
+    ]);
+    return registerBundle('aperi21:wien-displacement-law', m.wienDisplacementLawBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:superposition-quantum', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-superposition-quantum'),
+      import('./capabilities/modern/superposition-quantum.generated.js'),
+    ]);
+    return registerBundle('aperi21:superposition-quantum', m.superpositionQuantumBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:zeeman-effect', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-zeeman-effect'),
+      import('./capabilities/modern/zeeman-effect.generated.js'),
+    ]);
+    return registerBundle('aperi21:zeeman-effect', m.zeemanEffectBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:nuclear-fusion', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-nuclear-fusion'),
+      import('./capabilities/modern/nuclear-fusion.generated.js'),
+    ]);
+    return registerBundle('aperi21:nuclear-fusion', m.nuclearFusionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:fermi-level', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-fermi-level'),
+      import('./capabilities/modern/fermi-level.generated.js'),
+    ]);
+    return registerBundle('aperi21:fermi-level', m.fermiLevelBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:relativistic-momentum', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-relativistic-momentum'),
+      import('./capabilities/modern/relativistic-momentum.generated.js'),
+    ]);
+    return registerBundle('aperi21:relativistic-momentum', m.relativisticMomentumBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:work-function-and-threshold', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-work-function-and-threshold'),
+      import('./capabilities/modern/work-function-and-threshold.generated.js'),
+    ]);
+    return registerBundle('aperi21:work-function-and-threshold', m.workFunctionAndThresholdBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:quantum-harmonic-oscillator', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-quantum-harmonic-oscillator'),
+      import('./capabilities/modern/quantum-harmonic-oscillator.generated.js'),
+    ]);
+    return registerBundle('aperi21:quantum-harmonic-oscillator', m.quantumHarmonicOscillatorBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:electron-configuration', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-electron-configuration'),
+      import('./capabilities/modern/electron-configuration.generated.js'),
+    ]);
+    return registerBundle('aperi21:electron-configuration', m.electronConfigurationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:radiometric-dating', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-radiometric-dating'),
+      import('./capabilities/modern/radiometric-dating.generated.js'),
+    ]);
+    return registerBundle('aperi21:radiometric-dating', m.radiometricDatingBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:photovoltaic-effect', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-photovoltaic-effect'),
+      import('./capabilities/modern/photovoltaic-effect.generated.js'),
+    ]);
+    return registerBundle('aperi21:photovoltaic-effect', m.photovoltaicEffectBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:relativistic-doppler', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-relativistic-doppler'),
+      import('./capabilities/modern/relativistic-doppler.generated.js'),
+    ]);
+    return registerBundle('aperi21:relativistic-doppler', m.relativisticDopplerBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:electron-diffraction', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-electron-diffraction'),
+      import('./capabilities/modern/electron-diffraction.generated.js'),
+    ]);
+    return registerBundle('aperi21:electron-diffraction', m.electronDiffractionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:spin', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-spin'),
+      import('./capabilities/modern/spin.generated.js'),
+    ]);
+    return registerBundle('aperi21:spin', m.spinBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:exchange-particles', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-exchange-particles'),
+      import('./capabilities/modern/exchange-particles.generated.js'),
+    ]);
+    return registerBundle('aperi21:exchange-particles', m.exchangeParticlesBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:meissner-effect', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-meissner-effect'),
+      import('./capabilities/modern/meissner-effect.generated.js'),
+    ]);
+    return registerBundle('aperi21:meissner-effect', m.meissnerEffectBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:light-clock', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-light-clock'),
+      import('./capabilities/modern/light-clock.generated.js'),
+    ]);
+    return registerBundle('aperi21:light-clock', m.lightClockBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:measurement-collapse', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-measurement-collapse'),
+      import('./capabilities/modern/measurement-collapse.generated.js'),
+    ]);
+    return registerBundle('aperi21:measurement-collapse', m.measurementCollapseBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:chain-reaction', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-chain-reaction'),
+      import('./capabilities/modern/chain-reaction.generated.js'),
+    ]);
+    return registerBundle('aperi21:chain-reaction', m.chainReactionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:diode-and-led', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-diode-and-led'),
+      import('./capabilities/modern/diode-and-led.generated.js'),
+    ]);
+    return registerBundle('aperi21:diode-and-led', m.diodeAndLedBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:muon-decay-evidence', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-muon-decay-evidence'),
+      import('./capabilities/modern/muon-decay-evidence.generated.js'),
+    ]);
+    return registerBundle('aperi21:muon-decay-evidence', m.muonDecayEvidenceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:finite-well', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-finite-well'),
+      import('./capabilities/modern/finite-well.generated.js'),
+    ]);
+    return registerBundle('aperi21:finite-well', m.finiteWellBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:transistor-principle', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-transistor-principle'),
+      import('./capabilities/modern/transistor-principle.generated.js'),
+    ]);
+    return registerBundle('aperi21:transistor-principle', m.transistorPrincipleBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:twin-paradox', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-twin-paradox'),
+      import('./capabilities/modern/twin-paradox.generated.js'),
+    ]);
+    return registerBundle('aperi21:twin-paradox', m.twinParadoxBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:scanning-tunneling-microscope', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-scanning-tunneling-microscope'),
+      import('./capabilities/modern/scanning-tunneling-microscope.generated.js'),
+    ]);
+    return registerBundle('aperi21:scanning-tunneling-microscope', m.scanningTunnelingMicroscopeBundle, caps.capabilities);
+  });
+
   registerBundleLoader('aperi21:kinetic-energy', async () => {
     const [m, caps] = await Promise.all([
       import('@aperi21/sim-kinetic-energy'),

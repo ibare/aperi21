@@ -162,6 +162,9 @@ importers:
       '@aperi21/sim-angular-momentum-vector':
         specifier: workspace:*
         version: link:../../sims/oscillation/angular-momentum-vector
+      '@aperi21/sim-antimatter':
+        specifier: workspace:*
+        version: link:../../sims/modern/antimatter
       '@aperi21/sim-apparent-brightness':
         specifier: workspace:*
         version: link:../../sims/astro/apparent-brightness
@@ -192,6 +195,9 @@ importers:
       '@aperi21/sim-ballistic-pendulum':
         specifier: workspace:*
         version: link:../../sims/mechanics/ballistic-pendulum
+      '@aperi21/sim-band-theory':
+        specifier: workspace:*
+        version: link:../../sims/modern/band-theory
       '@aperi21/sim-banked-curve':
         specifier: workspace:*
         version: link:../../sims/mechanics/banked-curve
@@ -207,9 +213,21 @@ importers:
       '@aperi21/sim-bernoullis-principle':
         specifier: workspace:*
         version: link:../../sims/fluids/bernoullis-principle
+      '@aperi21/sim-binding-energy-curve':
+        specifier: workspace:*
+        version: link:../../sims/modern/binding-energy-curve
       '@aperi21/sim-black-hole-horizon':
         specifier: workspace:*
         version: link:../../sims/astro/black-hole-horizon
+      '@aperi21/sim-blackbody-radiation':
+        specifier: workspace:*
+        version: link:../../sims/modern/blackbody-radiation
+      '@aperi21/sim-bohr-model':
+        specifier: workspace:*
+        version: link:../../sims/modern/bohr-model
+      '@aperi21/sim-bose-einstein-condensate':
+        specifier: workspace:*
+        version: link:../../sims/modern/bose-einstein-condensate
       '@aperi21/sim-boundary-layer':
         specifier: workspace:*
         version: link:../../sims/fluids/boundary-layer
@@ -234,6 +252,9 @@ importers:
       '@aperi21/sim-centripetal-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/centripetal-force
+      '@aperi21/sim-chain-reaction':
+        specifier: workspace:*
+        version: link:../../sims/modern/chain-reaction
       '@aperi21/sim-charged-particle-in-magnetic-field':
         specifier: workspace:*
         version: link:../../sims/em/charged-particle-in-magnetic-field
@@ -243,6 +264,9 @@ importers:
       '@aperi21/sim-color-addition':
         specifier: workspace:*
         version: link:../../sims/optics/color-addition
+      '@aperi21/sim-compton-scattering':
+        specifier: workspace:*
+        version: link:../../sims/modern/compton-scattering
       '@aperi21/sim-conical-pendulum':
         specifier: workspace:*
         version: link:../../sims/mechanics/conical-pendulum
@@ -282,12 +306,21 @@ importers:
       '@aperi21/sim-damping-regimes':
         specifier: workspace:*
         version: link:../../sims/oscillation/damping-regimes
+      '@aperi21/sim-de-broglie-wavelength':
+        specifier: workspace:*
+        version: link:../../sims/modern/de-broglie-wavelength
+      '@aperi21/sim-decay-types':
+        specifier: workspace:*
+        version: link:../../sims/modern/decay-types
       '@aperi21/sim-diffraction':
         specifier: workspace:*
         version: link:../../sims/waves/diffraction
       '@aperi21/sim-digital-vs-analog-signal':
         specifier: workspace:*
         version: link:../../sims/waves/digital-vs-analog-signal
+      '@aperi21/sim-diode-and-led':
+        specifier: workspace:*
+        version: link:../../sims/modern/diode-and-led
       '@aperi21/sim-direction-of-acceleration':
         specifier: workspace:*
         version: link:../../sims/kinematics/direction-of-acceleration
@@ -333,6 +366,12 @@ importers:
       '@aperi21/sim-electromagnetic-wave':
         specifier: workspace:*
         version: link:../../sims/em/electromagnetic-wave
+      '@aperi21/sim-electron-configuration':
+        specifier: workspace:*
+        version: link:../../sims/modern/electron-configuration
+      '@aperi21/sim-electron-diffraction':
+        specifier: workspace:*
+        version: link:../../sims/modern/electron-diffraction
       '@aperi21/sim-elliptical-orbit':
         specifier: workspace:*
         version: link:../../sims/astro/elliptical-orbit
@@ -354,9 +393,15 @@ importers:
       '@aperi21/sim-equipotential-surface':
         specifier: workspace:*
         version: link:../../sims/em/equipotential-surface
+      '@aperi21/sim-equivalence-principle':
+        specifier: workspace:*
+        version: link:../../sims/modern/equivalence-principle
       '@aperi21/sim-escape-velocity':
         specifier: workspace:*
         version: link:../../sims/astro/escape-velocity
+      '@aperi21/sim-exchange-particles':
+        specifier: workspace:*
+        version: link:../../sims/modern/exchange-particles
       '@aperi21/sim-exoplanet-detection':
         specifier: workspace:*
         version: link:../../sims/astro/exoplanet-detection
@@ -366,12 +411,18 @@ importers:
       '@aperi21/sim-explosion-and-recoil':
         specifier: workspace:*
         version: link:../../sims/mechanics/explosion-and-recoil
+      '@aperi21/sim-fermi-level':
+        specifier: workspace:*
+        version: link:../../sims/modern/fermi-level
       '@aperi21/sim-fictitious-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/fictitious-force
       '@aperi21/sim-field-lines':
         specifier: workspace:*
         version: link:../../sims/em/field-lines
+      '@aperi21/sim-finite-well':
+        specifier: workspace:*
+        version: link:../../sims/modern/finite-well
       '@aperi21/sim-floating-and-draft':
         specifier: workspace:*
         version: link:../../sims/fluids/floating-and-draft
@@ -402,9 +453,15 @@ importers:
       '@aperi21/sim-gravitational-potential-energy-general':
         specifier: workspace:*
         version: link:../../sims/astro/gravitational-potential-energy-general
+      '@aperi21/sim-gravitational-redshift':
+        specifier: workspace:*
+        version: link:../../sims/modern/gravitational-redshift
       '@aperi21/sim-gravitational-slingshot':
         specifier: workspace:*
         version: link:../../sims/astro/gravitational-slingshot
+      '@aperi21/sim-gravitational-time-dilation':
+        specifier: workspace:*
+        version: link:../../sims/modern/gravitational-time-dilation
       '@aperi21/sim-gravity-inside-earth':
         specifier: workspace:*
         version: link:../../sims/astro/gravity-inside-earth
@@ -456,6 +513,9 @@ importers:
       '@aperi21/sim-inverse-square-law':
         specifier: workspace:*
         version: link:../../sims/astro/inverse-square-law
+      '@aperi21/sim-ionizing-radiation':
+        specifier: workspace:*
+        version: link:../../sims/modern/ionizing-radiation
       '@aperi21/sim-keplers-first-law':
         specifier: workspace:*
         version: link:../../sims/astro/keplers-first-law
@@ -477,12 +537,27 @@ importers:
       '@aperi21/sim-laplace-pressure':
         specifier: workspace:*
         version: link:../../sims/fluids/laplace-pressure
+      '@aperi21/sim-laser-and-stimulated-emission':
+        specifier: workspace:*
+        version: link:../../sims/modern/laser-and-stimulated-emission
+      '@aperi21/sim-length-contraction':
+        specifier: workspace:*
+        version: link:../../sims/modern/length-contraction
       '@aperi21/sim-lenz-law':
         specifier: workspace:*
         version: link:../../sims/em/lenz-law
       '@aperi21/sim-lift-force':
         specifier: workspace:*
         version: link:../../sims/fluids/lift-force
+      '@aperi21/sim-light-bending-by-gravity':
+        specifier: workspace:*
+        version: link:../../sims/modern/light-bending-by-gravity
+      '@aperi21/sim-light-clock':
+        specifier: workspace:*
+        version: link:../../sims/modern/light-clock
+      '@aperi21/sim-light-cone':
+        specifier: workspace:*
+        version: link:../../sims/modern/light-cone
       '@aperi21/sim-longitudinal-wave':
         specifier: workspace:*
         version: link:../../sims/waves/longitudinal-wave
@@ -498,15 +573,27 @@ importers:
       '@aperi21/sim-maxwell-boltzmann-distribution':
         specifier: workspace:*
         version: link:../../sims/thermal/maxwell-boltzmann-distribution
+      '@aperi21/sim-measurement-collapse':
+        specifier: workspace:*
+        version: link:../../sims/modern/measurement-collapse
       '@aperi21/sim-mechanical-advantage':
         specifier: workspace:*
         version: link:../../sims/mechanics/mechanical-advantage
+      '@aperi21/sim-meissner-effect':
+        specifier: workspace:*
+        version: link:../../sims/modern/meissner-effect
+      '@aperi21/sim-michelson-morley':
+        specifier: workspace:*
+        version: link:../../sims/modern/michelson-morley
       '@aperi21/sim-moment-of-inertia':
         specifier: workspace:*
         version: link:../../sims/oscillation/moment-of-inertia
       '@aperi21/sim-moon-phases':
         specifier: workspace:*
         version: link:../../sims/astro/moon-phases
+      '@aperi21/sim-muon-decay-evidence':
+        specifier: workspace:*
+        version: link:../../sims/modern/muon-decay-evidence
       '@aperi21/sim-net-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/net-force
@@ -537,6 +624,15 @@ importers:
       '@aperi21/sim-normal-modes':
         specifier: workspace:*
         version: link:../../sims/oscillation/normal-modes
+      '@aperi21/sim-nuclear-fission':
+        specifier: workspace:*
+        version: link:../../sims/modern/nuclear-fission
+      '@aperi21/sim-nuclear-fusion':
+        specifier: workspace:*
+        version: link:../../sims/modern/nuclear-fusion
+      '@aperi21/sim-nuclear-structure':
+        specifier: workspace:*
+        version: link:../../sims/modern/nuclear-structure
       '@aperi21/sim-orbital-decay':
         specifier: workspace:*
         version: link:../../sims/astro/orbital-decay
@@ -546,12 +642,21 @@ importers:
       '@aperi21/sim-orbital-velocity':
         specifier: workspace:*
         version: link:../../sims/astro/orbital-velocity
+      '@aperi21/sim-pair-production':
+        specifier: workspace:*
+        version: link:../../sims/modern/pair-production
       '@aperi21/sim-parallel-axis-theorem':
         specifier: workspace:*
         version: link:../../sims/oscillation/parallel-axis-theorem
+      '@aperi21/sim-particle-in-a-box':
+        specifier: workspace:*
+        version: link:../../sims/modern/particle-in-a-box
       '@aperi21/sim-pascals-principle':
         specifier: workspace:*
         version: link:../../sims/fluids/pascals-principle
+      '@aperi21/sim-pauli-exclusion':
+        specifier: workspace:*
+        version: link:../../sims/modern/pauli-exclusion
       '@aperi21/sim-pendulum-isochronism':
         specifier: workspace:*
         version: link:../../sims/oscillation/pendulum-isochronism
@@ -564,9 +669,18 @@ importers:
       '@aperi21/sim-phase-space':
         specifier: workspace:*
         version: link:../../sims/oscillation/phase-space
+      '@aperi21/sim-photoelectric-effect':
+        specifier: workspace:*
+        version: link:../../sims/modern/photoelectric-effect
+      '@aperi21/sim-photovoltaic-effect':
+        specifier: workspace:*
+        version: link:../../sims/modern/photovoltaic-effect
       '@aperi21/sim-physical-pendulum':
         specifier: workspace:*
         version: link:../../sims/oscillation/physical-pendulum
+      '@aperi21/sim-pn-junction':
+        specifier: workspace:*
+        version: link:../../sims/modern/pn-junction
       '@aperi21/sim-poiseuille-flow':
         specifier: workspace:*
         version: link:../../sims/fluids/poiseuille-flow
@@ -588,9 +702,18 @@ importers:
       '@aperi21/sim-quality-factor':
         specifier: workspace:*
         version: link:../../sims/oscillation/quality-factor
+      '@aperi21/sim-quantum-harmonic-oscillator':
+        specifier: workspace:*
+        version: link:../../sims/modern/quantum-harmonic-oscillator
+      '@aperi21/sim-quantum-tunneling':
+        specifier: workspace:*
+        version: link:../../sims/modern/quantum-tunneling
       '@aperi21/sim-radioactive-decay':
         specifier: workspace:*
         version: link:../../sims/modern/radioactive-decay
+      '@aperi21/sim-radiometric-dating':
+        specifier: workspace:*
+        version: link:../../sims/modern/radiometric-dating
       '@aperi21/sim-radius-of-curvature':
         specifier: workspace:*
         version: link:../../sims/kinematics/radius-of-curvature
@@ -612,6 +735,18 @@ importers:
       '@aperi21/sim-relative-velocity':
         specifier: workspace:*
         version: link:../../sims/kinematics/relative-velocity
+      '@aperi21/sim-relativistic-doppler':
+        specifier: workspace:*
+        version: link:../../sims/modern/relativistic-doppler
+      '@aperi21/sim-relativistic-momentum':
+        specifier: workspace:*
+        version: link:../../sims/modern/relativistic-momentum
+      '@aperi21/sim-relativistic-velocity-addition':
+        specifier: workspace:*
+        version: link:../../sims/modern/relativistic-velocity-addition
+      '@aperi21/sim-relativity-of-simultaneity':
+        specifier: workspace:*
+        version: link:../../sims/modern/relativity-of-simultaneity
       '@aperi21/sim-resonance':
         specifier: workspace:*
         version: link:../../sims/oscillation/resonance
@@ -636,12 +771,24 @@ importers:
       '@aperi21/sim-rotational-kinetic-energy':
         specifier: workspace:*
         version: link:../../sims/oscillation/rotational-kinetic-energy
+      '@aperi21/sim-rutherford-scattering':
+        specifier: workspace:*
+        version: link:../../sims/modern/rutherford-scattering
+      '@aperi21/sim-scale-of-universe':
+        specifier: workspace:*
+        version: link:../../sims/modern/scale-of-universe
+      '@aperi21/sim-scanning-tunneling-microscope':
+        specifier: workspace:*
+        version: link:../../sims/modern/scanning-tunneling-microscope
       '@aperi21/sim-seasonal-sun-path':
         specifier: workspace:*
         version: link:../../sims/astro/seasonal-sun-path
       '@aperi21/sim-seismic-waves':
         specifier: workspace:*
         version: link:../../sims/waves/seismic-waves
+      '@aperi21/sim-semiconductor-doping':
+        specifier: workspace:*
+        version: link:../../sims/modern/semiconductor-doping
       '@aperi21/sim-shell-theorem':
         specifier: workspace:*
         version: link:../../sims/astro/shell-theorem
@@ -675,6 +822,9 @@ importers:
       '@aperi21/sim-spacetime-diagram':
         specifier: workspace:*
         version: link:../../sims/modern/spacetime-diagram
+      '@aperi21/sim-spin':
+        specifier: workspace:*
+        version: link:../../sims/modern/spin
       '@aperi21/sim-spring-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/spring-force
@@ -711,6 +861,9 @@ importers:
       '@aperi21/sim-stellar-spectral-class':
         specifier: workspace:*
         version: link:../../sims/astro/stellar-spectral-class
+      '@aperi21/sim-stern-gerlach':
+        specifier: workspace:*
+        version: link:../../sims/modern/stern-gerlach
       '@aperi21/sim-stokes-drag':
         specifier: workspace:*
         version: link:../../sims/fluids/stokes-drag
@@ -723,12 +876,18 @@ importers:
       '@aperi21/sim-string-vibration':
         specifier: workspace:*
         version: link:../../sims/waves/string-vibration
+      '@aperi21/sim-superconductivity':
+        specifier: workspace:*
+        version: link:../../sims/modern/superconductivity
       '@aperi21/sim-supernova-and-neutron-star':
         specifier: workspace:*
         version: link:../../sims/astro/supernova-and-neutron-star
       '@aperi21/sim-superposition':
         specifier: workspace:*
         version: link:../../sims/waves/superposition
+      '@aperi21/sim-superposition-quantum':
+        specifier: workspace:*
+        version: link:../../sims/modern/superposition-quantum
       '@aperi21/sim-surface-tension':
         specifier: workspace:*
         version: link:../../sims/fluids/surface-tension
@@ -750,6 +909,9 @@ importers:
       '@aperi21/sim-tidal-force':
         specifier: workspace:*
         version: link:../../sims/astro/tidal-force
+      '@aperi21/sim-time-dilation':
+        specifier: workspace:*
+        version: link:../../sims/modern/time-dilation
       '@aperi21/sim-torque':
         specifier: workspace:*
         version: link:../../sims/oscillation/torque
@@ -759,15 +921,24 @@ importers:
       '@aperi21/sim-trajectory-equation':
         specifier: workspace:*
         version: link:../../sims/kinematics/trajectory-equation
+      '@aperi21/sim-transistor-principle':
+        specifier: workspace:*
+        version: link:../../sims/modern/transistor-principle
       '@aperi21/sim-transverse-wave':
         specifier: workspace:*
         version: link:../../sims/waves/transverse-wave
+      '@aperi21/sim-twin-paradox':
+        specifier: workspace:*
+        version: link:../../sims/modern/twin-paradox
       '@aperi21/sim-two-body-problem':
         specifier: workspace:*
         version: link:../../sims/astro/two-body-problem
       '@aperi21/sim-two-dimensional-collision':
         specifier: workspace:*
         version: link:../../sims/mechanics/two-dimensional-collision
+      '@aperi21/sim-uncertainty-principle':
+        specifier: workspace:*
+        version: link:../../sims/modern/uncertainty-principle
       '@aperi21/sim-uniform-circular-motion':
         specifier: workspace:*
         version: link:../../sims/kinematics/uniform-circular-motion
@@ -804,6 +975,9 @@ importers:
       '@aperi21/sim-wave-energy':
         specifier: workspace:*
         version: link:../../sims/waves/wave-energy
+      '@aperi21/sim-wave-function':
+        specifier: workspace:*
+        version: link:../../sims/modern/wave-function
       '@aperi21/sim-wave-speed-in-medium':
         specifier: workspace:*
         version: link:../../sims/waves/wave-speed-in-medium
@@ -819,18 +993,27 @@ importers:
       '@aperi21/sim-wetting-and-contact-angle':
         specifier: workspace:*
         version: link:../../sims/fluids/wetting-and-contact-angle
+      '@aperi21/sim-wien-displacement-law':
+        specifier: workspace:*
+        version: link:../../sims/modern/wien-displacement-law
       '@aperi21/sim-work-by-variable-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/work-by-variable-force
       '@aperi21/sim-work-energy-theorem':
         specifier: workspace:*
         version: link:../../sims/mechanics/work-energy-theorem
+      '@aperi21/sim-work-function-and-threshold':
+        specifier: workspace:*
+        version: link:../../sims/modern/work-function-and-threshold
       '@aperi21/sim-youngs-double-slit':
         specifier: workspace:*
         version: link:../../sims/optics/youngs-double-slit
       '@aperi21/sim-youngs-modulus':
         specifier: workspace:*
         version: link:../../sims/mechanics/youngs-modulus
+      '@aperi21/sim-zeeman-effect':
+        specifier: workspace:*
+        version: link:../../sims/modern/zeeman-effect
     devDependencies:
       '@aperi21/plugin-circuit':
         specifier: workspace:*
@@ -2550,6 +2733,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/modern/antimatter:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/modern/atomic-orbital:
     devDependencies:
       '@aperi21/schema':
@@ -2559,7 +2751,181 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/modern/band-theory:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/binding-energy-curve:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/blackbody-radiation:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/bohr-model:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/bose-einstein-condensate:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/chain-reaction:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/compton-scattering:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/de-broglie-wavelength:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/decay-types:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/diode-and-led:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/modern/double-slit-with-electrons:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/electron-configuration:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/electron-diffraction:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/equivalence-principle:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/exchange-particles:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/fermi-level:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/finite-well:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/gravitational-redshift:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/gravitational-time-dilation:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -2580,7 +2946,292 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/modern/ionizing-radiation:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/laser-and-stimulated-emission:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/length-contraction:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/light-bending-by-gravity:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/light-clock:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/light-cone:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/measurement-collapse:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/meissner-effect:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/michelson-morley:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/muon-decay-evidence:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/nuclear-fission:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/nuclear-fusion:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/nuclear-structure:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/pair-production:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/particle-in-a-box:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/pauli-exclusion:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/photoelectric-effect:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/photovoltaic-effect:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/pn-junction:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/quantum-harmonic-oscillator:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/quantum-tunneling:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/modern/radioactive-decay:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/radiometric-dating:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/relativistic-doppler:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/relativistic-momentum:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/relativistic-velocity-addition:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/relativity-of-simultaneity:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/rutherford-scattering:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/scale-of-universe:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/scanning-tunneling-microscope:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/semiconductor-doping:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -2591,6 +3242,123 @@ importers:
 
   sims/modern/spacetime-diagram:
     devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/spin:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/stern-gerlach:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/superconductivity:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/superposition-quantum:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/time-dilation:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/transistor-principle:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/twin-paradox:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/uncertainty-principle:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/wave-function:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/wien-displacement-law:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/work-function-and-threshold:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/zeeman-effect:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../../../packages/schema

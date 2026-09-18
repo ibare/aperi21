@@ -2277,42 +2277,50 @@
         {
           "id": "michelson-morley",
           "name": "마이컬슨-몰리 실험",
-          "desc": "에테르가 없다는 증거"
+          "desc": "에테르가 없다는 증거",
+          "simId": "aperi21:michelson-morley"
         },
         {
           "id": "relativity-of-simultaneity",
           "name": "동시성의 상대성",
-          "desc": "기준틀마다 다른 '동시'"
+          "desc": "기준틀마다 다른 '동시'",
+          "simId": "aperi21:relativity-of-simultaneity"
         },
         {
           "id": "time-dilation",
           "name": "시간 지연",
-          "desc": "운동하는 시계가 느려짐"
+          "desc": "운동하는 시계가 느려짐",
+          "simId": "aperi21:time-dilation"
         },
         {
           "id": "light-clock",
           "name": "빛 시계",
-          "desc": "시간 지연을 유도하는 사고 실험"
+          "desc": "시간 지연을 유도하는 사고 실험",
+          "simId": "aperi21:light-clock"
         },
         {
           "id": "length-contraction",
           "name": "길이 수축",
-          "desc": "운동 방향으로의 수축"
+          "desc": "운동 방향으로의 수축",
+          "simId": "aperi21:length-contraction"
         },
         {
           "id": "muon-decay-evidence",
           "name": "뮤온의 도달",
-          "desc": "시간 지연의 관측 증거"
+          "desc": "시간 지연의 관측 증거",
+          "simId": "aperi21:muon-decay-evidence"
         },
         {
           "id": "relativistic-velocity-addition",
           "name": "속도의 상대론적 덧셈",
-          "desc": "광속을 넘지 못하는 합성"
+          "desc": "광속을 넘지 못하는 합성",
+          "simId": "aperi21:relativistic-velocity-addition"
         },
         {
           "id": "twin-paradox",
           "name": "쌍둥이 역설",
-          "desc": "비대칭을 만드는 가속"
+          "desc": "비대칭을 만드는 가속",
+          "simId": "aperi21:twin-paradox"
         },
         {
           "id": "spacetime-diagram",
@@ -2324,77 +2332,92 @@
         {
           "id": "light-cone",
           "name": "광원뿔",
-          "desc": "인과가 닿는 영역"
+          "desc": "인과가 닿는 영역",
+          "simId": "aperi21:light-cone"
         },
         {
           "id": "relativistic-momentum",
           "name": "상대론적 운동량",
-          "desc": "속도가 커질 때의 발산"
+          "desc": "속도가 커질 때의 발산",
+          "simId": "aperi21:relativistic-momentum"
         },
         {
           "id": "relativistic-doppler",
           "name": "상대론적 도플러",
-          "desc": "시간 지연이 더해진 진동수 변화"
+          "desc": "시간 지연이 더해진 진동수 변화",
+          "simId": "aperi21:relativistic-doppler"
         },
         {
           "id": "equivalence-principle",
           "name": "등가 원리",
-          "desc": "가속과 중력의 구별 불가"
+          "desc": "가속과 중력의 구별 불가",
+          "simId": "aperi21:equivalence-principle"
         },
         {
           "id": "gravitational-time-dilation",
           "name": "중력 시간 지연",
-          "desc": "퍼텐셜에 따른 시계의 차이"
+          "desc": "퍼텐셜에 따른 시계의 차이",
+          "simId": "aperi21:gravitational-time-dilation"
         },
         {
           "id": "gravitational-redshift",
           "name": "중력 적색 이동",
-          "desc": "빠져나오며 잃는 에너지"
+          "desc": "빠져나오며 잃는 에너지",
+          "simId": "aperi21:gravitational-redshift"
         },
         {
           "id": "light-bending-by-gravity",
           "name": "빛의 휨",
-          "desc": "질량 근처에서 휘는 경로"
+          "desc": "질량 근처에서 휘는 경로",
+          "simId": "aperi21:light-bending-by-gravity"
         },
         {
           "id": "blackbody-radiation",
           "name": "흑체 복사",
-          "desc": "고전 이론의 파탄"
+          "desc": "고전 이론의 파탄",
+          "simId": "aperi21:blackbody-radiation"
         },
         {
           "id": "wien-displacement-law",
           "name": "빈 변위 법칙",
-          "desc": "온도와 최대 파장"
+          "desc": "온도와 최대 파장",
+          "simId": "aperi21:wien-displacement-law"
         },
         {
           "id": "photoelectric-effect",
           "name": "광전 효과",
-          "desc": "빛의 입자성 증거"
+          "desc": "빛의 입자성 증거",
+          "simId": "aperi21:photoelectric-effect"
         },
         {
           "id": "work-function-and-threshold",
           "name": "일함수와 문턱 진동수",
-          "desc": "세기가 아니라 진동수가 정하는 것"
+          "desc": "세기가 아니라 진동수가 정하는 것",
+          "simId": "aperi21:work-function-and-threshold"
         },
         {
           "id": "compton-scattering",
           "name": "콤프턴 산란",
-          "desc": "광자가 운동량을 가진다는 증거"
+          "desc": "광자가 운동량을 가진다는 증거",
+          "simId": "aperi21:compton-scattering"
         },
         {
           "id": "pair-production",
           "name": "쌍생성",
-          "desc": "에너지가 물질이 되는 것"
+          "desc": "에너지가 물질이 되는 것",
+          "simId": "aperi21:pair-production"
         },
         {
           "id": "de-broglie-wavelength",
           "name": "드브로이 파장",
-          "desc": "물질의 파동성"
+          "desc": "물질의 파동성",
+          "simId": "aperi21:de-broglie-wavelength"
         },
         {
           "id": "electron-diffraction",
           "name": "전자 회절",
-          "desc": "물질파의 관측 증거"
+          "desc": "물질파의 관측 증거",
+          "simId": "aperi21:electron-diffraction"
         },
         {
           "id": "double-slit-with-electrons",
@@ -2406,47 +2429,56 @@
         {
           "id": "uncertainty-principle",
           "name": "불확정성 원리",
-          "desc": "켤레량의 동시 결정 한계"
+          "desc": "켤레량의 동시 결정 한계",
+          "simId": "aperi21:uncertainty-principle"
         },
         {
           "id": "wave-function",
           "name": "파동 함수",
-          "desc": "확률 진폭과 그 해석"
+          "desc": "확률 진폭과 그 해석",
+          "simId": "aperi21:wave-function"
         },
         {
           "id": "superposition-quantum",
           "name": "양자 중첩",
-          "desc": "여러 상태의 합으로 있는 것"
+          "desc": "여러 상태의 합으로 있는 것",
+          "simId": "aperi21:superposition-quantum"
         },
         {
           "id": "measurement-collapse",
           "name": "측정과 붕괴",
-          "desc": "관측이 상태를 정하는 것"
+          "desc": "관측이 상태를 정하는 것",
+          "simId": "aperi21:measurement-collapse"
         },
         {
           "id": "particle-in-a-box",
           "name": "무한 우물",
-          "desc": "경계가 만드는 에너지 양자화"
+          "desc": "경계가 만드는 에너지 양자화",
+          "simId": "aperi21:particle-in-a-box"
         },
         {
           "id": "finite-well",
           "name": "유한 우물",
-          "desc": "벽 바깥으로 새는 파동 함수"
+          "desc": "벽 바깥으로 새는 파동 함수",
+          "simId": "aperi21:finite-well"
         },
         {
           "id": "quantum-tunneling",
           "name": "터널 효과",
-          "desc": "장벽을 통과하는 확률"
+          "desc": "장벽을 통과하는 확률",
+          "simId": "aperi21:quantum-tunneling"
         },
         {
           "id": "scanning-tunneling-microscope",
           "name": "주사 터널 현미경",
-          "desc": "터널 전류로 그리는 표면"
+          "desc": "터널 전류로 그리는 표면",
+          "simId": "aperi21:scanning-tunneling-microscope"
         },
         {
           "id": "quantum-harmonic-oscillator",
           "name": "양자 조화 진동자",
-          "desc": "등간격 준위와 영점 에너지"
+          "desc": "등간격 준위와 영점 에너지",
+          "simId": "aperi21:quantum-harmonic-oscillator"
         },
         {
           "id": "hydrogen-spectrum",
@@ -2458,7 +2490,8 @@
         {
           "id": "bohr-model",
           "name": "보어 모형",
-          "desc": "궤도의 양자화"
+          "desc": "궤도의 양자화",
+          "simId": "aperi21:bohr-model"
         },
         {
           "id": "atomic-orbital",
@@ -2470,42 +2503,50 @@
         {
           "id": "pauli-exclusion",
           "name": "파울리 배타 원리",
-          "desc": "같은 상태를 못 가짐"
+          "desc": "같은 상태를 못 가짐",
+          "simId": "aperi21:pauli-exclusion"
         },
         {
           "id": "electron-configuration",
           "name": "전자 배치",
-          "desc": "주기율표가 나오는 방식"
+          "desc": "주기율표가 나오는 방식",
+          "simId": "aperi21:electron-configuration"
         },
         {
           "id": "spin",
           "name": "스핀",
-          "desc": "고전 대응물이 없는 각운동량"
+          "desc": "고전 대응물이 없는 각운동량",
+          "simId": "aperi21:spin"
         },
         {
           "id": "stern-gerlach",
           "name": "슈테른-게를라흐 실험",
-          "desc": "갈라지는 원자 빔"
+          "desc": "갈라지는 원자 빔",
+          "simId": "aperi21:stern-gerlach"
         },
         {
           "id": "zeeman-effect",
           "name": "제이만 효과",
-          "desc": "자기장이 가르는 준위"
+          "desc": "자기장이 가르는 준위",
+          "simId": "aperi21:zeeman-effect"
         },
         {
           "id": "laser-and-stimulated-emission",
           "name": "레이저와 유도 방출",
-          "desc": "결이 맞는 빛의 증폭"
+          "desc": "결이 맞는 빛의 증폭",
+          "simId": "aperi21:laser-and-stimulated-emission"
         },
         {
           "id": "nuclear-structure",
           "name": "원자핵의 구성",
-          "desc": "양성자와 중성자"
+          "desc": "양성자와 중성자",
+          "simId": "aperi21:nuclear-structure"
         },
         {
           "id": "binding-energy-curve",
           "name": "결합 에너지 곡선",
-          "desc": "철에서 최대가 되는 이유"
+          "desc": "철에서 최대가 되는 이유",
+          "simId": "aperi21:binding-energy-curve"
         },
         {
           "id": "radioactive-decay",
@@ -2517,109 +2558,129 @@
         {
           "id": "decay-types",
           "name": "붕괴의 종류",
-          "desc": "알파·베타·감마"
+          "desc": "알파·베타·감마",
+          "simId": "aperi21:decay-types"
         },
         {
           "id": "radiometric-dating",
           "name": "방사성 연대 측정",
-          "desc": "남은 비율로 재는 시간"
+          "desc": "남은 비율로 재는 시간",
+          "simId": "aperi21:radiometric-dating"
         },
         {
           "id": "nuclear-fission",
           "name": "핵분열",
-          "desc": "무거운 핵이 갈라지며 내는 에너지"
+          "desc": "무거운 핵이 갈라지며 내는 에너지",
+          "simId": "aperi21:nuclear-fission"
         },
         {
           "id": "chain-reaction",
           "name": "연쇄 반응",
-          "desc": "중성자가 이어가는 분열"
+          "desc": "중성자가 이어가는 분열",
+          "simId": "aperi21:chain-reaction"
         },
         {
           "id": "nuclear-fusion",
           "name": "핵융합",
-          "desc": "가벼운 핵이 합쳐지며 내는 에너지"
+          "desc": "가벼운 핵이 합쳐지며 내는 에너지",
+          "simId": "aperi21:nuclear-fusion"
         },
         {
           "id": "antimatter",
           "name": "반물질",
-          "desc": "부호가 반대인 짝"
+          "desc": "부호가 반대인 짝",
+          "simId": "aperi21:antimatter"
         },
         {
           "id": "band-theory",
           "name": "띠 이론",
-          "desc": "도체·부도체·반도체의 구분"
+          "desc": "도체·부도체·반도체의 구분",
+          "simId": "aperi21:band-theory"
         },
         {
           "id": "fermi-level",
           "name": "페르미 준위",
-          "desc": "전자가 채워진 높이"
+          "desc": "전자가 채워진 높이",
+          "simId": "aperi21:fermi-level"
         },
         {
           "id": "semiconductor-doping",
           "name": "도핑",
-          "desc": "불순물이 만드는 n형과 p형"
+          "desc": "불순물이 만드는 n형과 p형",
+          "simId": "aperi21:semiconductor-doping"
         },
         {
           "id": "pn-junction",
           "name": "pn 접합",
-          "desc": "공핍층과 정류"
+          "desc": "공핍층과 정류",
+          "simId": "aperi21:pn-junction"
         },
         {
           "id": "diode-and-led",
           "name": "다이오드와 LED",
-          "desc": "한 방향 전류와 빛의 방출"
+          "desc": "한 방향 전류와 빛의 방출",
+          "simId": "aperi21:diode-and-led"
         },
         {
           "id": "transistor-principle",
           "name": "트랜지스터",
-          "desc": "작은 신호가 큰 전류를 제어"
+          "desc": "작은 신호가 큰 전류를 제어",
+          "simId": "aperi21:transistor-principle"
         },
         {
           "id": "photovoltaic-effect",
           "name": "광전지 효과",
-          "desc": "빛이 만드는 전위차"
+          "desc": "빛이 만드는 전위차",
+          "simId": "aperi21:photovoltaic-effect"
         },
         {
           "id": "superconductivity",
           "name": "초전도",
-          "desc": "저항이 사라지는 상태"
+          "desc": "저항이 사라지는 상태",
+          "simId": "aperi21:superconductivity"
         },
         {
           "id": "meissner-effect",
           "name": "마이스너 효과",
-          "desc": "자기장을 밀어내는 초전도체"
+          "desc": "자기장을 밀어내는 초전도체",
+          "simId": "aperi21:meissner-effect"
         },
         {
           "id": "bose-einstein-condensate",
           "name": "보스-아인슈타인 응축",
-          "desc": "같은 상태로 몰리는 저온의 입자"
+          "desc": "같은 상태로 몰리는 저온의 입자",
+          "simId": "aperi21:bose-einstein-condensate"
         },
         {
           "id": "scale-of-universe",
           "name": "우주의 규모",
-          "desc": "원자에서 우주까지 10의 거듭제곱으로 잇는 크기"
+          "desc": "원자에서 우주까지 10의 거듭제곱으로 잇는 크기",
+          "simId": "aperi21:scale-of-universe"
         },
         {
           "id": "rutherford-scattering",
           "name": "러더퍼드 산란",
-          "desc": "대부분 지나가고 일부가 튕겨 나온 실험"
+          "desc": "대부분 지나가고 일부가 튕겨 나온 실험",
+          "simId": "aperi21:rutherford-scattering"
         },
         {
           "id": "ionizing-radiation",
           "name": "이온화 복사",
-          "desc": "결합을 끊을 만큼 큰 광자 에너지"
+          "desc": "결합을 끊을 만큼 큰 광자 에너지",
+          "simId": "aperi21:ionizing-radiation"
         },
         {
           "id": "exchange-particles",
           "name": "교환 입자",
-          "desc": "힘을 주고받는 입자"
+          "desc": "힘을 주고받는 입자",
+          "simId": "aperi21:exchange-particles"
         }
       ]
     }
   ],
   "summary": {
     "topics": 441,
-    "implemented": 239,
+    "implemented": 300,
     "labs": 103
   }
 }
