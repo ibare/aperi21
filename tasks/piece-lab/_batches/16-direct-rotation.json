@@ -1,0 +1,15 @@
+{
+  "name": "16-direct-rotation",
+  "title": "직접 구현 — 회전 8개 (원본 없음)",
+  "record": "tasks/engine-requirements/gap-ledger.md",
+  "pieces": [
+    "torque",
+    "parallel-axis-theorem",
+    "rotational-kinetic-energy",
+    "angular-momentum",
+    "conservation-of-angular-momentum",
+    "angular-momentum-vector",
+    "rolling-without-slipping",
+    "rolling-race"
+  ]
+}

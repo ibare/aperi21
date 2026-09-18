@@ -1,0 +1,14 @@
+{
+  "name": "18-direct-oscillation-2",
+  "title": "직접 구현 — 감쇠 · 강제 · 결합 진동 7개 (원본 없음)",
+  "record": "tasks/engine-requirements/gap-ledger.md",
+  "pieces": [
+    "damped-oscillation",
+    "damping-regimes",
+    "driven-oscillation",
+    "quality-factor",
+    "coupled-oscillators",
+    "beats-in-oscillation",
+    "nonlinear-oscillation"
+  ]
+}

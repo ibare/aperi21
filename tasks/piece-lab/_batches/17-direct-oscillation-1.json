@@ -1,0 +1,15 @@
+{
+  "name": "17-direct-oscillation-1",
+  "title": "직접 구현 — 평형 · 기어 · 조화 운동 8개 (원본 없음)",
+  "record": "tasks/engine-requirements/gap-ledger.md",
+  "pieces": [
+    "static-equilibrium",
+    "center-of-gravity",
+    "gears",
+    "simple-harmonic-motion",
+    "shm-energy",
+    "mass-spring-system",
+    "simple-pendulum",
+    "physical-pendulum"
+  ]
+}

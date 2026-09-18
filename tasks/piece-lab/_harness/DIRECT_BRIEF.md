@@ -59,6 +59,9 @@ sim 패키지는 **이미 만들어져 있다** (6파일 최소 스텁 · loader
   `params.timeline` 의 `at(id)` · `start(id)` · `span(from, to)` 등을 읽는다. 단계 경계를
   모듈 상수로 두고 `if (u < B1)` 로 가르지 않는다 (S-piece · 원칙 2) — 시험 1 에서 rule-guard 가
   바로 이것을 잡았다.
+- **주장이 기대는 물리량(질량 · 용수철 상수 · 감쇠 · 진폭 · 구동 진동수 · 충돌마다의 처음 속도 등)은
+  `stages[].constants` 에 선언하고 `readConstants` 로 기본값과 함께 읽는다.** scene · physics 의 모듈 상수로만
+  두지 않는다 (원칙 2) — 지난 배치에서 rule-guard 가 충돌별 처음 속도 배수로 이것을 잡았다.
 - 도착한 순간 이미 진행 중이다 — `timeline.startAt` / 프리롤.
 - 캡션은 `BundleSchema.caption` 슬롯 하나. 지금 화면에서 벌어지는 일만 말한다.
 - 같은 시각은 언제나 같은 화면이어야 한다. 누적 적분이 필요한 것만 `step` 이 상태에 쌓는다.
@@ -73,7 +76,7 @@ sim 패키지는 **이미 만들어져 있다** (6파일 최소 스텁 · loader
   "id": "{{id}}",
   "claim": "한 문장 주장",
   "verb": "그 문장의 동사 — 화면에서 실제로 일어나는 것",
-  "probeTimes": [주장이 드러나는 시각 3~5개(초) — 카탈로그를 `?t=` 로 여는 값. timeScale 로 느리게 흘린 단계가 있으면 단계 시각과 어긋나므로 찍힌 장면을 보고 잡는다],
+  "probeTimes": [주장이 드러나는 시각 3~5개(초) — 카탈로그를 `?t=` 로 여는 값. `?t=` 는 `startAt` 에서부터 흐른 화면 시간이다(조각 시계 = startAt + t, timeScale 적용). 단계 시각과 어긋나므로 찍힌 장면을 보고 잡는다],
   "controls": ["조작기와 그것이 바꾸는 것 — 없으면 빈 배열"],
   "timeline": [{ "t": 0.4, "what": "그 시각 화면에 보여야 하는 것" }]
 }
@@ -119,6 +122,9 @@ curl -s -X POST http://localhost:3800/api/events \
   -H "Content-Type: application/json" \
   -d '{"projectName":"aperi21","action":"...","reason":"...","taskId":"{{taskId}}"}'
 ```
+
+보고용 도우미 스크립트를 만들려면 이름에 네 id 를 넣는다(예: `/tmp/bd-{{id}}.sh`). 같은 이름을 다른 에이전트도 쓴다 —
+지난 배치에서 공유 이름 `bd.sh` 가 서로 덮어써졌다. 저장소 안에는 두지 않는다.
 
 ## 끝나기 전에
 
