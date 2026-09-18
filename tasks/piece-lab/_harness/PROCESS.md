@@ -158,5 +158,8 @@ tasks/piece-lab/_report/            (gitignore — 언제든 다시 만든다)
 해서, 동시에 만들어 화면이 겹치던 일(inelastic-collision · energy-in-collision)을 막는다.
 
 스텁은 커밋하지 않는다. 목표치 커밋 시점에 스텁이 하나라도 남으면 S-piece 위반이다(주장 · 캡션 · 자동 진행이 없다).
+**완료를 말하기 전에 매니페스트와 대조한다** — 매니페스트의 조각마다 `tasks/piece-lab/<id>/inventory.json` 이 있고,
+`sims/**` 에 스텁 표지(「스텁 — 구현 에이전트가 채운다」)가 0 인지 스크립트로 센다. 끝난 알림을 세는 것으로 갈음하지 않는다 —
+중력과 천체 큐에서 투입 순서의 한 칸(elliptical-orbit)을 건너뛰고 「38/38」 로 보고했다가 사용자가 빈 화면을 찾았다.
 도중에 포기한 조각은 흔적을 모두 걷어낸 뒤 커밋한다 — `sims/<category>/<id>`, loader 블록, bootstrap 의존, lockfile,
 생성물, topics 의 sim 줄, catalog.json.

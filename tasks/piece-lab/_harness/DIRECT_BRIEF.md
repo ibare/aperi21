@@ -70,6 +70,24 @@ sim 패키지는 **이미 만들어져 있다** (6파일 최소 스텁 · loader
 - **화면에 수(비 · 배수 · 계수)를 띄우면 선언값을 그대로 쓴다** — 스테이지 상수로 선언하고 `String(값)` 이나
   문안 키로 보인다. 계산해서 `toFixed` 로 줄이지 않는다 (S-piece 유효숫자). rule-guard 가 세 번(inelastic-collision ·
   physical-pendulum · viscosity) 잡았다.
+- **천체 분야의 물리량도 같다** — G · 천체 질량 · 궤도 반지름 · 이심률 · 자전축 경사(23.5°) · 관측 위도 · 축척 비율 ·
+  허블 상수 · 별의 온도는 `stages[].constants` 에 둔다.
+- **큰 수 · 지수 표기를 코드에서 조립하지 않는다.** `String(6.674e-11)` 은 `"6.674e-11"` 이 된다 — `toExponential` 이나
+  `` `${m}×10^${e}` `` 로 만들지 말고, 보일 문자열을 문안 키로 두거나 가수 · 지수를 스테이지 상수로 선언해 `{name}` 자리표시 +
+  `vars` 로 끼운다 (C1 · S-piece 유효숫자). 로그 눈금 이름표(`10ⁿ`)도 같다. graph 의 `scale: 'log'` 는 없다(삭제됨).
+- **별빛 · 적색 이동처럼 색 자체가 주장이면** `colorRole` 을 분광형마다 칠해 범례로 쓰지 말고, `light` 채널
+  (`LightChannel.light: { rgb }`)에 `@aperi21/plugin-optics` 의 `spectrumToLinearRgb` · `wavelengthToLinearRgb` 를 쓴다
+  (`sims/astro/hr-diagram` 참고). **온도 → RGB 표를 sim 안에 손으로 만들지 않는다** (C2). 의존이 없는데 필요하면 멈추고 보고한다.
+- 배경 별 · 은하 분포처럼 흩뿌림이 필요하면 **시드를 받는 결정적 난수**만 쓴다. `Math.random` 금지 (S-sim — 같은 시각은 같은 화면).
+- `boundsHint` 는 **고정값**이다. 궤도가 커지거나 줄어도 상태로 경계를 계산하지 않는다 (S-piece · 원칙 6). 가장 큰 장면이
+  들어가도록 처음부터 잡는다.
+- 천구 · 3D 를 2D 월드 좌표로 투영하는 계산은 조각의 배치 계산이라 괜찮다. 월드 → 화면 변환 · 캔버스는 만지지 않는다 (원칙 1).
+- 캡션 슬롯을 선언하면 scene 에 id `caption` 인 primitive 를 두지 않는다 (예약 id).
+- **선 굵기 · 글자 크기 · 불투명도 · 이름표 띄움 거리를 primitive 안에 숫자로 박지 않는다** — 파일 머리의 이름 있는
+  상수(`TRAIL_WIDTH_PX`, `LABEL_PX`, `PLANET_OPACITY`, `LABEL_GAP`)로 둔다 (C2). 0 · 1(완전히 비움 · 채움)만 예외다.
+  `anchor` 에 더하는 `+14` · `offset: [0, -16]`, 불투명도 램프 배율(`spread * 5`), 즉석 글자 크기(`LABEL_PX - 1`),
+  점 크기 계수도 같다.
+  rule-guard 가 이 큐에서 세 번(circular-orbit · escape-velocity · axial-tilt-seasons) 잡았다.
 - 도착한 순간 이미 진행 중이다 — `timeline.startAt` / 프리롤.
 - 캡션은 `BundleSchema.caption` 슬롯 하나. 지금 화면에서 벌어지는 일만 말한다.
 - 같은 시각은 언제나 같은 화면이어야 한다. 누적 적분이 필요한 것만 `step` 이 상태에 쌓는다.
