@@ -1,0 +1,15 @@
+{
+  "name": "15-direct-energy-3",
+  "title": "직접 구현 턴 2 — 운동량 · 충돌 8개 (원본 없음)",
+  "record": "tasks/engine-requirements/gap-ledger.md",
+  "pieces": [
+    "impulse-momentum-theorem",
+    "conservation-of-momentum",
+    "elastic-collision",
+    "inelastic-collision",
+    "two-dimensional-collision",
+    "center-of-mass-motion",
+    "explosion-and-recoil",
+    "energy-in-collision"
+  ]
+}

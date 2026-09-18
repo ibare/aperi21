@@ -112,3 +112,19 @@ tasks/piece-lab/_report/            (gitignore — 언제든 다시 만든다)
 - 이관 에이전트는 부족을 `tasks/engine-requirements/gap-ledger.md` 의 id 에 대 보고, 없으면 **새 부족**으로 영향(`주장` / `근사`)과 함께 보고한다. 장부는 메인이 고친다.
 - 결과 보고: `pnpm piece:report --batch=<NN>-probe-t<n> --sims=<base>` + 분야별 새 부족 수 표 + 주장 판단 거리
 - 한 턴에 새 부족 종류가 0 인 분야는 `probe-9domains.json` 의 `excluded` 로 옮긴다.
+
+---
+
+# 엔진 위 직접 구현 — 최종 채택 전 마지막 실험 (2026-09-18 사용자 확정)
+
+표현력 검증 뒤 시험 1(`13-direct-energy-1`)로 연 방식이다. **자유 구현 원본을 만들지 않는다.**
+
+```
+[지정 지점까지 반복]  메인: 스텁 · loader · topics sim 연결 ─▶ 직접 구현(격리 에이전트 N 개) ─▶ 메인: 장부 · 카탈로그 · 게이트 · rule-guard
+[지정 지점에서 한 번]  결과 보고 ──확인 ─▶ 커밋
+```
+
+- 지시서는 `DIRECT_BRIEF.md`. 조각마다 `tasks/piece-lab/<id>/inventory.json` 만 두고 `index.html` 은 없다.
+- 원본 대조 대신 **만든 에이전트가 probeTimes 마다 라이트 · 다크 스크린샷을 직접 열어** 주장이 서는지 판정한다.
+- **결과 보고는 사용자가 지정한 지점까지 모두 끝낸 뒤 한 번.** 그 사이 턴마다 멈추지 않는다.
+- 결과 보고: `pnpm piece:report --batch=<NN> --sims=<base>` (턴마다) + 새 부족 + 주장 판단 거리.

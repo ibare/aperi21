@@ -1,0 +1,15 @@
+{
+  "name": "14-direct-energy-2",
+  "title": "직접 구현 턴 1 — 일·에너지 8개 (원본 없음)",
+  "record": "tasks/engine-requirements/gap-ledger.md",
+  "pieces": [
+    "work-by-variable-force",
+    "work-energy-theorem",
+    "gravitational-potential-energy",
+    "elastic-potential-energy",
+    "conservative-force",
+    "non-conservative-force",
+    "equilibrium-points",
+    "efficiency"
+  ]
+}
