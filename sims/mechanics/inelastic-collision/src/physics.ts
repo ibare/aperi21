@@ -3,119 +3,224 @@
 // ========================================================================
 // 쌓는 상태가 없다. 모든 값이 시간표 진행도의 함수이고, `step` 은 항등이다.
 //
-// 같은 질량 m 두 수레, 하나는 v 로 달려오고 하나는 멈춰 있다. 반발 계수 e 이면
+// 높이 h 에서 놓은 공, 바닥과의 반발 계수 e.
 //
-//   vA′ = v(1 − e)/2      vB′ = v(1 + e)/2
-//   벌어지는 빠르기  vB′ − vA′ = e·v          (다가오던 빠르기 v 의 e 배)
-//   남는 운동 에너지  (1 + e²)/2 · ½mv²
-//   사라지는 몫       (1 − e²)/2 · ½mv²
+//   바닥에 닿는 빠르기      v₀ = √(2gh)
+//   k 번째로 튀어 나가는 빠르기  u_k = e^k · v₀        (들어온 빠르기의 e 배)
+//   k 번째 꼭짓점 높이      h_k = u_k² / 2g = e^{2k} · h   (앞 꼭짓점의 e² 배)
+//   k 번째 충돌에서 사라진 몫   mg(h_{k−1} − h_k) = (1 − e²) · mg·h_{k−1}
 //
-// 이 조각은 둘째 줄과 넷째 줄을 같은 화면의 같은 높이에 놓는 것이 전부다.
+//   떨어지는 시간 t₀ = √(2h/g), k 번째 튐의 체공 2u_k/g = 2e^k·t₀
+//   튐을 멈추기까지 t₀ · (1 + 2e/(1 − e))  — 튐은 끝없이 이어지지만 시간의 합은 유한하다.
+//
+// 이 조각은 꼭짓점 높이의 줄(h_k)과 그 사이 모자란 만큼을 한 화면에 늘어놓는 것이 전부다.
 // ========================================================================
 
-import type { StageDef, TimelineFrame } from '@aperi21/schema';
-import {
-  APPROACH_DISTANCE,
-  APPROACH_SPEED,
-  CART_HALF_W,
-  RESTITUTION_BOTTOM,
-  RESTITUTION_MID,
-  RESTITUTION_TOP,
-} from './schema';
+import type { StageDef, TimelineFrame, Vec2 } from '@aperi21/schema';
+import { APEX_KEYS, BALL_R, DRIFT_SPEED, DROP_HEIGHT, GRAVITY, RESTITUTION, RING_LIFE } from './schema';
 import type { InelasticCollisionState } from './state';
 
-export interface InelasticCollisionConstants {
-  /** 달려오는 속력(m/s). */
-  speed: number;
-  /** 세 줄의 반발 계수, 위에서부터. */
-  restitutions: readonly [number, number, number];
+export interface BounceConstants {
+  /** 놓는 높이(m). */
+  height: number;
+  /** 반발 계수. */
+  restitution: number;
+  /** 중력 가속도(m/s²). */
+  gravity: number;
+  /** 옆으로 가는 빠르기(m/s). */
+  drift: number;
 }
 
-export function readConstants(stage: StageDef): InelasticCollisionConstants {
+export function readConstants(stage: StageDef): BounceConstants {
   const c = stage.constants ?? {};
   return {
-    speed: c.speed ?? APPROACH_SPEED,
-    restitutions: [
-      c.restitutionTop ?? RESTITUTION_TOP,
-      c.restitutionMid ?? RESTITUTION_MID,
-      c.restitutionBottom ?? RESTITUTION_BOTTOM,
-    ],
+    height: c.height ?? DROP_HEIGHT,
+    restitution: c.restitution ?? RESTITUTION,
+    gravity: c.gravity ?? GRAVITY,
+    drift: c.drift ?? DRIFT_SPEED,
   };
 }
 
-/** 닿는 순간 달려온 수레의 중심 x. 멈춘 수레의 중심이 0 이다. */
-export const CONTACT_X = -2 * CART_HALF_W;
+/** 이 높이(놓은 높이에 대한 몫)보다 낮은 튐은 멈춘 것으로 본다. 화면에서 1 px 아래다. */
+const REST_FRACTION = 1e-4;
+/** 튐 수의 상한 — e 가 1 에 아주 가까운 선언에서도 목록이 끝나게 한다. */
+const MAX_HOPS = 200;
 
-/** 한 줄의 지금 값. */
-export interface LaneReading {
-  /** 반발 계수. */
-  e: number;
-  /** 두 수레 중심 x(월드). */
-  xA: number;
-  xB: number;
-  /** 두 수레의 지금 속도(m/s). 화살표 길이가 된다. */
-  vA: number;
-  vB: number;
-  /** 처음 운동 에너지에 대한 지금 남은 몫 0~1. */
-  kept: number;
-  /** 충돌이 끝났을 때 남는 몫 — 사라진 칸의 왼쪽 끝. */
-  keptFinal: number;
+/** 한 번의 튐. `k` 는 1 부터 — k 번째 충돌 뒤의 날아오름이다. */
+export interface Hop {
+  k: number;
+  /** 튀어 나간 시각(= k 번째 착지 시각, 공의 시계). */
+  t: number;
+  /** 튀어 나가는 빠르기(m/s). */
+  u: number;
+  /** 꼭짓점 높이(공 밑면, m). */
+  peak: number;
+}
+
+export interface Schedule {
+  /** 바닥에 처음 닿는 빠르기. */
+  v0: number;
+  /** 떨어지는 시간. */
+  t0: number;
+  hops: readonly Hop[];
+  /** 튐을 멈추는 시각. */
+  settle: number;
+}
+
+/**
+ * 튐 일정표 — 착지 시각 · 튀어 나가는 빠르기 · 꼭짓점. 간격이 매번 e 배로 짧아진다.
+ * 선언할 자리가 없어 여기서 센다 (G80).
+ */
+export function schedule(c: BounceConstants): Schedule {
+  const g = c.gravity;
+  const e = c.restitution;
+  const v0 = Math.sqrt(2 * g * c.height);
+  const t0 = Math.sqrt((2 * c.height) / g);
+  const hops: Hop[] = [];
+  let t = t0;
+  let u = v0;
+  for (let k = 1; k <= MAX_HOPS; k++) {
+    u *= e;
+    const peak = (u * u) / (2 * g);
+    if (peak < c.height * REST_FRACTION) break;
+    hops.push({ k, t, u, peak });
+    t += (2 * u) / g;
+  }
+  return { v0, t0, hops, settle: t };
+}
+
+/** 공의 시계 τ 에서 공 밑면의 높이와 세로 속도. 튐을 멈춘 뒤는 바닥에 선다. */
+function heightAt(s: Schedule, c: BounceConstants, tau: number): { y: number; vy: number } {
+  const g = c.gravity;
+  if (tau < s.t0) return { y: c.height - 0.5 * g * tau * tau, vy: -g * tau };
+  for (const hop of s.hops) {
+    const dt = tau - hop.t;
+    if (dt >= 0 && dt < (2 * hop.u) / g) {
+      return { y: hop.u * dt - 0.5 * g * dt * dt, vy: hop.u - g * dt };
+    }
+  }
+  return { y: 0, vy: 0 };
+}
+
+/** 공 중심의 월드 자리. 원점은 놓는 자리 바로 아래 바닥. */
+function centerAt(s: Schedule, c: BounceConstants, tau: number): Vec2 {
+  const { y } = heightAt(s, c, tau);
+  return [c.drift * Math.min(tau, s.settle), Math.max(0, y) + BALL_R];
+}
+
+/** 이름표를 단 꼭짓점 하나. `k` 0 은 놓은 자리다. */
+export interface Apex {
+  k: number;
+  /** 공 중심 자리(월드). */
+  pos: Vec2;
+}
+
+/** 앞 꼭짓점 높이의 점선 — 앞 꼭짓점에서 오른쪽으로, 다음 꼭짓점(또는 지금 공)까지. */
+export interface Level {
+  k: number;
+  from: Vec2;
+  toX: number;
+}
+
+/** 한 번의 충돌 뒤 모자란 높이 — 앞 꼭짓점 높이에서 이번 꼭짓점까지. */
+export interface Shortfall {
+  k: number;
+  x: number;
+  fromY: number;
+  toY: number;
 }
 
 export interface Reading {
-  lanes: readonly LaneReading[];
-  /** 움직이는 중인가 — 멈춰 세운 비교 화면에서는 속도 화살표를 걷는다. */
-  moving: boolean;
-  /** 부딪힌 뒤인가 — 틈을 재기 시작한다. */
-  separating: boolean;
-  /** 사라진 칸을 드러내는 정도 0~1. 충돌 동안 자란다. */
-  lostShown: number;
-  /** 물러나며 옅어지는 정도(1 이면 또렷하다). */
+  /** 공 중심. */
+  ball: Vec2;
+  /** 지나온 궤적(공 중심). */
+  trail: readonly Vec2[];
+  /** 지금까지 닿은 꼭짓점 — 이름표가 있는 것까지만. */
+  apexes: readonly Apex[];
+  levels: readonly Level[];
+  shortfalls: readonly Shortfall[];
+  /** 착지 파문 — 자리 · 나이(물리 초) · 세기(그 충돌에서 사라진 에너지에 비례, 첫 충돌이 1). */
+  rings: readonly { pos: Vec2; age: number; strength: number }[];
+  /** 첫 충돌 자리의 v · ev — 첫 착지 뒤에만. */
+  firstImpact?: { x: number; vIn: number; vOut: number };
+  /** 나타남 · 물러남(1 이면 또렷하다). */
   opacity: number;
 }
+
+/** 궤적 표본 간격(물리 초). 착지 순간은 따로 넣어 V 의 끝이 뭉개지지 않게 한다. */
+const TRAIL_DT = 1 / 90;
 
 /**
  * 시간표 진행도 → 화면에 놓을 값들. 같은 시각은 언제나 같은 값이다.
  *
- * 단계 경계를 상수로 두고 가르지 않는다 — `at(id)` 가 그 단계의 진행도를 준다
- * (단계 앞에서는 0, 지난 뒤에는 1).
+ * 공의 시계는 `fall` · `bounce` 두 단계의 진행도 × 길이의 합이다. 단계 경계를 상수로
+ * 두지 않는다 — 시간표가 바뀌면 공의 시계가 따라온다.
  */
-export function derive(tl: TimelineFrame, c: InelasticCollisionConstants): Reading {
-  const v = c.speed;
-  const approach = tl.at('approach');
-  const imp = tl.at('impact');
-  const apart = tl.at('apart');
-  const compare = tl.at('compare');
-  const fade = tl.at('fade');
+export function derive(tl: TimelineFrame, c: BounceConstants): Reading {
+  const s = schedule(c);
+  // 착지 시각 — k 번째 튐은 k 번째 착지에서 튀어 나간다. 튐이 하나도 없으면 첫 착지뿐이다.
+  const landingTimes = s.hops.length > 0 ? s.hops.map((h) => h.t) : [s.t0];
+  const tau = tl.at('fall') * tl.duration('fall') + tl.at('bounce') * tl.duration('bounce');
+  const end = Math.min(tau, s.settle);
 
-  // 부딪힌 뒤 흐른 물리 시간 — `apart` 단계는 조각 시계와 같은 빠르기로 흐른다.
-  const since = apart * tl.duration('apart');
+  // ---- 궤적 ----
+  const trail: Vec2[] = [];
+  const landings = landingTimes.filter((t) => t < end);
+  let li = 0;
+  for (let t = 0; t < end; t += TRAIL_DT) {
+    while (li < landings.length && (landings[li] as number) <= t) {
+      trail.push(centerAt(s, c, landings[li] as number));
+      li++;
+    }
+    trail.push(centerAt(s, c, t));
+  }
+  trail.push(centerAt(s, c, end));
 
-  const lanes = c.restitutions.map((e): LaneReading => {
-    const vA1 = (v * (1 - e)) / 2;
-    const vB1 = (v * (1 + e)) / 2;
-    const keptFinal = (1 + e * e) / 2;
-    const before = imp === 0;
-    return {
-      e,
-      xA: before ? CONTACT_X - APPROACH_DISTANCE * (1 - approach) : CONTACT_X + vA1 * since,
-      xB: before ? 0 : vB1 * since,
-      // 닿아 있는 동안 한쪽 속도가 다른 쪽으로 넘어간다. 늘인 시간이라 모양만 잇는다.
-      vA: v + (vA1 - v) * imp,
-      vB: vB1 * imp,
-      // 막대는 곧게 줄어든다. 실제로는 눌리는 동안 더 내려갔다가 되튀며 조금 돌아오지만,
-      // 그 굴곡은 이 조각의 주장(끝에 무엇이 남는가)이 아니다 — NOTES (b).
-      kept: 1 - (1 - keptFinal) * imp,
-      keptFinal,
-    };
+  // ---- 꼭짓점 · 앞 높이 점선 · 모자란 높이 ----
+  const maxK = APEX_KEYS.length - 1;
+  const apexes: Apex[] = [{ k: 0, pos: [0, c.height + BALL_R] }];
+  for (const hop of s.hops) {
+    if (hop.k > maxK) break;
+    const tPeak = hop.t + hop.u / c.gravity;
+    if (tau < tPeak) break;
+    apexes.push({ k: hop.k, pos: [c.drift * tPeak, hop.peak + BALL_R] });
+  }
+  const ball = centerAt(s, c, tau);
+  const levels: Level[] = [];
+  const shortfalls: Shortfall[] = [];
+  apexes.forEach((a, i) => {
+    const next = apexes[i + 1];
+    if (next) {
+      levels.push({ k: a.k, from: a.pos, toX: next.pos[0] });
+      shortfalls.push({ k: next.k, x: next.pos[0], fromY: a.pos[1], toY: next.pos[1] });
+    } else if (a.k < maxK && tau < s.settle) {
+      // 다음 꼭짓점을 기다리는 중 — 점선이 공을 따라 오른쪽으로 자란다.
+      levels.push({ k: a.k, from: a.pos, toX: Math.max(a.pos[0], ball[0]) });
+    }
   });
 
+  // ---- 착지 파문 ----
+  const e2 = c.restitution * c.restitution;
+  const rings = landingTimes
+    .map((t, j) => ({ t, j }))
+    .filter(({ t }) => t <= tau && tau - t < RING_LIFE)
+    .map(({ t, j }) => ({
+      pos: [c.drift * t, 0] as Vec2,
+      age: tau - t,
+      // j 번째 충돌에서 사라진 에너지 = (1 − e²) · e^{2j} · mgh. 첫 충돌에 대한 몫.
+      strength: Math.pow(e2, j),
+    }));
+
+  const first = s.hops[0];
   return {
-    lanes,
-    moving: compare === 0,
-    separating: apart > 0,
-    lostShown: imp,
-    opacity: 1 - fade,
+    ball,
+    trail,
+    apexes,
+    levels,
+    shortfalls,
+    rings,
+    firstImpact: first && tau >= s.t0 ? { x: c.drift * s.t0, vIn: s.v0, vOut: first.u } : undefined,
+    opacity: tl.at('appear') * (1 - tl.at('fade')),
   };
 }
 

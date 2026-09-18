@@ -1,18 +1,19 @@
 // ========================================================================
 // inelastic-collision — 선언
 // ========================================================================
-// 질문: 부딪힌 뒤 튀어 나가는 충돌에서 에너지는 얼마나 사라지는가? 그것을 눈으로
-// 가늠할 단서가 충돌 뒤의 화면에 남아 있는가?
+// 질문: 바닥에 떨어뜨린 공은 왜 놓은 높이까지 다시 올라오지 못하는가? 한 번
+// 부딪힐 때 무엇이 얼마나 없어지는가?
 //
-// 답: 남아 있다 — **두 물체가 서로 멀어지는 빠르기**다. 같은 수레가 같은 속력으로
-// 멈춘 같은 수레에 부딪혀도, 부딪히는 면이 덜 튀기면 둘 사이가 덜 벌어지고 그만큼
-// 운동 에너지가 더 많이 사라진다. 벌어지는 빠르기는 e·v, 사라지는 몫은 (1−e²)/2.
+// 답: 부딪힐 때마다 공은 **들어온 빠르기의 e 배로만** 튀어 나온다(e: 반발 계수).
+// 올라가는 높이는 빠르기의 제곱을 따르므로 튀어 오르는 높이는 매번 e² 배로 준다.
+// 모자란 높이만큼의 에너지가 그 한 번의 충돌 안에서 찌그러짐과 열로 빠져나갔다.
 //
-// 화면에서는 세 쌍이 나란히 부딪힌다. 각 줄의 왼쪽에 벌어진 틈, 오른쪽에 사라진 몫이
-// 같은 높이로 놓여 **틈이 좁은 줄일수록 사라진 칸이 길다.**
+// 화면에서는 공 하나가 바닥을 여러 번 튄다. 꼭짓점마다 h · e²h · e⁴h … 가 붙고,
+// 바로 앞 꼭짓점 높이의 점선에서 모자란 만큼이 강조색 치수선으로 남는다.
 //
-// 탄성(e = 1) · 완전 비탄성(e = 0) 끝점과 운동량 보존은 이웃 조각의 몫이라 여기서
-// 말하지 않는다.
+// 이웃과의 경계 — 두 물체의 운동량은 그대로이고 에너지만 충돌 종류에 따라 갈린다는
+// 구분은 `energy-in-collision`, 붙어서 함께 가는 끝점은 `perfectly-inelastic-collision`,
+// 아무것도 사라지지 않는 끝점은 `elastic-collision` 의 몫이다.
 // ========================================================================
 
 import type { BundleSchema, LocalizedText } from '@aperi21/schema';
@@ -24,47 +25,42 @@ export const INELASTIC_COLLISION_ID = 'inelastic-collision';
 // 물리 — 스테이지 상수의 기본값이다. 저작자가 스테이지에서 바꾼다 (원칙 2).
 // ------------------------------------------------------------------------
 
-/** 달려오는 수레의 속력(m/s). 세 줄 모두 같다. */
-export const APPROACH_SPEED = 1.2;
+/** 공을 놓는 높이(m) — 공 밑면에서 바닥까지. */
+export const DROP_HEIGHT = 1.5;
 /**
- * 세 줄의 반발 계수 — 위에서부터. 사라지는 몫 (1−e²)/2 이 0.18 · 0.375 · 0.48 로 갈린다.
+ * 공과 바닥 사이의 반발 계수. 튀어 오르는 높이가 매번 e² = 0.64 배가 된다.
  *
- * 끝점 1 과 0 은 두지 않는다. 1 은 아무것도 사라지지 않는 탄성 충돌, 0 은 붙어서 함께
- * 가는 완전 비탄성 충돌로 이웃 조각이 각각 맡는다. 이 조각은 그 사이, 튀어 나가면서도
- * 에너지를 잃는 충돌이다.
+ * 0.8 은 꼭짓점 다섯 개(h ~ e⁸h)가 한 화면에서 모두 읽히는 값이다. 더 작으면 세 번째
+ * 꼭짓점부터 바닥에 붙어 「매번 같은 비율」 이 두 점으로만 서고, 더 크면 한 번에 줄어드는
+ * 몫이 좁아 「모자란 높이」 가 선처럼 가늘어진다.
  */
-export const RESTITUTION_TOP = 0.8;
-export const RESTITUTION_MID = 0.5;
-export const RESTITUTION_BOTTOM = 0.2;
-
-// ------------------------------------------------------------------------
-// 배치 — 월드 1 단위 = 1 m. 원점은 가운데 줄에서 멈춰 선 수레의 중심.
-// ------------------------------------------------------------------------
-
-/** 수레 반너비 · 반높이(m). 두 수레는 같은 수레다. */
-export const CART_HALF_W = 0.25;
-export const CART_HALF_H = 0.15;
-/** 줄 간격(m). 수레 중심 사이. */
-export const LANE_GAP = 0.95;
-/** 달려오는 수레가 처음 있는 자리 — 닿는 자리에서 이만큼 왼쪽(m). */
-export const APPROACH_DISTANCE = 1.8;
-/** 속도 화살표 배율(월드 m 당 m/s). */
-export const ARROW_SCALE = 0.5;
-/** 이보다 짧은 화살표는 두지 않는다(월드). 촉만 남은 점이 방향을 거짓말한다. */
-export const ARROW_MIN = 0.07;
-/** 화살표를 수레 윗면에서 띄우는 높이(월드). */
-export const ARROW_LIFT = 0.12;
-
-/** 에너지 막대 — 가득 찬 길이(처음 운동 에너지) · 시작 x · 반두께(m). */
-export const BAR_X0 = 3.05;
-export const BAR_FULL = 2.0;
-export const BAR_HALF_H = 0.13;
-
+export const RESTITUTION = 0.8;
+/** 중력 가속도(m/s²). */
+export const GRAVITY = 9.8;
 /**
- * 프레이밍 — 왼쪽은 반발 계수 표식과 달려오는 자리, 오른쪽은 막대와 그 이름표.
- * 아래쪽 0.62 는 캡션 줄 몫이다 (G24). 매 프레임 같은 값이다 (S-piece).
+ * 공이 옆으로 가는 빠르기(m/s). 바닥이 매끄러워 부딪혀도 바뀌지 않는다.
+ * 꼭짓점을 옆으로 펼쳐 한 화면에 늘어놓는 일을 한다 — 제자리에서 튀면 궤적이 한 줄에 겹친다.
+ * 1.25 는 가로로 넓은 임베드(세로가 먼저 차는 프레이밍)의 가로를 궤적이 거의 다 쓰는 값이다.
  */
-export const SCENE_BOUNDS = { minX: -3.35, maxX: 5.3, minY: -1.95, maxY: 1.52 } as const;
+export const DRIFT_SPEED = 1.25;
+
+// ------------------------------------------------------------------------
+// 배치 — 월드 1 단위 = 1 m. 원점은 공을 놓는 자리 바로 아래 바닥.
+// ------------------------------------------------------------------------
+
+/** 공 반지름(m). 궤적 · 높이 점선은 공 중심을 지난다. */
+export const BALL_R = 0.08;
+/** 첫 충돌 자리에 남기는 v · ev 화살표의 배율(월드 m 당 m/s). */
+export const ARROW_SCALE = 0.1;
+/** 그 두 화살표를 착지점에서 좌우로 띄우는 거리(m). 궤적의 V 바깥에 선다. */
+export const ARROW_SPREAD = 0.15;
+/** 착지 파문이 옅어지기까지(물리 시간, 초). */
+export const RING_LIFE = 0.6;
+/**
+ * 프레이밍 여백(m). 왼쪽은 `h` 이름표, 오른쪽은 공이 멈춘 뒤의 자리, 위는 꼭짓점 이름표,
+ * 아래는 `e` 표식과 캡션 줄 몫이다 (G24). 가로 끝은 선언된 상수에서 한 번 정해진다.
+ */
+export const FRAME_PAD = { left: 0.55, right: 0.45, top: 0.32, bottom: 0.72 } as const;
 
 // ------------------------------------------------------------------------
 // 문안
@@ -73,37 +69,50 @@ export const SCENE_BOUNDS = { minX: -3.35, maxX: 5.3, minY: -1.95, maxY: 1.52 } 
 export const inelasticCollisionMessages = Object.freeze({
   'label.title': { ko: '비탄성 충돌', en: 'Inelastic collision' },
   'label.operation': { ko: '에너지가 사라지는 충돌', en: 'A collision that loses energy' },
-  'label.stage': { ko: '같은 수레 세 쌍', en: 'Three identical pairs' },
-  'label.view': { ko: '틈과 막대', en: 'Gap and bar' },
+  'label.stage': { ko: '바닥에 떨어뜨린 공', en: 'A ball dropped on the floor' },
+  'label.view': { ko: '튀는 공', en: 'Bouncing ball' },
 
-  /** 줄마다 붙는 반발 계수. 기호와 수라 번역 대상이 아니다 (C1 판정 3). */
+  /** 반발 계수. 기호와 수라 번역 대상이 아니다 (C1 판정 3). */
   'label.restitution': { ko: 'e = {e}', en: 'e = {e}' },
-  /** 막대 줄의 머리. */
-  'label.energy': { ko: '운동 에너지', en: 'Kinetic energy' },
-  /** 부딪히며 열 · 소리 · 찌그러짐으로 나간 몫 — 비워 둔 점선 칸. */
-  'label.lost': { ko: '사라진 몫', en: 'Lost' },
-  /** 벌어진 틈. 강조색 치수선 곁. */
-  'label.gap': { ko: '벌어진 틈', en: 'Gap' },
+  /** 꼭짓점 높이 — 기호라 번역 대상이 아니다 (C1 판정 3). 이름표가 있는 꼭짓점까지만 잰다. */
+  'label.apex0': { ko: 'h', en: 'h' },
+  'label.apex1': { ko: 'e²h', en: 'e²h' },
+  'label.apex2': { ko: 'e⁴h', en: 'e⁴h' },
+  'label.apex3': { ko: 'e⁶h', en: 'e⁶h' },
+  'label.apex4': { ko: 'e⁸h', en: 'e⁸h' },
+  /** 첫 충돌에 들어온 빠르기와 튀어 나간 빠르기. 기호다. */
+  'label.vIn': { ko: 'v', en: 'v' },
+  'label.vOut': { ko: 'ev', en: 'ev' },
+  /** 앞 꼭짓점 높이에서 모자란 만큼 — 강조색 치수선 곁. */
+  'label.lost': { ko: '사라진 에너지', en: 'Energy lost' },
 
-  'caption.approach': {
-    ko: '같은 수레가 같은 속력으로 멈춰 선 같은 수레에 달려든다. 세 쌍은 부딪히는 면만 다르다.',
-    en: 'Identical carts run at the same speed into identical carts at rest. Only the bumpers differ.',
+  'caption.fall': {
+    ko: '높이 h 에서 놓은 공이 바닥으로 떨어진다.',
+    en: 'A ball let go from height h falls to the floor.',
   },
-  'caption.impact': {
-    ko: '부딪히는 동안 세 쌍 모두 에너지 막대가 줄어든다 — 열과 소리, 찌그러짐으로 나가는 몫이다.',
-    en: 'During the impact every energy bar shrinks — that part leaves as heat, sound and dents.',
+  'caption.bounce': {
+    ko: '부딪힐 때마다 공은 들어온 빠르기의 e 배로만 튀어 나온다 — 그래서 매번 앞 꼭짓점보다 낮게 오른다.',
+    en: 'Each time it hits, the ball leaves at only e times the speed it arrived with — so every peak falls short of the one before.',
   },
-  'caption.apart': {
-    ko: '부딪힌 뒤 두 수레 사이가 벌어진다. 위 쌍은 빨리 멀어지고, 아래 쌍은 거의 붙어서 간다.',
-    en: 'After the impact the two carts pull apart. The top pair separates fast; the bottom pair barely separates.',
-  },
-  'caption.compare': {
-    ko: '덜 벌어진 쌍일수록 사라진 몫이 길다 — 튀어 나가지 못한 만큼이 에너지에서 빠졌다.',
-    en: 'The less a pair pulls apart, the longer its lost part — what did not bounce back is gone from the energy.',
+  'caption.hold': {
+    ko: '꼭짓점이 매번 e² 배로 낮아졌다. 모자란 높이만큼의 에너지가 부딪힐 때마다 찌그러짐과 열로 빠져나갔다.',
+    en: 'Each peak is e² times the last. At every impact, the energy for the missing height went into squashing and heat.',
   },
 } satisfies Record<string, LocalizedText>);
 
 export type InelasticCollisionMessageKey = keyof typeof inelasticCollisionMessages;
+
+/**
+ * 꼭짓점 이름표 키 — 놓은 높이부터. 이름표가 있는 꼭짓점까지만 높이 점선 · 모자란 높이를
+ * 잰다. 그 뒤의 작은 튐은 궤적만 남는다(재면 치수선 끝 표시끼리 겹친다, G103).
+ */
+export const APEX_KEYS = [
+  'label.apex0',
+  'label.apex1',
+  'label.apex2',
+  'label.apex3',
+  'label.apex4',
+] as const satisfies readonly InelasticCollisionMessageKey[];
 
 /** 선언에서 문안을 꺼낸다. 호출부에 문자열 리터럴을 두지 않기 위한 유일한 통로. */
 export const text = (key: InelasticCollisionMessageKey): LocalizedText => inelasticCollisionMessages[key];
@@ -126,42 +135,45 @@ export const inelasticCollisionSchema: BundleSchema = {
   parameters: [],
   stages: [
     {
-      id: 'three-pairs',
+      id: 'dropped-ball',
       label: text('label.stage'),
       constants: {
-        speed: APPROACH_SPEED,
-        restitutionTop: RESTITUTION_TOP,
-        restitutionMid: RESTITUTION_MID,
-        restitutionBottom: RESTITUTION_BOTTOM,
+        height: DROP_HEIGHT,
+        restitution: RESTITUTION,
+        gravity: GRAVITY,
+        drift: DRIFT_SPEED,
       },
     },
   ],
   environments: [],
-  views: [{ id: 'gap-and-bar', label: text('label.view'), default: true }],
+  views: [{ id: 'bouncing-ball', label: text('label.view'), default: true }],
 
-  /** 가로로 넓다 — 왼쪽 세 줄의 수레, 오른쪽 막대 셋. 세로는 세 줄이면 된다. */
-  canvas: { height: 380, minHeight: 340 },
+  /** 가로로 넓다 — 꼭짓점이 옆으로 늘어선다. 세로는 놓은 높이 하나면 된다. */
+  canvas: { height: 360, minHeight: 320 },
 
-  /** 도착한 순간 이미 수레가 달려오는 중이다 (S-piece). */
-  startAt: 0.5,
+  /** 도착한 순간 이미 공이 떨어지는 중이다 (S-piece). `appear` 0.4 + 낙하 0.2 초. */
+  startAt: 0.6,
 
   /**
-   * 한 주기 9.8 초.
+   * 한 주기. `fall` · `bounce` 의 길이는 **물리 시간**이다 — 두 단계를 이어 붙인 것이
+   * 공의 시계이고, 기본 상수(h = 1.5 m, e = 0.8)에서 `fall` 은 바닥에 닿기까지 0.55 초,
+   * `bounce` 는 그 뒤 공이 튐을 멈추기까지 4.43 초다. 저작자가 상수를 바꾸면 이 둘도
+   * 함께 고쳐야 한다(선언이 따라가지 못한다, G13 · G80). 짧으면 공이 튀던 자리에서 멈춰
+   * 서고, 길면 바닥에 멈춘 채 기다린다 — 어느 쪽도 그림이 틀리지는 않는다.
    *
-   * - `approach` — 세 줄의 수레가 같은 속력으로 달려온다. 막대가 모두 가득 차 있다.
-   * - `impact` — 닿은 채로. 실제로는 순식간이지만 막대가 줄어드는 것이 보이도록 늘인다.
-   *   진행도가 곧 충돌이 끝난 정도다.
-   * - `apart` — 두 수레가 각자의 속도로 간다. 틈이 줄마다 다른 빠르기로 벌어진다.
-   * - `compare` — 그 자리에서 멈춰 세운 화면. 틈과 사라진 몫을 줄마다 견준다.
-   * - `fade` — 옅어지며 물러난다. 끝난 화면이 남지 않도록 다음 주기로 잇는다.
+   * - `appear` — 놓는 자리에서 공이 나타난다.
+   * - `fall` — 떨어진다. 0.6 배로 느리게 흘려 본다.
+   * - `bounce` — 튄다. 꼭짓점마다 이름표 · 앞 높이 점선 · 모자란 높이가 선다.
+   * - `hold` — 멈춘 공과 궤적 전체. 꼭짓점을 한꺼번에 견준다.
+   * - `fade` — 옅어지며 물러난다.
    */
   timeline: {
     phases: [
-      { id: 'approach', duration: 1.5, caption: key('caption.approach') },
-      { id: 'impact', duration: 1.4, ease: 'smooth', caption: key('caption.impact') },
-      { id: 'apart', duration: 2.0, caption: key('caption.apart') },
-      { id: 'compare', duration: 4.2, caption: key('caption.compare') },
-      { id: 'fade', duration: 0.7, caption: key('caption.compare') },
+      { id: 'appear', duration: 0.4, caption: key('caption.fall') },
+      { id: 'fall', duration: 0.553, timeScale: 0.6, caption: key('caption.fall') },
+      { id: 'bounce', duration: 4.426, timeScale: 0.6, caption: key('caption.bounce') },
+      { id: 'hold', duration: 4.0, caption: key('caption.hold') },
+      { id: 'fade', duration: 0.6, caption: key('caption.hold') },
     ],
   },
 
@@ -174,8 +186,8 @@ export const inelasticCollisionSchema: BundleSchema = {
     style: { colorRole: 'ink', emphasis: 'strong' },
   },
 
-  // 그리드 · 카메라 단추 · 제목 · 범례 없음(기본). 재는 것은 줄마다의 틈과 막대 길이의
-  // 대비이고, 레일 위 절대 거리가 아니다 (S-piece).
+  // 그리드 · 카메라 단추 · 제목 · 범례 없음(기본). 견주는 것은 꼭짓점 높이의 비이고,
+  // 이름표(h · e²h …)가 그 비를 말한다. 눈금으로 절대 높이를 재게 하지 않는다 (S-piece).
 
   messages: inelasticCollisionMessages,
 };

@@ -3,13 +3,12 @@
 // ========================================================================
 // 그리지 않는다, 선언한다.
 //
-// 자유 렌더를 쓰지 않는다. 레일(`trajectory`) · 수레(`body`) · 속도(`vector`) ·
-// 벌어진 틈(`dimension`) · 남은 에너지(`region`) · 사라진 몫의 자리(`trajectory`
-// 닫힌 점선) · 표식과 이름표(`readout`) 가 모두 표준 어휘로 있다.
+// 자유 렌더를 쓰지 않는다. 바닥(`surface`) · 공(`body`) · 지나온 궤적과 앞 꼭짓점 높이의
+// 점선(`trajectory`) · 모자란 높이(`dimension`) · 첫 충돌의 v · ev(`vector`) · 착지 파문
+// (`trace` 반원 고리) · 기호 이름표(`readout`) 가 모두 표준 어휘로 있다.
 //
-// 색: 수레는 먹색(여섯 대가 같은 수레다), 막대는 보조색, 레일 · 이름표는 무채색.
-// 강조색은 **벌어진 틈** 한 가지 뜻에만 쓴다 — 줄마다 다른 것이 그것 하나이고,
-// 막대의 사라진 칸은 강조가 아니라 비워 둔 자리(점선)로 말한다.
+// 색: 공은 먹색, 궤적 · 점선 · 기호는 무채색, 첫 충돌의 두 화살표는 주 색(속도).
+// 강조색은 **사라진 에너지** 한 가지 뜻에만 쓴다 — 모자란 높이의 치수선과 착지 파문.
 // ========================================================================
 
 import type {
@@ -22,45 +21,24 @@ import type {
   Vec2,
   ViewDef,
 } from '@aperi21/schema';
-import { derive, readConstants, type Reading } from './physics';
-import {
-  ARROW_LIFT,
-  ARROW_MIN,
-  ARROW_SCALE,
-  BAR_FULL,
-  BAR_HALF_H,
-  BAR_X0,
-  CART_HALF_H,
-  CART_HALF_W,
-  LANE_GAP,
-  SCENE_BOUNDS,
-  text,
-} from './schema';
+import { derive, readConstants, schedule, type Reading } from './physics';
+import { APEX_KEYS, ARROW_SCALE, ARROW_SPREAD, BALL_R, FRAME_PAD, RING_LIFE, text } from './schema';
 import type { InelasticCollisionState } from './state';
 
-/** 레일 좌우 끝(월드). 달려오는 자리부터 멀어져 간 자리까지. */
-const RAIL_FROM = -2.8;
-const RAIL_TO = 2.65;
-/** 반발 계수 표식 자리(월드 x). 레일 왼쪽 끝 바깥. */
-const RESTITUTION_X = -2.95;
-/** 막대 머리 이름을 첫 줄 막대 위로 올리는 거리(화면 px). */
-const HEAD_OFFSET: Vec2 = [0, -16];
-/** 「사라진 몫」 이름을 마지막 줄 막대 아래로 내리는 거리(화면 px). */
-const LOST_OFFSET: Vec2 = [0, 15];
-/** 틈 이름을 띠 윗변 위로 올리는 거리(화면 px). 띠 안에 두면 점선과 겹친다. */
-const GAP_LABEL_OFFSET: Vec2 = [0, -22];
-/** 이보다 좁은 틈은 재지 않는다(월드). 끝점 표시끼리 겹친다 (G103). */
-const GAP_MIN = 0.06;
-
-const rect = (x0: number, x1: number, cy: number, halfH: number): Vec2[] => [
-  [x0, cy - halfH],
-  [x1, cy - halfH],
-  [x1, cy + halfH],
-  [x0, cy + halfH],
-];
-
-/** 줄 i 의 수레 중심 높이. 위 줄이 0. */
-const laneY = (i: number): number => LANE_GAP * (1 - i);
+/**
+ * 꼭짓점 이름표를 꼭짓점 **아래**, 그 튐의 아치 안으로 내리는 거리(화면 px). 위에 두면
+ * 위에서 내려오는 모자란 높이 치수선과 겹친다(첫 촬영에서 확인). 아치 안은 비어 있다.
+ */
+const APEX_LABEL_OFFSET: Vec2 = [0, 15];
+/** 놓은 높이 `h` 는 공 왼쪽에 둔다 — 위에 두면 점선 머리와 겹친다(화면 px). */
+const DROP_LABEL_OFFSET: Vec2 = [-14, 0];
+/** 「사라진 에너지」 를 첫 치수선 오른쪽으로 띄우는 거리(화면 px). */
+const LOST_LABEL_OFFSET: Vec2 = [9, 0];
+/** `e` 표식을 바닥 아래로 내리는 거리(화면 px). */
+const E_LABEL_OFFSET: Vec2 = [0, 16];
+/** 착지 파문 — 처음 · 끝 반지름(화면 px). */
+const RING_FROM = 6;
+const RING_TO = 40;
 
 export function scene(params: {
   state: InelasticCollisionState;
@@ -75,185 +53,171 @@ export function scene(params: {
   const r: Reading = derive(timeline, c);
   const op = r.opacity;
   const ink = { colorRole: 'ink', emphasis: 'strong' } as const;
-  const bar = { colorRole: 'secondary', emphasis: 'strong' } as const;
   const muted = { colorRole: 'muted', emphasis: 'strong' } as const;
+  const velocity = { colorRole: 'primary', emphasis: 'strong' } as const;
   const accent = { colorRole: 'accent', emphasis: 'strong' } as const;
   const g: Primitive[] = [];
 
-  r.lanes.forEach((lane, i) => {
-    const y = laneY(i);
-    const railY = y - CART_HALF_H;
+  // ---- 바닥 ----
+  // 물러나는 동안에도 남긴다 — 갈아 끼우는 순간 바닥까지 깜빡이면 그것이 충돌만큼 눈에 띈다.
+  g.push({ type: 'surface', id: 'floor', geometry: { kind: 'ground', y: 0 }, style: ink });
 
-    // ---- 레일과 반발 계수 ----
-    // 가는 무채색 선. `surface` wall 은 가장 굵은 먹색 선이라 세 줄이 겹겹이 서면
-    // 레일이 수레만큼 짙어진다 — 레일은 어디에 놓였는지만 말하면 된다.
+  // ---- 지나온 궤적 ----
+  if (r.trail.length > 1) {
+    g.push({ type: 'trajectory', id: 'trail', points: r.trail, width: 1.5, opacity: op, style: muted });
+  }
+
+  // ---- 앞 꼭짓점 높이 ----
+  // 가는 점선. 다음 꼭짓점이 이 선에 못 미치는 것이 보이도록 공을 따라 오른쪽으로 자란다.
+  for (const lv of r.levels) {
+    if (lv.toX - lv.from[0] < 1e-3) continue;
     g.push({
       type: 'trajectory',
-      id: `rail-${i}`,
-      points: [
-        [RAIL_FROM, railY],
-        [RAIL_TO, railY],
-      ],
+      id: `level-${lv.k}`,
+      points: [lv.from, [lv.toX, lv.from[1]]],
+      width: 1,
+      opacity: op,
+      style: { ...muted, lineStyle: 'dashed' },
+    });
+  }
+
+  // ---- 모자란 높이 — 이번 충돌에서 사라진 에너지 ----
+  for (const sf of r.shortfalls) {
+    g.push({
+      type: 'dimension',
+      id: `lost-${sf.k}`,
+      from: [sf.x, sf.fromY],
+      to: [sf.x, sf.toY],
+      opacity: op,
+      style: accent,
+    });
+    // 이름은 가장 긴 첫 치수선에만. 모든 치수선에 붙이면 뒤쪽 좁은 자리에서 궤적을 덮는다.
+    if (sf.k === 1) {
+      g.push({
+        type: 'readout',
+        id: 'lost-name',
+        anchor: { world: [sf.x, (sf.fromY + sf.toY) / 2], offset: LOST_LABEL_OFFSET },
+        text: text('label.lost'),
+        chip: false,
+        font: 'text',
+        fontSize: 12,
+        align: 'left',
+        opacity: op,
+        style: accent,
+      });
+    }
+  }
+
+  // ---- 꼭짓점 이름표 ----
+  for (const a of r.apexes) {
+    const key = APEX_KEYS[a.k];
+    if (!key) continue;
+    const first = a.k === 0;
+    g.push({
+      type: 'readout',
+      id: `apex-${a.k}`,
+      anchor: { world: a.pos, offset: first ? DROP_LABEL_OFFSET : APEX_LABEL_OFFSET },
+      text: text(key),
+      chip: false,
+      // 문장 글꼴 — 고정폭 글꼴에서 위 첨자(²·⁴)가 다른 글꼴로 대체되어 어긋나 찍혔다.
+      font: 'text',
+      italic: true,
+      fontSize: 13,
+      align: first ? 'right' : 'center',
+      opacity: op,
+      style: ink,
+    });
+  }
+
+  // ---- 첫 충돌의 v · ev ----
+  // 들어온 빠르기(점선 — 지나간 것)와 튀어 나간 빠르기를 착지점 좌우에 세운다. 궤적의 V
+  // 바깥에 서서 겹치지 않는다. 「덜 튀어 나온다」 가 길이로 남는 자리다.
+  const fi = r.firstImpact;
+  if (fi) {
+    const inLen = fi.vIn * ARROW_SCALE;
+    const outLen = fi.vOut * ARROW_SCALE;
+    g.push({
+      type: 'vector',
+      id: 'v-in',
+      from: [fi.x - ARROW_SPREAD, inLen],
+      delta: [0, -inLen],
+      label: text('label.vIn'),
+      labelSide: 'cw',
       width: 1.5,
       opacity: op,
-      style: muted,
+      style: { ...velocity, lineStyle: 'dashed' },
+    });
+    g.push({
+      type: 'vector',
+      id: 'v-out',
+      from: [fi.x + ARROW_SPREAD, 0],
+      delta: [0, outLen],
+      label: text('label.vOut'),
+      labelSide: 'cw',
+      width: 2,
+      opacity: op,
+      style: velocity,
     });
     g.push({
       type: 'readout',
-      id: `restitution-${i}`,
-      anchor: { world: [RESTITUTION_X, y] },
+      id: 'restitution',
+      anchor: { world: [fi.x, 0], offset: E_LABEL_OFFSET },
       text: text('label.restitution'),
-      vars: { e: String(lane.e) },
+      vars: { e: String(c.restitution) },
       chip: false,
       font: 'mono',
       fontSize: 13,
-      align: 'right',
-      opacity: op,
-      style: muted,
-    });
-
-    // ---- 두 수레 ----
-    for (const [who, x] of [
-      ['a', lane.xA],
-      ['b', lane.xB],
-    ] as const) {
-      g.push({
-        type: 'body',
-        id: `cart-${who}-${i}`,
-        pos: [x, y],
-        shape: 'rect',
-        size: [CART_HALF_W * 2, CART_HALF_H * 2],
-        opacity: op,
-        style: ink,
-      });
-    }
-
-    // ---- 속도 ----
-    // 움직이는 동안만. 멈춰 세운 비교 화면에 화살표가 남으면 「아직 달린다」 와
-    // 「여기서 견줘라」 가 한 화면에서 다툰다.
-    if (r.moving) {
-      for (const [who, x, v] of [
-        ['a', lane.xA, lane.vA],
-        ['b', lane.xB, lane.vB],
-      ] as const) {
-        const len = v * ARROW_SCALE;
-        if (len < ARROW_MIN) continue;
-        g.push({
-          type: 'vector',
-          id: `velocity-${who}-${i}`,
-          from: [x - len / 2, y + CART_HALF_H + ARROW_LIFT],
-          delta: [len, 0],
-          width: 2,
-          opacity: op,
-          style: muted,
-        });
-      }
-    }
-
-    // ---- 벌어진 틈 ----
-    // 강조색은 이것 하나. 줄마다 다른 빠르기로 자라고, 멈춘 뒤 줄마다 다른 길이로 남는다.
-    const gapFrom = lane.xA + CART_HALF_W;
-    const gapTo = lane.xB - CART_HALF_W;
-    if (r.separating && gapTo - gapFrom > GAP_MIN) {
-      // 틈을 수레 높이의 옅은 띠로 먼저 깐다. 치수선은 점선뿐이라(G19) 혼자서는
-      // 줄마다 다른 길이가 한눈에 견줘지지 않는다 — 띠가 「비어 있는 자리」 를 면으로 만든다.
-      g.push({
-        type: 'region',
-        id: `gap-band-${i}`,
-        points: rect(gapFrom, gapTo, y, CART_HALF_H),
-        fillOpacity: 0.22,
-        opacity: op,
-        style: accent,
-      });
-      g.push({
-        type: 'dimension',
-        id: `gap-${i}`,
-        from: [gapFrom, y],
-        to: [gapTo, y],
-        opacity: op,
-        style: accent,
-      });
-      // 이름은 가장 넓은 첫 줄에만. 셋 다 붙이면 좁은 틈에서 글자가 수레를 덮는다.
-      if (i === 0) {
-        g.push({
-          type: 'readout',
-          id: 'gap-name',
-          anchor: { world: [(gapFrom + gapTo) / 2, y], offset: GAP_LABEL_OFFSET },
-          text: text('label.gap'),
-          chip: false,
-          font: 'text',
-          fontSize: 12,
-          align: 'center',
-          opacity: op,
-          style: accent,
-        });
-      }
-    }
-
-    // ---- 운동 에너지 막대 ----
-    // 남은 몫은 채움, 사라진 몫은 비워 둔 자리(점선 테두리). 채우면 아직 있는 에너지로 읽힌다.
-    const keptEnd = BAR_X0 + BAR_FULL * lane.kept;
-    g.push({
-      type: 'region',
-      id: `energy-${i}`,
-      points: rect(BAR_X0, keptEnd, y, BAR_HALF_H),
-      fillOpacity: 0.5,
-      opaque: true,
-      opacity: op,
-      style: bar,
-    });
-    const fullEnd = BAR_X0 + BAR_FULL;
-    if (fullEnd - keptEnd > 0.01) {
-      g.push({
-        type: 'trajectory',
-        id: `lost-${i}`,
-        points: rect(keptEnd, fullEnd, y, BAR_HALF_H),
-        closed: true,
-        width: 1,
-        opacity: op * 0.85 * r.lostShown,
-        style: { ...muted, lineStyle: 'dashed' },
-      });
-    }
-  });
-
-  // ---- 막대 줄의 이름 ----
-  const topY = laneY(0);
-  const bottomY = laneY(r.lanes.length - 1);
-  g.push({
-    type: 'readout',
-    id: 'energy-name',
-    anchor: { world: [BAR_X0 + BAR_FULL / 2, topY + BAR_HALF_H], offset: HEAD_OFFSET },
-    text: text('label.energy'),
-    chip: false,
-    font: 'text',
-    fontSize: 13,
-    align: 'center',
-    opacity: op,
-    style: ink,
-  });
-  // 「사라진 몫」 은 가장 긴 마지막 줄 칸 아래에 한 번만.
-  const last = r.lanes[r.lanes.length - 1];
-  if (last && r.lostShown > 0.5) {
-    const from = BAR_X0 + BAR_FULL * last.keptFinal;
-    g.push({
-      type: 'readout',
-      id: 'lost-name',
-      anchor: { world: [(from + BAR_X0 + BAR_FULL) / 2, bottomY - BAR_HALF_H], offset: LOST_OFFSET },
-      text: text('label.lost'),
-      chip: false,
-      font: 'text',
-      fontSize: 12,
       align: 'center',
-      opacity: op * Math.min(1, (r.lostShown - 0.5) * 2),
+      opacity: op,
       style: muted,
     });
   }
+
+  // ---- 착지 파문 ----
+  // 부딪힌 순간 바닥 위로 번지는 반원. 크기가 그 충돌에서 사라진 에너지 몫을 따른다.
+  if (r.rings.length > 0) {
+    g.push({
+      type: 'trace',
+      id: 'impact',
+      marks: r.rings.map((m) => ({ pos: m.pos, age: m.age, strength: m.strength })),
+      life: RING_LIFE,
+      shape: 'ring',
+      size: RING_FROM,
+      spreadTo: RING_TO,
+      arc: [0, Math.PI],
+      width: 1.5,
+      opacity: op,
+      style: accent,
+    });
+  }
+
+  // ---- 공 ----
+  g.push({
+    type: 'body',
+    id: 'ball',
+    pos: r.ball,
+    shape: 'circle',
+    size: BALL_R,
+    glow: false,
+    opacity: op,
+    style: ink,
+  });
 
   // 캡션은 선언의 캡션 슬롯이 그린다 (`schema.caption`).
   return g;
 }
 
-/** 고정 경계. 매 프레임 같은 값이라 카메라가 흔들리지 않는다 (원칙 6). */
-export function boundsHint(): Bounds {
-  return { ...SCENE_BOUNDS };
+/**
+ * 고정 경계. 스테이지 상수에서 한 번 정해지고 매 프레임 같은 값이라 카메라가 흔들리지
+ * 않는다 (원칙 6). 가로 끝은 공이 튐을 멈추는 자리다.
+ */
+export function boundsHint(_state: InelasticCollisionState, stage: StageDef): Bounds {
+  const c = readConstants(stage);
+  const s = schedule(c);
+  return {
+    minX: -FRAME_PAD.left,
+    maxX: c.drift * s.settle + FRAME_PAD.right,
+    minY: -FRAME_PAD.bottom,
+    maxY: c.height + 2 * BALL_R + FRAME_PAD.top,
+  };
 }

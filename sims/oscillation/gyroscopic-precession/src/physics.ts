@@ -13,9 +13,15 @@ import type { GyroscopicPrecessionState } from './state';
 
 export type Vec3 = readonly [number, number, number];
 
-/** 고정 비스듬 시점 투영. 결과는 투영 평면 좌표 — y 가 위. */
+/**
+ * 고정 비스듬 시점 투영. 결과는 투영 평면 좌표 — y 가 위.
+ *
+ * **오른손 투영이다** — 화면 오른쪽 × 화면 위 = 보는 사람 쪽. `depth` 가 클수록 보는 사람에 가까워
+ * 아래로 내려오는데, 처음 식은 가로축 부호가 반대라 거울상이었다 — 그려진 r · 무게 · 돌림힘
+ * 화살표가 오른손 규칙과 반대로 읽혔다(장부 G120). 가로축 부호를 뒤집어 바로잡았다.
+ */
 export function project(p: Vec3): Vec2 {
-  const xr = p[0] * Math.cos(YAW) - p[1] * Math.sin(YAW);
+  const xr = -(p[0] * Math.cos(YAW) - p[1] * Math.sin(YAW));
   const depth = p[0] * Math.sin(YAW) + p[1] * Math.cos(YAW);
   const yr = p[2] * Math.cos(ELEV) - depth * Math.sin(ELEV);
   return [xr, yr];

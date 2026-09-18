@@ -552,11 +552,6 @@
           "simId": "aperi21:explosion-and-recoil"
         },
         {
-          "id": "variable-mass-system",
-          "name": "질량이 변하는 계",
-          "desc": "질량 유출입이 있는 운동 방정식"
-        },
-        {
           "id": "rocket-equation",
           "name": "로켓 방정식",
           "desc": "연료를 버려 얻는 속도",
@@ -2561,7 +2556,7 @@
     }
   ],
   "summary": {
-    "topics": 442,
+    "topics": 441,
     "implemented": 177,
     "labs": 103
   }
