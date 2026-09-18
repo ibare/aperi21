@@ -153,6 +153,12 @@ importers:
       '@aperi21/sim-angular-acceleration':
         specifier: workspace:*
         version: link:../../sims/kinematics/angular-acceleration
+      '@aperi21/sim-angular-momentum':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/angular-momentum
+      '@aperi21/sim-angular-momentum-vector':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/angular-momentum-vector
       '@aperi21/sim-apparent-brightness':
         specifier: workspace:*
         version: link:../../sims/astro/apparent-brightness
@@ -183,6 +189,9 @@ importers:
       '@aperi21/sim-beats':
         specifier: workspace:*
         version: link:../../sims/waves/beats
+      '@aperi21/sim-beats-in-oscillation':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/beats-in-oscillation
       '@aperi21/sim-bernoullis-principle':
         specifier: workspace:*
         version: link:../../sims/fluids/bernoullis-principle
@@ -195,6 +204,9 @@ importers:
       '@aperi21/sim-carnot-cycle':
         specifier: workspace:*
         version: link:../../sims/thermal/carnot-cycle
+      '@aperi21/sim-center-of-gravity':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/center-of-gravity
       '@aperi21/sim-center-of-mass-motion':
         specifier: workspace:*
         version: link:../../sims/mechanics/center-of-mass-motion
@@ -213,6 +225,9 @@ importers:
       '@aperi21/sim-connected-bodies':
         specifier: workspace:*
         version: link:../../sims/mechanics/connected-bodies
+      '@aperi21/sim-conservation-of-angular-momentum':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/conservation-of-angular-momentum
       '@aperi21/sim-conservation-of-momentum':
         specifier: workspace:*
         version: link:../../sims/mechanics/conservation-of-momentum
@@ -225,9 +240,18 @@ importers:
       '@aperi21/sim-coriolis-effect':
         specifier: workspace:*
         version: link:../../sims/mechanics/coriolis-effect
+      '@aperi21/sim-coupled-oscillators':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/coupled-oscillators
       '@aperi21/sim-current-magnetic-field':
         specifier: workspace:*
         version: link:../../sims/em/current-magnetic-field
+      '@aperi21/sim-damped-oscillation':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/damped-oscillation
+      '@aperi21/sim-damping-regimes':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/damping-regimes
       '@aperi21/sim-direction-of-acceleration':
         specifier: workspace:*
         version: link:../../sims/kinematics/direction-of-acceleration
@@ -240,6 +264,9 @@ importers:
       '@aperi21/sim-drag-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/drag-force
+      '@aperi21/sim-driven-oscillation':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/driven-oscillation
       '@aperi21/sim-efficiency':
         specifier: workspace:*
         version: link:../../sims/mechanics/efficiency
@@ -288,6 +315,9 @@ importers:
       '@aperi21/sim-gas-pressure':
         specifier: workspace:*
         version: link:../../sims/thermal/gas-pressure
+      '@aperi21/sim-gears':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/gears
       '@aperi21/sim-gravitational-acceleration':
         specifier: workspace:*
         version: link:../../sims/kinematics/gravitational-acceleration
@@ -351,6 +381,9 @@ importers:
       '@aperi21/sim-longitudinal-wave':
         specifier: workspace:*
         version: link:../../sims/waves/longitudinal-wave
+      '@aperi21/sim-mass-spring-system':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/mass-spring-system
       '@aperi21/sim-maxwell-boltzmann-distribution':
         specifier: workspace:*
         version: link:../../sims/thermal/maxwell-boltzmann-distribution
@@ -378,12 +411,18 @@ importers:
       '@aperi21/sim-non-inertial-frame':
         specifier: workspace:*
         version: link:../../sims/mechanics/non-inertial-frame
+      '@aperi21/sim-nonlinear-oscillation':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/nonlinear-oscillation
       '@aperi21/sim-normal-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/normal-force
       '@aperi21/sim-normal-modes':
         specifier: workspace:*
         version: link:../../sims/oscillation/normal-modes
+      '@aperi21/sim-parallel-axis-theorem':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/parallel-axis-theorem
       '@aperi21/sim-pendulum-isochronism':
         specifier: workspace:*
         version: link:../../sims/oscillation/pendulum-isochronism
@@ -396,6 +435,9 @@ importers:
       '@aperi21/sim-phase-space':
         specifier: workspace:*
         version: link:../../sims/oscillation/phase-space
+      '@aperi21/sim-physical-pendulum':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/physical-pendulum
       '@aperi21/sim-poiseuille-flow':
         specifier: workspace:*
         version: link:../../sims/fluids/poiseuille-flow
@@ -414,6 +456,9 @@ importers:
       '@aperi21/sim-pulley-system':
         specifier: workspace:*
         version: link:../../sims/mechanics/pulley-system
+      '@aperi21/sim-quality-factor':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/quality-factor
       '@aperi21/sim-radioactive-decay':
         specifier: workspace:*
         version: link:../../sims/modern/radioactive-decay
@@ -444,6 +489,24 @@ importers:
       '@aperi21/sim-rocket-equation':
         specifier: workspace:*
         version: link:../../sims/mechanics/rocket-equation
+      '@aperi21/sim-rolling-race':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/rolling-race
+      '@aperi21/sim-rolling-without-slipping':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/rolling-without-slipping
+      '@aperi21/sim-rotational-kinetic-energy':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/rotational-kinetic-energy
+      '@aperi21/sim-shm-energy':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/shm-energy
+      '@aperi21/sim-simple-harmonic-motion':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/simple-harmonic-motion
+      '@aperi21/sim-simple-pendulum':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/simple-pendulum
       '@aperi21/sim-spacetime-diagram':
         specifier: workspace:*
         version: link:../../sims/modern/spacetime-diagram
@@ -456,6 +519,9 @@ importers:
       '@aperi21/sim-standing-wave':
         specifier: workspace:*
         version: link:../../sims/waves/standing-wave
+      '@aperi21/sim-static-equilibrium':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/static-equilibrium
       '@aperi21/sim-static-friction':
         specifier: workspace:*
         version: link:../../sims/mechanics/static-friction
@@ -483,6 +549,9 @@ importers:
       '@aperi21/sim-tidal-force':
         specifier: workspace:*
         version: link:../../sims/astro/tidal-force
+      '@aperi21/sim-torque':
+        specifier: workspace:*
+        version: link:../../sims/oscillation/torque
       '@aperi21/sim-total-internal-reflection':
         specifier: workspace:*
         version: link:../../sims/optics/total-internal-reflection
@@ -1836,7 +1905,106 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/oscillation/angular-momentum:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/angular-momentum-vector:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/beats-in-oscillation:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/center-of-gravity:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/conservation-of-angular-momentum:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/coupled-oscillators:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/damped-oscillation:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/damping-regimes:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/driven-oscillation:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/gears:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/oscillation/gyroscopic-precession:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/mass-spring-system:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1854,7 +2022,25 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/oscillation/nonlinear-oscillation:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/oscillation/normal-modes:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/parallel-axis-theorem:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1881,7 +2067,97 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/oscillation/physical-pendulum:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/quality-factor:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/oscillation/resonance:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/rolling-race:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/rolling-without-slipping:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/rotational-kinetic-energy:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/shm-energy:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/simple-harmonic-motion:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/simple-pendulum:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/static-equilibrium:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/oscillation/torque:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*

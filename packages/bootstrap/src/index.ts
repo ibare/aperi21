@@ -1109,6 +1109,190 @@ export function registerAperi21Bundles(): void {
     );
   });
 
+  registerBundleLoader('aperi21:torque', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-torque'),
+      import('./capabilities/oscillation/torque.generated.js'),
+    ]);
+    return registerBundle('aperi21:torque', m.torqueBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:parallel-axis-theorem', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-parallel-axis-theorem'),
+      import('./capabilities/oscillation/parallel-axis-theorem.generated.js'),
+    ]);
+    return registerBundle('aperi21:parallel-axis-theorem', m.parallelAxisTheoremBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:rotational-kinetic-energy', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-rotational-kinetic-energy'),
+      import('./capabilities/oscillation/rotational-kinetic-energy.generated.js'),
+    ]);
+    return registerBundle('aperi21:rotational-kinetic-energy', m.rotationalKineticEnergyBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:angular-momentum', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-angular-momentum'),
+      import('./capabilities/oscillation/angular-momentum.generated.js'),
+    ]);
+    return registerBundle('aperi21:angular-momentum', m.angularMomentumBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:conservation-of-angular-momentum', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-conservation-of-angular-momentum'),
+      import('./capabilities/oscillation/conservation-of-angular-momentum.generated.js'),
+    ]);
+    return registerBundle('aperi21:conservation-of-angular-momentum', m.conservationOfAngularMomentumBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:angular-momentum-vector', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-angular-momentum-vector'),
+      import('./capabilities/oscillation/angular-momentum-vector.generated.js'),
+    ]);
+    return registerBundle('aperi21:angular-momentum-vector', m.angularMomentumVectorBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:rolling-without-slipping', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-rolling-without-slipping'),
+      import('./capabilities/oscillation/rolling-without-slipping.generated.js'),
+    ]);
+    return registerBundle('aperi21:rolling-without-slipping', m.rollingWithoutSlippingBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:rolling-race', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-rolling-race'),
+      import('./capabilities/oscillation/rolling-race.generated.js'),
+    ]);
+    return registerBundle('aperi21:rolling-race', m.rollingRaceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:static-equilibrium', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-static-equilibrium'),
+      import('./capabilities/oscillation/static-equilibrium.generated.js'),
+    ]);
+    return registerBundle('aperi21:static-equilibrium', m.staticEquilibriumBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:center-of-gravity', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-center-of-gravity'),
+      import('./capabilities/oscillation/center-of-gravity.generated.js'),
+    ]);
+    return registerBundle('aperi21:center-of-gravity', m.centerOfGravityBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:gears', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-gears'),
+      import('./capabilities/oscillation/gears.generated.js'),
+    ]);
+    return registerBundle('aperi21:gears', m.gearsBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:simple-harmonic-motion', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-simple-harmonic-motion'),
+      import('./capabilities/oscillation/simple-harmonic-motion.generated.js'),
+    ]);
+    return registerBundle('aperi21:simple-harmonic-motion', m.simpleHarmonicMotionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:shm-energy', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-shm-energy'),
+      import('./capabilities/oscillation/shm-energy.generated.js'),
+    ]);
+    return registerBundle('aperi21:shm-energy', m.shmEnergyBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:mass-spring-system', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-mass-spring-system'),
+      import('./capabilities/oscillation/mass-spring-system.generated.js'),
+    ]);
+    return registerBundle('aperi21:mass-spring-system', m.massSpringSystemBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:simple-pendulum', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-simple-pendulum'),
+      import('./capabilities/oscillation/simple-pendulum.generated.js'),
+    ]);
+    return registerBundle('aperi21:simple-pendulum', m.simplePendulumBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:physical-pendulum', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-physical-pendulum'),
+      import('./capabilities/oscillation/physical-pendulum.generated.js'),
+    ]);
+    return registerBundle('aperi21:physical-pendulum', m.physicalPendulumBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:damped-oscillation', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-damped-oscillation'),
+      import('./capabilities/oscillation/damped-oscillation.generated.js'),
+    ]);
+    return registerBundle('aperi21:damped-oscillation', m.dampedOscillationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:damping-regimes', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-damping-regimes'),
+      import('./capabilities/oscillation/damping-regimes.generated.js'),
+    ]);
+    return registerBundle('aperi21:damping-regimes', m.dampingRegimesBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:driven-oscillation', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-driven-oscillation'),
+      import('./capabilities/oscillation/driven-oscillation.generated.js'),
+    ]);
+    return registerBundle('aperi21:driven-oscillation', m.drivenOscillationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:quality-factor', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-quality-factor'),
+      import('./capabilities/oscillation/quality-factor.generated.js'),
+    ]);
+    return registerBundle('aperi21:quality-factor', m.qualityFactorBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:coupled-oscillators', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-coupled-oscillators'),
+      import('./capabilities/oscillation/coupled-oscillators.generated.js'),
+    ]);
+    return registerBundle('aperi21:coupled-oscillators', m.coupledOscillatorsBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:beats-in-oscillation', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-beats-in-oscillation'),
+      import('./capabilities/oscillation/beats-in-oscillation.generated.js'),
+    ]);
+    return registerBundle('aperi21:beats-in-oscillation', m.beatsInOscillationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:nonlinear-oscillation', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-nonlinear-oscillation'),
+      import('./capabilities/oscillation/nonlinear-oscillation.generated.js'),
+    ]);
+    return registerBundle('aperi21:nonlinear-oscillation', m.nonlinearOscillationBundle, caps.capabilities);
+  });
+
   registerBundleLoader('aperi21:beats', async () => {
     const [m, caps] = await Promise.all([
       import('@aperi21/sim-beats'),

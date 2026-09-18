@@ -590,7 +590,8 @@
         {
           "id": "torque",
           "name": "돌림힘",
-          "desc": "회전을 일으키는 양과 팔 길이"
+          "desc": "회전을 일으키는 양과 팔 길이",
+          "simId": "aperi21:torque"
         },
         {
           "id": "moment-of-inertia",
@@ -602,42 +603,50 @@
         {
           "id": "parallel-axis-theorem",
           "name": "평행축 정리",
-          "desc": "축을 옮길 때의 관성 모멘트"
+          "desc": "축을 옮길 때의 관성 모멘트",
+          "simId": "aperi21:parallel-axis-theorem"
         },
         {
           "id": "rotational-kinetic-energy",
           "name": "회전 운동 에너지",
-          "desc": "각속도가 담은 에너지"
+          "desc": "각속도가 담은 에너지",
+          "simId": "aperi21:rotational-kinetic-energy"
         },
         {
           "id": "angular-momentum",
           "name": "각운동량",
-          "desc": "회전의 운동량"
+          "desc": "회전의 운동량",
+          "simId": "aperi21:angular-momentum"
         },
         {
           "id": "conservation-of-angular-momentum",
           "name": "각운동량 보존",
-          "desc": "팔을 오므리면 빨라지는 이유"
+          "desc": "팔을 오므리면 빨라지는 이유",
+          "simId": "aperi21:conservation-of-angular-momentum"
         },
         {
           "id": "rolling-without-slipping",
           "name": "미끄러지지 않는 구름",
-          "desc": "병진과 회전의 구속 조건"
+          "desc": "병진과 회전의 구속 조건",
+          "simId": "aperi21:rolling-without-slipping"
         },
         {
           "id": "rolling-race",
           "name": "구르는 물체의 경주",
-          "desc": "질량 분포가 정하는 도착 순서"
+          "desc": "질량 분포가 정하는 도착 순서",
+          "simId": "aperi21:rolling-race"
         },
         {
           "id": "static-equilibrium",
           "name": "정적 평형",
-          "desc": "힘과 돌림힘이 모두 0"
+          "desc": "힘과 돌림힘이 모두 0",
+          "simId": "aperi21:static-equilibrium"
         },
         {
           "id": "center-of-gravity",
           "name": "무게 중심",
-          "desc": "넘어지는 조건을 정하는 점"
+          "desc": "넘어지는 조건을 정하는 점",
+          "simId": "aperi21:center-of-gravity"
         },
         {
           "id": "gyroscopic-precession",
@@ -649,32 +658,38 @@
         {
           "id": "angular-momentum-vector",
           "name": "각운동량의 방향",
-          "desc": "오른손 규칙과 회전축"
+          "desc": "오른손 규칙과 회전축",
+          "simId": "aperi21:angular-momentum-vector"
         },
         {
           "id": "simple-harmonic-motion",
           "name": "단순 조화 운동",
-          "desc": "복원력이 변위에 비례하는 운동"
+          "desc": "복원력이 변위에 비례하는 운동",
+          "simId": "aperi21:simple-harmonic-motion"
         },
         {
           "id": "shm-energy",
           "name": "조화 운동의 에너지",
-          "desc": "운동 에너지와 퍼텐셜의 교환"
+          "desc": "운동 에너지와 퍼텐셜의 교환",
+          "simId": "aperi21:shm-energy"
         },
         {
           "id": "mass-spring-system",
           "name": "용수철 진자",
-          "desc": "질량과 탄성 계수가 정하는 주기"
+          "desc": "질량과 탄성 계수가 정하는 주기",
+          "simId": "aperi21:mass-spring-system"
         },
         {
           "id": "simple-pendulum",
           "name": "단진자",
-          "desc": "작은 진폭에서의 주기"
+          "desc": "작은 진폭에서의 주기",
+          "simId": "aperi21:simple-pendulum"
         },
         {
           "id": "physical-pendulum",
           "name": "물리 진자",
-          "desc": "크기가 있는 물체의 진동"
+          "desc": "크기가 있는 물체의 진동",
+          "simId": "aperi21:physical-pendulum"
         },
         {
           "id": "pendulum-amplitude-dependence",
@@ -685,17 +700,20 @@
         {
           "id": "damped-oscillation",
           "name": "감쇠 진동",
-          "desc": "에너지가 빠져나가는 진동"
+          "desc": "에너지가 빠져나가는 진동",
+          "simId": "aperi21:damped-oscillation"
         },
         {
           "id": "damping-regimes",
           "name": "감쇠의 세 양상",
-          "desc": "부족·임계·과도 감쇠"
+          "desc": "부족·임계·과도 감쇠",
+          "simId": "aperi21:damping-regimes"
         },
         {
           "id": "driven-oscillation",
           "name": "강제 진동",
-          "desc": "외부 구동에 대한 응답"
+          "desc": "외부 구동에 대한 응답",
+          "simId": "aperi21:driven-oscillation"
         },
         {
           "id": "resonance",
@@ -707,12 +725,14 @@
         {
           "id": "quality-factor",
           "name": "Q 인자",
-          "desc": "공명의 날카로움"
+          "desc": "공명의 날카로움",
+          "simId": "aperi21:quality-factor"
         },
         {
           "id": "coupled-oscillators",
           "name": "결합 진동자",
-          "desc": "에너지가 오가는 두 진동자"
+          "desc": "에너지가 오가는 두 진동자",
+          "simId": "aperi21:coupled-oscillators"
         },
         {
           "id": "normal-modes",
@@ -724,7 +744,8 @@
         {
           "id": "beats-in-oscillation",
           "name": "진동의 맥놀이",
-          "desc": "가까운 두 진동수의 합"
+          "desc": "가까운 두 진동수의 합",
+          "simId": "aperi21:beats-in-oscillation"
         },
         {
           "id": "phase-space",
@@ -736,12 +757,14 @@
         {
           "id": "nonlinear-oscillation",
           "name": "비선형 진동",
-          "desc": "복원력이 비례를 벗어날 때"
+          "desc": "복원력이 비례를 벗어날 때",
+          "simId": "aperi21:nonlinear-oscillation"
         },
         {
           "id": "gears",
           "name": "기어",
-          "desc": "톱니 수가 바꾸는 회전과 힘"
+          "desc": "톱니 수가 바꾸는 회전과 힘",
+          "simId": "aperi21:gears"
         }
       ]
     },
@@ -2522,7 +2545,7 @@
   ],
   "summary": {
     "topics": 442,
-    "implemented": 137,
+    "implemented": 160,
     "labs": 103
   }
 }
