@@ -1019,7 +1019,8 @@
         {
           "id": "hydrostatic-pressure",
           "name": "정수압",
-          "desc": "깊이에 비례하는 압력"
+          "desc": "깊이에 비례하는 압력",
+          "simId": "aperi21:hydrostatic-pressure"
         },
         {
           "id": "pressure-and-container-shape",
@@ -1030,27 +1031,32 @@
         {
           "id": "atmospheric-pressure",
           "name": "대기압",
-          "desc": "공기 기둥의 무게"
+          "desc": "공기 기둥의 무게",
+          "simId": "aperi21:atmospheric-pressure"
         },
         {
           "id": "barometer",
           "name": "기압계",
-          "desc": "수은 기둥의 높이"
+          "desc": "수은 기둥의 높이",
+          "simId": "aperi21:barometer"
         },
         {
           "id": "manometer",
           "name": "압력계",
-          "desc": "액주 차이로 재는 압력"
+          "desc": "액주 차이로 재는 압력",
+          "simId": "aperi21:manometer"
         },
         {
           "id": "pascals-principle",
           "name": "파스칼 원리",
-          "desc": "압력의 전달과 유압 장치"
+          "desc": "압력의 전달과 유압 장치",
+          "simId": "aperi21:pascals-principle"
         },
         {
           "id": "buoyancy",
           "name": "부력",
-          "desc": "밀려난 유체의 무게만큼"
+          "desc": "밀려난 유체의 무게만큼",
+          "simId": "aperi21:buoyancy"
         },
         {
           "id": "archimedes-principle",
@@ -1061,7 +1067,8 @@
         {
           "id": "floating-and-draft",
           "name": "뜨는 깊이",
-          "desc": "잠기는 부피가 정해지는 방식"
+          "desc": "잠기는 부피가 정해지는 방식",
+          "simId": "aperi21:floating-and-draft"
         },
         {
           "id": "stability-of-floating-body",
@@ -1073,7 +1080,8 @@
         {
           "id": "continuity-equation",
           "name": "연속 방정식",
-          "desc": "단면적과 유속의 반비례"
+          "desc": "단면적과 유속의 반비례",
+          "simId": "aperi21:continuity-equation"
         },
         {
           "id": "bernoullis-principle",
@@ -1085,7 +1093,8 @@
         {
           "id": "venturi-effect",
           "name": "벤투리 효과",
-          "desc": "좁아진 곳에서 낮아지는 압력"
+          "desc": "좁아진 곳에서 낮아지는 압력",
+          "simId": "aperi21:venturi-effect"
         },
         {
           "id": "torricellis-law",
@@ -1104,7 +1113,8 @@
         {
           "id": "viscosity",
           "name": "점성",
-          "desc": "층 사이의 마찰"
+          "desc": "층 사이의 마찰",
+          "simId": "aperi21:viscosity"
         },
         {
           "id": "poiseuille-flow",
@@ -1116,7 +1126,8 @@
         {
           "id": "stokes-drag",
           "name": "스토크스 항력",
-          "desc": "느린 흐름에서의 저항"
+          "desc": "느린 흐름에서의 저항",
+          "simId": "aperi21:stokes-drag"
         },
         {
           "id": "laminar-vs-turbulent",
@@ -1128,22 +1139,26 @@
         {
           "id": "reynolds-number",
           "name": "레이놀즈 수",
-          "desc": "전이를 가르는 무차원 수"
+          "desc": "전이를 가르는 무차원 수",
+          "simId": "aperi21:reynolds-number"
         },
         {
           "id": "boundary-layer",
           "name": "경계층",
-          "desc": "벽 근처에서 속도가 0이 되는 층"
+          "desc": "벽 근처에서 속도가 0이 되는 층",
+          "simId": "aperi21:boundary-layer"
         },
         {
           "id": "surface-tension",
           "name": "표면 장력",
-          "desc": "표면을 줄이려는 힘"
+          "desc": "표면을 줄이려는 힘",
+          "simId": "aperi21:surface-tension"
         },
         {
           "id": "laplace-pressure",
           "name": "라플라스 압력",
-          "desc": "곡률이 만드는 안팎 압력차"
+          "desc": "곡률이 만드는 안팎 압력차",
+          "simId": "aperi21:laplace-pressure"
         },
         {
           "id": "capillary-action",
@@ -1155,12 +1170,14 @@
         {
           "id": "wetting-and-contact-angle",
           "name": "젖음과 접촉각",
-          "desc": "액체가 고체 위에 퍼지는 정도"
+          "desc": "액체가 고체 위에 퍼지는 정도",
+          "simId": "aperi21:wetting-and-contact-angle"
         },
         {
           "id": "drag-in-fluid",
           "name": "유체 속 항력",
-          "desc": "형상과 속도가 정하는 저항"
+          "desc": "형상과 속도가 정하는 저항",
+          "simId": "aperi21:drag-in-fluid"
         }
       ]
     },
@@ -2545,7 +2562,7 @@
   ],
   "summary": {
     "topics": 442,
-    "implemented": 160,
+    "implemented": 177,
     "labs": 103
   }
 }

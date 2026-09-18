@@ -165,6 +165,9 @@ importers:
       '@aperi21/sim-apparent-weight':
         specifier: workspace:*
         version: link:../../sims/mechanics/apparent-weight
+      '@aperi21/sim-atmospheric-pressure':
+        specifier: workspace:*
+        version: link:../../sims/fluids/atmospheric-pressure
       '@aperi21/sim-atomic-orbital':
         specifier: workspace:*
         version: link:../../sims/modern/atomic-orbital
@@ -186,6 +189,9 @@ importers:
       '@aperi21/sim-banked-curve':
         specifier: workspace:*
         version: link:../../sims/mechanics/banked-curve
+      '@aperi21/sim-barometer':
+        specifier: workspace:*
+        version: link:../../sims/fluids/barometer
       '@aperi21/sim-beats':
         specifier: workspace:*
         version: link:../../sims/waves/beats
@@ -195,6 +201,12 @@ importers:
       '@aperi21/sim-bernoullis-principle':
         specifier: workspace:*
         version: link:../../sims/fluids/bernoullis-principle
+      '@aperi21/sim-boundary-layer':
+        specifier: workspace:*
+        version: link:../../sims/fluids/boundary-layer
+      '@aperi21/sim-buoyancy':
+        specifier: workspace:*
+        version: link:../../sims/fluids/buoyancy
       '@aperi21/sim-buoyant-force-as-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/buoyant-force-as-force
@@ -234,6 +246,9 @@ importers:
       '@aperi21/sim-conservative-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/conservative-force
+      '@aperi21/sim-continuity-equation':
+        specifier: workspace:*
+        version: link:../../sims/fluids/continuity-equation
       '@aperi21/sim-coordinate-choice':
         specifier: workspace:*
         version: link:../../sims/kinematics/coordinate-choice
@@ -264,6 +279,9 @@ importers:
       '@aperi21/sim-drag-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/drag-force
+      '@aperi21/sim-drag-in-fluid':
+        specifier: workspace:*
+        version: link:../../sims/fluids/drag-in-fluid
       '@aperi21/sim-driven-oscillation':
         specifier: workspace:*
         version: link:../../sims/oscillation/driven-oscillation
@@ -306,6 +324,9 @@ importers:
       '@aperi21/sim-field-lines':
         specifier: workspace:*
         version: link:../../sims/em/field-lines
+      '@aperi21/sim-floating-and-draft':
+        specifier: workspace:*
+        version: link:../../sims/fluids/floating-and-draft
       '@aperi21/sim-free-body-diagram':
         specifier: workspace:*
         version: link:../../sims/mechanics/free-body-diagram
@@ -339,6 +360,9 @@ importers:
       '@aperi21/sim-hydrogen-spectrum':
         specifier: workspace:*
         version: link:../../sims/modern/hydrogen-spectrum
+      '@aperi21/sim-hydrostatic-pressure':
+        specifier: workspace:*
+        version: link:../../sims/fluids/hydrostatic-pressure
       '@aperi21/sim-impulse-force-relation':
         specifier: workspace:*
         version: link:../../sims/mechanics/impulse-force-relation
@@ -372,6 +396,9 @@ importers:
       '@aperi21/sim-lagrange-points':
         specifier: workspace:*
         version: link:../../sims/astro/lagrange-points
+      '@aperi21/sim-laplace-pressure':
+        specifier: workspace:*
+        version: link:../../sims/fluids/laplace-pressure
       '@aperi21/sim-lenz-law':
         specifier: workspace:*
         version: link:../../sims/em/lenz-law
@@ -381,6 +408,9 @@ importers:
       '@aperi21/sim-longitudinal-wave':
         specifier: workspace:*
         version: link:../../sims/waves/longitudinal-wave
+      '@aperi21/sim-manometer':
+        specifier: workspace:*
+        version: link:../../sims/fluids/manometer
       '@aperi21/sim-mass-spring-system':
         specifier: workspace:*
         version: link:../../sims/oscillation/mass-spring-system
@@ -423,6 +453,9 @@ importers:
       '@aperi21/sim-parallel-axis-theorem':
         specifier: workspace:*
         version: link:../../sims/oscillation/parallel-axis-theorem
+      '@aperi21/sim-pascals-principle':
+        specifier: workspace:*
+        version: link:../../sims/fluids/pascals-principle
       '@aperi21/sim-pendulum-isochronism':
         specifier: workspace:*
         version: link:../../sims/oscillation/pendulum-isochronism
@@ -483,6 +516,9 @@ importers:
       '@aperi21/sim-resonance':
         specifier: workspace:*
         version: link:../../sims/oscillation/resonance
+      '@aperi21/sim-reynolds-number':
+        specifier: workspace:*
+        version: link:../../sims/fluids/reynolds-number
       '@aperi21/sim-river-crossing':
         specifier: workspace:*
         version: link:../../sims/kinematics/river-crossing
@@ -525,12 +561,18 @@ importers:
       '@aperi21/sim-static-friction':
         specifier: workspace:*
         version: link:../../sims/mechanics/static-friction
+      '@aperi21/sim-stokes-drag':
+        specifier: workspace:*
+        version: link:../../sims/fluids/stokes-drag
       '@aperi21/sim-stopping-distance':
         specifier: workspace:*
         version: link:../../sims/kinematics/stopping-distance
       '@aperi21/sim-stress-strain-curve':
         specifier: workspace:*
         version: link:../../sims/mechanics/stress-strain-curve
+      '@aperi21/sim-surface-tension':
+        specifier: workspace:*
+        version: link:../../sims/fluids/surface-tension
       '@aperi21/sim-tangential-normal-acceleration':
         specifier: workspace:*
         version: link:../../sims/kinematics/tangential-normal-acceleration
@@ -576,12 +618,21 @@ importers:
       '@aperi21/sim-vector-decomposition':
         specifier: workspace:*
         version: link:../../sims/kinematics/vector-decomposition
+      '@aperi21/sim-venturi-effect':
+        specifier: workspace:*
+        version: link:../../sims/fluids/venturi-effect
       '@aperi21/sim-vertical-loop':
         specifier: workspace:*
         version: link:../../sims/mechanics/vertical-loop
       '@aperi21/sim-vertical-throw':
         specifier: workspace:*
         version: link:../../sims/kinematics/vertical-throw
+      '@aperi21/sim-viscosity':
+        specifier: workspace:*
+        version: link:../../sims/fluids/viscosity
+      '@aperi21/sim-wetting-and-contact-angle':
+        specifier: workspace:*
+        version: link:../../sims/fluids/wetting-and-contact-angle
       '@aperi21/sim-work-by-variable-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/work-by-variable-force
@@ -963,7 +1014,43 @@ importers:
         specifier: ^2.1.9
         version: 2.1.9(jsdom@25.0.1)
 
+  sims/fluids/atmospheric-pressure:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/fluids/barometer:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/fluids/bernoullis-principle:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/fluids/boundary-layer:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/fluids/buoyancy:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -981,6 +1068,42 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/fluids/continuity-equation:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/fluids/drag-in-fluid:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/fluids/floating-and-draft:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/fluids/hydrostatic-pressure:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/fluids/laminar-vs-turbulent:
     devDependencies:
       '@aperi21/schema':
@@ -990,7 +1113,34 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/fluids/laplace-pressure:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/fluids/lift-force:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/fluids/manometer:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/fluids/pascals-principle:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1026,6 +1176,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/fluids/reynolds-number:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/fluids/stability-of-floating-body:
     devDependencies:
       '@aperi21/schema':
@@ -1035,7 +1194,52 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/fluids/stokes-drag:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/fluids/surface-tension:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/fluids/torricellis-law:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/fluids/venturi-effect:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/fluids/viscosity:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/fluids/wetting-and-contact-angle:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*

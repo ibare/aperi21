@@ -948,6 +948,142 @@ export function registerAperi21Bundles(): void {
     );
   });
 
+  registerBundleLoader('aperi21:hydrostatic-pressure', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-hydrostatic-pressure'),
+      import('./capabilities/fluids/hydrostatic-pressure.generated.js'),
+    ]);
+    return registerBundle('aperi21:hydrostatic-pressure', m.hydrostaticPressureBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:continuity-equation', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-continuity-equation'),
+      import('./capabilities/fluids/continuity-equation.generated.js'),
+    ]);
+    return registerBundle('aperi21:continuity-equation', m.continuityEquationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:surface-tension', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-surface-tension'),
+      import('./capabilities/fluids/surface-tension.generated.js'),
+    ]);
+    return registerBundle('aperi21:surface-tension', m.surfaceTensionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:buoyancy', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-buoyancy'),
+      import('./capabilities/fluids/buoyancy.generated.js'),
+    ]);
+    return registerBundle('aperi21:buoyancy', m.buoyancyBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:viscosity', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-viscosity'),
+      import('./capabilities/fluids/viscosity.generated.js'),
+    ]);
+    return registerBundle('aperi21:viscosity', m.viscosityBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:pascals-principle', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-pascals-principle'),
+      import('./capabilities/fluids/pascals-principle.generated.js'),
+    ]);
+    return registerBundle('aperi21:pascals-principle', m.pascalsPrincipleBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:venturi-effect', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-venturi-effect'),
+      import('./capabilities/fluids/venturi-effect.generated.js'),
+    ]);
+    return registerBundle('aperi21:venturi-effect', m.venturiEffectBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:laplace-pressure', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-laplace-pressure'),
+      import('./capabilities/fluids/laplace-pressure.generated.js'),
+    ]);
+    return registerBundle('aperi21:laplace-pressure', m.laplacePressureBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:floating-and-draft', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-floating-and-draft'),
+      import('./capabilities/fluids/floating-and-draft.generated.js'),
+    ]);
+    return registerBundle('aperi21:floating-and-draft', m.floatingAndDraftBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:stokes-drag', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-stokes-drag'),
+      import('./capabilities/fluids/stokes-drag.generated.js'),
+    ]);
+    return registerBundle('aperi21:stokes-drag', m.stokesDragBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:atmospheric-pressure', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-atmospheric-pressure'),
+      import('./capabilities/fluids/atmospheric-pressure.generated.js'),
+    ]);
+    return registerBundle('aperi21:atmospheric-pressure', m.atmosphericPressureBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:reynolds-number', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-reynolds-number'),
+      import('./capabilities/fluids/reynolds-number.generated.js'),
+    ]);
+    return registerBundle('aperi21:reynolds-number', m.reynoldsNumberBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:wetting-and-contact-angle', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-wetting-and-contact-angle'),
+      import('./capabilities/fluids/wetting-and-contact-angle.generated.js'),
+    ]);
+    return registerBundle('aperi21:wetting-and-contact-angle', m.wettingAndContactAngleBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:manometer', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-manometer'),
+      import('./capabilities/fluids/manometer.generated.js'),
+    ]);
+    return registerBundle('aperi21:manometer', m.manometerBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:drag-in-fluid', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-drag-in-fluid'),
+      import('./capabilities/fluids/drag-in-fluid.generated.js'),
+    ]);
+    return registerBundle('aperi21:drag-in-fluid', m.dragInFluidBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:barometer', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-barometer'),
+      import('./capabilities/fluids/barometer.generated.js'),
+    ]);
+    return registerBundle('aperi21:barometer', m.barometerBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:boundary-layer', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-boundary-layer'),
+      import('./capabilities/fluids/boundary-layer.generated.js'),
+    ]);
+    return registerBundle('aperi21:boundary-layer', m.boundaryLayerBundle, caps.capabilities);
+  });
+
   // ── 01-broad 배치 (2026-09-12). 역학 · 진동 · 파동 · 전자기 · 열 · 천체 10 ──
   //
   // 기존 조각이 유체에 몰려 있어(5/10) 같은 분과를 더 고르면 이미 있는 어휘를

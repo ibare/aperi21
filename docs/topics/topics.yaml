@@ -1284,6 +1284,7 @@ topics:
     level: lower
     curricula: [ap, uk]
     visualNote: 깊이를 내리면 압력이 따라 커진다
+    sim: aperi21:hydrostatic-pressure
   - id: pressure-and-container-shape
     name: 그릇 모양과 압력
     desc: 바닥 압력이 모양에 무관한 것
@@ -1299,6 +1300,7 @@ topics:
     level: lower
     curricula: [ap, uk]
     visualNote: 높이 올라가면 머리 위 공기 기둥이 짧아져 압력이 준다
+    sim: aperi21:atmospheric-pressure
   - id: barometer
     name: 기압계
     desc: 수은 기둥의 높이
@@ -1306,6 +1308,7 @@ topics:
     level: lower
     curricula: [uk]
     visualNote: 기압이 바뀌면 수은 기둥 높이가 따라 움직인다
+    sim: aperi21:barometer
   - id: manometer
     name: 압력계
     desc: 액주 차이로 재는 압력
@@ -1313,6 +1316,7 @@ topics:
     level: null
     curricula: []
     visualNote: 압력 차가 액면 높이 차로 나타난다
+    sim: aperi21:manometer
   - id: pascals-principle
     name: 파스칼 원리
     desc: 압력의 전달과 유압 장치
@@ -1320,6 +1324,7 @@ topics:
     level: upper
     curricula: [ap]
     visualNote: 한쪽을 누르면 다른 쪽이 넓이 비만큼 밀려 올라간다
+    sim: aperi21:pascals-principle
   - id: buoyancy
     name: 부력
     desc: 밀려난 유체의 무게만큼
@@ -1327,6 +1332,7 @@ topics:
     level: lower
     curricula: [ap, uk]
     visualNote: 잠긴 부피만큼 밀려난 유체가 되밀어 올린다
+    sim: aperi21:buoyancy
   - id: archimedes-principle
     name: 아르키메데스 원리
     desc: 뜨고 가라앉는 조건
@@ -1342,6 +1348,7 @@ topics:
     level: upper
     curricula: [ap]
     visualNote: 밀도를 바꾸면 잠기는 깊이가 달라진다
+    sim: aperi21:floating-and-draft
   - id: stability-of-floating-body
     name: 부유체의 안정
     desc: 무게 중심과 부심의 관계
@@ -1357,6 +1364,7 @@ topics:
     level: upper
     curricula: [ap]
     visualNote: 관이 좁아지면 같은 양이 지나느라 흐름이 빨라진다
+    sim: aperi21:continuity-equation
   - id: bernoullis-principle
     name: 베르누이 원리
     desc: 속도와 압력의 교환
@@ -1372,6 +1380,7 @@ topics:
     level: upper
     curricula: [ap]
     visualNote: 목이 좁은 곳에서 액면이 빨려 올라간다
+    sim: aperi21:venturi-effect
   - id: torricellis-law
     name: 토리첼리 법칙
     desc: 구멍에서 나오는 유속
@@ -1395,6 +1404,7 @@ topics:
     level: null
     curricula: []
     visualNote: 끈적한 유체일수록 층이 느리게 끌린다
+    sim: aperi21:viscosity
   - id: poiseuille-flow
     name: 관 속의 층류
     desc: 반지름 4제곱에 비례하는 유량
@@ -1410,6 +1420,7 @@ topics:
     level: null
     curricula: []
     visualNote: 작은 구가 느리게 가라앉으며 종단 속도에 이른다
+    sim: aperi21:stokes-drag
   - id: laminar-vs-turbulent
     name: 층류와 난류
     desc: 흐름의 두 양상
@@ -1425,6 +1436,7 @@ topics:
     level: null
     curricula: []
     visualNote: 한 수를 넘기면 흐름의 결이 바뀐다
+    sim: aperi21:reynolds-number
   - id: boundary-layer
     name: 경계층
     desc: 벽 근처에서 속도가 0이 되는 층
@@ -1432,6 +1444,7 @@ topics:
     level: null
     curricula: []
     visualNote: 벽 가까이에서만 속도가 급히 변하는 얇은 층이 생긴다
+    sim: aperi21:boundary-layer
   - id: surface-tension
     name: 표면 장력
     desc: 표면을 줄이려는 힘
@@ -1439,6 +1452,7 @@ topics:
     level: null
     curricula: []
     visualNote: 물방울이 공 모양으로 뭉치고 소금쟁이가 뜬다
+    sim: aperi21:surface-tension
   - id: laplace-pressure
     name: 라플라스 압력
     desc: 곡률이 만드는 안팎 압력차
@@ -1446,6 +1460,7 @@ topics:
     level: null
     curricula: []
     visualNote: 작은 거품 안이 더 세게 눌린다
+    sim: aperi21:laplace-pressure
   - id: capillary-action
     name: 모세관 현상
     desc: 좁은 관에서의 상승과 하강
@@ -1461,6 +1476,7 @@ topics:
     level: null
     curricula: []
     visualNote: 같은 물방울이 표면에 따라 퍼지거나 뭉친다
+    sim: aperi21:wetting-and-contact-angle
   - id: drag-in-fluid
     name: 유체 속 항력
     desc: 형상과 속도가 정하는 저항
@@ -1468,6 +1484,7 @@ topics:
     level: lower
     curricula: [uk]
     visualNote: 형상을 바꾸면 같은 속도에서 저항이 달라진다
+    sim: aperi21:drag-in-fluid
   # ── 열과 통계
   - id: thermal-equilibrium
     name: 열평형
