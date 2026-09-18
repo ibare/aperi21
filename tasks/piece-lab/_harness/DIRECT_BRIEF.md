@@ -46,6 +46,7 @@ sim 패키지는 **이미 만들어져 있다** (6파일 최소 스텁 · loader
    `sims/mechanics/ballistic-pendulum/` (src · NOTES.md), 그리고
    `tasks/piece-lab/kinetic-energy/inventory.json`
 4. 부족 장부 — `tasks/engine-requirements/gap-ledger.md`. 모자란 것을 여기 id 에 대 본다
+5. 같은 분야에서 먼저 끝난 조각 — 아래 「이웃」 에 적힌 것은 src · NOTES 를 읽고 주장 · 화면이 겹치지 않게 한다
 {{related}}
 
 ## 규칙
@@ -62,6 +63,13 @@ sim 패키지는 **이미 만들어져 있다** (6파일 최소 스텁 · loader
 - **주장이 기대는 물리량(질량 · 용수철 상수 · 감쇠 · 진폭 · 구동 진동수 · 충돌마다의 처음 속도 등)은
   `stages[].constants` 에 선언하고 `readConstants` 로 기본값과 함께 읽는다.** scene · physics 의 모듈 상수로만
   두지 않는다 (원칙 2) — 지난 배치에서 rule-guard 가 충돌별 처음 속도 배수로 이것을 잡았다.
+- 스텁 schema 에는 `timeline` · `caption` 이 없다 — **새로 선언한다** (S-piece). 스텁 messages 의 `en` 자리에 든
+  한글은 임시값이다 — **영어 문안으로 바꾼다** (C1, en 원본으로 화면이 온전해야 한다).
+- 이웃 조각을 읽을 때 조작기를 상태에 따라 조건부로 돌려주거나(`pressure-isotropy`) 조작기 범위를 코드 상수로
+  계산하는(`laminar-vs-turbulent`) 방식은 따라 하지 않는다 — 에디터가 편집할 데이터가 아니다 (원칙 7).
+- **화면에 수(비 · 배수 · 계수)를 띄우면 선언값을 그대로 쓴다** — 스테이지 상수로 선언하고 `String(값)` 이나
+  문안 키로 보인다. 계산해서 `toFixed` 로 줄이지 않는다 (S-piece 유효숫자). rule-guard 가 세 번(inelastic-collision ·
+  physical-pendulum · viscosity) 잡았다.
 - 도착한 순간 이미 진행 중이다 — `timeline.startAt` / 프리롤.
 - 캡션은 `BundleSchema.caption` 슬롯 하나. 지금 화면에서 벌어지는 일만 말한다.
 - 같은 시각은 언제나 같은 화면이어야 한다. 누적 적분이 필요한 것만 `step` 이 상태에 쌓는다.

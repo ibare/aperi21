@@ -1,0 +1,29 @@
+{
+  "name": "19-direct-fluids",
+  "title": "직접 구현(큐) — 유체 17개 (원본 없음)",
+  "record": "tasks/engine-requirements/gap-ledger.md",
+  "queue": {
+    "concurrency": 5,
+    "verifyEvery": 5,
+    "order": "투입 순서 — 형제 조각은 떨어뜨려 넣는다"
+  },
+  "pieces": [
+    "hydrostatic-pressure",
+    "continuity-equation",
+    "surface-tension",
+    "buoyancy",
+    "viscosity",
+    "pascals-principle",
+    "venturi-effect",
+    "laplace-pressure",
+    "floating-and-draft",
+    "stokes-drag",
+    "atmospheric-pressure",
+    "reynolds-number",
+    "wetting-and-contact-angle",
+    "manometer",
+    "drag-in-fluid",
+    "barometer",
+    "boundary-layer"
+  ]
+}
