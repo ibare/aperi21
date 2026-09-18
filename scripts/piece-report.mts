@@ -13,7 +13,11 @@
  *        배치 없는 점검 → _report/_scratch/<id>/ (여럿이면 _scratch/_adhoc/)
  *        에이전트의 자기 점검용. 배치 보고서를 덮지 않는다
  *   --sims=http://localhost:5176/aperi21/
- *        정식 sims 가 있으면 같은 t 의 스크린샷을 자유 구현본 옆에 둔다 (카탈로그 dev 서버 필요)
+ *        정식 sims 가 있으면 같은 t 의 스크린샷을 자유 구현본 옆에 둔다 (카탈로그 dev 서버 필요).
+ *        sims 는 운영체제 테마와 무관하게 라이트(@t.sims.png) · 다크(@t.sims.dark.png) 둘 다 찍는다.
+ *
+ * 원본(`<id>/index.html`)이 없고 `<id>/inventory.json` 만 있는 조각은 **엔진 위에서 바로 만든 조각**이다.
+ * 원본 촬영 · 계측 · 엔진 대조를 건너뛰고 sims 만 찍는다 — 이때 --sims 가 없거나 sims 를 찍지 못하면 멈춘다.
  *
  * 산출물 (gitignore — 언제든 다시 만든다)
  *   _report/index.html              배치 목차. 각 배치의 summary.json 만 모은다
@@ -88,8 +92,10 @@ const FIT_ORDER = ['없음', '수정 필요', '엔진 밖', '있음'] as const;
 interface Probe {
   t: number;
   shot: string;
-  /** 같은 t 의 정식 sims 스크린샷. sims 가 없거나 --sims 를 안 줬으면 없다. */
+  /** 같은 t 의 정식 sims 스크린샷(라이트). sims 가 없거나 --sims 를 안 줬으면 없다. */
   simsShot?: string;
+  /** 같은 t 의 정식 sims 스크린샷(다크). */
+  simsDarkShot?: string;
   report: {
     t?: number;
     frames?: number;
@@ -114,8 +120,9 @@ function probeSims(
   id: string,
   topicId: string,
   t: number,
+  scheme: 'light' | 'dark',
 ): string | undefined {
-  const shot = join(SHOTS, `${fileId(id)}@${t}.sims.png`);
+  const shot = join(SHOTS, `${fileId(id)}@${t}.sims${scheme === 'dark' ? '.dark' : ''}.png`);
   // 주소는 **주제** id 다. 조각 id 와 다를 수 있다 (topicIdOf 주석).
   const url = `${base.replace(/\/?$/, '/')}#/topic/${topicId}?t=${t}`;
   try {
@@ -124,7 +131,10 @@ function probeSims(
       [
         '--headless=new', '--disable-gpu', '--hide-scrollbars', '--no-first-run',
         '--force-device-scale-factor=1', `--window-size=${WIDTH},${HEIGHT + 400}`,
-        '--virtual-time-budget=5000', `--screenshot=${shot}`, url,
+        '--virtual-time-budget=5000',
+        // 카탈로그는 prefers-color-scheme 로 테마를 고른다 — 운영체제 설정에 끌려가지 않게 못박는다 (0 다크 · 1 라이트).
+        `--blink-settings=preferredColorScheme=${scheme === 'dark' ? 0 : 1}`,
+        `--screenshot=${shot}`, url,
       ],
       { timeout: CHROME_TIMEOUT_MS, stdio: 'ignore' },
     );
@@ -211,8 +221,21 @@ function sumOps(ops: Record<string, number> | undefined): number {
 
 function listPieces(): string[] {
   return readdirSync(LAB).filter(
-    (d) => !d.startsWith('_') && existsSync(join(LAB, d, 'index.html')),
+    (d) => !d.startsWith('_') && (existsSync(join(LAB, d, 'index.html')) || existsSync(join(LAB, d, 'inventory.json'))),
   );
+}
+
+/** 원본 없이 엔진 위에서 바로 만든 조각인가 — inventory.json 만 있고 index.html 이 없다. */
+function isDirect(id: string): boolean {
+  return !existsSync(join(LAB, id, 'index.html'));
+}
+
+/** 정식 sim 디렉터리(저장소 기준 상대 경로). 없으면 undefined. */
+function simDirOf(id: string): string | undefined {
+  for (const c of readdirSync(join(ROOT, 'sims'))) {
+    if (existsSync(join(ROOT, 'sims', c, id, 'src'))) return `sims/${c}/${id}`;
+  }
+  return undefined;
 }
 
 interface BatchManifest {
@@ -288,21 +311,32 @@ function main(): void {
   const chrome = findChrome();
   mkdirSync(SHOTS, { recursive: true });
 
-  const results: { id: string; inv: Inventory; probes: Probe[]; fit: EngineFit | null }[] = [];
+  const results: { id: string; inv: Inventory; probes: Probe[]; fit: EngineFit | null; direct: boolean }[] = [];
   for (const id of pieces) {
     const invPath = join(LAB, id, 'inventory.json');
     const inv: Inventory = existsSync(invPath) ? JSON.parse(readFileSync(invPath, 'utf8')) : {};
     const times = inv.probeTimes?.length ? inv.probeTimes : DEFAULT_PROBES;
-    const probes = times.map((t) => probe(chrome, id, t));
+    const direct = isDirect(id);
+    const probes: Probe[] = times.map((t) => (direct ? { t, shot: '', report: null } : probe(chrome, id, t)));
     const topicId = simsBase ? topicIdOf(id) : undefined;
     if (simsBase && topicId) {
-      for (const p of probes) p.simsShot = probeSims(chrome, simsBase, id, topicId, p.t);
+      for (const p of probes) {
+        p.simsShot = probeSims(chrome, simsBase, id, topicId, p.t, 'light');
+        p.simsDarkShot = probeSims(chrome, simsBase, id, topicId, p.t, 'dark');
+      }
+    }
+    if (direct && probes.some((p) => !p.simsShot || !p.simsDarkShot)) {
+      throw new Error(`${id}: 원본이 없는 조각인데 sims 를 찍지 못했다 — --sims 주소 · 카탈로그 연결(simId)을 확인한다`);
     }
     const fitPath = join(LAB, id, 'engine-fit.json');
     const fit: EngineFit | null = existsSync(fitPath) ? JSON.parse(readFileSync(fitPath, 'utf8')) : null;
-    results.push({ id, inv, probes, fit });
+    results.push({ id, inv, probes, fit, direct });
     const ok = probes.filter((p) => p.report).length;
-    console.log(`  ${id.padEnd(36)} 시각 ${times.length}개 · 계측 ${ok}/${times.length}`);
+    console.log(
+      direct
+        ? `  ${id.padEnd(36)} 시각 ${times.length}개 · 원본 없음(sims 라이트·다크)`
+        : `  ${id.padEnd(36)} 시각 ${times.length}개 · 계측 ${ok}/${times.length}`,
+    );
   }
 
   // ---- 분석용 report.md ----
@@ -324,22 +358,23 @@ function main(): void {
     md.push('');
     if (outside.length) md.push('**엔진 밖 — 결정 필요**', ...outside.map((x) => `- ${x.id}: ${x.o}`), '');
   }
-  const missingFit = results.filter((r) => !r.fit).map((r) => r.id);
+  const missingFit = results.filter((r) => !r.fit && !r.direct).map((r) => r.id);
   if (missingFit.length) md.push(`- ⚠ 엔진 대조(engine-fit.json) 없음: ${missingFit.join(', ')}`, '');
 
-  for (const { id, inv, probes, fit } of results) {
+  for (const { id, inv, probes, fit, direct } of results) {
     md.push(`## ${id}`, '');
+    if (direct) md.push(`- 원본 없음 — 엔진 위에서 바로 만든 조각. NOTES: \`${simDirOf(id) ?? '?'}/NOTES.md\``, '');
     if (inv.claim) md.push(`**주장** ${inv.claim}`, '');
     if (inv.verb) md.push(`**동사** ${inv.verb}`, '');
     const problems: string[] = [];
     if (!existsSync(join(LAB, id, 'inventory.json'))) problems.push('inventory.json 없음');
-    if (probes.some((p) => !p.report)) problems.push('계측 JSON 없음 — piece-kit 을 싣지 않았거나 loop 를 쓰지 않았다');
+    if (!direct && probes.some((p) => !p.report)) problems.push('계측 JSON 없음 — piece-kit 을 싣지 않았거나 loop 를 쓰지 않았다');
     const errs = [...new Set(probes.flatMap((p) => p.report?.errors ?? []))];
     if (errs.length) problems.push(`오류 ${errs.length}건: ${errs.slice(0, 3).join(' / ')}`);
     const unmarked = probes.map((p) => sumOps(p.report?.marks?.['(묶음 밖)']));
     if (unmarked.some((n) => n > 20)) problems.push(`묶음 밖 호출이 많다 (${unmarked.join(', ')}) — mark 로 감싸지 않은 그리기`);
     if (problems.length) md.push(...problems.map((p) => `- ⚠ ${p}`), '');
-    const limit = comparisonLimit(id);
+    const limit = direct ? [] : comparisonLimit(id);
     if (limit.length) md.push(`- ⓘ 비교 한계 — sims 가 렌더러 안에서 적분하는 어휘(${limit.join(', ')})를 쓴다. 같은 t 라도 자유 구현본과 다르게 나온다`, '');
 
     // 묶음 × 시각 표
@@ -395,7 +430,20 @@ function main(): void {
     : '';
   // 출력 자리에서 tasks/piece-lab 까지의 상대 경로 (_report/<batch> → ../.., _report/_scratch/<id> → ../../..)
   const labLink = relative(OUT, LAB) || '.';
-  const cards = results.map(({ id, inv, probes, fit }) => {
+  const cards = results.map(({ id, inv, probes, fit, direct }) => {
+    if (direct) {
+      const simDir = simDirOf(id);
+      const shots = probes
+        .map(
+          (p) =>
+            `<figure><img class="sims" src="shots/${esc(fileId(id))}@${p.t}.sims.png" loading="lazy"><img class="sims" src="shots/${esc(fileId(id))}@${p.t}.sims.dark.png" loading="lazy"><figcaption>t = ${p.t}s · 위 라이트 / 아래 다크</figcaption></figure>`,
+        )
+        .join('');
+      const notes = simDir ? `<a href="${esc(relative(OUT, join(ROOT, simDir)))}/NOTES.md">NOTES</a>` : '';
+      return `<section><h2>${esc(id)}</h2>${inv.claim ? `<p class="claim">${esc(inv.claim)}</p>` : ''}${inv.verb ? `<p class="claim">동사: ${esc(inv.verb)}</p>` : ''}
+      <div class="row">${shots}</div>
+      <p class="links">원본 없음 — 엔진 위에서 바로 만든 조각 · ${notes}</p></section>`;
+    }
     const shots = probes.map((p) => {
       const err = p.report?.errors?.length ? `<b class="err">오류 ${p.report.errors.length}</b>` : '';
       const sims = p.simsShot
@@ -430,7 +478,7 @@ ${cards}
 `);
   if (manifest) {
     const warnings = results.filter(
-      (r) => !r.fit || r.probes.some((p) => !p.report || (p.report.errors?.length ?? 0) > 0),
+      (r) => !r.direct && (!r.fit || r.probes.some((p) => !p.report || (p.report.errors?.length ?? 0) > 0)),
     ).length;
     const summaryJson: BatchSummary = {
       name: manifest.name,
