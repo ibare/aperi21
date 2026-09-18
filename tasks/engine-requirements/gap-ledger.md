@@ -15,34 +15,34 @@
 
 | id | 부족 | 영향 | 겪은 조각 (일부) |
 |---|---|---|---|
-| G01 | `step` 이 `TimelineFrame` 을 받지 못한다 — 조각이 시계를 따로 세고 시간표를 다시 계산한다 | 근사 | inclined-plane · apparent-weight · atwood-machine · balance-scale · impulse-force-relation · stress-strain-curve · banked-curve · free-body-diagram · equilibrium-of-forces · kinetic-friction · normal-force · angle-of-friction · tension · conical-pendulum · buoyant-force-as-force · fictitious-force · phase-space · color-addition · bernoullis-principle · maxwell-boltzmann-distribution · spacetime-diagram · tidal-force · potential-energy-curve · hr-diagram · equipotential-surface · moon-phases · huygens-principle · polarization · phase-diagram · youngs-double-slit · moment-of-inertia · stability-of-floating-body · total-internal-reflection · radioactive-decay · equilibrium-points |
-| G02 | 화살촉 크기 상한이 길이의 0.35 로 고정 — 짧은 화살표의 방향이 약하다 | 근사 | gravitational-acceleration · newtons-second-law · inclined-plane · mechanical-advantage · normal-force · buoyant-force-as-force · gyroscopic-precession · gravitational-potential-energy · impulse-momentum-theorem · two-dimensional-collision |
-| G03 | `body` 둘레의 굵기 · 색을 채움과 따로 고를 수 없다 | 근사 | coriolis-effect · static-friction · vertical-loop · equilibrium-of-forces · angle-of-friction · interference · phase-space · field-lines · equipotential-surface · thermal-convection · phase-diagram · stability-of-floating-body · total-internal-reflection · perfectly-inelastic-collision |
+| G01 | `step` 이 `TimelineFrame` 을 받지 못한다 — 조각이 시계를 따로 세고 시간표를 다시 계산한다 | 근사 | inclined-plane · apparent-weight · atwood-machine · balance-scale · impulse-force-relation · stress-strain-curve · banked-curve · free-body-diagram · equilibrium-of-forces · kinetic-friction · normal-force · angle-of-friction · tension · conical-pendulum · buoyant-force-as-force · fictitious-force · phase-space · color-addition · bernoullis-principle · maxwell-boltzmann-distribution · spacetime-diagram · tidal-force · potential-energy-curve · hr-diagram · equipotential-surface · moon-phases · huygens-principle · polarization · phase-diagram · youngs-double-slit · moment-of-inertia · stability-of-floating-body · total-internal-reflection · radioactive-decay · equilibrium-points · angular-momentum |
+| G02 | 화살촉 크기 상한이 길이의 0.35 로 고정 — 짧은 화살표의 방향이 약하다 | 근사 | gravitational-acceleration · newtons-second-law · inclined-plane · mechanical-advantage · normal-force · buoyant-force-as-force · gyroscopic-precession · gravitational-potential-energy · impulse-momentum-theorem · two-dimensional-collision · rotational-kinetic-energy · nonlinear-oscillation |
+| G03 | `body` 둘레의 굵기 · 색을 채움과 따로 고를 수 없다 | 근사 | coriolis-effect · static-friction · vertical-loop · equilibrium-of-forces · angle-of-friction · interference · phase-space · field-lines · equipotential-surface · thermal-convection · phase-diagram · stability-of-floating-body · total-internal-reflection · perfectly-inelastic-collision · rolling-race · rolling-without-slipping · gears |
 | G04 | 선 끝 · 이음 모양을 고를 수 없다 | 근사 | static-friction · stress-strain-curve · mechanical-advantage · carnot-cycle · double-slit-with-electrons · resonance · rc-circuit · refraction-of-waves |
 | G05 | 점선 무늬(대시 길이 · 간격)를 선언할 수 없다 | 근사 | non-inertial-frame · stress-strain-curve · banked-curve · youngs-modulus · fictitious-force · phase-space · tidal-force · bernoullis-principle · maxwell-boltzmann-distribution · spacetime-diagram · potential-energy-curve · gyroscopic-precession · carnot-cycle · normal-modes · moon-phases · polarization · keplers-second-law · capillary-action · standing-wave · youngs-double-slit · rc-circuit · hydrogen-spectrum · stability-of-floating-body · refraction-of-waves · total-internal-reflection · radioactive-decay · perfectly-inelastic-collision |
 | G06 | `rect` 에 모서리 둥글림이 없다 | 근사 | newtons-second-law · apparent-weight · non-inertial-frame · inertial-vs-gravitational-mass · tension |
 | G07 | 짙은 물체 위 글자에 쓸 반전(바탕) 색 역할이 없다 | 근사 | atwood-machine · pulley-system · connected-bodies · youngs-modulus · field-lines · spacetime-diagram · equipotential-surface · thermal-convection · huygens-principle · refraction-of-waves · total-internal-reflection · charged-particle-in-magnetic-field · efficiency |
 | G08 | 재질 · 옅은 면 톤에 맞는 색 역할이 없다 (`luminance` 로 눈대중) | 근사 | coriolis-effect · non-inertial-frame · impulse-force-relation · angle-of-friction · inertial-vs-gravitational-mass · energy-flow-diagram · field-lines · tidal-force · bernoullis-principle · maxwell-boltzmann-distribution · gyroscopic-precession · equipotential-surface · normal-modes · moon-phases · poiseuille-flow · double-slit-with-electrons · keplers-second-law · capillary-action · phase-diagram · rc-circuit · lagrange-points · stability-of-floating-body · refraction-of-waves · total-internal-reflection · inelastic-collision |
-| G09 | 여러 인스턴스를 한꺼번에 흐리게 하는 묶음 불투명도가 없다 | 근사 | non-inertial-frame · stress-strain-curve · phase-space · tidal-force · perfectly-inelastic-collision · elastic-collision · inelastic-collision · conservation-of-momentum · energy-in-collision |
-| G10 | 판(패널) 단위 좌표계가 없다 — 인스턴스마다 위치를 옮긴다 | 근사 | coriolis-effect · non-inertial-frame · tidal-force · normal-modes · phase-diagram · rc-circuit · kinetic-energy · rocket-equation · work-energy-theorem · non-conservative-force · equilibrium-points · inelastic-collision · energy-in-collision · impulse-momentum-theorem |
+| G09 | 여러 인스턴스를 한꺼번에 흐리게 하는 묶음 불투명도가 없다 | 근사 | non-inertial-frame · stress-strain-curve · phase-space · tidal-force · perfectly-inelastic-collision · elastic-collision · inelastic-collision · conservation-of-momentum · energy-in-collision · rolling-race · driven-oscillation |
+| G10 | 판(패널) 단위 좌표계가 없다 — 인스턴스마다 위치를 옮긴다 | 근사 | coriolis-effect · non-inertial-frame · tidal-force · normal-modes · phase-diagram · rc-circuit · kinetic-energy · rocket-equation · work-energy-theorem · non-conservative-force · equilibrium-points · inelastic-collision · energy-in-collision · impulse-momentum-theorem · torque · rolling-race · rolling-without-slipping · rotational-kinetic-energy · static-equilibrium · driven-oscillation · damping-regimes · nonlinear-oscillation |
 | G11 | 시간표 이징 곡선이 모자라다 (감속 출발 · 코사인 · inOutQuad) | 근사 | net-force · inclined-plane · spring-force · pulley-system · buoyant-force-as-force · electromagnetic-wave · total-internal-reflection |
 | G12 | 여러 단계에 걸친 이징을 선언할 자리가 없다 | 근사 | stress-strain-curve |
-| G13 | 시간표 단계에 값을 실을 수 없고, 단계 길이가 상태 · 조작값을 따라가지 못한다 | 근사 | atwood-machine · normal-force · inertial-vs-gravitational-mass · impulse-force-relation · interference · spacetime-diagram · equipotential-surface · huygens-principle · double-slit-with-electrons · keplers-second-law · phase-diagram · youngs-double-slit · rc-circuit · moment-of-inertia · refraction-of-waves · energy-dissipation · perfectly-inelastic-collision · elastic-potential-energy · gravitational-potential-energy · elastic-collision · impulse-momentum-theorem |
+| G13 | 시간표 단계에 값을 실을 수 없고, 단계 길이가 상태 · 조작값을 따라가지 못한다 | 근사 | atwood-machine · normal-force · inertial-vs-gravitational-mass · impulse-force-relation · interference · spacetime-diagram · equipotential-surface · huygens-principle · double-slit-with-electrons · keplers-second-law · phase-diagram · youngs-double-slit · rc-circuit · moment-of-inertia · refraction-of-waves · energy-dissipation · perfectly-inelastic-collision · elastic-potential-energy · gravitational-potential-energy · elastic-collision · impulse-momentum-theorem · simple-harmonic-motion · mass-spring-system · simple-pendulum · damped-oscillation · coupled-oscillators · beats-in-oscillation · damping-regimes |
 | G14 | 캡션 `vars` 에 문안 키를 넣을 수 없다 · 캡션 조건이 경로 하나뿐이다 | 근사 | free-body-diagram · drag-force · bernoullis-principle · potential-energy-curve · hr-diagram · normal-modes · moon-phases · capillary-action · stability-of-floating-body · explosion-and-recoil · center-of-mass-motion |
 | G15 | 캡션을 흐리게 사라지게 하거나 단계마다 페이드를 정할 수 없다 | 근사 | static-friction · double-slit-with-electrons |
-| G16 | `readout` 이 회전하지 않고, 글자 기준선에 맞출 수 없다 | 근사 | coriolis-effect · mechanical-advantage · kinetic-friction · phase-space · potential-energy-curve · hr-diagram · carnot-cycle · moon-phases · double-slit-with-electrons · standing-wave · moment-of-inertia · lagrange-points · total-internal-reflection · perfectly-inelastic-collision · elastic-collision |
-| G17 | `vector.label` 의 크기 · 자리가 고정이고 값을 끼울 수 없다 | 근사 | vertical-loop · connected-bodies · buoyant-force-as-force · gyroscopic-precession · conservative-force · elastic-collision · explosion-and-recoil · impulse-momentum-theorem · two-dimensional-collision |
-| G18 | `region` 에 구멍이 없고 테두리 굵기를 못 고른다 | 근사 | banked-curve · drag-force · normal-force · stability-of-floating-body · rocket-equation · ballistic-pendulum · work-energy-theorem · inelastic-collision · energy-in-collision |
-| G19 | `dimension` 이 점선뿐이다 | 근사 | stress-strain-curve · kinetic-energy · elastic-potential-energy · conservative-force · inelastic-collision · explosion-and-recoil |
-| G20 | 용수철 옆 폭 · 굵기, 줄 굵기 · 짙기를 고를 수 없다 | 근사 | spring-force · centripetal-force · buoyant-force-as-force · tension · phase-space · elastic-potential-energy |
+| G16 | `readout` 이 회전하지 않고, 글자 기준선에 맞출 수 없다 | 근사 | coriolis-effect · mechanical-advantage · kinetic-friction · phase-space · potential-energy-curve · hr-diagram · carnot-cycle · moon-phases · double-slit-with-electrons · standing-wave · moment-of-inertia · lagrange-points · total-internal-reflection · perfectly-inelastic-collision · elastic-collision · torque |
+| G17 | `vector.label` 의 크기 · 자리가 고정이고 값을 끼울 수 없다 | 근사 | vertical-loop · connected-bodies · buoyant-force-as-force · gyroscopic-precession · conservative-force · elastic-collision · explosion-and-recoil · impulse-momentum-theorem · two-dimensional-collision · simple-harmonic-motion |
+| G18 | `region` 에 구멍이 없고 테두리 굵기를 못 고른다 | 근사 | banked-curve · drag-force · normal-force · stability-of-floating-body · rocket-equation · ballistic-pendulum · work-energy-theorem · inelastic-collision · energy-in-collision · center-of-gravity · coupled-oscillators |
+| G19 | `dimension` 이 점선뿐이다 | 근사 | stress-strain-curve · kinetic-energy · elastic-potential-energy · conservative-force · inelastic-collision · explosion-and-recoil · rotational-kinetic-energy · quality-factor |
+| G20 | 용수철 옆 폭 · 굵기, 줄 굵기 · 짙기를 고를 수 없다 | 근사 | spring-force · centripetal-force · buoyant-force-as-force · tension · phase-space · elastic-potential-energy · quality-factor |
 | G21 | `point-drag` 손잡이를 숨기거나 범위 · 판정 모양을 줄 수 없다 | 근사 | balance-scale · equilibrium-of-forces · tension · color-addition · field-lines · potential-energy-curve · thin-film-interference · equipotential-surface · normal-modes · moon-phases · total-internal-reflection |
 | G22 | `slider` 값 표시 끄기 · 끝 이름표 · 단위 번역이 없다 | 근사 | impulse-force-relation · conical-pendulum · angle-of-friction · bernoullis-principle · spacetime-diagram · gyroscopic-precession · lift-force · polarization · resonance · phase-diagram · rc-circuit · refraction-of-waves |
 | G23 | `restart` 는 엔진 시계만 되돌려 상태를 쌓는 조각에는 효과가 없다 | 근사 | inertial-vs-gravitational-mass · lift-force |
-| G24 | 러너 여백 · 선언한 조작기 · 캡션 자리가 프레이밍 여백으로 잡히지 않는다 | 근사 | static-friction · banked-curve · tension · interference · field-lines · bernoullis-principle · maxwell-boltzmann-distribution · spacetime-diagram(그림 밖 캡션·조작기 줄) · potential-energy-curve · gyroscopic-precession · lift-force · carnot-cycle · longitudinal-wave · equipotential-surface · atomic-orbital · normal-modes · moon-phases · huygens-principle · polarization · electromagnetic-wave · resonance · youngs-double-slit · rc-circuit · hydrogen-spectrum · moment-of-inertia · lagrange-points · stability-of-floating-body · refraction-of-waves · charged-particle-in-magnetic-field · radioactive-decay · energy-dissipation · perfectly-inelastic-collision · elastic-collision · inelastic-collision · conservation-of-momentum |
-| G25 | 화면 px 로 고정되는 크기가 없고, 글자가 배율을 따르지 않는다 | 근사 | vertical-loop · non-inertial-frame · fictitious-force · interference · energy-flow-diagram · field-lines · tidal-force · maxwell-boltzmann-distribution · spacetime-diagram · gyroscopic-precession · hr-diagram · longitudinal-wave · thin-film-interference · equipotential-surface · huygens-principle · double-slit-with-electrons · resonance · phase-diagram · rc-circuit · moment-of-inertia · lagrange-points · stability-of-floating-body · radioactive-decay |
+| G24 | 러너 여백 · 선언한 조작기 · 캡션 자리가 프레이밍 여백으로 잡히지 않는다 | 근사 | static-friction · banked-curve · tension · interference · field-lines · bernoullis-principle · maxwell-boltzmann-distribution · spacetime-diagram(그림 밖 캡션·조작기 줄) · potential-energy-curve · gyroscopic-precession · lift-force · carnot-cycle · longitudinal-wave · equipotential-surface · atomic-orbital · normal-modes · moon-phases · huygens-principle · polarization · electromagnetic-wave · resonance · youngs-double-slit · rc-circuit · hydrogen-spectrum · moment-of-inertia · lagrange-points · stability-of-floating-body · refraction-of-waves · charged-particle-in-magnetic-field · radioactive-decay · energy-dissipation · perfectly-inelastic-collision · elastic-collision · inelastic-collision · conservation-of-momentum · conservation-of-angular-momentum · rolling-race · simple-pendulum · driven-oscillation |
+| G25 | 화면 px 로 고정되는 크기가 없고, 글자가 배율을 따르지 않는다 | 근사 | vertical-loop · non-inertial-frame · fictitious-force · interference · energy-flow-diagram · field-lines · tidal-force · maxwell-boltzmann-distribution · spacetime-diagram · gyroscopic-precession · hr-diagram · longitudinal-wave · thin-film-interference · equipotential-surface · huygens-principle · double-slit-with-electrons · resonance · phase-diagram · rc-circuit · moment-of-inertia · lagrange-points · stability-of-floating-body · radioactive-decay · angular-momentum-vector · center-of-gravity |
 | G26 | 가는 선을 화면 픽셀에 맞추는 선언이 없다 | 근사 | youngs-modulus |
 | G27 | `button` 에 비활성 모양이 없다 | 근사 | centripetal-force |
-| G28 | 곡선(베지어) · 타원 어휘가 없어 점으로 표본한다 | 근사 | free-body-diagram · fictitious-force · energy-flow-diagram · field-lines · gyroscopic-precession · equipotential-surface · poiseuille-flow · electromagnetic-wave · keplers-second-law · capillary-action · charged-particle-in-magnetic-field · radioactive-decay · work-by-variable-force · efficiency · conservative-force · equilibrium-points · impulse-momentum-theorem |
+| G28 | 곡선(베지어) · 타원 어휘가 없어 점으로 표본한다 | 근사 | free-body-diagram · fictitious-force · energy-flow-diagram · field-lines · gyroscopic-precession · equipotential-surface · poiseuille-flow · electromagnetic-wave · keplers-second-law · capillary-action · charged-particle-in-magnetic-field · radioactive-decay · work-by-variable-force · efficiency · conservative-force · equilibrium-points · impulse-momentum-theorem · conservation-of-angular-momentum · angular-momentum · angular-momentum-vector · damped-oscillation · coupled-oscillators |
 
 ## 턴 기록
 
@@ -58,7 +58,7 @@
 |---|---|---|---|
 | G29 | 자리마다 값이 있는 스칼라 장(격자 값)을 칠하는 어휘가 없다 — 칸마다 `region` 을 수백~수천 개 선언한다 (간섭 8208개 · 베르누이 400개). 실시간 프레임 비용 미확인 | 근사 | interference · bernoullis-principle |
 | G30 | 값→색 척도가 없다 (음·0·양 발산형, 순차형). `luminance` 한 줄로 근사해 대비가 약하고 다크 테마에서 뒤집힌다 | 근사 | interference · bernoullis-principle · lift-force · longitudinal-wave · equipotential-surface |
-| G31 | 그라데이션 채움(선형 · 방사형)이 없다 — 알파를 겹친 원판 56장, 층을 쌓은 꼬리로 흉내 낸다 | 근사 | energy-flow-diagram · tidal-force · hr-diagram · phase-diagram · hydrogen-spectrum · stability-of-floating-body · efficiency |
+| G31 | 그라데이션 채움(선형 · 방사형)이 없다 — 알파를 겹친 원판 56장, 층을 쌓은 꼬리로 흉내 낸다 | 근사 | energy-flow-diagram · tidal-force · hr-diagram · phase-diagram · hydrogen-spectrum · stability-of-floating-body · efficiency · rolling-race |
 | G32 | `particleSystem` 이 인스턴스 하나에 색 · 알파 하나다 — 입자별 색 · 알파가 없다 | 근사 | energy-flow-diagram · hr-diagram |
 | G33 | 빛의 원색 · 합색(빨강 · 초록 · 파랑 · 노랑 · 청록 · 자홍 · 흰)에 맞는 색 역할이 없다 — 「빨강 + 초록 = 노랑」 이 색으로 서지 않는다 | **주장** | color-addition · thin-film-interference · total-internal-reflection |
 | G34 | 테마와 무관한 절대 검정 · 흰이 없다 — 흰 합색이 배경 미색이 되고, 다크 테마에서 막과 흰 칸의 밝기가 뒤집힐 것으로 보인다(다크 미촬영) | **주장** | color-addition · thin-film-interference · moon-phases · polarization |
@@ -74,7 +74,7 @@
 | G44 | 값의 변화 방향(오름 · 내림 · 멈춤)으로 캡션을 고르거나, 조작하면 단계 캡션에서 상태 캡션으로 넘기는 전환을 선언할 자리가 없다 | 근사 | maxwell-boltzmann-distribution · polarization · phase-diagram · youngs-double-slit |
 | G45 | `trace` ring 의 속을 바탕색으로 채울 수 없다 | 근사 | maxwell-boltzmann-distribution · spacetime-diagram |
 | G46 | `slider.step` 이 값 글자까지 눈금에 붙인다 (744 → 750) | 근사 | maxwell-boltzmann-distribution · moment-of-inertia |
-| G47 | 그래프 축 어휘가 없다 — `scale` linear 는 값 표식을 늘 그리고 눈금 숫자를 강조색으로 칠해, 대신 쓰면 강조색이 두 뜻이 된다 | 근사 | maxwell-boltzmann-distribution · phase-space(세로축 이름을 세우지 못함) · hr-diagram · thin-film-interference · rc-circuit · moment-of-inertia · total-internal-reflection · radioactive-decay · kinetic-energy · ballistic-pendulum · work-by-variable-force · work-energy-theorem · elastic-potential-energy · gravitational-potential-energy · conservation-of-momentum · impulse-momentum-theorem · two-dimensional-collision |
+| G47 | 그래프 축 어휘가 없다 — `scale` linear 는 값 표식을 늘 그리고 눈금 숫자를 강조색으로 칠해, 대신 쓰면 강조색이 두 뜻이 된다 | 근사 | maxwell-boltzmann-distribution · phase-space(세로축 이름을 세우지 못함) · hr-diagram · thin-film-interference · rc-circuit · moment-of-inertia · total-internal-reflection · radioactive-decay · kinetic-energy · ballistic-pendulum · work-by-variable-force · work-energy-theorem · elastic-potential-energy · gravitational-potential-energy · conservation-of-momentum · impulse-momentum-theorem · two-dimensional-collision · conservation-of-angular-momentum · parallel-axis-theorem · damping-regimes · quality-factor |
 | G48 | 한 점과 기울기로 긋는 무한 직선이 없다 | 근사 | spacetime-diagram |
 | G49 | 선 끝 이름표를 화면 안에 두기 (`readout.clamp` 로 되는지 미확인) | 근사 | spacetime-diagram |
 | G50 | 글자 둘레 바탕색 테두리가 없다 | 근사 | spacetime-diagram · stability-of-floating-body |
@@ -141,11 +141,11 @@
 
 | id | 부족 | 영향 | 처음 보고한 조각 |
 |---|---|---|---|
-| G55 | 고정 시점 3차원 투영이 없다 — 3차원 점 · 원 · 원판 · 화살표를 선언할 수 없어 조각이 투영 수식과 깊이 순서(단계별 인스턴스)를 짠다. 저작자가 시점을 못 바꾼다 | 근사 | gyroscopic-precession · atomic-orbital · polarization |
+| G55 | 고정 시점 3차원 투영이 없다 — 3차원 점 · 원 · 원판 · 화살표를 선언할 수 없어 조각이 투영 수식과 깊이 순서(단계별 인스턴스)를 짠다. 저작자가 시점을 못 바꾼다 | 근사 | gyroscopic-precession · atomic-orbital · polarization · angular-momentum · angular-momentum-vector |
 | G56 | 높이장을 3차원 곡면으로 그리는 어휘가 없다 — 투영 · 가려짐 · 기울기 음영을 조각이 구워 `scalarField` 한 장으로 넘긴다. 곡면 위 선 · 점의 가려짐도 조각이 뺀다 | 근사 | equipotential-surface |
 | G57 | 머리 있는 화살표 묶음이 없다 — `vector` 는 낱개, `lineSet` 은 머리가 없어 꺾쇠 두 획으로 흉내 낸다 | 근사 | gyroscopic-precession · stability-of-floating-body |
 | G58 | 캡션 문안의 일부(값 하나)에 강조색 · 굵기를 걸 수 없다 — 화면 표식과 캡션 숫자를 색으로 잇지 못한다 | 근사 | hr-diagram |
-| G59 | `TimelineFrame` 에 다른 시각의 진행도를 묻는 자리가 없다 — 「조금 전 자리」 꼬리를 위해 조각이 단계 길이 · 이징을 다시 계산한다 | 근사 | hr-diagram · electromagnetic-wave · standing-wave · center-of-mass-motion |
+| G59 | `TimelineFrame` 에 다른 시각의 진행도를 묻는 자리가 없다 — 「조금 전 자리」 꼬리를 위해 조각이 단계 길이 · 이징을 다시 계산한다 | 근사 | hr-diagram · electromagnetic-wave · standing-wave · center-of-mass-motion · conservation-of-angular-momentum · quality-factor |
 | G60 | 파장마다 그 파장의 색으로 칠하는 스펙트럼 채움이 없다 — 「골이 초록 자리에 왔다」 가 눈금 숫자로만 읽힌다 (빛 색 트랙) | **주장** | thin-film-interference · hydrogen-spectrum |
 | G61 | 물리 계산이 낸 색(값 → RGB)을 칠할 수 없다 — `scalarField` 색표 · 입자 색이 테마 역할의 명암뿐이다. 반사색 · 흑체색 (빛 색 트랙) | **주장** (thin-film) · 근사 (hr) | thin-film-interference · hr-diagram · youngs-double-slit · hydrogen-spectrum · total-internal-reflection |
 | G62 | `scalarField` 의 값→색 사상 곡선 · 섞기 공간을 고를 수 없다 — 선형광 고정이라 원본의 농도 · 명도 사상을 옮기려면 조각이 테마 명도 숫자를 들고 되풀거나(다크에서 틀림) 중간 농도를 잃는다 | 근사 | lift-force · longitudinal-wave · thermal-convection · huygens-principle · polarization · double-slit-with-electrons · resonance · capillary-action · standing-wave · youngs-double-slit · hydrogen-spectrum · lagrange-points |
@@ -179,7 +179,7 @@
 | id | 부족 | 영향 | 처음 보고한 조각 |
 |---|---|---|---|
 | G67 | 가로만 폭에 맞춰 늘어나는 배치를 선언할 수 없다 — 가로 · 세로 같은 배율이라 좁은 임베드에서 세로 눈금까지 준다 | 근사 | normal-modes |
-| G68 | `lineSet` 에 선 모양(점선)이 없다 — 점선 가닥을 `trajectory` 낱개로 선언한다 (G05 는 대시 무늬 값을 고르는 문제) | 근사 | normal-modes · radioactive-decay · kinetic-energy · work-energy-theorem · non-conservative-force |
+| G68 | `lineSet` 에 선 모양(점선)이 없다 — 점선 가닥을 `trajectory` 낱개로 선언한다 (G05 는 대시 무늬 값을 고르는 문제) | 근사 | normal-modes · radioactive-decay · kinetic-energy · work-energy-theorem · non-conservative-force · shm-energy |
 | G69 | 광원 · 시선 방향만 주면 구의 명암 경계를 그리는 원판 어휘가 없다 — 조각이 칸마다 내적을 계산해 `scalarField` 로 넘긴다 | 근사 | moon-phases |
 | G70 | `scalarField` 순차형의 낮은 끝이 바탕으로 고정이고 여러 색 정박점이 없다 — 「그늘도 조금 밝은 톤」 · 「차가운 끝도 색」 을 줄 수 없다 | 근사 | moon-phases · thermal-convection · phase-diagram · stability-of-floating-body · refraction-of-waves |
 | G71 | `scalarField` 의 칠 영역이 축 정렬 사각형뿐이다 — 원판 · 기울어진 판 밖을 바탕 값으로 칠해 모양을 만들고, 그 칸이 아래 그림을 가린다 | 근사 | moon-phases · polarization · capillary-action |
@@ -189,9 +189,9 @@
 | G75 | `particleSystem` 에 「꼬리가 짧을 때만 점」 이 없다 | 근사 | thermal-convection |
 | G76 | `preroll` 이 상태의 일부만 미리 굴리게 고를 수 없다 — `initialState` 가 직접 적분한다 | 근사 | thermal-convection |
 | G77 | `particleSystem` 입자에 둘레 선(굵기 · 색)이 없다 (G03 은 `body` 한정) | 근사 | huygens-principle · radioactive-decay |
-| G78 | 면 해칭의 방향 · 간격 · 색을 고를 수 없다 — `region` hatch 는 45° · 바탕색 고정 | 근사 | polarization · stability-of-floating-body · kinetic-energy · non-conservative-force · gravitational-potential-energy |
+| G78 | 면 해칭의 방향 · 간격 · 색을 고를 수 없다 — `region` hatch 는 45° · 바탕색 고정 | 근사 | polarization · stability-of-floating-body · kinetic-energy · non-conservative-force · gravitational-potential-energy · rotational-kinetic-energy |
 | G79 | `particleSystem` 점 크기를 월드 단위로 줄 수 없다 (G63 은 `lineSet` 굵기) | 근사 | electromagnetic-wave · resonance · phase-diagram · moment-of-inertia · radioactive-decay · efficiency |
-| G80 | 간격이 점점 짧아지는 사건 일정표(사건 수 · 사건 시각)를 선언할 자리가 없다 | 근사 | double-slit-with-electrons |
+| G80 | 간격이 점점 짧아지는 사건 일정표(사건 수 · 사건 시각)를 선언할 자리가 없다 | 근사 | double-slit-with-electrons · physical-pendulum |
 | G81 | `scalarField` 를 보간 없이 칸 그대로 칠할 수 없다 | 근사 | double-slit-with-electrons · resonance |
 
 ### 기존 주장 부족의 재발
@@ -240,14 +240,14 @@
 |---|---|---|---|
 | G82 | 한 줄씩 밀리는 시간 이력 무늬(폭포 무늬) 어휘가 없다 — 조각이 이력을 상태에 쌓고 매 프레임 통째로 넘긴다 | 근사 | resonance |
 | G83 | 고정 촬영(`?t=`) 중 조작기를 비활성으로 그리는 선언이 없다 | 근사 | resonance · refraction-of-waves |
-| G84 | 월드에 놓이는 막대 묶음이 없다 — `graph` bar 는 화면 카드라 막대를 `region` 으로 직접 배치한다 | 근사 | keplers-second-law · energy-dissipation · rocket-equation · ballistic-pendulum · non-conservative-force · conservative-force · inelastic-collision · energy-in-collision |
+| G84 | 월드에 놓이는 막대 묶음이 없다 — `graph` bar 는 화면 카드라 막대를 `region` 으로 직접 배치한다 | 근사 | keplers-second-law · energy-dissipation · rocket-equation · ballistic-pendulum · non-conservative-force · conservative-force · inelastic-collision · energy-in-collision · parallel-axis-theorem · shm-energy · coupled-oscillators |
 | G85 | 발산형 `scalarField` 의 가운데(0)가 바탕으로 고정이다 — 「대기압 액체 ≠ 공기」 · 「바탕보다 밝은 마루」 를 줄 수 없고 테마에 따라 명암이 뒤집힌다 (G70 은 순차형 낮은 끝) | 근사 | capillary-action · youngs-double-slit |
 | G86 | `param-chips` 가 같은 칸을 다시 누른 것을 알리지 못한다 — `heldPath` 로 우회 | 근사 | capillary-action |
 | G87 | 음 · 양을 가르는 중립 색 역할 쌍이 없다 — 뜻이 다른 `negative` 를 빌린다 (G54 는 같은 역할 양쪽) | 근사 | standing-wave |
 | G88 | `marker` 점 크기를 고를 수 없다 | 근사 | standing-wave |
 | G89 | 경로를 따라 흐르는 점 묶음이 없다 — scene 이 점 자리를 계산한다 | 근사 | rc-circuit · efficiency · conservative-force |
 | G90 | 코어에 회로 기호 · 2위치 스위치가 없다 — 선으로 그린다 | 근사 | rc-circuit |
-| G91 | 값에서 기준선까지 잇는 세로 차이 막대(끝 눈금 포함)가 없다 — `lineSet` 으로 근사 | 근사 | rc-circuit · radioactive-decay · conservative-force |
+| G91 | 값에서 기준선까지 잇는 세로 차이 막대(끝 눈금 포함)가 없다 — `lineSet` 으로 근사 | 근사 | rc-circuit · radioactive-decay · conservative-force · rotational-kinetic-energy · damped-oscillation |
 | G92 | 빛 채널의 가득 찬 빛이 라이트 바탕과 겹쳐 발광체 · 밝은 면의 윤곽이 사라진다 — 같은 대상을 역할 색과 빛으로 두 번 선언하거나 윤곽을 더한다 | 근사 | hydrogen-spectrum (moon-phases 재이관에서도) |
 
 ### 기존 부족으로 주장이 약해진 조각
@@ -278,9 +278,9 @@
 |---|---|---|---|
 | G93 | 시간표 단계 경계에 부동소수 허용이 없다 — `?t=` 촬영이 1/60 초 걸음을 쌓아 경계 바로 앞(3.9999…)에 멈춰 **앞 단계 캡션**이 찍힌다. 어휘 부족이 아니라 엔진 시계의 결함일 수 있다(미확인) | 근사 | charged-particle-in-magnetic-field |
 | G94 | `trajectory` `fade: 'tail'` 의 최소 알파 · 옅어지는 곡선을 고를 수 없다 | 근사 | charged-particle-in-magnetic-field |
-| G95 | 굽은 화살표(원호 + 촉) 어휘가 없다 — 원호와 삼각형을 따로 선언하고 촉 자리를 scene 이 계산한다 | 근사 | moment-of-inertia · stability-of-floating-body |
+| G95 | 굽은 화살표(원호 + 촉) 어휘가 없다 — 원호와 삼각형을 따로 선언하고 촉 자리를 scene 이 계산한다 | 근사 | moment-of-inertia · stability-of-floating-body · parallel-axis-theorem · angular-momentum-vector · gears |
 | G96 | 조작한 뒤 다른 단계 묶음으로 넘어가는 시간표 선언이 없다 (G44 는 캡션 전환만) | 근사 | moment-of-inertia |
-| G97 | 뷰포트 전체를 덮는 장을 선언할 수 없다 — 월드 사각형 끝이 비쳐 넓게 깔아 피한다 (G71 은 영역 모양) | 근사 | lagrange-points · rocket-equation |
+| G97 | 뷰포트 전체를 덮는 장을 선언할 수 없다 — 월드 사각형 끝이 비쳐 넓게 깔아 피한다 (G71 은 영역 모양) | 근사 | lagrange-points · rocket-equation · angular-momentum |
 | G98 | 빛 채널에 값 → 밝기 사상(화면값 / 선형광)을 고를 자리가 없다 — 조각이 역변환해 넘긴다 (G62 는 `scalarField` 역할 색) | 근사 | total-internal-reflection |
 | G99 | 조작하는 동안 시간표 시계를 멈추는 선언이 없다 — 손을 놓으면 그동안 흐른 자리로 뛴다 | 근사 | total-internal-reflection |
 
@@ -353,7 +353,7 @@ hydrogen-spectrum)은 이제 모두 섰다.
 | id | 부족 | 영향 | 처음 보고한 조각 |
 |---|---|---|---|
 | G102 | 열 · 온도처럼 뜻이 정해진 색 역할이 없다 — `accent` 를 빌리면 같은 그림에서 강조가 두 뜻이 된다 | 근사 | energy-dissipation |
-| G103 | `dimension` 이 짧아지면 끝 표시와 글자가 겹친다 — 최소 길이 · 글자 자리 규칙이 없고, 조각이 「이 아래로는 재지 않는다」 를 판정할 자리도 없다 | 근사 | ballistic-pendulum · elastic-potential-energy · inelastic-collision |
+| G103 | `dimension` 이 짧아지면 끝 표시와 글자가 겹친다 — 최소 길이 · 글자 자리 규칙이 없고, 조각이 「이 아래로는 재지 않는다」 를 판정할 자리도 없다 | 근사 | ballistic-pendulum · elastic-potential-energy · inelastic-collision · rotational-kinetic-energy · quality-factor |
 | G104 | 시간표 단계에 「이 단계 동안 이 값은 그대로다」 를 선언할 자리가 없다 — 어느 표지를 걸지 scene 이 진행도로 다시 판정한다 (G01 은 `step` 쪽) | 근사 | ballistic-pendulum |
 
 관찰(부족 아님): 같은 `t` 로 두 번 찍으면 조각 그림은 픽셀까지 같고 캡션 · 이름표 **글자의 래스터화**만 달라진다.
@@ -378,13 +378,72 @@ hydrogen-spectrum)은 이제 모두 섰다.
 
 | id | 부족 | 영향 | 처음 보고한 조각 |
 |---|---|---|---|
-| G105 | 스테이지 상수가 수 하나씩뿐이라 목록(줄마다의 값)을 선언할 수 없다 — 줄 수는 코드에, 줄마다의 값은 이름 셋으로 흩는다 (G13 은 시간표 단계 쪽) | 근사 | inelastic-collision · energy-in-collision |
+| G105 | 스테이지 상수가 수 하나씩뿐이라 목록(줄마다의 값)을 선언할 수 없다 — 줄 수는 코드에, 줄마다의 값은 이름 셋으로 흩는다 (G13 은 시간표 단계 쪽) | 근사 | inelastic-collision · energy-in-collision · mass-spring-system · physical-pendulum · damping-regimes |
 | G106 | 한 번 터지고 끝나는 파편 어휘가 없다 — `stream` 은 계속 뿜기만 해서 scene 이 파편 자리를 계산해 `particleSystem` 으로 넘긴다 | 근사 | explosion-and-recoil |
-| G107 | 용수철(`constraint` spring)에 다 눌린 최소 길이가 없다 — 가장 눌린 순간 코일이 뭉쳐 자연 길이를 늘려 피한다 (G20 은 폭 · 굵기) | 근사 | conservation-of-momentum |
+| G107 | 용수철(`constraint` spring)에 다 눌린 최소 길이가 없다 — 가장 눌린 순간 코일이 뭉쳐 자연 길이를 늘려 피한다 (G20 은 폭 · 굵기) | 근사 | conservation-of-momentum · damping-regimes · nonlinear-oscillation |
 | G108 | 화살표를 꼬리-머리로 잇는 묶음이 없다 — 이음 자리를 scene 이 계산하고, 짧아진 화살표는 머리만 남는다 (G57 은 나란한 묶음) | 근사 | energy-in-collision |
 | G109 | 같은 자리에서 이름표 문안을 갈아 끼우는 선언이 없다 — 단계를 하나 더 두어 바꾼다 (G14 · G44 는 캡션 쪽) | 근사 | energy-in-collision |
-| G110 | `vector.from` 을 물체 id 에 걸 수 없다 — 화살표 꼬리를 물체 가장자리에 두는 계산을 scene 이 한다 | 근사 | two-dimensional-collision |
-| G111 | 선을 따라 이름표를 붙일 자리가 없다 — 어디에 두어도 선과 겹쳐 이름표를 뺐다 (G49 는 선 끝) | 근사 | center-of-mass-motion |
+| G110 | `vector.from` 을 물체 id 에 걸 수 없다 — 화살표 꼬리를 물체 가장자리에 두는 계산을 scene 이 한다 | 근사 | two-dimensional-collision · torque · static-equilibrium · center-of-gravity · simple-harmonic-motion · nonlinear-oscillation |
+| G111 | 선을 따라 이름표를 붙일 자리가 없다 — 어디에 두어도 선과 겹쳐 이름표를 뺐다 (G49 는 선 끝) | 근사 | center-of-mass-motion · torque · parallel-axis-theorem · nonlinear-oscillation |
 | G112 | 이름표와 대상을 잇는 지시선이 없다 — 움직이는 점의 이름표를 고정 자리에 두고 색으로만 잇는다 | 근사 | center-of-mass-motion |
 
 가장 많이 겪은 기존 부족: G09 묶음 불투명도 · G17 화살표 이름표 (각 4) · G10 · G47 · G24 (각 3).
+
+## 직접 구현 배치 16 (2026-09-18) — 회전 8개
+
+`_batches/16-direct-rotation.json`. 돌림힘 · 평행축 정리 · 회전 운동 에너지 · 각운동량 · 각운동량 보존 · 각운동량의 방향 ·
+미끄러지지 않는 구름 · 구르는 물체의 경주. 여덟 모두 두 테마에서 주장이 선다(만든 에이전트의 판정).
+
+**새 부족 9 — 주장 1, 근사 8.** 처음으로 `주장` 영향이 나왔다(G120).
+
+| id | 부족 | 영향 | 처음 보고한 조각 |
+|---|---|---|---|
+| G113 | `sector` 가 곧은 두 변을 긋지 않는다 — 어디서부터 잰 각인지 점선으로 따로 보인다 | 근사 | torque · static-equilibrium |
+| G114 | `surface` wall 에 평면도(위에서 본) 벽 두께가 없다 — 선 하나로 벽을 대신한다 | 근사 | torque |
+| G115 | `readout` 에 아래 · 위 첨자가 없다 — `I_cm` 을 밑줄 문자 그대로 쓴다 | 근사 | parallel-axis-theorem |
+| G116 | 원형 `body` 가 `orientation` 을 그림에 드러내지 않는다 — 도는 표지를 `lineSet` 살로 따로 선언하고 끝점을 scene 이 계산한다 (moment-of-inertia 도 같은 우회) | 근사 | rolling-race · rotational-kinetic-energy |
+| G117 | 물리 시계가 멈추는 단계를 선언할 수 없다(`timeScale` > 0) — physics 가 「움직이는 단계」 id 목록을 코드에 둔다 (G99 는 조작 중 시계, G104 는 값 그대로 표지) | 근사 | rolling-without-slipping |
+| G118 | 한 점을 중심으로 함께 도는 묶음(테 · 살 · 표지점)을 각 하나로 돌리는 선언이 없다 — 인스턴스마다 cos · sin 으로 자리를 계산한다 (G10 은 평행 이동) | 근사 | rolling-without-slipping · static-equilibrium · center-of-gravity |
+| G119 | `surface.material` 이 선언에만 있고 렌더러가 읽지 않는다 — S-render 「선언에 둔 필드는 렌더러가 구현한다」 위반(rule-guard 확인, 2026-04-21 부터). 20개 sim 의 `material` 선언이 그림에 반영되지 않는다 | 근사 | rotational-kinetic-energy |
+| G120 | 3차원 투영이 거울상이 아님을 어휘가 보장하지 않는다 — 조각의 투영식 가로축 부호 하나로 오른손 규칙이 왼손 규칙이 되고, 모양은 멀쩡해 드러나지 않는다 (G55 의 투영 부재가 원인). gyroscopic-precession 의 투영이 이 기준으로 거울상일 수 있다는 보고가 있다(미확인) | **주장** | angular-momentum-vector |
+| G121 | 한 선을 깊이에 따라 앞 · 뒤로 갈라 그릴 방법이 없다 — 표본마다 깊이를 보고 가닥을 나눠 선언한다 | 근사 | angular-momentum-vector |
+
+rule-guard 사후 검증이 둘을 잡아 고쳤다 — conservation-of-angular-momentum 의 선언 이징(linear)과 physics 의 smoothstep 불일치
+(선언 `smooth` 로 바꾸고 physics 가 선언의 이징 이름을 읽는다), parallel-axis-theorem 의 시작 축 거리 코드 상수(스테이지 상수로).
+
+## 직접 구현 배치 17 (2026-09-18) — 평형 · 기어 · 조화 운동 8개
+
+`_batches/17-direct-oscillation-1.json`. 정적 평형 · 무게 중심 · 기어 · 단순 조화 운동 · 조화 운동의 에너지 · 용수철 진자 · 단진자 ·
+물리 진자. 여덟 모두 두 테마에서 주장이 선다(만든 에이전트의 판정). 주장 부족 0.
+
+정적 평형 · 무게 중심의 「도는 물체에 붙는 좌표계 / 한 점 둘레로 돌리기」 는 G118 과 같은 모자람이라 새 id 를 주지 않았다.
+
+**새 부족 9, 모두 근사.**
+
+| id | 부족 | 영향 | 처음 보고한 조각 |
+|---|---|---|---|
+| G122 | 월드 앵커에 붙인 `readout` 칩이 `align` 을 무시하고 늘 가운데에 놓여 표지점을 덮는다 | 근사 | center-of-gravity |
+| G123 | `dimension` 글자의 크기 · 글꼴 · 기울임 · 바탕 칩을 고를 수 없다 — 같은 그림에서 기호 모양이 갈리고, 물체 위에서 글자가 묻힌다 | 근사 | mass-spring-system · gears |
+| G124 | 핀에 매달려 도는 강체 어휘가 없다 — `constraint` rigid_rod 는 핀 너머로 튀어나온 몸통을 그리지 못해 막대 · 질량 중심 · 거리 표지를 scene 이 매 프레임 계산한다 | 근사 | physical-pendulum |
+| G125 | 움직이는 물체 위의 점을 따라가는 조작기가 없다 — 조작기 선언이 정적이다 | 근사 | physical-pendulum |
+| G126 | `constraint` 끝을 물체 id 에 걸면 중심까지 긋는다 — 속 빈 물체 안으로 줄이 비쳐 둘레 끝점을 scene 이 계산한다 (G110 은 `vector.from`) | 근사 | simple-pendulum |
+| G127 | 세로 `dimension` 의 글자가 선 위 끝 너머에 붙는다 — 다른 물체(보) 위에 얹혀 글자 없는 치수선 + 따로 붙인 이름표로 피한다 (G103 · G111 과 다름) | 근사 | simple-pendulum |
+| G128 | 기어(톱니바퀴) 어휘가 없다 — 톱니를 사다리꼴로 계산해 매 프레임 SVG 경로 문자열로 `body` custom 에 넘긴다 | 근사 | gears |
+| G129 | 단계 길이 사이의 관계(주기 = `turn` × 2 등)를 선언할 자리가 없다 — 저작자가 깨도 경고 없이 주기 끝에서 튄다 | 근사 | gears |
+| G130 | 고정 촬영(`?t=`)에서 조작기 값을 고를 수 없다 — 칩의 다른 값 화면을 확인하지 못한다 (G83 은 비활성 모양) | 근사 | gears |
+
+## 직접 구현 배치 18 (2026-09-18) — 감쇠 · 강제 · 결합 진동 7개
+
+`_batches/18-direct-oscillation-2.json`. 감쇠 진동 · 감쇠의 세 양상 · 강제 진동 · Q 인자 · 결합 진동자 · 진동의 맥놀이 · 비선형 진동.
+일곱 모두 두 테마에서 주장이 선다(만든 에이전트의 판정). 주장 부족 0. 회전과 진동 분야는 이 배치로 다 만들었다.
+
+판정 메모 — coupled-oscillators 가 새 부족으로 올린 「단계 길이가 스테이지 상수를 따라가지 못한다」 는 배치 17 의 세 조각이
+이미 G13 으로 적은 것과 같아 G13 으로 셌다. damping-regimes 의 「정착 시각을 표시하는 어휘」 는 정착 시각 계산이 조각의
+물리라서 장부에 올리지 않았다(표시는 `trajectory` 눈금으로 된다).
+
+**새 부족 2, 모두 근사.**
+
+| id | 부족 | 영향 | 처음 보고한 조각 |
+|---|---|---|---|
+| G131 | 월드에 놓이는 흐르는 기록지(시간창 이력 곡선)가 없다 — `graph` 는 화면 카드라 물체 옆에 붙일 수 없어 scene 이 표본 수백 개를 매 프레임 계산해 `trajectory` 로 넘긴다 (waves/beats 의 NOTES 「시간창 잔상 트랙」 과 같다, G82 폭포 무늬와 다름) | 근사 | driven-oscillation · beats-in-oscillation |
+| G132 | 감쇠기(대시포트) 어휘가 없다 — 감쇠의 존재와 세기를 이름표 글자만 말한다 | 근사 | damping-regimes |
