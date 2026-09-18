@@ -953,6 +953,7 @@ topics:
     level: lower
     curricula: [kr, ib, ngss, ap, uk]
     visualNote: 거리를 늘리면 힘이 제곱으로 줄어든다
+    sim: aperi21:newtons-law-of-gravitation
   - id: gravitational-field
     name: 중력장
     desc: 공간에 분포한 중력의 세기
@@ -960,6 +961,7 @@ topics:
     level: lower
     curricula: [kr, ib, ngss, ap, uk]
     visualNote: 질량 주위에서 화살표가 촘촘해지고 성겨진다
+    sim: aperi21:gravitational-field
   - id: shell-theorem
     name: 껍질 정리
     desc: 구 껍질 안팎에서의 중력
@@ -967,6 +969,7 @@ topics:
     level: upper
     curricula: [ib]
     visualNote: 껍질 안으로 들어가면 당기는 힘이 사라진다
+    sim: aperi21:shell-theorem
   - id: gravity-inside-earth
     name: 지구 내부의 중력
     desc: 깊이에 따라 줄어드는 중력
@@ -974,6 +977,7 @@ topics:
     level: null
     curricula: []
     visualNote: 중심으로 갈수록 중력이 줄어 0 이 된다
+    sim: aperi21:gravity-inside-earth
   - id: gravitational-potential-energy-general
     name: 중력 퍼텐셜 에너지(일반)
     desc: 무한대를 기준으로 한 음의 에너지
@@ -981,6 +985,7 @@ topics:
     level: upper
     curricula: [ib, uk]
     visualNote: 무한대를 0 으로 두면 우물 모양이 되고 묶인 궤도가 우물 안에 갇힌다
+    sim: aperi21:gravitational-potential-energy-general
   - id: escape-velocity
     name: 탈출 속도
     desc: 중력을 벗어나는 최소 속도
@@ -988,6 +993,7 @@ topics:
     level: upper
     curricula: [kr, ib, uk]
     visualNote: 속도를 조금씩 올리다 보면 어느 순간 돌아오지 않는다
+    sim: aperi21:escape-velocity
   - id: orbital-velocity
     name: 궤도 속도
     desc: 원 궤도를 유지하는 속도
@@ -995,6 +1001,7 @@ topics:
     level: lower
     curricula: [kr, ib, ngss, uk]
     visualNote: 속도가 맞아야 원이 되고, 모자라면 떨어지고 넘치면 벗어난다
+    sim: aperi21:orbital-velocity
   - id: circular-orbit
     name: 원 궤도
     desc: 구심력이 중력인 운동
@@ -1002,6 +1009,7 @@ topics:
     level: lower
     curricula: [kr, ib, ngss, uk]
     visualNote: 중력이 구심력 노릇을 하는 것이 궤도로 보인다
+    sim: aperi21:circular-orbit
   - id: elliptical-orbit
     name: 타원 궤도
     desc: 초점에 놓인 중심 천체
@@ -1009,6 +1017,7 @@ topics:
     level: upper
     curricula: [ngss]
     visualNote: 초점을 벌리면 궤도가 길쭉해진다
+    sim: aperi21:elliptical-orbit
   - id: keplers-first-law
     name: 케플러 제1법칙
     desc: 궤도는 타원이다
@@ -1016,6 +1025,7 @@ topics:
     level: upper
     curricula: [kr, ib, ngss]
     visualNote: 중심 천체가 한가운데가 아니라 초점에 앉는다
+    sim: aperi21:keplers-first-law
   - id: keplers-second-law
     name: 케플러 제2법칙
     desc: 같은 시간에 같은 넓이
@@ -1031,6 +1041,7 @@ topics:
     level: upper
     curricula: [kr, ib, ngss, uk]
     visualNote: 긴반지름을 늘리면 주기가 따라 길어진다
+    sim: aperi21:keplers-third-law
   - id: two-body-problem
     name: 이체 문제
     desc: 질량 중심 둘레를 도는 두 천체
@@ -1038,6 +1049,7 @@ topics:
     level: null
     curricula: []
     visualNote: 둘이 공통 질량 중심을 돈다
+    sim: aperi21:two-body-problem
   - id: tidal-force
     name: 조석력
     desc: 중력의 차이가 만드는 늘어남
@@ -1053,6 +1065,7 @@ topics:
     level: null
     curricula: []
     visualNote: 너무 가까이 가면 조석력이 천체를 찢는다
+    sim: aperi21:roche-limit
   - id: weightlessness
     name: 무중력
     desc: 자유 낙하 중의 겉보기 무게
@@ -1060,6 +1073,7 @@ topics:
     level: null
     curricula: []
     visualNote: 함께 자유 낙하하면 저울이 0 을 가리킨다
+    sim: aperi21:weightlessness
   - id: geostationary-orbit
     name: 정지 궤도
     desc: 자전 주기와 같은 궤도
@@ -1067,6 +1081,7 @@ topics:
     level: upper
     curricula: [uk]
     visualNote: 높이를 맞추면 지표 한 점 위에 멈춰 선다
+    sim: aperi21:geostationary-orbit
   - id: gravitational-slingshot
     name: 중력 도움
     desc: 천체를 이용한 속도 변화
@@ -1074,6 +1089,7 @@ topics:
     level: null
     curricula: []
     visualNote: 행성을 스쳐 지나며 속도를 얻는다
+    sim: aperi21:gravitational-slingshot
   - id: lagrange-points
     name: 라그랑주 점
     desc: 두 천체 사이의 평형 위치
@@ -1089,6 +1105,7 @@ topics:
     level: null
     curricula: []
     visualNote: 두 번 밀어 낮은 궤도에서 높은 궤도로 옮긴다
+    sim: aperi21:orbital-transfer
   - id: black-hole-horizon
     name: 사건 지평선
     desc: 탈출 속도가 광속이 되는 반지름
@@ -1096,6 +1113,7 @@ topics:
     level: upper
     curricula: [kr, uk]
     visualNote: 반지름 안으로 들어간 빛이 나오지 못한다
+    sim: aperi21:black-hole-horizon
   - id: diurnal-motion
     name: 일주 운동
     desc: 하루 동안 태양과 별이 하늘을 가로지르는 길
@@ -1103,6 +1121,7 @@ topics:
     level: primary
     curricula: [kr]
     visualNote: 하루를 빨리 감으면 별이 그리는 길이 드러난다
+    sim: aperi21:diurnal-motion
   - id: earth-rotation-day-night
     name: 자전과 낮과 밤
     desc: 도는 지구 위에서 낮과 밤이 갈리는 이유
@@ -1110,6 +1129,7 @@ topics:
     level: primary
     curricula: [kr]
     visualNote: 도는 지구 위의 한 점이 빛과 그늘을 오간다
+    sim: aperi21:earth-rotation-day-night
   - id: earth-revolution-constellations
     name: 공전과 별자리
     desc: 계절마다 보이는 별자리가 달라지는 이유
@@ -1117,6 +1137,7 @@ topics:
     level: primary
     curricula: [kr]
     visualNote: 공전 위치를 옮기면 한밤에 보이는 별자리가 바뀐다
+    sim: aperi21:earth-revolution-constellations
   - id: solar-altitude-shadow
     name: 태양 고도와 그림자
     desc: 고도가 바뀌면 그림자 길이와 기온이 함께 바뀐다
@@ -1124,6 +1145,7 @@ topics:
     level: primary
     curricula: [kr]
     visualNote: 고도가 바뀌면 그림자 길이가 함께 바뀐다
+    sim: aperi21:solar-altitude-shadow
   - id: seasonal-sun-path
     name: 계절과 태양의 길
     desc: 남중 고도와 낮 길이가 함께 달라지는 것
@@ -1131,6 +1153,7 @@ topics:
     level: primary
     curricula: [kr, ngss]
     visualNote: 계절을 옮기면 태양이 지나는 길과 낮 길이가 같이 달라진다
+    sim: aperi21:seasonal-sun-path
   - id: axial-tilt-seasons
     name: 자전축 기울기와 계절
     desc: 기울어진 채 도는 것이 만드는 계절
@@ -1138,6 +1161,7 @@ topics:
     level: primary
     curricula: [kr, ngss]
     visualNote: 기울기를 0으로 두면 계절이 사라진다
+    sim: aperi21:axial-tilt-seasons
   - id: moon-phases
     name: 달의 위상
     desc: 햇빛을 받는 달의 어느 쪽을 보는가
@@ -1153,6 +1177,7 @@ topics:
     level: lower
     curricula: [kr, ngss]
     visualNote: 세 천체가 한 줄에 설 때만 일어난다
+    sim: aperi21:eclipse
   - id: stellar-parallax
     name: 연주시차
     desc: 지구가 공전하며 가까운 별이 어긋나 보이는 각
@@ -1160,6 +1185,7 @@ topics:
     level: lower
     curricula: [kr, ib, uk]
     visualNote: 지구가 공전하는 동안 가까운 별만 어긋나 보인다
+    sim: aperi21:stellar-parallax
   - id: apparent-brightness
     name: 겉보기 밝기
     desc: 같은 별도 거리에 따라 다르게 밝아 보이는 것
@@ -1176,6 +1202,7 @@ topics:
     level: lower
     curricula: [kr, uk]
     visualNote: 등급이 한 단계 오를 때 밝기가 얼마나 줄어드는지 나란히 견준다
+    sim: aperi21:magnitude-scale
   - id: star-color-temperature
     name: 별의 색과 표면 온도
     desc: 표면 온도가 정하는 별빛의 색
@@ -1183,6 +1210,7 @@ topics:
     level: lower
     curricula: [kr, ib, uk]
     visualNote: 온도를 올리면 색이 붉은 쪽에서 푸른 쪽으로 옮겨 간다
+    sim: aperi21:star-color-temperature
   - id: expanding-universe
     name: 우주의 팽창
     desc: 모든 방향으로 멀어지는 은하들
@@ -1190,6 +1218,7 @@ topics:
     level: lower
     curricula: [kr, ngss, uk]
     visualNote: 격자를 늘리면 모든 점이 서로 멀어진다
+    sim: aperi21:expanding-universe
   - id: stellar-luminosity
     name: 광도
     desc: 별이 실제로 내는 빛의 양
@@ -1197,6 +1226,7 @@ topics:
     level: upper
     curricula: [ib, ngss, uk]
     visualNote: 겉보기 밝기와 거리에서 실제 밝기를 되짚는다
+    sim: aperi21:stellar-luminosity
   - id: hr-diagram
     name: HR 도
     desc: 온도와 광도로 별을 늘어놓은 그림
@@ -1212,6 +1242,7 @@ topics:
     level: upper
     curricula: [ib, ngss]
     visualNote: 한쪽을 키우면 별이 부풀거나 무너진다
+    sim: aperi21:star-radiation-gravity-balance
   - id: orbital-decay
     name: 궤도 감쇠
     desc: 옅은 대기가 끄는 궤도
@@ -1219,6 +1250,7 @@ topics:
     level: upper
     curricula: [ib]
     visualNote: 항력을 주면 궤도가 조금씩 내려앉는다
+    sim: aperi21:orbital-decay
   - id: inverse-square-law
     name: 역제곱 법칙
     desc: 퍼지는 만큼 옅어지는 것
@@ -1226,6 +1258,7 @@ topics:
     level: upper
     curricula: [ngss, uk]
     visualNote: 거리를 두 배로 하면 넷으로 나뉜다 — 퍼지는 면적으로 보인다
+    sim: aperi21:inverse-square-law
   - id: stellar-nucleosynthesis
     name: 별의 원소 합성
     desc: 무거운 원소가 별에서 만들어지는 것
@@ -1233,6 +1266,7 @@ topics:
     level: lower
     curricula: [ngss, uk]
     visualNote: 핵융합이 헬륨에서 철까지 차례로 만들고, 철 너머는 초신성이 만든다
+    sim: aperi21:stellar-nucleosynthesis
   - id: star-life-cycle
     name: 별의 일생
     desc: 질량이 가르는 별의 경로
@@ -1240,6 +1274,7 @@ topics:
     level: lower
     curricula: [uk]
     visualNote: 질량에 따라 갈라지는 경로를 HR 도 위에서 따라간다
+    sim: aperi21:star-life-cycle
   - id: stellar-spectral-class
     name: 별의 스펙트럼 분류
     desc: 온도가 정하는 흡수선 무늬
@@ -1247,6 +1282,7 @@ topics:
     level: upper
     curricula: [uk]
     visualNote: 온도가 바뀌면 흡수선 무늬가 O에서 M으로 옮겨 간다
+    sim: aperi21:stellar-spectral-class
   - id: supernova-and-neutron-star
     name: 초신성과 중성자별
     desc: 무너지고 튕겨 나가는 최후
@@ -1254,6 +1290,7 @@ topics:
     level: upper
     curricula: [uk]
     visualNote: 중심이 무너지고 바깥이 튕겨 나간다
+    sim: aperi21:supernova-and-neutron-star
   - id: exoplanet-detection
     name: 외계행성 탐지
     desc: 행성이 남기는 흔적
@@ -1261,6 +1298,7 @@ topics:
     level: upper
     curricula: [uk]
     visualNote: 행성이 지날 때 광곡선이 파이고 별이 흔들린다
+    sim: aperi21:exoplanet-detection
   # ── 유체
   - id: pressure-isotropy
     name: 압력의 등방성

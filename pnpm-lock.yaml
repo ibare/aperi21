@@ -180,6 +180,9 @@ importers:
       '@aperi21/sim-average-velocity':
         specifier: workspace:*
         version: link:../../sims/kinematics/average-velocity
+      '@aperi21/sim-axial-tilt-seasons':
+        specifier: workspace:*
+        version: link:../../sims/astro/axial-tilt-seasons
       '@aperi21/sim-balance-scale':
         specifier: workspace:*
         version: link:../../sims/mechanics/balance-scale
@@ -201,6 +204,9 @@ importers:
       '@aperi21/sim-bernoullis-principle':
         specifier: workspace:*
         version: link:../../sims/fluids/bernoullis-principle
+      '@aperi21/sim-black-hole-horizon':
+        specifier: workspace:*
+        version: link:../../sims/astro/black-hole-horizon
       '@aperi21/sim-boundary-layer':
         specifier: workspace:*
         version: link:../../sims/fluids/boundary-layer
@@ -228,6 +234,9 @@ importers:
       '@aperi21/sim-charged-particle-in-magnetic-field':
         specifier: workspace:*
         version: link:../../sims/em/charged-particle-in-magnetic-field
+      '@aperi21/sim-circular-orbit':
+        specifier: workspace:*
+        version: link:../../sims/astro/circular-orbit
       '@aperi21/sim-color-addition':
         specifier: workspace:*
         version: link:../../sims/optics/color-addition
@@ -270,6 +279,9 @@ importers:
       '@aperi21/sim-direction-of-acceleration':
         specifier: workspace:*
         version: link:../../sims/kinematics/direction-of-acceleration
+      '@aperi21/sim-diurnal-motion':
+        specifier: workspace:*
+        version: link:../../sims/astro/diurnal-motion
       '@aperi21/sim-doppler-effect':
         specifier: workspace:*
         version: link:../../sims/waves/doppler-effect
@@ -285,6 +297,15 @@ importers:
       '@aperi21/sim-driven-oscillation':
         specifier: workspace:*
         version: link:../../sims/oscillation/driven-oscillation
+      '@aperi21/sim-earth-revolution-constellations':
+        specifier: workspace:*
+        version: link:../../sims/astro/earth-revolution-constellations
+      '@aperi21/sim-earth-rotation-day-night':
+        specifier: workspace:*
+        version: link:../../sims/astro/earth-rotation-day-night
+      '@aperi21/sim-eclipse':
+        specifier: workspace:*
+        version: link:../../sims/astro/eclipse
       '@aperi21/sim-efficiency':
         specifier: workspace:*
         version: link:../../sims/mechanics/efficiency
@@ -297,6 +318,9 @@ importers:
       '@aperi21/sim-electromagnetic-wave':
         specifier: workspace:*
         version: link:../../sims/em/electromagnetic-wave
+      '@aperi21/sim-elliptical-orbit':
+        specifier: workspace:*
+        version: link:../../sims/astro/elliptical-orbit
       '@aperi21/sim-energy-dissipation':
         specifier: workspace:*
         version: link:../../sims/mechanics/energy-dissipation
@@ -315,6 +339,15 @@ importers:
       '@aperi21/sim-equipotential-surface':
         specifier: workspace:*
         version: link:../../sims/em/equipotential-surface
+      '@aperi21/sim-escape-velocity':
+        specifier: workspace:*
+        version: link:../../sims/astro/escape-velocity
+      '@aperi21/sim-exoplanet-detection':
+        specifier: workspace:*
+        version: link:../../sims/astro/exoplanet-detection
+      '@aperi21/sim-expanding-universe':
+        specifier: workspace:*
+        version: link:../../sims/astro/expanding-universe
       '@aperi21/sim-explosion-and-recoil':
         specifier: workspace:*
         version: link:../../sims/mechanics/explosion-and-recoil
@@ -339,12 +372,27 @@ importers:
       '@aperi21/sim-gears':
         specifier: workspace:*
         version: link:../../sims/oscillation/gears
+      '@aperi21/sim-geostationary-orbit':
+        specifier: workspace:*
+        version: link:../../sims/astro/geostationary-orbit
       '@aperi21/sim-gravitational-acceleration':
         specifier: workspace:*
         version: link:../../sims/kinematics/gravitational-acceleration
+      '@aperi21/sim-gravitational-field':
+        specifier: workspace:*
+        version: link:../../sims/astro/gravitational-field
       '@aperi21/sim-gravitational-potential-energy':
         specifier: workspace:*
         version: link:../../sims/mechanics/gravitational-potential-energy
+      '@aperi21/sim-gravitational-potential-energy-general':
+        specifier: workspace:*
+        version: link:../../sims/astro/gravitational-potential-energy-general
+      '@aperi21/sim-gravitational-slingshot':
+        specifier: workspace:*
+        version: link:../../sims/astro/gravitational-slingshot
+      '@aperi21/sim-gravity-inside-earth':
+        specifier: workspace:*
+        version: link:../../sims/astro/gravity-inside-earth
       '@aperi21/sim-gyroscopic-precession':
         specifier: workspace:*
         version: link:../../sims/oscillation/gyroscopic-precession
@@ -384,9 +432,18 @@ importers:
       '@aperi21/sim-interference':
         specifier: workspace:*
         version: link:../../sims/waves/interference
+      '@aperi21/sim-inverse-square-law':
+        specifier: workspace:*
+        version: link:../../sims/astro/inverse-square-law
+      '@aperi21/sim-keplers-first-law':
+        specifier: workspace:*
+        version: link:../../sims/astro/keplers-first-law
       '@aperi21/sim-keplers-second-law':
         specifier: workspace:*
         version: link:../../sims/astro/keplers-second-law
+      '@aperi21/sim-keplers-third-law':
+        specifier: workspace:*
+        version: link:../../sims/astro/keplers-third-law
       '@aperi21/sim-kinetic-energy':
         specifier: workspace:*
         version: link:../../sims/mechanics/kinetic-energy
@@ -408,6 +465,9 @@ importers:
       '@aperi21/sim-longitudinal-wave':
         specifier: workspace:*
         version: link:../../sims/waves/longitudinal-wave
+      '@aperi21/sim-magnitude-scale':
+        specifier: workspace:*
+        version: link:../../sims/astro/magnitude-scale
       '@aperi21/sim-manometer':
         specifier: workspace:*
         version: link:../../sims/fluids/manometer
@@ -429,6 +489,9 @@ importers:
       '@aperi21/sim-net-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/net-force
+      '@aperi21/sim-newtons-law-of-gravitation':
+        specifier: workspace:*
+        version: link:../../sims/astro/newtons-law-of-gravitation
       '@aperi21/sim-newtons-second-law':
         specifier: workspace:*
         version: link:../../sims/mechanics/newtons-second-law
@@ -450,6 +513,15 @@ importers:
       '@aperi21/sim-normal-modes':
         specifier: workspace:*
         version: link:../../sims/oscillation/normal-modes
+      '@aperi21/sim-orbital-decay':
+        specifier: workspace:*
+        version: link:../../sims/astro/orbital-decay
+      '@aperi21/sim-orbital-transfer':
+        specifier: workspace:*
+        version: link:../../sims/astro/orbital-transfer
+      '@aperi21/sim-orbital-velocity':
+        specifier: workspace:*
+        version: link:../../sims/astro/orbital-velocity
       '@aperi21/sim-parallel-axis-theorem':
         specifier: workspace:*
         version: link:../../sims/oscillation/parallel-axis-theorem
@@ -522,6 +594,9 @@ importers:
       '@aperi21/sim-river-crossing':
         specifier: workspace:*
         version: link:../../sims/kinematics/river-crossing
+      '@aperi21/sim-roche-limit':
+        specifier: workspace:*
+        version: link:../../sims/astro/roche-limit
       '@aperi21/sim-rocket-equation':
         specifier: workspace:*
         version: link:../../sims/mechanics/rocket-equation
@@ -534,6 +609,12 @@ importers:
       '@aperi21/sim-rotational-kinetic-energy':
         specifier: workspace:*
         version: link:../../sims/oscillation/rotational-kinetic-energy
+      '@aperi21/sim-seasonal-sun-path':
+        specifier: workspace:*
+        version: link:../../sims/astro/seasonal-sun-path
+      '@aperi21/sim-shell-theorem':
+        specifier: workspace:*
+        version: link:../../sims/astro/shell-theorem
       '@aperi21/sim-shm-energy':
         specifier: workspace:*
         version: link:../../sims/oscillation/shm-energy
@@ -543,6 +624,9 @@ importers:
       '@aperi21/sim-simple-pendulum':
         specifier: workspace:*
         version: link:../../sims/oscillation/simple-pendulum
+      '@aperi21/sim-solar-altitude-shadow':
+        specifier: workspace:*
+        version: link:../../sims/astro/solar-altitude-shadow
       '@aperi21/sim-spacetime-diagram':
         specifier: workspace:*
         version: link:../../sims/modern/spacetime-diagram
@@ -555,12 +639,33 @@ importers:
       '@aperi21/sim-standing-wave':
         specifier: workspace:*
         version: link:../../sims/waves/standing-wave
+      '@aperi21/sim-star-color-temperature':
+        specifier: workspace:*
+        version: link:../../sims/astro/star-color-temperature
+      '@aperi21/sim-star-life-cycle':
+        specifier: workspace:*
+        version: link:../../sims/astro/star-life-cycle
+      '@aperi21/sim-star-radiation-gravity-balance':
+        specifier: workspace:*
+        version: link:../../sims/astro/star-radiation-gravity-balance
       '@aperi21/sim-static-equilibrium':
         specifier: workspace:*
         version: link:../../sims/oscillation/static-equilibrium
       '@aperi21/sim-static-friction':
         specifier: workspace:*
         version: link:../../sims/mechanics/static-friction
+      '@aperi21/sim-stellar-luminosity':
+        specifier: workspace:*
+        version: link:../../sims/astro/stellar-luminosity
+      '@aperi21/sim-stellar-nucleosynthesis':
+        specifier: workspace:*
+        version: link:../../sims/astro/stellar-nucleosynthesis
+      '@aperi21/sim-stellar-parallax':
+        specifier: workspace:*
+        version: link:../../sims/astro/stellar-parallax
+      '@aperi21/sim-stellar-spectral-class':
+        specifier: workspace:*
+        version: link:../../sims/astro/stellar-spectral-class
       '@aperi21/sim-stokes-drag':
         specifier: workspace:*
         version: link:../../sims/fluids/stokes-drag
@@ -570,6 +675,9 @@ importers:
       '@aperi21/sim-stress-strain-curve':
         specifier: workspace:*
         version: link:../../sims/mechanics/stress-strain-curve
+      '@aperi21/sim-supernova-and-neutron-star':
+        specifier: workspace:*
+        version: link:../../sims/astro/supernova-and-neutron-star
       '@aperi21/sim-surface-tension':
         specifier: workspace:*
         version: link:../../sims/fluids/surface-tension
@@ -600,6 +708,9 @@ importers:
       '@aperi21/sim-trajectory-equation':
         specifier: workspace:*
         version: link:../../sims/kinematics/trajectory-equation
+      '@aperi21/sim-two-body-problem':
+        specifier: workspace:*
+        version: link:../../sims/astro/two-body-problem
       '@aperi21/sim-two-dimensional-collision':
         specifier: workspace:*
         version: link:../../sims/mechanics/two-dimensional-collision
@@ -630,6 +741,9 @@ importers:
       '@aperi21/sim-viscosity':
         specifier: workspace:*
         version: link:../../sims/fluids/viscosity
+      '@aperi21/sim-weightlessness':
+        specifier: workspace:*
+        version: link:../../sims/astro/weightlessness
       '@aperi21/sim-wetting-and-contact-angle':
         specifier: workspace:*
         version: link:../../sims/fluids/wetting-and-contact-angle
@@ -873,6 +987,156 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/astro/axial-tilt-seasons:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/black-hole-horizon:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/circular-orbit:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/diurnal-motion:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/earth-revolution-constellations:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/earth-rotation-day-night:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/eclipse:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/elliptical-orbit:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/escape-velocity:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/exoplanet-detection:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/expanding-universe:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/geostationary-orbit:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/gravitational-field:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/gravitational-potential-energy-general:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/gravitational-slingshot:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/gravity-inside-earth:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/astro/hr-diagram:
     devDependencies:
       '@aperi21/plugin-optics':
@@ -885,7 +1149,34 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/astro/inverse-square-law:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/keplers-first-law:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/astro/keplers-second-law:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/keplers-third-law:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -903,6 +1194,18 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/astro/magnitude-scale:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/astro/moon-phases:
     devDependencies:
       '@aperi21/schema':
@@ -912,7 +1215,184 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/astro/newtons-law-of-gravitation:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/orbital-decay:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/orbital-transfer:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/orbital-velocity:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/roche-limit:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/seasonal-sun-path:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/shell-theorem:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/solar-altitude-shadow:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/star-color-temperature:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/star-life-cycle:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/star-radiation-gravity-balance:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/stellar-luminosity:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/stellar-nucleosynthesis:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/stellar-parallax:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/stellar-spectral-class:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/supernova-and-neutron-star:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/astro/tidal-force:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/two-body-problem:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/astro/weightlessness:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*

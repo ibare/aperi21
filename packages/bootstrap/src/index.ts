@@ -1492,6 +1492,310 @@ export function registerAperi21Bundles(): void {
       caps.capabilities,
     );
   });
+
+  registerBundleLoader('aperi21:newtons-law-of-gravitation', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-newtons-law-of-gravitation'),
+      import('./capabilities/astro/newtons-law-of-gravitation.generated.js'),
+    ]);
+    return registerBundle('aperi21:newtons-law-of-gravitation', m.newtonsLawOfGravitationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:circular-orbit', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-circular-orbit'),
+      import('./capabilities/astro/circular-orbit.generated.js'),
+    ]);
+    return registerBundle('aperi21:circular-orbit', m.circularOrbitBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:earth-rotation-day-night', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-earth-rotation-day-night'),
+      import('./capabilities/astro/earth-rotation-day-night.generated.js'),
+    ]);
+    return registerBundle('aperi21:earth-rotation-day-night', m.earthRotationDayNightBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:star-color-temperature', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-star-color-temperature'),
+      import('./capabilities/astro/star-color-temperature.generated.js'),
+    ]);
+    return registerBundle('aperi21:star-color-temperature', m.starColorTemperatureBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:gravitational-field', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-gravitational-field'),
+      import('./capabilities/astro/gravitational-field.generated.js'),
+    ]);
+    return registerBundle('aperi21:gravitational-field', m.gravitationalFieldBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:keplers-first-law', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-keplers-first-law'),
+      import('./capabilities/astro/keplers-first-law.generated.js'),
+    ]);
+    return registerBundle('aperi21:keplers-first-law', m.keplersFirstLawBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:axial-tilt-seasons', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-axial-tilt-seasons'),
+      import('./capabilities/astro/axial-tilt-seasons.generated.js'),
+    ]);
+    return registerBundle('aperi21:axial-tilt-seasons', m.axialTiltSeasonsBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:magnitude-scale', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-magnitude-scale'),
+      import('./capabilities/astro/magnitude-scale.generated.js'),
+    ]);
+    return registerBundle('aperi21:magnitude-scale', m.magnitudeScaleBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:shell-theorem', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-shell-theorem'),
+      import('./capabilities/astro/shell-theorem.generated.js'),
+    ]);
+    return registerBundle('aperi21:shell-theorem', m.shellTheoremBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:escape-velocity', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-escape-velocity'),
+      import('./capabilities/astro/escape-velocity.generated.js'),
+    ]);
+    return registerBundle('aperi21:escape-velocity', m.escapeVelocityBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:diurnal-motion', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-diurnal-motion'),
+      import('./capabilities/astro/diurnal-motion.generated.js'),
+    ]);
+    return registerBundle('aperi21:diurnal-motion', m.diurnalMotionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:stellar-luminosity', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-stellar-luminosity'),
+      import('./capabilities/astro/stellar-luminosity.generated.js'),
+    ]);
+    return registerBundle('aperi21:stellar-luminosity', m.stellarLuminosityBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:inverse-square-law', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-inverse-square-law'),
+      import('./capabilities/astro/inverse-square-law.generated.js'),
+    ]);
+    return registerBundle('aperi21:inverse-square-law', m.inverseSquareLawBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:keplers-third-law', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-keplers-third-law'),
+      import('./capabilities/astro/keplers-third-law.generated.js'),
+    ]);
+    return registerBundle('aperi21:keplers-third-law', m.keplersThirdLawBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:eclipse', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-eclipse'),
+      import('./capabilities/astro/eclipse.generated.js'),
+    ]);
+    return registerBundle('aperi21:eclipse', m.eclipseBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:stellar-spectral-class', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-stellar-spectral-class'),
+      import('./capabilities/astro/stellar-spectral-class.generated.js'),
+    ]);
+    return registerBundle('aperi21:stellar-spectral-class', m.stellarSpectralClassBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:gravity-inside-earth', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-gravity-inside-earth'),
+      import('./capabilities/astro/gravity-inside-earth.generated.js'),
+    ]);
+    return registerBundle('aperi21:gravity-inside-earth', m.gravityInsideEarthBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:orbital-velocity', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-orbital-velocity'),
+      import('./capabilities/astro/orbital-velocity.generated.js'),
+    ]);
+    return registerBundle('aperi21:orbital-velocity', m.orbitalVelocityBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:earth-revolution-constellations', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-earth-revolution-constellations'),
+      import('./capabilities/astro/earth-revolution-constellations.generated.js'),
+    ]);
+    return registerBundle('aperi21:earth-revolution-constellations', m.earthRevolutionConstellationsBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:expanding-universe', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-expanding-universe'),
+      import('./capabilities/astro/expanding-universe.generated.js'),
+    ]);
+    return registerBundle('aperi21:expanding-universe', m.expandingUniverseBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:weightlessness', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-weightlessness'),
+      import('./capabilities/astro/weightlessness.generated.js'),
+    ]);
+    return registerBundle('aperi21:weightlessness', m.weightlessnessBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:elliptical-orbit', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-elliptical-orbit'),
+      import('./capabilities/astro/elliptical-orbit.generated.js'),
+    ]);
+    return registerBundle('aperi21:elliptical-orbit', m.ellipticalOrbitBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:solar-altitude-shadow', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-solar-altitude-shadow'),
+      import('./capabilities/astro/solar-altitude-shadow.generated.js'),
+    ]);
+    return registerBundle('aperi21:solar-altitude-shadow', m.solarAltitudeShadowBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:star-radiation-gravity-balance', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-star-radiation-gravity-balance'),
+      import('./capabilities/astro/star-radiation-gravity-balance.generated.js'),
+    ]);
+    return registerBundle('aperi21:star-radiation-gravity-balance', m.starRadiationGravityBalanceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:gravitational-potential-energy-general', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-gravitational-potential-energy-general'),
+      import('./capabilities/astro/gravitational-potential-energy-general.generated.js'),
+    ]);
+    return registerBundle('aperi21:gravitational-potential-energy-general', m.gravitationalPotentialEnergyGeneralBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:two-body-problem', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-two-body-problem'),
+      import('./capabilities/astro/two-body-problem.generated.js'),
+    ]);
+    return registerBundle('aperi21:two-body-problem', m.twoBodyProblemBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:stellar-parallax', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-stellar-parallax'),
+      import('./capabilities/astro/stellar-parallax.generated.js'),
+    ]);
+    return registerBundle('aperi21:stellar-parallax', m.stellarParallaxBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:stellar-nucleosynthesis', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-stellar-nucleosynthesis'),
+      import('./capabilities/astro/stellar-nucleosynthesis.generated.js'),
+    ]);
+    return registerBundle('aperi21:stellar-nucleosynthesis', m.stellarNucleosynthesisBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:roche-limit', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-roche-limit'),
+      import('./capabilities/astro/roche-limit.generated.js'),
+    ]);
+    return registerBundle('aperi21:roche-limit', m.rocheLimitBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:geostationary-orbit', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-geostationary-orbit'),
+      import('./capabilities/astro/geostationary-orbit.generated.js'),
+    ]);
+    return registerBundle('aperi21:geostationary-orbit', m.geostationaryOrbitBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:seasonal-sun-path', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-seasonal-sun-path'),
+      import('./capabilities/astro/seasonal-sun-path.generated.js'),
+    ]);
+    return registerBundle('aperi21:seasonal-sun-path', m.seasonalSunPathBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:exoplanet-detection', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-exoplanet-detection'),
+      import('./capabilities/astro/exoplanet-detection.generated.js'),
+    ]);
+    return registerBundle('aperi21:exoplanet-detection', m.exoplanetDetectionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:black-hole-horizon', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-black-hole-horizon'),
+      import('./capabilities/astro/black-hole-horizon.generated.js'),
+    ]);
+    return registerBundle('aperi21:black-hole-horizon', m.blackHoleHorizonBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:orbital-transfer', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-orbital-transfer'),
+      import('./capabilities/astro/orbital-transfer.generated.js'),
+    ]);
+    return registerBundle('aperi21:orbital-transfer', m.orbitalTransferBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:star-life-cycle', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-star-life-cycle'),
+      import('./capabilities/astro/star-life-cycle.generated.js'),
+    ]);
+    return registerBundle('aperi21:star-life-cycle', m.starLifeCycleBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:gravitational-slingshot', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-gravitational-slingshot'),
+      import('./capabilities/astro/gravitational-slingshot.generated.js'),
+    ]);
+    return registerBundle('aperi21:gravitational-slingshot', m.gravitationalSlingshotBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:supernova-and-neutron-star', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-supernova-and-neutron-star'),
+      import('./capabilities/astro/supernova-and-neutron-star.generated.js'),
+    ]);
+    return registerBundle('aperi21:supernova-and-neutron-star', m.supernovaAndNeutronStarBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:orbital-decay', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-orbital-decay'),
+      import('./capabilities/astro/orbital-decay.generated.js'),
+    ]);
+    return registerBundle('aperi21:orbital-decay', m.orbitalDecayBundle, caps.capabilities);
+  });
 }
 
 let pluginsInstalledFor = new WeakSet<Host>();

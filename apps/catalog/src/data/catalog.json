@@ -770,52 +770,62 @@
         {
           "id": "newtons-law-of-gravitation",
           "name": "만유인력 법칙",
-          "desc": "거리 제곱에 반비례하는 힘"
+          "desc": "거리 제곱에 반비례하는 힘",
+          "simId": "aperi21:newtons-law-of-gravitation"
         },
         {
           "id": "gravitational-field",
           "name": "중력장",
-          "desc": "공간에 분포한 중력의 세기"
+          "desc": "공간에 분포한 중력의 세기",
+          "simId": "aperi21:gravitational-field"
         },
         {
           "id": "shell-theorem",
           "name": "껍질 정리",
-          "desc": "구 껍질 안팎에서의 중력"
+          "desc": "구 껍질 안팎에서의 중력",
+          "simId": "aperi21:shell-theorem"
         },
         {
           "id": "gravity-inside-earth",
           "name": "지구 내부의 중력",
-          "desc": "깊이에 따라 줄어드는 중력"
+          "desc": "깊이에 따라 줄어드는 중력",
+          "simId": "aperi21:gravity-inside-earth"
         },
         {
           "id": "gravitational-potential-energy-general",
           "name": "중력 퍼텐셜 에너지(일반)",
-          "desc": "무한대를 기준으로 한 음의 에너지"
+          "desc": "무한대를 기준으로 한 음의 에너지",
+          "simId": "aperi21:gravitational-potential-energy-general"
         },
         {
           "id": "escape-velocity",
           "name": "탈출 속도",
-          "desc": "중력을 벗어나는 최소 속도"
+          "desc": "중력을 벗어나는 최소 속도",
+          "simId": "aperi21:escape-velocity"
         },
         {
           "id": "orbital-velocity",
           "name": "궤도 속도",
-          "desc": "원 궤도를 유지하는 속도"
+          "desc": "원 궤도를 유지하는 속도",
+          "simId": "aperi21:orbital-velocity"
         },
         {
           "id": "circular-orbit",
           "name": "원 궤도",
-          "desc": "구심력이 중력인 운동"
+          "desc": "구심력이 중력인 운동",
+          "simId": "aperi21:circular-orbit"
         },
         {
           "id": "elliptical-orbit",
           "name": "타원 궤도",
-          "desc": "초점에 놓인 중심 천체"
+          "desc": "초점에 놓인 중심 천체",
+          "simId": "aperi21:elliptical-orbit"
         },
         {
           "id": "keplers-first-law",
           "name": "케플러 제1법칙",
-          "desc": "궤도는 타원이다"
+          "desc": "궤도는 타원이다",
+          "simId": "aperi21:keplers-first-law"
         },
         {
           "id": "keplers-second-law",
@@ -827,12 +837,14 @@
         {
           "id": "keplers-third-law",
           "name": "케플러 제3법칙",
-          "desc": "주기와 긴반지름의 관계"
+          "desc": "주기와 긴반지름의 관계",
+          "simId": "aperi21:keplers-third-law"
         },
         {
           "id": "two-body-problem",
           "name": "이체 문제",
-          "desc": "질량 중심 둘레를 도는 두 천체"
+          "desc": "질량 중심 둘레를 도는 두 천체",
+          "simId": "aperi21:two-body-problem"
         },
         {
           "id": "tidal-force",
@@ -844,22 +856,26 @@
         {
           "id": "roche-limit",
           "name": "로슈 한계",
-          "desc": "조석력이 천체를 부수는 거리"
+          "desc": "조석력이 천체를 부수는 거리",
+          "simId": "aperi21:roche-limit"
         },
         {
           "id": "weightlessness",
           "name": "무중력",
-          "desc": "자유 낙하 중의 겉보기 무게"
+          "desc": "자유 낙하 중의 겉보기 무게",
+          "simId": "aperi21:weightlessness"
         },
         {
           "id": "geostationary-orbit",
           "name": "정지 궤도",
-          "desc": "자전 주기와 같은 궤도"
+          "desc": "자전 주기와 같은 궤도",
+          "simId": "aperi21:geostationary-orbit"
         },
         {
           "id": "gravitational-slingshot",
           "name": "중력 도움",
-          "desc": "천체를 이용한 속도 변화"
+          "desc": "천체를 이용한 속도 변화",
+          "simId": "aperi21:gravitational-slingshot"
         },
         {
           "id": "lagrange-points",
@@ -871,42 +887,50 @@
         {
           "id": "orbital-transfer",
           "name": "궤도 전이",
-          "desc": "호만 전이와 그 비용"
+          "desc": "호만 전이와 그 비용",
+          "simId": "aperi21:orbital-transfer"
         },
         {
           "id": "black-hole-horizon",
           "name": "사건 지평선",
-          "desc": "탈출 속도가 광속이 되는 반지름"
+          "desc": "탈출 속도가 광속이 되는 반지름",
+          "simId": "aperi21:black-hole-horizon"
         },
         {
           "id": "diurnal-motion",
           "name": "일주 운동",
-          "desc": "하루 동안 태양과 별이 하늘을 가로지르는 길"
+          "desc": "하루 동안 태양과 별이 하늘을 가로지르는 길",
+          "simId": "aperi21:diurnal-motion"
         },
         {
           "id": "earth-rotation-day-night",
           "name": "자전과 낮과 밤",
-          "desc": "도는 지구 위에서 낮과 밤이 갈리는 이유"
+          "desc": "도는 지구 위에서 낮과 밤이 갈리는 이유",
+          "simId": "aperi21:earth-rotation-day-night"
         },
         {
           "id": "earth-revolution-constellations",
           "name": "공전과 별자리",
-          "desc": "계절마다 보이는 별자리가 달라지는 이유"
+          "desc": "계절마다 보이는 별자리가 달라지는 이유",
+          "simId": "aperi21:earth-revolution-constellations"
         },
         {
           "id": "solar-altitude-shadow",
           "name": "태양 고도와 그림자",
-          "desc": "고도가 바뀌면 그림자 길이와 기온이 함께 바뀐다"
+          "desc": "고도가 바뀌면 그림자 길이와 기온이 함께 바뀐다",
+          "simId": "aperi21:solar-altitude-shadow"
         },
         {
           "id": "seasonal-sun-path",
           "name": "계절과 태양의 길",
-          "desc": "남중 고도와 낮 길이가 함께 달라지는 것"
+          "desc": "남중 고도와 낮 길이가 함께 달라지는 것",
+          "simId": "aperi21:seasonal-sun-path"
         },
         {
           "id": "axial-tilt-seasons",
           "name": "자전축 기울기와 계절",
-          "desc": "기울어진 채 도는 것이 만드는 계절"
+          "desc": "기울어진 채 도는 것이 만드는 계절",
+          "simId": "aperi21:axial-tilt-seasons"
         },
         {
           "id": "moon-phases",
@@ -918,12 +942,14 @@
         {
           "id": "eclipse",
           "name": "일식과 월식",
-          "desc": "해와 지구와 달이 한 줄에 설 때"
+          "desc": "해와 지구와 달이 한 줄에 설 때",
+          "simId": "aperi21:eclipse"
         },
         {
           "id": "stellar-parallax",
           "name": "연주시차",
-          "desc": "지구가 공전하며 가까운 별이 어긋나 보이는 각"
+          "desc": "지구가 공전하며 가까운 별이 어긋나 보이는 각",
+          "simId": "aperi21:stellar-parallax"
         },
         {
           "id": "apparent-brightness",
@@ -935,22 +961,26 @@
         {
           "id": "magnitude-scale",
           "name": "별의 등급",
-          "desc": "밝기를 등급으로 나타내는 방식"
+          "desc": "밝기를 등급으로 나타내는 방식",
+          "simId": "aperi21:magnitude-scale"
         },
         {
           "id": "star-color-temperature",
           "name": "별의 색과 표면 온도",
-          "desc": "표면 온도가 정하는 별빛의 색"
+          "desc": "표면 온도가 정하는 별빛의 색",
+          "simId": "aperi21:star-color-temperature"
         },
         {
           "id": "expanding-universe",
           "name": "우주의 팽창",
-          "desc": "모든 방향으로 멀어지는 은하들"
+          "desc": "모든 방향으로 멀어지는 은하들",
+          "simId": "aperi21:expanding-universe"
         },
         {
           "id": "stellar-luminosity",
           "name": "광도",
-          "desc": "별이 실제로 내는 빛의 양"
+          "desc": "별이 실제로 내는 빛의 양",
+          "simId": "aperi21:stellar-luminosity"
         },
         {
           "id": "hr-diagram",
@@ -962,42 +992,50 @@
         {
           "id": "star-radiation-gravity-balance",
           "name": "복사압과 중력의 평형",
-          "desc": "별이 무너지지도 흩어지지도 않는 이유"
+          "desc": "별이 무너지지도 흩어지지도 않는 이유",
+          "simId": "aperi21:star-radiation-gravity-balance"
         },
         {
           "id": "orbital-decay",
           "name": "궤도 감쇠",
-          "desc": "옅은 대기가 끄는 궤도"
+          "desc": "옅은 대기가 끄는 궤도",
+          "simId": "aperi21:orbital-decay"
         },
         {
           "id": "inverse-square-law",
           "name": "역제곱 법칙",
-          "desc": "퍼지는 만큼 옅어지는 것"
+          "desc": "퍼지는 만큼 옅어지는 것",
+          "simId": "aperi21:inverse-square-law"
         },
         {
           "id": "stellar-nucleosynthesis",
           "name": "별의 원소 합성",
-          "desc": "무거운 원소가 별에서 만들어지는 것"
+          "desc": "무거운 원소가 별에서 만들어지는 것",
+          "simId": "aperi21:stellar-nucleosynthesis"
         },
         {
           "id": "star-life-cycle",
           "name": "별의 일생",
-          "desc": "질량이 가르는 별의 경로"
+          "desc": "질량이 가르는 별의 경로",
+          "simId": "aperi21:star-life-cycle"
         },
         {
           "id": "stellar-spectral-class",
           "name": "별의 스펙트럼 분류",
-          "desc": "온도가 정하는 흡수선 무늬"
+          "desc": "온도가 정하는 흡수선 무늬",
+          "simId": "aperi21:stellar-spectral-class"
         },
         {
           "id": "supernova-and-neutron-star",
           "name": "초신성과 중성자별",
-          "desc": "무너지고 튕겨 나가는 최후"
+          "desc": "무너지고 튕겨 나가는 최후",
+          "simId": "aperi21:supernova-and-neutron-star"
         },
         {
           "id": "exoplanet-detection",
           "name": "외계행성 탐지",
-          "desc": "행성이 남기는 흔적"
+          "desc": "행성이 남기는 흔적",
+          "simId": "aperi21:exoplanet-detection"
         }
       ]
     },
@@ -2557,7 +2595,7 @@
   ],
   "summary": {
     "topics": 441,
-    "implemented": 177,
+    "implemented": 215,
     "labs": 103
   }
 }
