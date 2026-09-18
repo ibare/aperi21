@@ -969,6 +969,134 @@ export function registerAperi21Bundles(): void {
     return registerBundle('aperi21:ramp-energy', m.rampEnergyBundle, caps.capabilities);
   });
 
+  registerBundleLoader('aperi21:work-by-variable-force', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-work-by-variable-force'),
+      import('./capabilities/mechanics/work-by-variable-force.generated.js'),
+    ]);
+    return registerBundle('aperi21:work-by-variable-force', m.workByVariableForceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:work-energy-theorem', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-work-energy-theorem'),
+      import('./capabilities/mechanics/work-energy-theorem.generated.js'),
+    ]);
+    return registerBundle('aperi21:work-energy-theorem', m.workEnergyTheoremBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:gravitational-potential-energy', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-gravitational-potential-energy'),
+      import('./capabilities/mechanics/gravitational-potential-energy.generated.js'),
+    ]);
+    return registerBundle('aperi21:gravitational-potential-energy', m.gravitationalPotentialEnergyBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:elastic-potential-energy', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-elastic-potential-energy'),
+      import('./capabilities/mechanics/elastic-potential-energy.generated.js'),
+    ]);
+    return registerBundle('aperi21:elastic-potential-energy', m.elasticPotentialEnergyBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:conservative-force', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-conservative-force'),
+      import('./capabilities/mechanics/conservative-force.generated.js'),
+    ]);
+    return registerBundle('aperi21:conservative-force', m.conservativeForceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:non-conservative-force', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-non-conservative-force'),
+      import('./capabilities/mechanics/non-conservative-force.generated.js'),
+    ]);
+    return registerBundle('aperi21:non-conservative-force', m.nonConservativeForceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:equilibrium-points', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-equilibrium-points'),
+      import('./capabilities/mechanics/equilibrium-points.generated.js'),
+    ]);
+    return registerBundle('aperi21:equilibrium-points', m.equilibriumPointsBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:efficiency', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-efficiency'),
+      import('./capabilities/mechanics/efficiency.generated.js'),
+    ]);
+    return registerBundle('aperi21:efficiency', m.efficiencyBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:impulse-momentum-theorem', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-impulse-momentum-theorem'),
+      import('./capabilities/mechanics/impulse-momentum-theorem.generated.js'),
+    ]);
+    return registerBundle('aperi21:impulse-momentum-theorem', m.impulseMomentumTheoremBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:conservation-of-momentum', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-conservation-of-momentum'),
+      import('./capabilities/mechanics/conservation-of-momentum.generated.js'),
+    ]);
+    return registerBundle('aperi21:conservation-of-momentum', m.conservationOfMomentumBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:elastic-collision', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-elastic-collision'),
+      import('./capabilities/mechanics/elastic-collision.generated.js'),
+    ]);
+    return registerBundle('aperi21:elastic-collision', m.elasticCollisionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:inelastic-collision', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-inelastic-collision'),
+      import('./capabilities/mechanics/inelastic-collision.generated.js'),
+    ]);
+    return registerBundle('aperi21:inelastic-collision', m.inelasticCollisionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:two-dimensional-collision', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-two-dimensional-collision'),
+      import('./capabilities/mechanics/two-dimensional-collision.generated.js'),
+    ]);
+    return registerBundle('aperi21:two-dimensional-collision', m.twoDimensionalCollisionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:center-of-mass-motion', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-center-of-mass-motion'),
+      import('./capabilities/mechanics/center-of-mass-motion.generated.js'),
+    ]);
+    return registerBundle('aperi21:center-of-mass-motion', m.centerOfMassMotionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:explosion-and-recoil', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-explosion-and-recoil'),
+      import('./capabilities/mechanics/explosion-and-recoil.generated.js'),
+    ]);
+    return registerBundle('aperi21:explosion-and-recoil', m.explosionAndRecoilBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:energy-in-collision', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-energy-in-collision'),
+      import('./capabilities/mechanics/energy-in-collision.generated.js'),
+    ]);
+    return registerBundle('aperi21:energy-in-collision', m.energyInCollisionBundle, caps.capabilities);
+  });
+
   registerBundleLoader('aperi21:pendulum-isochronism', async () => {
     const [m, caps] = await Promise.all([
       import('@aperi21/sim-pendulum-isochronism'),

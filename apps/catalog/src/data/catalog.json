@@ -433,7 +433,8 @@
         {
           "id": "work-by-variable-force",
           "name": "변하는 힘이 한 일",
-          "desc": "힘-변위 그래프의 넓이"
+          "desc": "힘-변위 그래프의 넓이",
+          "simId": "aperi21:work-by-variable-force"
         },
         {
           "id": "kinetic-energy",
@@ -444,27 +445,32 @@
         {
           "id": "work-energy-theorem",
           "name": "일-운동 에너지 정리",
-          "desc": "알짜일이 운동 에너지 변화와 같음"
+          "desc": "알짜일이 운동 에너지 변화와 같음",
+          "simId": "aperi21:work-energy-theorem"
         },
         {
           "id": "gravitational-potential-energy",
           "name": "중력 퍼텐셜 에너지",
-          "desc": "높이에 저장된 에너지"
+          "desc": "높이에 저장된 에너지",
+          "simId": "aperi21:gravitational-potential-energy"
         },
         {
           "id": "elastic-potential-energy",
           "name": "탄성 퍼텐셜 에너지",
-          "desc": "변형에 저장된 에너지"
+          "desc": "변형에 저장된 에너지",
+          "simId": "aperi21:elastic-potential-energy"
         },
         {
           "id": "conservative-force",
           "name": "보존력",
-          "desc": "경로에 무관한 힘과 퍼텐셜의 존재"
+          "desc": "경로에 무관한 힘과 퍼텐셜의 존재",
+          "simId": "aperi21:conservative-force"
         },
         {
           "id": "non-conservative-force",
           "name": "비보존력",
-          "desc": "경로에 따라 달라지는 일"
+          "desc": "경로에 따라 달라지는 일",
+          "simId": "aperi21:non-conservative-force"
         },
         {
           "id": "conservation-of-mechanical-energy",
@@ -488,32 +494,38 @@
         {
           "id": "equilibrium-points",
           "name": "평형점",
-          "desc": "안정·불안정·중립 평형"
+          "desc": "안정·불안정·중립 평형",
+          "simId": "aperi21:equilibrium-points"
         },
         {
           "id": "efficiency",
           "name": "효율",
-          "desc": "넣은 것과 얻은 것의 비"
+          "desc": "넣은 것과 얻은 것의 비",
+          "simId": "aperi21:efficiency"
         },
         {
           "id": "impulse-momentum-theorem",
           "name": "충격량-운동량 정리",
-          "desc": "충격량이 운동량 변화와 같음"
+          "desc": "충격량이 운동량 변화와 같음",
+          "simId": "aperi21:impulse-momentum-theorem"
         },
         {
           "id": "conservation-of-momentum",
           "name": "운동량 보존",
-          "desc": "외력이 없을 때의 총 운동량"
+          "desc": "외력이 없을 때의 총 운동량",
+          "simId": "aperi21:conservation-of-momentum"
         },
         {
           "id": "elastic-collision",
           "name": "탄성 충돌",
-          "desc": "운동 에너지까지 보존되는 충돌"
+          "desc": "운동 에너지까지 보존되는 충돌",
+          "simId": "aperi21:elastic-collision"
         },
         {
           "id": "inelastic-collision",
           "name": "비탄성 충돌",
-          "desc": "에너지가 사라지는 충돌"
+          "desc": "에너지가 사라지는 충돌",
+          "simId": "aperi21:inelastic-collision"
         },
         {
           "id": "perfectly-inelastic-collision",
@@ -524,17 +536,20 @@
         {
           "id": "two-dimensional-collision",
           "name": "2차원 충돌",
-          "desc": "성분마다 따로 성립하는 보존"
+          "desc": "성분마다 따로 성립하는 보존",
+          "simId": "aperi21:two-dimensional-collision"
         },
         {
           "id": "center-of-mass-motion",
           "name": "질량 중심의 운동",
-          "desc": "내부 힘에 영향받지 않는 운동"
+          "desc": "내부 힘에 영향받지 않는 운동",
+          "simId": "aperi21:center-of-mass-motion"
         },
         {
           "id": "explosion-and-recoil",
           "name": "폭발과 반동",
-          "desc": "정지한 계가 갈라질 때"
+          "desc": "정지한 계가 갈라질 때",
+          "simId": "aperi21:explosion-and-recoil"
         },
         {
           "id": "variable-mass-system",
@@ -556,7 +571,8 @@
         {
           "id": "energy-in-collision",
           "name": "충돌에서의 에너지",
-          "desc": "보존되는 것과 안 되는 것의 구분"
+          "desc": "보존되는 것과 안 되는 것의 구분",
+          "simId": "aperi21:energy-in-collision"
         },
         {
           "id": "energy-flow-diagram",
@@ -2506,7 +2522,7 @@
   ],
   "summary": {
     "topics": 442,
-    "implemented": 121,
+    "implemented": 137,
     "labs": 103
   }
 }

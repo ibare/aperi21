@@ -195,6 +195,9 @@ importers:
       '@aperi21/sim-carnot-cycle':
         specifier: workspace:*
         version: link:../../sims/thermal/carnot-cycle
+      '@aperi21/sim-center-of-mass-motion':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/center-of-mass-motion
       '@aperi21/sim-centripetal-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/centripetal-force
@@ -210,6 +213,12 @@ importers:
       '@aperi21/sim-connected-bodies':
         specifier: workspace:*
         version: link:../../sims/mechanics/connected-bodies
+      '@aperi21/sim-conservation-of-momentum':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/conservation-of-momentum
+      '@aperi21/sim-conservative-force':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/conservative-force
       '@aperi21/sim-coordinate-choice':
         specifier: workspace:*
         version: link:../../sims/kinematics/coordinate-choice
@@ -231,6 +240,15 @@ importers:
       '@aperi21/sim-drag-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/drag-force
+      '@aperi21/sim-efficiency':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/efficiency
+      '@aperi21/sim-elastic-collision':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/elastic-collision
+      '@aperi21/sim-elastic-potential-energy':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/elastic-potential-energy
       '@aperi21/sim-electromagnetic-wave':
         specifier: workspace:*
         version: link:../../sims/em/electromagnetic-wave
@@ -240,12 +258,21 @@ importers:
       '@aperi21/sim-energy-flow-diagram':
         specifier: workspace:*
         version: link:../../sims/mechanics/energy-flow-diagram
+      '@aperi21/sim-energy-in-collision':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/energy-in-collision
       '@aperi21/sim-equilibrium-of-forces':
         specifier: workspace:*
         version: link:../../sims/mechanics/equilibrium-of-forces
+      '@aperi21/sim-equilibrium-points':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/equilibrium-points
       '@aperi21/sim-equipotential-surface':
         specifier: workspace:*
         version: link:../../sims/em/equipotential-surface
+      '@aperi21/sim-explosion-and-recoil':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/explosion-and-recoil
       '@aperi21/sim-fictitious-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/fictitious-force
@@ -264,6 +291,9 @@ importers:
       '@aperi21/sim-gravitational-acceleration':
         specifier: workspace:*
         version: link:../../sims/kinematics/gravitational-acceleration
+      '@aperi21/sim-gravitational-potential-energy':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/gravitational-potential-energy
       '@aperi21/sim-gyroscopic-precession':
         specifier: workspace:*
         version: link:../../sims/oscillation/gyroscopic-precession
@@ -282,9 +312,15 @@ importers:
       '@aperi21/sim-impulse-force-relation':
         specifier: workspace:*
         version: link:../../sims/mechanics/impulse-force-relation
+      '@aperi21/sim-impulse-momentum-theorem':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/impulse-momentum-theorem
       '@aperi21/sim-inclined-plane':
         specifier: workspace:*
         version: link:../../sims/mechanics/inclined-plane
+      '@aperi21/sim-inelastic-collision':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/inelastic-collision
       '@aperi21/sim-inertial-frame':
         specifier: workspace:*
         version: link:../../sims/mechanics/inertial-frame
@@ -336,6 +372,9 @@ importers:
       '@aperi21/sim-newtons-third-law':
         specifier: workspace:*
         version: link:../../sims/mechanics/newtons-third-law
+      '@aperi21/sim-non-conservative-force':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/non-conservative-force
       '@aperi21/sim-non-inertial-frame':
         specifier: workspace:*
         version: link:../../sims/mechanics/non-inertial-frame
@@ -450,6 +489,9 @@ importers:
       '@aperi21/sim-trajectory-equation':
         specifier: workspace:*
         version: link:../../sims/kinematics/trajectory-equation
+      '@aperi21/sim-two-dimensional-collision':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/two-dimensional-collision
       '@aperi21/sim-uniform-circular-motion':
         specifier: workspace:*
         version: link:../../sims/kinematics/uniform-circular-motion
@@ -471,6 +513,12 @@ importers:
       '@aperi21/sim-vertical-throw':
         specifier: workspace:*
         version: link:../../sims/kinematics/vertical-throw
+      '@aperi21/sim-work-by-variable-force':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/work-by-variable-force
+      '@aperi21/sim-work-energy-theorem':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/work-energy-theorem
       '@aperi21/sim-youngs-double-slit':
         specifier: workspace:*
         version: link:../../sims/optics/youngs-double-slit
@@ -1233,6 +1281,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/center-of-mass-motion:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/mechanics/centripetal-force:
     devDependencies:
       '@aperi21/schema':
@@ -1260,6 +1317,24 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/conservation-of-momentum:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/conservative-force:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/mechanics/coriolis-effect:
     devDependencies:
       '@aperi21/schema':
@@ -1270,6 +1345,33 @@ importers:
         version: 5.9.3
 
   sims/mechanics/drag-force:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/efficiency:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/elastic-collision:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/elastic-potential-energy:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1296,7 +1398,34 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/energy-in-collision:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/mechanics/equilibrium-of-forces:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/equilibrium-points:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/explosion-and-recoil:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1323,6 +1452,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/gravitational-potential-energy:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/mechanics/impulse-force-relation:
     devDependencies:
       '@aperi21/schema':
@@ -1332,7 +1470,25 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/impulse-momentum-theorem:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/mechanics/inclined-plane:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/inelastic-collision:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1405,6 +1561,15 @@ importers:
         version: 5.9.3
 
   sims/mechanics/newtons-third-law:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/non-conservative-force:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1515,7 +1680,34 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/two-dimensional-collision:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/mechanics/vertical-loop:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/work-by-variable-force:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/work-energy-theorem:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
