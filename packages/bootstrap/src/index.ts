@@ -1573,10 +1573,45 @@ export function registerAperi21Bundles(): void {
     return registerBundle('aperi21:wave-energy', m.waveEnergyBundle, caps.capabilities);
   });
 
+  registerBundleLoader('aperi21:string-vibration', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-string-vibration'),
+      import('./capabilities/waves/string-vibration.generated.js'),
+    ]);
+    return registerBundle('aperi21:string-vibration', m.stringVibrationBundle, caps.capabilities);
+  });
 
+  registerBundleLoader('aperi21:slit-width-and-diffraction', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-slit-width-and-diffraction'),
+      import('./capabilities/waves/slit-width-and-diffraction.generated.js'),
+    ]);
+    return registerBundle('aperi21:slit-width-and-diffraction', m.slitWidthAndDiffractionBundle, caps.capabilities);
+  });
 
+  registerBundleLoader('aperi21:shock-wave', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-shock-wave'),
+      import('./capabilities/waves/shock-wave.generated.js'),
+    ]);
+    return registerBundle('aperi21:shock-wave', m.shockWaveBundle, caps.capabilities);
+  });
 
+  registerBundleLoader('aperi21:noise-cancellation', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-noise-cancellation'),
+      import('./capabilities/waves/noise-cancellation.generated.js'),
+    ]);
+    return registerBundle('aperi21:noise-cancellation', m.noiseCancellationBundle, caps.capabilities);
+  });
 
+  registerBundleLoader('aperi21:wave-vs-particle-transport', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-wave-vs-particle-transport'),
+      import('./capabilities/waves/wave-vs-particle-transport.generated.js'),
+    ]);
+    return registerBundle('aperi21:wave-vs-particle-transport', m.waveVsParticleTransportBundle, caps.capabilities);
+  });
 
 
 

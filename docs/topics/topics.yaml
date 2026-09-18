@@ -1814,6 +1814,7 @@ topics:
     level: null
     curricula: []
     visualNote: 매질은 제자리에서 흔들리는데 에너지는 건너간다
+    sim: aperi21:wave-vs-particle-transport
   - id: transverse-wave
     name: 횡파
     desc: 진동 방향이 진행 방향과 수직
@@ -1901,6 +1902,7 @@ topics:
     level: upper
     curricula: [kr, ib, ap, uk]
     visualNote: 길이를 줄이면 더 높은 음이 난다
+    sim: aperi21:string-vibration
   - id: air-column-resonance
     name: 기주 공명
     desc: 열린 관과 닫힌 관의 차이
@@ -1941,6 +1943,7 @@ topics:
     level: null
     curricula: []
     visualNote: 음속을 넘기면 파면이 원뿔로 모인다
+    sim: aperi21:shock-wave
   - id: sound-intensity
     name: 음의 세기
     desc: 거리 제곱에 반비례하는 감쇠
@@ -1980,6 +1983,7 @@ topics:
     level: upper
     curricula: [ib]
     visualNote: 틈이 파장만 해지면 크게 퍼진다
+    sim: aperi21:slit-width-and-diffraction
   - id: wave-energy
     name: 파동의 에너지
     desc: 진폭 제곱에 비례하는 에너지
@@ -2010,6 +2014,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 뒤집은 파동을 더하면 서로 지운다
+    sim: aperi21:noise-cancellation
   - id: sound-source-vibration
     name: 소리와 떨림
     desc: 소리 나는 물체는 떨리고, 떨림이 멎으면 소리도 멎는다

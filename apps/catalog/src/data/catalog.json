@@ -1438,7 +1438,8 @@
         {
           "id": "wave-vs-particle-transport",
           "name": "파동이 나르는 것",
-          "desc": "매질은 제자리, 에너지는 이동"
+          "desc": "매질은 제자리, 에너지는 이동",
+          "simId": "aperi21:wave-vs-particle-transport"
         },
         {
           "id": "transverse-wave",
@@ -1507,7 +1508,8 @@
         {
           "id": "string-vibration",
           "name": "줄의 진동",
-          "desc": "양끝이 고정된 줄의 모드"
+          "desc": "양끝이 고정된 줄의 모드",
+          "simId": "aperi21:string-vibration"
         },
         {
           "id": "air-column-resonance",
@@ -1537,7 +1539,8 @@
         {
           "id": "shock-wave",
           "name": "충격파",
-          "desc": "음속을 넘을 때 생기는 원뿔"
+          "desc": "음속을 넘을 때 생기는 원뿔",
+          "simId": "aperi21:shock-wave"
         },
         {
           "id": "sound-intensity",
@@ -1567,7 +1570,8 @@
         {
           "id": "slit-width-and-diffraction",
           "name": "슬릿 폭과 회절",
-          "desc": "파장과 폭의 비가 정하는 퍼짐"
+          "desc": "파장과 폭의 비가 정하는 퍼짐",
+          "simId": "aperi21:slit-width-and-diffraction"
         },
         {
           "id": "wave-energy",
@@ -1589,7 +1593,8 @@
         {
           "id": "noise-cancellation",
           "name": "능동 소음 제거",
-          "desc": "역위상 파동의 중첩"
+          "desc": "역위상 파동의 중첩",
+          "simId": "aperi21:noise-cancellation"
         },
         {
           "id": "sound-source-vibration",

@@ -516,6 +516,9 @@ importers:
       '@aperi21/sim-newtons-third-law':
         specifier: workspace:*
         version: link:../../sims/mechanics/newtons-third-law
+      '@aperi21/sim-noise-cancellation':
+        specifier: workspace:*
+        version: link:../../sims/waves/noise-cancellation
       '@aperi21/sim-non-conservative-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/non-conservative-force
@@ -642,12 +645,18 @@ importers:
       '@aperi21/sim-shm-energy':
         specifier: workspace:*
         version: link:../../sims/oscillation/shm-energy
+      '@aperi21/sim-shock-wave':
+        specifier: workspace:*
+        version: link:../../sims/waves/shock-wave
       '@aperi21/sim-simple-harmonic-motion':
         specifier: workspace:*
         version: link:../../sims/oscillation/simple-harmonic-motion
       '@aperi21/sim-simple-pendulum':
         specifier: workspace:*
         version: link:../../sims/oscillation/simple-pendulum
+      '@aperi21/sim-slit-width-and-diffraction':
+        specifier: workspace:*
+        version: link:../../sims/waves/slit-width-and-diffraction
       '@aperi21/sim-solar-altitude-shadow':
         specifier: workspace:*
         version: link:../../sims/astro/solar-altitude-shadow
@@ -705,6 +714,9 @@ importers:
       '@aperi21/sim-stress-strain-curve':
         specifier: workspace:*
         version: link:../../sims/mechanics/stress-strain-curve
+      '@aperi21/sim-string-vibration':
+        specifier: workspace:*
+        version: link:../../sims/waves/string-vibration
       '@aperi21/sim-supernova-and-neutron-star':
         specifier: workspace:*
         version: link:../../sims/astro/supernova-and-neutron-star
@@ -786,6 +798,9 @@ importers:
       '@aperi21/sim-wave-speed-in-medium':
         specifier: workspace:*
         version: link:../../sims/waves/wave-speed-in-medium
+      '@aperi21/sim-wave-vs-particle-transport':
+        specifier: workspace:*
+        version: link:../../sims/waves/wave-vs-particle-transport
       '@aperi21/sim-wavefront-and-ray':
         specifier: workspace:*
         version: link:../../sims/waves/wavefront-and-ray
@@ -3064,6 +3079,14 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/waves/noise-cancellation:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
 
   sims/waves/reflection-of-waves:
     devDependencies:
@@ -3092,7 +3115,23 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/waves/shock-wave:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
 
+  sims/waves/slit-width-and-diffraction:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
 
   sims/waves/sound-intensity:
     devDependencies:
@@ -3122,6 +3161,14 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/waves/string-vibration:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
 
   sims/waves/superposition:
     devDependencies:
@@ -3169,6 +3216,14 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/waves/wave-vs-particle-transport:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
 
   sims/waves/wavefront-and-ray:
     devDependencies:
