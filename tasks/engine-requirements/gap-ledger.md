@@ -471,3 +471,19 @@ rule-guard 사후 검증 묶음마다 잡아 고친 것 — viscosity 점성 비
 floating-and-draft 밀도 `toFixed(2)`(선언값 그대로), venturi-effect 선언 이징(linear)과 physics 코사인 불일치(선언 `smooth`
 + 선언의 이징 이름을 읽는다). 유효숫자 위반이 세 번째라 지시서에 「화면의 수는 선언값 그대로」 를 더했다.
 가장 많이 겪은 기존 부족: G110 화살표 꼬리 · G89 흐르는 점 · G28 곡선 (각 5).
+
+## 엔진 결함 수정 · 조각 패치 (2026-09-18)
+
+사용자 결정: 선언만 있고 구현이 없던 `surface` 의 두 필드는 **지우지 않고 구현한다** — 선언 쪽 사용처가 있었고(`material`
+46곳) 조각들이 우회하고 있었다(`arc` 를 원한 조각 3곳).
+
+| id | 상태 | 근거 |
+|---|---|---|
+| G119 | 해결됨 | `renderSurface` 가 `material` 넷을 구현 — solid(기본 · 이전 그림 그대로), smooth(결 없는 면 · solid 와 같은 그림), rough(면 안쪽 결 사선), transparent(옅은 점선 경계, 띠는 그대로). `style` 색 역할도 따른다(선언 없으면 전경색). 쓰는 조각: non-conservative-force 가 거친 띠 `region` 을 지우고 바닥을 `rough` 로 |
+| G138 | 해결됨 | `renderSurface` 가 `arc` 를 구현(라디안 · 월드 반시계 + · from→to). 쓰는 조각: angular-acceleration 이 바퀴 테두리를 `surface` 원호로 옮겨 구조물 층에 놓고 `drawOrder: 'scene'` 을 되돌렸다 |
+| G120 | 일부 해결 | gyroscopic-precession 의 투영이 거울상이었다 — 가로축 부호를 뒤집어 오른손 투영으로 고쳤다. 어휘가 손잡이를 보장하지 않는 것(3차원 투영 부재, G55)은 남는다 |
+| G78 | 일부 해결 | 거친 바닥의 결은 `surface.material: 'rough'` 로 풀렸다(non-conservative-force). `region` hatch 의 방향 · 간격 · 색 고정은 남는다 |
+
+같은 날 inelastic-collision 을 다시 지었다 — energy-in-collision 과 「반발 계수만 다른 세 줄 + 에너지 칸」 화면이 겹쳐,
+바닥에 여러 번 튀는 공 하나로 「매번 앞 꼭짓점보다 e² 배 낮게 오른다」 를 보인다. 새 부족 0.
+variable-mass-system 은 rocket-equation 과 주장이 겹쳐 주제 목록에서 뺐다(사용자 결정).
