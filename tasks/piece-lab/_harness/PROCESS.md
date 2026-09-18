@@ -157,7 +157,14 @@ tasks/piece-lab/_report/            (gitignore — 언제든 다시 만든다)
 투입 순서는 메인이 정한다. **주장이 가까운 형제 조각은 떨어뜨려 넣는다** — 먼저 끝난 형제를 뒤의 에이전트가 읽고 들어가게
 해서, 동시에 만들어 화면이 겹치던 일(inelastic-collision · energy-in-collision)을 막는다.
 
+**생성물 두 벌의 시점.** 스텁을 깐 직후 `pnpm catalog:topics` 를 돌린다 — `catalog.json` 에 simId 가 없으면
+`piece:report` 가 「sims 를 찍지 못했다」로 멈춘다(파동 큐에서 빠뜨려 첫 다섯이 모두 막혔다). 전체 게이트의 `pnpm test`
+전에는 `pnpm catalog:gen` 을 돌린다 — bootstrap 카탈로그 테스트가 loader id 집합과 생성물을 대조한다.
+
 스텁은 커밋하지 않는다. 목표치 커밋 시점에 스텁이 하나라도 남으면 S-piece 위반이다(주장 · 캡션 · 자동 진행이 없다).
+목표치 도중에 끝난 조각만 커밋하려면, 공유 파일(bootstrap loader · package.json · topics sim 줄 · catalog.json ·
+카탈로그 생성물 · lockfile)에서 스텁 몫을 걷어낸 사본을 `git update-index --cacheinfo` 로 index 에만 올린다 —
+작업 트리는 그대로 두어 도는 에이전트의 스텁 · 촬영이 끊기지 않는다(파동 큐에서 16 · 5 두 번 이렇게 나눠 커밋했다).
 **완료를 말하기 전에 매니페스트와 대조한다** — 매니페스트의 조각마다 `tasks/piece-lab/<id>/inventory.json` 이 있고,
 `sims/**` 에 스텁 표지(「스텁 — 구현 에이전트가 채운다」)가 0 인지 스크립트로 센다. 끝난 알림을 세는 것으로 갈음하지 않는다 —
 중력과 천체 큐에서 투입 순서의 한 칸(elliptical-orbit)을 건너뛰고 「38/38」 로 보고했다가 사용자가 빈 화면을 찾았다.
