@@ -250,13 +250,28 @@ export interface Constraint extends BaseMeta {
   // 나오면 그때 그 조각이 요구하는 모양으로 올린다.
 }
 
+/**
+ * 움직이지 않는 구조물의 면. 색은 `style` 을 따르고, 선언이 없으면 전경색이다.
+ */
 export interface Surface extends BaseMeta {
   type: 'surface';
   geometry:
     | { kind: 'ground'; y?: Scalar }                                    // 바닥 무한 평면
     | { kind: 'incline'; origin: Vec2; angle: number; length: Scalar }  // 경사면
     | { kind: 'wall'; from: Vec2; to: Vec2 }                            // 일반 선분
+    /**
+     * 원호. `from` · `to` 는 라디안, 월드 +x 에서 **반시계**가 + 인 수학 방향이다.
+     * `from` 에서 `to` 로 긋는다 — `to` 가 크면 반시계, 작으면 시계 방향. 온 원은 `to = from + 2π`.
+     */
     | { kind: 'arc'; center: Vec2; radius: Scalar; from: number; to: number };
+  /**
+   * 면의 재질 — 그림이 달라진다.
+   * - `solid`(기본): 선 + 옅은 띠(ground · incline).
+   * - `smooth`: 결 없는 면 — solid 와 같은 그림. `rough` 의 반대다.
+   * - `rough`: solid 위에 결 사선. 면의 안쪽 — ground · incline 은 아래, wall 은 **월드에서**
+   *   from→to 의 오른쪽, arc 는 바깥 — 에 긋는다.
+   * - `transparent`: 경계선을 옅은 점선으로 — 물면 · 유리처럼 비치는 경계. 띠(아래 매질)는 그대로.
+   */
   material?: 'solid' | 'rough' | 'smooth' | 'transparent';
 }
 

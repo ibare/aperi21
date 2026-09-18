@@ -48,14 +48,12 @@ export const LANE_DETOUR_Y = 0;
 
 /** 상자 크기 [가로, 세로](m). 둘이 같다 — 같은 상자라는 것이 주장의 전제다. */
 export const BOX_SIZE: readonly [number, number] = [0.44, 0.3];
-/** 거친 바닥 띠의 두께(m). 바닥선 아래로 깔린다. */
-export const ROUGH_DEPTH = 0.14;
 /** 거친 바닥이 끝나는 x. 아래 상자가 가장 멀리 가는 C 보다 조금 더 간다. */
 export const ROUGH_END = SPAN_AB + OVERSHOOT + 0.7;
 /** 거친 바닥이 시작하는 x. 상자가 A 에서 이미 거친 바닥 위에 있다. */
 export const ROUGH_START = -0.7;
 
-/** 잃은 에너지 막대 — 바닥선 아래 위 · 아래 끝(바닥선 기준 m). 거친 띠 아래에 붙는다. */
+/** 잃은 에너지 막대 — 바닥선 아래 위 · 아래 끝(바닥선 기준 m). 거친 바닥의 결 아래에 붙는다. */
 export const BAR_TOP = -0.24;
 export const BAR_BOTTOM = -0.4;
 /** 막대 1 m = 월드 1 m. 지나온 길을 그대로 펴 놓은 길이라 배율이 따로 없다. */
@@ -178,8 +176,8 @@ export const nonConservativeForceSchema: BundleSchema = {
   canvas: { height: 320, minHeight: 290 },
 
   /**
-   * 겹침이 판정 장치다. 기준선(A · B)은 상자 · 막대 **뒤**로 지나가야 하고, 막대는 거친
-   * 띠 위에 올라와야 한다. 층 순서로는 `region`(막대 · 거친 띠)이 물체 위로 올라온다.
+   * 겹침이 판정 장치다. 기준선(A · B)은 상자 · 막대 **뒤**로 지나가야 한다. 층 순서로는
+   * `region`(막대)이 물체 위로 올라온다.
    */
   drawOrder: 'scene',
 

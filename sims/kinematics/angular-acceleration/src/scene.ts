@@ -17,6 +17,7 @@ import type {
   SceneGraph,
   Sector,
   StageDef,
+  Surface,
   TimelineFrame,
   Trace,
   Trajectory,
@@ -30,7 +31,6 @@ import {
   HUB_RADIUS,
   RADIUS,
   RIM_OPACITY,
-  RIM_WIDTH_PX,
   SCENE_BOUNDS,
   SECTOR_FILL_OPACITY,
   SECTOR_RIM_PX,
@@ -45,8 +45,6 @@ import type { AngularAccelerationState } from './state';
 
 /** 바퀴 중심. 회전축이자 부채꼴의 꼭짓점. */
 const CENTER: Vec2 = [0, 0];
-/** 테두리 원을 이루는 점 개수. */
-const RIM_SEGMENTS = 96;
 /** 기록이 이보다 옅으면 아무것도 그리지 않는다. 원본 `op <= 0.01`. */
 const MIN_OPACITY = 0.01;
 
@@ -86,14 +84,12 @@ export function scene(params: {
 
   // ---- 바퀴 테두리 ----
   // 눈금이 놓일 자리. 기록이 지워지는 동안에도 남아 화면이 비어 보이지 않는다.
-  const rim: Trajectory = {
-    type: 'trajectory',
+  // 궤적이 아니라 구조물이다 — `surface` 원호로 두면 구조물 층(10)에 놓여 눈금 · 부채꼴 · 바퀴살이
+  // 모두 그 위를 지난다. 온 원이라 각의 기준(시계 각 · 수학 각)은 상관없다.
+  const rim: Surface = {
+    type: 'surface',
     id: 'rim',
-    points: Array.from({ length: RIM_SEGMENTS }, (_, i) =>
-      pointAtClockAngle(CENTER, RADIUS, (i / RIM_SEGMENTS) * Math.PI * 2),
-    ),
-    closed: true,
-    width: RIM_WIDTH_PX,
+    geometry: { kind: 'arc', center: CENTER, radius: RADIUS, from: 0, to: Math.PI * 2 },
     opacity: RIM_OPACITY,
     style: { colorRole: 'muted', emphasis: 'subtle' },
   };

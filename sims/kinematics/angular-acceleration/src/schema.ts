@@ -27,8 +27,6 @@ export const HUB_RADIUS = 0.035;
 /** 바퀴살 끝점. 원본 5 px. */
 export const SPOKE_TIP_RADIUS = 0.05;
 
-/** 테두리 선 굵기(화면 px). 원본 1.5. */
-export const RIM_WIDTH_PX = 1.5;
 /** 눈금 획 굵기(화면 px). 원본 2. */
 export const TICK_WIDTH_PX = 2;
 /** 바퀴살 굵기(화면 px). 원본 2.5. */
@@ -146,15 +144,9 @@ export const angularAccelerationSchema: BundleSchema = {
    */
   camera: { screenYBias: -16 },
 
-  /**
-   * **scene 에 쓴 순서대로 그린다.** 겹침이 이 그림의 판정 장치다 — 테두리 위로 눈금이
-   * 지나가야 눈금이 "테두리를 가로지르는 시간 기록" 으로 읽히고, 붉은 부채꼴은 눈금과
-   * 바퀴살 아래에 깔려야 "쓸고 지나간 각" 이 눈금을 가리지 않는다.
-   *
-   * 기본 층(`layer`)으로는 이 관계가 하나 어긋난다. 테두리를 그릴 어휘가 `trajectory`
-   * 뿐이라 바퀴살과 같은 층(20)에 놓이고, 그러면 테두리가 눈금(19) 위를 지난다.
-   */
-  drawOrder: 'scene',
+  // 겹침이 이 그림의 판정 장치다 — 테두리 위로 눈금이 지나가야 눈금이 「테두리를 가로지르는
+  // 시간 기록」 으로 읽힌다. 테두리가 `surface` 원호(구조물 층 10)라 기본 층 순서
+  // (테두리 < 부채꼴 18 < 눈금 19 < 바퀴살 20)만으로 성립한다 — `drawOrder: 'scene'` 은 두지 않는다.
 
   /**
    * 도착한 순간 이미 진행 중 — 원본 PHASE. 눈금 열한 개(0~10번)가 찍혀 있고 붉은

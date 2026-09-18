@@ -1,8 +1,8 @@
 // ========================================================================
 // non-conservative-force — Scene Graph 선언
 // ========================================================================
-// 그리지 않는다, 선언한다. 자유 렌더 계층을 쓰지 않는다 — 바닥(surface) ·
-// 거친 띠와 잃은 에너지 막대(region) · A · B 기준선(lineSet) · 상자(body) ·
+// 그리지 않는다, 선언한다. 자유 렌더 계층을 쓰지 않는다 —
+// 거친 바닥(surface `rough`) · 잃은 에너지 막대(region) · A · B 기준선(lineSet) · 상자(body) ·
 // 마찰 화살표(vector) · A→B 치수선(dimension) · 이름표(readout)가 모두 표준 어휘로 있다.
 //
 // 색은 뜻마다 하나다 — 상자는 먹색(둘이 같은 대상이라 같은 색), 마찰 화살표는
@@ -33,7 +33,6 @@ import {
   LANE_DETOUR_Y,
   LANE_DIRECT_Y,
   POINT_A,
-  ROUGH_DEPTH,
   ROUGH_END,
   ROUGH_START,
   SCENE_BOUNDS,
@@ -53,8 +52,6 @@ const LABEL_GAP_PX = 7;
 const GUIDE_WIDTH = 1;
 /** 기준선 짙기. 상자 · 막대보다 뒤로 물러나 있어야 한다. */
 const GUIDE_OPACITY = 0.5;
-/** 거친 바닥 띠의 짙기. 바닥의 결이라 옅다. */
-const ROUGH_FILL = 0.3;
 /** 잃은 에너지 막대의 짙기. 다크 바탕에서도 또렷해야 한다. */
 const BAR_FILL = 0.78;
 
@@ -138,25 +135,13 @@ export function scene(params: {
     const { box, y } = lane;
 
     // ---- 거친 바닥 ----
-    // 사선 결로 깐다. 두 레인의 바닥이 같다는 것이 전제라 색을 가르지 않는다.
-    out.push({
-      type: 'region',
-      id: `rough-${lane.id}`,
-      points: [
-        [ROUGH_START, y],
-        [ROUGH_END, y],
-        [ROUGH_END, y - ROUGH_DEPTH],
-        [ROUGH_START, y - ROUGH_DEPTH],
-      ],
-      fill: 'hatch',
-      fillOpacity: ROUGH_FILL,
-      style: { colorRole: 'muted', emphasis: 'strong' },
-    });
+    // 결은 면의 재질이다 — `rough` 면이 바닥선 아래로 사선 결을 긋는다. 두 레인의 바닥이
+    // 같다는 것이 전제라 색을 가르지 않는다.
     out.push({
       type: 'surface',
       id: `floor-${lane.id}`,
       geometry: { kind: 'wall', from: [ROUGH_START, y], to: [ROUGH_END, y] },
-      material: 'solid',
+      material: 'rough',
     });
 
     // ---- 잃은 에너지 막대 ----

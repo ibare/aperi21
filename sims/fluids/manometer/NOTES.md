@@ -74,7 +74,7 @@
 
 | 부족 | 이 조각에서 | 영향 |
 | --- | --- | --- |
-| `surface` 의 `arc` geometry 가 선언에만 있고 렌더러가 그리지 않는다 (S-render 「선언에 둔 필드는 렌더러가 구현한다」 위반. `angular-acceleration` · `pressure-isotropy` NOTES 에도 적혀 있으나 장부에 id 가 없다) | 굽은 관 벽을 `surface` 로 선언할 수 없어 곧은 벽까지 `lineSet` 폴리라인 한 줄로 이어 그었다 — 모양은 오히려 이음매 없이 나온다 | 근사 |
+| `surface` 의 `arc` geometry 가 선언에만 있고 렌더러가 그리지 않는다 (S-render 「선언에 둔 필드는 렌더러가 구현한다」 위반. `angular-acceleration` · `pressure-isotropy` NOTES 에도 적혀 있으나 장부에 id 가 없다) | 굽은 관 벽을 `surface` 로 선언할 수 없어 곧은 벽까지 `lineSet` 폴리라인 한 줄로 이어 그었다 — 모양은 오히려 이음매 없이 나온다. **2026-09-18 엔진이 arc 를 구현했다(G138 해결).** 이 조각은 폴리라인이 이음매 없이 나와 옮기지 않았다 | 근사 |
 
 관 모양(두 팔 + 굽이 표본) · 높이 차 식 · 거울상 배치 · 화살표 길이 배율은 조각의 물리 · 배치
 계산이라 부족이 아니다.
