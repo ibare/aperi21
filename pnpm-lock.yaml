@@ -174,6 +174,9 @@ importers:
       '@aperi21/sim-balance-scale':
         specifier: workspace:*
         version: link:../../sims/mechanics/balance-scale
+      '@aperi21/sim-ballistic-pendulum':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/ballistic-pendulum
       '@aperi21/sim-banked-curve':
         specifier: workspace:*
         version: link:../../sims/mechanics/banked-curve
@@ -231,6 +234,9 @@ importers:
       '@aperi21/sim-electromagnetic-wave':
         specifier: workspace:*
         version: link:../../sims/em/electromagnetic-wave
+      '@aperi21/sim-energy-dissipation':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/energy-dissipation
       '@aperi21/sim-energy-flow-diagram':
         specifier: workspace:*
         version: link:../../sims/mechanics/energy-flow-diagram
@@ -291,6 +297,9 @@ importers:
       '@aperi21/sim-keplers-second-law':
         specifier: workspace:*
         version: link:../../sims/astro/keplers-second-law
+      '@aperi21/sim-kinetic-energy':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/kinetic-energy
       '@aperi21/sim-kinetic-friction':
         specifier: workspace:*
         version: link:../../sims/mechanics/kinetic-friction
@@ -339,6 +348,9 @@ importers:
       '@aperi21/sim-pendulum-isochronism':
         specifier: workspace:*
         version: link:../../sims/oscillation/pendulum-isochronism
+      '@aperi21/sim-perfectly-inelastic-collision':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/perfectly-inelastic-collision
       '@aperi21/sim-phase-diagram':
         specifier: workspace:*
         version: link:../../sims/thermal/phase-diagram
@@ -390,6 +402,9 @@ importers:
       '@aperi21/sim-river-crossing':
         specifier: workspace:*
         version: link:../../sims/kinematics/river-crossing
+      '@aperi21/sim-rocket-equation':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/rocket-equation
       '@aperi21/sim-spacetime-diagram':
         specifier: workspace:*
         version: link:../../sims/modern/spacetime-diagram
@@ -1191,6 +1206,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/ballistic-pendulum:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/mechanics/banked-curve:
     devDependencies:
       '@aperi21/schema':
@@ -1246,6 +1270,15 @@ importers:
         version: 5.9.3
 
   sims/mechanics/drag-force:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/energy-dissipation:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1326,6 +1359,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/kinetic-energy:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/mechanics/kinetic-friction:
     devDependencies:
       '@aperi21/schema':
@@ -1389,6 +1431,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/perfectly-inelastic-collision:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/mechanics/potential-energy-curve:
     devDependencies:
       '@aperi21/schema':
@@ -1412,6 +1463,15 @@ importers:
       '@aperi21/plugin-mechanics':
         specifier: workspace:*
         version: link:../../../packages/plugin-mechanics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/rocket-equation:
+    devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../../../packages/schema

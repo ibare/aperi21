@@ -824,6 +824,46 @@ export function registerAperi21Bundles(): void {
     return registerBundle('aperi21:radioactive-decay', m.radioactiveDecayBundle, caps.capabilities);
   });
 
+  registerBundleLoader('aperi21:kinetic-energy', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-kinetic-energy'),
+      import('./capabilities/mechanics/kinetic-energy.generated.js'),
+    ]);
+    return registerBundle('aperi21:kinetic-energy', m.kineticEnergyBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:energy-dissipation', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-energy-dissipation'),
+      import('./capabilities/mechanics/energy-dissipation.generated.js'),
+    ]);
+    return registerBundle('aperi21:energy-dissipation', m.energyDissipationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:perfectly-inelastic-collision', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-perfectly-inelastic-collision'),
+      import('./capabilities/mechanics/perfectly-inelastic-collision.generated.js'),
+    ]);
+    return registerBundle('aperi21:perfectly-inelastic-collision', m.perfectlyInelasticCollisionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:rocket-equation', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-rocket-equation'),
+      import('./capabilities/mechanics/rocket-equation.generated.js'),
+    ]);
+    return registerBundle('aperi21:rocket-equation', m.rocketEquationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:ballistic-pendulum', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-ballistic-pendulum'),
+      import('./capabilities/mechanics/ballistic-pendulum.generated.js'),
+    ]);
+    return registerBundle('aperi21:ballistic-pendulum', m.ballisticPendulumBundle, caps.capabilities);
+  });
+
   registerBundleLoader('aperi21:uniform-motion', async () => {
     const [m, caps] = await Promise.all([
       import('@aperi21/sim-uniform-motion'),

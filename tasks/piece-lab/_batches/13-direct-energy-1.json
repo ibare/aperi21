@@ -1,0 +1,12 @@
+{
+  "name": "13-direct-energy-1",
+  "title": "직접 구현 시험 1 — 일·에너지·운동량 5개 (원본 없음)",
+  "record": "tasks/engine-requirements/gap-ledger.md",
+  "pieces": [
+    "kinetic-energy",
+    "energy-dissipation",
+    "perfectly-inelastic-collision",
+    "rocket-equation",
+    "ballistic-pendulum"
+  ]
+}

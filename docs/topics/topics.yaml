@@ -532,6 +532,7 @@ topics:
     level: primary
     curricula: [kr, ib, ngss, ap, uk]
     visualNote: 속력을 두 배로 하면 네 배가 된다
+    sim: aperi21:kinetic-energy
   - id: work-energy-theorem
     name: 일-운동 에너지 정리
     desc: 알짜일이 운동 에너지 변화와 같음
@@ -583,6 +584,7 @@ topics:
     level: lower
     curricula: [kr, ib, ap, uk]
     visualNote: 마찰이 있는 쪽이 덜 올라간다
+    sim: aperi21:energy-dissipation
   - id: potential-energy-curve
     name: 퍼텐셜 곡선
     desc: 곡선의 모양이 운동을 정하는 방식
@@ -640,6 +642,7 @@ topics:
     level: upper
     curricula: [ib, ap]
     visualNote: 붙어서 함께 간다
+    sim: aperi21:perfectly-inelastic-collision
   - id: two-dimensional-collision
     name: 2차원 충돌
     desc: 성분마다 따로 성립하는 보존
@@ -675,6 +678,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 버린 만큼 앞으로 나아간다
+    sim: aperi21:rocket-equation
   - id: ballistic-pendulum
     name: 탄동 진자
     desc: 충돌과 에너지 보존을 잇는 측정
@@ -682,6 +686,7 @@ topics:
     level: null
     curricula: []
     visualNote: 박혀 함께 올라간 높이로 처음 속력을 되짚는다
+    sim: aperi21:ballistic-pendulum
   - id: energy-in-collision
     name: 충돌에서의 에너지
     desc: 보존되는 것과 안 되는 것의 구분

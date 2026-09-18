@@ -438,7 +438,8 @@
         {
           "id": "kinetic-energy",
           "name": "운동 에너지",
-          "desc": "속력이 담고 있는 에너지"
+          "desc": "속력이 담고 있는 에너지",
+          "simId": "aperi21:kinetic-energy"
         },
         {
           "id": "work-energy-theorem",
@@ -474,7 +475,8 @@
         {
           "id": "energy-dissipation",
           "name": "에너지 소산",
-          "desc": "마찰이 가져가는 몫과 그 행방"
+          "desc": "마찰이 가져가는 몫과 그 행방",
+          "simId": "aperi21:energy-dissipation"
         },
         {
           "id": "potential-energy-curve",
@@ -516,7 +518,8 @@
         {
           "id": "perfectly-inelastic-collision",
           "name": "완전 비탄성 충돌",
-          "desc": "붙어서 함께 움직이는 경우"
+          "desc": "붙어서 함께 움직이는 경우",
+          "simId": "aperi21:perfectly-inelastic-collision"
         },
         {
           "id": "two-dimensional-collision",
@@ -541,12 +544,14 @@
         {
           "id": "rocket-equation",
           "name": "로켓 방정식",
-          "desc": "연료를 버려 얻는 속도"
+          "desc": "연료를 버려 얻는 속도",
+          "simId": "aperi21:rocket-equation"
         },
         {
           "id": "ballistic-pendulum",
           "name": "탄동 진자",
-          "desc": "충돌과 에너지 보존을 잇는 측정"
+          "desc": "충돌과 에너지 보존을 잇는 측정",
+          "simId": "aperi21:ballistic-pendulum"
         },
         {
           "id": "energy-in-collision",
@@ -2501,7 +2506,7 @@
   ],
   "summary": {
     "topics": 442,
-    "implemented": 116,
+    "implemented": 121,
     "labs": 103
   }
 }
