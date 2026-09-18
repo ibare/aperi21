@@ -1445,6 +1445,142 @@ export function registerAperi21Bundles(): void {
     return registerBundle('aperi21:doppler-effect', m.dopplerEffectBundle, caps.capabilities);
   });
 
+  registerBundleLoader('aperi21:wave-basics', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-wave-basics'),
+      import('./capabilities/waves/wave-basics.generated.js'),
+    ]);
+    return registerBundle('aperi21:wave-basics', m.waveBasicsBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:superposition', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-superposition'),
+      import('./capabilities/waves/superposition.generated.js'),
+    ]);
+    return registerBundle('aperi21:superposition', m.superpositionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:reflection-of-waves', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-reflection-of-waves'),
+      import('./capabilities/waves/reflection-of-waves.generated.js'),
+    ]);
+    return registerBundle('aperi21:reflection-of-waves', m.reflectionOfWavesBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:diffraction', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-diffraction'),
+      import('./capabilities/waves/diffraction.generated.js'),
+    ]);
+    return registerBundle('aperi21:diffraction', m.diffractionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:sound-source-vibration', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-sound-source-vibration'),
+      import('./capabilities/waves/sound-source-vibration.generated.js'),
+    ]);
+    return registerBundle('aperi21:sound-source-vibration', m.soundSourceVibrationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:transverse-wave', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-transverse-wave'),
+      import('./capabilities/waves/transverse-wave.generated.js'),
+    ]);
+    return registerBundle('aperi21:transverse-wave', m.transverseWaveBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:harmonics', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-harmonics'),
+      import('./capabilities/waves/harmonics.generated.js'),
+    ]);
+    return registerBundle('aperi21:harmonics', m.harmonicsBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:doppler-source-vs-observer', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-doppler-source-vs-observer'),
+      import('./capabilities/waves/doppler-source-vs-observer.generated.js'),
+    ]);
+    return registerBundle('aperi21:doppler-source-vs-observer', m.dopplerSourceVsObserverBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:digital-vs-analog-signal', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-digital-vs-analog-signal'),
+      import('./capabilities/waves/digital-vs-analog-signal.generated.js'),
+    ]);
+    return registerBundle('aperi21:digital-vs-analog-signal', m.digitalVsAnalogSignalBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:wavefront-and-ray', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-wavefront-and-ray'),
+      import('./capabilities/waves/wavefront-and-ray.generated.js'),
+    ]);
+    return registerBundle('aperi21:wavefront-and-ray', m.wavefrontAndRayBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:wave-speed-in-medium', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-wave-speed-in-medium'),
+      import('./capabilities/waves/wave-speed-in-medium.generated.js'),
+    ]);
+    return registerBundle('aperi21:wave-speed-in-medium', m.waveSpeedInMediumBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:constructive-destructive', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-constructive-destructive'),
+      import('./capabilities/waves/constructive-destructive.generated.js'),
+    ]);
+    return registerBundle('aperi21:constructive-destructive', m.constructiveDestructiveBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:sound-intensity', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-sound-intensity'),
+      import('./capabilities/waves/sound-intensity.generated.js'),
+    ]);
+    return registerBundle('aperi21:sound-intensity', m.soundIntensityBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:seismic-waves', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-seismic-waves'),
+      import('./capabilities/waves/seismic-waves.generated.js'),
+    ]);
+    return registerBundle('aperi21:seismic-waves', m.seismicWavesBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:impedance-mismatch', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-impedance-mismatch'),
+      import('./capabilities/waves/impedance-mismatch.generated.js'),
+    ]);
+    return registerBundle('aperi21:impedance-mismatch', m.impedanceMismatchBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:wave-energy', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-wave-energy'),
+      import('./capabilities/waves/wave-energy.generated.js'),
+    ]);
+    return registerBundle('aperi21:wave-energy', m.waveEnergyBundle, caps.capabilities);
+  });
+
+
+
+
+
+
+
+
+
   registerBundleLoader('aperi21:current-magnetic-field', async () => {
     const [m, caps] = await Promise.all([
       import('@aperi21/sim-current-magnetic-field'),

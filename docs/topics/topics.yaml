@@ -1806,6 +1806,7 @@ topics:
     level: primary
     curricula: [kr, ib, ngss, ap, uk]
     visualNote: 파장과 진폭을 바꾸면 모양이 따라 변한다
+    sim: aperi21:wave-basics
   - id: wave-vs-particle-transport
     name: 파동이 나르는 것
     desc: 매질은 제자리, 에너지는 이동
@@ -1820,6 +1821,7 @@ topics:
     level: lower
     curricula: [kr, ib, ap, uk]
     visualNote: 매질은 위아래로 흔들리는데 마루는 옆으로 간다
+    sim: aperi21:transverse-wave
   - id: longitudinal-wave
     name: 종파
     desc: 진동 방향이 진행 방향과 나란함
@@ -1835,6 +1837,7 @@ topics:
     level: lower
     curricula: [ib, ngss, ap, uk]
     visualNote: 줄을 팽팽히 하면 파동이 빨라진다
+    sim: aperi21:wave-speed-in-medium
   - id: wavefront-and-ray
     name: 파면과 광선
     desc: 같은 위상의 면과 그 수직선
@@ -1842,6 +1845,7 @@ topics:
     level: lower
     curricula: [kr, ib]
     visualNote: 같은 위상의 면과 그 수직선이 함께 움직인다
+    sim: aperi21:wavefront-and-ray
   - id: huygens-principle
     name: 하위헌스 원리
     desc: 파면의 각 점이 새 파원이 되는 것
@@ -1857,6 +1861,7 @@ topics:
     level: upper
     curricula: [kr, ib, uk]
     visualNote: 겹치는 순간 더해지고 지나가면 원래대로다
+    sim: aperi21:superposition
   - id: constructive-destructive
     name: 보강과 상쇄
     desc: 위상차가 정하는 합의 크기
@@ -1864,6 +1869,7 @@ topics:
     level: upper
     curricula: [ib]
     visualNote: 위상이 맞으면 커지고 어긋나면 사라진다
+    sim: aperi21:constructive-destructive
   - id: interference
     name: 간섭
     desc: 두 파원이 만드는 무늬
@@ -1887,6 +1893,7 @@ topics:
     level: upper
     curricula: [kr, ib, ap, uk]
     visualNote: 경계 조건이 허용하는 모양만 남는다
+    sim: aperi21:harmonics
   - id: string-vibration
     name: 줄의 진동
     desc: 양끝이 고정된 줄의 모드
@@ -1926,6 +1933,7 @@ topics:
     level: upper
     curricula: [kr, ib]
     visualNote: 누가 움직이느냐에 따라 결과가 어긋난다
+    sim: aperi21:doppler-source-vs-observer
   - id: shock-wave
     name: 충격파
     desc: 음속을 넘을 때 생기는 원뿔
@@ -1940,6 +1948,7 @@ topics:
     level: upper
     curricula: [ap]
     visualNote: 멀어질수록 같은 에너지가 넓게 퍼져 옅어진다
+    sim: aperi21:sound-intensity
   - id: reflection-of-waves
     name: 파동의 반사
     desc: 고정단과 자유단에서의 위상
@@ -1947,6 +1956,7 @@ topics:
     level: lower
     curricula: [kr, ib, ngss, uk]
     visualNote: 고정단에서는 뒤집혀 돌아오고 자유단에서는 그대로다
+    sim: aperi21:reflection-of-waves
   - id: refraction-of-waves
     name: 파동의 굴절
     desc: 속도 변화가 만드는 방향 전환
@@ -1962,6 +1972,7 @@ topics:
     level: lower
     curricula: [kr, ib, uk]
     visualNote: 틈을 지나며 파동이 돌아 퍼진다
+    sim: aperi21:diffraction
   - id: slit-width-and-diffraction
     name: 슬릿 폭과 회절
     desc: 파장과 폭의 비가 정하는 퍼짐
@@ -1976,6 +1987,7 @@ topics:
     level: lower
     curricula: [ngss]
     visualNote: 진폭을 두 배로 하면 에너지가 네 배가 된다
+    sim: aperi21:wave-energy
   - id: wave-attenuation
     name: 파동의 감쇠
     desc: 매질이 흡수하는 에너지
@@ -1990,6 +2002,7 @@ topics:
     level: lower
     curricula: [kr, ngss]
     visualNote: 매질이 크게 다르면 대부분 되돌아온다
+    sim: aperi21:impedance-mismatch
   - id: noise-cancellation
     name: 능동 소음 제거
     desc: 역위상 파동의 중첩
@@ -2004,6 +2017,7 @@ topics:
     level: primary
     curricula: [kr, ngss]
     visualNote: 떨림을 멈추면 소리도 멎는다
+    sim: aperi21:sound-source-vibration
   - id: sound-through-materials
     name: 물질을 통한 소리 전달
     desc: 매질에 따라 달라지는 소리의 전달
@@ -2018,6 +2032,7 @@ topics:
     level: lower
     curricula: [ngss]
     visualNote: 잡음을 섞으면 아날로그는 뭉개지고 디지털은 원래대로 되살아난다
+    sim: aperi21:digital-vs-analog-signal
   - id: seismic-waves
     name: 지진파
     desc: 지구 속을 지나는 P파와 S파
@@ -2025,6 +2040,7 @@ topics:
     level: lower
     curricula: [uk]
     visualNote: S파가 액체 핵을 못 지나 그림자대가 생긴다
+    sim: aperi21:seismic-waves
   # ── 광학
   - id: rectilinear-propagation
     name: 빛의 직진

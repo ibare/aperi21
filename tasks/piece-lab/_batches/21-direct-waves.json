@@ -1,0 +1,36 @@
+{
+  "name": "21-direct-waves",
+  "title": "직접 구현(큐) — 파동과 음향 24개 (원본 없음)",
+  "record": "tasks/engine-requirements/gap-ledger.md",
+  "queue": {
+    "concurrency": 5,
+    "verifyEvery": 5,
+    "order": "투입 순서 — 파동 기본 · 중첩 · 경계와 공명 · 회절 · 소리 · 신호와 지진 무리를 돌아가며, 형제 조각은 떨어뜨려 넣는다"
+  },
+  "pieces": [
+    "wave-basics",
+    "superposition",
+    "reflection-of-waves",
+    "diffraction",
+    "sound-source-vibration",
+    "transverse-wave",
+    "harmonics",
+    "doppler-source-vs-observer",
+    "digital-vs-analog-signal",
+    "wavefront-and-ray",
+    "wave-speed-in-medium",
+    "constructive-destructive",
+    "sound-intensity",
+    "seismic-waves",
+    "impedance-mismatch",
+    "wave-energy",
+    "string-vibration",
+    "slit-width-and-diffraction",
+    "shock-wave",
+    "noise-cancellation",
+    "wave-vs-particle-transport",
+    "air-column-resonance",
+    "sound-through-materials",
+    "wave-attenuation"
+  ]
+}

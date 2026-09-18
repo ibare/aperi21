@@ -255,6 +255,9 @@ importers:
       '@aperi21/sim-conservative-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/conservative-force
+      '@aperi21/sim-constructive-destructive':
+        specifier: workspace:*
+        version: link:../../sims/waves/constructive-destructive
       '@aperi21/sim-continuity-equation':
         specifier: workspace:*
         version: link:../../sims/fluids/continuity-equation
@@ -276,6 +279,12 @@ importers:
       '@aperi21/sim-damping-regimes':
         specifier: workspace:*
         version: link:../../sims/oscillation/damping-regimes
+      '@aperi21/sim-diffraction':
+        specifier: workspace:*
+        version: link:../../sims/waves/diffraction
+      '@aperi21/sim-digital-vs-analog-signal':
+        specifier: workspace:*
+        version: link:../../sims/waves/digital-vs-analog-signal
       '@aperi21/sim-direction-of-acceleration':
         specifier: workspace:*
         version: link:../../sims/kinematics/direction-of-acceleration
@@ -285,6 +294,9 @@ importers:
       '@aperi21/sim-doppler-effect':
         specifier: workspace:*
         version: link:../../sims/waves/doppler-effect
+      '@aperi21/sim-doppler-source-vs-observer':
+        specifier: workspace:*
+        version: link:../../sims/waves/doppler-source-vs-observer
       '@aperi21/sim-double-slit-with-electrons':
         specifier: workspace:*
         version: link:../../sims/modern/double-slit-with-electrons
@@ -396,6 +408,9 @@ importers:
       '@aperi21/sim-gyroscopic-precession':
         specifier: workspace:*
         version: link:../../sims/oscillation/gyroscopic-precession
+      '@aperi21/sim-harmonics':
+        specifier: workspace:*
+        version: link:../../sims/waves/harmonics
       '@aperi21/sim-heat-conduction':
         specifier: workspace:*
         version: link:../../sims/thermal/heat-conduction
@@ -411,6 +426,9 @@ importers:
       '@aperi21/sim-hydrostatic-pressure':
         specifier: workspace:*
         version: link:../../sims/fluids/hydrostatic-pressure
+      '@aperi21/sim-impedance-mismatch':
+        specifier: workspace:*
+        version: link:../../sims/waves/impedance-mismatch
       '@aperi21/sim-impulse-force-relation':
         specifier: workspace:*
         version: link:../../sims/mechanics/impulse-force-relation
@@ -579,6 +597,9 @@ importers:
       '@aperi21/sim-reference-frame':
         specifier: workspace:*
         version: link:../../sims/kinematics/reference-frame
+      '@aperi21/sim-reflection-of-waves':
+        specifier: workspace:*
+        version: link:../../sims/waves/reflection-of-waves
       '@aperi21/sim-refraction-of-waves':
         specifier: workspace:*
         version: link:../../sims/waves/refraction-of-waves
@@ -612,6 +633,9 @@ importers:
       '@aperi21/sim-seasonal-sun-path':
         specifier: workspace:*
         version: link:../../sims/astro/seasonal-sun-path
+      '@aperi21/sim-seismic-waves':
+        specifier: workspace:*
+        version: link:../../sims/waves/seismic-waves
       '@aperi21/sim-shell-theorem':
         specifier: workspace:*
         version: link:../../sims/astro/shell-theorem
@@ -627,6 +651,12 @@ importers:
       '@aperi21/sim-solar-altitude-shadow':
         specifier: workspace:*
         version: link:../../sims/astro/solar-altitude-shadow
+      '@aperi21/sim-sound-intensity':
+        specifier: workspace:*
+        version: link:../../sims/waves/sound-intensity
+      '@aperi21/sim-sound-source-vibration':
+        specifier: workspace:*
+        version: link:../../sims/waves/sound-source-vibration
       '@aperi21/sim-spacetime-diagram':
         specifier: workspace:*
         version: link:../../sims/modern/spacetime-diagram
@@ -678,6 +708,9 @@ importers:
       '@aperi21/sim-supernova-and-neutron-star':
         specifier: workspace:*
         version: link:../../sims/astro/supernova-and-neutron-star
+      '@aperi21/sim-superposition':
+        specifier: workspace:*
+        version: link:../../sims/waves/superposition
       '@aperi21/sim-surface-tension':
         specifier: workspace:*
         version: link:../../sims/fluids/surface-tension
@@ -708,6 +741,9 @@ importers:
       '@aperi21/sim-trajectory-equation':
         specifier: workspace:*
         version: link:../../sims/kinematics/trajectory-equation
+      '@aperi21/sim-transverse-wave':
+        specifier: workspace:*
+        version: link:../../sims/waves/transverse-wave
       '@aperi21/sim-two-body-problem':
         specifier: workspace:*
         version: link:../../sims/astro/two-body-problem
@@ -741,6 +777,18 @@ importers:
       '@aperi21/sim-viscosity':
         specifier: workspace:*
         version: link:../../sims/fluids/viscosity
+      '@aperi21/sim-wave-basics':
+        specifier: workspace:*
+        version: link:../../sims/waves/wave-basics
+      '@aperi21/sim-wave-energy':
+        specifier: workspace:*
+        version: link:../../sims/waves/wave-energy
+      '@aperi21/sim-wave-speed-in-medium':
+        specifier: workspace:*
+        version: link:../../sims/waves/wave-speed-in-medium
+      '@aperi21/sim-wavefront-and-ray':
+        specifier: workspace:*
+        version: link:../../sims/waves/wavefront-and-ray
       '@aperi21/sim-weightlessness':
         specifier: workspace:*
         version: link:../../sims/astro/weightlessness
@@ -2916,7 +2964,35 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+
   sims/waves/beats:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/waves/constructive-destructive:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/waves/diffraction:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/waves/digital-vs-analog-signal:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -2934,7 +3010,34 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/waves/doppler-source-vs-observer:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/waves/harmonics:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/waves/huygens-principle:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/waves/impedance-mismatch:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -2961,6 +3064,16 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+
+  sims/waves/reflection-of-waves:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/waves/refraction-of-waves:
     devDependencies:
       '@aperi21/schema':
@@ -2970,7 +3083,94 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/waves/seismic-waves:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+
+
+  sims/waves/sound-intensity:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/waves/sound-source-vibration:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+
   sims/waves/standing-wave:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+
+  sims/waves/superposition:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/waves/transverse-wave:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+
+  sims/waves/wave-basics:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/waves/wave-energy:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/waves/wave-speed-in-medium:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+
+  sims/waves/wavefront-and-ray:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*

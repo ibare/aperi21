@@ -1432,7 +1432,8 @@
         {
           "id": "wave-basics",
           "name": "파동의 기본량",
-          "desc": "파장·진동수·속력·진폭"
+          "desc": "파장·진동수·속력·진폭",
+          "simId": "aperi21:wave-basics"
         },
         {
           "id": "wave-vs-particle-transport",
@@ -1442,7 +1443,8 @@
         {
           "id": "transverse-wave",
           "name": "횡파",
-          "desc": "진동 방향이 진행 방향과 수직"
+          "desc": "진동 방향이 진행 방향과 수직",
+          "simId": "aperi21:transverse-wave"
         },
         {
           "id": "longitudinal-wave",
@@ -1454,12 +1456,14 @@
         {
           "id": "wave-speed-in-medium",
           "name": "매질과 파동 속도",
-          "desc": "장력·밀도·탄성이 정하는 속도"
+          "desc": "장력·밀도·탄성이 정하는 속도",
+          "simId": "aperi21:wave-speed-in-medium"
         },
         {
           "id": "wavefront-and-ray",
           "name": "파면과 광선",
-          "desc": "같은 위상의 면과 그 수직선"
+          "desc": "같은 위상의 면과 그 수직선",
+          "simId": "aperi21:wavefront-and-ray"
         },
         {
           "id": "huygens-principle",
@@ -1471,12 +1475,14 @@
         {
           "id": "superposition",
           "name": "중첩 원리",
-          "desc": "파동이 겹칠 때의 합"
+          "desc": "파동이 겹칠 때의 합",
+          "simId": "aperi21:superposition"
         },
         {
           "id": "constructive-destructive",
           "name": "보강과 상쇄",
-          "desc": "위상차가 정하는 합의 크기"
+          "desc": "위상차가 정하는 합의 크기",
+          "simId": "aperi21:constructive-destructive"
         },
         {
           "id": "interference",
@@ -1495,7 +1501,8 @@
         {
           "id": "harmonics",
           "name": "배음",
-          "desc": "경계 조건이 정하는 진동수"
+          "desc": "경계 조건이 정하는 진동수",
+          "simId": "aperi21:harmonics"
         },
         {
           "id": "string-vibration",
@@ -1524,7 +1531,8 @@
         {
           "id": "doppler-source-vs-observer",
           "name": "음원과 관찰자",
-          "desc": "누가 움직이냐에 따른 비대칭"
+          "desc": "누가 움직이냐에 따른 비대칭",
+          "simId": "aperi21:doppler-source-vs-observer"
         },
         {
           "id": "shock-wave",
@@ -1534,12 +1542,14 @@
         {
           "id": "sound-intensity",
           "name": "음의 세기",
-          "desc": "거리 제곱에 반비례하는 감쇠"
+          "desc": "거리 제곱에 반비례하는 감쇠",
+          "simId": "aperi21:sound-intensity"
         },
         {
           "id": "reflection-of-waves",
           "name": "파동의 반사",
-          "desc": "고정단과 자유단에서의 위상"
+          "desc": "고정단과 자유단에서의 위상",
+          "simId": "aperi21:reflection-of-waves"
         },
         {
           "id": "refraction-of-waves",
@@ -1551,7 +1561,8 @@
         {
           "id": "diffraction",
           "name": "회절",
-          "desc": "장애물을 돌아가는 파동"
+          "desc": "장애물을 돌아가는 파동",
+          "simId": "aperi21:diffraction"
         },
         {
           "id": "slit-width-and-diffraction",
@@ -1561,7 +1572,8 @@
         {
           "id": "wave-energy",
           "name": "파동의 에너지",
-          "desc": "진폭 제곱에 비례하는 에너지"
+          "desc": "진폭 제곱에 비례하는 에너지",
+          "simId": "aperi21:wave-energy"
         },
         {
           "id": "wave-attenuation",
@@ -1571,7 +1583,8 @@
         {
           "id": "impedance-mismatch",
           "name": "임피던스 부정합",
-          "desc": "경계에서 반사되는 비율"
+          "desc": "경계에서 반사되는 비율",
+          "simId": "aperi21:impedance-mismatch"
         },
         {
           "id": "noise-cancellation",
@@ -1581,7 +1594,8 @@
         {
           "id": "sound-source-vibration",
           "name": "소리와 떨림",
-          "desc": "소리 나는 물체는 떨리고, 떨림이 멎으면 소리도 멎는다"
+          "desc": "소리 나는 물체는 떨리고, 떨림이 멎으면 소리도 멎는다",
+          "simId": "aperi21:sound-source-vibration"
         },
         {
           "id": "sound-through-materials",
@@ -1591,12 +1605,14 @@
         {
           "id": "digital-vs-analog-signal",
           "name": "디지털 신호와 아날로그",
-          "desc": "잡음을 견디는 방식의 차이"
+          "desc": "잡음을 견디는 방식의 차이",
+          "simId": "aperi21:digital-vs-analog-signal"
         },
         {
           "id": "seismic-waves",
           "name": "지진파",
-          "desc": "지구 속을 지나는 P파와 S파"
+          "desc": "지구 속을 지나는 P파와 S파",
+          "simId": "aperi21:seismic-waves"
         }
       ]
     },
@@ -2595,7 +2611,7 @@
   ],
   "summary": {
     "topics": 441,
-    "implemented": 215,
+    "implemented": 239,
     "labs": 103
   }
 }
