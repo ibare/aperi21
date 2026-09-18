@@ -1514,7 +1514,8 @@
         {
           "id": "air-column-resonance",
           "name": "기주 공명",
-          "desc": "열린 관과 닫힌 관의 차이"
+          "desc": "열린 관과 닫힌 관의 차이",
+          "simId": "aperi21:air-column-resonance"
         },
         {
           "id": "beats",
@@ -1582,7 +1583,8 @@
         {
           "id": "wave-attenuation",
           "name": "파동의 감쇠",
-          "desc": "매질이 흡수하는 에너지"
+          "desc": "매질이 흡수하는 에너지",
+          "simId": "aperi21:wave-attenuation"
         },
         {
           "id": "impedance-mismatch",
@@ -1605,7 +1607,8 @@
         {
           "id": "sound-through-materials",
           "name": "물질을 통한 소리 전달",
-          "desc": "매질에 따라 달라지는 소리의 전달"
+          "desc": "매질에 따라 달라지는 소리의 전달",
+          "simId": "aperi21:sound-through-materials"
         },
         {
           "id": "digital-vs-analog-signal",

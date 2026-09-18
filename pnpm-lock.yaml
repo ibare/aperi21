@@ -147,6 +147,9 @@ importers:
       '@aperi21/sim-acceleration-time-graph':
         specifier: workspace:*
         version: link:../../sims/kinematics/acceleration-time-graph
+      '@aperi21/sim-air-column-resonance':
+        specifier: workspace:*
+        version: link:../../sims/waves/air-column-resonance
       '@aperi21/sim-angle-of-friction':
         specifier: workspace:*
         version: link:../../sims/mechanics/angle-of-friction
@@ -666,6 +669,9 @@ importers:
       '@aperi21/sim-sound-source-vibration':
         specifier: workspace:*
         version: link:../../sims/waves/sound-source-vibration
+      '@aperi21/sim-sound-through-materials':
+        specifier: workspace:*
+        version: link:../../sims/waves/sound-through-materials
       '@aperi21/sim-spacetime-diagram':
         specifier: workspace:*
         version: link:../../sims/modern/spacetime-diagram
@@ -789,6 +795,9 @@ importers:
       '@aperi21/sim-viscosity':
         specifier: workspace:*
         version: link:../../sims/fluids/viscosity
+      '@aperi21/sim-wave-attenuation':
+        specifier: workspace:*
+        version: link:../../sims/waves/wave-attenuation
       '@aperi21/sim-wave-basics':
         specifier: workspace:*
         version: link:../../sims/waves/wave-basics
@@ -2979,6 +2988,14 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/waves/air-column-resonance:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
 
   sims/waves/beats:
     devDependencies:
@@ -3151,6 +3168,14 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/waves/sound-through-materials:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
 
   sims/waves/standing-wave:
     devDependencies:
@@ -3188,6 +3213,14 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/waves/wave-attenuation:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
 
   sims/waves/wave-basics:
     devDependencies:

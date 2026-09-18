@@ -1613,8 +1613,29 @@ export function registerAperi21Bundles(): void {
     return registerBundle('aperi21:wave-vs-particle-transport', m.waveVsParticleTransportBundle, caps.capabilities);
   });
 
+  registerBundleLoader('aperi21:air-column-resonance', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-air-column-resonance'),
+      import('./capabilities/waves/air-column-resonance.generated.js'),
+    ]);
+    return registerBundle('aperi21:air-column-resonance', m.airColumnResonanceBundle, caps.capabilities);
+  });
 
+  registerBundleLoader('aperi21:sound-through-materials', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-sound-through-materials'),
+      import('./capabilities/waves/sound-through-materials.generated.js'),
+    ]);
+    return registerBundle('aperi21:sound-through-materials', m.soundThroughMaterialsBundle, caps.capabilities);
+  });
 
+  registerBundleLoader('aperi21:wave-attenuation', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-wave-attenuation'),
+      import('./capabilities/waves/wave-attenuation.generated.js'),
+    ]);
+    return registerBundle('aperi21:wave-attenuation', m.waveAttenuationBundle, caps.capabilities);
+  });
 
   registerBundleLoader('aperi21:current-magnetic-field', async () => {
     const [m, caps] = await Promise.all([

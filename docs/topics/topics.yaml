@@ -1910,6 +1910,7 @@ topics:
     level: upper
     curricula: [kr, ib, ap]
     visualNote: 관을 막으면 울리는 길이가 달라진다
+    sim: aperi21:air-column-resonance
   - id: beats
     name: 맥놀이
     desc: 가까운 두 진동수의 합
@@ -1999,6 +2000,7 @@ topics:
     level: lower
     curricula: [ngss, uk]
     visualNote: 나아갈수록 진폭이 줄어든다
+    sim: aperi21:wave-attenuation
   - id: impedance-mismatch
     name: 임피던스 부정합
     desc: 경계에서 반사되는 비율
@@ -2030,6 +2032,7 @@ topics:
     level: primary
     curricula: [kr, ngss]
     visualNote: 매질을 바꾸면 전달되는 정도가 달라진다
+    sim: aperi21:sound-through-materials
   - id: digital-vs-analog-signal
     name: 디지털 신호와 아날로그
     desc: 잡음을 견디는 방식의 차이
