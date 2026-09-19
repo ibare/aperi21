@@ -21,11 +21,12 @@ import { tmpdir } from 'node:os';
 import { join, relative } from 'node:path';
 
 /** 발행 대상. 여기 없는 @aperi21/* 를 발행본이 참조하면 위반이다. */
-const PUBLISHED = ['@aperi21/host', '@aperi21/host-tiptap-bundle'] as const;
+const PUBLISHED = ['@aperi21/host', '@aperi21/host-tiptap-bundle', '@aperi21/authoring'] as const;
 
 const PACKAGE_DIRS: Record<string, string> = {
   '@aperi21/host': 'packages/host',
   '@aperi21/host-tiptap-bundle': 'packages/host-tiptap-bundle',
+  '@aperi21/authoring': 'packages/authoring',
 };
 
 const root = process.cwd();

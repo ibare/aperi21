@@ -12,6 +12,8 @@
  *    로 분리된다. 호스트 Vite/Rollup 가 그 chunk 그래프를 그대로 이어받는다.
  *
  * 편의용:
+ *  - getAperi21Catalog(locale): sim 을 로드하지 않고 추가 가능 목록을 한 언어로 조회.
+ *  - loadFrameworkMessages(locale): 프레임워크 문구 번들을 host 에 등록.
  *  - bootstrapAperi21(host?): registerAperi21Bundles 를 호출하고, host 가
  *    주어지면 installAperi21Plugins(host) 도 함께 호출. 외부 호스트가 한 번에
  *    부팅하기 위한 단일 진입점.
@@ -3642,6 +3644,13 @@ export function _resetBootstrapState(): void {
   pluginsInstalledFor = new WeakSet<Host>();
 }
 
-// 카탈로그 — 호스트가 시각화 모듈을 로드하지 않고 "추가 가능한 목록" 을 그릴 수 있게.
+// 카탈로그 — 호스트가 시각화 모듈을 로드하지 않고 "추가 가능한 목록" 을 한 언어로 그릴 수 있게.
 export { getAperi21Catalog } from './catalog.js';
-export type { Aperi21CatalogEntry } from './catalog-types.js';
+export type {
+  Aperi21Catalog,
+  Aperi21CatalogDomain,
+  Aperi21CatalogEntry,
+} from './catalog-types.js';
+
+// 프레임워크 문구 — 호스트 locale 의 번들을 host 의 문구 저장소에 등록한다.
+export { loadFrameworkMessages } from './messages.js';

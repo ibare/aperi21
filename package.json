@@ -16,12 +16,15 @@
     "catalog:topics": "tsx scripts/gen-topic-catalog.mts",
     "budget": "tsx scripts/bundle-budget.mts",
     "gen:capabilities": "tsx scripts/gen-capabilities.mts",
-    "piece:report": "tsx scripts/piece-report.mts"
+    "piece:report": "tsx scripts/piece-report.mts",
+    "messages:gen": "tsx scripts/gen-messages.mts",
+    "screen:gen": "tsx scripts/gen-screen-labels.mts"
   },
   "devDependencies": {
     "@aperi21/bootstrap": "workspace:*",
     "@aperi21/host": "workspace:*",
     "tsx": "^4.22.4",
-    "yaml": "^2.9.1"
+    "yaml": "^2.9.1",
+    "@aperi21/authoring": "workspace:*"
   }
 }

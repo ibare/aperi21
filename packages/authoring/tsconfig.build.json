@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": "dist",
+    "rootDir": "src",
+    // 발행본에는 소스맵을 넣지 않는다 — `files: ["dist"]` 라 맵이 가리키는 src 가 없다.
+    "sourceMap": false,
+    "declarationMap": false
+  },
+  "include": ["src"]
+}

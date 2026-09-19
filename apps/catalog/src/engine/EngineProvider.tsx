@@ -1,7 +1,11 @@
 import { useEffect, useMemo, type ReactNode } from 'react';
 import { createHost } from '@aperi21/host';
 import { HostProvider } from '@aperi21/react';
-import { installAperi21Plugins, registerAperi21Bundles } from '@aperi21/bootstrap';
+import {
+  installAperi21Plugins,
+  loadFrameworkMessages,
+  registerAperi21Bundles,
+} from '@aperi21/bootstrap';
 import { useTheme } from '../theme/ThemeProvider';
 import { uiThemeFromCss } from './uiThemeFromCss';
 
@@ -24,6 +28,7 @@ export function EngineProvider({ children }: { children: ReactNode }) {
       // Tiptap NodeView 가 마운트될 때 같은 bundle 레지스트리를 통해 lazy load
       // 하므로, 부팅 시 한 번 loader 등록해 둔다.
       registerAperi21Bundles();
+      void loadFrameworkMessages('ko');
       void installAperi21Plugins(h);
       return h;
     },

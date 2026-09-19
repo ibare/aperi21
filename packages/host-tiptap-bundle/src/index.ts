@@ -7,7 +7,8 @@
  *    BundleExtension 반환을 한 호출로 끝낸다.
  *  - @aperi21/host-tiptap 의 공개 표면 재노출
  *    (BundleExtension, parseBundleRaw, createBundleNodeView, renderBundleMarkdown).
- *  - @aperi21/bootstrap 의 bootstrap 함수 재노출.
+ *  - @aperi21/bootstrap 의 bootstrap 함수 · getAperi21Catalog(locale) ·
+ *    loadFrameworkMessages(locale) 재노출.
  *  - @aperi21/host 에서 외부 호스트가 필요로 할 만한 진입점(createHost, runBundle,
  *    레지스트리 함수) 도 노출 — 호스트가 자기 Host 인스턴스를 만들고 plugin/번들
  *    설치를 직접 통제하고 싶을 때(고급).
@@ -28,7 +29,7 @@
  */
 
 import { BundleExtension } from '@aperi21/host-tiptap';
-import { bootstrapAperi21 } from '@aperi21/bootstrap';
+import { bootstrapAperi21, loadFrameworkMessages } from '@aperi21/bootstrap';
 import { createHost, type HostTheme, type ThemeMode } from '@aperi21/host';
 
 export type CreateAperi21ExtensionOptions = {
@@ -60,6 +61,10 @@ export function createAperi21Extension(options: CreateAperi21ExtensionOptions = 
   // bundle loader 등록 + 이 host 에 plugin 설치. 비동기 완료를 기다리지 않는다
   // (runBundle 루프가 self-heal). 호출자가 부팅 완료를 보장할 필요 없음.
   void bootstrapAperi21(host);
+  // 프레임워크 문구 번들을 등록한다. 조회기가 조회 시점에 읽으므로 기다리지 않아도
+  // 도착한 뒤 그려지는 문구는 그 언어로 나온다. 첫 화면부터 맞추려면 호스트가
+  // `await loadFrameworkMessages(locale)` 를 먼저 부른다.
+  void loadFrameworkMessages(options.locale);
   return BundleExtension.configure({ host, locale: options.locale, theme: options.theme });
 }
 
@@ -77,10 +82,16 @@ export {
   installAperi21Plugins,
 } from '@aperi21/bootstrap';
 
-// 카탈로그 — methii 등 호스트가 시각화 모듈 로드 없이 "추가 가능한 시각화 목록" 을
-// 검색·삽입 UI 로 그릴 수 있게 하는 경량 메타데이터. FACET 의 getFacetCatalog 과
-// 동일한 엔트리 구조({ id, title, description?, domain }).
-export { getAperi21Catalog, type Aperi21CatalogEntry } from '@aperi21/bootstrap';
+// 카탈로그 — 호스트가 시각화 모듈 로드 없이 "추가 가능한 시각화 목록" 을 한 언어로
+// 불러와 검색·삽입 UI 를 그리게 하는 경량 메타데이터. FACET 의 getFacetCatalog 과 같은 모양.
+// 프레임워크 문구 — 조작기·배지 문구를 호스트 locale 로 등록한다.
+export {
+  getAperi21Catalog,
+  loadFrameworkMessages,
+  type Aperi21Catalog,
+  type Aperi21CatalogDomain,
+  type Aperi21CatalogEntry,
+} from '@aperi21/bootstrap';
 
 export {
   createHost,
