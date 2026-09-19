@@ -17,11 +17,15 @@ pnpm add @aperi21/host-tiptap-bundle
 
 ### peerDependencies
 
-호스트의 Tiptap 인스턴스를 단일하게 유지하기 위해 아래는 호스트가 직접 설치한다.
+아래는 호스트가 직접 설치해 단일 인스턴스로 공유한다.
 
 ```bash
-npm install @tiptap/core@^3 @tiptap/pm@^3
+npm install @aperi21/host @tiptap/core@^3 @tiptap/pm@^3
 ```
+
+- `@aperi21/host` — 번들 레지스트리와 문구 저장소를 담는다. 번들이 이것을 inline 하면
+  사본이 둘이 되어 부팅이 등록한 시각화를 재생이 찾지 못한다.
+- `@tiptap/core`, `@tiptap/pm` — 호스트의 Tiptap 단일 인스턴스를 공유한다.
 
 ## 사용법
 
@@ -47,19 +51,39 @@ new Editor({
 
 | 옵션      | 타입                  | 설명                                     |
 | --------- | --------------------- | ---------------------------------------- |
-| `locale`  | `string`              | `runBundle` 및 host의 언어 (예: `'ko'`). |
+| `locale`  | `string`              | `runBundle` 및 host의 언어 (예: `'ko'`). 조작기 문구 번들도 이 언어로 불러온다. |
 | `theme`   | `'light' \| 'dark'`   | 시각화 테마.                             |
+
+## 조작기 문구
+
+조작기·배지가 그리는 공통 문구는 언어별 번들로 따로 실린다. `createAperi21Extension`
+이 그 언어의 번들을 알아서 불러오지만 기다리지는 않는다. 첫 화면부터 그 언어로
+띄우려면 먼저 기다린다.
+
+```ts
+import { loadFrameworkMessages, createAperi21Extension } from '@aperi21/host-tiptap-bundle';
+
+await loadFrameworkMessages('ko');
+const extension = createAperi21Extension({ locale: 'ko' });
+```
+
+번들이 없는 언어는 영어로 뜬다.
 
 ## 카탈로그
 
-시각화 모듈을 로드하지 않고 "추가 가능한 시각화 목록"을 검색·삽입 UI로 그릴 수 있는
-경량 메타데이터를 제공한다.
+시각화 모듈을 로드하지 않고 "추가 가능한 시각화 목록"을 한 언어로 불러온다.
 
 ```ts
 import { getAperi21Catalog } from '@aperi21/host-tiptap-bundle';
 
-const entries = getAperi21Catalog(); // [{ id, title, description?, domain }, ...]
+const catalog = await getAperi21Catalog('ko');
+// catalog.locale  — 실제로 담긴 언어. 없는 언어를 요청하면 'en'
+// catalog.domains — 분야 이름표 [{ id, name }]
+// catalog.entries — [{ id, title, description?, domain }]
 ```
+
+언어마다 따로 된 chunk 라 요청한 언어 하나만 내려받는다. `domains` 와 `entries` 는
+분야 → 주제 순서이므로 그대로 순회해 그리면 된다.
 
 ## 고급 API
 

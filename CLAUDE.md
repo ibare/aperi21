@@ -126,12 +126,13 @@ curl -s -X POST http://localhost:3800/api/events \
 
 ## Release (npm 배포)
 
-배포 대상은 **두 패키지**이며 **lockstep** 으로 같은 버전을 함께 올린다.
+배포 대상은 **세 패키지**이며 **lockstep** 으로 같은 버전을 함께 올린다.
 
 | 패키지 | 역할 | 빌드 |
 | --- | --- | --- |
 | `@aperi21/host` | 시각화 런타임 + **번들 레지스트리**. 호스트가 단일 인스턴스로 설치 | rollup (JS + dts, 의존 0) |
-| `@aperi21/host-tiptap-bundle` | Tiptap 확장 + sim/plugin 번들. host 는 peer | rollup (chunk 분리 유지) |
+| `@aperi21/host-tiptap-bundle` | Tiptap 확장 + sim/plugin 번들 + 언어별 카탈로그·문구. host 는 peer | rollup (chunk 분리 유지) |
+| `@aperi21/authoring` | 호스트 LLM 파이프라인용 개념 메타(surface/briefing). 의존 0 | tsc 단독 |
 
 나머지 패키지는 `private: true` 로 유지하고 번들에 inline 한다.
 `@aperi21/schema` 는 **타입 전용**(런타임 export 0건)이라 발행하지 않는다 — 타입은
@@ -162,10 +163,11 @@ curl -s -X POST http://localhost:3800/api/events \
 
 1. 게이트 1~4 통과
 2. semver 결정 — 0.x 동안 minor 를 breaking 허용 구간으로 본다
-3. 두 패키지를 같은 버전으로 올린다
+3. 세 패키지를 같은 버전으로 올린다
    ```sh
    cd packages/host && npm version <type> --no-git-tag-version
    cd packages/host-tiptap-bundle && npm version <type> --no-git-tag-version
+   cd packages/authoring && npm version <type> --no-git-tag-version
    ```
 4. `git commit -m "chore(release): aperi21 <ver>"`
 5. `git tag v<ver>` (lockstep 이므로 단일 태그)
@@ -173,6 +175,7 @@ curl -s -X POST http://localhost:3800/api/events \
    ```sh
    cd packages/host && pnpm publish --no-git-checks
    cd packages/host-tiptap-bundle && pnpm publish --no-git-checks
+   cd packages/authoring && pnpm publish --no-git-checks   # 무의존이라 순서에 매이지 않는다
    ```
    `prepack` 이 빌드를 자동 수행한다.
 7. `git push && git push --tags`
@@ -191,4 +194,9 @@ curl -s -X POST http://localhost:3800/api/events \
   토큰은 어떤 리포에도 커밋 금지. 계정 2FA 는 security key 방식이라 CLI OTP 가 없다.
 - **소비자 영향** — host 가 peer 가 되면서 번들만 설치하던 호스트는 `@aperi21/host` 를
   함께 설치해야 한다. 0.1.0 → 0.2.0 은 그 의미에서 breaking 이다.
+  다음 발행도 breaking 이다 — `getAperi21Catalog()` 가 동기·전 언어 배열에서
+  `getAperi21Catalog(locale)` 비동기·한 언어(`{locale, domains, entries}`)로 바뀌었고,
+  `domain` 값이 sim 폴더 이름에서 `topics.yaml` 의 11분과 id 로 바뀌었다.
+- **생성물은 커밋한다.** 언어 목록의 원본은 `messages/*.json` 이다. 문구를 바꾸면
+  `pnpm messages:gen`, sim 선언·`topics.yaml` 을 바꾸면 `pnpm catalog:gen` · `pnpm screen:gen`.
 - 향후 패키지가 늘면 GitHub Actions + npm Trusted Publishing(OIDC) 도입 검토.
