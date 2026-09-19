@@ -70,6 +70,9 @@ sim 패키지는 **이미 만들어져 있다** (6파일 최소 스텁 · loader
 - **화면에 수(비 · 배수 · 계수)를 띄우면 선언값을 그대로 쓴다** — 스테이지 상수로 선언하고 `String(값)` 이나
   문안 키로 보인다. 계산해서 `toFixed` 로 줄이지 않는다 (S-piece 유효숫자). rule-guard 가 세 번(inelastic-collision ·
   physical-pendulum · viscosity) 잡았다.
+  **정수로 딱 떨어지는 계산값도 계산값이다** — 가운데 온도 `(tHot + tCold) / 2`, 합 `qCold + work`, `L·α·ΔT` 를 `String()` 으로 옮겨
+  띄우지 말고 정박값 상수(`tMeet` · `qHot` · `growMm`)를 따로 선언해 띄운다. 모양 · 자리는 계산으로 두고, 글자와 계산이 같아야 한다는
+  관계는 NOTES (c) G143 에 적는다. 열 큐에서 세 번(thermal-equilibrium · thermal-expansion · refrigerator-heat-pump).
 - **천체 분야의 물리량도 같다** — G · 천체 질량 · 궤도 반지름 · 이심률 · 자전축 경사(23.5°) · 관측 위도 · 축척 비율 ·
   허블 상수 · 별의 온도는 `stages[].constants` 에 둔다.
 - **큰 수 · 지수 표기를 코드에서 조립하지 않는다.** `String(6.674e-11)` 은 `"6.674e-11"` 이 된다 — `toExponential` 이나
@@ -88,6 +91,8 @@ sim 패키지는 **이미 만들어져 있다** (6파일 최소 스텁 · loader
   `anchor` 에 더하는 `+14` · `offset: [0, -16]`, 불투명도 램프 배율(`spread * 5`), 즉석 글자 크기(`LABEL_PX - 1`),
   점 크기 계수도 같다.
   rule-guard 가 이 큐에서 세 번(circular-orbit · escape-velocity · axial-tilt-seasons) 잡았다.
+  이름표 띄움을 그 자리에서 `LABEL_GAP / 2` · `LABEL_GAP * 2` · `TICK_GAP / 2` 로 만드는 것도 같다 — 열 큐에서 세 번(calorimetry · triple-point ·
+  cyclic-process). 다른 띄움이 필요하면 이름 있는 상수를 하나 더 둔다.
 - **파동 분야의 물리량도 같다** — 파장 · 진동수 · 주기 · 진폭 · 파속 · 매질별 속력 · 감쇠 계수 · 슬릿 폭 · 관 길이 ·
   배음 차수 · 음원 속력 · 기준 세기는 `stages[].constants` 에 둔다. 이웃 `interference` · `standing-wave` 가 schema 모듈
   상수로 둔 방식은 따라 하지 않는다 (원칙 2, 사전 검토가 짚었다). 파형 표본 수 · 간격은 파일 머리의 이름 있는 상수로 두고
@@ -140,6 +145,38 @@ sim 패키지는 **이미 만들어져 있다** (6파일 최소 스텁 · loader
   **법칙을 말로 푼 일반 진술도 식과 같다** — 「선의 수를 정하는 것은 안에 든 전하다」 · 「전압이 길이 비대로 나뉜다」 · 「전류가 일정하면
   역기전력은 없다」 · 「오른손 손가락을 감으면」 · 「벌린 배수의 제곱만큼」 대신 지금 화면에서 보이는 사실(「세 기둥이 모두 {n} 에 닿았다」)을 쓴다.
   rule-guard 가 여섯 번(coulombs-law · gausss-law · potential-divider · field-of-charged-sphere · energy-in-inductor · magnetic-dipole) 잡았다.
+- **열의 물리량도 같다** — 비열 · 질량 · 처음 온도 · 잠열 · α · γ · n · R · σ · 반사율 · 통과율 · 분자 수 · 시드는 `stages[].constants` 에 둔다.
+  이웃 `heat-conduction` · `gas-pressure` · `thermal-convection` 이 schema 모듈 상수로 두고 `constants: {}` 로 비운 방식, `gas-pressure` physics 가
+  단계를 다시 세고 캡션 문턱을 비교하는 방식은 따라 하지 않는다 (원칙 2 · S-piece).
+- **광학의 물리량도 같다** — 굴절률 · 초점 거리 · 물체 거리 · 파장 · 틈 폭 · 틈 간격 · 틈 수 · 곡률 반지름 · 두께 · 편광 각 · 과장 배율은
+  `stages[].constants` 에 둔다. 이웃 `total-internal-reflection` · `polarization` · `youngs-double-slit` · `color-addition` · `thin-film-interference` 의
+  모듈 상수 + `constants: {}`, TIR 의 계산 각 `toFixed(1)` · 굴절률 `toFixed(2)`, `ray-tracing` 의 scene 안 `{ ko, en }` 과 timeline 없는 슬라이더 형태는
+  따라 하지 않는다 (원칙 2 · C1 · S-piece).
+- **각도(°) · 배율 · 초점 거리 · 온도(℃ · K) · 배수 · 세기 몫** 은 정박값 상수 + `'{deg}°'` 같은 문안 키 + `vars` 로 보인다. `refract` · 거울 식 ·
+  σT⁴ 결과를 반올림해 띄우지 않는다. % 축은 눈금만 쓰고 지금 값 글자를 띄우지 않는다 (S-piece 유효숫자).
+- **온도는 한 역할의 명암으로** — `scalarField` 순차형(`{ high }`)이나 막대 높이 · 온도 글자로 보인다. 뜨거움 · 차가움을 빨강 · 파랑 두 역할로
+  가르지 않는다. 백열처럼 빛 색이 주장일 때만 light 채널을 쓰는데 열 스텁에는 plugin-optics 의존이 없다 — 필요하면 멈추고 보고한다 (C2 · S-piece).
+- **분자 · 알갱이 운동은 같은 시각 같은 화면** — 벽에서만 튀는 분자는 (시드, 시각)의 닫힌 식으로, 분자끼리 부딪히는 경로(평균 자유 행로 ·
+  브라운 · 퍼짐)는 `initialState` 에서 시드로 한 주기를 미리 계산해 두고 시각으로 읽는다. `step` 에 쌓지 않는다. `step` 은 `TimelineFrame` 을 받지
+  않으니 단계는 scene 의 `params.timeline` 으로만 읽는다 — 이웃의 physics `phaseAt(clock)` 재계산을 따라 하지 않는다 (S-sim · S-piece).
+- **plugin-optics 에서는 순수 계산과 타입만 import 한다** — `traceRay` · `findImage` · `reflect` · `refract` · `wavelengthToLinearRgb` ·
+  `spectrumToLinearRgb` · `VISIBLE_NM`. `renderRay` · `renderOpticalElement` · `opticsPlugin` · default export 는 import 하지 않는다 (원칙 1 · S-sim).
+  plugin-optics 어휘의 제약:
+  - `ray` 는 파장 색 아니면 `accent` 뿐이다 — light 채널 · 흰빛 · 점선 · 굵기가 없고 `intensity` 는 0.2 아래로 안 내려가며 opacity · highlight · clip 을
+    따르지 않는다. **흰 줄기 · 허상 연장 점선은 `trajectory`(`lineStyle: 'dashed'`, light 채널)로 긋고**, 빛을 끄려면 ray 를 선언에서 뺀다.
+  - `opticalElement` 그림은 거울 휨 · 렌즈 두께가 고정이고 `focalLength` · `refractiveIndex` · `polarizerAngle` 이 그림에 반영되지 않는다.
+    `lens-thin` 화살촉은 세로 렌즈(orientation 0)에서만 맞다. 두께가 바뀌는 수정체 · 두꺼운 렌즈 · 편광판 축은 `region` / `trajectory` 로 그린다.
+    `lens-concave` 가 볼록 렌즈 모양으로 그려지던 결함(G224)은 2026-09-19 에 고쳐졌다 — 이제 오목 모양으로 그려진다.
+    두께가 고정이라(G219) 두께가 주장이면 여전히 `region` 으로 그린다.
+  - `findImage` 는 **렌즈 전용**이다(거울이면 `null`). 거울 상은 조각이 거울 식으로 계산한다. `traceRay` 의 오목 · 볼록 거울은 근축 근사,
+    `prism` 은 한 번만 굴절하고, 얇은 렌즈는 비스듬한 줄기에 1/cosθ 오차가 난다 — **프리즘 · 물방울 · 섬유 · 두꺼운 렌즈 · 수차는 조각이
+    `refract` 로 면마다 계산한다.** 상 점과 줄기 교점은 한쪽 계산으로 통일한다.
+  - `refract(d, n, eta)` 의 법선은 입사 쪽을 향하고 `eta = n1/n2` 다. 전반사 때 말없이 반사 벡터를 돌려주므로 새는지 갇히는지는 조각이 임계각과
+    직접 비교해 판정한다.
+- **흰빛 · 빛 색 줄기는 라이트 바탕에서 사라진다** — 테마 light `full` 이 라이트에서 흰색이다. 빛 없음 바탕(`region` `light: 0`, `color-addition`
+  선례) 위에 두고 두 테마 촬영으로 확인한다 (C2 · G92).
+- **투입 문구의 굵은 주장 문장을 캡션에 옮기지 않는다** — `PV = nRT` · 배율 = 상거리/물체거리 · 굴절력 합 · cos² · 360/θ − 1 · 2⁻ᴺ · 「…때문이다」 는
+  문단의 몫이다. 캡션은 지금 화면에서 보이는 사실만 (S-piece).
 - **단계 안을 코드로 다시 가르지 않는다** — `tl.at('x') / 0.12` · `window * 0.5` · `FADE_S = 0.4` 로 앞머리 · 뒷부분을 잘라
   페이드하거나 멈춤 몫을 두거나, `x*x*(3-2x)` 같은 이징을 코드로 씌우는 것 모두 S-piece 위반이다. 짧은 단계를 timeline 에
   더 선언하고 `at()` 으로 읽거나 `ease` 를 선언한다. 알갱이마다 다른 시각처럼 단계로 풀 수 없으면 그 몫을 스테이지 상수로
@@ -150,6 +187,8 @@ sim 패키지는 **이미 만들어져 있다** (6파일 최소 스텁 · loader
   바꿈). rule-guard 가 세 번(wave-function · relativistic-velocity-addition · ionizing-radiation) 잡았다.
   전자기에서도 세 번(lorentz-force · charging-methods · electromagnet) — **스위치를 닫는 · 여는 단계, 나타남 단계에는 그 단계의 일만
   쓰고**(「스위치를 닫는다」), 전류가 흐르고 · 클립이 오르고 · 전자가 옮겨 가는 결과는 결과 단계부터 건다.
+  **짧은 전환 단계(사라짐 `hide*` · 다가옴 `approach` · 새기 시작 `seep`)에 다음 단계 캡션을 걸지 않는다** — 직전 멈춤의 캡션을
+  이어 쓰거나 그 단계의 일만 쓴 키를 따로 둔다. 열 · 광학 큐에서 세 번(refrigerator-heat-pump · multiple-mirror-images · mirage).
 - **캡션 · 이름표에 스테이지 상수의 값(「절반」 · 「두 배」 · 「한 바퀴」 · 「6 V」)을 문안으로 박지 않는다** — `initialState({ stage })` 에서
   `readConstants` 로 읽은 값을 `String(값)` 으로 state 에 두고 `caption.vars` 로 끼운다(`sims/modern/time-dilation/src/state.ts` 가 선례, G133 우회로).
   「G133 때문에 끼울 수 없다」 가 아니다. rule-guard 가 여덟 번 잡았다 (원칙 2).
