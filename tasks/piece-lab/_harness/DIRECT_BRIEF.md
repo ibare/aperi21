@@ -117,6 +117,29 @@ sim 패키지는 **이미 만들어져 있다** (6파일 최소 스텁 · loader
 - **가시광 밖의 빛(자외선 · X선 · γ선 · 적외선)은 색을 지어내지 않는다** — 파장은 물결 간격으로, 세기는 모양으로 보인다.
   `wavelengthToLinearRgb` 는 380~780 nm 밖을 검정으로 돌려 다크에서 사라진다. plugin-optics 의존이 없는데 빛의 색이 필요하면
   멈추고 보고한다 (C2 · S-piece).
+- **전자기의 물리량도 같다** — 전하량 · k · 거리 · 전압 · 저항 · 용량 · 인덕턴스 · 감은 수 · 전류 · B · E · 진동수 · 판 간격 · 넓이 · κ ·
+  내부 저항은 `stages[].constants` 에 둔다. 이웃 `field-lines` · `rc-circuit` · `electromagnetic-wave` · `charged-particle-in-magnetic-field` ·
+  `current-magnetic-field` 가 schema 모듈 상수로 두고 `constants: {}` 로 비운 방식, `rc-circuit` 의 `u < CHARGE_SPAN` · `current-magnetic-field` physics 가
+  모듈 상수 `CURRENT_PHASES` 를 훑는 방식은 따라 하지 않는다 — 스위치 닫힘 · 끊김 · 전류 올리기 · 일정 · 내리기는 timeline 단계다 (원칙 2 · S-piece).
+- **표시 배율도 선언이다** — 장 세기 → 화살표 길이 배율, 가까운 곳 길이 상한, 전류 → 알갱이 속력 배율, 과장 배율, 3D 투영 각은 `stages[].constants` 에
+  이름 붙여 둔다. 상한에 걸린 화살표는 비례가 끊긴 것이므로 그 처리를 NOTES (b) 에 적는다 (원칙 2).
+- **plugin-circuit · plugin-em 에서는 순수 계산과 타입만 import 한다**(`solveMna` · `MnaElement` · `manhattanRoute` · `followAngle` · `wireField*`).
+  `render*` · `circuitPlugin` · default export 는 import 하지 않는다. circuitElement / wire / terminal 은 선언만 하면 bootstrap 이 그린다 (원칙 1 · S-sim).
+- **`circuitElement.value` 는 화면 글자가 된다** — 렌더러가 `${value}${unit}` 를 그대로 쓴다. 넣으면 스테이지 상수를 보일 단위로(`2` + `'μF'`) 넣고,
+  합성값 · solveMna 결과 같은 계산값은 넣지 않는다. circuitElement 에는 램프 켜짐 · 밝기, 계기 바늘, 검류계 · 다이오드 · 가변저항 · 써미스터 · LDR 소자,
+  `opacity` · `highlight` · `label` 이 없다 — 켜짐 · 밝기는 `body` 의 `light` · 둘레 모양으로, 바늘은 `scale` 로 근사하고 NOTES (c) 에 적는다 (S-piece · S-render).
+- **수를 스스로 띄우는 어휘를 조심한다** — `scale` dial 은 지금 값을 `toFixed(digits)` 로 늘 쓰고(G144), `graph` bar 는 막대마다 `toFixed(1)` 을,
+  `vector.showMagnitude` 는 화살표의 월드 길이를 쓴다. `showMagnitude` 는 켜지 않고, 계기 · 막대에서 수가 뜨면 멈추는 값을 선언한 정박값과 같게 두거나
+  G144 조립(`sector` + `lineSet` + `readout`)으로 대신한다 (S-piece 유효숫자).
+- **단위가 붙는 값(V · Ω · A · μF · mH · T · Hz · e = 1.6×10⁻¹⁹ C)** 은 정박값 상수 + `'{v} V'` 문안 키 + `vars` 로 끼운다. `dc-circuit` 의 `fmt`
+  (toFixed · `'e-3'` · toExponential) · `` `I=${…} A` `` 이어 붙이기 · scene 안 `{ko,en}` 문안, `rc-circuit` 의 `toFixed(1)` 을 따라 하지 않는다 (C1 · S-piece).
+- **전하 부호 · 자극 · 전류 방향은 표식과 모양으로 가른다** — `+` / `−`, `N` / `S`, `⊙` / `⊗`, 관례 전류 화살표 `I` / 전자 알갱이 `e⁻`. N 빨강 · S 파랑
+  관례색, 두 파형(V · I, 1차 · 2차, 전류 · 변위)을 역할색 범례로 쓰지 않는다 — 선 모양(실선 · 점선)과 표식으로 (S-piece). 도선 속을 흐르는 알갱이는
+  무엇인지 표식으로 밝힌다 — 전자(`e⁻`)면 관례 전류 `I` 와 반대로 간다.
+- **식은 캡션 · 문안에 쓰지 않는다** — `F = kq₁q₂/r²` · `B = μ₀nI` · `ε = −N dΦ/dt` 는 문단의 몫이다. 도식 옆 표식 한 조각(`V₂/V₁`)까지만 (S-piece).
+  **법칙을 말로 푼 일반 진술도 식과 같다** — 「선의 수를 정하는 것은 안에 든 전하다」 · 「전압이 길이 비대로 나뉜다」 · 「전류가 일정하면
+  역기전력은 없다」 · 「오른손 손가락을 감으면」 · 「벌린 배수의 제곱만큼」 대신 지금 화면에서 보이는 사실(「세 기둥이 모두 {n} 에 닿았다」)을 쓴다.
+  rule-guard 가 여섯 번(coulombs-law · gausss-law · potential-divider · field-of-charged-sphere · energy-in-inductor · magnetic-dipole) 잡았다.
 - **단계 안을 코드로 다시 가르지 않는다** — `tl.at('x') / 0.12` · `window * 0.5` · `FADE_S = 0.4` 로 앞머리 · 뒷부분을 잘라
   페이드하거나 멈춤 몫을 두거나, `x*x*(3-2x)` 같은 이징을 코드로 씌우는 것 모두 S-piece 위반이다. 짧은 단계를 timeline 에
   더 선언하고 `at()` 으로 읽거나 `ease` 를 선언한다. 알갱이마다 다른 시각처럼 단계로 풀 수 없으면 그 몫을 스테이지 상수로
@@ -125,6 +148,11 @@ sim 패키지는 **이미 만들어져 있다** (6파일 최소 스텁 · loader
 - 캡션은 `BundleSchema.caption` 슬롯 하나. 지금 화면에서 벌어지는 일만 말한다. **다음 단계에서 일어날 일을 앞 단계 캡션에
   미리 걸지 않고**(appear 에 「쏟아진다」), **무작위 결과에 기대는 문장은 모든 주기에서 참이게** 결과를 보장한다(시드 · 자리
   바꿈). rule-guard 가 세 번(wave-function · relativistic-velocity-addition · ionizing-radiation) 잡았다.
+  전자기에서도 세 번(lorentz-force · charging-methods · electromagnet) — **스위치를 닫는 · 여는 단계, 나타남 단계에는 그 단계의 일만
+  쓰고**(「스위치를 닫는다」), 전류가 흐르고 · 클립이 오르고 · 전자가 옮겨 가는 결과는 결과 단계부터 건다.
+- **캡션 · 이름표에 스테이지 상수의 값(「절반」 · 「두 배」 · 「한 바퀴」 · 「6 V」)을 문안으로 박지 않는다** — `initialState({ stage })` 에서
+  `readConstants` 로 읽은 값을 `String(값)` 으로 state 에 두고 `caption.vars` 로 끼운다(`sims/modern/time-dilation/src/state.ts` 가 선례, G133 우회로).
+  「G133 때문에 끼울 수 없다」 가 아니다. rule-guard 가 여덟 번 잡았다 (원칙 2).
 - 같은 시각은 언제나 같은 화면이어야 한다. 누적 적분이 필요한 것만 `step` 이 상태에 쌓는다.
 - 크롬(그리드 · 카메라 단추)은 주장이 요구할 때만 켠다. 조작기는 독자가 직접 해 봐야 하는 것이
   있을 때만 필요한 만큼 둔다.
@@ -183,6 +211,9 @@ curl -s -X POST http://localhost:3800/api/events \
   -H "Content-Type: application/json" \
   -d '{"projectName":"aperi21","action":"...","reason":"...","taskId":"{{taskId}}"}'
 ```
+
+**`inventory.json` · `state.ts` 처럼 새로 만드는 파일도 만들기 전에 보고한다** — 이 큐에서 세 에이전트가 파일을 만든 뒤에야
+보고했다. 빠뜨렸으면 소급하지 말고 다음 보고에 그 사실을 적는다.
 
 보고용 도우미 스크립트를 만들려면 이름에 네 id 를 넣는다(예: `/tmp/bd-{{id}}.sh`). 같은 이름을 다른 에이전트도 쓴다 —
 지난 배치에서 공유 이름 `bd.sh` 가 서로 덮어써졌다. 저장소 안에는 두지 않는다.

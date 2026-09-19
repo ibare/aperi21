@@ -157,6 +157,10 @@ tasks/piece-lab/_report/            (gitignore — 언제든 다시 만든다)
 투입 순서는 메인이 정한다. **주장이 가까운 형제 조각은 떨어뜨려 넣는다** — 먼저 끝난 형제를 뒤의 에이전트가 읽고 들어가게
 해서, 동시에 만들어 화면이 겹치던 일(inelastic-collision · energy-in-collision)을 막는다.
 
+**투입 문구 맨 앞에 첫 Baden 보고(curl)를 넣는다.** 에이전트는 지시서를 읽어야 보고 방법을 알게 되므로, 문구에 없으면 첫 읽기가
+보고 없이 지나간다 — 전자기 큐에서 에이전트 넷이 그렇게 보고했다. 투입 문구 예: 「먼저 Baden 에 읽기 보고를 한 뒤 시작한다:
+curl …」 → 「p-<id>.txt 를 읽고 그 지시를 그대로 따른다 … 커밋 · git 명령 금지(git status 같은 읽기 명령도 금지)」.
+
 **생성물 두 벌의 시점.** 스텁을 깐 직후 `pnpm catalog:topics` 를 돌린다 — `catalog.json` 에 simId 가 없으면
 `piece:report` 가 「sims 를 찍지 못했다」로 멈춘다(파동 큐에서 빠뜨려 첫 다섯이 모두 막혔다). 전체 게이트의 `pnpm test`
 전에는 `pnpm catalog:gen` 을 돌린다 — bootstrap 카탈로그 테스트가 loader id 집합과 생성물을 대조한다.
