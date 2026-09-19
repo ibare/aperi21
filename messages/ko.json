@@ -1,0 +1,13 @@
+{
+  "ui.angleDial.label": "각도",
+  "ui.envToggles.label": "환경",
+  "ui.nodeView.error": "[bundle] {message}",
+  "ui.nodeView.loading": "[bundle] 로딩…",
+  "ui.paramPanel.reset": "초기값",
+  "ui.paramPanel.title": "파라미터",
+  "ui.pinballLauncher.label": "발사대 · {power}%",
+  "ui.placement.label": "배치",
+  "ui.resetButtons.camera": "카메라",
+  "ui.resetButtons.state": "초기화",
+  "ui.stageTabs.label": "스테이지"
+}

@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      '@aperi21/authoring':
+        specifier: workspace:*
+        version: link:packages/authoring
       '@aperi21/bootstrap':
         specifier: workspace:*
         version: link:packages/bootstrap
@@ -135,6 +138,15 @@ importers:
       vite:
         specifier: ^5.4.11
         version: 5.4.21
+
+  packages/authoring:
+    devDependencies:
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(jsdom@25.0.1)
 
   packages/bootstrap:
     dependencies:
@@ -1544,6 +1556,9 @@ importers:
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../schema
+      '@rollup/plugin-json':
+        specifier: ^6.1.0
+        version: 6.1.0(rollup@4.60.2)
       '@rollup/plugin-node-resolve':
         specifier: ^15.3.0
         version: 15.3.1(rollup@4.60.2)
@@ -6335,6 +6350,15 @@ packages:
   '@rolldown/pluginutils@1.0.0-beta.27':
     resolution: {integrity: sha512-+d0F4MKMCbeVUJwG96uQ4SgAznZNSq93I3V+9NHA4OpvqG8mRCpGdKmK8l/dl02h2CCDHwW2FqilnTyDcAnqjA==}
 
+  '@rollup/plugin-json@6.1.0':
+    resolution: {integrity: sha512-EGI2te5ENk1coGeADSIwZ7G2Q8CJS2sF120T7jLw4xFw9n7wIOXHo+kIYRAoVpJAN+kmqZSoO3Fp4JtoNF4ReA==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+
   '@rollup/plugin-node-resolve@15.3.1':
     resolution: {integrity: sha512-tgg6b91pAybXHJQMAAwW9VuWBO6Thi+q7BCNARLwSqlmsHz0XYURtGvh/AuwSADXSI4h/2uHbs7s4FzlZDGSGA==}
     engines: {node: '>=14.0.0'}
@@ -7808,6 +7832,12 @@ snapshots:
   '@remix-run/router@1.23.2': {}
 
   '@rolldown/pluginutils@1.0.0-beta.27': {}
+
+  '@rollup/plugin-json@6.1.0(rollup@4.60.2)':
+    dependencies:
+      '@rollup/pluginutils': 5.3.0(rollup@4.60.2)
+    optionalDependencies:
+      rollup: 4.60.2
 
   '@rollup/plugin-node-resolve@15.3.1(rollup@4.60.2)':
     dependencies:

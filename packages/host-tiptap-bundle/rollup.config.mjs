@@ -15,6 +15,7 @@
  */
 
 import { nodeResolve } from '@rollup/plugin-node-resolve';
+import json from '@rollup/plugin-json';
 import esbuild from 'rollup-plugin-esbuild';
 import dts from 'rollup-plugin-dts';
 import { visualizer } from 'rollup-plugin-visualizer';
@@ -62,6 +63,13 @@ function manualChunks(id) {
   // 조각 수에 비례해 첫 페이로드가 자란다 (R10).
   const capMatch = id.match(/\/packages\/bootstrap\/src\/capabilities\/([^/]+)\/([^/]+)\.generated\./);
   if (capMatch) return `sim-${capMatch[1]}-${capMatch[2]}`;
+
+  // 언어별 카탈로그와 프레임워크 문구 번들. **언어마다 따로 둔다** — bootstrap 규칙
+  // (아래)에 먼저 걸리면 runtime 으로 가서 모든 언어가 첫 페이로드에 실린다 (C6).
+  const catalogMatch = id.match(/\/packages\/bootstrap\/src\/catalog\/([a-z]{2}(?:-[A-Z]{2})?)\.generated\./);
+  if (catalogMatch) return `catalog-${catalogMatch[1]}`;
+  const messagesMatch = id.match(/\/messages\/([a-z]{2}(?:-[A-Z]{2})?)\.json$/);
+  if (messagesMatch) return `messages-${messagesMatch[1]}`;
 
   const pluginMatch = id.match(/\/packages\/plugin-([^/]+)\//);
   if (pluginMatch) return `plugin-${pluginMatch[1]}`;
@@ -121,6 +129,9 @@ const jsBundle = {
       extensions: ['.ts', '.tsx', '.mjs', '.js'],
       preferBuiltins: false,
     }),
+    // 프레임워크 문구 번들(messages/<locale>.json)을 모듈로 읽는다. 없으면 rollup 이
+    // JSON 을 JS 로 파싱하다 실패한다 (FACET `a8cfe7a`).
+    json(),
     esbuild({
       target: 'es2022',
       sourceMap: true,

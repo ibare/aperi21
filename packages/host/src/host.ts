@@ -26,7 +26,6 @@ import { ResetButtonsController } from './controller/reset-buttons';
 import { ButtonController } from './controller/button';
 import { PressAreaController } from './controller/press-area';
 import { I18nResolver, type Dictionary, type HostI18n } from './i18n/resolver';
-import { FRAMEWORK_MESSAGES } from './i18n/messages';
 import { PluginManager, ServiceRegistry, type HostPlugin } from './pluginManager';
 import { CORE_RENDERERS } from './renderer/primitives';
 import { RendererRegistry } from './renderer/registry';
@@ -131,19 +130,6 @@ function controllerEntries(
   return out;
 }
 
-/**
- * 프레임워크 문구 번들(2층) 위에 호스트가 준 사전을 얹는다. 호스트 값이 이긴다.
- * 이것이 없으면 ko 화면의 프레임워크 문구가 전부 en 원본으로 떨어진다 (C1).
- */
-function mergeDictionary(dictionary?: Dictionary): Dictionary {
-  if (!dictionary) return FRAMEWORK_MESSAGES;
-  const merged: Dictionary = {};
-  for (const lang of new Set([...Object.keys(FRAMEWORK_MESSAGES), ...Object.keys(dictionary)])) {
-    merged[lang] = { ...FRAMEWORK_MESSAGES[lang], ...dictionary[lang] };
-  }
-  return merged;
-}
-
 const defaultLogger: PluginLogger = {
   warn(msg) {
     console.warn(msg);
@@ -217,7 +203,7 @@ export class Host {
 
     this.theme = resolveThemeInput(config.theme);
     this.themeMode = this.theme.mode;
-    this.i18n = new I18nResolver(config.lang ?? 'ko', mergeDictionary(config.dictionary));
+    this.i18n = new I18nResolver(config.lang ?? 'ko', config.dictionary);
 
     // 서비스 등록 — Plugin 의 HostAPI.getService 로 조회 가능.
     this.services.register(HOST_SERVICE_IDS.renderer, this.rendererRegistry);
@@ -292,7 +278,7 @@ export class Host {
   }
 
   setLang(lang: string, dictionary?: Dictionary): void {
-    this.i18n = new I18nResolver(lang, mergeDictionary(dictionary));
+    this.i18n = new I18nResolver(lang, dictionary);
     this.services.register(HOST_SERVICE_IDS.i18n, this.i18n);
   }
 

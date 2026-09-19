@@ -64,6 +64,7 @@
     "@aperi21/host": "workspace:*",
     "@aperi21/host-tiptap": "workspace:*",
     "@aperi21/schema": "workspace:*",
+    "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.3.0",
     "@tiptap/core": "^3.22.3",
     "@tiptap/pm": "^3.22.3",

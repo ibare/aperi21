@@ -1,4 +1,5 @@
 import type { LocalizedText } from '@aperi21/schema';
+import { lookupRegisteredMessage } from './messages';
 
 /**
  * 호스트가 쓰는 확장 I18n 인터페이스. schema 의 최소 I18n 은 `currentLang`
@@ -14,7 +15,7 @@ export interface HostI18n {
    *
    * ```
    * 1. 선언의 messages[key]   저작자가 정한 문안   ← 언제나 이김
-   * 2. locale 번들[key]        호스트가 주입
+   * 2. locale 번들[key]        호스트 사전 → registerMessages 로 등록된 번들
    * 3. en 원본                 호출부 리터럴 fallback
    * ```
    *
@@ -58,7 +59,10 @@ export class I18nResolver implements HostI18n {
   t(key: string, en: string, vars?: Record<string, string | number>): string {
     const authored = this.overrides[key];
     if (authored !== undefined) return interpolate(this.resolve(authored), vars);
-    const bundled = this.dict[this.lang]?.[key] ?? this.dict['en']?.[key];
+    const bundled =
+      this.dict[this.lang]?.[key] ??
+      lookupRegisteredMessage(this.lang, key) ??
+      this.dict['en']?.[key];
     return interpolate(bundled ?? en, vars);
   }
 
@@ -71,7 +75,12 @@ export class I18nResolver implements HostI18n {
     if (typeof text === 'string') {
       if (text.startsWith('@i18n:')) {
         const key = text.slice(6);
-        return this.dict[this.lang]?.[key] ?? this.dict['en']?.[key] ?? text;
+        return (
+          this.dict[this.lang]?.[key] ??
+          lookupRegisteredMessage(this.lang, key) ??
+          this.dict['en']?.[key] ??
+          text
+        );
       }
       return text;
     }

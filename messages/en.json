@@ -1,0 +1,13 @@
+{
+  "ui.angleDial.label": "ANGLE",
+  "ui.envToggles.label": "env",
+  "ui.nodeView.error": "[bundle] {message}",
+  "ui.nodeView.loading": "[bundle] loading…",
+  "ui.paramPanel.reset": "reset",
+  "ui.paramPanel.title": "params",
+  "ui.pinballLauncher.label": "LAUNCHER · {power}%",
+  "ui.placement.label": "PLACE",
+  "ui.resetButtons.camera": "Camera",
+  "ui.resetButtons.state": "Reset",
+  "ui.stageTabs.label": "stage"
+}
