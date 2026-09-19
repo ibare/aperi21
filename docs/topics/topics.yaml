@@ -12,29 +12,30 @@
 # 빼는 근거가 아니다 (README 1절).
 
 # 분과는 열거의 비계다. 소속이 아니라 출처를 뜻한다 (README 3절).
+# 호스트 카탈로그의 분야 원본이기도 하다 — 이름은 언어 → 문자열 (pnpm catalog:gen).
 domains:
   - id: kinematics
-    name: 운동학
+    name: { ko: 운동학, en: "Kinematics" }
   - id: newtonian-mechanics
-    name: 뉴턴 역학
+    name: { ko: 뉴턴 역학, en: "Newtonian Mechanics" }
   - id: energy-momentum
-    name: 일·에너지·운동량
+    name: { ko: 일·에너지·운동량, en: "Work, Energy and Momentum" }
   - id: rotation-oscillation
-    name: 회전과 진동
+    name: { ko: 회전과 진동, en: "Rotation and Oscillation" }
   - id: gravitation
-    name: 중력과 천체
+    name: { ko: 중력과 천체, en: "Gravitation and Astronomy" }
   - id: fluids
-    name: 유체
+    name: { ko: 유체, en: "Fluids" }
   - id: thermodynamics
-    name: 열과 통계
+    name: { ko: 열과 통계, en: "Thermal and Statistical Physics" }
   - id: waves-acoustics
-    name: 파동과 음향
+    name: { ko: 파동과 음향, en: "Waves and Acoustics" }
   - id: optics
-    name: 광학
+    name: { ko: 광학, en: "Optics" }
   - id: electromagnetism
-    name: 전자기
+    name: { ko: 전자기, en: "Electromagnetism" }
   - id: modern-physics
-    name: 현대물리
+    name: { ko: 현대물리, en: "Modern Physics" }
 
 topics:
   # ── 운동학

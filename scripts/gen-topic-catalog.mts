@@ -56,7 +56,7 @@ interface SourceTopic {
 }
 
 interface Source {
-  domains: { id: string; name: string }[];
+  domains: { id: string; name: Record<string, string> }[];
   topics: SourceTopic[];
 }
 
@@ -112,7 +112,8 @@ for (const t of source.topics) {
 
 const domains: Domain[] = source.domains.map((d) => ({
   id: d.id,
-  name: d.name,
+  // 사이트는 한국어로 그린다. 호스트 카탈로그는 언어별 이름을 모두 쓴다 (gen-aperi21-catalog).
+  name: d.name.ko ?? d.id,
   topics: byDomain.get(d.id)!,
 }));
 
