@@ -150,9 +150,15 @@ importers:
       '@aperi21/sim-acceleration-time-graph':
         specifier: workspace:*
         version: link:../../sims/kinematics/acceleration-time-graph
+      '@aperi21/sim-adiabatic-process':
+        specifier: workspace:*
+        version: link:../../sims/thermal/adiabatic-process
       '@aperi21/sim-air-column-resonance':
         specifier: workspace:*
         version: link:../../sims/waves/air-column-resonance
+      '@aperi21/sim-albedo':
+        specifier: workspace:*
+        version: link:../../sims/thermal/albedo
       '@aperi21/sim-amperes-law':
         specifier: workspace:*
         version: link:../../sims/em/amperes-law
@@ -177,6 +183,9 @@ importers:
       '@aperi21/sim-apparent-brightness':
         specifier: workspace:*
         version: link:../../sims/astro/apparent-brightness
+      '@aperi21/sim-apparent-depth':
+        specifier: workspace:*
+        version: link:../../sims/optics/apparent-depth
       '@aperi21/sim-apparent-weight':
         specifier: workspace:*
         version: link:../../sims/mechanics/apparent-weight
@@ -222,12 +231,18 @@ importers:
       '@aperi21/sim-bernoullis-principle':
         specifier: workspace:*
         version: link:../../sims/fluids/bernoullis-principle
+      '@aperi21/sim-bimetal':
+        specifier: workspace:*
+        version: link:../../sims/thermal/bimetal
       '@aperi21/sim-binding-energy-curve':
         specifier: workspace:*
         version: link:../../sims/modern/binding-energy-curve
       '@aperi21/sim-biot-savart-law':
         specifier: workspace:*
         version: link:../../sims/em/biot-savart-law
+      '@aperi21/sim-birefringence':
+        specifier: workspace:*
+        version: link:../../sims/optics/birefringence
       '@aperi21/sim-black-hole-horizon':
         specifier: workspace:*
         version: link:../../sims/astro/black-hole-horizon
@@ -243,12 +258,24 @@ importers:
       '@aperi21/sim-boundary-layer':
         specifier: workspace:*
         version: link:../../sims/fluids/boundary-layer
+      '@aperi21/sim-boyles-law':
+        specifier: workspace:*
+        version: link:../../sims/thermal/boyles-law
+      '@aperi21/sim-brewster-angle':
+        specifier: workspace:*
+        version: link:../../sims/optics/brewster-angle
+      '@aperi21/sim-brownian-motion':
+        specifier: workspace:*
+        version: link:../../sims/thermal/brownian-motion
       '@aperi21/sim-buoyancy':
         specifier: workspace:*
         version: link:../../sims/fluids/buoyancy
       '@aperi21/sim-buoyant-force-as-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/buoyant-force-as-force
+      '@aperi21/sim-calorimetry':
+        specifier: workspace:*
+        version: link:../../sims/thermal/calorimetry
       '@aperi21/sim-capacitors-in-circuit':
         specifier: workspace:*
         version: link:../../sims/em/capacitors-in-circuit
@@ -282,6 +309,12 @@ importers:
       '@aperi21/sim-charging-methods':
         specifier: workspace:*
         version: link:../../sims/em/charging-methods
+      '@aperi21/sim-charles-law':
+        specifier: workspace:*
+        version: link:../../sims/thermal/charles-law
+      '@aperi21/sim-chromatic-aberration':
+        specifier: workspace:*
+        version: link:../../sims/optics/chromatic-aberration
       '@aperi21/sim-circular-orbit':
         specifier: workspace:*
         version: link:../../sims/astro/circular-orbit
@@ -291,6 +324,9 @@ importers:
       '@aperi21/sim-compton-scattering':
         specifier: workspace:*
         version: link:../../sims/modern/compton-scattering
+      '@aperi21/sim-concave-mirror':
+        specifier: workspace:*
+        version: link:../../sims/optics/concave-mirror
       '@aperi21/sim-conical-pendulum':
         specifier: workspace:*
         version: link:../../sims/mechanics/conical-pendulum
@@ -312,6 +348,12 @@ importers:
       '@aperi21/sim-continuity-equation':
         specifier: workspace:*
         version: link:../../sims/fluids/continuity-equation
+      '@aperi21/sim-converging-diverging-lens':
+        specifier: workspace:*
+        version: link:../../sims/optics/converging-diverging-lens
+      '@aperi21/sim-convex-mirror':
+        specifier: workspace:*
+        version: link:../../sims/optics/convex-mirror
       '@aperi21/sim-coordinate-choice':
         specifier: workspace:*
         version: link:../../sims/kinematics/coordinate-choice
@@ -327,6 +369,9 @@ importers:
       '@aperi21/sim-current-magnetic-field':
         specifier: workspace:*
         version: link:../../sims/em/current-magnetic-field
+      '@aperi21/sim-cyclic-process':
+        specifier: workspace:*
+        version: link:../../sims/thermal/cyclic-process
       '@aperi21/sim-damped-oscillation':
         specifier: workspace:*
         version: link:../../sims/oscillation/damped-oscillation
@@ -345,6 +390,12 @@ importers:
       '@aperi21/sim-diffraction':
         specifier: workspace:*
         version: link:../../sims/waves/diffraction
+      '@aperi21/sim-diffraction-grating':
+        specifier: workspace:*
+        version: link:../../sims/optics/diffraction-grating
+      '@aperi21/sim-diffusion':
+        specifier: workspace:*
+        version: link:../../sims/thermal/diffusion
       '@aperi21/sim-digital-vs-analog-signal':
         specifier: workspace:*
         version: link:../../sims/waves/digital-vs-analog-signal
@@ -354,6 +405,9 @@ importers:
       '@aperi21/sim-direction-of-acceleration':
         specifier: workspace:*
         version: link:../../sims/kinematics/direction-of-acceleration
+      '@aperi21/sim-dispersion':
+        specifier: workspace:*
+        version: link:../../sims/optics/dispersion
       '@aperi21/sim-displacement-current':
         specifier: workspace:*
         version: link:../../sims/em/displacement-current
@@ -447,6 +501,9 @@ importers:
       '@aperi21/sim-energy-in-inductor':
         specifier: workspace:*
         version: link:../../sims/em/energy-in-inductor
+      '@aperi21/sim-entropy-and-irreversibility':
+        specifier: workspace:*
+        version: link:../../sims/thermal/entropy-and-irreversibility
       '@aperi21/sim-equilibrium-of-forces':
         specifier: workspace:*
         version: link:../../sims/mechanics/equilibrium-of-forces
@@ -498,6 +555,9 @@ importers:
       '@aperi21/sim-finite-well':
         specifier: workspace:*
         version: link:../../sims/modern/finite-well
+      '@aperi21/sim-first-law-of-thermodynamics':
+        specifier: workspace:*
+        version: link:../../sims/thermal/first-law-of-thermodynamics
       '@aperi21/sim-floating-and-draft':
         specifier: workspace:*
         version: link:../../sims/fluids/floating-and-draft
@@ -552,6 +612,9 @@ importers:
       '@aperi21/sim-gravity-inside-earth':
         specifier: workspace:*
         version: link:../../sims/astro/gravity-inside-earth
+      '@aperi21/sim-greenhouse-effect':
+        specifier: workspace:*
+        version: link:../../sims/thermal/greenhouse-effect
       '@aperi21/sim-gyroscopic-precession':
         specifier: workspace:*
         version: link:../../sims/oscillation/gyroscopic-precession
@@ -561,9 +624,15 @@ importers:
       '@aperi21/sim-heat-conduction':
         specifier: workspace:*
         version: link:../../sims/thermal/heat-conduction
+      '@aperi21/sim-heat-engine':
+        specifier: workspace:*
+        version: link:../../sims/thermal/heat-engine
       '@aperi21/sim-hr-diagram':
         specifier: workspace:*
         version: link:../../sims/astro/hr-diagram
+      '@aperi21/sim-human-eye-accommodation':
+        specifier: workspace:*
+        version: link:../../sims/optics/human-eye-accommodation
       '@aperi21/sim-huygens-principle':
         specifier: workspace:*
         version: link:../../sims/waves/huygens-principle
@@ -573,6 +642,9 @@ importers:
       '@aperi21/sim-hydrostatic-pressure':
         specifier: workspace:*
         version: link:../../sims/fluids/hydrostatic-pressure
+      '@aperi21/sim-ideal-gas-law':
+        specifier: workspace:*
+        version: link:../../sims/thermal/ideal-gas-law
       '@aperi21/sim-impedance-mismatch':
         specifier: workspace:*
         version: link:../../sims/waves/impedance-mismatch
@@ -594,6 +666,9 @@ importers:
       '@aperi21/sim-inertial-vs-gravitational-mass':
         specifier: workspace:*
         version: link:../../sims/mechanics/inertial-vs-gravitational-mass
+      '@aperi21/sim-insulation':
+        specifier: workspace:*
+        version: link:../../sims/thermal/insulation
       '@aperi21/sim-interference':
         specifier: workspace:*
         version: link:../../sims/waves/interference
@@ -603,6 +678,12 @@ importers:
       '@aperi21/sim-ionizing-radiation':
         specifier: workspace:*
         version: link:../../sims/modern/ionizing-radiation
+      '@aperi21/sim-isobaric-isochoric':
+        specifier: workspace:*
+        version: link:../../sims/thermal/isobaric-isochoric
+      '@aperi21/sim-isothermal-process':
+        specifier: workspace:*
+        version: link:../../sims/thermal/isothermal-process
       '@aperi21/sim-iv-characteristic':
         specifier: workspace:*
         version: link:../../sims/em/iv-characteristic
@@ -639,12 +720,21 @@ importers:
       '@aperi21/sim-laser-and-stimulated-emission':
         specifier: workspace:*
         version: link:../../sims/modern/laser-and-stimulated-emission
+      '@aperi21/sim-latent-heat':
+        specifier: workspace:*
+        version: link:../../sims/thermal/latent-heat
+      '@aperi21/sim-law-of-reflection':
+        specifier: workspace:*
+        version: link:../../sims/optics/law-of-reflection
       '@aperi21/sim-lc-oscillation':
         specifier: workspace:*
         version: link:../../sims/em/lc-oscillation
       '@aperi21/sim-length-contraction':
         specifier: workspace:*
         version: link:../../sims/modern/length-contraction
+      '@aperi21/sim-lens-combination':
+        specifier: workspace:*
+        version: link:../../sims/optics/lens-combination
       '@aperi21/sim-lenz-law':
         specifier: workspace:*
         version: link:../../sims/em/lenz-law
@@ -660,6 +750,9 @@ importers:
       '@aperi21/sim-light-cone':
         specifier: workspace:*
         version: link:../../sims/modern/light-cone
+      '@aperi21/sim-light-through-materials':
+        specifier: workspace:*
+        version: link:../../sims/optics/light-through-materials
       '@aperi21/sim-longitudinal-wave':
         specifier: workspace:*
         version: link:../../sims/waves/longitudinal-wave
@@ -687,9 +780,18 @@ importers:
       '@aperi21/sim-magnetic-poles':
         specifier: workspace:*
         version: link:../../sims/em/magnetic-poles
+      '@aperi21/sim-magnification':
+        specifier: workspace:*
+        version: link:../../sims/optics/magnification
+      '@aperi21/sim-magnifying-glass':
+        specifier: workspace:*
+        version: link:../../sims/optics/magnifying-glass
       '@aperi21/sim-magnitude-scale':
         specifier: workspace:*
         version: link:../../sims/astro/magnitude-scale
+      '@aperi21/sim-malus-law':
+        specifier: workspace:*
+        version: link:../../sims/optics/malus-law
       '@aperi21/sim-manometer':
         specifier: workspace:*
         version: link:../../sims/fluids/manometer
@@ -702,9 +804,15 @@ importers:
       '@aperi21/sim-maxwell-boltzmann-distribution':
         specifier: workspace:*
         version: link:../../sims/thermal/maxwell-boltzmann-distribution
+      '@aperi21/sim-maxwells-demon':
+        specifier: workspace:*
+        version: link:../../sims/thermal/maxwells-demon
       '@aperi21/sim-maxwells-equations':
         specifier: workspace:*
         version: link:../../sims/em/maxwells-equations
+      '@aperi21/sim-mean-free-path':
+        specifier: workspace:*
+        version: link:../../sims/thermal/mean-free-path
       '@aperi21/sim-measurement-collapse':
         specifier: workspace:*
         version: link:../../sims/modern/measurement-collapse
@@ -717,9 +825,15 @@ importers:
       '@aperi21/sim-michelson-morley':
         specifier: workspace:*
         version: link:../../sims/modern/michelson-morley
+      '@aperi21/sim-microscope':
+        specifier: workspace:*
+        version: link:../../sims/optics/microscope
       '@aperi21/sim-millikan-experiment':
         specifier: workspace:*
         version: link:../../sims/em/millikan-experiment
+      '@aperi21/sim-mirage':
+        specifier: workspace:*
+        version: link:../../sims/optics/mirage
       '@aperi21/sim-moment-of-inertia':
         specifier: workspace:*
         version: link:../../sims/oscillation/moment-of-inertia
@@ -732,18 +846,27 @@ importers:
       '@aperi21/sim-motor':
         specifier: workspace:*
         version: link:../../sims/em/motor
+      '@aperi21/sim-multiple-mirror-images':
+        specifier: workspace:*
+        version: link:../../sims/optics/multiple-mirror-images
       '@aperi21/sim-muon-decay-evidence':
         specifier: workspace:*
         version: link:../../sims/modern/muon-decay-evidence
       '@aperi21/sim-mutual-inductance':
         specifier: workspace:*
         version: link:../../sims/em/mutual-inductance
+      '@aperi21/sim-myopia-hyperopia':
+        specifier: workspace:*
+        version: link:../../sims/optics/myopia-hyperopia
       '@aperi21/sim-net-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/net-force
       '@aperi21/sim-newtons-law-of-gravitation':
         specifier: workspace:*
         version: link:../../sims/astro/newtons-law-of-gravitation
+      '@aperi21/sim-newtons-rings':
+        specifier: workspace:*
+        version: link:../../sims/optics/newtons-rings
       '@aperi21/sim-newtons-second-law':
         specifier: workspace:*
         version: link:../../sims/mechanics/newtons-second-law
@@ -777,9 +900,15 @@ importers:
       '@aperi21/sim-nuclear-structure':
         specifier: workspace:*
         version: link:../../sims/modern/nuclear-structure
+      '@aperi21/sim-object-color':
+        specifier: workspace:*
+        version: link:../../sims/optics/object-color
       '@aperi21/sim-ohms-law':
         specifier: workspace:*
         version: link:../../sims/em/ohms-law
+      '@aperi21/sim-optical-fiber':
+        specifier: workspace:*
+        version: link:../../sims/optics/optical-fiber
       '@aperi21/sim-orbital-decay':
         specifier: workspace:*
         version: link:../../sims/astro/orbital-decay
@@ -831,6 +960,12 @@ importers:
       '@aperi21/sim-physical-pendulum':
         specifier: workspace:*
         version: link:../../sims/oscillation/physical-pendulum
+      '@aperi21/sim-pinhole-camera':
+        specifier: workspace:*
+        version: link:../../sims/optics/pinhole-camera
+      '@aperi21/sim-plane-mirror-image':
+        specifier: workspace:*
+        version: link:../../sims/optics/plane-mirror-image
       '@aperi21/sim-pn-junction':
         specifier: workspace:*
         version: link:../../sims/modern/pn-junction
@@ -858,12 +993,21 @@ importers:
       '@aperi21/sim-poynting-vector':
         specifier: workspace:*
         version: link:../../sims/em/poynting-vector
+      '@aperi21/sim-pressure-from-collisions':
+        specifier: workspace:*
+        version: link:../../sims/thermal/pressure-from-collisions
+      '@aperi21/sim-prism':
+        specifier: workspace:*
+        version: link:../../sims/optics/prism
       '@aperi21/sim-projectile-motion':
         specifier: workspace:*
         version: link:../../sims/kinematics/projectile-motion
       '@aperi21/sim-pulley-system':
         specifier: workspace:*
         version: link:../../sims/mechanics/pulley-system
+      '@aperi21/sim-pv-diagram':
+        specifier: workspace:*
+        version: link:../../sims/thermal/pv-diagram
       '@aperi21/sim-quality-factor':
         specifier: workspace:*
         version: link:../../sims/oscillation/quality-factor
@@ -876,6 +1020,9 @@ importers:
       '@aperi21/sim-radiation-pressure':
         specifier: workspace:*
         version: link:../../sims/em/radiation-pressure
+      '@aperi21/sim-radiative-equilibrium':
+        specifier: workspace:*
+        version: link:../../sims/thermal/radiative-equilibrium
       '@aperi21/sim-radioactive-decay':
         specifier: workspace:*
         version: link:../../sims/modern/radioactive-decay
@@ -885,15 +1032,30 @@ importers:
       '@aperi21/sim-radius-of-curvature':
         specifier: workspace:*
         version: link:../../sims/kinematics/radius-of-curvature
+      '@aperi21/sim-rainbow':
+        specifier: workspace:*
+        version: link:../../sims/optics/rainbow
       '@aperi21/sim-ramp-energy':
         specifier: workspace:*
         version: link:../../sims/mechanics/ramp-energy
+      '@aperi21/sim-random-walk':
+        specifier: workspace:*
+        version: link:../../sims/thermal/random-walk
+      '@aperi21/sim-rayleigh-scattering':
+        specifier: workspace:*
+        version: link:../../sims/optics/rayleigh-scattering
       '@aperi21/sim-rc-circuit':
         specifier: workspace:*
         version: link:../../sims/em/rc-circuit
       '@aperi21/sim-reactance-and-impedance':
         specifier: workspace:*
         version: link:../../sims/em/reactance-and-impedance
+      '@aperi21/sim-real-vs-virtual-image':
+        specifier: workspace:*
+        version: link:../../sims/optics/real-vs-virtual-image
+      '@aperi21/sim-rectilinear-propagation':
+        specifier: workspace:*
+        version: link:../../sims/optics/rectilinear-propagation
       '@aperi21/sim-reference-frame':
         specifier: workspace:*
         version: link:../../sims/kinematics/reference-frame
@@ -903,6 +1065,9 @@ importers:
       '@aperi21/sim-refraction-of-waves':
         specifier: workspace:*
         version: link:../../sims/waves/refraction-of-waves
+      '@aperi21/sim-refrigerator-heat-pump':
+        specifier: workspace:*
+        version: link:../../sims/thermal/refrigerator-heat-pump
       '@aperi21/sim-relative-velocity':
         specifier: workspace:*
         version: link:../../sims/kinematics/relative-velocity
@@ -921,6 +1086,9 @@ importers:
       '@aperi21/sim-resistance-and-geometry':
         specifier: workspace:*
         version: link:../../sims/em/resistance-and-geometry
+      '@aperi21/sim-resolving-power':
+        specifier: workspace:*
+        version: link:../../sims/optics/resolving-power
       '@aperi21/sim-resonance':
         specifier: workspace:*
         version: link:../../sims/oscillation/resonance
@@ -957,9 +1125,18 @@ importers:
       '@aperi21/sim-scanning-tunneling-microscope':
         specifier: workspace:*
         version: link:../../sims/modern/scanning-tunneling-microscope
+      '@aperi21/sim-scattering':
+        specifier: workspace:*
+        version: link:../../sims/optics/scattering
       '@aperi21/sim-seasonal-sun-path':
         specifier: workspace:*
         version: link:../../sims/astro/seasonal-sun-path
+      '@aperi21/sim-second-law-of-thermodynamics':
+        specifier: workspace:*
+        version: link:../../sims/thermal/second-law-of-thermodynamics
+      '@aperi21/sim-seeing-requires-light':
+        specifier: workspace:*
+        version: link:../../sims/optics/seeing-requires-light
       '@aperi21/sim-seismic-waves':
         specifier: workspace:*
         version: link:../../sims/waves/seismic-waves
@@ -972,6 +1149,9 @@ importers:
       '@aperi21/sim-series-rlc-resonance':
         specifier: workspace:*
         version: link:../../sims/em/series-rlc-resonance
+      '@aperi21/sim-shadow-umbra-penumbra':
+        specifier: workspace:*
+        version: link:../../sims/optics/shadow-umbra-penumbra
       '@aperi21/sim-shell-theorem':
         specifier: workspace:*
         version: link:../../sims/astro/shell-theorem
@@ -990,9 +1170,15 @@ importers:
       '@aperi21/sim-simple-pendulum':
         specifier: workspace:*
         version: link:../../sims/oscillation/simple-pendulum
+      '@aperi21/sim-single-slit-diffraction':
+        specifier: workspace:*
+        version: link:../../sims/optics/single-slit-diffraction
       '@aperi21/sim-slit-width-and-diffraction':
         specifier: workspace:*
         version: link:../../sims/waves/slit-width-and-diffraction
+      '@aperi21/sim-snells-law':
+        specifier: workspace:*
+        version: link:../../sims/optics/snells-law
       '@aperi21/sim-solar-altitude-shadow':
         specifier: workspace:*
         version: link:../../sims/astro/solar-altitude-shadow
@@ -1008,6 +1194,15 @@ importers:
       '@aperi21/sim-spacetime-diagram':
         specifier: workspace:*
         version: link:../../sims/modern/spacetime-diagram
+      '@aperi21/sim-specific-heat':
+        specifier: workspace:*
+        version: link:../../sims/thermal/specific-heat
+      '@aperi21/sim-specular-diffuse-reflection':
+        specifier: workspace:*
+        version: link:../../sims/optics/specular-diffuse-reflection
+      '@aperi21/sim-spherical-aberration':
+        specifier: workspace:*
+        version: link:../../sims/optics/spherical-aberration
       '@aperi21/sim-spin':
         specifier: workspace:*
         version: link:../../sims/modern/spin
@@ -1035,6 +1230,12 @@ importers:
       '@aperi21/sim-static-friction':
         specifier: workspace:*
         version: link:../../sims/mechanics/static-friction
+      '@aperi21/sim-statistical-fluctuation':
+        specifier: workspace:*
+        version: link:../../sims/thermal/statistical-fluctuation
+      '@aperi21/sim-stefan-boltzmann-law':
+        specifier: workspace:*
+        version: link:../../sims/thermal/stefan-boltzmann-law
       '@aperi21/sim-stellar-luminosity':
         specifier: workspace:*
         version: link:../../sims/astro/stellar-luminosity
@@ -1083,6 +1284,9 @@ importers:
       '@aperi21/sim-tangential-normal-acceleration':
         specifier: workspace:*
         version: link:../../sims/kinematics/tangential-normal-acceleration
+      '@aperi21/sim-telescope':
+        specifier: workspace:*
+        version: link:../../sims/optics/telescope
       '@aperi21/sim-temperature-and-resistance':
         specifier: workspace:*
         version: link:../../sims/em/temperature-and-resistance
@@ -1095,6 +1299,15 @@ importers:
       '@aperi21/sim-thermal-convection':
         specifier: workspace:*
         version: link:../../sims/thermal/thermal-convection
+      '@aperi21/sim-thermal-equilibrium':
+        specifier: workspace:*
+        version: link:../../sims/thermal/thermal-equilibrium
+      '@aperi21/sim-thermal-expansion':
+        specifier: workspace:*
+        version: link:../../sims/thermal/thermal-expansion
+      '@aperi21/sim-thermal-radiation':
+        specifier: workspace:*
+        version: link:../../sims/thermal/thermal-radiation
       '@aperi21/sim-thermistor-and-ldr':
         specifier: workspace:*
         version: link:../../sims/em/thermistor-and-ldr
@@ -1125,6 +1338,9 @@ importers:
       '@aperi21/sim-transverse-wave':
         specifier: workspace:*
         version: link:../../sims/waves/transverse-wave
+      '@aperi21/sim-triple-point':
+        specifier: workspace:*
+        version: link:../../sims/thermal/triple-point
       '@aperi21/sim-twin-paradox':
         specifier: workspace:*
         version: link:../../sims/modern/twin-paradox
@@ -4239,6 +4455,54 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/optics/apparent-depth:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/birefringence:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/brewster-angle:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/chromatic-aberration:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/optics/color-addition:
     devDependencies:
       '@aperi21/schema':
@@ -4248,8 +4512,284 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/optics/concave-mirror:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/converging-diverging-lens:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/convex-mirror:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/diffraction-grating:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/dispersion:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/human-eye-accommodation:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/law-of-reflection:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/lens-combination:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/light-through-materials:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/magnification:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/magnifying-glass:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/malus-law:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/microscope:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/mirage:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/multiple-mirror-images:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/myopia-hyperopia:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/newtons-rings:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/object-color:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/optical-fiber:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/pinhole-camera:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/plane-mirror-image:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/optics/polarization:
     devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/prism:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/rainbow:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../../../packages/schema
@@ -4271,6 +4811,150 @@ importers:
       vitest:
         specifier: ^2.1.9
         version: 2.1.9(jsdom@25.0.1)
+
+  sims/optics/rayleigh-scattering:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/real-vs-virtual-image:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/rectilinear-propagation:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/resolving-power:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/scattering:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/seeing-requires-light:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/shadow-umbra-penumbra:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/single-slit-diffraction:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/snells-law:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/specular-diffuse-reflection:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/spherical-aberration:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/telescope:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
 
   sims/optics/thin-film-interference:
     devDependencies:
@@ -4575,7 +5259,106 @@ importers:
         specifier: ^2.1.9
         version: 2.1.9(jsdom@25.0.1)
 
+  sims/thermal/adiabatic-process:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/albedo:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/bimetal:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/boyles-law:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/brownian-motion:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/calorimetry:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/thermal/carnot-cycle:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/charles-law:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/cyclic-process:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/diffusion:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/entropy-and-irreversibility:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/first-law-of-thermodynamics:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -4593,7 +5376,70 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/thermal/greenhouse-effect:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/thermal/heat-conduction:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/heat-engine:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/ideal-gas-law:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/insulation:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/isobaric-isochoric:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/isothermal-process:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/latent-heat:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -4611,6 +5457,24 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/thermal/maxwells-demon:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/mean-free-path:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/thermal/phase-diagram:
     devDependencies:
       '@aperi21/schema':
@@ -4620,7 +5484,124 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/thermal/pressure-from-collisions:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/pv-diagram:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/radiative-equilibrium:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/random-walk:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/refrigerator-heat-pump:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/second-law-of-thermodynamics:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/specific-heat:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/statistical-fluctuation:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/stefan-boltzmann-law:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/thermal/thermal-convection:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/thermal-equilibrium:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/thermal-expansion:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/thermal-radiation:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/triple-point:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*

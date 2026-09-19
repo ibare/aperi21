@@ -1221,22 +1221,26 @@
         {
           "id": "thermal-equilibrium",
           "name": "열평형",
-          "desc": "접촉한 두 계가 도달하는 상태"
+          "desc": "접촉한 두 계가 도달하는 상태",
+          "simId": "aperi21:thermal-equilibrium"
         },
         {
           "id": "specific-heat",
           "name": "비열",
-          "desc": "물질마다 다른 온도 변화"
+          "desc": "물질마다 다른 온도 변화",
+          "simId": "aperi21:specific-heat"
         },
         {
           "id": "calorimetry",
           "name": "열량 측정",
-          "desc": "섞었을 때의 최종 온도"
+          "desc": "섞었을 때의 최종 온도",
+          "simId": "aperi21:calorimetry"
         },
         {
           "id": "latent-heat",
           "name": "잠열",
-          "desc": "상변화 중 온도가 멈추는 이유"
+          "desc": "상변화 중 온도가 멈추는 이유",
+          "simId": "aperi21:latent-heat"
         },
         {
           "id": "phase-diagram",
@@ -1248,7 +1252,8 @@
         {
           "id": "triple-point",
           "name": "삼중점",
-          "desc": "세 상이 공존하는 조건"
+          "desc": "세 상이 공존하는 조건",
+          "simId": "aperi21:triple-point"
         },
         {
           "id": "thermal-conduction",
@@ -1266,37 +1271,44 @@
         {
           "id": "thermal-radiation",
           "name": "열복사",
-          "desc": "매질 없이 전달되는 열"
+          "desc": "매질 없이 전달되는 열",
+          "simId": "aperi21:thermal-radiation"
         },
         {
           "id": "stefan-boltzmann-law",
           "name": "슈테판-볼츠만 법칙",
-          "desc": "온도 4제곱에 비례하는 복사"
+          "desc": "온도 4제곱에 비례하는 복사",
+          "simId": "aperi21:stefan-boltzmann-law"
         },
         {
           "id": "thermal-expansion",
           "name": "열팽창",
-          "desc": "온도에 따른 길이·부피 변화"
+          "desc": "온도에 따른 길이·부피 변화",
+          "simId": "aperi21:thermal-expansion"
         },
         {
           "id": "bimetal",
           "name": "바이메탈",
-          "desc": "팽창률 차이가 만드는 휨"
+          "desc": "팽창률 차이가 만드는 휨",
+          "simId": "aperi21:bimetal"
         },
         {
           "id": "ideal-gas-law",
           "name": "이상 기체 법칙",
-          "desc": "압력·부피·온도의 관계"
+          "desc": "압력·부피·온도의 관계",
+          "simId": "aperi21:ideal-gas-law"
         },
         {
           "id": "boyles-law",
           "name": "보일 법칙",
-          "desc": "온도가 일정할 때의 압력-부피"
+          "desc": "온도가 일정할 때의 압력-부피",
+          "simId": "aperi21:boyles-law"
         },
         {
           "id": "charles-law",
           "name": "샤를 법칙",
-          "desc": "압력이 일정할 때의 부피-온도"
+          "desc": "압력이 일정할 때의 부피-온도",
+          "simId": "aperi21:charles-law"
         },
         {
           "id": "kinetic-theory-of-gases",
@@ -1307,7 +1319,8 @@
         {
           "id": "pressure-from-collisions",
           "name": "충돌이 만드는 압력",
-          "desc": "벽에 부딪는 분자의 운동량"
+          "desc": "벽에 부딪는 분자의 운동량",
+          "simId": "aperi21:pressure-from-collisions"
         },
         {
           "id": "maxwell-boltzmann-distribution",
@@ -1319,52 +1332,62 @@
         {
           "id": "mean-free-path",
           "name": "평균 자유 행로",
-          "desc": "충돌과 충돌 사이의 거리"
+          "desc": "충돌과 충돌 사이의 거리",
+          "simId": "aperi21:mean-free-path"
         },
         {
           "id": "first-law-of-thermodynamics",
           "name": "열역학 제1법칙",
-          "desc": "내부 에너지·일·열의 관계"
+          "desc": "내부 에너지·일·열의 관계",
+          "simId": "aperi21:first-law-of-thermodynamics"
         },
         {
           "id": "pv-diagram",
           "name": "PV 그림",
-          "desc": "넓이가 일인 표현"
+          "desc": "넓이가 일인 표현",
+          "simId": "aperi21:pv-diagram"
         },
         {
           "id": "isothermal-process",
           "name": "등온 과정",
-          "desc": "온도를 유지하는 변화"
+          "desc": "온도를 유지하는 변화",
+          "simId": "aperi21:isothermal-process"
         },
         {
           "id": "adiabatic-process",
           "name": "단열 과정",
-          "desc": "열 출입이 없는 변화"
+          "desc": "열 출입이 없는 변화",
+          "simId": "aperi21:adiabatic-process"
         },
         {
           "id": "isobaric-isochoric",
           "name": "등압·등적 과정",
-          "desc": "압력 또는 부피를 고정한 변화"
+          "desc": "압력 또는 부피를 고정한 변화",
+          "simId": "aperi21:isobaric-isochoric"
         },
         {
           "id": "cyclic-process",
           "name": "순환 과정",
-          "desc": "제자리로 돌아오는 변화"
+          "desc": "제자리로 돌아오는 변화",
+          "simId": "aperi21:cyclic-process"
         },
         {
           "id": "second-law-of-thermodynamics",
           "name": "열역학 제2법칙",
-          "desc": "방향이 있는 변화"
+          "desc": "방향이 있는 변화",
+          "simId": "aperi21:second-law-of-thermodynamics"
         },
         {
           "id": "entropy-and-irreversibility",
           "name": "엔트로피와 비가역성",
-          "desc": "되돌릴 수 없는 이유"
+          "desc": "되돌릴 수 없는 이유",
+          "simId": "aperi21:entropy-and-irreversibility"
         },
         {
           "id": "heat-engine",
           "name": "열기관",
-          "desc": "열을 일로 바꾸는 순환"
+          "desc": "열을 일로 바꾸는 순환",
+          "simId": "aperi21:heat-engine"
         },
         {
           "id": "carnot-cycle",
@@ -1376,52 +1399,62 @@
         {
           "id": "refrigerator-heat-pump",
           "name": "냉장고와 열펌프",
-          "desc": "일을 넣어 열을 옮기는 것"
+          "desc": "일을 넣어 열을 옮기는 것",
+          "simId": "aperi21:refrigerator-heat-pump"
         },
         {
           "id": "brownian-motion",
           "name": "브라운 운동",
-          "desc": "분자 충돌이 만드는 무작위 운동"
+          "desc": "분자 충돌이 만드는 무작위 운동",
+          "simId": "aperi21:brownian-motion"
         },
         {
           "id": "diffusion",
           "name": "확산",
-          "desc": "농도 차이가 만드는 흐름"
+          "desc": "농도 차이가 만드는 흐름",
+          "simId": "aperi21:diffusion"
         },
         {
           "id": "random-walk",
           "name": "무작위 걸음",
-          "desc": "제곱근에 비례하는 이동 거리"
+          "desc": "제곱근에 비례하는 이동 거리",
+          "simId": "aperi21:random-walk"
         },
         {
           "id": "statistical-fluctuation",
           "name": "요동",
-          "desc": "입자 수가 적을 때 커지는 흔들림"
+          "desc": "입자 수가 적을 때 커지는 흔들림",
+          "simId": "aperi21:statistical-fluctuation"
         },
         {
           "id": "maxwells-demon",
           "name": "맥스웰의 도깨비",
-          "desc": "정보와 엔트로피의 관계"
+          "desc": "정보와 엔트로피의 관계",
+          "simId": "aperi21:maxwells-demon"
         },
         {
           "id": "insulation",
           "name": "보온과 단열",
-          "desc": "열의 이동을 늦추는 것"
+          "desc": "열의 이동을 늦추는 것",
+          "simId": "aperi21:insulation"
         },
         {
           "id": "albedo",
           "name": "반사율",
-          "desc": "되돌아가는 빛의 몫"
+          "desc": "되돌아가는 빛의 몫",
+          "simId": "aperi21:albedo"
         },
         {
           "id": "radiative-equilibrium",
           "name": "복사 평형",
-          "desc": "들어온 만큼 내보낼 때 정해지는 온도"
+          "desc": "들어온 만큼 내보낼 때 정해지는 온도",
+          "simId": "aperi21:radiative-equilibrium"
         },
         {
           "id": "greenhouse-effect",
           "name": "온실 효과",
-          "desc": "적외선을 되돌리는 층이 지표를 덥히는 것"
+          "desc": "적외선을 되돌리는 층이 지표를 덥히는 것",
+          "simId": "aperi21:greenhouse-effect"
         }
       ]
     },
@@ -1631,57 +1664,68 @@
         {
           "id": "rectilinear-propagation",
           "name": "빛의 직진",
-          "desc": "그림자와 광선 모형"
+          "desc": "그림자와 광선 모형",
+          "simId": "aperi21:rectilinear-propagation"
         },
         {
           "id": "shadow-umbra-penumbra",
           "name": "본그림자와 반그림자",
-          "desc": "광원의 크기가 만드는 경계"
+          "desc": "광원의 크기가 만드는 경계",
+          "simId": "aperi21:shadow-umbra-penumbra"
         },
         {
           "id": "pinhole-camera",
           "name": "바늘구멍 사진기",
-          "desc": "구멍 하나가 만드는 상"
+          "desc": "구멍 하나가 만드는 상",
+          "simId": "aperi21:pinhole-camera"
         },
         {
           "id": "law-of-reflection",
           "name": "반사 법칙",
-          "desc": "입사각과 반사각"
+          "desc": "입사각과 반사각",
+          "simId": "aperi21:law-of-reflection"
         },
         {
           "id": "specular-diffuse-reflection",
           "name": "정반사와 난반사",
-          "desc": "표면 거칠기가 정하는 반사"
+          "desc": "표면 거칠기가 정하는 반사",
+          "simId": "aperi21:specular-diffuse-reflection"
         },
         {
           "id": "plane-mirror-image",
           "name": "평면거울의 상",
-          "desc": "허상의 위치와 좌우 반전"
+          "desc": "허상의 위치와 좌우 반전",
+          "simId": "aperi21:plane-mirror-image"
         },
         {
           "id": "multiple-mirror-images",
           "name": "두 거울의 상",
-          "desc": "각도가 정하는 상의 개수"
+          "desc": "각도가 정하는 상의 개수",
+          "simId": "aperi21:multiple-mirror-images"
         },
         {
           "id": "concave-mirror",
           "name": "오목거울",
-          "desc": "초점과 실상"
+          "desc": "초점과 실상",
+          "simId": "aperi21:concave-mirror"
         },
         {
           "id": "convex-mirror",
           "name": "볼록거울",
-          "desc": "확대된 시야와 허상"
+          "desc": "확대된 시야와 허상",
+          "simId": "aperi21:convex-mirror"
         },
         {
           "id": "snells-law",
           "name": "굴절 법칙",
-          "desc": "매질에 따른 경로 꺾임"
+          "desc": "매질에 따른 경로 꺾임",
+          "simId": "aperi21:snells-law"
         },
         {
           "id": "apparent-depth",
           "name": "겉보기 깊이",
-          "desc": "물속 물체가 떠 보이는 이유"
+          "desc": "물속 물체가 떠 보이는 이유",
+          "simId": "aperi21:apparent-depth"
         },
         {
           "id": "total-internal-reflection",
@@ -1693,27 +1737,32 @@
         {
           "id": "optical-fiber",
           "name": "광섬유",
-          "desc": "전반사로 가두는 빛"
+          "desc": "전반사로 가두는 빛",
+          "simId": "aperi21:optical-fiber"
         },
         {
           "id": "mirage",
           "name": "신기루",
-          "desc": "밀도 기울기가 휘게 하는 빛"
+          "desc": "밀도 기울기가 휘게 하는 빛",
+          "simId": "aperi21:mirage"
         },
         {
           "id": "dispersion",
           "name": "분산",
-          "desc": "파장에 따른 굴절률 차이"
+          "desc": "파장에 따른 굴절률 차이",
+          "simId": "aperi21:dispersion"
         },
         {
           "id": "prism",
           "name": "프리즘",
-          "desc": "분산으로 나뉘는 스펙트럼"
+          "desc": "분산으로 나뉘는 스펙트럼",
+          "simId": "aperi21:prism"
         },
         {
           "id": "rainbow",
           "name": "무지개",
-          "desc": "물방울 속 굴절과 반사"
+          "desc": "물방울 속 굴절과 반사",
+          "simId": "aperi21:rainbow"
         },
         {
           "id": "thin-lens",
@@ -1724,57 +1773,68 @@
         {
           "id": "converging-diverging-lens",
           "name": "볼록 렌즈와 오목 렌즈",
-          "desc": "모으는 렌즈와 퍼뜨리는 렌즈"
+          "desc": "모으는 렌즈와 퍼뜨리는 렌즈",
+          "simId": "aperi21:converging-diverging-lens"
         },
         {
           "id": "magnification",
           "name": "배율",
-          "desc": "상의 크기와 물체의 크기"
+          "desc": "상의 크기와 물체의 크기",
+          "simId": "aperi21:magnification"
         },
         {
           "id": "real-vs-virtual-image",
           "name": "실상과 허상",
-          "desc": "빛이 실제로 모이는가"
+          "desc": "빛이 실제로 모이는가",
+          "simId": "aperi21:real-vs-virtual-image"
         },
         {
           "id": "lens-combination",
           "name": "렌즈의 조합",
-          "desc": "두 렌즈가 만드는 합성 초점"
+          "desc": "두 렌즈가 만드는 합성 초점",
+          "simId": "aperi21:lens-combination"
         },
         {
           "id": "spherical-aberration",
           "name": "구면 수차",
-          "desc": "가장자리 광선이 다른 곳에 모임"
+          "desc": "가장자리 광선이 다른 곳에 모임",
+          "simId": "aperi21:spherical-aberration"
         },
         {
           "id": "chromatic-aberration",
           "name": "색수차",
-          "desc": "파장마다 다른 초점"
+          "desc": "파장마다 다른 초점",
+          "simId": "aperi21:chromatic-aberration"
         },
         {
           "id": "human-eye-accommodation",
           "name": "눈의 조절",
-          "desc": "수정체가 초점을 맞추는 방식"
+          "desc": "수정체가 초점을 맞추는 방식",
+          "simId": "aperi21:human-eye-accommodation"
         },
         {
           "id": "myopia-hyperopia",
           "name": "근시와 원시",
-          "desc": "상이 맺히는 위치와 교정"
+          "desc": "상이 맺히는 위치와 교정",
+          "simId": "aperi21:myopia-hyperopia"
         },
         {
           "id": "magnifying-glass",
           "name": "돋보기",
-          "desc": "가까운 초점 안의 물체"
+          "desc": "가까운 초점 안의 물체",
+          "simId": "aperi21:magnifying-glass"
         },
         {
           "id": "microscope",
           "name": "현미경",
-          "desc": "대물과 접안의 배율 곱"
+          "desc": "대물과 접안의 배율 곱",
+          "simId": "aperi21:microscope"
         },
         {
           "id": "telescope",
           "name": "망원경",
-          "desc": "초점 거리 비가 정하는 배율"
+          "desc": "초점 거리 비가 정하는 배율",
+          "simId": "aperi21:telescope"
         },
         {
           "id": "youngs-double-slit",
@@ -1786,12 +1846,14 @@
         {
           "id": "single-slit-diffraction",
           "name": "단일 슬릿 회절",
-          "desc": "폭이 만드는 무늬"
+          "desc": "폭이 만드는 무늬",
+          "simId": "aperi21:single-slit-diffraction"
         },
         {
           "id": "diffraction-grating",
           "name": "회절 격자",
-          "desc": "여러 슬릿이 만드는 날카로운 극대"
+          "desc": "여러 슬릿이 만드는 날카로운 극대",
+          "simId": "aperi21:diffraction-grating"
         },
         {
           "id": "thin-film-interference",
@@ -1803,12 +1865,14 @@
         {
           "id": "newtons-rings",
           "name": "뉴턴 링",
-          "desc": "곡면과 평면 사이의 간섭"
+          "desc": "곡면과 평면 사이의 간섭",
+          "simId": "aperi21:newtons-rings"
         },
         {
           "id": "resolving-power",
           "name": "분해능",
-          "desc": "두 점을 가르는 한계"
+          "desc": "두 점을 가르는 한계",
+          "simId": "aperi21:resolving-power"
         },
         {
           "id": "polarization",
@@ -1820,32 +1884,38 @@
         {
           "id": "malus-law",
           "name": "말뤼스 법칙",
-          "desc": "편광판을 지난 세기"
+          "desc": "편광판을 지난 세기",
+          "simId": "aperi21:malus-law"
         },
         {
           "id": "brewster-angle",
           "name": "브루스터 각",
-          "desc": "반사광이 완전 편광되는 각"
+          "desc": "반사광이 완전 편광되는 각",
+          "simId": "aperi21:brewster-angle"
         },
         {
           "id": "birefringence",
           "name": "복굴절",
-          "desc": "방향에 따라 다른 굴절률"
+          "desc": "방향에 따라 다른 굴절률",
+          "simId": "aperi21:birefringence"
         },
         {
           "id": "scattering",
           "name": "산란",
-          "desc": "하늘과 노을의 색"
+          "desc": "하늘과 노을의 색",
+          "simId": "aperi21:scattering"
         },
         {
           "id": "rayleigh-scattering",
           "name": "레일리 산란",
-          "desc": "파장 4제곱에 반비례하는 산란"
+          "desc": "파장 4제곱에 반비례하는 산란",
+          "simId": "aperi21:rayleigh-scattering"
         },
         {
           "id": "seeing-requires-light",
           "name": "보려면 빛이 있어야",
-          "desc": "빛이 없으면 물체가 보이지 않는다"
+          "desc": "빛이 없으면 물체가 보이지 않는다",
+          "simId": "aperi21:seeing-requires-light"
         },
         {
           "id": "color-addition",
@@ -1857,12 +1927,14 @@
         {
           "id": "object-color",
           "name": "물체의 색",
-          "desc": "물체가 되쏘는 빛이 정하는 색"
+          "desc": "물체가 되쏘는 빛이 정하는 색",
+          "simId": "aperi21:object-color"
         },
         {
           "id": "light-through-materials",
           "name": "빛과 재료",
-          "desc": "재료에 따라 갈리는 빛의 통과"
+          "desc": "재료에 따라 갈리는 빛의 통과",
+          "simId": "aperi21:light-through-materials"
         }
       ]
     },
@@ -2749,7 +2821,7 @@
   ],
   "summary": {
     "topics": 441,
-    "implemented": 369,
+    "implemented": 441,
     "labs": 103
   }
 }

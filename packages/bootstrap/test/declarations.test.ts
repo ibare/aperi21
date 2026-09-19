@@ -38,7 +38,9 @@ describe('선언 참조 정합', () => {
         if (key) expect(messages[key], `${id}: ${key}`).toBeDefined();
       }
     }
-  });
+    // 이 파일의 첫 테스트라 등록된 번들 전부를 처음 import 하는 비용을 떠안는다 — 조각 수에 비례해
+    // 기본 5 초를 넘는다(441 조각에서 약 5.1 초). 뒤 테스트는 같은 번들을 캐시에서 읽는다.
+  }, 30_000);
 
   it('캡션 슬롯을 선언한 조각의 번들에 readout 이 실린다 — 빠지면 캡션이 조용히 사라진다', async () => {
     for (const id of listBundleLoaderIds()) {

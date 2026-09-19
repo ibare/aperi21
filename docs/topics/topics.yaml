@@ -1524,6 +1524,7 @@ topics:
     level: primary
     curricula: [kr, ngss, ap]
     visualNote: 뜨거운 쪽과 찬 쪽이 한 온도로 만난다
+    sim: aperi21:thermal-equilibrium
   - id: specific-heat
     name: 비열
     desc: 물질마다 다른 온도 변화
@@ -1531,6 +1532,7 @@ topics:
     level: lower
     curricula: [kr, ib, ngss, ap, uk]
     visualNote: 같은 열을 줘도 물질마다 오르는 온도가 다르다
+    sim: aperi21:specific-heat
   - id: calorimetry
     name: 열량 측정
     desc: 섞었을 때의 최종 온도
@@ -1538,6 +1540,7 @@ topics:
     level: lower
     curricula: [ngss]
     visualNote: 섞으면 어느 온도에서 멈추는지 드러난다
+    sim: aperi21:calorimetry
   - id: latent-heat
     name: 잠열
     desc: 상변화 중 온도가 멈추는 이유
@@ -1545,6 +1548,7 @@ topics:
     level: lower
     curricula: [kr, ib, ap, uk]
     visualNote: 상변화 동안 열을 줘도 온도가 멈춰 있다
+    sim: aperi21:latent-heat
   - id: phase-diagram
     name: 상평형 그림
     desc: 압력과 온도가 정하는 상
@@ -1560,6 +1564,7 @@ topics:
     level: null
     curricula: []
     visualNote: 셋이 함께 있는 한 점에서 만난다
+    sim: aperi21:triple-point
   - id: thermal-conduction
     name: 열전도
     desc: 접촉을 통한 전달
@@ -1584,6 +1589,7 @@ topics:
     level: primary
     curricula: [kr, ib, ngss, ap, uk]
     visualNote: 매질이 없어도 건너와 데운다
+    sim: aperi21:thermal-radiation
   - id: stefan-boltzmann-law
     name: 슈테판-볼츠만 법칙
     desc: 온도 4제곱에 비례하는 복사
@@ -1591,6 +1597,7 @@ topics:
     level: lower
     curricula: [ib, uk]
     visualNote: 온도를 조금 올리면 복사가 가파르게 는다
+    sim: aperi21:stefan-boltzmann-law
   - id: thermal-expansion
     name: 열팽창
     desc: 온도에 따른 길이·부피 변화
@@ -1598,6 +1605,7 @@ topics:
     level: lower
     curricula: [kr, ib]
     visualNote: 데우면 늘어나 틈이 메워진다
+    sim: aperi21:thermal-expansion
   - id: bimetal
     name: 바이메탈
     desc: 팽창률 차이가 만드는 휨
@@ -1605,6 +1613,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 팽창률이 다른 두 장이 붙어 있어 휜다
+    sim: aperi21:bimetal
   - id: ideal-gas-law
     name: 이상 기체 법칙
     desc: 압력·부피·온도의 관계
@@ -1612,6 +1621,7 @@ topics:
     level: upper
     curricula: [kr, ib, ap, uk]
     visualNote: 셋 중 하나를 잡고 둘을 바꾸면 관계가 드러난다
+    sim: aperi21:ideal-gas-law
   - id: boyles-law
     name: 보일 법칙
     desc: 온도가 일정할 때의 압력-부피
@@ -1619,6 +1629,7 @@ topics:
     level: lower
     curricula: [kr, ib, ap, uk]
     visualNote: 누르면 부피가 준다
+    sim: aperi21:boyles-law
   - id: charles-law
     name: 샤를 법칙
     desc: 압력이 일정할 때의 부피-온도
@@ -1626,6 +1637,7 @@ topics:
     level: lower
     curricula: [kr, ib, ap, uk]
     visualNote: 데우면 부피가 는다
+    sim: aperi21:charles-law
   - id: kinetic-theory-of-gases
     name: 기체 분자 운동론
     desc: 거시량을 분자 운동으로 설명
@@ -1642,6 +1654,7 @@ topics:
     level: lower
     curricula: [kr, ib, uk]
     visualNote: 분자가 벽을 때리는 횟수와 세기가 압력이 된다
+    sim: aperi21:pressure-from-collisions
   - id: maxwell-boltzmann-distribution
     name: 맥스웰-볼츠만 분포
     desc: 분자 속력의 분포
@@ -1657,6 +1670,7 @@ topics:
     level: null
     curricula: []
     visualNote: 밀도를 높이면 부딪히기까지의 거리가 짧아진다
+    sim: aperi21:mean-free-path
   - id: first-law-of-thermodynamics
     name: 열역학 제1법칙
     desc: 내부 에너지·일·열의 관계
@@ -1664,6 +1678,7 @@ topics:
     level: upper
     curricula: [kr, ib, ngss, ap]
     visualNote: 넣은 열이 내부 에너지와 일로 갈린다
+    sim: aperi21:first-law-of-thermodynamics
   - id: pv-diagram
     name: PV 그림
     desc: 넓이가 일인 표현
@@ -1671,6 +1686,7 @@ topics:
     level: upper
     curricula: [kr, ib, ap]
     visualNote: 둘러싼 넓이가 한 일로 읽힌다
+    sim: aperi21:pv-diagram
   - id: isothermal-process
     name: 등온 과정
     desc: 온도를 유지하는 변화
@@ -1678,6 +1694,7 @@ topics:
     level: upper
     curricula: [ib, ap]
     visualNote: 온도를 붙들면 곡선이 정해진 모양을 따른다
+    sim: aperi21:isothermal-process
   - id: adiabatic-process
     name: 단열 과정
     desc: 열 출입이 없는 변화
@@ -1685,6 +1702,7 @@ topics:
     level: upper
     curricula: [ib, ap]
     visualNote: 열을 막으면 등온보다 가파르게 떨어진다
+    sim: aperi21:adiabatic-process
   - id: isobaric-isochoric
     name: 등압·등적 과정
     desc: 압력 또는 부피를 고정한 변화
@@ -1692,6 +1710,7 @@ topics:
     level: upper
     curricula: [ib, ap]
     visualNote: 무엇을 고정하느냐에 따라 경로가 갈린다
+    sim: aperi21:isobaric-isochoric
   - id: cyclic-process
     name: 순환 과정
     desc: 제자리로 돌아오는 변화
@@ -1699,6 +1718,7 @@ topics:
     level: upper
     curricula: [kr, ib]
     visualNote: 한 바퀴 돌아 제자리로 오지만 일은 남는다
+    sim: aperi21:cyclic-process
   - id: second-law-of-thermodynamics
     name: 열역학 제2법칙
     desc: 방향이 있는 변화
@@ -1706,6 +1726,7 @@ topics:
     level: upper
     curricula: [kr, ib, ngss, ap]
     visualNote: 섞인 것이 저절로 갈라지지 않는다
+    sim: aperi21:second-law-of-thermodynamics
   - id: entropy-and-irreversibility
     name: 엔트로피와 비가역성
     desc: 되돌릴 수 없는 이유
@@ -1713,6 +1734,7 @@ topics:
     level: upper
     curricula: [kr, ib, ngss]
     visualNote: 되감으면 어색해지는 장면이 바로 그 뜻이다
+    sim: aperi21:entropy-and-irreversibility
   - id: heat-engine
     name: 열기관
     desc: 열을 일로 바꾸는 순환
@@ -1720,6 +1742,7 @@ topics:
     level: upper
     curricula: [kr, ib, ap]
     visualNote: 받은 열 중 일부만 일이 되고 나머지는 버려진다
+    sim: aperi21:heat-engine
   - id: carnot-cycle
     name: 카르노 순환
     desc: 이론적 최대 효율
@@ -1735,6 +1758,7 @@ topics:
     level: upper
     curricula: [ap]
     visualNote: 일을 넣어 찬 곳에서 더운 곳으로 열을 옮긴다
+    sim: aperi21:refrigerator-heat-pump
   - id: brownian-motion
     name: 브라운 운동
     desc: 분자 충돌이 만드는 무작위 운동
@@ -1742,6 +1766,7 @@ topics:
     level: upper
     curricula: [uk]
     visualNote: 보이지 않는 분자가 때려 알갱이가 비틀거린다
+    sim: aperi21:brownian-motion
   - id: diffusion
     name: 확산
     desc: 농도 차이가 만드는 흐름
@@ -1749,6 +1774,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 가만 두면 저절로 퍼져 고르게 된다
+    sim: aperi21:diffusion
   - id: random-walk
     name: 무작위 걸음
     desc: 제곱근에 비례하는 이동 거리
@@ -1756,6 +1782,7 @@ topics:
     level: null
     curricula: []
     visualNote: 걸음이 쌓여도 거리는 걸음 수의 제곱근으로만 는다
+    sim: aperi21:random-walk
   - id: statistical-fluctuation
     name: 요동
     desc: 입자 수가 적을 때 커지는 흔들림
@@ -1763,6 +1790,7 @@ topics:
     level: null
     curricula: []
     visualNote: 입자 수가 적을수록 요동이 크게 보인다
+    sim: aperi21:statistical-fluctuation
   - id: maxwells-demon
     name: 맥스웰의 도깨비
     desc: 정보와 엔트로피의 관계
@@ -1770,6 +1798,7 @@ topics:
     level: null
     curricula: []
     visualNote: 빠른 분자만 골라 보내면 저절로 갈라지는 것처럼 보인다
+    sim: aperi21:maxwells-demon
   - id: insulation
     name: 보온과 단열
     desc: 열의 이동을 늦추는 것
@@ -1777,6 +1806,7 @@ topics:
     level: primary
     curricula: [kr, ngss, uk]
     visualNote: 같은 시간이 지났을 때 식는 정도가 재료마다 다르다
+    sim: aperi21:insulation
   - id: albedo
     name: 반사율
     desc: 되돌아가는 빛의 몫
@@ -1784,6 +1814,7 @@ topics:
     level: upper
     curricula: [ib]
     visualNote: 표면을 바꾸면 되돌아가는 빛의 양이 달라진다
+    sim: aperi21:albedo
   - id: radiative-equilibrium
     name: 복사 평형
     desc: 들어온 만큼 내보낼 때 정해지는 온도
@@ -1791,6 +1822,7 @@ topics:
     level: upper
     curricula: [ib]
     visualNote: 들어오는 에너지와 나가는 에너지가 맞아떨어지는 온도로 수렴한다
+    sim: aperi21:radiative-equilibrium
   - id: greenhouse-effect
     name: 온실 효과
     desc: 적외선을 되돌리는 층이 지표를 덥히는 것
@@ -1798,6 +1830,7 @@ topics:
     level: upper
     curricula: [ib]
     visualNote: 적외선을 되돌리는 층을 넣으면 지표 온도가 올라간다
+    sim: aperi21:greenhouse-effect
   # ── 파동과 음향
   - id: wave-basics
     name: 파동의 기본량
@@ -2057,6 +2090,7 @@ topics:
     level: primary
     curricula: [kr, ap]
     visualNote: 가린 만큼 그림자가 생긴다
+    sim: aperi21:rectilinear-propagation
   - id: shadow-umbra-penumbra
     name: 본그림자와 반그림자
     desc: 광원의 크기가 만드는 경계
@@ -2064,6 +2098,7 @@ topics:
     level: null
     curricula: []
     visualNote: 광원을 키우면 본그림자가 줄고 반그림자가 는다
+    sim: aperi21:shadow-umbra-penumbra
   - id: pinhole-camera
     name: 바늘구멍 사진기
     desc: 구멍 하나가 만드는 상
@@ -2071,6 +2106,7 @@ topics:
     level: null
     curricula: []
     visualNote: 구멍을 키우면 밝아지는 대신 흐려진다
+    sim: aperi21:pinhole-camera
   - id: law-of-reflection
     name: 반사 법칙
     desc: 입사각과 반사각
@@ -2078,6 +2114,7 @@ topics:
     level: primary
     curricula: [kr, ib, ngss, ap]
     visualNote: 들어온 각과 나간 각이 맞거울처럼 같다
+    sim: aperi21:law-of-reflection
   - id: specular-diffuse-reflection
     name: 정반사와 난반사
     desc: 표면 거칠기가 정하는 반사
@@ -2085,6 +2122,7 @@ topics:
     level: lower
     curricula: [uk]
     visualNote: 거친 면에서는 광선이 사방으로 흩어진다
+    sim: aperi21:specular-diffuse-reflection
   - id: plane-mirror-image
     name: 평면거울의 상
     desc: 허상의 위치와 좌우 반전
@@ -2092,6 +2130,7 @@ topics:
     level: primary
     curricula: [kr, ap]
     visualNote: 거울 뒤 같은 거리에 상이 선다
+    sim: aperi21:plane-mirror-image
   - id: multiple-mirror-images
     name: 두 거울의 상
     desc: 각도가 정하는 상의 개수
@@ -2099,6 +2138,7 @@ topics:
     level: null
     curricula: []
     visualNote: 두 거울의 각을 좁히면 상이 늘어난다
+    sim: aperi21:multiple-mirror-images
   - id: concave-mirror
     name: 오목거울
     desc: 초점과 실상
@@ -2106,6 +2146,7 @@ topics:
     level: lower
     curricula: [kr, ap]
     visualNote: 물체를 초점 안팎으로 옮기면 상이 뒤집히고 바뀐다
+    sim: aperi21:concave-mirror
   - id: convex-mirror
     name: 볼록거울
     desc: 확대된 시야와 허상
@@ -2113,6 +2154,7 @@ topics:
     level: lower
     curricula: [kr, ap]
     visualNote: 넓게 보이지만 늘 작고 바로 선 상이다
+    sim: aperi21:convex-mirror
   - id: snells-law
     name: 굴절 법칙
     desc: 매질에 따른 경로 꺾임
@@ -2120,6 +2162,7 @@ topics:
     level: lower
     curricula: [kr, ib, ap, uk]
     visualNote: 매질을 바꾸면 경로가 꺾인다
+    sim: aperi21:snells-law
   - id: apparent-depth
     name: 겉보기 깊이
     desc: 물속 물체가 떠 보이는 이유
@@ -2127,6 +2170,7 @@ topics:
     level: null
     curricula: []
     visualNote: 물속 물체가 실제보다 얕은 곳에 보인다
+    sim: aperi21:apparent-depth
   - id: total-internal-reflection
     name: 전반사
     desc: 임계각과 그 조건
@@ -2142,6 +2186,7 @@ topics:
     level: upper
     curricula: [ngss, uk]
     visualNote: 휘어도 빛이 갇힌 채 따라간다
+    sim: aperi21:optical-fiber
   - id: mirage
     name: 신기루
     desc: 밀도 기울기가 휘게 하는 빛
@@ -2149,6 +2194,7 @@ topics:
     level: null
     curricula: []
     visualNote: 뜨거운 공기층에서 빛이 휘어 하늘이 바닥에 비친다
+    sim: aperi21:mirage
   - id: dispersion
     name: 분산
     desc: 파장에 따른 굴절률 차이
@@ -2156,6 +2202,7 @@ topics:
     level: null
     curricula: []
     visualNote: 흰빛이 색으로 갈라진다
+    sim: aperi21:dispersion
   - id: prism
     name: 프리즘
     desc: 분산으로 나뉘는 스펙트럼
@@ -2163,6 +2210,7 @@ topics:
     level: null
     curricula: []
     visualNote: 두 번 꺾이며 색이 벌어진다
+    sim: aperi21:prism
   - id: rainbow
     name: 무지개
     desc: 물방울 속 굴절과 반사
@@ -2170,6 +2218,7 @@ topics:
     level: null
     curricula: []
     visualNote: 물방울 안에서 꺾이고 되비쳐 40도쯤에 색이 선다
+    sim: aperi21:rainbow
   - id: thin-lens
     name: 얇은 렌즈
     desc: 초점과 결상
@@ -2185,6 +2234,7 @@ topics:
     level: lower
     curricula: [kr, ib, ap, uk]
     visualNote: 모으는 렌즈와 퍼뜨리는 렌즈가 광선을 다르게 다룬다
+    sim: aperi21:converging-diverging-lens
   - id: magnification
     name: 배율
     desc: 상의 크기와 물체의 크기
@@ -2192,6 +2242,7 @@ topics:
     level: lower
     curricula: [ap, uk]
     visualNote: 물체를 옮기면 상의 크기가 따라 바뀐다
+    sim: aperi21:magnification
   - id: real-vs-virtual-image
     name: 실상과 허상
     desc: 빛이 실제로 모이는가
@@ -2199,6 +2250,7 @@ topics:
     level: lower
     curricula: [kr, ap, uk]
     visualNote: 빛이 실제로 모이는지 연장선에서 만나는지가 갈린다
+    sim: aperi21:real-vs-virtual-image
   - id: lens-combination
     name: 렌즈의 조합
     desc: 두 렌즈가 만드는 합성 초점
@@ -2206,6 +2258,7 @@ topics:
     level: upper
     curricula: [uk]
     visualNote: 두 렌즈를 이으면 합성 초점이 생긴다
+    sim: aperi21:lens-combination
   - id: spherical-aberration
     name: 구면 수차
     desc: 가장자리 광선이 다른 곳에 모임
@@ -2213,6 +2266,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 가장자리 광선이 다른 곳에 모여 흐려진다
+    sim: aperi21:spherical-aberration
   - id: chromatic-aberration
     name: 색수차
     desc: 파장마다 다른 초점
@@ -2220,6 +2274,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 색마다 초점이 어긋나 테두리에 색이 진다
+    sim: aperi21:chromatic-aberration
   - id: human-eye-accommodation
     name: 눈의 조절
     desc: 수정체가 초점을 맞추는 방식
@@ -2227,6 +2282,7 @@ topics:
     level: null
     curricula: []
     visualNote: 수정체 두께가 바뀌며 초점이 맞는다
+    sim: aperi21:human-eye-accommodation
   - id: myopia-hyperopia
     name: 근시와 원시
     desc: 상이 맺히는 위치와 교정
@@ -2234,6 +2290,7 @@ topics:
     level: null
     curricula: []
     visualNote: 상이 망막 앞뒤에 맺히고 렌즈가 그것을 옮긴다
+    sim: aperi21:myopia-hyperopia
   - id: magnifying-glass
     name: 돋보기
     desc: 가까운 초점 안의 물체
@@ -2241,6 +2298,7 @@ topics:
     level: primary
     curricula: [kr]
     visualNote: 초점 안으로 넣으면 크고 바로 선 허상이 보인다
+    sim: aperi21:magnifying-glass
   - id: microscope
     name: 현미경
     desc: 대물과 접안의 배율 곱
@@ -2248,6 +2306,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 두 번 확대되는 과정이 광선으로 드러난다
+    sim: aperi21:microscope
   - id: telescope
     name: 망원경
     desc: 초점 거리 비가 정하는 배율
@@ -2255,6 +2314,7 @@ topics:
     level: upper
     curricula: [kr, uk]
     visualNote: 초점 거리 비가 배율이 되는 것이 광선에 보인다
+    sim: aperi21:telescope
   - id: youngs-double-slit
     name: 이중 슬릿 간섭
     desc: 빛의 파동성 증거
@@ -2270,6 +2330,7 @@ topics:
     level: upper
     curricula: [ib, ap, uk]
     visualNote: 틈을 좁히면 무늬가 넓게 퍼진다
+    sim: aperi21:single-slit-diffraction
   - id: diffraction-grating
     name: 회절 격자
     desc: 여러 슬릿이 만드는 날카로운 극대
@@ -2277,6 +2338,7 @@ topics:
     level: upper
     curricula: [kr, ib, ap, uk]
     visualNote: 여러 틈이 극대를 날카롭게 만든다
+    sim: aperi21:diffraction-grating
   - id: thin-film-interference
     name: 박막 간섭
     desc: 두께가 만드는 색
@@ -2292,6 +2354,7 @@ topics:
     level: null
     curricula: []
     visualNote: 간격이 벌어질수록 고리가 촘촘해진다
+    sim: aperi21:newtons-rings
   - id: resolving-power
     name: 분해능
     desc: 두 점을 가르는 한계
@@ -2299,6 +2362,7 @@ topics:
     level: upper
     curricula: [uk]
     visualNote: 두 점이 가까워지면 어느 순간 하나로 뭉친다
+    sim: aperi21:resolving-power
   - id: polarization
     name: 편광
     desc: 진동면의 선택
@@ -2314,6 +2378,7 @@ topics:
     level: upper
     curricula: [kr]
     visualNote: 각을 돌릴수록 세기가 코사인 제곱으로 준다
+    sim: aperi21:malus-law
   - id: brewster-angle
     name: 브루스터 각
     desc: 반사광이 완전 편광되는 각
@@ -2321,6 +2386,7 @@ topics:
     level: null
     curricula: []
     visualNote: 어느 각에서 반사광이 완전히 편광된다
+    sim: aperi21:brewster-angle
   - id: birefringence
     name: 복굴절
     desc: 방향에 따라 다른 굴절률
@@ -2328,6 +2394,7 @@ topics:
     level: null
     curricula: []
     visualNote: 한 줄기가 두 줄기로 갈라져 상이 겹쳐 보인다
+    sim: aperi21:birefringence
   - id: scattering
     name: 산란
     desc: 하늘과 노을의 색
@@ -2335,6 +2402,7 @@ topics:
     level: null
     curricula: []
     visualNote: 입자 크기에 따라 흩어지는 방향이 달라진다
+    sim: aperi21:scattering
   - id: rayleigh-scattering
     name: 레일리 산란
     desc: 파장 4제곱에 반비례하는 산란
@@ -2342,6 +2410,7 @@ topics:
     level: null
     curricula: []
     visualNote: 짧은 파장이 더 흩어져 하늘이 파랗고 노을이 붉다
+    sim: aperi21:rayleigh-scattering
   - id: seeing-requires-light
     name: 보려면 빛이 있어야
     desc: 빛이 없으면 물체가 보이지 않는다
@@ -2349,6 +2418,7 @@ topics:
     level: primary
     curricula: [kr, ngss]
     visualNote: 빛을 끄면 물체가 보이지 않는다
+    sim: aperi21:seeing-requires-light
   - id: color-addition
     name: 빛의 합성
     desc: 세 색의 빛이 겹쳐 만드는 색
@@ -2364,6 +2434,7 @@ topics:
     level: primary
     curricula: [kr, ngss, uk]
     visualNote: 같은 물체가 비추는 빛에 따라 다른 색으로 보인다
+    sim: aperi21:object-color
   - id: light-through-materials
     name: 빛과 재료
     desc: 재료에 따라 갈리는 빛의 통과
@@ -2371,6 +2442,7 @@ topics:
     level: primary
     curricula: [ngss, uk]
     visualNote: 같은 빛을 두고 재료를 바꾸면 통과·차단·흐림이 갈린다
+    sim: aperi21:light-through-materials
   # ── 전자기
   - id: electric-charge
     name: 전하
