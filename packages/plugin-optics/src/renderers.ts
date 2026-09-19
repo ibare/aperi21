@@ -1,6 +1,13 @@
 import type { OpticalElement, PrimitiveRenderer, Ray, Vec2 } from '@aperi21/schema';
 import { linearToSrgb, wavelengthToLinearRgb } from './color';
 
+/**
+ * 오목 렌즈 모양 치수(화면 px). 가장자리 반두께가 가운데 반두께보다 커야 가운데가 얇은 오목 모양이 된다.
+ * 두께는 아직 선언에 없다(장부 G219) — 여기는 기본값이다.
+ */
+const CONCAVE_EDGE_HALF_PX = 7;
+const CONCAVE_CENTER_HALF_PX = 2;
+
 /** 파장(nm)→화면 색. 색상 계산은 조각과 같은 `wavelengthToLinearRgb` 한 곳이다. */
 function wavelengthToColor(nm: number): string {
   const [r, g, b] = wavelengthToLinearRgb(nm);
@@ -135,11 +142,18 @@ export const renderOpticalElement: PrimitiveRenderer = (rc, p0) => {
     }
 
     case 'lens-concave': {
-      // 양 오목
+      // 양 오목 — 가장자리가 두껍고 가운데가 얇다. 두 끝을 법선 방향으로 벌린 네 꼭짓점을 곧은 변으로 잇고,
+      // 두 면은 가운데가 안쪽(c ± n·CENTER)에 닿는 이차 곡선으로 긋는다. 화면 좌표의 법선은 y 를 뒤집는다.
+      // (두 곡선이 같은 두 끝점을 잇게 두면 부호와 상관없이 볼록 모양이 된다 — 장부 G224.)
+      const nx = n[0];
+      const ny = -n[1];
+      const e = CONCAVE_EDGE_HALF_PX;
+      const k = 2 * CONCAVE_CENTER_HALF_PX - CONCAVE_EDGE_HALF_PX;
       c.beginPath();
-      c.moveTo(ax, ay);
-      c.quadraticCurveTo(cx + n[0] * -6, cy - n[1] * -6, bx, by);
-      c.quadraticCurveTo(cx - n[0] * -6, cy + n[1] * -6, ax, ay);
+      c.moveTo(ax + nx * e, ay + ny * e);
+      c.quadraticCurveTo(cx + nx * k, cy + ny * k, bx + nx * e, by + ny * e);
+      c.lineTo(bx - nx * e, by - ny * e);
+      c.quadraticCurveTo(cx - nx * k, cy - ny * k, ax - nx * e, ay - ny * e);
       c.closePath();
       c.fill();
       c.stroke();
