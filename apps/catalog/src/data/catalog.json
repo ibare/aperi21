@@ -1873,27 +1873,32 @@
         {
           "id": "electric-charge",
           "name": "전하",
-          "desc": "두 종류의 전하와 보존"
+          "desc": "두 종류의 전하와 보존",
+          "simId": "aperi21:electric-charge"
         },
         {
           "id": "charging-methods",
           "name": "대전 방법",
-          "desc": "마찰·접촉·유도"
+          "desc": "마찰·접촉·유도",
+          "simId": "aperi21:charging-methods"
         },
         {
           "id": "coulombs-law",
           "name": "쿨롱 법칙",
-          "desc": "전하 사이의 힘"
+          "desc": "전하 사이의 힘",
+          "simId": "aperi21:coulombs-law"
         },
         {
           "id": "superposition-of-forces",
           "name": "전기력의 중첩",
-          "desc": "여러 전하가 주는 힘의 합"
+          "desc": "여러 전하가 주는 힘의 합",
+          "simId": "aperi21:superposition-of-forces"
         },
         {
           "id": "electric-field",
           "name": "전기장",
-          "desc": "단위 전하가 받는 힘"
+          "desc": "단위 전하가 받는 힘",
+          "simId": "aperi21:electric-field"
         },
         {
           "id": "field-lines",
@@ -1905,27 +1910,32 @@
         {
           "id": "field-of-dipole",
           "name": "쌍극자의 전기장",
-          "desc": "가까운 두 반대 전하"
+          "desc": "가까운 두 반대 전하",
+          "simId": "aperi21:field-of-dipole"
         },
         {
           "id": "uniform-field",
           "name": "균일한 전기장",
-          "desc": "평행판 사이의 장"
+          "desc": "평행판 사이의 장",
+          "simId": "aperi21:uniform-field"
         },
         {
           "id": "charge-in-uniform-field",
           "name": "균일장 속 전하",
-          "desc": "포물선 운동과의 대응"
+          "desc": "포물선 운동과의 대응",
+          "simId": "aperi21:charge-in-uniform-field"
         },
         {
           "id": "gausss-law",
           "name": "가우스 법칙",
-          "desc": "닫힌 면을 지나는 전기력선속"
+          "desc": "닫힌 면을 지나는 전기력선속",
+          "simId": "aperi21:gausss-law"
         },
         {
           "id": "field-of-charged-sphere",
           "name": "대전된 구의 전기장",
-          "desc": "안과 밖이 다른 이유"
+          "desc": "안과 밖이 다른 이유",
+          "simId": "aperi21:field-of-charged-sphere"
         },
         {
           "id": "equipotential-surface",
@@ -1937,62 +1947,74 @@
         {
           "id": "potential-vs-field",
           "name": "전위와 전기장",
-          "desc": "기울기 관계"
+          "desc": "기울기 관계",
+          "simId": "aperi21:potential-vs-field"
         },
         {
           "id": "electrostatic-shielding",
           "name": "정전기 차폐",
-          "desc": "도체 내부의 장이 0인 이유"
+          "desc": "도체 내부의 장이 0인 이유",
+          "simId": "aperi21:electrostatic-shielding"
         },
         {
           "id": "charge-on-conductor-surface",
           "name": "도체 표면의 전하",
-          "desc": "뾰족한 곳에 몰리는 전하"
+          "desc": "뾰족한 곳에 몰리는 전하",
+          "simId": "aperi21:charge-on-conductor-surface"
         },
         {
           "id": "dielectric",
           "name": "유전체",
-          "desc": "분극과 전기장의 약화"
+          "desc": "분극과 전기장의 약화",
+          "simId": "aperi21:dielectric"
         },
         {
           "id": "parallel-plate-capacitor",
           "name": "평행판 축전기",
-          "desc": "넓이·간격이 정하는 용량"
+          "desc": "넓이·간격이 정하는 용량",
+          "simId": "aperi21:parallel-plate-capacitor"
         },
         {
           "id": "capacitors-in-circuit",
           "name": "축전기의 연결",
-          "desc": "직렬과 병렬의 합성"
+          "desc": "직렬과 병렬의 합성",
+          "simId": "aperi21:capacitors-in-circuit"
         },
         {
           "id": "energy-in-capacitor",
           "name": "축전기의 에너지",
-          "desc": "전기장에 저장된 에너지"
+          "desc": "전기장에 저장된 에너지",
+          "simId": "aperi21:energy-in-capacitor"
         },
         {
           "id": "electric-current",
           "name": "전류",
-          "desc": "전하의 흐름과 방향 규약"
+          "desc": "전하의 흐름과 방향 규약",
+          "simId": "aperi21:electric-current"
         },
         {
           "id": "drift-velocity",
           "name": "표류 속도",
-          "desc": "느린 전자와 빠른 신호"
+          "desc": "느린 전자와 빠른 신호",
+          "simId": "aperi21:drift-velocity"
         },
         {
           "id": "ohms-law",
           "name": "옴 법칙",
-          "desc": "전압·전류·저항"
+          "desc": "전압·전류·저항",
+          "simId": "aperi21:ohms-law"
         },
         {
           "id": "resistance-and-geometry",
           "name": "저항과 형태",
-          "desc": "길이와 단면적의 영향"
+          "desc": "길이와 단면적의 영향",
+          "simId": "aperi21:resistance-and-geometry"
         },
         {
           "id": "temperature-and-resistance",
           "name": "온도와 저항",
-          "desc": "금속과 반도체의 반대 경향"
+          "desc": "금속과 반도체의 반대 경향",
+          "simId": "aperi21:temperature-and-resistance"
         },
         {
           "id": "series-parallel-resistors",
@@ -2003,27 +2025,32 @@
         {
           "id": "emf-and-internal-resistance",
           "name": "기전력과 내부 저항",
-          "desc": "단자 전압이 낮아지는 이유"
+          "desc": "단자 전압이 낮아지는 이유",
+          "simId": "aperi21:emf-and-internal-resistance"
         },
         {
           "id": "kirchhoffs-current-law",
           "name": "키르히호프 전류 법칙",
-          "desc": "마디에서의 전하 보존"
+          "desc": "마디에서의 전하 보존",
+          "simId": "aperi21:kirchhoffs-current-law"
         },
         {
           "id": "kirchhoffs-voltage-law",
           "name": "키르히호프 전압 법칙",
-          "desc": "고리에서의 에너지 보존"
+          "desc": "고리에서의 에너지 보존",
+          "simId": "aperi21:kirchhoffs-voltage-law"
         },
         {
           "id": "wheatstone-bridge",
           "name": "휘트스톤 브리지",
-          "desc": "평형으로 재는 저항"
+          "desc": "평형으로 재는 저항",
+          "simId": "aperi21:wheatstone-bridge"
         },
         {
           "id": "joule-heating",
           "name": "줄 열",
-          "desc": "저항이 만드는 열"
+          "desc": "저항이 만드는 열",
+          "simId": "aperi21:joule-heating"
         },
         {
           "id": "rc-circuit",
@@ -2035,17 +2062,20 @@
         {
           "id": "magnetic-field",
           "name": "자기장",
-          "desc": "자기력의 분포"
+          "desc": "자기력의 분포",
+          "simId": "aperi21:magnetic-field"
         },
         {
           "id": "magnetic-field-lines",
           "name": "자기력선",
-          "desc": "끊기지 않고 닫히는 선"
+          "desc": "끊기지 않고 닫히는 선",
+          "simId": "aperi21:magnetic-field-lines"
         },
         {
           "id": "lorentz-force",
           "name": "로런츠 힘",
-          "desc": "자기장 속 전하가 받는 힘"
+          "desc": "자기장 속 전하가 받는 힘",
+          "simId": "aperi21:lorentz-force"
         },
         {
           "id": "charged-particle-in-magnetic-field",
@@ -2057,22 +2087,26 @@
         {
           "id": "velocity-selector",
           "name": "속도 선택기",
-          "desc": "전기력과 자기력의 균형"
+          "desc": "전기력과 자기력의 균형",
+          "simId": "aperi21:velocity-selector"
         },
         {
           "id": "mass-spectrometer",
           "name": "질량 분석기",
-          "desc": "반지름으로 가르는 질량"
+          "desc": "반지름으로 가르는 질량",
+          "simId": "aperi21:mass-spectrometer"
         },
         {
           "id": "force-on-current-wire",
           "name": "전류가 받는 힘",
-          "desc": "도선에 작용하는 자기력"
+          "desc": "도선에 작용하는 자기력",
+          "simId": "aperi21:force-on-current-wire"
         },
         {
           "id": "biot-savart-law",
           "name": "비오-사바르 법칙",
-          "desc": "전류 요소가 만드는 자기장"
+          "desc": "전류 요소가 만드는 자기장",
+          "simId": "aperi21:biot-savart-law"
         },
         {
           "id": "field-of-straight-wire",
@@ -2083,32 +2117,38 @@
         {
           "id": "field-of-loop-and-solenoid",
           "name": "고리와 솔레노이드",
-          "desc": "축 위의 자기장"
+          "desc": "축 위의 자기장",
+          "simId": "aperi21:field-of-loop-and-solenoid"
         },
         {
           "id": "amperes-law",
           "name": "앙페르 법칙",
-          "desc": "전류와 자기장의 순환"
+          "desc": "전류와 자기장의 순환",
+          "simId": "aperi21:amperes-law"
         },
         {
           "id": "force-between-wires",
           "name": "도선 사이의 힘",
-          "desc": "나란한 두 전류의 인력·척력"
+          "desc": "나란한 두 전류의 인력·척력",
+          "simId": "aperi21:force-between-wires"
         },
         {
           "id": "magnetic-dipole",
           "name": "자기 쌍극자",
-          "desc": "고리 전류와 자석의 동일성"
+          "desc": "고리 전류와 자석의 동일성",
+          "simId": "aperi21:magnetic-dipole"
         },
         {
           "id": "magnetic-materials",
           "name": "자성체",
-          "desc": "강자성·상자성·반자성"
+          "desc": "강자성·상자성·반자성",
+          "simId": "aperi21:magnetic-materials"
         },
         {
           "id": "faradays-law",
           "name": "패러데이 법칙",
-          "desc": "자속 변화가 만드는 기전력"
+          "desc": "자속 변화가 만드는 기전력",
+          "simId": "aperi21:faradays-law"
         },
         {
           "id": "lenzs-law",
@@ -2119,82 +2159,98 @@
         {
           "id": "motional-emf",
           "name": "운동 기전력",
-          "desc": "도선이 움직여 생기는 전압"
+          "desc": "도선이 움직여 생기는 전압",
+          "simId": "aperi21:motional-emf"
         },
         {
           "id": "eddy-current",
           "name": "맴돌이 전류",
-          "desc": "덩어리 도체 속의 유도 전류"
+          "desc": "덩어리 도체 속의 유도 전류",
+          "simId": "aperi21:eddy-current"
         },
         {
           "id": "self-inductance",
           "name": "자체 인덕턴스",
-          "desc": "자기 자신의 자속 변화"
+          "desc": "자기 자신의 자속 변화",
+          "simId": "aperi21:self-inductance"
         },
         {
           "id": "mutual-inductance",
           "name": "상호 인덕턴스",
-          "desc": "이웃 회로에 유도되는 기전력"
+          "desc": "이웃 회로에 유도되는 기전력",
+          "simId": "aperi21:mutual-inductance"
         },
         {
           "id": "energy-in-inductor",
           "name": "인덕터의 에너지",
-          "desc": "자기장에 저장된 에너지"
+          "desc": "자기장에 저장된 에너지",
+          "simId": "aperi21:energy-in-inductor"
         },
         {
           "id": "rl-circuit",
           "name": "RL 회로",
-          "desc": "전류가 서서히 오르는 이유"
+          "desc": "전류가 서서히 오르는 이유",
+          "simId": "aperi21:rl-circuit"
         },
         {
           "id": "lc-oscillation",
           "name": "LC 진동",
-          "desc": "전기와 자기 에너지의 교환"
+          "desc": "전기와 자기 에너지의 교환",
+          "simId": "aperi21:lc-oscillation"
         },
         {
           "id": "ac-generation",
           "name": "교류의 발생",
-          "desc": "회전하는 코일과 사인파"
+          "desc": "회전하는 코일과 사인파",
+          "simId": "aperi21:ac-generation"
         },
         {
           "id": "reactance-and-impedance",
           "name": "리액턴스와 임피던스",
-          "desc": "주파수에 의존하는 저항"
+          "desc": "주파수에 의존하는 저항",
+          "simId": "aperi21:reactance-and-impedance"
         },
         {
           "id": "phase-in-ac-circuit",
           "name": "교류의 위상차",
-          "desc": "전압과 전류가 어긋나는 것"
+          "desc": "전압과 전류가 어긋나는 것",
+          "simId": "aperi21:phase-in-ac-circuit"
         },
         {
           "id": "series-rlc-resonance",
           "name": "RLC 공진",
-          "desc": "임피던스가 최소가 되는 주파수"
+          "desc": "임피던스가 최소가 되는 주파수",
+          "simId": "aperi21:series-rlc-resonance"
         },
         {
           "id": "transformer",
           "name": "변압기",
-          "desc": "감은 수와 전압비"
+          "desc": "감은 수와 전압비",
+          "simId": "aperi21:transformer"
         },
         {
           "id": "motor",
           "name": "전동기",
-          "desc": "전류가 받는 힘으로 도는 것"
+          "desc": "전류가 받는 힘으로 도는 것",
+          "simId": "aperi21:motor"
         },
         {
           "id": "generator",
           "name": "발전기",
-          "desc": "회전이 만드는 기전력"
+          "desc": "회전이 만드는 기전력",
+          "simId": "aperi21:generator"
         },
         {
           "id": "displacement-current",
           "name": "변위 전류",
-          "desc": "축전기 사이를 잇는 항"
+          "desc": "축전기 사이를 잇는 항",
+          "simId": "aperi21:displacement-current"
         },
         {
           "id": "maxwells-equations",
           "name": "맥스웰 방정식",
-          "desc": "전자기를 묶는 네 식"
+          "desc": "전자기를 묶는 네 식",
+          "simId": "aperi21:maxwells-equations"
         },
         {
           "id": "electromagnetic-wave",
@@ -2206,67 +2262,80 @@
         {
           "id": "poynting-vector",
           "name": "포인팅 벡터",
-          "desc": "전자기파가 나르는 에너지 흐름"
+          "desc": "전자기파가 나르는 에너지 흐름",
+          "simId": "aperi21:poynting-vector"
         },
         {
           "id": "radiation-pressure",
           "name": "복사압",
-          "desc": "빛이 미는 힘"
+          "desc": "빛이 미는 힘",
+          "simId": "aperi21:radiation-pressure"
         },
         {
           "id": "antenna-radiation",
           "name": "안테나의 복사",
-          "desc": "가속하는 전하가 내는 파동"
+          "desc": "가속하는 전하가 내는 파동",
+          "simId": "aperi21:antenna-radiation"
         },
         {
           "id": "magnet-attraction",
           "name": "자석에 붙는 것",
-          "desc": "자석이 당기는 물체와 당기지 않는 물체"
+          "desc": "자석이 당기는 물체와 당기지 않는 물체",
+          "simId": "aperi21:magnet-attraction"
         },
         {
           "id": "magnetic-poles",
           "name": "자석의 두 극",
-          "desc": "같은 극은 밀고 다른 극은 당긴다"
+          "desc": "같은 극은 밀고 다른 극은 당긴다",
+          "simId": "aperi21:magnetic-poles"
         },
         {
           "id": "simple-circuit",
           "name": "전기 회로 만들기",
-          "desc": "이어져야 흐르고 끊기면 꺼진다"
+          "desc": "이어져야 흐르고 끊기면 꺼진다",
+          "simId": "aperi21:simple-circuit"
         },
         {
           "id": "electromagnet",
           "name": "전자석",
-          "desc": "전류가 흐를 때만 자석이 되는 것"
+          "desc": "전류가 흐를 때만 자석이 되는 것",
+          "simId": "aperi21:electromagnet"
         },
         {
           "id": "iv-characteristic",
           "name": "I-V 특성 곡선",
-          "desc": "전압과 전류의 관계가 직선이 아닌 소자"
+          "desc": "전압과 전류의 관계가 직선이 아닌 소자",
+          "simId": "aperi21:iv-characteristic"
         },
         {
           "id": "thermistor-and-ldr",
           "name": "써미스터와 광저항",
-          "desc": "온도와 빛에 따라 변하는 저항"
+          "desc": "온도와 빛에 따라 변하는 저항",
+          "simId": "aperi21:thermistor-and-ldr"
         },
         {
           "id": "potential-divider",
           "name": "분압기",
-          "desc": "저항으로 전압을 나누어 쓰는 것"
+          "desc": "저항으로 전압을 나누어 쓰는 것",
+          "simId": "aperi21:potential-divider"
         },
         {
           "id": "millikan-experiment",
           "name": "밀리컨 실험",
-          "desc": "전하가 띄엄띄엄하다는 증거"
+          "desc": "전하가 띄엄띄엄하다는 증거",
+          "simId": "aperi21:millikan-experiment"
         },
         {
           "id": "power-transmission",
           "name": "송전",
-          "desc": "전압을 올려 손실을 줄이는 것"
+          "desc": "전압을 올려 손실을 줄이는 것",
+          "simId": "aperi21:power-transmission"
         },
         {
           "id": "loudspeaker-and-microphone",
           "name": "스피커와 마이크",
-          "desc": "전류와 진동을 오가는 변환"
+          "desc": "전류와 진동을 오가는 변환",
+          "simId": "aperi21:loudspeaker-and-microphone"
         }
       ]
     },
@@ -2680,7 +2749,7 @@
   ],
   "summary": {
     "topics": 441,
-    "implemented": 300,
+    "implemented": 369,
     "labs": 103
   }
 }

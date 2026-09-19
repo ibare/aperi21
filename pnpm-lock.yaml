@@ -144,12 +144,18 @@ importers:
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../schema
+      '@aperi21/sim-ac-generation':
+        specifier: workspace:*
+        version: link:../../sims/em/ac-generation
       '@aperi21/sim-acceleration-time-graph':
         specifier: workspace:*
         version: link:../../sims/kinematics/acceleration-time-graph
       '@aperi21/sim-air-column-resonance':
         specifier: workspace:*
         version: link:../../sims/waves/air-column-resonance
+      '@aperi21/sim-amperes-law':
+        specifier: workspace:*
+        version: link:../../sims/em/amperes-law
       '@aperi21/sim-angle-of-friction':
         specifier: workspace:*
         version: link:../../sims/mechanics/angle-of-friction
@@ -162,6 +168,9 @@ importers:
       '@aperi21/sim-angular-momentum-vector':
         specifier: workspace:*
         version: link:../../sims/oscillation/angular-momentum-vector
+      '@aperi21/sim-antenna-radiation':
+        specifier: workspace:*
+        version: link:../../sims/em/antenna-radiation
       '@aperi21/sim-antimatter':
         specifier: workspace:*
         version: link:../../sims/modern/antimatter
@@ -216,6 +225,9 @@ importers:
       '@aperi21/sim-binding-energy-curve':
         specifier: workspace:*
         version: link:../../sims/modern/binding-energy-curve
+      '@aperi21/sim-biot-savart-law':
+        specifier: workspace:*
+        version: link:../../sims/em/biot-savart-law
       '@aperi21/sim-black-hole-horizon':
         specifier: workspace:*
         version: link:../../sims/astro/black-hole-horizon
@@ -237,6 +249,9 @@ importers:
       '@aperi21/sim-buoyant-force-as-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/buoyant-force-as-force
+      '@aperi21/sim-capacitors-in-circuit':
+        specifier: workspace:*
+        version: link:../../sims/em/capacitors-in-circuit
       '@aperi21/sim-capillary-action':
         specifier: workspace:*
         version: link:../../sims/fluids/capillary-action
@@ -255,9 +270,18 @@ importers:
       '@aperi21/sim-chain-reaction':
         specifier: workspace:*
         version: link:../../sims/modern/chain-reaction
+      '@aperi21/sim-charge-in-uniform-field':
+        specifier: workspace:*
+        version: link:../../sims/em/charge-in-uniform-field
+      '@aperi21/sim-charge-on-conductor-surface':
+        specifier: workspace:*
+        version: link:../../sims/em/charge-on-conductor-surface
       '@aperi21/sim-charged-particle-in-magnetic-field':
         specifier: workspace:*
         version: link:../../sims/em/charged-particle-in-magnetic-field
+      '@aperi21/sim-charging-methods':
+        specifier: workspace:*
+        version: link:../../sims/em/charging-methods
       '@aperi21/sim-circular-orbit':
         specifier: workspace:*
         version: link:../../sims/astro/circular-orbit
@@ -294,6 +318,9 @@ importers:
       '@aperi21/sim-coriolis-effect':
         specifier: workspace:*
         version: link:../../sims/mechanics/coriolis-effect
+      '@aperi21/sim-coulombs-law':
+        specifier: workspace:*
+        version: link:../../sims/em/coulombs-law
       '@aperi21/sim-coupled-oscillators':
         specifier: workspace:*
         version: link:../../sims/oscillation/coupled-oscillators
@@ -312,6 +339,9 @@ importers:
       '@aperi21/sim-decay-types':
         specifier: workspace:*
         version: link:../../sims/modern/decay-types
+      '@aperi21/sim-dielectric':
+        specifier: workspace:*
+        version: link:../../sims/em/dielectric
       '@aperi21/sim-diffraction':
         specifier: workspace:*
         version: link:../../sims/waves/diffraction
@@ -324,6 +354,9 @@ importers:
       '@aperi21/sim-direction-of-acceleration':
         specifier: workspace:*
         version: link:../../sims/kinematics/direction-of-acceleration
+      '@aperi21/sim-displacement-current':
+        specifier: workspace:*
+        version: link:../../sims/em/displacement-current
       '@aperi21/sim-diurnal-motion':
         specifier: workspace:*
         version: link:../../sims/astro/diurnal-motion
@@ -342,6 +375,9 @@ importers:
       '@aperi21/sim-drag-in-fluid':
         specifier: workspace:*
         version: link:../../sims/fluids/drag-in-fluid
+      '@aperi21/sim-drift-velocity':
+        specifier: workspace:*
+        version: link:../../sims/em/drift-velocity
       '@aperi21/sim-driven-oscillation':
         specifier: workspace:*
         version: link:../../sims/oscillation/driven-oscillation
@@ -354,6 +390,9 @@ importers:
       '@aperi21/sim-eclipse':
         specifier: workspace:*
         version: link:../../sims/astro/eclipse
+      '@aperi21/sim-eddy-current':
+        specifier: workspace:*
+        version: link:../../sims/em/eddy-current
       '@aperi21/sim-efficiency':
         specifier: workspace:*
         version: link:../../sims/mechanics/efficiency
@@ -363,6 +402,18 @@ importers:
       '@aperi21/sim-elastic-potential-energy':
         specifier: workspace:*
         version: link:../../sims/mechanics/elastic-potential-energy
+      '@aperi21/sim-electric-charge':
+        specifier: workspace:*
+        version: link:../../sims/em/electric-charge
+      '@aperi21/sim-electric-current':
+        specifier: workspace:*
+        version: link:../../sims/em/electric-current
+      '@aperi21/sim-electric-field':
+        specifier: workspace:*
+        version: link:../../sims/em/electric-field
+      '@aperi21/sim-electromagnet':
+        specifier: workspace:*
+        version: link:../../sims/em/electromagnet
       '@aperi21/sim-electromagnetic-wave':
         specifier: workspace:*
         version: link:../../sims/em/electromagnetic-wave
@@ -372,18 +423,30 @@ importers:
       '@aperi21/sim-electron-diffraction':
         specifier: workspace:*
         version: link:../../sims/modern/electron-diffraction
+      '@aperi21/sim-electrostatic-shielding':
+        specifier: workspace:*
+        version: link:../../sims/em/electrostatic-shielding
       '@aperi21/sim-elliptical-orbit':
         specifier: workspace:*
         version: link:../../sims/astro/elliptical-orbit
+      '@aperi21/sim-emf-and-internal-resistance':
+        specifier: workspace:*
+        version: link:../../sims/em/emf-and-internal-resistance
       '@aperi21/sim-energy-dissipation':
         specifier: workspace:*
         version: link:../../sims/mechanics/energy-dissipation
       '@aperi21/sim-energy-flow-diagram':
         specifier: workspace:*
         version: link:../../sims/mechanics/energy-flow-diagram
+      '@aperi21/sim-energy-in-capacitor':
+        specifier: workspace:*
+        version: link:../../sims/em/energy-in-capacitor
       '@aperi21/sim-energy-in-collision':
         specifier: workspace:*
         version: link:../../sims/mechanics/energy-in-collision
+      '@aperi21/sim-energy-in-inductor':
+        specifier: workspace:*
+        version: link:../../sims/em/energy-in-inductor
       '@aperi21/sim-equilibrium-of-forces':
         specifier: workspace:*
         version: link:../../sims/mechanics/equilibrium-of-forces
@@ -411,6 +474,9 @@ importers:
       '@aperi21/sim-explosion-and-recoil':
         specifier: workspace:*
         version: link:../../sims/mechanics/explosion-and-recoil
+      '@aperi21/sim-faradays-law':
+        specifier: workspace:*
+        version: link:../../sims/em/faradays-law
       '@aperi21/sim-fermi-level':
         specifier: workspace:*
         version: link:../../sims/modern/fermi-level
@@ -420,12 +486,27 @@ importers:
       '@aperi21/sim-field-lines':
         specifier: workspace:*
         version: link:../../sims/em/field-lines
+      '@aperi21/sim-field-of-charged-sphere':
+        specifier: workspace:*
+        version: link:../../sims/em/field-of-charged-sphere
+      '@aperi21/sim-field-of-dipole':
+        specifier: workspace:*
+        version: link:../../sims/em/field-of-dipole
+      '@aperi21/sim-field-of-loop-and-solenoid':
+        specifier: workspace:*
+        version: link:../../sims/em/field-of-loop-and-solenoid
       '@aperi21/sim-finite-well':
         specifier: workspace:*
         version: link:../../sims/modern/finite-well
       '@aperi21/sim-floating-and-draft':
         specifier: workspace:*
         version: link:../../sims/fluids/floating-and-draft
+      '@aperi21/sim-force-between-wires':
+        specifier: workspace:*
+        version: link:../../sims/em/force-between-wires
+      '@aperi21/sim-force-on-current-wire':
+        specifier: workspace:*
+        version: link:../../sims/em/force-on-current-wire
       '@aperi21/sim-free-body-diagram':
         specifier: workspace:*
         version: link:../../sims/mechanics/free-body-diagram
@@ -435,9 +516,15 @@ importers:
       '@aperi21/sim-gas-pressure':
         specifier: workspace:*
         version: link:../../sims/thermal/gas-pressure
+      '@aperi21/sim-gausss-law':
+        specifier: workspace:*
+        version: link:../../sims/em/gausss-law
       '@aperi21/sim-gears':
         specifier: workspace:*
         version: link:../../sims/oscillation/gears
+      '@aperi21/sim-generator':
+        specifier: workspace:*
+        version: link:../../sims/em/generator
       '@aperi21/sim-geostationary-orbit':
         specifier: workspace:*
         version: link:../../sims/astro/geostationary-orbit
@@ -516,6 +603,12 @@ importers:
       '@aperi21/sim-ionizing-radiation':
         specifier: workspace:*
         version: link:../../sims/modern/ionizing-radiation
+      '@aperi21/sim-iv-characteristic':
+        specifier: workspace:*
+        version: link:../../sims/em/iv-characteristic
+      '@aperi21/sim-joule-heating':
+        specifier: workspace:*
+        version: link:../../sims/em/joule-heating
       '@aperi21/sim-keplers-first-law':
         specifier: workspace:*
         version: link:../../sims/astro/keplers-first-law
@@ -531,6 +624,12 @@ importers:
       '@aperi21/sim-kinetic-friction':
         specifier: workspace:*
         version: link:../../sims/mechanics/kinetic-friction
+      '@aperi21/sim-kirchhoffs-current-law':
+        specifier: workspace:*
+        version: link:../../sims/em/kirchhoffs-current-law
+      '@aperi21/sim-kirchhoffs-voltage-law':
+        specifier: workspace:*
+        version: link:../../sims/em/kirchhoffs-voltage-law
       '@aperi21/sim-lagrange-points':
         specifier: workspace:*
         version: link:../../sims/astro/lagrange-points
@@ -540,6 +639,9 @@ importers:
       '@aperi21/sim-laser-and-stimulated-emission':
         specifier: workspace:*
         version: link:../../sims/modern/laser-and-stimulated-emission
+      '@aperi21/sim-lc-oscillation':
+        specifier: workspace:*
+        version: link:../../sims/em/lc-oscillation
       '@aperi21/sim-length-contraction':
         specifier: workspace:*
         version: link:../../sims/modern/length-contraction
@@ -561,18 +663,48 @@ importers:
       '@aperi21/sim-longitudinal-wave':
         specifier: workspace:*
         version: link:../../sims/waves/longitudinal-wave
+      '@aperi21/sim-lorentz-force':
+        specifier: workspace:*
+        version: link:../../sims/em/lorentz-force
+      '@aperi21/sim-loudspeaker-and-microphone':
+        specifier: workspace:*
+        version: link:../../sims/em/loudspeaker-and-microphone
+      '@aperi21/sim-magnet-attraction':
+        specifier: workspace:*
+        version: link:../../sims/em/magnet-attraction
+      '@aperi21/sim-magnetic-dipole':
+        specifier: workspace:*
+        version: link:../../sims/em/magnetic-dipole
+      '@aperi21/sim-magnetic-field':
+        specifier: workspace:*
+        version: link:../../sims/em/magnetic-field
+      '@aperi21/sim-magnetic-field-lines':
+        specifier: workspace:*
+        version: link:../../sims/em/magnetic-field-lines
+      '@aperi21/sim-magnetic-materials':
+        specifier: workspace:*
+        version: link:../../sims/em/magnetic-materials
+      '@aperi21/sim-magnetic-poles':
+        specifier: workspace:*
+        version: link:../../sims/em/magnetic-poles
       '@aperi21/sim-magnitude-scale':
         specifier: workspace:*
         version: link:../../sims/astro/magnitude-scale
       '@aperi21/sim-manometer':
         specifier: workspace:*
         version: link:../../sims/fluids/manometer
+      '@aperi21/sim-mass-spectrometer':
+        specifier: workspace:*
+        version: link:../../sims/em/mass-spectrometer
       '@aperi21/sim-mass-spring-system':
         specifier: workspace:*
         version: link:../../sims/oscillation/mass-spring-system
       '@aperi21/sim-maxwell-boltzmann-distribution':
         specifier: workspace:*
         version: link:../../sims/thermal/maxwell-boltzmann-distribution
+      '@aperi21/sim-maxwells-equations':
+        specifier: workspace:*
+        version: link:../../sims/em/maxwells-equations
       '@aperi21/sim-measurement-collapse':
         specifier: workspace:*
         version: link:../../sims/modern/measurement-collapse
@@ -585,15 +717,27 @@ importers:
       '@aperi21/sim-michelson-morley':
         specifier: workspace:*
         version: link:../../sims/modern/michelson-morley
+      '@aperi21/sim-millikan-experiment':
+        specifier: workspace:*
+        version: link:../../sims/em/millikan-experiment
       '@aperi21/sim-moment-of-inertia':
         specifier: workspace:*
         version: link:../../sims/oscillation/moment-of-inertia
       '@aperi21/sim-moon-phases':
         specifier: workspace:*
         version: link:../../sims/astro/moon-phases
+      '@aperi21/sim-motional-emf':
+        specifier: workspace:*
+        version: link:../../sims/em/motional-emf
+      '@aperi21/sim-motor':
+        specifier: workspace:*
+        version: link:../../sims/em/motor
       '@aperi21/sim-muon-decay-evidence':
         specifier: workspace:*
         version: link:../../sims/modern/muon-decay-evidence
+      '@aperi21/sim-mutual-inductance':
+        specifier: workspace:*
+        version: link:../../sims/em/mutual-inductance
       '@aperi21/sim-net-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/net-force
@@ -633,6 +777,9 @@ importers:
       '@aperi21/sim-nuclear-structure':
         specifier: workspace:*
         version: link:../../sims/modern/nuclear-structure
+      '@aperi21/sim-ohms-law':
+        specifier: workspace:*
+        version: link:../../sims/em/ohms-law
       '@aperi21/sim-orbital-decay':
         specifier: workspace:*
         version: link:../../sims/astro/orbital-decay
@@ -648,6 +795,9 @@ importers:
       '@aperi21/sim-parallel-axis-theorem':
         specifier: workspace:*
         version: link:../../sims/oscillation/parallel-axis-theorem
+      '@aperi21/sim-parallel-plate-capacitor':
+        specifier: workspace:*
+        version: link:../../sims/em/parallel-plate-capacitor
       '@aperi21/sim-particle-in-a-box':
         specifier: workspace:*
         version: link:../../sims/modern/particle-in-a-box
@@ -666,6 +816,9 @@ importers:
       '@aperi21/sim-phase-diagram':
         specifier: workspace:*
         version: link:../../sims/thermal/phase-diagram
+      '@aperi21/sim-phase-in-ac-circuit':
+        specifier: workspace:*
+        version: link:../../sims/em/phase-in-ac-circuit
       '@aperi21/sim-phase-space':
         specifier: workspace:*
         version: link:../../sims/oscillation/phase-space
@@ -690,9 +843,21 @@ importers:
       '@aperi21/sim-position-time-graph':
         specifier: workspace:*
         version: link:../../sims/kinematics/position-time-graph
+      '@aperi21/sim-potential-divider':
+        specifier: workspace:*
+        version: link:../../sims/em/potential-divider
       '@aperi21/sim-potential-energy-curve':
         specifier: workspace:*
         version: link:../../sims/mechanics/potential-energy-curve
+      '@aperi21/sim-potential-vs-field':
+        specifier: workspace:*
+        version: link:../../sims/em/potential-vs-field
+      '@aperi21/sim-power-transmission':
+        specifier: workspace:*
+        version: link:../../sims/em/power-transmission
+      '@aperi21/sim-poynting-vector':
+        specifier: workspace:*
+        version: link:../../sims/em/poynting-vector
       '@aperi21/sim-projectile-motion':
         specifier: workspace:*
         version: link:../../sims/kinematics/projectile-motion
@@ -708,6 +873,9 @@ importers:
       '@aperi21/sim-quantum-tunneling':
         specifier: workspace:*
         version: link:../../sims/modern/quantum-tunneling
+      '@aperi21/sim-radiation-pressure':
+        specifier: workspace:*
+        version: link:../../sims/em/radiation-pressure
       '@aperi21/sim-radioactive-decay':
         specifier: workspace:*
         version: link:../../sims/modern/radioactive-decay
@@ -723,6 +891,9 @@ importers:
       '@aperi21/sim-rc-circuit':
         specifier: workspace:*
         version: link:../../sims/em/rc-circuit
+      '@aperi21/sim-reactance-and-impedance':
+        specifier: workspace:*
+        version: link:../../sims/em/reactance-and-impedance
       '@aperi21/sim-reference-frame':
         specifier: workspace:*
         version: link:../../sims/kinematics/reference-frame
@@ -747,6 +918,9 @@ importers:
       '@aperi21/sim-relativity-of-simultaneity':
         specifier: workspace:*
         version: link:../../sims/modern/relativity-of-simultaneity
+      '@aperi21/sim-resistance-and-geometry':
+        specifier: workspace:*
+        version: link:../../sims/em/resistance-and-geometry
       '@aperi21/sim-resonance':
         specifier: workspace:*
         version: link:../../sims/oscillation/resonance
@@ -756,6 +930,9 @@ importers:
       '@aperi21/sim-river-crossing':
         specifier: workspace:*
         version: link:../../sims/kinematics/river-crossing
+      '@aperi21/sim-rl-circuit':
+        specifier: workspace:*
+        version: link:../../sims/em/rl-circuit
       '@aperi21/sim-roche-limit':
         specifier: workspace:*
         version: link:../../sims/astro/roche-limit
@@ -786,9 +963,15 @@ importers:
       '@aperi21/sim-seismic-waves':
         specifier: workspace:*
         version: link:../../sims/waves/seismic-waves
+      '@aperi21/sim-self-inductance':
+        specifier: workspace:*
+        version: link:../../sims/em/self-inductance
       '@aperi21/sim-semiconductor-doping':
         specifier: workspace:*
         version: link:../../sims/modern/semiconductor-doping
+      '@aperi21/sim-series-rlc-resonance':
+        specifier: workspace:*
+        version: link:../../sims/em/series-rlc-resonance
       '@aperi21/sim-shell-theorem':
         specifier: workspace:*
         version: link:../../sims/astro/shell-theorem
@@ -798,6 +981,9 @@ importers:
       '@aperi21/sim-shock-wave':
         specifier: workspace:*
         version: link:../../sims/waves/shock-wave
+      '@aperi21/sim-simple-circuit':
+        specifier: workspace:*
+        version: link:../../sims/em/simple-circuit
       '@aperi21/sim-simple-harmonic-motion':
         specifier: workspace:*
         version: link:../../sims/oscillation/simple-harmonic-motion
@@ -885,6 +1071,9 @@ importers:
       '@aperi21/sim-superposition':
         specifier: workspace:*
         version: link:../../sims/waves/superposition
+      '@aperi21/sim-superposition-of-forces':
+        specifier: workspace:*
+        version: link:../../sims/em/superposition-of-forces
       '@aperi21/sim-superposition-quantum':
         specifier: workspace:*
         version: link:../../sims/modern/superposition-quantum
@@ -894,6 +1083,9 @@ importers:
       '@aperi21/sim-tangential-normal-acceleration':
         specifier: workspace:*
         version: link:../../sims/kinematics/tangential-normal-acceleration
+      '@aperi21/sim-temperature-and-resistance':
+        specifier: workspace:*
+        version: link:../../sims/em/temperature-and-resistance
       '@aperi21/sim-tension':
         specifier: workspace:*
         version: link:../../sims/mechanics/tension
@@ -903,6 +1095,9 @@ importers:
       '@aperi21/sim-thermal-convection':
         specifier: workspace:*
         version: link:../../sims/thermal/thermal-convection
+      '@aperi21/sim-thermistor-and-ldr':
+        specifier: workspace:*
+        version: link:../../sims/em/thermistor-and-ldr
       '@aperi21/sim-thin-film-interference':
         specifier: workspace:*
         version: link:../../sims/optics/thin-film-interference
@@ -921,6 +1116,9 @@ importers:
       '@aperi21/sim-trajectory-equation':
         specifier: workspace:*
         version: link:../../sims/kinematics/trajectory-equation
+      '@aperi21/sim-transformer':
+        specifier: workspace:*
+        version: link:../../sims/em/transformer
       '@aperi21/sim-transistor-principle':
         specifier: workspace:*
         version: link:../../sims/modern/transistor-principle
@@ -942,6 +1140,9 @@ importers:
       '@aperi21/sim-uniform-circular-motion':
         specifier: workspace:*
         version: link:../../sims/kinematics/uniform-circular-motion
+      '@aperi21/sim-uniform-field':
+        specifier: workspace:*
+        version: link:../../sims/em/uniform-field
       '@aperi21/sim-uniform-motion':
         specifier: workspace:*
         version: link:../../sims/kinematics/uniform-motion
@@ -954,6 +1155,9 @@ importers:
       '@aperi21/sim-vector-decomposition':
         specifier: workspace:*
         version: link:../../sims/kinematics/vector-decomposition
+      '@aperi21/sim-velocity-selector':
+        specifier: workspace:*
+        version: link:../../sims/em/velocity-selector
       '@aperi21/sim-venturi-effect':
         specifier: workspace:*
         version: link:../../sims/fluids/venturi-effect
@@ -993,6 +1197,9 @@ importers:
       '@aperi21/sim-wetting-and-contact-angle':
         specifier: workspace:*
         version: link:../../sims/fluids/wetting-and-contact-angle
+      '@aperi21/sim-wheatstone-bridge':
+        specifier: workspace:*
+        version: link:../../sims/em/wheatstone-bridge
       '@aperi21/sim-wien-displacement-law':
         specifier: workspace:*
         version: link:../../sims/modern/wien-displacement-law
@@ -1671,7 +1878,97 @@ importers:
         specifier: ^2.1.9
         version: 2.1.9(jsdom@25.0.1)
 
+  sims/em/ac-generation:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/amperes-law:
+    devDependencies:
+      '@aperi21/plugin-em':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-em
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/antenna-radiation:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/biot-savart-law:
+    devDependencies:
+      '@aperi21/plugin-em':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-em
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/capacitors-in-circuit:
+    devDependencies:
+      '@aperi21/plugin-circuit':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-circuit
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/charge-in-uniform-field:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/charge-on-conductor-surface:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/em/charged-particle-in-magnetic-field:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/charging-methods:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/coulombs-law:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1692,7 +1989,121 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/em/dielectric:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/displacement-current:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/drift-velocity:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/eddy-current:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/electric-charge:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/electric-current:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/electric-field:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/electromagnet:
+    devDependencies:
+      '@aperi21/plugin-em':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-em
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/em/electromagnetic-wave:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/electrostatic-shielding:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/emf-and-internal-resistance:
+    devDependencies:
+      '@aperi21/plugin-circuit':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-circuit
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/energy-in-capacitor:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/energy-in-inductor:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1710,7 +2121,136 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/em/faradays-law:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/em/field-lines:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/field-of-charged-sphere:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/field-of-dipole:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/field-of-loop-and-solenoid:
+    devDependencies:
+      '@aperi21/plugin-em':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-em
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/force-between-wires:
+    devDependencies:
+      '@aperi21/plugin-em':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-em
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/force-on-current-wire:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/gausss-law:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/generator:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/iv-characteristic:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/joule-heating:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/kirchhoffs-current-law:
+    devDependencies:
+      '@aperi21/plugin-circuit':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-circuit
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/kirchhoffs-voltage-law:
+    devDependencies:
+      '@aperi21/plugin-circuit':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-circuit
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/lc-oscillation:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -1728,8 +2268,341 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/em/lorentz-force:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/loudspeaker-and-microphone:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/magnet-attraction:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/magnetic-dipole:
+    devDependencies:
+      '@aperi21/plugin-em':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-em
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/magnetic-field:
+    devDependencies:
+      '@aperi21/plugin-em':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-em
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/magnetic-field-lines:
+    devDependencies:
+      '@aperi21/plugin-em':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-em
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/magnetic-materials:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/magnetic-poles:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/mass-spectrometer:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/maxwells-equations:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/millikan-experiment:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/motional-emf:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/motor:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/mutual-inductance:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/ohms-law:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/parallel-plate-capacitor:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/phase-in-ac-circuit:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/potential-divider:
+    devDependencies:
+      '@aperi21/plugin-circuit':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-circuit
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/potential-vs-field:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/power-transmission:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/poynting-vector:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/radiation-pressure:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/em/rc-circuit:
     devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/reactance-and-impedance:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/resistance-and-geometry:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/rl-circuit:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/self-inductance:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/series-rlc-resonance:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/simple-circuit:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/superposition-of-forces:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/temperature-and-resistance:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/thermistor-and-ldr:
+    devDependencies:
+      '@aperi21/plugin-circuit':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-circuit
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/transformer:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/uniform-field:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/velocity-selector:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/em/wheatstone-bridge:
+    devDependencies:
+      '@aperi21/plugin-circuit':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-circuit
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../../../packages/schema

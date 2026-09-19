@@ -2145,6 +2145,558 @@ export function registerAperi21Bundles(): void {
     return registerBundle('aperi21:lenz-law', m.lenzLawBundle, caps.capabilities);
   });
 
+  registerBundleLoader('aperi21:electric-charge', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-electric-charge'),
+      import('./capabilities/em/electric-charge.generated.js'),
+    ]);
+    return registerBundle('aperi21:electric-charge', m.electricChargeBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:parallel-plate-capacitor', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-parallel-plate-capacitor'),
+      import('./capabilities/em/parallel-plate-capacitor.generated.js'),
+    ]);
+    return registerBundle('aperi21:parallel-plate-capacitor', m.parallelPlateCapacitorBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:electric-current', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-electric-current'),
+      import('./capabilities/em/electric-current.generated.js'),
+    ]);
+    return registerBundle('aperi21:electric-current', m.electricCurrentBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:magnetic-field', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-magnetic-field'),
+      import('./capabilities/em/magnetic-field.generated.js'),
+    ]);
+    return registerBundle('aperi21:magnetic-field', m.magneticFieldBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:lorentz-force', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-lorentz-force'),
+      import('./capabilities/em/lorentz-force.generated.js'),
+    ]);
+    return registerBundle('aperi21:lorentz-force', m.lorentzForceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:faradays-law', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-faradays-law'),
+      import('./capabilities/em/faradays-law.generated.js'),
+    ]);
+    return registerBundle('aperi21:faradays-law', m.faradaysLawBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:lc-oscillation', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-lc-oscillation'),
+      import('./capabilities/em/lc-oscillation.generated.js'),
+    ]);
+    return registerBundle('aperi21:lc-oscillation', m.lcOscillationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:antenna-radiation', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-antenna-radiation'),
+      import('./capabilities/em/antenna-radiation.generated.js'),
+    ]);
+    return registerBundle('aperi21:antenna-radiation', m.antennaRadiationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:coulombs-law', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-coulombs-law'),
+      import('./capabilities/em/coulombs-law.generated.js'),
+    ]);
+    return registerBundle('aperi21:coulombs-law', m.coulombsLawBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:capacitors-in-circuit', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-capacitors-in-circuit'),
+      import('./capabilities/em/capacitors-in-circuit.generated.js'),
+    ]);
+    return registerBundle('aperi21:capacitors-in-circuit', m.capacitorsInCircuitBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:ohms-law', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-ohms-law'),
+      import('./capabilities/em/ohms-law.generated.js'),
+    ]);
+    return registerBundle('aperi21:ohms-law', m.ohmsLawBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:magnetic-poles', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-magnetic-poles'),
+      import('./capabilities/em/magnetic-poles.generated.js'),
+    ]);
+    return registerBundle('aperi21:magnetic-poles', m.magneticPolesBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:force-on-current-wire', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-force-on-current-wire'),
+      import('./capabilities/em/force-on-current-wire.generated.js'),
+    ]);
+    return registerBundle('aperi21:force-on-current-wire', m.forceOnCurrentWireBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:motional-emf', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-motional-emf'),
+      import('./capabilities/em/motional-emf.generated.js'),
+    ]);
+    return registerBundle('aperi21:motional-emf', m.motionalEmfBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:reactance-and-impedance', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-reactance-and-impedance'),
+      import('./capabilities/em/reactance-and-impedance.generated.js'),
+    ]);
+    return registerBundle('aperi21:reactance-and-impedance', m.reactanceAndImpedanceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:displacement-current', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-displacement-current'),
+      import('./capabilities/em/displacement-current.generated.js'),
+    ]);
+    return registerBundle('aperi21:displacement-current', m.displacementCurrentBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:electric-field', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-electric-field'),
+      import('./capabilities/em/electric-field.generated.js'),
+    ]);
+    return registerBundle('aperi21:electric-field', m.electricFieldBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:energy-in-capacitor', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-energy-in-capacitor'),
+      import('./capabilities/em/energy-in-capacitor.generated.js'),
+    ]);
+    return registerBundle('aperi21:energy-in-capacitor', m.energyInCapacitorBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:simple-circuit', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-simple-circuit'),
+      import('./capabilities/em/simple-circuit.generated.js'),
+    ]);
+    return registerBundle('aperi21:simple-circuit', m.simpleCircuitBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:magnet-attraction', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-magnet-attraction'),
+      import('./capabilities/em/magnet-attraction.generated.js'),
+    ]);
+    return registerBundle('aperi21:magnet-attraction', m.magnetAttractionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:velocity-selector', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-velocity-selector'),
+      import('./capabilities/em/velocity-selector.generated.js'),
+    ]);
+    return registerBundle('aperi21:velocity-selector', m.velocitySelectorBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:generator', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-generator'),
+      import('./capabilities/em/generator.generated.js'),
+    ]);
+    return registerBundle('aperi21:generator', m.generatorBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:phase-in-ac-circuit', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-phase-in-ac-circuit'),
+      import('./capabilities/em/phase-in-ac-circuit.generated.js'),
+    ]);
+    return registerBundle('aperi21:phase-in-ac-circuit', m.phaseInAcCircuitBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:poynting-vector', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-poynting-vector'),
+      import('./capabilities/em/poynting-vector.generated.js'),
+    ]);
+    return registerBundle('aperi21:poynting-vector', m.poyntingVectorBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:charging-methods', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-charging-methods'),
+      import('./capabilities/em/charging-methods.generated.js'),
+    ]);
+    return registerBundle('aperi21:charging-methods', m.chargingMethodsBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:dielectric', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-dielectric'),
+      import('./capabilities/em/dielectric.generated.js'),
+    ]);
+    return registerBundle('aperi21:dielectric', m.dielectricBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:kirchhoffs-current-law', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-kirchhoffs-current-law'),
+      import('./capabilities/em/kirchhoffs-current-law.generated.js'),
+    ]);
+    return registerBundle('aperi21:kirchhoffs-current-law', m.kirchhoffsCurrentLawBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:magnetic-field-lines', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-magnetic-field-lines'),
+      import('./capabilities/em/magnetic-field-lines.generated.js'),
+    ]);
+    return registerBundle('aperi21:magnetic-field-lines', m.magneticFieldLinesBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:mass-spectrometer', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-mass-spectrometer'),
+      import('./capabilities/em/mass-spectrometer.generated.js'),
+    ]);
+    return registerBundle('aperi21:mass-spectrometer', m.massSpectrometerBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:self-inductance', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-self-inductance'),
+      import('./capabilities/em/self-inductance.generated.js'),
+    ]);
+    return registerBundle('aperi21:self-inductance', m.selfInductanceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:series-rlc-resonance', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-series-rlc-resonance'),
+      import('./capabilities/em/series-rlc-resonance.generated.js'),
+    ]);
+    return registerBundle('aperi21:series-rlc-resonance', m.seriesRlcResonanceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:radiation-pressure', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-radiation-pressure'),
+      import('./capabilities/em/radiation-pressure.generated.js'),
+    ]);
+    return registerBundle('aperi21:radiation-pressure', m.radiationPressureBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:uniform-field', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-uniform-field'),
+      import('./capabilities/em/uniform-field.generated.js'),
+    ]);
+    return registerBundle('aperi21:uniform-field', m.uniformFieldBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:drift-velocity', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-drift-velocity'),
+      import('./capabilities/em/drift-velocity.generated.js'),
+    ]);
+    return registerBundle('aperi21:drift-velocity', m.driftVelocityBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:electromagnet', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-electromagnet'),
+      import('./capabilities/em/electromagnet.generated.js'),
+    ]);
+    return registerBundle('aperi21:electromagnet', m.electromagnetBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:motor', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-motor'),
+      import('./capabilities/em/motor.generated.js'),
+    ]);
+    return registerBundle('aperi21:motor', m.motorBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:rl-circuit', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-rl-circuit'),
+      import('./capabilities/em/rl-circuit.generated.js'),
+    ]);
+    return registerBundle('aperi21:rl-circuit', m.rlCircuitBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:maxwells-equations', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-maxwells-equations'),
+      import('./capabilities/em/maxwells-equations.generated.js'),
+    ]);
+    return registerBundle('aperi21:maxwells-equations', m.maxwellsEquationsBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:superposition-of-forces', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-superposition-of-forces'),
+      import('./capabilities/em/superposition-of-forces.generated.js'),
+    ]);
+    return registerBundle('aperi21:superposition-of-forces', m.superpositionOfForcesBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:resistance-and-geometry', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-resistance-and-geometry'),
+      import('./capabilities/em/resistance-and-geometry.generated.js'),
+    ]);
+    return registerBundle('aperi21:resistance-and-geometry', m.resistanceAndGeometryBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:field-of-loop-and-solenoid', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-field-of-loop-and-solenoid'),
+      import('./capabilities/em/field-of-loop-and-solenoid.generated.js'),
+    ]);
+    return registerBundle('aperi21:field-of-loop-and-solenoid', m.fieldOfLoopAndSolenoidBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:loudspeaker-and-microphone', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-loudspeaker-and-microphone'),
+      import('./capabilities/em/loudspeaker-and-microphone.generated.js'),
+    ]);
+    return registerBundle('aperi21:loudspeaker-and-microphone', m.loudspeakerAndMicrophoneBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:mutual-inductance', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-mutual-inductance'),
+      import('./capabilities/em/mutual-inductance.generated.js'),
+    ]);
+    return registerBundle('aperi21:mutual-inductance', m.mutualInductanceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:field-of-dipole', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-field-of-dipole'),
+      import('./capabilities/em/field-of-dipole.generated.js'),
+    ]);
+    return registerBundle('aperi21:field-of-dipole', m.fieldOfDipoleBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:kirchhoffs-voltage-law', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-kirchhoffs-voltage-law'),
+      import('./capabilities/em/kirchhoffs-voltage-law.generated.js'),
+    ]);
+    return registerBundle('aperi21:kirchhoffs-voltage-law', m.kirchhoffsVoltageLawBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:biot-savart-law', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-biot-savart-law'),
+      import('./capabilities/em/biot-savart-law.generated.js'),
+    ]);
+    return registerBundle('aperi21:biot-savart-law', m.biotSavartLawBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:transformer', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-transformer'),
+      import('./capabilities/em/transformer.generated.js'),
+    ]);
+    return registerBundle('aperi21:transformer', m.transformerBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:charge-in-uniform-field', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-charge-in-uniform-field'),
+      import('./capabilities/em/charge-in-uniform-field.generated.js'),
+    ]);
+    return registerBundle('aperi21:charge-in-uniform-field', m.chargeInUniformFieldBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:emf-and-internal-resistance', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-emf-and-internal-resistance'),
+      import('./capabilities/em/emf-and-internal-resistance.generated.js'),
+    ]);
+    return registerBundle('aperi21:emf-and-internal-resistance', m.emfAndInternalResistanceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:amperes-law', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-amperes-law'),
+      import('./capabilities/em/amperes-law.generated.js'),
+    ]);
+    return registerBundle('aperi21:amperes-law', m.amperesLawBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:ac-generation', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-ac-generation'),
+      import('./capabilities/em/ac-generation.generated.js'),
+    ]);
+    return registerBundle('aperi21:ac-generation', m.acGenerationBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:gausss-law', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-gausss-law'),
+      import('./capabilities/em/gausss-law.generated.js'),
+    ]);
+    return registerBundle('aperi21:gausss-law', m.gausssLawBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:joule-heating', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-joule-heating'),
+      import('./capabilities/em/joule-heating.generated.js'),
+    ]);
+    return registerBundle('aperi21:joule-heating', m.jouleHeatingBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:force-between-wires', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-force-between-wires'),
+      import('./capabilities/em/force-between-wires.generated.js'),
+    ]);
+    return registerBundle('aperi21:force-between-wires', m.forceBetweenWiresBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:eddy-current', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-eddy-current'),
+      import('./capabilities/em/eddy-current.generated.js'),
+    ]);
+    return registerBundle('aperi21:eddy-current', m.eddyCurrentBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:field-of-charged-sphere', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-field-of-charged-sphere'),
+      import('./capabilities/em/field-of-charged-sphere.generated.js'),
+    ]);
+    return registerBundle('aperi21:field-of-charged-sphere', m.fieldOfChargedSphereBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:potential-divider', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-potential-divider'),
+      import('./capabilities/em/potential-divider.generated.js'),
+    ]);
+    return registerBundle('aperi21:potential-divider', m.potentialDividerBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:magnetic-dipole', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-magnetic-dipole'),
+      import('./capabilities/em/magnetic-dipole.generated.js'),
+    ]);
+    return registerBundle('aperi21:magnetic-dipole', m.magneticDipoleBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:energy-in-inductor', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-energy-in-inductor'),
+      import('./capabilities/em/energy-in-inductor.generated.js'),
+    ]);
+    return registerBundle('aperi21:energy-in-inductor', m.energyInInductorBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:potential-vs-field', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-potential-vs-field'),
+      import('./capabilities/em/potential-vs-field.generated.js'),
+    ]);
+    return registerBundle('aperi21:potential-vs-field', m.potentialVsFieldBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:temperature-and-resistance', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-temperature-and-resistance'),
+      import('./capabilities/em/temperature-and-resistance.generated.js'),
+    ]);
+    return registerBundle('aperi21:temperature-and-resistance', m.temperatureAndResistanceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:magnetic-materials', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-magnetic-materials'),
+      import('./capabilities/em/magnetic-materials.generated.js'),
+    ]);
+    return registerBundle('aperi21:magnetic-materials', m.magneticMaterialsBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:power-transmission', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-power-transmission'),
+      import('./capabilities/em/power-transmission.generated.js'),
+    ]);
+    return registerBundle('aperi21:power-transmission', m.powerTransmissionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:electrostatic-shielding', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-electrostatic-shielding'),
+      import('./capabilities/em/electrostatic-shielding.generated.js'),
+    ]);
+    return registerBundle('aperi21:electrostatic-shielding', m.electrostaticShieldingBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:wheatstone-bridge', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-wheatstone-bridge'),
+      import('./capabilities/em/wheatstone-bridge.generated.js'),
+    ]);
+    return registerBundle('aperi21:wheatstone-bridge', m.wheatstoneBridgeBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:charge-on-conductor-surface', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-charge-on-conductor-surface'),
+      import('./capabilities/em/charge-on-conductor-surface.generated.js'),
+    ]);
+    return registerBundle('aperi21:charge-on-conductor-surface', m.chargeOnConductorSurfaceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:iv-characteristic', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-iv-characteristic'),
+      import('./capabilities/em/iv-characteristic.generated.js'),
+    ]);
+    return registerBundle('aperi21:iv-characteristic', m.ivCharacteristicBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:millikan-experiment', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-millikan-experiment'),
+      import('./capabilities/em/millikan-experiment.generated.js'),
+    ]);
+    return registerBundle('aperi21:millikan-experiment', m.millikanExperimentBundle, caps.capabilities);
+  });
+
+  registerBundleLoader('aperi21:thermistor-and-ldr', async () => {
+    const [m, caps] = await Promise.all([
+      import('@aperi21/sim-thermistor-and-ldr'),
+      import('./capabilities/em/thermistor-and-ldr.generated.js'),
+    ]);
+    return registerBundle('aperi21:thermistor-and-ldr', m.thermistorAndLdrBundle, caps.capabilities);
+  });
+
   registerBundleLoader('aperi21:heat-conduction', async () => {
     const [m, caps] = await Promise.all([
       import('@aperi21/sim-heat-conduction'),
