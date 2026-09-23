@@ -66,7 +66,7 @@
         {
           "id": "velocity-time-graph",
           "name": "속도-시간 그래프",
-          "desc": "기울기가 가속도, 넓이가 변위인 표현",
+          "desc": "곡선 아래 넓이가 나아간 거리로 읽히는 표현",
           "simId": "aperi21:velocity-time-graph",
           "labUrl": "piece-lab/velocity-time-graph/index.html"
         },
@@ -149,7 +149,7 @@
         {
           "id": "trajectory-equation",
           "name": "궤적 방정식",
-          "desc": "시간을 소거해 얻은 경로의 식",
+          "desc": "시각을 걷어 내도 남는 가로와 높이 사이의 관계",
           "simId": "aperi21:trajectory-equation",
           "labUrl": "piece-lab/trajectory-equation/index.html"
         },
@@ -475,7 +475,7 @@
         {
           "id": "conservation-of-mechanical-energy",
           "name": "역학적 에너지 보존",
-          "desc": "형태가 바뀌어도 총량이 유지됨",
+          "desc": "같은 낙차를 다른 길로 내려오면 끝 속력이 같음",
           "simId": "aperi21:ramp-energy"
         },
         {
@@ -1159,7 +1159,7 @@
         {
           "id": "stokes-drag",
           "name": "스토크스 항력",
-          "desc": "느린 흐름에서의 저항",
+          "desc": "느린 흐름에서 크기가 가라앉는 빠르기를 정하는 것",
           "simId": "aperi21:stokes-drag"
         },
         {
@@ -1184,7 +1184,7 @@
         {
           "id": "surface-tension",
           "name": "표면 장력",
-          "desc": "표면을 줄이려는 힘",
+          "desc": "방향을 돌려 짐을 받치는 수면의 당김",
           "simId": "aperi21:surface-tension"
         },
         {
@@ -1560,7 +1560,7 @@
         {
           "id": "doppler-effect",
           "name": "도플러 효과",
-          "desc": "상대 운동에 따른 진동수 변화",
+          "desc": "움직이는 원천이 앞뒤 파면 간격을 갈라 놓는 것",
           "simId": "aperi21:doppler-effect",
           "labUrl": "piece-lab/doppler-effect/index.html"
         },
@@ -1957,7 +1957,7 @@
         {
           "id": "coulombs-law",
           "name": "쿨롱 법칙",
-          "desc": "전하 사이의 힘",
+          "desc": "벌린 배수의 제곱만큼 약해지는 전하 사이의 힘",
           "simId": "aperi21:coulombs-law"
         },
         {
@@ -2091,7 +2091,7 @@
         {
           "id": "series-parallel-resistors",
           "name": "저항의 직렬과 병렬",
-          "desc": "연결 방식에 따른 합성",
+          "desc": "연결을 바꾸면 같은 전지가 내주는 전류가 달라지는 것",
           "simId": "aperi21:dc-circuit"
         },
         {

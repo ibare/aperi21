@@ -105,11 +105,11 @@ topics:
     sim: aperi21:position-time-graph
   - id: velocity-time-graph
     name: 속도-시간 그래프
-    desc: 기울기가 가속도, 넓이가 변위인 표현
+    desc: 곡선 아래 넓이가 나아간 거리로 읽히는 표현
     domain: kinematics
     level: lower
     curricula: [kr, ib, ap, uk]
-    visualNote: 기울기가 가속도로, 넓이가 변위로 읽힌다
+    visualNote: 속도 곡선 아래를 칠하면 그만큼 나아간 거리가 된다
     sim: aperi21:velocity-time-graph
     batch: 00-pilot-kinematics
   - id: acceleration-time-graph
@@ -205,7 +205,7 @@ topics:
     sim: aperi21:projectile
   - id: trajectory-equation
     name: 궤적 방정식
-    desc: 시간을 소거해 얻은 경로의 식
+    desc: 시각을 걷어 내도 남는 가로와 높이 사이의 관계
     domain: kinematics
     level: upper
     curricula: [kr, ib, ap]
@@ -577,11 +577,11 @@ topics:
     sim: aperi21:non-conservative-force
   - id: conservation-of-mechanical-energy
     name: 역학적 에너지 보존
-    desc: 형태가 바뀌어도 총량이 유지됨
+    desc: 같은 낙차를 다른 길로 내려오면 끝 속력이 같음
     domain: energy-momentum
     level: lower
     curricula: [kr, ib, ap, uk]
-    visualNote: 높이가 속력으로 바뀌었다가 되돌아온다
+    visualNote: 길이 달라도 같은 높이에서 내려온 공 셋이 같은 속력으로 도착한다
     sim: aperi21:ramp-energy
     batch: 01-broad
   - id: energy-dissipation
@@ -1427,7 +1427,7 @@ topics:
     domain: fluids
     level: null
     curricula: []
-    visualNote: 받음각을 올리면 양력이 커지다 어느 순간 무너진다
+    visualNote: 같은 순간 뿌린 연기 줄이 날개에서 갈려 위쪽이 앞질러 간다
     sim: aperi21:lift-force
   - id: viscosity
     name: 점성
@@ -1447,11 +1447,11 @@ topics:
     sim: aperi21:poiseuille-flow
   - id: stokes-drag
     name: 스토크스 항력
-    desc: 느린 흐름에서의 저항
+    desc: 느린 흐름에서 크기가 가라앉는 빠르기를 정하는 것
     domain: fluids
     level: null
     curricula: []
-    visualNote: 작은 구가 느리게 가라앉으며 종단 속도에 이른다
+    visualNote: 반지름이 두 배인 구는 자국 간격이 네 배로 벌어진다
     sim: aperi21:stokes-drag
   - id: laminar-vs-turbulent
     name: 층류와 난류
@@ -1479,11 +1479,11 @@ topics:
     sim: aperi21:boundary-layer
   - id: surface-tension
     name: 표면 장력
-    desc: 표면을 줄이려는 힘
+    desc: 방향을 돌려 짐을 받치는 수면의 당김
     domain: fluids
     level: null
     curricula: []
-    visualNote: 물방울이 공 모양으로 뭉치고 소금쟁이가 뜬다
+    visualNote: 수면이 파이면 같은 크기의 당김이 위로 돌아서서 바늘을 받친다
     sim: aperi21:surface-tension
   - id: laplace-pressure
     name: 라플라스 압력
@@ -1956,7 +1956,7 @@ topics:
     batch: 01-broad
   - id: doppler-effect
     name: 도플러 효과
-    desc: 상대 운동에 따른 진동수 변화
+    desc: 움직이는 원천이 앞뒤 파면 간격을 갈라 놓는 것
     domain: waves-acoustics
     level: upper
     curricula: [kr, ib, ap, uk]
@@ -2463,7 +2463,7 @@ topics:
     sim: aperi21:charging-methods
   - id: coulombs-law
     name: 쿨롱 법칙
-    desc: 전하 사이의 힘
+    desc: 벌린 배수의 제곱만큼 약해지는 전하 사이의 힘
     domain: electromagnetism
     level: lower
     curricula: [kr, ib, ngss, ap, uk]
@@ -2539,7 +2539,7 @@ topics:
     domain: electromagnetism
     level: upper
     curricula: [kr, ib, ap, uk]
-    visualNote: 면을 따라 움직이면 일이 들지 않는다
+    visualNote: 가장 가파른 내리막이 같은 값 선을 만날 때마다 직각으로 지난다
     sim: aperi21:equipotential-surface
   - id: potential-vs-field
     name: 전위와 전기장
@@ -2639,7 +2639,7 @@ topics:
     sim: aperi21:temperature-and-resistance
   - id: series-parallel-resistors
     name: 저항의 직렬과 병렬
-    desc: 연결 방식에 따른 합성
+    desc: 연결을 바꾸면 같은 전지가 내주는 전류가 달라지는 것
     domain: electromagnetism
     level: lower
     curricula: [kr, ib, ap, uk]
