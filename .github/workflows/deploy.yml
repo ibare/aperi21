@@ -35,6 +35,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # 사이트가 읽는 apps/catalog/src/data/catalog.json 도 생성물이다.
+      # 낡은 채로 배포되면 사이트만 조용히 뒤처진다.
+      - name: Generated artifacts are fresh
+        run: pnpm gen:check
+
       - name: Typecheck
         run: pnpm -r typecheck
 

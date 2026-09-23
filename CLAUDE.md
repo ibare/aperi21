@@ -38,11 +38,16 @@ methii 등 외부 호스트 소비자 프로젝트는 **read-only** — 직접 �
 통과 바는 CI 와 동등하다. 코드 변경 뒤 다음을 통과시킨다.
 
 ```sh
+pnpm gen:check
 pnpm -r typecheck
 pnpm test
 ```
 
-`.github/workflows/ci.yml` 이 push·PR 에서 같은 둘을 돌리고, `deploy.yml` 도 빌드 전에
+`gen:check` 는 생성기를 전부 돌려 생성물이 낡지 않았는지 본다 (Release 「생성물」).
+원본(`sims/**` 선언 · `topics.yaml` · `concepts/` · `messages/*.json`)을 건드리지 않은
+변경이면 통과는 자명하지만, **낡은 채 넘어가면 아래 둘이 옛 상태끼리 맞물려 통과한다.**
+
+`.github/workflows/ci.yml` 이 push·PR 에서 같은 셋을 돌리고, `deploy.yml` 도 빌드 전에
 같은 게이트를 통과해야 배포된다.
 
 > 백그라운드 실행 주의 — `pnpm -r` 은 recursive 라 child 프로세스를 패키지마다 spawn 한다.
@@ -83,7 +88,8 @@ rules/
 - 사용자가 "규칙 체크" / "rule-guard" / "감사" 로 명시 호출할 수도 있다.
 - rule-guard 는 코드를 고치지 않는다. 판정과 보고만 한다.
 - 서브에이전트에 복합 작업을 위임하지 않는다. 작업 단위를 나눠 각각 호출한다.
-- 작업 완료 보고 전에 반드시 `pnpm -r typecheck` + `pnpm test` 를 통과시킨다.
+- 작업 완료 보고 전에 반드시 「코드 품질 · 통과 바」의 셋(`pnpm gen:check` ·
+  `pnpm -r typecheck` · `pnpm test`)을 통과시킨다.
 
 ## Baden 보고
 
@@ -147,12 +153,17 @@ curl -s -X POST http://localhost:3800/api/events \
 
 ### 발행 전 게이트 (순서대로 통과)
 
+0. **`pnpm gen:check`** — 생성물이 원본과 맞는지 (아래 「생성물」 참조)
 1. `pnpm -r typecheck`
 2. `pnpm test`
 3. **`pnpm release:check`** — 위 넷을 자동으로 검사한다 (`src` 누출 0 · `workspace:` 잔존 0 ·
    `publishConfig` 오버라이드 적용 · **발행본 `.d.ts` 가 미발행 private 패키지를
    참조하지 않을 것**). CI 가 push·PR 마다 같은 스크립트를 돌린다.
 4. rule-guard 감사 (S-host 의존 일방향 · lazy 보존 · 단일 인스턴스)
+
+0번이 없으면 **낡은 생성물끼리 맞물려 전부 통과한다.** 다른 검사는 모두 생성물끼리
+맞대기 때문이다 — 조각을 더하고 생성기를 돌리지 않으면 카탈로그도 등록부도 함께 옛
+상태라 서로 일치하고, 새 조각은 아무 데도 뜨지 않은 채 조용히 발행된다.
 
 3번이 없으면 **워크스페이스에서는 멀쩡하고 발행본에서만 죽는** 사고를 못 잡는다.
 0.1.0 이 실제로 그랬다 — `.d.ts` 가 미발행 `@aperi21/host-tiptap` / `@aperi21/bootstrap`
@@ -161,7 +172,7 @@ curl -s -X POST http://localhost:3800/api/events \
 
 ### 절차
 
-1. 게이트 1~4 통과
+1. 게이트 0~4 통과
 2. semver 결정 — 0.x 동안 minor 를 breaking 허용 구간으로 본다
 3. 세 패키지를 같은 버전으로 올린다
    ```sh
@@ -183,6 +194,35 @@ curl -s -X POST http://localhost:3800/api/events \
    신규 publish 직후 GET(읽기) 전파는 최대 ~2분 지연될 수 있다(쓰기는 즉시).
    조회 404여도 `E403 (cannot publish over previously published)` 이면 배포는 성공한 것.
 
+### 생성물 (커밋 대상)
+
+**생성물은 커밋한다.** 원본은 `sims/<category>/<name>/` 의 선언, `docs/topics/topics.yaml`,
+`packages/authoring/src/concepts/`, 호출부의 en 리터럴, 그리고 번역인 `messages/<locale>.json`
+(`en.json` 은 산출물이다) 이다. 원본을 고쳤으면
+**`pnpm gen:all`** 로 전부 다시 만들고 생성물을 같은 커밋에 담는다.
+
+| 생성기 | 원본 → 산출물 |
+| --- | --- |
+| `registry:gen` | `sims/**` → `bootstrap/src/bundles.generated.ts` · bootstrap 의 sim 의존 |
+| `gen:capabilities` | sim 선언 → `bootstrap/src/capabilities/**` |
+| `catalog:gen` | bootstrap → 언어별 카탈로그 · loader 표 · `authoring/src/sim-domains.generated.ts` |
+| `screen:gen` | sim 선언 → `authoring/src/screen-labels.generated.ts` |
+| `concept:index` | `authoring/src/concepts/*.ts` → `index.ts` |
+| `messages:gen` | 호출부 en 리터럴 → `messages/en.json` |
+| `catalog:topics` | `topics.yaml` + 조각 → `apps/catalog/src/data/catalog.json` |
+| `gap:ledger` | `tasks/topic-gaps/entries/` → `LEDGER.md` |
+
+**순서가 있다.** `catalog:gen` 은 bootstrap 을 import 하므로 그전에 등록부와 능력 파일이
+있어야 한다. 위 표의 순서가 그 순서이고, 목록의 원본은 `scripts/gen-check.mts` 하나다
+(`gen:all` 과 `gen:check` 가 같은 목록을 쓴다).
+
+조각을 **새로 더했다면** `registry:gen` 이 bootstrap 의 의존을 바꾸므로 그 뒤에
+`pnpm install` 이 한 번 필요하다 (`catalog:gen` 이 새 조각을 모듈로 해석해야 한다).
+CI 는 install 이 앞서므로 해당 없고, 손으로 돌릴 때만 걸린다.
+
+**`pnpm gen:check`** 는 전부 돌린 뒤 바뀐 것이 있으면 실패한다 — **원본과 생성물을 맞대는
+유일한 검사**다. CI 와 배포 워크플로가 맨 앞에서 돌린다.
+
 ### 인증·주의
 
 - **`pnpm publish` 만 사용한다** (`npm publish` 금지). `workspace:^` 를 npm semver 로
@@ -197,6 +237,4 @@ curl -s -X POST http://localhost:3800/api/events \
   다음 발행도 breaking 이다 — `getAperi21Catalog()` 가 동기·전 언어 배열에서
   `getAperi21Catalog(locale)` 비동기·한 언어(`{locale, domains, entries}`)로 바뀌었고,
   `domain` 값이 sim 폴더 이름에서 `topics.yaml` 의 11분과 id 로 바뀌었다.
-- **생성물은 커밋한다.** 언어 목록의 원본은 `messages/*.json` 이다. 문구를 바꾸면
-  `pnpm messages:gen`, sim 선언·`topics.yaml` 을 바꾸면 `pnpm catalog:gen` · `pnpm screen:gen`.
 - 향후 패키지가 늘면 GitHub Actions + npm Trusted Publishing(OIDC) 도입 검토.

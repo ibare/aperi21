@@ -162,7 +162,7 @@ specifics:
 
   - id: S-host
     file: specifics/S-host.md
-    description: 어댑터·bootstrap·발행 번들의 책임 분리와 의존 일방향, lazy 보존, 단일 registry 인스턴스, 발행 전 게이트 4단
+    description: 어댑터·bootstrap·발행 번들의 책임 분리와 의존 일방향, lazy 보존, 단일 registry 인스턴스, 발행 전 게이트 5단(0~4)
     triggers:
       paths:
         - "packages/host-tiptap/**"

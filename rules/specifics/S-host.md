@@ -1,9 +1,9 @@
 ---
 name: S-host
-description: 호스트 어댑터·카탈로그 통합·외부 발행 번들의 책임 분리, 의존 일방향, lazy 보존, 단일 registry 인스턴스, 발행 게이트.
+description: 호스트 어댑터·카탈로그 통합·외부 발행 번들의 책임 분리, 의존 일방향, lazy 보존, 단일 registry 인스턴스, 발행 게이트(생성물 신선도 포함).
 type: specific
-version: 1
-last_verified: 2026-09-09
+version: 2
+last_verified: 2026-09-23
 ---
 
 # S-host. 호스트 어댑터 · 발행 규율
@@ -56,6 +56,9 @@ last_verified: 2026-09-09
 
 순서대로 통과한다.
 
+0. **`pnpm gen:check`** — 생성기를 전부 돌려 생성물이 낡지 않았는지 본다 (2026-09-23 결정).
+   다른 검사는 모두 생성물끼리 맞대므로, 낡은 채로는 **옛 상태끼리 맞물려 전부 통과한다.**
+   목록·순서는 `scripts/gen-check.mts`, 설명은 `CLAUDE.md` Release 「생성물」.
 1. `pnpm -r typecheck`
 2. `pnpm test`
 3. **`pnpm release:check`** — `scripts/release-check.mts` 가 세 발행 패키지(host · host-tiptap-bundle · authoring)를 pack 해

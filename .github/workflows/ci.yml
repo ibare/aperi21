@@ -28,6 +28,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # 다른 검사는 모두 생성물끼리 맞댄다 — 조각을 더하고 생성기를 돌리지 않으면
+      # 카탈로그도 등록부도 함께 옛 상태라 서로 일치해 전부 통과한다. 원본(sims/ ·
+      # topics.yaml · concepts/)과 생성물을 맞대는 것은 이 스텝뿐이라 맨 앞에 둔다.
+      - name: Generated artifacts are fresh
+        run: pnpm gen:check
+
       # 통과 바. ESLint 를 두지 않으므로 strict tsc 가 기계적 검증의 전부다.
       - name: Typecheck
         run: pnpm -r typecheck
