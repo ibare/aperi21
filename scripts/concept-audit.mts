@@ -101,7 +101,9 @@ report('글의 구성에 관여한다 — 재료만 준다', construction);
 // 여섯 건 났다. 조작기 이름은 두 낱말로 붙어 나오므로 그 꼴로 잡는다 — projectile-range 의
 // "Three stage tabs" 가 실제 누출이었다.
 const INTERNAL =
-  /\b(aperi21|bundle|renderer|primitive|schema)\b|\b(stage|view|param|env) (tabs|panel|chips|toggles)\b|\b(point|scale) drag\b|\bpress area\b/i;
+  // `bundle of light` 는 평범한 영어다(빛다발). 광학 쪽에서 되풀이될 표현이라 예외로 둔다 —
+  // 우리 뜻의 `bundle` 은 뒤에 of 를 달지 않는다.
+  /\b(aperi21|renderer|primitive|schema)\b|\bbundles?\b(?! of )|\b(stage|view|param|env) (tabs|panel|chips|toggles)\b|\b(point|scale) drag\b|\bpress area\b/i;
 const internal: string[] = [];
 for (const c of concepts) {
   const fields: [string, string][] = [
