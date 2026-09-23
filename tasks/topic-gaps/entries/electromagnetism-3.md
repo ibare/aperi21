@@ -1,0 +1,7 @@
+# 전자기 묶음 3 — 주제 ↔ 조각 간극
+
+| 주제 | 주제가 약속한 것 | 화면이 하는 것 | 개념에서 처리한 방식 | 갈래 |
+|---|---|---|---|---|
+| equipotential-surface | visualNote 「면을 따라 움직이면 **일이 들지 않는다**」 | 일이 없다. 화면이 하는 것은 **직각**뿐이다 — 시험 전하가 가장 가파른 내리막을 내려가며 등전위선을 만날 때마다 직각 표시를 남긴다. 면을 따라 움직이는 전하도, 일·전위차를 재거나 세는 자리도 없다 (조각 선언 「질문: 전기장은 왜 등전위면과 늘 수직인가」, 고정 캡션 한 줄도 직각만 말한다) | definition 을 「같은 값 선과 가장 가파른 내리막이 직각으로 만난다, 어느 배치에서나」로 쓰고, 일·전위차를 기대하는 글은 avoidWhen 으로 되돌렸다(「Nothing here is weighed, counted or added up; only the angle of crossing is shown」). 경로와 무관한 에너지 셈은 `conservative-force` 로 이었다 | 조각 |
+| energy-in-capacitor | desc 「**전기장에 저장된** 에너지」 | 장이 하나도 없다. 화면은 한 몫씩 전하를 옮기는 일을 V–Q 직선 아래 띠로 쌓아 삼각형이 직사각형 QV 의 절반임을 보인다 (조각 NOTES (b) 「판 사이 장의 방향 · 장선은 두지 않았다(장 자체는 `uniform-field` 의 몫)」). 단위 부피당 에너지·E² 로 가는 길이 화면에 없다 | definition 을 「V–Q 직선 아래 삼각형이 직사각형의 절반이다 — 몫마다 더 높은 전압을 넘기 때문」으로 쓰고, 장에 저장된 에너지 밀도를 묻는 글은 avoidWhen 으로 되돌렸다(「No field is drawn here at all; the whole account is kept in work done on charge」) | 설명 |
+| electrostatic-shielding | visualNote 「도체 **상자** 안으로 장이 들어오지 못한다」 | 상자가 아니라 둥근 고리(속 빈 원통의 단면)다 (조각 NOTES (b) 「사각 상자는 모서리에서 장을 풀어야 한다 … 원통은 해석해가 있어 선이 겉면에 **정확히** 수직으로 닿는다 — 이 조각의 판정 장치가 그 수직이다」). 차폐 자체는 모양과 무관하고, 모서리·뾰족한 곳의 몰림은 이 조각이 다루지 않는다 | definition 을 「a neutral hollow conductor」로 모양을 말하지 않게 쓰고, observable 은 화면대로 고리로 적었다. exemplarKeywords 에는 독자의 말인 `Faraday cage` · `a metal box keeps an outside field out` 을 남겨 상자로 들어오는 글이 걸리게 했다 | 설명 |
