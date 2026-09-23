@@ -1,10 +1,17 @@
 /**
- * 개념 선언 목록. `concepts/<id>.ts` 한 파일에 하나를 두고 여기 모은다.
+ * 개념 선언 목록 — 자동 생성. 직접 편집하지 말 것.
  *
- * 선언 순서가 공개 조회의 순서다. 아직 선언된 개념이 없다 — 441 개 sim 의 개념 선언은
- * 배치로 채운다.
+ * 생성: pnpm concept:index  (scripts/gen-concept-index.mts)
+ * 출처: concepts/<id>.ts 의 Aperi21ConceptSource export.
+ *
+ * 선언 순서(파일 이름순)가 공개 조회의 순서다.
  */
 
 import type { Aperi21ConceptSource } from '../concept-types.js';
+import { freeFallConcept } from './free-fall.js';
+import { gravitationalAccelerationConcept } from './gravitational-acceleration.js';
 
-export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [];
+export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
+  freeFallConcept,
+  gravitationalAccelerationConcept,
+];
