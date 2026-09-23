@@ -1728,7 +1728,7 @@
 
 ### T81 · `field-of-straight-wire`
 
-- 조각 — `aperi21:current-magnetic-field` · `sims/em/current-magnetic-field`
+- 조각 — `aperi21:field-of-straight-wire` · `sims/em/field-of-straight-wire`
 - 문안 7건
   - `label.title` — 전류가 만드는 자기장
   - `label.operation` — 전선을 감아 도는 쪽으로 돌아서고, 멀수록 덜 돌아선다

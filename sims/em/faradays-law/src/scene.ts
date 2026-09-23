@@ -64,7 +64,7 @@ const WIRE = { colorRole: 'muted', emphasis: 'strong' } as const;
 /** 자석의 움직임. */
 const MOTION = { colorRole: 'primary', emphasis: 'strong' } as const;
 
-/** 자석 S 극의 빛의 양 — 이웃 `lenz-law` 와 같은 자석이라 같은 값이다. */
+/** 자석 S 극의 빛의 양 — 이웃 `lenzs-law` 와 같은 자석이라 같은 값이다. */
 const SOUTH_LUMINANCE = 0.33;
 /** N 글자 — 짙은 반쪽에서 파낸 글자라 바탕에 가까운 빛의 양이다. */
 const KNOCKOUT_LUMINANCE = 0.04;

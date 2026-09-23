@@ -1,5 +1,5 @@
 // ========================================================================
-// heat-conduction — 런타임 상태
+// thermal-conduction — 런타임 상태
 // ========================================================================
 // 온도 배열은 **쌓이는 값**이다. 시계만 앞당겨서는 화면이 비어 있으므로
 // `schema.preroll` 이 마운트 전에 이 상태를 실제로 굴린다.
@@ -46,7 +46,7 @@ export interface Rod {
   readonly beads: readonly Bead[];
 }
 
-export interface HeatConductionState {
+export interface ThermalConductionState {
   /** 조각 시계(초). 프리롤을 포함한다. */
   readonly t: number;
   /** 쇠 · 나무 순서. */
@@ -102,7 +102,7 @@ function makeRod(id: Rod['id'], alpha: number, rand: () => number): Rod {
  * "도착한 순간 이미 진행 중" 을 만드는 것은 여기가 아니라 `schema.preroll` 이다
  * (원칙 2 — 시작 시점은 저작 결정이라 선언에 둔다).
  */
-export function initialState(): HeatConductionState {
+export function initialState(): ThermalConductionState {
   const rand = mulberry32(1);
   return {
     t: 0,

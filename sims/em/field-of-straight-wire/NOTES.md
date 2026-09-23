@@ -1,6 +1,6 @@
 # 전류가 만드는 자기장 — sim 노트
 
-원본: `tasks/piece-lab/current-magnetic-field/` (자유 구현). 원본의 결정과 근거는 그쪽 `NOTES.md`.
+원본: `tasks/piece-lab/field-of-straight-wire/` (자유 구현). 원본의 결정과 근거는 그쪽 `NOTES.md`.
 이 파일은 sim 으로 옮긴 뒤 **달라진 것**과 **어휘 부족**을 적는다.
 
 ## 대조 결과

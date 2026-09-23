@@ -1,5 +1,5 @@
 // ========================================================================
-// heat-conduction — 순수 물리
+// thermal-conduction — 순수 물리
 // ========================================================================
 // 1차원 열확산 ∂θ/∂t = α ∂²θ/∂x² 를 노드 N+1 개 격자에서 explicit 유한차분으로
 // 푼다. 왼쪽 끝은 고정 온도(버너), 오른쪽 끝은 단열, 두 막대의 코드는 완전히
@@ -17,7 +17,7 @@ import {
   STABILITY,
   THETA_MELT,
 } from './schema';
-import type { Bead, HeatConductionState, Rod } from './state';
+import type { Bead, ThermalConductionState, Rod } from './state';
 
 /**
  * 이 걸음을 안정하게 밟는 데 필요한 서브스텝 수.
@@ -112,7 +112,7 @@ function advanceBead(b: Bead, T: readonly number[], dt: number): Bead {
 }
 
 /** 한 스텝 전진. 순수 함수 — DOM·캔버스·시간을 모른다. */
-export function step(params: { state: HeatConductionState; dt: number }): HeatConductionState {
+export function step(params: { state: ThermalConductionState; dt: number }): ThermalConductionState {
   const { state, dt } = params;
   if (!(dt > 0)) return state;
 

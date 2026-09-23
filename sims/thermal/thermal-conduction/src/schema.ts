@@ -1,5 +1,5 @@
 // ========================================================================
-// heat-conduction — 선언
+// thermal-conduction — 선언
 // ========================================================================
 // 질문: 같은 불에 같은 시간을 두었는데, 왜 쇠막대는 반대쪽 끝까지 뜨거워지고
 // 나무막대는 잡은 자리가 미지근한가.
@@ -7,13 +7,13 @@
 // 열확산계수가 80배 다르기 때문이다. 온도를 색으로만 말하지 않고 **자리를 옮기는
 // 사건**(밀랍 구슬이 차례로 떨어지는 것)으로 바꿔 보인다.
 //
-// 원본: tasks/piece-lab/heat-conduction/ (자유 구현)
+// 원본: tasks/piece-lab/thermal-conduction/ (자유 구현)
 // ========================================================================
 
 import type { BundleSchema, LocalizedText } from '@aperi21/schema';
 
-/** 등록 키 `aperi21:heat-conduction` 와 문자 그대로 일치한다 (C4). */
-export const HEAT_CONDUCTION_ID = 'heat-conduction';
+/** 등록 키 `aperi21:thermal-conduction` 와 문자 그대로 일치한다 (C4). */
+export const THERMAL_CONDUCTION_ID = 'thermal-conduction';
 
 // ------------------------------------------------------------------------
 // 물리 — 길이 mm · 시간 초 · 온도 ℃
@@ -140,7 +140,7 @@ export const SCENE_BOUNDS = {
 // 문안
 // ------------------------------------------------------------------------
 
-export const heatConductionMessages = Object.freeze({
+export const thermalConductionMessages = Object.freeze({
   'label.title': { ko: '열전도', en: 'Heat conduction' },
   'label.operation': {
     ko: '쇠에서는 번져 나가고 나무에서는 머문다',
@@ -161,15 +161,15 @@ export const heatConductionMessages = Object.freeze({
   },
 } satisfies Record<string, LocalizedText>);
 
-export type HeatConductionMessageKey = keyof typeof heatConductionMessages;
+export type ThermalConductionMessageKey = keyof typeof thermalConductionMessages;
 
 /** 선언에서 문안을 꺼낸다. 호출부에 문자열 리터럴을 두지 않기 위한 유일한 통로 (C1). */
-export function text(key: HeatConductionMessageKey): LocalizedText {
-  return heatConductionMessages[key];
+export function text(key: ThermalConductionMessageKey): LocalizedText {
+  return thermalConductionMessages[key];
 }
 
 /** 캡션 슬롯이 부르는 문안 키. 없는 키를 쓰면 여기서 타입이 막는다. */
-function key(k: HeatConductionMessageKey): string {
+function key(k: ThermalConductionMessageKey): string {
   return k;
 }
 
@@ -177,8 +177,8 @@ function key(k: HeatConductionMessageKey): string {
 // BundleSchema
 // ------------------------------------------------------------------------
 
-export const heatConductionSchema: BundleSchema = {
-  id: HEAT_CONDUCTION_ID,
+export const thermalConductionSchema: BundleSchema = {
+  id: THERMAL_CONDUCTION_ID,
   label: text('label.title'),
   category: 'thermal',
   operation: text('label.operation'),
@@ -232,5 +232,5 @@ export const heatConductionSchema: BundleSchema = {
    * 이 그림에서 재는 자는 구슬이고, 카메라 버튼은 프레이밍을 독자에게 넘긴다.
    */
 
-  messages: heatConductionMessages,
+  messages: thermalConductionMessages,
 };

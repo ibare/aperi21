@@ -9,7 +9,6 @@
  *   biot-savart-law        한 점의 장이 조각들의 **합**이다
  * 주제 설명의 「거리에 반비례하는 세기」 는 화면이 「멀수록 덜 돌아선다」 까지만 한다 —
  * 장부에 올리고 정량으로 읽는 쓰임은 avoidWhen 으로 되돌렸다.
- * `canonicalSim` 은 topics.yaml 의 `sim` 값 그대로라 개념 id 와 다르다.
  */
 
 import type { Aperi21ConceptSource } from '../concept-types.js';
@@ -17,7 +16,7 @@ import type { Aperi21ConceptSource } from '../concept-types.js';
 export const fieldOfStraightWireConcept: Aperi21ConceptSource = {
   id: 'field-of-straight-wire',
   label: 'Field Wrapping a Straight Current',
-  canonicalSim: 'aperi21:current-magnetic-field',
+  canonicalSim: 'aperi21:field-of-straight-wire',
 
   surface: {
     definition:

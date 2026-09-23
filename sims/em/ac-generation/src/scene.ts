@@ -262,7 +262,7 @@ export function scene(params: {
     style: FIELD,
   });
 
-  // ---- 극 조각 — N 은 먹, S 는 옅게 (generator · lenz-law 의 자석과 같은 모양) ----
+  // ---- 극 조각 — N 은 먹, S 는 옅게 (generator · lenzs-law 의 자석과 같은 모양) ----
   const nPos: Vec2 = [faceL - POLE_W / 2, AXLE[1]];
   const sPos: Vec2 = [faceR + POLE_W / 2, AXLE[1]];
   out.push(

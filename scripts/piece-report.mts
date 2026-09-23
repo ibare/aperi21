@@ -172,9 +172,12 @@ function fileId(id: string): string {
  * 이 조각을 마운트하는 **주제의 id**. 카탈로그에서 `simId` 로 거슬러 찾는다.
  *
  * 조각 id 와 주제 id 가 같다고 가정하지 않는다. 01-broad 배치가 그 가정을 깼다 —
- * `lenz-law` 의 주제는 `lenzs-law`, `heat-conduction` 은 `thermal-conduction`,
- * `inertial-frame` 은 `newtons-first-law` 다. 주제 이름은 물리 개념의 이름이고
+ * `inertial-frame` 의 주제는 `newtons-first-law`, `ramp-energy` 는
+ * `conservation-of-mechanical-energy` 다. 주제 이름은 물리 개념의 이름이고
  * 조각 id 는 그 개념의 한 시각화라, 둘이 달라지는 것이 정상이다.
+ *
+ * 낱말만 다르던 셋(`lenz-law` · `heat-conduction` · `current-magnetic-field`)은
+ * 2026-09-23 에 주제 id 로 개명해 이 목록에서 빠졌다.
  *
  * 거꾸로 찾으면 언제나 맞는다 — 등록 키 `aperi21:<조각 id>` 는 C4 가 조각 id 와
  * 문자 그대로 같기를 강제하고, 카탈로그의 `simId` 가 그 키다.

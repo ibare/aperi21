@@ -59,7 +59,7 @@ const CURRENT = { colorRole: 'secondary', emphasis: 'strong' } as const;
 /** 막는 힘 — 강조색은 이 한 뜻에만. */
 const BRAKE = { colorRole: 'accent', emphasis: 'strong' } as const;
 
-/** 자석 S 극의 빛의 양 — 이웃 `lenz-law` · `faradays-law` 와 같은 자석이라 같은 값이다. */
+/** 자석 S 극의 빛의 양 — 이웃 `lenzs-law` · `faradays-law` 와 같은 자석이라 같은 값이다. */
 const SOUTH_LUMINANCE = 0.33;
 /** N 글자 — 짙은 반쪽에서 파낸 글자라 바탕에 가까운 빛의 양이다. */
 const KNOCKOUT_LUMINANCE = 0.04;

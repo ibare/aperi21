@@ -1,18 +1,18 @@
 // ========================================================================
-// current-magnetic-field — 선언
+// field-of-straight-wire — 선언
 // ========================================================================
 // 질문: 전선에 전류를 흘리면 옆에 놓인 나침반 바늘은 어디를 가리키게 될까.
 //
 // 전선을 감아 도는 고리 쪽으로 돌아선다. 그리고 **멀수록 덜 돌아선다** —
 // 전선장이 1/r 로 약해져 지구장에 덜 이기기 때문이다.
 //
-// 원본: tasks/piece-lab/current-magnetic-field/ (자유 구현)
+// 원본: tasks/piece-lab/field-of-straight-wire/ (자유 구현)
 // ========================================================================
 
 import type { BundleSchema, LocalizedText, TimelinePhase, Vec2 } from '@aperi21/schema';
 
-/** 등록 키 `aperi21:current-magnetic-field` 와 문자 그대로 일치한다 (C4). */
-export const CURRENT_MAGNETIC_FIELD_ID = 'current-magnetic-field';
+/** 등록 키 `aperi21:field-of-straight-wire` 와 문자 그대로 일치한다 (C4). */
+export const FIELD_OF_STRAIGHT_WIRE_ID = 'field-of-straight-wire';
 
 // ------------------------------------------------------------------------
 // 자리와 크기
@@ -142,7 +142,7 @@ const currentTimeline: TimelinePhase[] = CURRENT_PHASES.map((p) => ({
 // 문안
 // ------------------------------------------------------------------------
 
-export const currentMagneticFieldMessages = Object.freeze({
+export const fieldOfStraightWireMessages = Object.freeze({
   'label.title': { ko: '전류가 만드는 자기장', en: 'The field a current makes' },
   'label.operation': {
     ko: '전선을 감아 도는 쪽으로 돌아서고, 멀수록 덜 돌아선다',
@@ -165,14 +165,14 @@ export const currentMagneticFieldMessages = Object.freeze({
   },
 } satisfies Record<string, LocalizedText>);
 
-export type CurrentMagneticFieldMessageKey = keyof typeof currentMagneticFieldMessages;
+export type FieldOfStraightWireMessageKey = keyof typeof fieldOfStraightWireMessages;
 
-export function text(key: CurrentMagneticFieldMessageKey): LocalizedText {
-  return currentMagneticFieldMessages[key];
+export function text(key: FieldOfStraightWireMessageKey): LocalizedText {
+  return fieldOfStraightWireMessages[key];
 }
 
 /** 캡션 슬롯이 부르는 문안 키. 없는 키를 쓰면 여기서 타입이 막는다. */
-function key(k: CurrentMagneticFieldMessageKey): string {
+function key(k: FieldOfStraightWireMessageKey): string {
   return k;
 }
 
@@ -180,8 +180,8 @@ function key(k: CurrentMagneticFieldMessageKey): string {
 // BundleSchema
 // ------------------------------------------------------------------------
 
-export const currentMagneticFieldSchema: BundleSchema = {
-  id: CURRENT_MAGNETIC_FIELD_ID,
+export const fieldOfStraightWireSchema: BundleSchema = {
+  id: FIELD_OF_STRAIGHT_WIRE_ID,
   label: text('label.title'),
   category: 'em',
   operation: text('label.operation'),
@@ -228,5 +228,5 @@ export const currentMagneticFieldSchema: BundleSchema = {
    * 지시인데 이 그림에서 재는 것은 거리가 아니라 **얼마나 돌아섰는가**다.
    */
 
-  messages: currentMagneticFieldMessages,
+  messages: fieldOfStraightWireMessages,
 };

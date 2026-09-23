@@ -1,5 +1,5 @@
 // ========================================================================
-// current-magnetic-field — Scene Graph 선언
+// field-of-straight-wire — Scene Graph 선언
 // ========================================================================
 // 그리지 않는다, 선언한다.
 //
@@ -36,7 +36,7 @@ import {
   WIRE_DOT_RADIUS,
   WIRE_RADIUS,
 } from './schema';
-import type { CurrentMagneticFieldState } from './state';
+import type { FieldOfStraightWireState } from './state';
 
 /** S극 윤곽 삼각의 선 굵기(화면 px). 원본의 1 px 획. */
 const OUTLINE_WIDTH_PX = 1;
@@ -81,7 +81,7 @@ function circlePoints(center: Vec2, radius: number, segments: number): Vec2[] {
 }
 
 export function scene(params: {
-  state: CurrentMagneticFieldState;
+  state: FieldOfStraightWireState;
   view: ViewDef;
   stage: StageDef;
   environments: EnvironmentDef[];

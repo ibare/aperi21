@@ -56,27 +56,24 @@ importers:
       '@aperi21/sim-beats':
         specifier: workspace:*
         version: link:../../sims/waves/beats
-      '@aperi21/sim-current-magnetic-field':
-        specifier: workspace:*
-        version: link:../../sims/em/current-magnetic-field
       '@aperi21/sim-dc-circuit':
         specifier: workspace:*
         version: link:../../sims/electronics/dc-circuit
       '@aperi21/sim-doppler-effect':
         specifier: workspace:*
         version: link:../../sims/waves/doppler-effect
+      '@aperi21/sim-field-of-straight-wire':
+        specifier: workspace:*
+        version: link:../../sims/em/field-of-straight-wire
       '@aperi21/sim-gas-pressure':
         specifier: workspace:*
         version: link:../../sims/thermal/gas-pressure
-      '@aperi21/sim-heat-conduction':
-        specifier: workspace:*
-        version: link:../../sims/thermal/heat-conduction
       '@aperi21/sim-inertial-frame':
         specifier: workspace:*
         version: link:../../sims/mechanics/inertial-frame
-      '@aperi21/sim-lenz-law':
+      '@aperi21/sim-lenzs-law':
         specifier: workspace:*
-        version: link:../../sims/em/lenz-law
+        version: link:../../sims/em/lenzs-law
       '@aperi21/sim-pendulum-isochronism':
         specifier: workspace:*
         version: link:../../sims/oscillation/pendulum-isochronism
@@ -95,6 +92,9 @@ importers:
       '@aperi21/sim-ray-tracing':
         specifier: workspace:*
         version: link:../../sims/optics/ray-tracing
+      '@aperi21/sim-thermal-conduction':
+        specifier: workspace:*
+        version: link:../../sims/thermal/thermal-conduction
       '@tiptap/core':
         specifier: ^3.22.3
         version: 3.22.5(@tiptap/pm@3.22.5)
@@ -384,9 +384,6 @@ importers:
       '@aperi21/sim-coupled-oscillators':
         specifier: workspace:*
         version: link:../../sims/oscillation/coupled-oscillators
-      '@aperi21/sim-current-magnetic-field':
-        specifier: workspace:*
-        version: link:../../sims/em/current-magnetic-field
       '@aperi21/sim-cyclic-process':
         specifier: workspace:*
         version: link:../../sims/thermal/cyclic-process
@@ -570,6 +567,9 @@ importers:
       '@aperi21/sim-field-of-loop-and-solenoid':
         specifier: workspace:*
         version: link:../../sims/em/field-of-loop-and-solenoid
+      '@aperi21/sim-field-of-straight-wire':
+        specifier: workspace:*
+        version: link:../../sims/em/field-of-straight-wire
       '@aperi21/sim-finite-well':
         specifier: workspace:*
         version: link:../../sims/modern/finite-well
@@ -639,9 +639,6 @@ importers:
       '@aperi21/sim-harmonics':
         specifier: workspace:*
         version: link:../../sims/waves/harmonics
-      '@aperi21/sim-heat-conduction':
-        specifier: workspace:*
-        version: link:../../sims/thermal/heat-conduction
       '@aperi21/sim-heat-engine':
         specifier: workspace:*
         version: link:../../sims/thermal/heat-engine
@@ -759,9 +756,9 @@ importers:
       '@aperi21/sim-lens-combination':
         specifier: workspace:*
         version: link:../../sims/optics/lens-combination
-      '@aperi21/sim-lenz-law':
+      '@aperi21/sim-lenzs-law':
         specifier: workspace:*
-        version: link:../../sims/em/lenz-law
+        version: link:../../sims/em/lenzs-law
       '@aperi21/sim-lift-force':
         specifier: workspace:*
         version: link:../../sims/fluids/lift-force
@@ -1332,6 +1329,9 @@ importers:
       '@aperi21/sim-terminal-velocity':
         specifier: workspace:*
         version: link:../../sims/kinematics/terminal-velocity
+      '@aperi21/sim-thermal-conduction':
+        specifier: workspace:*
+        version: link:../../sims/thermal/thermal-conduction
       '@aperi21/sim-thermal-convection':
         specifier: workspace:*
         version: link:../../sims/thermal/thermal-convection
@@ -2208,18 +2208,6 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
-  sims/em/current-magnetic-field:
-    devDependencies:
-      '@aperi21/plugin-em':
-        specifier: workspace:*
-        version: link:../../../packages/plugin-em
-      '@aperi21/schema':
-        specifier: workspace:*
-        version: link:../../../packages/schema
-      typescript:
-        specifier: ^5.6.3
-        version: 5.9.3
-
   sims/em/dielectric:
     devDependencies:
       '@aperi21/schema':
@@ -2400,6 +2388,18 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/em/field-of-straight-wire:
+    devDependencies:
+      '@aperi21/plugin-em':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-em
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/em/force-between-wires:
     devDependencies:
       '@aperi21/plugin-em':
@@ -2490,7 +2490,7 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
-  sims/em/lenz-law:
+  sims/em/lenzs-law:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -5391,15 +5391,6 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
-  sims/thermal/heat-conduction:
-    devDependencies:
-      '@aperi21/schema':
-        specifier: workspace:*
-        version: link:../../../packages/schema
-      typescript:
-        specifier: ^5.6.3
-        version: 5.9.3
-
   sims/thermal/heat-engine:
     devDependencies:
       '@aperi21/schema':
@@ -5572,6 +5563,15 @@ importers:
         version: 5.9.3
 
   sims/thermal/stefan-boltzmann-law:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/thermal-conduction:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*

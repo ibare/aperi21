@@ -9,7 +9,7 @@
  *   self-inductance  코일이 자기 자신의 전류 변화에 맞선다
  * 이쪽만 「거스른다 · 되민다 · 붙잡는다 · 전류는 뒤집히는데 힘은 그대로」 어휘를 갖고,
  * 크기 · 수치 어휘를 하나도 갖지 않는다. 주제 id 는 `lenzs-law` 이고 조각 등록 키는
- * `aperi21:lenz-law` 라 서로 다르다 — topics.yaml 의 sim 값을 그대로 쓴다 (C4).
+ * `aperi21:lenzs-law` 라 서로 다르다 — topics.yaml 의 sim 값을 그대로 쓴다 (C4).
  */
 
 import type { Aperi21ConceptSource } from '../concept-types.js';
@@ -17,7 +17,7 @@ import type { Aperi21ConceptSource } from '../concept-types.js';
 export const lenzsLawConcept: Aperi21ConceptSource = {
   id: 'lenzs-law',
   label: 'The Direction That Stands Against the Change',
-  canonicalSim: 'aperi21:lenz-law',
+  canonicalSim: 'aperi21:lenzs-law',
 
   surface: {
     definition:

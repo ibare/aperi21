@@ -1,5 +1,5 @@
 // ========================================================================
-// heat-conduction — Scene Graph 선언
+// thermal-conduction — Scene Graph 선언
 // ========================================================================
 // 그리지 않는다, 선언한다. 자유 렌더를 쓰지 않는다.
 //
@@ -43,7 +43,7 @@ import {
   text,
   wy,
 } from './schema';
-import type { HeatConductionState, Rod } from './state';
+import type { ThermalConductionState, Rod } from './state';
 
 // ------------------------------------------------------------------------
 // 색 역할
@@ -357,7 +357,7 @@ function label(rod: Rod, box: RodBox, out: Primitive[]): void {
 // scene
 // ------------------------------------------------------------------------
 
-export function scene(params: { state: HeatConductionState }): SceneGraph {
+export function scene(params: { state: ThermalConductionState }): SceneGraph {
   const { state } = params;
   // 원본의 화면 시각. 프리롤만큼 빼면 `?t=` 로 연 화면이 원본과 같은 위상에서 흔들린다.
   const t = state.t - PREROLL_S;

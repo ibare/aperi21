@@ -283,7 +283,7 @@ export interface Surface extends BaseMeta {
 // 저작자에게 거짓말을 하고 있었고(S-render), 01-broad 배치의 조각들이 그 자리를
 // 밟았을 때 원한 것은 기성품 장이 아니었다 — "엔진이 '파동=동심원' 같은 기성품을
 // 주면 이 조각의 핵심이 사라진다"(doppler-effect), "장선을 깔아 주는 도구였다면
-// 이 조각은 만들 수 없었다"(current-magnetic-field). 필요해지면 그때 정찰이
+// 이 조각은 만들 수 없었다"(field-of-straight-wire). 필요해지면 그때 정찰이
 // 발견한 모양으로 올린다 (원칙 4).
 
 export interface ParticleSystem extends BaseMeta, LightChannel {
@@ -1005,7 +1005,7 @@ export interface ControllerInstance {
    * 자동 진행과 조작기가 같은 값을 밀 때 필요하다 — 손대기 전에는 조각이
    * 자동으로 값을 정하고, 잡는 순간 자동이 양보하며, 놓으면 조각이 정한 방식으로
    * 돌아간다. **무엇으로 돌아갈지는 조각이 안다**(`laminar-vs-turbulent` 는 가장
-   * 가까운 정박값으로, `lenz-law` 는 놓는 순간의 속도로). 러너는 잡혔다는
+   * 가까운 정박값으로, `lenzs-law` 는 놓는 순간의 속도로). 러너는 잡혔다는
    * 사실만 적고, 그 뒤는 조각의 `step` 이 한다.
    *
    * `scale-drag` 는 `binds.held` 로 이미 같은 일을 했다. 한 조각이 아니라 여섯이

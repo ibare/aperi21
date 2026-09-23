@@ -1,5 +1,5 @@
 // ========================================================================
-// current-magnetic-field — 순수 물리
+// field-of-straight-wire — 순수 물리
 // ========================================================================
 // 화면에서 실제로 일어나는 것은 바늘이 **돌아가는 것** 하나다. 아래 한 줄이
 // 주장 셋을 한꺼번에 만든다 — 따로 연출한 것이 없다.
@@ -29,7 +29,7 @@ import {
   SAMPLE_BOUNDS,
   WIRE,
 } from './schema';
-import type { CurrentMagneticFieldState } from './state';
+import type { FieldOfStraightWireState } from './state';
 
 /** 한 주기(초). 선언한 구간 길이의 합이다 — 주기를 따로 적지 않는다. */
 export const CURRENT_PERIOD = CURRENT_PHASES.reduce((sum, p) => sum + p.duration, 0);
@@ -124,9 +124,9 @@ export function captionFlags(current: number): { forward: boolean; reversed: boo
  * 다르게 틀린다.
  */
 export function step(params: {
-  state: CurrentMagneticFieldState;
+  state: FieldOfStraightWireState;
   dt: number;
-}): CurrentMagneticFieldState {
+}): FieldOfStraightWireState {
   const { state, dt } = params;
   const t = state.t + dt;
   const samples = deriveSamples();

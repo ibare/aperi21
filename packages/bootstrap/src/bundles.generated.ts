@@ -462,14 +462,6 @@ export function registerGeneratedBundles(): void {
     return registerBundle("aperi21:coulombs-law", m.coulombsLawBundle, caps.capabilities);
   });
 
-  registerBundleLoader("aperi21:current-magnetic-field", async () => {
-    const [m, caps] = await Promise.all([
-      import("@aperi21/sim-current-magnetic-field"),
-      import("./capabilities/em/current-magnetic-field.generated.js"),
-    ]);
-    return registerBundle("aperi21:current-magnetic-field", m.currentMagneticFieldBundle, caps.capabilities);
-  });
-
   registerBundleLoader("aperi21:dielectric", async () => {
     const [m, caps] = await Promise.all([
       import("@aperi21/sim-dielectric"),
@@ -622,6 +614,14 @@ export function registerGeneratedBundles(): void {
     return registerBundle("aperi21:field-of-loop-and-solenoid", m.fieldOfLoopAndSolenoidBundle, caps.capabilities);
   });
 
+  registerBundleLoader("aperi21:field-of-straight-wire", async () => {
+    const [m, caps] = await Promise.all([
+      import("@aperi21/sim-field-of-straight-wire"),
+      import("./capabilities/em/field-of-straight-wire.generated.js"),
+    ]);
+    return registerBundle("aperi21:field-of-straight-wire", m.fieldOfStraightWireBundle, caps.capabilities);
+  });
+
   registerBundleLoader("aperi21:force-between-wires", async () => {
     const [m, caps] = await Promise.all([
       import("@aperi21/sim-force-between-wires"),
@@ -694,12 +694,12 @@ export function registerGeneratedBundles(): void {
     return registerBundle("aperi21:lc-oscillation", m.lcOscillationBundle, caps.capabilities);
   });
 
-  registerBundleLoader("aperi21:lenz-law", async () => {
+  registerBundleLoader("aperi21:lenzs-law", async () => {
     const [m, caps] = await Promise.all([
-      import("@aperi21/sim-lenz-law"),
-      import("./capabilities/em/lenz-law.generated.js"),
+      import("@aperi21/sim-lenzs-law"),
+      import("./capabilities/em/lenzs-law.generated.js"),
     ]);
-    return registerBundle("aperi21:lenz-law", m.lenzLawBundle, caps.capabilities);
+    return registerBundle("aperi21:lenzs-law", m.lenzLawBundle, caps.capabilities);
   });
 
   registerBundleLoader("aperi21:lorentz-force", async () => {
@@ -3094,14 +3094,6 @@ export function registerGeneratedBundles(): void {
     return registerBundle("aperi21:greenhouse-effect", m.greenhouseEffectBundle, caps.capabilities);
   });
 
-  registerBundleLoader("aperi21:heat-conduction", async () => {
-    const [m, caps] = await Promise.all([
-      import("@aperi21/sim-heat-conduction"),
-      import("./capabilities/thermal/heat-conduction.generated.js"),
-    ]);
-    return registerBundle("aperi21:heat-conduction", m.heatConductionBundle, caps.capabilities);
-  });
-
   registerBundleLoader("aperi21:heat-engine", async () => {
     const [m, caps] = await Promise.all([
       import("@aperi21/sim-heat-engine"),
@@ -3260,6 +3252,14 @@ export function registerGeneratedBundles(): void {
       import("./capabilities/thermal/stefan-boltzmann-law.generated.js"),
     ]);
     return registerBundle("aperi21:stefan-boltzmann-law", m.stefanBoltzmannLawBundle, caps.capabilities);
+  });
+
+  registerBundleLoader("aperi21:thermal-conduction", async () => {
+    const [m, caps] = await Promise.all([
+      import("@aperi21/sim-thermal-conduction"),
+      import("./capabilities/thermal/thermal-conduction.generated.js"),
+    ]);
+    return registerBundle("aperi21:thermal-conduction", m.thermalConductionBundle, caps.capabilities);
   });
 
   registerBundleLoader("aperi21:thermal-convection", async () => {

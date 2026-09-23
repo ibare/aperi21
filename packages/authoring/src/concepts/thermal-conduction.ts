@@ -10,9 +10,6 @@
  * 이쪽만 「막대를 타고 번져 나간다 · 머문다 · 구슬이 차례로 떨어진다 · 재질 둘」 어휘를 갖는다.
  * 유체 · 진공 · 물결 · 복사량은 쓰지 않는다.
  *
- * `canonicalSim` 은 주제 id 와 다르다 — `topics.yaml` 의 `sim` 값(`aperi21:heat-conduction`)
- * 을 그대로 쓴다.
- *
  * 조작기가 없다. affordances 에 **저절로 일어나는 것**을 적는다.
  */
 
@@ -21,7 +18,7 @@ import type { Aperi21ConceptSource } from '../concept-types.js';
 export const thermalConductionConcept: Aperi21ConceptSource = {
   id: 'thermal-conduction',
   label: 'Heat Working Its Way Through the Material Itself',
-  canonicalSim: 'aperi21:heat-conduction',
+  canonicalSim: 'aperi21:thermal-conduction',
 
   surface: {
     definition:

@@ -1259,7 +1259,7 @@
           "id": "thermal-conduction",
           "name": "열전도",
           "desc": "접촉을 통한 전달",
-          "simId": "aperi21:heat-conduction"
+          "simId": "aperi21:thermal-conduction"
         },
         {
           "id": "thermal-convection",
@@ -2184,7 +2184,7 @@
           "id": "field-of-straight-wire",
           "name": "직선 전류의 자기장",
           "desc": "거리가 멀수록 주는 세기",
-          "simId": "aperi21:current-magnetic-field"
+          "simId": "aperi21:field-of-straight-wire"
         },
         {
           "id": "field-of-loop-and-solenoid",
@@ -2226,7 +2226,7 @@
           "id": "lenzs-law",
           "name": "렌츠 법칙",
           "desc": "변화를 방해하는 유도 전류",
-          "simId": "aperi21:lenz-law"
+          "simId": "aperi21:lenzs-law"
         },
         {
           "id": "motional-emf",

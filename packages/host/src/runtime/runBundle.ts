@@ -129,7 +129,7 @@ const INSPECT_MAX_T = 60;
  *
  * 러너가 하는 일은 여기까지다 — 자동 진행이 어떻게 양보하고 놓은 뒤 무엇으로
  * 돌아갈지는 조각마다 다르다. `laminar-vs-turbulent` 는 가장 가까운 정박값으로
- * 돌아가고 `lenz-law` 는 놓는 순간의 속도로 이어 간다.
+ * 돌아가고 `lenzs-law` 는 놓는 순간의 속도로 이어 간다.
  */
 export function markHeld(
   refs: { state: BundleState },

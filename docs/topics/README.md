@@ -166,10 +166,15 @@ aperi21 은 글로벌 서비스가 임베딩하는 모듈이라, 최소 보장�
   일 — 를 한 줄로 남긴다. 구현할 때 그 조각의 주장을 고르는 출발점이 된다
 - `sim` 이 있으면 구현된 것이다. `gen-topic-catalog.mts` 가 이 값을 읽어 사이트에 연결한다
 
-**`id` 와 `sim` 의 문자열은 다를 수 있고, 그것이 정상이다.** `lenzs-law` 의 조각은
-`aperi21:lenz-law` 이고 `newtons-first-law` 의 조각은 `aperi21:inertial-frame` 이다.
-주제는 교육과정이 부르는 이름을 따르고, 조각은 **화면에서 일어나는 일**을 따르기 때문이다.
-같은 표기 규약(kebab-case)을 쓸 뿐 같은 문자열이어야 하는 것이 아니다.
+**`id` 와 `sim` 의 문자열은 다를 수 있다.** `newtons-first-law` 의 조각은
+`aperi21:inertial-frame` 이고, `pendulum-amplitude-dependence` 의 조각은
+`aperi21:pendulum-isochronism` 이다 — 조각이 **주제보다 좁은 주장**을 한다고 이름으로
+말하는 자리다. 같은 표기 규약(kebab-case)을 쓸 뿐 같은 문자열이어야 하는 것은 아니다.
+
+**다만 낱말만 다른 것은 맞춘다.** 2026-09-23 에 셋을 주제 id 로 개명했다 —
+`lenz-law` → `lenzs-law` · `heat-conduction` → `thermal-conduction` ·
+`current-magnetic-field` → `field-of-straight-wire`. 같은 것을 두 이름으로 부르던
+자리였고, 이름이 다르면 그 차이에 뜻이 있어야 한다.
 
 **`sim` 에는 등록 키 전체를 적는다.** `aperi21:` 접두어를 코드에서 조립하면 그 순간
 문자열 추적이 끊긴다 — `rules/concerns/C4.md` 의 MUST NOT 이다.

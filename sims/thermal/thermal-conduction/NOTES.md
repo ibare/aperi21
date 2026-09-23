@@ -1,6 +1,6 @@
 # 열전도 — sim 노트
 
-원본: `tasks/piece-lab/heat-conduction/` (자유 구현). 원본의 결정과 근거는 그쪽 `NOTES.md`.
+원본: `tasks/piece-lab/thermal-conduction/` (자유 구현). 원본의 결정과 근거는 그쪽 `NOTES.md`.
 이 파일은 sim 으로 옮긴 뒤 **달라진 것**과 **어휘 부족**을 적는다.
 
 ## 쓴 어휘
@@ -109,7 +109,7 @@
 
 ## 대조 한계
 
-`apps/catalog/src/data/catalog.json` 에 `heat-conduction` 주제가 없어서
+`apps/catalog/src/data/catalog.json` 에 `thermal-conduction` 주제가 없어서
 (`thermal-conduction` 이라는 다른 id 의 주제만 있고 `simId` 가 비어 있다)
 `pnpm piece:report --sims` 가 정식 sims 스크린샷을 찍지 못한다 — `simIdOf` 가 주제를
 못 찾으면 조용히 건너뛴다. 카탈로그 연결은 이 작업의 범위 밖이라(공유 파일) 손대지 않았다.

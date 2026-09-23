@@ -1,7 +1,7 @@
 import { NORTH, PREROLL, START_AT } from './schema';
 import { captionFlags, currentAt, deriveSamples } from './physics';
 
-export interface CurrentMagneticFieldState {
+export interface FieldOfStraightWireState {
   /**
    * 조각 시계(초). 시간표의 주기 안 시각과 같은 눈금이다 — `step` 은 시각을
    * 받지 않으므로 전류를 읽으려면 조각이 자기 시계를 들고 있어야 한다.
@@ -30,7 +30,7 @@ export interface CurrentMagneticFieldState {
  * 0.55 초**가 된다. 두 선언이 한 눈금 위에 있으므로 시간표의 주기 안 시각과도
  * 어긋나지 않는다.
  */
-export function initialState(): CurrentMagneticFieldState {
+export function initialState(): FieldOfStraightWireState {
   const t = START_AT - PREROLL;
   const current = currentAt(t);
   return {

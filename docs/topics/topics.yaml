@@ -1573,7 +1573,7 @@ topics:
     level: primary
     curricula: [kr, ib, ngss, ap, uk]
     visualNote: 재료마다 열이 번져 가는 속도가 다르다
-    sim: aperi21:heat-conduction
+    sim: aperi21:thermal-conduction
     batch: 01-broad
   - id: thermal-convection
     name: 대류
@@ -2764,7 +2764,7 @@ topics:
     level: lower
     curricula: [kr, ib, ngss, ap, uk]
     visualNote: 도선 둘레로 자기장이 감긴다
-    sim: aperi21:current-magnetic-field
+    sim: aperi21:field-of-straight-wire
     batch: 01-broad
   - id: field-of-loop-and-solenoid
     name: 고리와 솔레노이드
@@ -2821,7 +2821,7 @@ topics:
     level: lower
     curricula: [kr, ib, ngss, ap, uk]
     visualNote: 변화를 방해하는 쪽으로 유도 전류가 흐른다
-    sim: aperi21:lenz-law
+    sim: aperi21:lenzs-law
     batch: 01-broad
   - id: motional-emf
     name: 운동 기전력

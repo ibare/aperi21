@@ -90,7 +90,7 @@ const KNOB_PATH_PX = 1;
 const KNOB_PATH_OPACITY = 0.6;
 /** 원을 표본하는 점 수. */
 const CIRCLE_SAMPLES = 72;
-/** 극 조각 — S 극의 빛의 양, N 극에서 파낸 글자의 빛의 양, 극 글자 크기(lenz-law 와 같다). */
+/** 극 조각 — S 극의 빛의 양, N 극에서 파낸 글자의 빛의 양, 극 글자 크기(lenzs-law 와 같다). */
 const SOUTH_LUMINANCE = 0.33;
 const KNOCKOUT_LUMINANCE = 0.04;
 const POLE_FONT_PX = 14;
@@ -198,7 +198,7 @@ export function scene(params: {
     style: FIELD,
   });
 
-  // ---- 극 조각 — N 은 먹, S 는 옅게 (lenz-law · faradays-law 의 자석과 같은 모양) ----
+  // ---- 극 조각 — N 은 먹, S 는 옅게 (lenzs-law · faradays-law 의 자석과 같은 모양) ----
   const nPos: Vec2 = [faceL - POLE_W / 2, AXLE[1]];
   const sPos: Vec2 = [faceR + POLE_W / 2, AXLE[1]];
   out.push(

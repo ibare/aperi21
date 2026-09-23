@@ -1,6 +1,6 @@
 # 렌츠 법칙 — sim 노트
 
-원본: `tasks/piece-lab/lenz-law/` (자유 구현). 원본의 결정과 근거는 그쪽 `NOTES.md`.
+원본: `tasks/piece-lab/lenzs-law/` (자유 구현). 원본의 결정과 근거는 그쪽 `NOTES.md`.
 이 파일은 sim 으로 옮긴 뒤 **달라진 것**과 **어휘 부족**을 적는다.
 
 옮기면서 쓴 어휘 — `trajectory`(코일 다섯 고리) · `trace`(고리를 도는 전하) ·
@@ -90,11 +90,11 @@
 
 ## 확인 한계 — 화면 대조를 끝내지 못했다
 
-`pnpm -s piece:report --sims=http://localhost:5173/aperi21/ lenz-law` 이 **sims 쪽
+`pnpm -s piece:report --sims=http://localhost:5173/aperi21/ lenzs-law` 이 **sims 쪽
 스크린샷을 한 장도 만들지 못했다.** dev 서버는 200 으로 살아 있다. 원인은 조각이 아니라
 카탈로그 배선이다.
 
-- 카탈로그 주제 id 는 `lenzs-law` 인데 조각 id 는 `lenz-law` 다. 보고서는
+- 카탈로그 주제 id 는 `lenzs-law` 인데 조각 id 는 `lenzs-law` 다. 보고서는
   `#/topic/<조각 id>` 로 열므로 주소가 어긋난다.
 - 더 근본적으로 `apps/catalog/src/data/catalog.json` 의 `lenzs-law` 주제에 **`simId` 가
   없다.** `simId` 를 가진 주제는 10개뿐이고 그중에 이 조각이 없다. 그래서 주제 페이지를
