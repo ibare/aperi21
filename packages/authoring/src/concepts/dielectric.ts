@@ -63,7 +63,7 @@ export const dielectricConcept: Aperi21ConceptSource = {
 
     useWhen: [
       'The article says a dielectric weakens the field or improves the store and the reader is treating the material constant as a number looked up in a table. Molecules turning as they cross the plate edge, with the arrows shortening as they do, puts a mechanism underneath that number.',
-      'The prose needs the isolated case kept apart from the connected one: here the charge on the plates cannot move, so the thing that gives way is the field.',
+      'The reader is about to be told what a slab of material does, with no battery anywhere in the account. Nothing can leave these plates, so what the slab pushes on is the field between them and the arrows shortening is the whole of the answer.',
     ],
 
     avoidWhen: [
