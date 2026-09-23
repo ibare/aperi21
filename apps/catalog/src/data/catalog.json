@@ -144,7 +144,7 @@
           "id": "projectile-range",
           "name": "사거리와 발사각",
           "desc": "던지는 각도가 날아가는 거리를 바꾸는 방식",
-          "simId": "aperi21:projectile"
+          "simId": "aperi21:projectile-range"
         },
         {
           "id": "trajectory-equation",
@@ -780,6 +780,12 @@
           "simId": "aperi21:gravitational-field"
         },
         {
+          "id": "range-and-surface-gravity",
+          "name": "중력과 사거리",
+          "desc": "같은 발사가 중력이 약한 곳에서 더 멀리 가는 것",
+          "simId": "aperi21:range-and-surface-gravity"
+        },
+        {
           "id": "shell-theorem",
           "name": "껍질 정리",
           "desc": "구 껍질 안팎에서의 중력",
@@ -1043,6 +1049,12 @@
       "id": "fluids",
       "name": "유체",
       "topics": [
+        {
+          "id": "projectile-in-wind",
+          "name": "바람과 사거리",
+          "desc": "같은 발사라도 바람이 착지점을 옮기는 것",
+          "simId": "aperi21:projectile-in-wind"
+        },
         {
           "id": "pressure-isotropy",
           "name": "압력의 등방성",
@@ -1768,7 +1780,7 @@
           "id": "thin-lens",
           "name": "얇은 렌즈",
           "desc": "초점과 결상",
-          "simId": "aperi21:ray-tracing"
+          "simId": "aperi21:thin-lens"
         },
         {
           "id": "converging-diverging-lens",
@@ -1781,6 +1793,12 @@
           "name": "배율",
           "desc": "상의 크기와 물체의 크기",
           "simId": "aperi21:magnification"
+        },
+        {
+          "id": "focal-length",
+          "name": "초점 거리",
+          "desc": "초점 거리가 상이 맺히는 자리를 정하는 것",
+          "simId": "aperi21:focal-length"
         },
         {
           "id": "real-vs-virtual-image",
@@ -2092,7 +2110,7 @@
           "id": "series-parallel-resistors",
           "name": "저항의 직렬과 병렬",
           "desc": "연결을 바꾸면 같은 전지가 내주는 전류가 달라지는 것",
-          "simId": "aperi21:dc-circuit"
+          "simId": "aperi21:series-parallel-resistors"
         },
         {
           "id": "emf-and-internal-resistance",
@@ -2820,8 +2838,8 @@
     }
   ],
   "summary": {
-    "topics": 441,
-    "implemented": 441,
+    "topics": 444,
+    "implemented": 444,
     "labs": 103
   }
 }

@@ -10,7 +10,7 @@
 할 수 있는가(가능성), 실제로 그려진 결과(색 · 배치 · 읽힘).
 
 `파싱 실패` 는 「없다」가 아니라 **못 읽었다**는 뜻이다. 그 자리는 사람이 연다.
-대상 100건 · 파싱 실패 1건 · 문안 선언이 없는 구세대 조각 4건.
+대상 100건 · 파싱 실패 1건 · 문안 선언이 없는 구세대 조각 0건.
 
 
 ### T02 · `velocity-time-graph`
@@ -32,13 +32,28 @@
 
 ### T04 · `projectile-range`
 
-- 조각 — `aperi21:projectile` · `sims/physics/projectile`
-- 문안 — **선언 없음.** 화면 문자가 C1 3층 조회를 지나지 않는 구세대 조각이다
-- 조작기 — launch-angle(angle-dial) · launcher(pinball-launcher) · stages(stage-tabs) · views(view-tabs) · envs(env-toggles)
-- 스테이지 — earth · moon · vacuum
-- 뷰 — trajectory · forces · energy
-- 시간표 — 없음
-- 노드 종류 — body · event · gauge · surface · trajectory · vector
+- 조각 — `aperi21:projectile-range` · `sims/kinematics/projectile-range`
+- 문안 15건
+  - `label.title` — 사거리와 발사각
+  - `label.operation` — 던지는 각도가 날아가는 거리를 바꾸는 방식
+  - `label.stage` — 같은 속력, 다섯 각도
+  - `label.view` — 다섯 발사
+  - `label.deg15` — 15°
+  - `label.deg30` — 30°
+  - `label.deg45` — 45°
+  - `label.deg60` — 60°
+  - `label.deg75` — 75°
+  - `caption.aim` — 다섯 화살표의 길이가 같다 — 같은 속력, 다른 각도
+  - `caption.fly` — 다섯 공이 같은 속력으로 한꺼번에 떠났다
+  - `caption.sink` — 낮게 쏜 셋은 이미 내려앉았고, 가파른 둘은 아직 공중에 있다
+  - `caption.last` — 60° 가 30° 의 자국 위에 내려앉았다
+  - `caption.pairs` — 75° 는 15° 의 자국 위에, 60° 는 30° 의 자국 위에 내려앉았다
+  - `caption.far` — 45° 의 자국만 짝 없이, 그 둘보다 멀리 홀로 있다
+- 조작기 — 없음 (자동 진행)
+- 스테이지 — same-speed
+- 뷰 — fan
+- 시간표 — aim→caption.aim · release→caption.fly · fly→caption.fly · sink→caption.sink · last→caption.last · pairs→caption.pairs · reveal→caption.far · far→caption.far · fade→caption.far
+- 노드 종류 — body · dimension · readout · surface · trace · trajectory · vector
 
 ### T05 · `trajectory-equation`
 
@@ -266,23 +281,53 @@
 
 ### T66 · `thin-lens`
 
-- 조각 — `aperi21:ray-tracing` · `sims/optics/ray-tracing`
-- 문안 — **선언 없음.** 화면 문자가 C1 3층 조회를 지나지 않는 구세대 조각이다
-- 조작기 — params(param-panel) · stages(stage-tabs) · views(view-tabs)
-- 스테이지 — convex-lens · concave-lens · flat-mirror
-- 뷰 — rays · image
-- 시간표 — 없음
-- 노드 종류 — body · marker · opticalElement · ray
+- 조각 — `aperi21:thin-lens` · `sims/optics/thin-lens`
+- 문안 15건
+  - `label.title` — 얇은 렌즈
+  - `label.operation` — 세 광선으로 상을 찾는다
+  - `label.stage` — 볼록 렌즈
+  - `label.view` — 광축
+  - `label.focusNear` — F
+  - `label.focusFar` — F′
+  - `label.object` — 물체
+  - `label.image` — 상
+  - `caption.setup` — 볼록 렌즈가 광축 위에 서고, 렌즈에서 같은 거리인 양쪽에 초점이 찍혀 있다
+  - `caption.parallel` — 물체 끝에서 축에 평행하게 간 광선이 렌즈에서 꺾여 건너편 초점 F′ 를 지난다
+  - `caption.center` — 렌즈 한가운데로 들어간 광선은 꺾이지 않고 곧게 지나간다
+  - `caption.focal` — 앞쪽 초점 F 를 지나 온 광선은 렌즈를 나오며 축에 평행해진다
+  - `caption.meet` — 셋이 렌즈 뒤 한 점에서 만났다
+  - `caption.rise` — 만난 그 점까지 상이 거꾸로 선다
+  - `caption.hold` — 세 광선이 모두 상 끝을 지난다
+- 조작기 — 없음 (자동 진행)
+- 스테이지 — converging-lens
+- 뷰 — axis
+- 시간표 — setup→caption.setup · draw-parallel→caption.parallel · draw-center→caption.center · draw-focal→caption.focal · meet→caption.meet · rise→caption.rise · hold→caption.hold · fade→caption.hold
+- 노드 종류 — body · opticalElement · ray · readout · trajectory · vector
 
 ### T67 · `thin-lens`
 
-- 조각 — `aperi21:ray-tracing` · `sims/optics/ray-tracing`
-- 문안 — **선언 없음.** 화면 문자가 C1 3층 조회를 지나지 않는 구세대 조각이다
-- 조작기 — params(param-panel) · stages(stage-tabs) · views(view-tabs)
-- 스테이지 — convex-lens · concave-lens · flat-mirror
-- 뷰 — rays · image
-- 시간표 — 없음
-- 노드 종류 — body · marker · opticalElement · ray
+- 조각 — `aperi21:thin-lens` · `sims/optics/thin-lens`
+- 문안 15건
+  - `label.title` — 얇은 렌즈
+  - `label.operation` — 세 광선으로 상을 찾는다
+  - `label.stage` — 볼록 렌즈
+  - `label.view` — 광축
+  - `label.focusNear` — F
+  - `label.focusFar` — F′
+  - `label.object` — 물체
+  - `label.image` — 상
+  - `caption.setup` — 볼록 렌즈가 광축 위에 서고, 렌즈에서 같은 거리인 양쪽에 초점이 찍혀 있다
+  - `caption.parallel` — 물체 끝에서 축에 평행하게 간 광선이 렌즈에서 꺾여 건너편 초점 F′ 를 지난다
+  - `caption.center` — 렌즈 한가운데로 들어간 광선은 꺾이지 않고 곧게 지나간다
+  - `caption.focal` — 앞쪽 초점 F 를 지나 온 광선은 렌즈를 나오며 축에 평행해진다
+  - `caption.meet` — 셋이 렌즈 뒤 한 점에서 만났다
+  - `caption.rise` — 만난 그 점까지 상이 거꾸로 선다
+  - `caption.hold` — 세 광선이 모두 상 끝을 지난다
+- 조작기 — 없음 (자동 진행)
+- 스테이지 — converging-lens
+- 뷰 — axis
+- 시간표 — setup→caption.setup · draw-parallel→caption.parallel · draw-center→caption.center · draw-focal→caption.focal · meet→caption.meet · rise→caption.rise · hold→caption.hold · fade→caption.hold
+- 노드 종류 — body · opticalElement · ray · readout · trajectory · vector
 
 ### T73 · `coulombs-law`
 
@@ -325,13 +370,26 @@
 
 ### T79 · `series-parallel-resistors`
 
-- 조각 — `aperi21:dc-circuit` · `sims/electronics/dc-circuit`
-- 문안 — **선언 없음.** 화면 문자가 C1 3층 조회를 지나지 않는 구세대 조각이다
-- 조작기 — params(param-panel) · stages(stage-tabs) · views(view-tabs)
-- 스테이지 — simple · series · parallel
-- 뷰 — schematic · meters
-- 시간표 — 없음
-- 노드 종류 — battery · circuitElement · marker · resistor · terminal · wire
+- 조각 — `aperi21:series-parallel-resistors` · `sims/electronics/series-parallel-resistors`
+- 문안 13건
+  - `label.title` — 저항의 직렬과 병렬
+  - `label.operation` — 연결을 바꾸면 같은 전지가 내주는 전류가 달라지는 것
+  - `label.stage` — 같은 전지 · 같은 저항 둘
+  - `label.view` — 나란한 배치 셋
+  - `label.single` — 하나만
+  - `label.series` — 직렬
+  - `label.parallel` — 병렬
+  - `label.volts` — {v} V
+  - `label.amps` — {i} A
+  - `label.electron` — e⁻
+  - `caption.flow` — 같은 전지와 같은 저항 둘 — 하나만 잇고, 직렬로 잇고, 병렬로 이었다
+  - `caption.count` — 같은 동안 전지를 지난 전하를 회로마다 아래 기둥으로 쌓는다
+  - `caption.compare` — 직렬 기둥은 하나만 일 때의 높이에 못 미치고, 병렬 기둥은 그 높이를 넘었다
+- 조작기 — 없음 (자동 진행)
+- 스테이지 — three-arrangements
+- 뷰 — side-by-side
+- 시간표 — flow→caption.flow · count→caption.count · hold→caption.compare · fade→caption.compare
+- 노드 종류 — circuitElement · lineSet · particleSystem · readout · region · resistor · terminal · trajectory · vector
 
 ### T57 · `wave-basics`
 

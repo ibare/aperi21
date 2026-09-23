@@ -33,13 +33,13 @@ mark{background:var(--mark);color:inherit;border-radius:3px;padding:0 2px}
 </style></head><body>
 <div class="wrap">
 <h1>주제와 조각이 서로 다른 말을 하는 자리</h1>
-<p class="lede">주제의 <code>desc</code> 와 조각이 화면에 띄우는 <code>label.operation</code> 을 441개 전수로 맞댄 것이다.
-351개는 글자까지 같고(조각을 지을 때 주제에서 베꼈다), 여기 90개가 갈렸다.
+<p class="lede">주제의 <code>desc</code> 와 조각이 화면에 띄우는 <code>label.operation</code> 을 444개 전수로 맞댄 것이다.
+353개는 글자까지 같고(조각을 지을 때 주제에서 베꼈다), 여기 91개가 갈렸다.
 칠해진 낱말은 <strong>한쪽에만 있는 말</strong>이다.</p>
 <div class="bar">
-  <button data-f="all" aria-pressed="true">전체 90</button>
-  <button data-f="touched" aria-pressed="false">우리가 고침 49</button>
-  <button data-f="drift" aria-pressed="false">원래 갈림 41</button>
+  <button data-f="all" aria-pressed="true">전체 91</button>
+  <button data-f="touched" aria-pressed="false">우리가 고침 48</button>
+  <button data-f="drift" aria-pressed="false">원래 갈림 43</button>
   <input id="q" type="search" placeholder="주제·낱말로 거르기" />
 </div>
 <p class="count" id="count"></p>
@@ -154,16 +154,6 @@ mark{background:var(--mark);color:inherit;border-radius:3px;padding:0 2px}
   <p class="vn"><span class="k">visualNote</span> 수평과 연직이 서로를 건드리지 않고 따로 간다</p>
 </article>
 
-<article class="row" data-group="drift" data-text="projectile-range 사거리와 발사각 던지는 각도가 날아가는 거리를 바꾸는 방식 각도 다이얼 + 핀볼 런처">
-  <header><h3>사거리와 발사각</h3><code>projectile-range</code><span class="dom">운동학</span>
-  <span class="tag d">원래 갈림</span></header>
-  <div class="pair">
-    <div class="side"><span class="k">주제 desc</span><p><mark>던지</mark>는 각도가 <mark>날아가</mark>는 <mark>거리</mark>를 <mark>바꾸</mark>는 <mark>방식</mark></p></div>
-    <div class="side"><span class="k">조각이 띄우는 한 줄</span><p>각도 <mark>다이얼</mark> + <mark>핀볼</mark> <mark>런처</mark></p></div>
-  </div>
-  <p class="vn"><span class="k">visualNote</span> 45도에서 가장 멀리 간다</p>
-</article>
-
 <article class="row" data-group="touched" data-text="trajectory-equation 궤적 방정식 시각을 걷어 내도 남는 가로와 높이 사이의 관계 시간을 소거해 얻은 경로의 식">
   <header><h3>궤적 방정식</h3><code>trajectory-equation</code><span class="dom">운동학</span>
   <span class="tag t">우리가 고침</span></header>
@@ -264,6 +254,16 @@ mark{background:var(--mark);color:inherit;border-radius:3px;padding:0 2px}
   <p class="vn"><span class="k">visualNote</span> 빨라질수록 저항이 가파르게 는다</p>
 </article>
 
+<article class="row" data-group="drift" data-text="projectile-in-wind 바람과 사거리 같은 발사라도 바람이 착지점을 옮기는 것 같은 발사, 다른 바람">
+  <header><h3>바람과 사거리</h3><code>projectile-in-wind</code><span class="dom">유체</span>
+  <span class="tag d">원래 갈림</span></header>
+  <div class="pair">
+    <div class="side"><span class="k">주제 desc</span><p>같은 <mark>발사라</mark>도 바람이 <mark>착지점</mark>을 <mark>옮기</mark>는 것</p></div>
+    <div class="side"><span class="k">조각이 띄우는 한 줄</span><p>같은 발사, <mark>다른</mark> 바람</p></div>
+  </div>
+  <p class="vn"><span class="k">visualNote</span> 뒷바람은 멀리, 앞바람은 가깝게 떨어뜨린다</p>
+</article>
+
 <article class="row" data-group="drift" data-text="atwood-machine 애트우드 기계 두 추가 도르래로 연결된 계 두 추의 합이 같으면 차이가 가속도를 정한다">
   <header><h3>애트우드 기계</h3><code>atwood-machine</code><span class="dom">뉴턴 역학</span>
   <span class="tag d">원래 갈림</span></header>
@@ -352,6 +352,16 @@ mark{background:var(--mark);color:inherit;border-radius:3px;padding:0 2px}
     <div class="side"><span class="k">조각이 띄우는 한 줄</span><p>폭이 <mark>달라</mark>도 같은 <mark>박자</mark>로 <mark>돌아온다</mark></p></div>
   </div>
   <p class="vn"><span class="k">visualNote</span> 진폭을 키우면 주기가 조금씩 길어진다</p>
+</article>
+
+<article class="row" data-group="drift" data-text="range-and-surface-gravity 중력과 사거리 같은 발사가 중력이 약한 곳에서 더 멀리 가는 것 같은 발사, 다른 중력">
+  <header><h3>중력과 사거리</h3><code>range-and-surface-gravity</code><span class="dom">중력과 천체</span>
+  <span class="tag d">원래 갈림</span></header>
+  <div class="pair">
+    <div class="side"><span class="k">주제 desc</span><p>같은 발사가 중력이 약한 곳에서 더 <mark>멀리</mark> 가는 것</p></div>
+    <div class="side"><span class="k">조각이 띄우는 한 줄</span><p>같은 발사, <mark>다른</mark> 중력</p></div>
+  </div>
+  <p class="vn"><span class="k">visualNote</span> 지구와 달에 같은 각도로 쏘면 달 쪽이 훨씬 멀리 떨어진다</p>
 </article>
 
 <article class="row" data-group="touched" data-text="keplers-third-law 케플러 제3법칙 궤도 반지름과 한 바퀴 시간의 관계 주기와 긴반지름의 관계">
@@ -714,14 +724,24 @@ mark{background:var(--mark);color:inherit;border-radius:3px;padding:0 2px}
   <p class="vn"><span class="k">visualNote</span> 거울 뒤 같은 거리에 상이 선다</p>
 </article>
 
-<article class="row" data-group="drift" data-text="thin-lens 얇은 렌즈 초점과 결상 광원과 렌즈·거울을 배치해 광선 경로와 결상을 관찰.">
+<article class="row" data-group="drift" data-text="thin-lens 얇은 렌즈 초점과 결상 세 광선으로 상을 찾는다">
   <header><h3>얇은 렌즈</h3><code>thin-lens</code><span class="dom">광학</span>
   <span class="tag d">원래 갈림</span></header>
   <div class="pair">
-    <div class="side"><span class="k">주제 desc</span><p><mark>초점</mark>과 결상</p></div>
-    <div class="side"><span class="k">조각이 띄우는 한 줄</span><p><mark>광원</mark>과 <mark>렌즈</mark>·<mark>거울</mark>을 <mark>배치해</mark> <mark>광선</mark> <mark>경로</mark>와 결상을 <mark>관찰.</mark></p></div>
+    <div class="side"><span class="k">주제 desc</span><p><mark>초점</mark>과 <mark>결상</mark></p></div>
+    <div class="side"><span class="k">조각이 띄우는 한 줄</span><p>세 <mark>광선</mark>으로 상을 <mark>찾는다</mark></p></div>
   </div>
   <p class="vn"><span class="k">visualNote</span> 광선 셋을 따라가면 상이 어디 맺히는지 나온다</p>
+</article>
+
+<article class="row" data-group="drift" data-text="focal-length 초점 거리 초점 거리가 상이 맺히는 자리를 정하는 것 상이 맺히는 자리를 정하는 것">
+  <header><h3>초점 거리</h3><code>focal-length</code><span class="dom">광학</span>
+  <span class="tag d">원래 갈림</span></header>
+  <div class="pair">
+    <div class="side"><span class="k">주제 desc</span><p><mark>초점</mark> <mark>거리</mark>가 상이 맺히는 자리를 정하는 것</p></div>
+    <div class="side"><span class="k">조각이 띄우는 한 줄</span><p>상이 맺히는 자리를 정하는 것</p></div>
+  </div>
+  <p class="vn"><span class="k">visualNote</span> 초점 거리를 줄이면 상이 렌즈 쪽으로 다가온다</p>
 </article>
 
 <article class="row" data-group="touched" data-text="scattering 산란 파란 하늘과 흰 구름을 가르는 입자 크기 하늘과 노을의 색">
@@ -792,16 +812,6 @@ mark{background:var(--mark);color:inherit;border-radius:3px;padding:0 2px}
     <div class="side"><span class="k">조각이 띄우는 한 줄</span><p><mark>느린</mark> 전자와 <mark>빠른</mark> <mark>신호</mark></p></div>
   </div>
   <p class="vn"><span class="k">visualNote</span> 전자는 굼뜬데 불은 곧바로 켜진다</p>
-</article>
-
-<article class="row" data-group="touched" data-text="series-parallel-resistors 저항의 직렬과 병렬 연결을 바꾸면 같은 전지가 내주는 전류가 달라지는 것 배터리·저항으로 단순·직렬·병렬 회로를 구성해 전압·전류를 확인.">
-  <header><h3>저항의 직렬과 병렬</h3><code>series-parallel-resistors</code><span class="dom">전자기</span>
-  <span class="tag t">우리가 고침</span></header>
-  <div class="pair">
-    <div class="side"><span class="k">주제 desc</span><p><mark>연결</mark>을 <mark>바꾸면</mark> 같은 <mark>전지</mark>가 <mark>내주</mark>는 전류가 <mark>달라지</mark>는 것</p></div>
-    <div class="side"><span class="k">조각이 띄우는 한 줄</span><p><mark>배터리</mark>·<mark>저항</mark>으로 <mark>단순</mark>·<mark>직렬</mark>·<mark>병렬</mark> <mark>회로</mark>를 <mark>구성해</mark> <mark>전압</mark>·전류를 <mark>확인.</mark></p></div>
-  </div>
-  <p class="vn"><span class="k">visualNote</span> 연결을 바꾸면 같은 전지에도 흐르는 전류가 달라진다</p>
 </article>
 
 <article class="row" data-group="drift" data-text="rc-circuit RC 회로 충전과 방전의 시간 상수 남은 차이가 τ 마다 같은 비율로 줄어든다">

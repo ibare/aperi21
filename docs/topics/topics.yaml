@@ -202,7 +202,7 @@ topics:
     level: upper
     curricula: [kr, ib, ap, uk]
     visualNote: 45도에서 가장 멀리 간다
-    sim: aperi21:projectile
+    sim: aperi21:projectile-range
   - id: trajectory-equation
     name: 궤적 방정식
     desc: 시각을 걷어 내도 남는 가로와 높이 사이의 관계
@@ -430,6 +430,14 @@ topics:
     curricula: [ib, ap, uk]
     visualNote: 빨라질수록 저항이 가파르게 는다
     sim: aperi21:drag-force
+  - id: projectile-in-wind
+    name: 바람과 사거리
+    desc: 같은 발사라도 바람이 착지점을 옮기는 것
+    domain: fluids
+    level: null
+    curricula: []
+    visualNote: 뒷바람은 멀리, 앞바람은 가깝게 떨어뜨린다
+    sim: aperi21:projectile-in-wind
   - id: buoyant-force-as-force
     name: 부력(힘으로서)
     desc: 유체가 위로 미는 힘
@@ -963,6 +971,14 @@ topics:
     curricula: [kr, ib, ngss, ap, uk]
     visualNote: 질량 곁에서는 화살표가 길고 멀어질수록 짧아진다
     sim: aperi21:gravitational-field
+  - id: range-and-surface-gravity
+    name: 중력과 사거리
+    desc: 같은 발사가 중력이 약한 곳에서 더 멀리 가는 것
+    domain: gravitation
+    level: null
+    curricula: []
+    visualNote: 지구와 달에 같은 각도로 쏘면 달 쪽이 훨씬 멀리 떨어진다
+    sim: aperi21:range-and-surface-gravity
   - id: shell-theorem
     name: 껍질 정리
     desc: 구 껍질 안팎에서의 중력
@@ -2227,7 +2243,7 @@ topics:
     level: upper
     curricula: [kr, ap]
     visualNote: 광선 셋을 따라가면 상이 어디 맺히는지 나온다
-    sim: aperi21:ray-tracing
+    sim: aperi21:thin-lens
   - id: converging-diverging-lens
     name: 볼록 렌즈와 오목 렌즈
     desc: 모으는 렌즈와 퍼뜨리는 렌즈
@@ -2244,6 +2260,14 @@ topics:
     curricula: [ap, uk]
     visualNote: 물체를 옮기면 상의 크기가 따라 바뀐다
     sim: aperi21:magnification
+  - id: focal-length
+    name: 초점 거리
+    desc: 초점 거리가 상이 맺히는 자리를 정하는 것
+    domain: optics
+    level: null
+    curricula: []
+    visualNote: 초점 거리를 줄이면 상이 렌즈 쪽으로 다가온다
+    sim: aperi21:focal-length
   - id: real-vs-virtual-image
     name: 실상과 허상
     desc: 빛이 실제로 모이는가
@@ -2644,7 +2668,7 @@ topics:
     level: lower
     curricula: [kr, ib, ap, uk]
     visualNote: 연결을 바꾸면 같은 전지에도 흐르는 전류가 달라진다
-    sim: aperi21:dc-circuit
+    sim: aperi21:series-parallel-resistors
   - id: emf-and-internal-resistance
     name: 기전력과 내부 저항
     desc: 단자 전압이 낮아지는 이유

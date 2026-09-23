@@ -149,6 +149,7 @@ import { fieldOfStraightWireConcept } from './field-of-straight-wire.js';
 import { finiteWellConcept } from './finite-well.js';
 import { firstLawOfThermodynamicsConcept } from './first-law-of-thermodynamics.js';
 import { floatingAndDraftConcept } from './floating-and-draft.js';
+import { focalLengthConcept } from './focal-length.js';
 import { forceBetweenWiresConcept } from './force-between-wires.js';
 import { forceOnCurrentWireConcept } from './force-on-current-wire.js';
 import { freeBodyDiagramConcept } from './free-body-diagram.js';
@@ -298,6 +299,7 @@ import { pressureAndContainerShapeConcept } from './pressure-and-container-shape
 import { pressureFromCollisionsConcept } from './pressure-from-collisions.js';
 import { pressureIsotropyConcept } from './pressure-isotropy.js';
 import { prismConcept } from './prism.js';
+import { projectileInWindConcept } from './projectile-in-wind.js';
 import { projectileMotionConcept } from './projectile-motion.js';
 import { projectileRangeConcept } from './projectile-range.js';
 import { pulleySystemConcept } from './pulley-system.js';
@@ -312,6 +314,7 @@ import { radiometricDatingConcept } from './radiometric-dating.js';
 import { radiusOfCurvatureConcept } from './radius-of-curvature.js';
 import { rainbowConcept } from './rainbow.js';
 import { randomWalkConcept } from './random-walk.js';
+import { rangeAndSurfaceGravityConcept } from './range-and-surface-gravity.js';
 import { rayleighScatteringConcept } from './rayleigh-scattering.js';
 import { rcCircuitConcept } from './rc-circuit.js';
 import { reactanceConcept } from './reactance.js';
@@ -592,6 +595,7 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   finiteWellConcept,
   firstLawOfThermodynamicsConcept,
   floatingAndDraftConcept,
+  focalLengthConcept,
   forceBetweenWiresConcept,
   forceOnCurrentWireConcept,
   freeBodyDiagramConcept,
@@ -741,6 +745,7 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   pressureFromCollisionsConcept,
   pressureIsotropyConcept,
   prismConcept,
+  projectileInWindConcept,
   projectileMotionConcept,
   projectileRangeConcept,
   pulleySystemConcept,
@@ -755,6 +760,7 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   radiusOfCurvatureConcept,
   rainbowConcept,
   randomWalkConcept,
+  rangeAndSurfaceGravityConcept,
   rayleighScatteringConcept,
   rcCircuitConcept,
   reactanceConcept,

@@ -579,6 +579,9 @@ importers:
       '@aperi21/sim-floating-and-draft':
         specifier: workspace:*
         version: link:../../sims/fluids/floating-and-draft
+      '@aperi21/sim-focal-length':
+        specifier: workspace:*
+        version: link:../../sims/optics/focal-length
       '@aperi21/sim-force-between-wires':
         specifier: workspace:*
         version: link:../../sims/em/force-between-wires
@@ -1029,9 +1032,15 @@ importers:
       '@aperi21/sim-projectile':
         specifier: workspace:*
         version: link:../../sims/physics/projectile
+      '@aperi21/sim-projectile-in-wind':
+        specifier: workspace:*
+        version: link:../../sims/fluids/projectile-in-wind
       '@aperi21/sim-projectile-motion':
         specifier: workspace:*
         version: link:../../sims/kinematics/projectile-motion
+      '@aperi21/sim-projectile-range':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/projectile-range
       '@aperi21/sim-pulley-system':
         specifier: workspace:*
         version: link:../../sims/mechanics/pulley-system
@@ -1071,6 +1080,9 @@ importers:
       '@aperi21/sim-random-walk':
         specifier: workspace:*
         version: link:../../sims/thermal/random-walk
+      '@aperi21/sim-range-and-surface-gravity':
+        specifier: workspace:*
+        version: link:../../sims/astro/range-and-surface-gravity
       '@aperi21/sim-ray-tracing':
         specifier: workspace:*
         version: link:../../sims/optics/ray-tracing
@@ -1179,6 +1191,9 @@ importers:
       '@aperi21/sim-semiconductor-doping':
         specifier: workspace:*
         version: link:../../sims/modern/semiconductor-doping
+      '@aperi21/sim-series-parallel-resistors':
+        specifier: workspace:*
+        version: link:../../sims/electronics/series-parallel-resistors
       '@aperi21/sim-series-rlc-resonance':
         specifier: workspace:*
         version: link:../../sims/em/series-rlc-resonance
@@ -1350,6 +1365,9 @@ importers:
       '@aperi21/sim-thin-film-interference':
         specifier: workspace:*
         version: link:../../sims/optics/thin-film-interference
+      '@aperi21/sim-thin-lens':
+        specifier: workspace:*
+        version: link:../../sims/optics/thin-lens
       '@aperi21/sim-tidal-force':
         specifier: workspace:*
         version: link:../../sims/astro/tidal-force
@@ -1944,6 +1962,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/astro/range-and-surface-gravity:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/astro/roche-limit:
     devDependencies:
       '@aperi21/schema':
@@ -2108,6 +2135,18 @@ importers:
       vitest:
         specifier: ^2.1.9
         version: 2.1.9(jsdom@25.0.1)
+
+  sims/electronics/series-parallel-resistors:
+    devDependencies:
+      '@aperi21/plugin-circuit':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-circuit
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
 
   sims/em/ac-generation:
     devDependencies:
@@ -3015,6 +3054,15 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/fluids/projectile-in-wind:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/fluids/reynolds-number:
     devDependencies:
       '@aperi21/schema':
@@ -3181,6 +3229,15 @@ importers:
         version: 5.9.3
 
   sims/kinematics/projectile-motion:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/kinematics/projectile-range:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -4587,6 +4644,18 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/optics/focal-length:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/optics/human-eye-accommodation:
     devDependencies:
       '@aperi21/plugin-optics':
@@ -4972,6 +5041,18 @@ importers:
         version: 5.9.3
 
   sims/optics/thin-film-interference:
+    devDependencies:
+      '@aperi21/plugin-optics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/optics/thin-lens:
     devDependencies:
       '@aperi21/plugin-optics':
         specifier: workspace:*

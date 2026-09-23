@@ -15,7 +15,7 @@
 import { registerBundle, registerBundleLoader } from '@aperi21/host';
 
 /** 등록된 조각 수. 검사가 기대값으로 쓴다. */
-export const BUNDLE_COUNT = 441;
+export const BUNDLE_COUNT = 444;
 
 /**
  * 조각 loader 를 모두 등록한다. **멱등 가드는 여기 두지 않는다** — 호출자
@@ -254,6 +254,14 @@ export function registerGeneratedBundles(): void {
     return registerBundle("aperi21:orbital-velocity", m.orbitalVelocityBundle, caps.capabilities);
   });
 
+  registerBundleLoader("aperi21:range-and-surface-gravity", async () => {
+    const [m, caps] = await Promise.all([
+      import("@aperi21/sim-range-and-surface-gravity"),
+      import("./capabilities/astro/range-and-surface-gravity.generated.js"),
+    ]);
+    return registerBundle("aperi21:range-and-surface-gravity", m.rangeAndSurfaceGravityBundle, caps.capabilities);
+  });
+
   registerBundleLoader("aperi21:roche-limit", async () => {
     const [m, caps] = await Promise.all([
       import("@aperi21/sim-roche-limit"),
@@ -374,12 +382,12 @@ export function registerGeneratedBundles(): void {
     return registerBundle("aperi21:weightlessness", m.weightlessnessBundle, caps.capabilities);
   });
 
-  registerBundleLoader("aperi21:dc-circuit", async () => {
+  registerBundleLoader("aperi21:series-parallel-resistors", async () => {
     const [m, caps] = await Promise.all([
-      import("@aperi21/sim-dc-circuit"),
-      import("./capabilities/electronics/dc-circuit.generated.js"),
+      import("@aperi21/sim-series-parallel-resistors"),
+      import("./capabilities/electronics/series-parallel-resistors.generated.js"),
     ]);
-    return registerBundle("aperi21:dc-circuit", m.dcCircuitBundle, caps.capabilities);
+    return registerBundle("aperi21:series-parallel-resistors", m.seriesParallelResistorsBundle, caps.capabilities);
   });
 
   registerBundleLoader("aperi21:ac-generation", async () => {
@@ -1142,6 +1150,14 @@ export function registerGeneratedBundles(): void {
     return registerBundle("aperi21:pressure-isotropy", m.pressureIsotropyBundle, caps.capabilities);
   });
 
+  registerBundleLoader("aperi21:projectile-in-wind", async () => {
+    const [m, caps] = await Promise.all([
+      import("@aperi21/sim-projectile-in-wind"),
+      import("./capabilities/fluids/projectile-in-wind.generated.js"),
+    ]);
+    return registerBundle("aperi21:projectile-in-wind", m.projectileInWindBundle, caps.capabilities);
+  });
+
   registerBundleLoader("aperi21:reynolds-number", async () => {
     const [m, caps] = await Promise.all([
       import("@aperi21/sim-reynolds-number"),
@@ -1292,6 +1308,14 @@ export function registerGeneratedBundles(): void {
       import("./capabilities/kinematics/projectile-motion.generated.js"),
     ]);
     return registerBundle("aperi21:projectile-motion", m.projectileMotionBundle, caps.capabilities);
+  });
+
+  registerBundleLoader("aperi21:projectile-range", async () => {
+    const [m, caps] = await Promise.all([
+      import("@aperi21/sim-projectile-range"),
+      import("./capabilities/kinematics/projectile-range.generated.js"),
+    ]);
+    return registerBundle("aperi21:projectile-range", m.projectileRangeBundle, caps.capabilities);
   });
 
   registerBundleLoader("aperi21:radius-of-curvature", async () => {
@@ -2470,6 +2494,14 @@ export function registerGeneratedBundles(): void {
     return registerBundle("aperi21:dispersion", m.dispersionBundle, caps.capabilities);
   });
 
+  registerBundleLoader("aperi21:focal-length", async () => {
+    const [m, caps] = await Promise.all([
+      import("@aperi21/sim-focal-length"),
+      import("./capabilities/optics/focal-length.generated.js"),
+    ]);
+    return registerBundle("aperi21:focal-length", m.focalLengthBundle, caps.capabilities);
+  });
+
   registerBundleLoader("aperi21:human-eye-accommodation", async () => {
     const [m, caps] = await Promise.all([
       import("@aperi21/sim-human-eye-accommodation"),
@@ -2622,14 +2654,6 @@ export function registerGeneratedBundles(): void {
     return registerBundle("aperi21:rainbow", m.rainbowBundle, caps.capabilities);
   });
 
-  registerBundleLoader("aperi21:ray-tracing", async () => {
-    const [m, caps] = await Promise.all([
-      import("@aperi21/sim-ray-tracing"),
-      import("./capabilities/optics/ray-tracing.generated.js"),
-    ]);
-    return registerBundle("aperi21:ray-tracing", m.rayTracingBundle, caps.capabilities);
-  });
-
   registerBundleLoader("aperi21:rayleigh-scattering", async () => {
     const [m, caps] = await Promise.all([
       import("@aperi21/sim-rayleigh-scattering"),
@@ -2732,6 +2756,14 @@ export function registerGeneratedBundles(): void {
       import("./capabilities/optics/thin-film-interference.generated.js"),
     ]);
     return registerBundle("aperi21:thin-film-interference", m.thinFilmInterferenceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader("aperi21:thin-lens", async () => {
+    const [m, caps] = await Promise.all([
+      import("@aperi21/sim-thin-lens"),
+      import("./capabilities/optics/thin-lens.generated.js"),
+    ]);
+    return registerBundle("aperi21:thin-lens", m.thinLensBundle, caps.capabilities);
   });
 
   registerBundleLoader("aperi21:total-internal-reflection", async () => {
@@ -2980,14 +3012,6 @@ export function registerGeneratedBundles(): void {
       import("./capabilities/oscillation/torque.generated.js"),
     ]);
     return registerBundle("aperi21:torque", m.torqueBundle, caps.capabilities);
-  });
-
-  registerBundleLoader("aperi21:projectile", async () => {
-    const [m, caps] = await Promise.all([
-      import("@aperi21/sim-projectile"),
-      import("./capabilities/physics/projectile.generated.js"),
-    ]);
-    return registerBundle("aperi21:projectile", m.projectileBundle, caps.capabilities);
   });
 
   registerBundleLoader("aperi21:adiabatic-process", async () => {
