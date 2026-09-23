@@ -8,10 +8,30 @@
  */
 
 import type { Aperi21ConceptSource } from '../concept-types.js';
+import { accelerationTimeGraphConcept } from './acceleration-time-graph.js';
+import { averageAccelerationConcept } from './average-acceleration.js';
+import { averageVelocityConcept } from './average-velocity.js';
+import { coordinateChoiceConcept } from './coordinate-choice.js';
+import { directionOfAccelerationConcept } from './direction-of-acceleration.js';
 import { freeFallConcept } from './free-fall.js';
 import { gravitationalAccelerationConcept } from './gravitational-acceleration.js';
+import { positionTimeGraphConcept } from './position-time-graph.js';
+import { referenceFrameConcept } from './reference-frame.js';
+import { uniformMotionConcept } from './uniform-motion.js';
+import { uniformlyAcceleratedMotionConcept } from './uniformly-accelerated-motion.js';
+import { velocityTimeGraphConcept } from './velocity-time-graph.js';
 
 export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
+  accelerationTimeGraphConcept,
+  averageAccelerationConcept,
+  averageVelocityConcept,
+  coordinateChoiceConcept,
+  directionOfAccelerationConcept,
   freeFallConcept,
   gravitationalAccelerationConcept,
+  positionTimeGraphConcept,
+  referenceFrameConcept,
+  uniformMotionConcept,
+  uniformlyAcceleratedMotionConcept,
+  velocityTimeGraphConcept,
 ];

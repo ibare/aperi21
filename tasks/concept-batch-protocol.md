@@ -64,10 +64,22 @@ FACET 은 완제품 ↔ 조각의 `origin` 으로 묶었다. 우리는 그 관�
   **손대지 않는다** — `pnpm concept:index` 가 파일을 훑어 다시 쓴다. 여러 에이전트가
   동시에 목록을 고치면 그 자리가 충돌 지점이 된다.
 
+## 간극을 장부에 남긴다
+
+개념을 쓰다 보면 **주제 설명이 화면보다 넓은 자리**를 반드시 만난다 — 「기울기가 가속도,
+넓이가 변위」라고 적힌 주제인데 화면은 넓이만 말하는 식이다. `definition` 은 화면이 하는
+주장으로 써야 하므로 그때 좁히게 되는데, **그 사실을 적지 않으면 개념 파일 안에 묻힌다.**
+
+묶음마다 `tasks/topic-gaps/entries/<분과>-<n>.md` 에 행으로 적는다. 서식·바·갈래는
+`tasks/topic-gaps/README.md`. 간극이 없으면 파일을 만들지 않는다.
+
+이 장부는 개념 배치가 끝난 뒤 **보충 작업의 목록**이 된다. 한 건씩 사람이 방향을 잡는다.
+
 ## 한 묶음을 마치고
 
 ```sh
 pnpm concept:index      # 선언 목록 재생성
+pnpm gap:ledger         # 간극 장부 모으기
 pnpm concept:audit      # definition 닮음 · useWhen 되풀이 · 내부 어휘 · 빈 필드
 pnpm -r typecheck
 pnpm test
