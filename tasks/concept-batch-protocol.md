@@ -89,9 +89,12 @@ pnpm test
 
 ## 전부 마치고
 
-전수를 덮는지 보는 검사(`concepts` ↔ `SIM_DOMAINS`)를 붙인다. `concept:audit` 은
-**선언된 것끼리만** 보므로 빠진 조각을 알려 주지 않는다. FACET 은 이 검사가 없어
-facet 이 74 → 179 로 늘었는데 개념이 74 그대로인 것을 한동안 몰랐다.
+전수를 덮는지 보는 검사는 **붙었다** — `packages/authoring/test/coverage.test.ts` 가
+`concepts` ↔ `SIM_DOMAINS` 를 맞댄다. `concept:audit` 은 선언된 것끼리만 보므로 빠진
+조각을 알려 주지 않는다. 조각을 더하면 이 검사가 멈춘다.
+
+묶음 경계를 넘는 형제는 대비를 잇지 못한 채 남는다 (`contrastWith` 가 이미 선언된 것만
+가리키므로). 전부 마친 뒤 **대비를 잇는 한 바퀴**를 따로 돈다.
 
 ## 확인 지점
 

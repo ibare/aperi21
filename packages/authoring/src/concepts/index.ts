@@ -19,27 +19,33 @@ import { angularAccelerationConcept } from './angular-acceleration.js';
 import { angularMomentumVectorConcept } from './angular-momentum-vector.js';
 import { angularMomentumConcept } from './angular-momentum.js';
 import { antennaRadiationConcept } from './antenna-radiation.js';
+import { antimatterConcept } from './antimatter.js';
 import { apparentBrightnessConcept } from './apparent-brightness.js';
 import { apparentDepthConcept } from './apparent-depth.js';
 import { apparentWeightConcept } from './apparent-weight.js';
 import { archimedesPrincipleConcept } from './archimedes-principle.js';
 import { atmosphericPressureConcept } from './atmospheric-pressure.js';
+import { atomicOrbitalConcept } from './atomic-orbital.js';
 import { atwoodMachineConcept } from './atwood-machine.js';
 import { averageAccelerationConcept } from './average-acceleration.js';
 import { averageVelocityConcept } from './average-velocity.js';
 import { axialTiltSeasonsConcept } from './axial-tilt-seasons.js';
 import { balanceScaleConcept } from './balance-scale.js';
 import { ballisticPendulumConcept } from './ballistic-pendulum.js';
+import { bandTheoryConcept } from './band-theory.js';
 import { bankedCurveConcept } from './banked-curve.js';
 import { barometerConcept } from './barometer.js';
 import { beatsInOscillationConcept } from './beats-in-oscillation.js';
 import { beatsConcept } from './beats.js';
 import { bernoullisPrincipleConcept } from './bernoullis-principle.js';
 import { bimetalConcept } from './bimetal.js';
+import { bindingEnergyCurveConcept } from './binding-energy-curve.js';
 import { biotSavartLawConcept } from './biot-savart-law.js';
 import { birefringenceConcept } from './birefringence.js';
 import { blackHoleHorizonConcept } from './black-hole-horizon.js';
 import { blackbodyRadiationConcept } from './blackbody-radiation.js';
+import { bohrModelConcept } from './bohr-model.js';
+import { boseEinsteinCondensateConcept } from './bose-einstein-condensate.js';
 import { boundaryLayerConcept } from './boundary-layer.js';
 import { boylesLawConcept } from './boyles-law.js';
 import { brewsterAngleConcept } from './brewster-angle.js';
@@ -54,6 +60,7 @@ import { centerOfGravityConcept } from './center-of-gravity.js';
 import { centerOfMassMotionConcept } from './center-of-mass-motion.js';
 import { centripetalAccelerationConcept } from './centripetal-acceleration.js';
 import { centripetalForceConcept } from './centripetal-force.js';
+import { chainReactionConcept } from './chain-reaction.js';
 import { chargeInUniformFieldConcept } from './charge-in-uniform-field.js';
 import { chargeOnConductorSurfaceConcept } from './charge-on-conductor-surface.js';
 import { chargedParticleInMagneticFieldConcept } from './charged-particle-in-magnetic-field.js';
@@ -82,11 +89,13 @@ import { cyclicProcessConcept } from './cyclic-process.js';
 import { dampedOscillationConcept } from './damped-oscillation.js';
 import { dampingRegimesConcept } from './damping-regimes.js';
 import { deBroglieWavelengthConcept } from './de-broglie-wavelength.js';
+import { decayTypesConcept } from './decay-types.js';
 import { dielectricConcept } from './dielectric.js';
 import { diffractionGratingConcept } from './diffraction-grating.js';
 import { diffractionConcept } from './diffraction.js';
 import { diffusionConcept } from './diffusion.js';
 import { digitalVsAnalogSignalConcept } from './digital-vs-analog-signal.js';
+import { diodeAndLedConcept } from './diode-and-led.js';
 import { directionOfAccelerationConcept } from './direction-of-acceleration.js';
 import { dispersionConcept } from './dispersion.js';
 import { displacementCurrentConcept } from './displacement-current.js';
@@ -110,6 +119,7 @@ import { electricCurrentConcept } from './electric-current.js';
 import { electricFieldConcept } from './electric-field.js';
 import { electromagnetConcept } from './electromagnet.js';
 import { electromagneticWaveConcept } from './electromagnetic-wave.js';
+import { electronConfigurationConcept } from './electron-configuration.js';
 import { electronDiffractionConcept } from './electron-diffraction.js';
 import { electrostaticShieldingConcept } from './electrostatic-shielding.js';
 import { ellipticalOrbitConcept } from './elliptical-orbit.js';
@@ -125,16 +135,19 @@ import { equilibriumPointsConcept } from './equilibrium-points.js';
 import { equipotentialSurfaceConcept } from './equipotential-surface.js';
 import { equivalencePrincipleConcept } from './equivalence-principle.js';
 import { escapeVelocityConcept } from './escape-velocity.js';
+import { exchangeParticlesConcept } from './exchange-particles.js';
 import { exoplanetDetectionConcept } from './exoplanet-detection.js';
 import { expandingUniverseConcept } from './expanding-universe.js';
 import { explosionAndRecoilConcept } from './explosion-and-recoil.js';
 import { faradaysLawConcept } from './faradays-law.js';
+import { fermiLevelConcept } from './fermi-level.js';
 import { fictitiousForceConcept } from './fictitious-force.js';
 import { fieldLinesConcept } from './field-lines.js';
 import { fieldOfChargedSphereConcept } from './field-of-charged-sphere.js';
 import { fieldOfDipoleConcept } from './field-of-dipole.js';
 import { fieldOfLoopAndSolenoidConcept } from './field-of-loop-and-solenoid.js';
 import { fieldOfStraightWireConcept } from './field-of-straight-wire.js';
+import { finiteWellConcept } from './finite-well.js';
 import { firstLawOfThermodynamicsConcept } from './first-law-of-thermodynamics.js';
 import { floatingAndDraftConcept } from './floating-and-draft.js';
 import { forceBetweenWiresConcept } from './force-between-wires.js';
@@ -160,6 +173,7 @@ import { heatEngineConcept } from './heat-engine.js';
 import { hrDiagramConcept } from './hr-diagram.js';
 import { humanEyeAccommodationConcept } from './human-eye-accommodation.js';
 import { huygensPrincipleConcept } from './huygens-principle.js';
+import { hydrogenSpectrumConcept } from './hydrogen-spectrum.js';
 import { hydrostaticPressureConcept } from './hydrostatic-pressure.js';
 import { idealGasLawConcept } from './ideal-gas-law.js';
 import { impedanceMismatchConcept } from './impedance-mismatch.js';
@@ -171,6 +185,7 @@ import { inertialVsGravitationalMassConcept } from './inertial-vs-gravitational-
 import { insulationConcept } from './insulation.js';
 import { interferenceConcept } from './interference.js';
 import { inverseSquareLawConcept } from './inverse-square-law.js';
+import { ionizingRadiationConcept } from './ionizing-radiation.js';
 import { isobaricIsochoricConcept } from './isobaric-isochoric.js';
 import { isothermalProcessConcept } from './isothermal-process.js';
 import { ivCharacteristicConcept } from './iv-characteristic.js';
@@ -186,6 +201,7 @@ import { kirchhoffsVoltageLawConcept } from './kirchhoffs-voltage-law.js';
 import { lagrangePointsConcept } from './lagrange-points.js';
 import { laminarVsTurbulentConcept } from './laminar-vs-turbulent.js';
 import { laplacePressureConcept } from './laplace-pressure.js';
+import { laserAndStimulatedEmissionConcept } from './laser-and-stimulated-emission.js';
 import { latentHeatConcept } from './latent-heat.js';
 import { lawOfReflectionConcept } from './law-of-reflection.js';
 import { lcOscillationConcept } from './lc-oscillation.js';
@@ -219,6 +235,7 @@ import { maxwellsEquationsConcept } from './maxwells-equations.js';
 import { meanFreePathConcept } from './mean-free-path.js';
 import { measurementCollapseConcept } from './measurement-collapse.js';
 import { mechanicalAdvantageConcept } from './mechanical-advantage.js';
+import { meissnerEffectConcept } from './meissner-effect.js';
 import { michelsonMorleyConcept } from './michelson-morley.js';
 import { microscopeConcept } from './microscope.js';
 import { millikanExperimentConcept } from './millikan-experiment.js';
@@ -243,6 +260,9 @@ import { nonInertialFrameConcept } from './non-inertial-frame.js';
 import { nonlinearOscillationConcept } from './nonlinear-oscillation.js';
 import { normalForceConcept } from './normal-force.js';
 import { normalModesConcept } from './normal-modes.js';
+import { nuclearFissionConcept } from './nuclear-fission.js';
+import { nuclearFusionConcept } from './nuclear-fusion.js';
+import { nuclearStructureConcept } from './nuclear-structure.js';
 import { objectColorConcept } from './object-color.js';
 import { ohmsLawConcept } from './ohms-law.js';
 import { opticalFiberConcept } from './optical-fiber.js';
@@ -254,15 +274,18 @@ import { parallelAxisTheoremConcept } from './parallel-axis-theorem.js';
 import { parallelPlateCapacitorConcept } from './parallel-plate-capacitor.js';
 import { particleInABoxConcept } from './particle-in-a-box.js';
 import { pascalsPrincipleConcept } from './pascals-principle.js';
+import { pauliExclusionConcept } from './pauli-exclusion.js';
 import { pendulumAmplitudeDependenceConcept } from './pendulum-amplitude-dependence.js';
 import { perfectlyInelasticCollisionConcept } from './perfectly-inelastic-collision.js';
 import { phaseDiagramConcept } from './phase-diagram.js';
 import { phaseInAcCircuitConcept } from './phase-in-ac-circuit.js';
 import { phaseSpaceConcept } from './phase-space.js';
 import { photoelectricEffectConcept } from './photoelectric-effect.js';
+import { photovoltaicEffectConcept } from './photovoltaic-effect.js';
 import { physicalPendulumConcept } from './physical-pendulum.js';
 import { pinholeCameraConcept } from './pinhole-camera.js';
 import { planeMirrorImageConcept } from './plane-mirror-image.js';
+import { pnJunctionConcept } from './pn-junction.js';
 import { poiseuilleFlowConcept } from './poiseuille-flow.js';
 import { polarizationConcept } from './polarization.js';
 import { positionTimeGraphConcept } from './position-time-graph.js';
@@ -280,8 +303,12 @@ import { projectileRangeConcept } from './projectile-range.js';
 import { pulleySystemConcept } from './pulley-system.js';
 import { pvDiagramConcept } from './pv-diagram.js';
 import { qualityFactorConcept } from './quality-factor.js';
+import { quantumHarmonicOscillatorConcept } from './quantum-harmonic-oscillator.js';
+import { quantumTunnelingConcept } from './quantum-tunneling.js';
 import { radiationPressureConcept } from './radiation-pressure.js';
 import { radiativeEquilibriumConcept } from './radiative-equilibrium.js';
+import { radioactiveDecayConcept } from './radioactive-decay.js';
+import { radiometricDatingConcept } from './radiometric-dating.js';
 import { radiusOfCurvatureConcept } from './radius-of-curvature.js';
 import { rainbowConcept } from './rainbow.js';
 import { randomWalkConcept } from './random-walk.js';
@@ -310,12 +337,16 @@ import { rocketEquationConcept } from './rocket-equation.js';
 import { rollingRaceConcept } from './rolling-race.js';
 import { rollingWithoutSlippingConcept } from './rolling-without-slipping.js';
 import { rotationalKineticEnergyConcept } from './rotational-kinetic-energy.js';
+import { rutherfordScatteringConcept } from './rutherford-scattering.js';
+import { scaleOfUniverseConcept } from './scale-of-universe.js';
+import { scanningTunnelingMicroscopeConcept } from './scanning-tunneling-microscope.js';
 import { scatteringConcept } from './scattering.js';
 import { seasonalSunPathConcept } from './seasonal-sun-path.js';
 import { secondLawOfThermodynamicsConcept } from './second-law-of-thermodynamics.js';
 import { seeingRequiresLightConcept } from './seeing-requires-light.js';
 import { seismicWavesConcept } from './seismic-waves.js';
 import { selfInductanceConcept } from './self-inductance.js';
+import { semiconductorDopingConcept } from './semiconductor-doping.js';
 import { seriesParallelResistorsConcept } from './series-parallel-resistors.js';
 import { seriesRlcResonanceConcept } from './series-rlc-resonance.js';
 import { shadowUmbraPenumbraConcept } from './shadow-umbra-penumbra.js';
@@ -336,6 +367,7 @@ import { spacetimeDiagramConcept } from './spacetime-diagram.js';
 import { specificHeatConcept } from './specific-heat.js';
 import { specularDiffuseReflectionConcept } from './specular-diffuse-reflection.js';
 import { sphericalAberrationConcept } from './spherical-aberration.js';
+import { spinConcept } from './spin.js';
 import { springForceConcept } from './spring-force.js';
 import { stabilityOfFloatingBodyConcept } from './stability-of-floating-body.js';
 import { standingWaveConcept } from './standing-wave.js';
@@ -350,10 +382,12 @@ import { stellarLuminosityConcept } from './stellar-luminosity.js';
 import { stellarNucleosynthesisConcept } from './stellar-nucleosynthesis.js';
 import { stellarParallaxConcept } from './stellar-parallax.js';
 import { stellarSpectralClassConcept } from './stellar-spectral-class.js';
+import { sternGerlachConcept } from './stern-gerlach.js';
 import { stokesDragConcept } from './stokes-drag.js';
 import { stoppingDistanceConcept } from './stopping-distance.js';
 import { stressStrainCurveConcept } from './stress-strain-curve.js';
 import { stringVibrationConcept } from './string-vibration.js';
+import { superconductivityConcept } from './superconductivity.js';
 import { supernovaAndNeutronStarConcept } from './supernova-and-neutron-star.js';
 import { superpositionOfForcesConcept } from './superposition-of-forces.js';
 import { superpositionQuantumConcept } from './superposition-quantum.js';
@@ -379,6 +413,7 @@ import { torricellisLawConcept } from './torricellis-law.js';
 import { totalInternalReflectionConcept } from './total-internal-reflection.js';
 import { trajectoryEquationConcept } from './trajectory-equation.js';
 import { transformerConcept } from './transformer.js';
+import { transistorPrincipleConcept } from './transistor-principle.js';
 import { transverseWaveConcept } from './transverse-wave.js';
 import { triplePointConcept } from './triple-point.js';
 import { twinParadoxConcept } from './twin-paradox.js';
@@ -413,6 +448,7 @@ import { workEnergyTheoremConcept } from './work-energy-theorem.js';
 import { workFunctionAndThresholdConcept } from './work-function-and-threshold.js';
 import { youngsDoubleSlitConcept } from './youngs-double-slit.js';
 import { youngsModulusConcept } from './youngs-modulus.js';
+import { zeemanEffectConcept } from './zeeman-effect.js';
 
 export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   acGenerationConcept,
@@ -426,27 +462,33 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   angularMomentumVectorConcept,
   angularMomentumConcept,
   antennaRadiationConcept,
+  antimatterConcept,
   apparentBrightnessConcept,
   apparentDepthConcept,
   apparentWeightConcept,
   archimedesPrincipleConcept,
   atmosphericPressureConcept,
+  atomicOrbitalConcept,
   atwoodMachineConcept,
   averageAccelerationConcept,
   averageVelocityConcept,
   axialTiltSeasonsConcept,
   balanceScaleConcept,
   ballisticPendulumConcept,
+  bandTheoryConcept,
   bankedCurveConcept,
   barometerConcept,
   beatsInOscillationConcept,
   beatsConcept,
   bernoullisPrincipleConcept,
   bimetalConcept,
+  bindingEnergyCurveConcept,
   biotSavartLawConcept,
   birefringenceConcept,
   blackHoleHorizonConcept,
   blackbodyRadiationConcept,
+  bohrModelConcept,
+  boseEinsteinCondensateConcept,
   boundaryLayerConcept,
   boylesLawConcept,
   brewsterAngleConcept,
@@ -461,6 +503,7 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   centerOfMassMotionConcept,
   centripetalAccelerationConcept,
   centripetalForceConcept,
+  chainReactionConcept,
   chargeInUniformFieldConcept,
   chargeOnConductorSurfaceConcept,
   chargedParticleInMagneticFieldConcept,
@@ -489,11 +532,13 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   dampedOscillationConcept,
   dampingRegimesConcept,
   deBroglieWavelengthConcept,
+  decayTypesConcept,
   dielectricConcept,
   diffractionGratingConcept,
   diffractionConcept,
   diffusionConcept,
   digitalVsAnalogSignalConcept,
+  diodeAndLedConcept,
   directionOfAccelerationConcept,
   dispersionConcept,
   displacementCurrentConcept,
@@ -517,6 +562,7 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   electricFieldConcept,
   electromagnetConcept,
   electromagneticWaveConcept,
+  electronConfigurationConcept,
   electronDiffractionConcept,
   electrostaticShieldingConcept,
   ellipticalOrbitConcept,
@@ -532,16 +578,19 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   equipotentialSurfaceConcept,
   equivalencePrincipleConcept,
   escapeVelocityConcept,
+  exchangeParticlesConcept,
   exoplanetDetectionConcept,
   expandingUniverseConcept,
   explosionAndRecoilConcept,
   faradaysLawConcept,
+  fermiLevelConcept,
   fictitiousForceConcept,
   fieldLinesConcept,
   fieldOfChargedSphereConcept,
   fieldOfDipoleConcept,
   fieldOfLoopAndSolenoidConcept,
   fieldOfStraightWireConcept,
+  finiteWellConcept,
   firstLawOfThermodynamicsConcept,
   floatingAndDraftConcept,
   forceBetweenWiresConcept,
@@ -567,6 +616,7 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   hrDiagramConcept,
   humanEyeAccommodationConcept,
   huygensPrincipleConcept,
+  hydrogenSpectrumConcept,
   hydrostaticPressureConcept,
   idealGasLawConcept,
   impedanceMismatchConcept,
@@ -578,6 +628,7 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   insulationConcept,
   interferenceConcept,
   inverseSquareLawConcept,
+  ionizingRadiationConcept,
   isobaricIsochoricConcept,
   isothermalProcessConcept,
   ivCharacteristicConcept,
@@ -593,6 +644,7 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   lagrangePointsConcept,
   laminarVsTurbulentConcept,
   laplacePressureConcept,
+  laserAndStimulatedEmissionConcept,
   latentHeatConcept,
   lawOfReflectionConcept,
   lcOscillationConcept,
@@ -626,6 +678,7 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   meanFreePathConcept,
   measurementCollapseConcept,
   mechanicalAdvantageConcept,
+  meissnerEffectConcept,
   michelsonMorleyConcept,
   microscopeConcept,
   millikanExperimentConcept,
@@ -650,6 +703,9 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   nonlinearOscillationConcept,
   normalForceConcept,
   normalModesConcept,
+  nuclearFissionConcept,
+  nuclearFusionConcept,
+  nuclearStructureConcept,
   objectColorConcept,
   ohmsLawConcept,
   opticalFiberConcept,
@@ -661,15 +717,18 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   parallelPlateCapacitorConcept,
   particleInABoxConcept,
   pascalsPrincipleConcept,
+  pauliExclusionConcept,
   pendulumAmplitudeDependenceConcept,
   perfectlyInelasticCollisionConcept,
   phaseDiagramConcept,
   phaseInAcCircuitConcept,
   phaseSpaceConcept,
   photoelectricEffectConcept,
+  photovoltaicEffectConcept,
   physicalPendulumConcept,
   pinholeCameraConcept,
   planeMirrorImageConcept,
+  pnJunctionConcept,
   poiseuilleFlowConcept,
   polarizationConcept,
   positionTimeGraphConcept,
@@ -687,8 +746,12 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   pulleySystemConcept,
   pvDiagramConcept,
   qualityFactorConcept,
+  quantumHarmonicOscillatorConcept,
+  quantumTunnelingConcept,
   radiationPressureConcept,
   radiativeEquilibriumConcept,
+  radioactiveDecayConcept,
+  radiometricDatingConcept,
   radiusOfCurvatureConcept,
   rainbowConcept,
   randomWalkConcept,
@@ -717,12 +780,16 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   rollingRaceConcept,
   rollingWithoutSlippingConcept,
   rotationalKineticEnergyConcept,
+  rutherfordScatteringConcept,
+  scaleOfUniverseConcept,
+  scanningTunnelingMicroscopeConcept,
   scatteringConcept,
   seasonalSunPathConcept,
   secondLawOfThermodynamicsConcept,
   seeingRequiresLightConcept,
   seismicWavesConcept,
   selfInductanceConcept,
+  semiconductorDopingConcept,
   seriesParallelResistorsConcept,
   seriesRlcResonanceConcept,
   shadowUmbraPenumbraConcept,
@@ -743,6 +810,7 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   specificHeatConcept,
   specularDiffuseReflectionConcept,
   sphericalAberrationConcept,
+  spinConcept,
   springForceConcept,
   stabilityOfFloatingBodyConcept,
   standingWaveConcept,
@@ -757,10 +825,12 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   stellarNucleosynthesisConcept,
   stellarParallaxConcept,
   stellarSpectralClassConcept,
+  sternGerlachConcept,
   stokesDragConcept,
   stoppingDistanceConcept,
   stressStrainCurveConcept,
   stringVibrationConcept,
+  superconductivityConcept,
   supernovaAndNeutronStarConcept,
   superpositionOfForcesConcept,
   superpositionQuantumConcept,
@@ -786,6 +856,7 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   totalInternalReflectionConcept,
   trajectoryEquationConcept,
   transformerConcept,
+  transistorPrincipleConcept,
   transverseWaveConcept,
   triplePointConcept,
   twinParadoxConcept,
@@ -820,4 +891,5 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   workFunctionAndThresholdConcept,
   youngsDoubleSlitConcept,
   youngsModulusConcept,
+  zeemanEffectConcept,
 ];
