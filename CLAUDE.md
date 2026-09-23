@@ -211,6 +211,7 @@ curl -s -X POST http://localhost:3800/api/events \
 | `messages:gen` | 호출부 en 리터럴 → `messages/en.json` |
 | `catalog:topics` | `topics.yaml` + 조각 → `apps/catalog/src/data/catalog.json` |
 | `gap:ledger` | `tasks/topic-gaps/entries/` → `LEDGER.md` |
+| `pairs:gen` | `topics.yaml` + sim 선언 → `PAIRS.md` · `PAIRS.html` (주제 한 줄 ↔ 조각 한 줄) |
 | `surface:gen` | `LEDGER.md` + sim 선언 → `SURFACE.md` (장부의 주장을 맞댈 사실) |
 
 **순서가 있다.** `catalog:gen` 은 bootstrap 을 import 하므로 그전에 등록부와 능력 파일이

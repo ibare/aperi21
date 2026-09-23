@@ -9,6 +9,7 @@ interface DomainSectionProps {
   domain: Domain;
   /** 1부터 시작하는 분과 번호. 화면 왼쪽의 색인. */
   index: number;
+  /** 펼친 채로 연다. 훑는 화면이라 접힘은 독자가 고르는 것이지 기본이 아니다. */
   defaultOpen?: boolean;
   /** 구현물이 있는 주제를 눌렀을 때. 목록에서 바로 띄워 하나씩 확인한다. */
   onOpenSim(topic: Topic): void;
@@ -23,7 +24,7 @@ interface DomainSectionProps {
 export function DomainSection({
   domain,
   index,
-  defaultOpen = false,
+  defaultOpen = true,
   onOpenSim,
 }: DomainSectionProps) {
   const { t } = useTranslation();

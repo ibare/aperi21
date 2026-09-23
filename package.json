@@ -24,6 +24,7 @@
     "gap:ledger": "tsx scripts/gen-topic-gap-ledger.mts",
     "registry:gen": "tsx scripts/gen-bundle-registry.mts",
     "surface:gen": "tsx scripts/gen-declared-surface.mts",
+    "pairs:gen": "tsx scripts/gen-operation-pairs.mts",
     "gen:all": "tsx scripts/gen-check.mts --write",
     "gen:check": "tsx scripts/gen-check.mts"
   },

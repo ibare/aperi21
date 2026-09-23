@@ -54,7 +54,6 @@ export function HomePage() {
               key={domain.id}
               domain={domain}
               index={i + 1}
-              defaultOpen={i === 0}
               onOpenSim={setOpenTopic}
             />
           ))}
