@@ -10,6 +10,8 @@
 import type { Aperi21ConceptSource } from '../concept-types.js';
 import { accelerationTimeGraphConcept } from './acceleration-time-graph.js';
 import { adiabaticProcessConcept } from './adiabatic-process.js';
+import { airColumnResonanceConcept } from './air-column-resonance.js';
+import { albedoConcept } from './albedo.js';
 import { angleOfFrictionConcept } from './angle-of-friction.js';
 import { angularAccelerationConcept } from './angular-acceleration.js';
 import { angularMomentumVectorConcept } from './angular-momentum-vector.js';
@@ -27,11 +29,13 @@ import { ballisticPendulumConcept } from './ballistic-pendulum.js';
 import { bankedCurveConcept } from './banked-curve.js';
 import { barometerConcept } from './barometer.js';
 import { beatsInOscillationConcept } from './beats-in-oscillation.js';
+import { beatsConcept } from './beats.js';
 import { bernoullisPrincipleConcept } from './bernoullis-principle.js';
 import { bimetalConcept } from './bimetal.js';
 import { blackHoleHorizonConcept } from './black-hole-horizon.js';
 import { boundaryLayerConcept } from './boundary-layer.js';
 import { boylesLawConcept } from './boyles-law.js';
+import { brownianMotionConcept } from './brownian-motion.js';
 import { buoyancyConcept } from './buoyancy.js';
 import { buoyantForceAsForceConcept } from './buoyant-force-as-force.js';
 import { calorimetryConcept } from './calorimetry.js';
@@ -43,21 +47,29 @@ import { centripetalAccelerationConcept } from './centripetal-acceleration.js';
 import { centripetalForceConcept } from './centripetal-force.js';
 import { charlesLawConcept } from './charles-law.js';
 import { circularOrbitConcept } from './circular-orbit.js';
+import { concaveMirrorConcept } from './concave-mirror.js';
 import { conicalPendulumConcept } from './conical-pendulum.js';
 import { connectedBodiesConcept } from './connected-bodies.js';
 import { conservationOfAngularMomentumConcept } from './conservation-of-angular-momentum.js';
 import { conservationOfMechanicalEnergyConcept } from './conservation-of-mechanical-energy.js';
 import { conservationOfMomentumConcept } from './conservation-of-momentum.js';
 import { conservativeForceConcept } from './conservative-force.js';
+import { constructiveDestructiveConcept } from './constructive-destructive.js';
 import { continuityEquationConcept } from './continuity-equation.js';
+import { convexMirrorConcept } from './convex-mirror.js';
 import { coordinateChoiceConcept } from './coordinate-choice.js';
 import { coriolisEffectConcept } from './coriolis-effect.js';
 import { coupledOscillatorsConcept } from './coupled-oscillators.js';
 import { cyclicProcessConcept } from './cyclic-process.js';
 import { dampedOscillationConcept } from './damped-oscillation.js';
 import { dampingRegimesConcept } from './damping-regimes.js';
+import { diffractionConcept } from './diffraction.js';
+import { diffusionConcept } from './diffusion.js';
+import { digitalVsAnalogSignalConcept } from './digital-vs-analog-signal.js';
 import { directionOfAccelerationConcept } from './direction-of-acceleration.js';
 import { diurnalMotionConcept } from './diurnal-motion.js';
+import { dopplerEffectConcept } from './doppler-effect.js';
+import { dopplerSourceVsObserverConcept } from './doppler-source-vs-observer.js';
 import { dragForceConcept } from './drag-force.js';
 import { dragInFluidConcept } from './drag-in-fluid.js';
 import { drivenOscillationConcept } from './driven-oscillation.js';
@@ -91,16 +103,22 @@ import { gravitationalPotentialEnergyGeneralConcept } from './gravitational-pote
 import { gravitationalPotentialEnergyConcept } from './gravitational-potential-energy.js';
 import { gravitationalSlingshotConcept } from './gravitational-slingshot.js';
 import { gravityInsideEarthConcept } from './gravity-inside-earth.js';
+import { greenhouseEffectConcept } from './greenhouse-effect.js';
 import { gyroscopicPrecessionConcept } from './gyroscopic-precession.js';
+import { harmonicsConcept } from './harmonics.js';
 import { heatEngineConcept } from './heat-engine.js';
 import { hrDiagramConcept } from './hr-diagram.js';
+import { huygensPrincipleConcept } from './huygens-principle.js';
 import { hydrostaticPressureConcept } from './hydrostatic-pressure.js';
 import { idealGasLawConcept } from './ideal-gas-law.js';
+import { impedanceMismatchConcept } from './impedance-mismatch.js';
 import { impulseForceRelationConcept } from './impulse-force-relation.js';
 import { impulseMomentumTheoremConcept } from './impulse-momentum-theorem.js';
 import { inclinedPlaneConcept } from './inclined-plane.js';
 import { inelasticCollisionConcept } from './inelastic-collision.js';
 import { inertialVsGravitationalMassConcept } from './inertial-vs-gravitational-mass.js';
+import { insulationConcept } from './insulation.js';
+import { interferenceConcept } from './interference.js';
 import { inverseSquareLawConcept } from './inverse-square-law.js';
 import { isobaricIsochoricConcept } from './isobaric-isochoric.js';
 import { isothermalProcessConcept } from './isothermal-process.js';
@@ -114,20 +132,25 @@ import { lagrangePointsConcept } from './lagrange-points.js';
 import { laminarVsTurbulentConcept } from './laminar-vs-turbulent.js';
 import { laplacePressureConcept } from './laplace-pressure.js';
 import { latentHeatConcept } from './latent-heat.js';
+import { lawOfReflectionConcept } from './law-of-reflection.js';
 import { liftForceConcept } from './lift-force.js';
+import { longitudinalWaveConcept } from './longitudinal-wave.js';
 import { magnitudeScaleConcept } from './magnitude-scale.js';
 import { manometerConcept } from './manometer.js';
 import { massSpringSystemConcept } from './mass-spring-system.js';
 import { maxwellBoltzmannDistributionConcept } from './maxwell-boltzmann-distribution.js';
+import { maxwellsDemonConcept } from './maxwells-demon.js';
 import { meanFreePathConcept } from './mean-free-path.js';
 import { mechanicalAdvantageConcept } from './mechanical-advantage.js';
 import { momentOfInertiaConcept } from './moment-of-inertia.js';
 import { moonPhasesConcept } from './moon-phases.js';
+import { multipleMirrorImagesConcept } from './multiple-mirror-images.js';
 import { netForceConcept } from './net-force.js';
 import { newtonsFirstLawConcept } from './newtons-first-law.js';
 import { newtonsLawOfGravitationConcept } from './newtons-law-of-gravitation.js';
 import { newtonsSecondLawConcept } from './newtons-second-law.js';
 import { newtonsThirdLawConcept } from './newtons-third-law.js';
+import { noiseCancellationConcept } from './noise-cancellation.js';
 import { nonConservativeForceConcept } from './non-conservative-force.js';
 import { nonInertialFrameConcept } from './non-inertial-frame.js';
 import { nonlinearOscillationConcept } from './nonlinear-oscillation.js';
@@ -143,6 +166,8 @@ import { perfectlyInelasticCollisionConcept } from './perfectly-inelastic-collis
 import { phaseDiagramConcept } from './phase-diagram.js';
 import { phaseSpaceConcept } from './phase-space.js';
 import { physicalPendulumConcept } from './physical-pendulum.js';
+import { pinholeCameraConcept } from './pinhole-camera.js';
+import { planeMirrorImageConcept } from './plane-mirror-image.js';
 import { poiseuilleFlowConcept } from './poiseuille-flow.js';
 import { positionTimeGraphConcept } from './position-time-graph.js';
 import { potentialEnergyCurveConcept } from './potential-energy-curve.js';
@@ -154,8 +179,13 @@ import { projectileRangeConcept } from './projectile-range.js';
 import { pulleySystemConcept } from './pulley-system.js';
 import { pvDiagramConcept } from './pv-diagram.js';
 import { qualityFactorConcept } from './quality-factor.js';
+import { radiativeEquilibriumConcept } from './radiative-equilibrium.js';
 import { radiusOfCurvatureConcept } from './radius-of-curvature.js';
+import { randomWalkConcept } from './random-walk.js';
+import { rectilinearPropagationConcept } from './rectilinear-propagation.js';
 import { referenceFrameConcept } from './reference-frame.js';
+import { reflectionOfWavesConcept } from './reflection-of-waves.js';
+import { refractionOfWavesConcept } from './refraction-of-waves.js';
 import { refrigeratorHeatPumpConcept } from './refrigerator-heat-pump.js';
 import { relativeVelocityConcept } from './relative-velocity.js';
 import { resonanceConcept } from './resonance.js';
@@ -168,19 +198,30 @@ import { rollingWithoutSlippingConcept } from './rolling-without-slipping.js';
 import { rotationalKineticEnergyConcept } from './rotational-kinetic-energy.js';
 import { seasonalSunPathConcept } from './seasonal-sun-path.js';
 import { secondLawOfThermodynamicsConcept } from './second-law-of-thermodynamics.js';
+import { seismicWavesConcept } from './seismic-waves.js';
+import { shadowUmbraPenumbraConcept } from './shadow-umbra-penumbra.js';
 import { shellTheoremConcept } from './shell-theorem.js';
 import { shmEnergyConcept } from './shm-energy.js';
+import { shockWaveConcept } from './shock-wave.js';
 import { simpleHarmonicMotionConcept } from './simple-harmonic-motion.js';
 import { simplePendulumConcept } from './simple-pendulum.js';
+import { slitWidthAndDiffractionConcept } from './slit-width-and-diffraction.js';
+import { snellsLawConcept } from './snells-law.js';
 import { solarAltitudeShadowConcept } from './solar-altitude-shadow.js';
+import { soundIntensityConcept } from './sound-intensity.js';
+import { soundSourceVibrationConcept } from './sound-source-vibration.js';
+import { soundThroughMaterialsConcept } from './sound-through-materials.js';
 import { specificHeatConcept } from './specific-heat.js';
+import { specularDiffuseReflectionConcept } from './specular-diffuse-reflection.js';
 import { springForceConcept } from './spring-force.js';
 import { stabilityOfFloatingBodyConcept } from './stability-of-floating-body.js';
+import { standingWaveConcept } from './standing-wave.js';
 import { starColorTemperatureConcept } from './star-color-temperature.js';
 import { starLifeCycleConcept } from './star-life-cycle.js';
 import { starRadiationGravityBalanceConcept } from './star-radiation-gravity-balance.js';
 import { staticEquilibriumConcept } from './static-equilibrium.js';
 import { staticFrictionConcept } from './static-friction.js';
+import { statisticalFluctuationConcept } from './statistical-fluctuation.js';
 import { stefanBoltzmannLawConcept } from './stefan-boltzmann-law.js';
 import { stellarLuminosityConcept } from './stellar-luminosity.js';
 import { stellarNucleosynthesisConcept } from './stellar-nucleosynthesis.js';
@@ -189,7 +230,9 @@ import { stellarSpectralClassConcept } from './stellar-spectral-class.js';
 import { stokesDragConcept } from './stokes-drag.js';
 import { stoppingDistanceConcept } from './stopping-distance.js';
 import { stressStrainCurveConcept } from './stress-strain-curve.js';
+import { stringVibrationConcept } from './string-vibration.js';
 import { supernovaAndNeutronStarConcept } from './supernova-and-neutron-star.js';
+import { superpositionConcept } from './superposition.js';
 import { surfaceTensionConcept } from './surface-tension.js';
 import { tangentialNormalAccelerationConcept } from './tangential-normal-acceleration.js';
 import { tensionConcept } from './tension.js';
@@ -203,6 +246,7 @@ import { tidalForceConcept } from './tidal-force.js';
 import { torqueConcept } from './torque.js';
 import { torricellisLawConcept } from './torricellis-law.js';
 import { trajectoryEquationConcept } from './trajectory-equation.js';
+import { transverseWaveConcept } from './transverse-wave.js';
 import { triplePointConcept } from './triple-point.js';
 import { twoBodyProblemConcept } from './two-body-problem.js';
 import { twoDimensionalCollisionConcept } from './two-dimensional-collision.js';
@@ -216,6 +260,12 @@ import { venturiEffectConcept } from './venturi-effect.js';
 import { verticalLoopConcept } from './vertical-loop.js';
 import { verticalThrowConcept } from './vertical-throw.js';
 import { viscosityConcept } from './viscosity.js';
+import { waveAttenuationConcept } from './wave-attenuation.js';
+import { waveBasicsConcept } from './wave-basics.js';
+import { waveEnergyConcept } from './wave-energy.js';
+import { waveSpeedInMediumConcept } from './wave-speed-in-medium.js';
+import { waveVsParticleTransportConcept } from './wave-vs-particle-transport.js';
+import { wavefrontAndRayConcept } from './wavefront-and-ray.js';
 import { weightlessnessConcept } from './weightlessness.js';
 import { wettingAndContactAngleConcept } from './wetting-and-contact-angle.js';
 import { workByVariableForceConcept } from './work-by-variable-force.js';
@@ -225,6 +275,8 @@ import { youngsModulusConcept } from './youngs-modulus.js';
 export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   accelerationTimeGraphConcept,
   adiabaticProcessConcept,
+  airColumnResonanceConcept,
+  albedoConcept,
   angleOfFrictionConcept,
   angularAccelerationConcept,
   angularMomentumVectorConcept,
@@ -242,11 +294,13 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   bankedCurveConcept,
   barometerConcept,
   beatsInOscillationConcept,
+  beatsConcept,
   bernoullisPrincipleConcept,
   bimetalConcept,
   blackHoleHorizonConcept,
   boundaryLayerConcept,
   boylesLawConcept,
+  brownianMotionConcept,
   buoyancyConcept,
   buoyantForceAsForceConcept,
   calorimetryConcept,
@@ -258,21 +312,29 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   centripetalForceConcept,
   charlesLawConcept,
   circularOrbitConcept,
+  concaveMirrorConcept,
   conicalPendulumConcept,
   connectedBodiesConcept,
   conservationOfAngularMomentumConcept,
   conservationOfMechanicalEnergyConcept,
   conservationOfMomentumConcept,
   conservativeForceConcept,
+  constructiveDestructiveConcept,
   continuityEquationConcept,
+  convexMirrorConcept,
   coordinateChoiceConcept,
   coriolisEffectConcept,
   coupledOscillatorsConcept,
   cyclicProcessConcept,
   dampedOscillationConcept,
   dampingRegimesConcept,
+  diffractionConcept,
+  diffusionConcept,
+  digitalVsAnalogSignalConcept,
   directionOfAccelerationConcept,
   diurnalMotionConcept,
+  dopplerEffectConcept,
+  dopplerSourceVsObserverConcept,
   dragForceConcept,
   dragInFluidConcept,
   drivenOscillationConcept,
@@ -306,16 +368,22 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   gravitationalPotentialEnergyConcept,
   gravitationalSlingshotConcept,
   gravityInsideEarthConcept,
+  greenhouseEffectConcept,
   gyroscopicPrecessionConcept,
+  harmonicsConcept,
   heatEngineConcept,
   hrDiagramConcept,
+  huygensPrincipleConcept,
   hydrostaticPressureConcept,
   idealGasLawConcept,
+  impedanceMismatchConcept,
   impulseForceRelationConcept,
   impulseMomentumTheoremConcept,
   inclinedPlaneConcept,
   inelasticCollisionConcept,
   inertialVsGravitationalMassConcept,
+  insulationConcept,
+  interferenceConcept,
   inverseSquareLawConcept,
   isobaricIsochoricConcept,
   isothermalProcessConcept,
@@ -329,20 +397,25 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   laminarVsTurbulentConcept,
   laplacePressureConcept,
   latentHeatConcept,
+  lawOfReflectionConcept,
   liftForceConcept,
+  longitudinalWaveConcept,
   magnitudeScaleConcept,
   manometerConcept,
   massSpringSystemConcept,
   maxwellBoltzmannDistributionConcept,
+  maxwellsDemonConcept,
   meanFreePathConcept,
   mechanicalAdvantageConcept,
   momentOfInertiaConcept,
   moonPhasesConcept,
+  multipleMirrorImagesConcept,
   netForceConcept,
   newtonsFirstLawConcept,
   newtonsLawOfGravitationConcept,
   newtonsSecondLawConcept,
   newtonsThirdLawConcept,
+  noiseCancellationConcept,
   nonConservativeForceConcept,
   nonInertialFrameConcept,
   nonlinearOscillationConcept,
@@ -358,6 +431,8 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   phaseDiagramConcept,
   phaseSpaceConcept,
   physicalPendulumConcept,
+  pinholeCameraConcept,
+  planeMirrorImageConcept,
   poiseuilleFlowConcept,
   positionTimeGraphConcept,
   potentialEnergyCurveConcept,
@@ -369,8 +444,13 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   pulleySystemConcept,
   pvDiagramConcept,
   qualityFactorConcept,
+  radiativeEquilibriumConcept,
   radiusOfCurvatureConcept,
+  randomWalkConcept,
+  rectilinearPropagationConcept,
   referenceFrameConcept,
+  reflectionOfWavesConcept,
+  refractionOfWavesConcept,
   refrigeratorHeatPumpConcept,
   relativeVelocityConcept,
   resonanceConcept,
@@ -383,19 +463,30 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   rotationalKineticEnergyConcept,
   seasonalSunPathConcept,
   secondLawOfThermodynamicsConcept,
+  seismicWavesConcept,
+  shadowUmbraPenumbraConcept,
   shellTheoremConcept,
   shmEnergyConcept,
+  shockWaveConcept,
   simpleHarmonicMotionConcept,
   simplePendulumConcept,
+  slitWidthAndDiffractionConcept,
+  snellsLawConcept,
   solarAltitudeShadowConcept,
+  soundIntensityConcept,
+  soundSourceVibrationConcept,
+  soundThroughMaterialsConcept,
   specificHeatConcept,
+  specularDiffuseReflectionConcept,
   springForceConcept,
   stabilityOfFloatingBodyConcept,
+  standingWaveConcept,
   starColorTemperatureConcept,
   starLifeCycleConcept,
   starRadiationGravityBalanceConcept,
   staticEquilibriumConcept,
   staticFrictionConcept,
+  statisticalFluctuationConcept,
   stefanBoltzmannLawConcept,
   stellarLuminosityConcept,
   stellarNucleosynthesisConcept,
@@ -404,7 +495,9 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   stokesDragConcept,
   stoppingDistanceConcept,
   stressStrainCurveConcept,
+  stringVibrationConcept,
   supernovaAndNeutronStarConcept,
+  superpositionConcept,
   surfaceTensionConcept,
   tangentialNormalAccelerationConcept,
   tensionConcept,
@@ -418,6 +511,7 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   torqueConcept,
   torricellisLawConcept,
   trajectoryEquationConcept,
+  transverseWaveConcept,
   triplePointConcept,
   twoBodyProblemConcept,
   twoDimensionalCollisionConcept,
@@ -431,6 +525,12 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   verticalLoopConcept,
   verticalThrowConcept,
   viscosityConcept,
+  waveAttenuationConcept,
+  waveBasicsConcept,
+  waveEnergyConcept,
+  waveSpeedInMediumConcept,
+  waveVsParticleTransportConcept,
+  wavefrontAndRayConcept,
   weightlessnessConcept,
   wettingAndContactAngleConcept,
   workByVariableForceConcept,
