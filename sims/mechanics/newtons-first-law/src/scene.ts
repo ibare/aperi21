@@ -1,5 +1,5 @@
 // ========================================================================
-// inertial-frame — Scene Graph 선언
+// newtons-first-law — Scene Graph 선언
 // ========================================================================
 // 그리지 않는다, 선언한다. 자유 렌더 계층을 쓰지 않는다.
 //
@@ -34,7 +34,7 @@ import type {
 } from '@aperi21/schema';
 import { impactAge, wallX } from './physics';
 import { IMPACT_LIFE, LEFT_CUT, REF, px, text, wy } from './schema';
-import type { InertialFrameState, Sample } from './state';
+import type { NewtonsFirstLawState, Sample } from './state';
 
 // ------------------------------------------------------------------------
 // 화면 px 로 두는 것 — 굵기 · 점 크기 · 글자는 물리량이 아니라 위계다
@@ -115,14 +115,14 @@ function circle(cx: number, cy: number, r: number, steps: number): Vec2[] {
 // ------------------------------------------------------------------------
 
 export function scene(params: {
-  state: InertialFrameState;
+  state: NewtonsFirstLawState;
   view: ViewDef;
   stage: StageDef;
   environments: EnvironmentDef[];
   timeline?: TimelineFrame;
 }): SceneGraph {
   const { state, timeline } = params;
-  if (!timeline) throw new Error('inertial-frame: schema.timeline 이 선언되어야 한다');
+  if (!timeline) throw new Error('newtons-first-law: schema.timeline 이 선언되어야 한다');
 
   /** 사이클 끝의 잦아듦. 원본이 코드에 두었던 알파 램프를 시간표가 준다. */
   const fade = 1 - timeline.at('fade');

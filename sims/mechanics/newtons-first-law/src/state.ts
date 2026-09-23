@@ -1,5 +1,5 @@
 // ========================================================================
-// inertial-frame — 런타임 상태
+// newtons-first-law — 런타임 상태
 // ========================================================================
 // 이 조각은 **상태를 누적한다.** 버스와 승객의 자리는 적분으로 얻고, 자취는
 // 0.3 초마다 한 쌍씩 쌓인다. 같은 시각이 언제나 같은 화면인 조각이 아니다 —
@@ -15,7 +15,7 @@ export interface Sample {
   readonly rider: number;
 }
 
-export interface InertialFrameState {
+export interface NewtonsFirstLawState {
   /** 사이클 안의 경과 시각(초). */
   readonly e: number;
 
@@ -62,7 +62,7 @@ export interface InertialFrameState {
  * 마찰만 물려받는다. 독자가 올려 둔 값을 사이클이 돌 때마다 0 으로 되돌리면
  * 손잡이를 쥔 채로 화면이 손을 뿌리치는 것이 된다.
  */
-export function freshState(friction: number): InertialFrameState {
+export function freshState(friction: number): NewtonsFirstLawState {
   const busX = px(REF.busStart);
   const mark = busX + px(REF.markDx);
   const stride = V0 * SAMPLE_DT;
@@ -93,7 +93,7 @@ export function initialState(_params: {
   values: Record<string, number>;
   stage: StageDef;
   environments: EnvironmentDef[];
-}): InertialFrameState {
+}): NewtonsFirstLawState {
   // 마찰 0 으로 연다. 힘이 없으면 어떻게 되는가가 이 조각이 먼저 하는 말이고,
   // 마찰은 그 대우를 독자가 손으로 시험하는 자리다.
   return freshState(0);

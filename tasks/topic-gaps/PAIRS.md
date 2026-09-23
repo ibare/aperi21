@@ -101,7 +101,7 @@
 | `laminar-vs-turbulent` | 흐름의 두 양상 | 흐름이 갑자기 흐트러지는 지점 |
 | `phase-diagram` | 압력과 온도가 정하는 상 | 삼중점보다 낮은 압력에서는 액체 구간을 건너뛴다 |
 | `thermal-conduction` | 접촉을 통한 전달 | 쇠에서는 번져 나가고 나무에서는 머문다 |
-| `kinetic-theory-of-gases` | 거시량을 분자 운동으로 설명 | 두드림이 쌓여 압력이 된다 |
+| `gas-pressure` | 온도를 올리면 분자가 벽을 더 자주 더 세게 때려 압력이 오르는 것 | 두드림이 쌓여 압력이 된다 |
 | `maxwell-boltzmann-distribution` | 분자 속력의 분포 | 데우면 분자 속력 분포가 퍼지며 내려앉는다 |
 | `longitudinal-wave` | 진동 방향이 진행 방향과 나란함 | 입자는 제자리에서 흔들리고, 빽빽한 자리가 나아간다 |
 | `huygens-principle` | 파면의 각 점이 새 파원이 되는 것 | 파면 위 점마다 나간 동그란 파가 겹쳐 곧게 펴진다 |

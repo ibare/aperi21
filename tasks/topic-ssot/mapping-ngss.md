@@ -83,7 +83,7 @@ Assessment Boundary 에 같은 일을 한다. 그것을 함께 읽었으면 여�
 | HS-PS2-4 | 만유인력과 쿨롱 법칙 | `newtons-law-of-gravitation` · `coulombs-law` · — `inverse-square-law` **신규** |
 | HS-PS2-5 | 전류가 자기장을, 변하는 자기장이 전류를 | `field-of-straight-wire` · `faradays-law` · `lenzs-law` · `motional-emf` |
 | HS-PS3-1 | 계 안팎의 에너지 출입 계산 | `first-law-of-thermodynamics` · `internal-energy` · `energy-flow-diagram` |
-| HS-PS3-2 | 거시 에너지 = 입자 운동 + 상대 위치 | `internal-energy` · `kinetic-theory-of-gases` · `gravitational-potential-energy` |
+| HS-PS3-2 | 거시 에너지 = 입자 운동 + 상대 위치 | `internal-energy` · `gas-pressure` · `gravitational-potential-energy` |
 | HS-PS3-3 | 에너지를 다른 형태로 바꾸는 장치 | `generator` · `photovoltaic-effect` · `efficiency` |
 | HS-PS3-4 | 열이 오가 균일해진다 (2법칙) | `thermal-equilibrium` · `second-law-of-thermodynamics` · `entropy` · `irreversibility` |
 | HS-PS3-5 | 전기·자기장으로 상호작용하는 두 물체 | `electric-field` · `magnetic-field` · `electric-potential` |

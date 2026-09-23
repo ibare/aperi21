@@ -1,11 +1,11 @@
 // ========================================================================
-// inertial-frame — 순수 물리
+// newtons-first-law — 순수 물리
 // ========================================================================
 // 한 문장으로: **제동은 버스에만 걸린다.** 승객에게 걸리는 수평힘은 바닥과의
 // 마찰뿐이고, 그것이 0 이면 승객의 가속도는 0 이라 속도가 그대로다. 앞칸에 닿는
 // 순간에야 승객에게 처음으로 힘이 걸린다.
 //
-// 적분은 원본(tasks/piece-lab/inertial-frame/index.html)의 `step` 을 그대로 옮긴
+// 적분은 원본(tasks/piece-lab/newtons-first-law/index.html)의 `step` 을 그대로 옮긴
 // 것이다. 단위만 월드로 바뀌었다.
 // ========================================================================
 
@@ -21,7 +21,7 @@ import {
   T_BRAKE,
   px,
 } from './schema';
-import { freshState, type InertialFrameState, type Sample } from './state';
+import { freshState, type NewtonsFirstLawState, type Sample } from './state';
 
 /** 조작기 값(0~100) → 승객에게 걸리는 마찰 가속도. */
 export function frictionAccel(friction: number): number {
@@ -34,16 +34,16 @@ export function wallX(busX: number): number {
 }
 
 /** 접촉 표시의 나이(초). 아직 닿지 않았으면 `null`. */
-export function impactAge(state: InertialFrameState): number | null {
+export function impactAge(state: NewtonsFirstLawState): number | null {
   return state.hitAt < 0 ? null : state.e - state.hitAt;
 }
 
 export function step(params: {
-  state: InertialFrameState;
+  state: NewtonsFirstLawState;
   dt: number;
   stage: StageDef;
   environments: EnvironmentDef[];
-}): InertialFrameState {
+}): NewtonsFirstLawState {
   const s = params.state;
   const dt = params.dt;
   const e = s.e + dt;

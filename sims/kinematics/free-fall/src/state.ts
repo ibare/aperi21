@@ -30,7 +30,7 @@ export interface FreeFallState {
    *
    * 시간표(`schema.timeline`)와 **같은 상수**로 도는 두 번째 시계다. `Bundle.step` 이
    * 시간표를 받지 않아서 생긴 것이고, 둘 다 러너가 주는 같은 `dt` 를 더하므로
-   * 어긋나지 않는다 (`inertial-frame` 과 같은 모양).
+   * 어긋나지 않는다 (`newtons-first-law` 과 같은 모양).
    */
   tau: number;
   /** 몇 번째로 떨어뜨리는 중인가. "차례로 바꾸기" 가 이 수를 본다. */

@@ -167,7 +167,7 @@ aperi21 은 글로벌 서비스가 임베딩하는 모듈이라, 최소 보장�
 - `sim` 이 있으면 구현된 것이다. `gen-topic-catalog.mts` 가 이 값을 읽어 사이트에 연결한다
 
 **`id` 와 `sim` 의 문자열은 다를 수 있다.** `newtons-first-law` 의 조각은
-`aperi21:inertial-frame` 이고, `pendulum-amplitude-dependence` 의 조각은
+`aperi21:newtons-first-law` 이고, `pendulum-amplitude-dependence` 의 조각은
 `aperi21:pendulum-isochronism` 이다 — 조각이 **주제보다 좁은 주장**을 한다고 이름으로
 말하는 자리다. 같은 표기 규약(kebab-case)을 쓸 뿐 같은 문자열이어야 하는 것은 아니다.
 

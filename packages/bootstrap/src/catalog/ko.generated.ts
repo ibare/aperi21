@@ -50,7 +50,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:tangential-normal-acceleration","title":"접선·법선 가속도","description":"속력 변화와 방향 변화의 분리","domain":"kinematics"},
     {"id":"aperi21:radius-of-curvature","title":"곡률 반지름","description":"굽은 정도에 맞는 원이 경로에 얹힌다","domain":"kinematics"},
     {"id":"aperi21:stopping-distance","title":"정지 거리","description":"반응 거리는 비례로, 제동 거리는 제곱으로 늘어난다","domain":"kinematics"},
-    {"id":"aperi21:inertial-frame","title":"관성 기준계","description":"버스만 느려지고 승객은 그대로 간다","domain":"newtonian-mechanics"},
+    {"id":"aperi21:newtons-first-law","title":"관성 기준계","description":"버스만 느려지고 승객은 그대로 간다","domain":"newtonian-mechanics"},
     {"id":"aperi21:newtons-second-law","title":"가속도 법칙","description":"알짜힘·질량·가속도의 관계","domain":"newtonian-mechanics"},
     {"id":"aperi21:newtons-third-law","title":"작용 반작용","description":"힘의 쌍과 서로 다른 작용점","domain":"newtonian-mechanics"},
     {"id":"aperi21:net-force","title":"알짜힘","description":"여러 힘의 벡터 합","domain":"newtonian-mechanics"},

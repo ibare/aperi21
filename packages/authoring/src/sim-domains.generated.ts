@@ -37,7 +37,7 @@ export const SIM_DOMAINS: Record<string, string> = {
   "aperi21:tangential-normal-acceleration": "kinematics",
   "aperi21:radius-of-curvature": "kinematics",
   "aperi21:stopping-distance": "kinematics",
-  "aperi21:inertial-frame": "newtonian-mechanics",
+  "aperi21:newtons-first-law": "newtonian-mechanics",
   "aperi21:newtons-second-law": "newtonian-mechanics",
   "aperi21:newtons-third-law": "newtonian-mechanics",
   "aperi21:net-force": "newtonian-mechanics",

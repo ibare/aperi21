@@ -1,5 +1,5 @@
 {
-  "name": "@aperi21/sim-inertial-frame",
+  "name": "@aperi21/sim-newtons-first-law",
   "version": "0.0.0",
   "private": true,
   "type": "module",

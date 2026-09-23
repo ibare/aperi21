@@ -2,7 +2,7 @@
  * mean-free-path 개념 선언.
  *
  * 알갱이 넷 중 하나. 이쪽은 **사이 거리** 를 주장한다.
- *   kinetic-theory-of-gases        합 — 두드림이 쌓여 한 값이 된다
+ *   gas-pressure        합 — 두드림이 쌓여 한 값이 된다
  *   pressure-from-collisions       두 곱 — 세기 × 횟수
  *   maxwell-boltzmann-distribution 퍼짐 — 분자마다 속력이 다르다
  *   mean-free-path                 **빽빽함 두 배면 사이 거리 절반** — 부딪히는 상대가 벽이 아니라 다른 분자다
@@ -78,7 +78,7 @@ export const meanFreePathConcept: Aperi21ConceptSource = {
 
     contrastWith: [
       {
-        concept: 'kinetic-theory-of-gases',
+        concept: 'gas-pressure',
         note: 'One is about molecules meeting the container and what that adds up to; the other is about molecules meeting one another and how far apart those meetings are.',
       },
       {

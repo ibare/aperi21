@@ -189,7 +189,6 @@
     "@aperi21/sim-impulse-momentum-theorem": "workspace:*",
     "@aperi21/sim-inclined-plane": "workspace:*",
     "@aperi21/sim-inelastic-collision": "workspace:*",
-    "@aperi21/sim-inertial-frame": "workspace:*",
     "@aperi21/sim-inertial-vs-gravitational-mass": "workspace:*",
     "@aperi21/sim-insulation": "workspace:*",
     "@aperi21/sim-interference": "workspace:*",
@@ -258,6 +257,7 @@
     "@aperi21/sim-mutual-inductance": "workspace:*",
     "@aperi21/sim-myopia-hyperopia": "workspace:*",
     "@aperi21/sim-net-force": "workspace:*",
+    "@aperi21/sim-newtons-first-law": "workspace:*",
     "@aperi21/sim-newtons-law-of-gravitation": "workspace:*",
     "@aperi21/sim-newtons-rings": "workspace:*",
     "@aperi21/sim-newtons-second-law": "workspace:*",
@@ -464,16 +464,6 @@
   "devDependencies": {
     "@aperi21/plugin-circuit": "workspace:*",
     "@aperi21/plugin-optics": "workspace:*",
-    "@aperi21/sim-archimedes-principle": "workspace:*",
-    "@aperi21/sim-centripetal-acceleration": "workspace:*",
-    "@aperi21/sim-dc-circuit": "workspace:*",
-    "@aperi21/sim-laminar-vs-turbulent": "workspace:*",
-    "@aperi21/sim-pressure-and-container-shape": "workspace:*",
-    "@aperi21/sim-pressure-isotropy": "workspace:*",
-    "@aperi21/sim-projectile": "workspace:*",
-    "@aperi21/sim-ray-tracing": "workspace:*",
-    "@aperi21/sim-torricellis-law": "workspace:*",
-    "@aperi21/sim-velocity-time-graph": "workspace:*",
     "typescript": "^5.6.3",
     "vitest": "^2.1.9"
   }

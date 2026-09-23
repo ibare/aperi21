@@ -56,9 +56,6 @@ importers:
       '@aperi21/sim-beats':
         specifier: workspace:*
         version: link:../../sims/waves/beats
-      '@aperi21/sim-dc-circuit':
-        specifier: workspace:*
-        version: link:../../sims/electronics/dc-circuit
       '@aperi21/sim-doppler-effect':
         specifier: workspace:*
         version: link:../../sims/waves/doppler-effect
@@ -68,12 +65,12 @@ importers:
       '@aperi21/sim-gas-pressure':
         specifier: workspace:*
         version: link:../../sims/thermal/gas-pressure
-      '@aperi21/sim-inertial-frame':
-        specifier: workspace:*
-        version: link:../../sims/mechanics/inertial-frame
       '@aperi21/sim-lenzs-law':
         specifier: workspace:*
         version: link:../../sims/em/lenzs-law
+      '@aperi21/sim-newtons-first-law':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/newtons-first-law
       '@aperi21/sim-pendulum-isochronism':
         specifier: workspace:*
         version: link:../../sims/oscillation/pendulum-isochronism
@@ -83,15 +80,9 @@ importers:
       '@aperi21/sim-pressure-isotropy':
         specifier: workspace:*
         version: link:../../sims/fluids/pressure-isotropy
-      '@aperi21/sim-projectile':
-        specifier: workspace:*
-        version: link:../../sims/physics/projectile
       '@aperi21/sim-ramp-energy':
         specifier: workspace:*
         version: link:../../sims/mechanics/ramp-energy
-      '@aperi21/sim-ray-tracing':
-        specifier: workspace:*
-        version: link:../../sims/optics/ray-tracing
       '@aperi21/sim-thermal-conduction':
         specifier: workspace:*
         version: link:../../sims/thermal/thermal-conduction
@@ -393,9 +384,6 @@ importers:
       '@aperi21/sim-damping-regimes':
         specifier: workspace:*
         version: link:../../sims/oscillation/damping-regimes
-      '@aperi21/sim-dc-circuit':
-        specifier: workspace:*
-        version: link:../../sims/electronics/dc-circuit
       '@aperi21/sim-de-broglie-wavelength':
         specifier: workspace:*
         version: link:../../sims/modern/de-broglie-wavelength
@@ -678,9 +666,6 @@ importers:
       '@aperi21/sim-inelastic-collision':
         specifier: workspace:*
         version: link:../../sims/mechanics/inelastic-collision
-      '@aperi21/sim-inertial-frame':
-        specifier: workspace:*
-        version: link:../../sims/mechanics/inertial-frame
       '@aperi21/sim-inertial-vs-gravitational-mass':
         specifier: workspace:*
         version: link:../../sims/mechanics/inertial-vs-gravitational-mass
@@ -885,6 +870,9 @@ importers:
       '@aperi21/sim-net-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/net-force
+      '@aperi21/sim-newtons-first-law':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/newtons-first-law
       '@aperi21/sim-newtons-law-of-gravitation':
         specifier: workspace:*
         version: link:../../sims/astro/newtons-law-of-gravitation
@@ -1029,9 +1017,6 @@ importers:
       '@aperi21/sim-prism':
         specifier: workspace:*
         version: link:../../sims/optics/prism
-      '@aperi21/sim-projectile':
-        specifier: workspace:*
-        version: link:../../sims/physics/projectile
       '@aperi21/sim-projectile-in-wind':
         specifier: workspace:*
         version: link:../../sims/fluids/projectile-in-wind
@@ -1083,9 +1068,6 @@ importers:
       '@aperi21/sim-range-and-surface-gravity':
         specifier: workspace:*
         version: link:../../sims/astro/range-and-surface-gravity
-      '@aperi21/sim-ray-tracing':
-        specifier: workspace:*
-        version: link:../../sims/optics/ray-tracing
       '@aperi21/sim-rayleigh-scattering':
         specifier: workspace:*
         version: link:../../sims/optics/rayleigh-scattering
@@ -2120,21 +2102,6 @@ importers:
       typescript:
         specifier: ^5.6.3
         version: 5.9.3
-
-  sims/electronics/dc-circuit:
-    devDependencies:
-      '@aperi21/plugin-circuit':
-        specifier: workspace:*
-        version: link:../../../packages/plugin-circuit
-      '@aperi21/schema':
-        specifier: workspace:*
-        version: link:../../../packages/schema
-      typescript:
-        specifier: ^5.6.3
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.9
-        version: 2.1.9(jsdom@25.0.1)
 
   sims/electronics/series-parallel-resistors:
     devDependencies:
@@ -3666,15 +3633,6 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
-  sims/mechanics/inertial-frame:
-    devDependencies:
-      '@aperi21/schema':
-        specifier: workspace:*
-        version: link:../../../packages/schema
-      typescript:
-        specifier: ^5.6.3
-        version: 5.9.3
-
   sims/mechanics/inertial-vs-gravitational-mass:
     devDependencies:
       '@aperi21/schema':
@@ -3712,6 +3670,15 @@ importers:
         version: 5.9.3
 
   sims/mechanics/net-force:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/mechanics/newtons-first-law:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -4881,21 +4848,6 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
-  sims/optics/ray-tracing:
-    devDependencies:
-      '@aperi21/plugin-optics':
-        specifier: workspace:*
-        version: link:../../../packages/plugin-optics
-      '@aperi21/schema':
-        specifier: workspace:*
-        version: link:../../../packages/schema
-      typescript:
-        specifier: ^5.6.3
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.9
-        version: 2.1.9(jsdom@25.0.1)
-
   sims/optics/rayleigh-scattering:
     devDependencies:
       '@aperi21/plugin-optics':
@@ -5342,18 +5294,6 @@ importers:
       typescript:
         specifier: ^5.6.3
         version: 5.9.3
-
-  sims/physics/projectile:
-    devDependencies:
-      '@aperi21/schema':
-        specifier: workspace:*
-        version: link:../../../packages/schema
-      typescript:
-        specifier: ^5.6.3
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.9
-        version: 2.1.9(jsdom@25.0.1)
 
   sims/thermal/adiabatic-process:
     devDependencies:

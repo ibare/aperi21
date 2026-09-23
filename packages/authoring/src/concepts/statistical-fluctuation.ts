@@ -85,7 +85,7 @@ export const statisticalFluctuationConcept: Aperi21ConceptSource = {
         note: 'One says that chance alone keeps producing small departures from the even share, larger the fewer the particles; the other asks whether a departure could be produced on purpose, and what that costs.',
       },
       {
-        concept: 'kinetic-theory-of-gases',
+        concept: 'gas-pressure',
         note: 'One is about the steady push that emerges when enough molecular events are added together; the other is about how far from steady that sum still is when there are not enough of them.',
       },
     ],

@@ -87,7 +87,7 @@ export const boseEinsteinCondensateConcept: Aperi21ConceptSource = {
         note: 'Both watch a distribution of speeds change with temperature, but one has it widen and flatten while keeping one shape, and the other has a second, far narrower feature appear below a threshold.',
       },
       {
-        concept: 'kinetic-theory-of-gases',
+        concept: 'gas-pressure',
         note: 'One treats a gas as many independent particles whose separate effects add up; the other is about the point at which that picture fails because a great many of them stop being independent.',
       },
       {

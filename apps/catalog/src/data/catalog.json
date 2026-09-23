@@ -205,7 +205,7 @@
           "id": "newtons-first-law",
           "name": "관성 법칙",
           "desc": "알짜힘이 없을 때의 운동 상태",
-          "simId": "aperi21:inertial-frame"
+          "simId": "aperi21:newtons-first-law"
         },
         {
           "id": "newtons-second-law",
@@ -1323,10 +1323,11 @@
           "simId": "aperi21:charles-law"
         },
         {
-          "id": "kinetic-theory-of-gases",
-          "name": "기체 분자 운동론",
-          "desc": "거시량을 분자 운동으로 설명",
-          "simId": "aperi21:gas-pressure"
+          "id": "gas-pressure",
+          "name": "기체 분자와 압력",
+          "desc": "온도를 올리면 분자가 벽을 더 자주 더 세게 때려 압력이 오르는 것",
+          "simId": "aperi21:gas-pressure",
+          "labUrl": "piece-lab/gas-pressure/index.html"
         },
         {
           "id": "pressure-from-collisions",
@@ -2840,6 +2841,6 @@
   "summary": {
     "topics": 444,
     "implemented": 444,
-    "labs": 103
+    "labs": 104
   }
 }

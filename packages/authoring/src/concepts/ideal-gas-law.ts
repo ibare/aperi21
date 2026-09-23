@@ -82,7 +82,7 @@ export const idealGasLawConcept: Aperi21ConceptSource = {
         note: 'One shows the volume following the temperature by the same multiple and stops there; the other follows that same case as a straight line and asks where the line points when it is continued backwards.',
       },
       {
-        concept: 'kinetic-theory-of-gases',
+        concept: 'gas-pressure',
         note: 'One treats pressure, volume and temperature as three quantities with a rule between them; the other asks what pressure is made of before any rule is stated.',
       },
       {

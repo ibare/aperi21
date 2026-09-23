@@ -1,6 +1,6 @@
 # 관성 기준계 — sim 노트
 
-원본: `tasks/piece-lab/inertial-frame/` (자유 구현). 원본의 결정과 근거는 그쪽 `NOTES.md`.
+원본: `tasks/piece-lab/newtons-first-law/` (자유 구현). 원본의 결정과 근거는 그쪽 `NOTES.md`.
 이 파일은 sim 으로 옮긴 뒤 **달라진 것**과 **어휘 부족**을 적는다.
 
 쓴 어휘 — `region`(도로·차체·승객 몸통·바퀴 속) · `trajectory`(차선·뒷문·칸막이·바닥·
@@ -10,7 +10,7 @@
 
 ## 대조
 
-카탈로그에 주제 `inertial-frame` 이 아직 없어 `#/topic/inertial-frame?t=` 이 열리지
+카탈로그에 주제 `newtons-first-law` 이 아직 없어 `#/topic/newtons-first-law?t=` 이 열리지
 않는다 — `pnpm piece:report --sims` 가 sims 쪽 스크린샷을 **조용히 건너뛴다**
 (`simIdOf` 가 `catalog.json` 에서 못 찾는다). 주제 목록(`PHYSICS-TOPICS.md`)과
 `gen-topic-catalog.mts` 의 `IMPLEMENTED` 는 공유 파일이라 이 작업에서 손대지 않았다.

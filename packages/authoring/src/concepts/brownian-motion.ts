@@ -81,7 +81,7 @@ export const brownianMotionConcept: Aperi21ConceptSource = {
         note: 'One follows a single body and the chance imbalance that shifts it; the other ignores any single body and follows what a whole crowd of them does to the way a substance is shared out.',
       },
       {
-        concept: 'kinetic-theory-of-gases',
+        concept: 'gas-pressure',
         note: 'Both build something from innumerable separate molecular taps, but one has the taps land on a movable speck and never cancel out perfectly, while the other has them land on a wall and add into one steady push.',
       },
       {

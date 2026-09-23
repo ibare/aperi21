@@ -1,21 +1,20 @@
 /**
- * kinetic-theory-of-gases 개념 선언.
+ * gas-pressure 개념 선언.
  *
  * 알갱이 넷 중 하나. 넷이 전부 「분자의 운동」 이라 **무엇을 묻는가**로 갈랐다.
- *   kinetic-theory-of-gases        **합** — 수많은 두드림이 쌓여 매끈한 한 값이 된다, 데우면 커진다
+ *   gas-pressure        **합** — 수많은 두드림이 쌓여 매끈한 한 값이 된다, 데우면 커진다
  *   pressure-from-collisions       **두 곱** — 세기 × 횟수, 속력을 두 배 하면 네 배
  *   maxwell-boltzmann-distribution **퍼짐** — 분자마다 속력이 다르고 그 분포가 온도를 탄다
  *   mean-free-path                 **사이 거리** — 다음 분자에 부딪히기까지 얼마나 가나
  * 이쪽만 매끈함 · 들썩임 · 수많음 · 온도를 직접 올려 봄 어휘를 갖는다.
  * 세기 · 횟수 · 곱 · 분포 · 꼬리 · 행로는 쓰지 않는다.
  *
- * 주제 id 와 등록 키가 다르다 — `canonicalSim` 은 topics.yaml 의 `sim` 값 그대로다.
  */
 
 import type { Aperi21ConceptSource } from '../concept-types.js';
 
 export const kineticTheoryOfGasesConcept: Aperi21ConceptSource = {
-  id: 'kinetic-theory-of-gases',
+  id: 'gas-pressure',
   label: 'Pressure as an Accumulation of Molecular Taps',
   canonicalSim: 'aperi21:gas-pressure',
 

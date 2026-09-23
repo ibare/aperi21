@@ -59,7 +59,7 @@
 6. **주기 안 시계가 둘이 되었다.** 시간표(`schema.timeline`)와 `state.tau` 가 같은
    상수(`CYCLE` · `HOLD` · `SETTLE` · `APPEAR`)를 본다. `step` 이 `timeline` 을 받지
    않아서 누적 적분을 하는 조각은 주기 안 시각을 상태에 따로 쌓아야 한다
-   (`mechanics/inertial-frame` 이 같은 모양). 둘 다 러너가 주는 같은 `dt` 를 더한다.
+   (`mechanics/newtons-first-law` 이 같은 모양). 둘 다 러너가 주는 같은 `dt` 를 더한다.
 
 7. **`drawOrder: 'scene'` 을 켰다.** 층 기본값은 `trace`(19) < `trajectory`(20) 이라
    잔상 원이 가로대 **아래**로 간다. 원본은 칸마다 가로대를 긋고 그 위에 원을 얹어

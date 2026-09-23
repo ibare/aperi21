@@ -83,7 +83,7 @@ export const boylesLawConcept: Aperi21ConceptSource = {
         note: 'Both hold one quantity and watch two others, but one ends in a product that survives while the other ends in a straight line and the place it points to when continued.',
       },
       {
-        concept: 'kinetic-theory-of-gases',
+        concept: 'gas-pressure',
         note: 'One takes it as given that a smaller space means a larger pressure and asks how much larger; the other asks what a pressure is made of in the first place.',
       },
     ],

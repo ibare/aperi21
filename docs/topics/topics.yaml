@@ -268,7 +268,7 @@ topics:
     level: lower
     curricula: [kr, ib, ap, uk]
     visualNote: 버스의 자국은 브레이크에 몰리는데 승객의 자국은 간격 그대로 찍힌다
-    sim: aperi21:inertial-frame
+    sim: aperi21:newtons-first-law
     batch: 01-broad
   - id: newtons-second-law
     name: 가속도 법칙
@@ -1655,13 +1655,13 @@ topics:
     curricula: [kr, ib, ap, uk]
     visualNote: 데우면 부피가 는다
     sim: aperi21:charles-law
-  - id: kinetic-theory-of-gases
-    name: 기체 분자 운동론
-    desc: 거시량을 분자 운동으로 설명
+  - id: gas-pressure
+    name: 기체 분자와 압력
+    desc: 온도를 올리면 분자가 벽을 더 자주 더 세게 때려 압력이 오르는 것
     domain: thermodynamics
     level: lower
     curricula: [kr, ib, ngss, ap, uk]
-    visualNote: 분자가 벽을 때리는 것이 압력으로 쌓인다
+    visualNote: 온도를 올리면 두드림이 잦고 세져 압력 막대가 오른다
     sim: aperi21:gas-pressure
     batch: 01-broad
   - id: pressure-from-collisions

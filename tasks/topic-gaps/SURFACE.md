@@ -471,7 +471,7 @@
 
 ### T07 · `newtons-first-law`
 
-- 조각 — `aperi21:inertial-frame` · `sims/mechanics/inertial-frame`
+- 조각 — `aperi21:newtons-first-law` · `sims/mechanics/newtons-first-law`
 - 문안 12건
   - `label.title` — 관성 기준계
   - `label.operation` — 버스만 느려지고 승객은 그대로 간다

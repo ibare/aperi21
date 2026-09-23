@@ -90,16 +90,23 @@ writeFileSync(OUT, lines.join('\n'), 'utf8');
 // 의존 목록도 같은 원본에서 만든다 — 조각을 더하고 의존을 빠뜨리면 모듈 해석이 실패한다.
 const pkg = JSON.parse(readFileSync(PKG, 'utf8')) as {
   dependencies: Record<string, string>;
+  devDependencies?: Record<string, string>;
 };
-const kept = Object.fromEntries(
-  Object.entries(pkg.dependencies).filter(([name]) => !name.startsWith('@aperi21/sim-')),
-);
-const deps = Object.fromEntries(
-  [...Object.entries(kept), ...sims.map((s) => [s.pkg, 'workspace:*'] as const)].sort(([a], [b]) =>
-    a.localeCompare(b),
-  ),
-);
+
+/**
+ * 조각 의존을 통째로 갈아 끼운다. **두 블록 다** 손본다 — `dependencies` 만 다시 쓰던
+ * 때, 지운 조각이 `devDependencies` 에 남아 `pnpm install` 이 워크스페이스에 없는
+ * 패키지를 찾다 멈췄다. 그 상태로 커밋까지 나갔다.
+ */
+function rewriteSimDeps(block: Record<string, string>, add: boolean): Record<string, string> {
+  const kept = Object.entries(block).filter(([name]) => !name.startsWith('@aperi21/sim-'));
+  const withSims = add ? [...kept, ...sims.map((s) => [s.pkg, 'workspace:*'] as const)] : kept;
+  return Object.fromEntries(withSims.sort(([a], [b]) => a.localeCompare(b)));
+}
+
+const deps = rewriteSimDeps(pkg.dependencies, true);
 pkg.dependencies = deps;
+if (pkg.devDependencies) pkg.devDependencies = rewriteSimDeps(pkg.devDependencies, false);
 writeFileSync(PKG, `${JSON.stringify(pkg, null, 2)}\n`, 'utf8');
 
 process.stdout.write(

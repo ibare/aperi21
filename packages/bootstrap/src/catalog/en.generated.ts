@@ -50,7 +50,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:tangential-normal-acceleration","title":"Tangential and normal acceleration","description":"Separating change of speed from change of direction","domain":"kinematics"},
     {"id":"aperi21:radius-of-curvature","title":"Radius of curvature","description":"A circle matching the bend rides the path","domain":"kinematics"},
     {"id":"aperi21:stopping-distance","title":"Stopping distance","description":"Reaction grows linearly, braking as the square","domain":"kinematics"},
-    {"id":"aperi21:inertial-frame","title":"Inertial frame","description":"Only the bus slows; the passenger keeps going","domain":"newtonian-mechanics"},
+    {"id":"aperi21:newtons-first-law","title":"Inertial frame","description":"Only the bus slows; the passenger keeps going","domain":"newtonian-mechanics"},
     {"id":"aperi21:newtons-second-law","title":"Newton's second law","description":"Net force, mass and acceleration","domain":"newtonian-mechanics"},
     {"id":"aperi21:newtons-third-law","title":"Action and reaction","description":"A force pair acting on different bodies","domain":"newtonian-mechanics"},
     {"id":"aperi21:net-force","title":"Net force","description":"Vector sum of several forces","domain":"newtonian-mechanics"},

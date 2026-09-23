@@ -2,7 +2,7 @@
  * maxwell-boltzmann-distribution 개념 선언.
  *
  * 알갱이 넷 중 하나. 이쪽은 **퍼짐** 을 주장한다.
- *   kinetic-theory-of-gases        합 — 두드림이 쌓여 한 값이 된다
+ *   gas-pressure        합 — 두드림이 쌓여 한 값이 된다
  *   pressure-from-collisions       두 곱 — 세기 × 횟수
  *   maxwell-boltzmann-distribution **퍼지며 내려앉는다** — 분자 수가 그대로라 넓어진 만큼 낮아진다
  *   mean-free-path                 사이 거리 — 다음 분자까지 얼마나 가나
@@ -74,7 +74,7 @@ export const maxwellBoltzmannDistributionConcept: Aperi21ConceptSource = {
 
     contrastWith: [
       {
-        concept: 'kinetic-theory-of-gases',
+        concept: 'gas-pressure',
         note: 'One treats the molecules as an interchangeable crowd whose collective effect on a wall is the whole story; the other looks inside the crowd and finds it is not uniform.',
       },
       {

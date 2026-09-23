@@ -86,7 +86,7 @@ export const longitudinalWaveConcept: Aperi21ConceptSource = {
         note: 'One shows a kind of wave whose shape is crowding rather than a curve; the other measures a wave’s length and period, which a crowding pattern has too but which this one never puts a number on.',
       },
       {
-        concept: 'kinetic-theory-of-gases',
+        concept: 'gas-pressure',
         note: 'Both fill the picture with particles of a gas, moving in quite different ways — one has them swaying in step about fixed places so that a pattern emerges, the other has them flying at random so that no pattern ever does.',
       },
     ],

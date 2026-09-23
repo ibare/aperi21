@@ -1,11 +1,11 @@
 // ========================================================================
-// inertial-frame — 선언
+// newtons-first-law — 선언
 // ========================================================================
 // 질문: 급정거한 버스에서 승객을 앞으로 민 것은 무엇인가.
 //
 // 아무것도 밀지 않았다. 버스만 느려지고 승객은 원래 속도로 그대로 간다.
 //
-// 원본: tasks/piece-lab/inertial-frame/ (자유 구현)
+// 원본: tasks/piece-lab/newtons-first-law/ (자유 구현)
 //
 // ---- 좌표 ----
 // 원본은 860 × 280 의 고정 화면 좌표(y 아래)로 그렸다. 여기서는 **월드 1 = 원본
@@ -15,8 +15,8 @@
 
 import type { BundleSchema, LocalizedText } from '@aperi21/schema';
 
-/** 등록 키 `aperi21:inertial-frame` 와 문자 그대로 일치한다 (C4). */
-export const INERTIAL_FRAME_ID = 'inertial-frame';
+/** 등록 키 `aperi21:newtons-first-law` 와 문자 그대로 일치한다 (C4). */
+export const NEWTONS_FIRST_LAW_ID = 'newtons-first-law';
 
 // ------------------------------------------------------------------------
 // 원본 배치 (원본 화면 px). 값은 index.html 에서 그대로 옮겼다
@@ -101,7 +101,7 @@ export const CYCLE = 8.0;
 // 문안
 // ------------------------------------------------------------------------
 
-export const inertialFrameMessages = Object.freeze({
+export const newtonsFirstLawMessages = Object.freeze({
   'label.title': { ko: '관성 기준계', en: 'Inertial frame' },
   'label.operation': {
     ko: '버스만 느려지고 승객은 그대로 간다',
@@ -141,15 +141,15 @@ export const inertialFrameMessages = Object.freeze({
   },
 } satisfies Record<string, LocalizedText>);
 
-export type InertialFrameMessageKey = keyof typeof inertialFrameMessages;
+export type NewtonsFirstLawMessageKey = keyof typeof newtonsFirstLawMessages;
 
 /** 선언에서 문안을 꺼낸다. 호출부에 문자열 리터럴을 두지 않기 위한 유일한 통로. */
-export function text(key: InertialFrameMessageKey): LocalizedText {
-  return inertialFrameMessages[key];
+export function text(key: NewtonsFirstLawMessageKey): LocalizedText {
+  return newtonsFirstLawMessages[key];
 }
 
 /** 시간표·캡션 슬롯이 부르는 문안 키. 없는 키를 쓰면 여기서 타입이 막는다. */
-function key(k: InertialFrameMessageKey): string {
+function key(k: NewtonsFirstLawMessageKey): string {
   return k;
 }
 
@@ -157,8 +157,8 @@ function key(k: InertialFrameMessageKey): string {
 // BundleSchema
 // ------------------------------------------------------------------------
 
-export const inertialFrameSchema: BundleSchema = {
-  id: INERTIAL_FRAME_ID,
+export const newtonsFirstLawSchema: BundleSchema = {
+  id: NEWTONS_FIRST_LAW_ID,
   label: text('label.title'),
   category: 'mechanics',
   operation: text('label.operation'),
@@ -223,5 +223,5 @@ export const inertialFrameSchema: BundleSchema = {
    * 전부를 흔들 수 있다.
    */
 
-  messages: inertialFrameMessages,
+  messages: newtonsFirstLawMessages,
 };

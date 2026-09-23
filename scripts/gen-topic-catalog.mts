@@ -33,7 +33,7 @@ const OUT = resolve(ROOT, 'apps/catalog/src/data/catalog.json');
  * 쓸 수 없다. 엔진 경계를 정하기 전에 눈으로 견주려고 붙여 둔 것이다.
  *
  * 디렉터리 이름이 **조각 id** 인 것은 여기 걸리지 않는다 — 주제 id 와 조각 id 는
- * 다를 수 있기 때문이다(`newtons-first-law` ↔ `inertial-frame`). 원본에 적힌 사실이
+ * 다를 수 있기 때문이다(`newtons-first-law` ↔ `newtons-first-law`). 원본에 적힌 사실이
  * 아니라 파일이 있느냐로 정해지는 파생값이라 여기서 판정한다.
  */
 const LAB_SRC = resolve(ROOT, 'tasks/piece-lab');

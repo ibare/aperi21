@@ -2,7 +2,7 @@
  * pressure-from-collisions 개념 선언.
  *
  * 알갱이 넷 중 하나. 이쪽은 **두 곱** 을 주장한다.
- *   kinetic-theory-of-gases        합 — 수많은 두드림이 쌓여 매끈한 한 값이 된다
+ *   gas-pressure        합 — 수많은 두드림이 쌓여 매끈한 한 값이 된다
  *   pressure-from-collisions       **세기 × 횟수** — 속력을 두 배 하면 둘 다 두 배라 네 배
  *   maxwell-boltzmann-distribution 퍼짐 — 분자마다 속력이 다르다
  *   mean-free-path                 사이 거리 — 다음 분자까지 얼마나 가나
@@ -77,7 +77,7 @@ export const pressureFromCollisionsConcept: Aperi21ConceptSource = {
 
     contrastWith: [
       {
-        concept: 'kinetic-theory-of-gases',
+        concept: 'gas-pressure',
         note: 'One establishes that a push is a heap of blows at all; the other assumes that and works out how the heap grows when the molecules are hurried.',
       },
       {

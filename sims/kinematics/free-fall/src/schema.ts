@@ -69,7 +69,7 @@ export const SCENE_BOUNDS = {
 //
 // `step` 은 `timeline` 을 받지 않는다(`Bundle.step` 의 인자에 없다). 그래서 누적
 // 적분을 하는 조각은 주기 안 시각을 상태에 따로 쌓아야 하고, 그 시계가 시간표와
-// 어긋나지 않게 **같은 상수**를 본다. `inertial-frame` 이 같은 모양이다.
+// 어긋나지 않게 **같은 상수**를 본다. `newtons-first-law` 이 같은 모양이다.
 
 /** 한 번 떨어뜨리고 다시 드는 데 걸리는 시간(초). */
 export const CYCLE = 4.3;

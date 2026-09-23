@@ -73,7 +73,7 @@ subtle 에서 rgba 를 주는데 선형광 합성은 hex 만 푼다 — 어긋�
 `Stream.width` 처럼 획 굵기가 아니라, 입자 둘레에 바탕색 테를 두르는 선언이 필요하다.
 
 **③ `trace` 의 감쇠가 선형 고정이다.** 사건 직후의 강조는 대개 지수로 잦아든다(원본 ·
-`pendulum` · `inertial-frame` 이 모두 exp 를 손으로 짰다). `life` 옆에 감쇠 이름
+`pendulum` · `newtons-first-law` 이 모두 exp 를 손으로 짰다). `life` 옆에 감쇠 이름
 (`linear` · `exp`)을 고르는 자리가 있으면 조각이 다시 짜지 않는다.
 
 **④ `trace` 의 크기가 화면 px 라 월드 도형에 맞출 수 없다.** 이 조각의 링은 칸(월드

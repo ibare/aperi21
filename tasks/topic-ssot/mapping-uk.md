@@ -123,7 +123,7 @@ upper 주제 중 GCSE 근거로 붙은 것이 있는지 데이터만으로 가�
   `generator` · `gravitational-field` · `gravitational-potential-energy` · `half-life`
   `hookes-law` · `hydrostatic-pressure` · `impulse-momentum-theorem` · `insulation`
   `internal-energy` · `ionizing-radiation` · `iv-characteristic` · `joule-heating`
-  `kinetic-energy` · `kinetic-theory-of-gases` · `latent-heat` · `lenzs-law`
+  `kinetic-energy` · `gas-pressure` · `latent-heat` · `lenzs-law`
   `lever-arm` · `light-through-materials` · `longitudinal-wave` · `loudspeaker-and-microphone`
   `magnet-attraction` · `magnetic-field` · `magnetic-field-lines` · `magnetic-poles`
   `magnification` · `magnitude-scale` · `mass-vs-weight` · `momentum`

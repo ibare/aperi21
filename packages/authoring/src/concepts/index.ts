@@ -154,6 +154,7 @@ import { forceBetweenWiresConcept } from './force-between-wires.js';
 import { forceOnCurrentWireConcept } from './force-on-current-wire.js';
 import { freeBodyDiagramConcept } from './free-body-diagram.js';
 import { freeFallConcept } from './free-fall.js';
+import { kineticTheoryOfGasesConcept } from './gas-pressure.js';
 import { gausssLawConcept } from './gausss-law.js';
 import { gearsConcept } from './gears.js';
 import { generatorConcept } from './generator.js';
@@ -196,7 +197,6 @@ import { keplersSecondLawConcept } from './keplers-second-law.js';
 import { keplersThirdLawConcept } from './keplers-third-law.js';
 import { kineticEnergyConcept } from './kinetic-energy.js';
 import { kineticFrictionConcept } from './kinetic-friction.js';
-import { kineticTheoryOfGasesConcept } from './kinetic-theory-of-gases.js';
 import { kirchhoffsCurrentLawConcept } from './kirchhoffs-current-law.js';
 import { kirchhoffsVoltageLawConcept } from './kirchhoffs-voltage-law.js';
 import { lagrangePointsConcept } from './lagrange-points.js';
@@ -600,6 +600,7 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   forceOnCurrentWireConcept,
   freeBodyDiagramConcept,
   freeFallConcept,
+  kineticTheoryOfGasesConcept,
   gausssLawConcept,
   gearsConcept,
   generatorConcept,
@@ -642,7 +643,6 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   keplersThirdLawConcept,
   kineticEnergyConcept,
   kineticFrictionConcept,
-  kineticTheoryOfGasesConcept,
   kirchhoffsCurrentLawConcept,
   kirchhoffsVoltageLawConcept,
   lagrangePointsConcept,

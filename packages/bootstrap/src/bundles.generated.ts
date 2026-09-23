@@ -1686,14 +1686,6 @@ export function registerGeneratedBundles(): void {
     return registerBundle("aperi21:inelastic-collision", m.inelasticCollisionBundle, caps.capabilities);
   });
 
-  registerBundleLoader("aperi21:inertial-frame", async () => {
-    const [m, caps] = await Promise.all([
-      import("@aperi21/sim-inertial-frame"),
-      import("./capabilities/mechanics/inertial-frame.generated.js"),
-    ]);
-    return registerBundle("aperi21:inertial-frame", m.inertialFrameBundle, caps.capabilities);
-  });
-
   registerBundleLoader("aperi21:inertial-vs-gravitational-mass", async () => {
     const [m, caps] = await Promise.all([
       import("@aperi21/sim-inertial-vs-gravitational-mass"),
@@ -1732,6 +1724,14 @@ export function registerGeneratedBundles(): void {
       import("./capabilities/mechanics/net-force.generated.js"),
     ]);
     return registerBundle("aperi21:net-force", m.netForceBundle, caps.capabilities);
+  });
+
+  registerBundleLoader("aperi21:newtons-first-law", async () => {
+    const [m, caps] = await Promise.all([
+      import("@aperi21/sim-newtons-first-law"),
+      import("./capabilities/mechanics/newtons-first-law.generated.js"),
+    ]);
+    return registerBundle("aperi21:newtons-first-law", m.newtonsFirstLawBundle, caps.capabilities);
   });
 
   registerBundleLoader("aperi21:newtons-second-law", async () => {

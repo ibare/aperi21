@@ -17,7 +17,7 @@ import type { Aperi21ConceptSource } from '../concept-types.js';
 export const newtonsFirstLawConcept: Aperi21ConceptSource = {
   id: 'newtons-first-law',
   label: "Newton's First Law",
-  canonicalSim: 'aperi21:inertial-frame',
+  canonicalSim: 'aperi21:newtons-first-law',
 
   surface: {
     definition:
