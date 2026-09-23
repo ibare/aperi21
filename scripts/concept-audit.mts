@@ -69,13 +69,17 @@ report('useWhen 이 되풀이된다 — 개념마다 다른 문장이어야 한�
 
 // 3 — 글의 분량·자리를 가리키는 말. 화면이 세는 것("how many rows")은 분량이 아니므로
 // 글의 단위 명사와 붙어 있을 때만 잡는다.
-const UNIT = '(paragraph|section|sentence|article|post|chapter|intro|introduction|conclusion)';
+// 'sentence' 를 뺀다 — 화면 캡션을 가리키는 "One sentence stands below" 가 정상 문장인데
+// 전부 걸렸다(실측 3건). 글의 분량을 뜻하는 단위는 문단 이상이다.
+const UNIT = '(paragraph|section|article|post|chapter|intro|introduction|conclusion)';
 // 수량·자리를 매기는 말만 잡는다. "The article has claimed…" 처럼 글을 **가리키는** 것은
 // 재료를 주는 정상 문장이라 걸리면 안 된다 (관사·지시사를 넣었다가 정상 문장이 전부
 // 걸렸다). 잡는 것은 "one paragraph" 같은 분량과 "the article should" 같은 지시다.
 const CONSTRUCTION = new RegExp(
   `\\b(one|two|three|four|five|each|every|per|half|most|several)\\s+${UNIT}\\b` +
-    `|\\b${UNIT}s?\\s+(should|must|needs? to|has to)\\b`,
+    // 작문을 지시하는 동사가 붙을 때만. "The article needs to break the habit" 은 글의
+    // 목적을 말하는 정상 문장이라 동사를 가리지 않으면 걸린다(실측 2건).
+    `|\\b${UNIT}s?\\s+(should|must|needs? to|has to)\\s+(mention|include|contain|open|close|begin|end|introduce|cover|spend)\\b`,
   'i',
 );
 const construction: string[] = [];
@@ -93,7 +97,11 @@ for (const c of concepts) {
 report('글의 구성에 관여한다 — 재료만 준다', construction);
 
 // 4 — 내부 어휘. 소비자가 알 이유가 없는 우리 구조의 말.
-const INTERNAL = /\b(aperi21|piece|bundle|sim|renderer|primitive|controller|schema|stage|timeline|declaration)\b/i;
+// 우리 구조의 말만 남긴다. `piece`(부분) · `stage`(단계)는 평범한 영어로도 쓰여 오검출이
+// 여섯 건 났다. 조작기 이름은 두 낱말로 붙어 나오므로 그 꼴로 잡는다 — projectile-range 의
+// "Three stage tabs" 가 실제 누출이었다.
+const INTERNAL =
+  /\b(aperi21|bundle|renderer|primitive|schema)\b|\b(stage|view|param|env) (tabs|panel|chips|toggles)\b|\b(point|scale) drag\b|\bpress area\b/i;
 const internal: string[] = [];
 for (const c of concepts) {
   const fields: [string, string][] = [
