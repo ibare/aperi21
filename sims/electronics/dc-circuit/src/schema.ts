@@ -1,7 +1,7 @@
 import type { BundleSchema } from '@aperi21/schema';
 
 export const schema: BundleSchema = {
-  id: 'dc_circuit',
+  id: 'dc-circuit',
   label: { ko: 'DC 회로', en: 'DC Circuit' },
   category: 'electromagnetism',
   operation: {

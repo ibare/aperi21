@@ -1,7 +1,7 @@
 import type { BundleSchema } from '@aperi21/schema';
 
 export const schema: BundleSchema = {
-  id: 'ray_tracing',
+  id: 'ray-tracing',
   label: { ko: '광선 추적', en: 'Ray Tracing' },
   category: 'optics',
   operation: {

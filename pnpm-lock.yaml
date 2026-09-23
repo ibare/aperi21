@@ -201,6 +201,9 @@ importers:
       '@aperi21/sim-apparent-weight':
         specifier: workspace:*
         version: link:../../sims/mechanics/apparent-weight
+      '@aperi21/sim-archimedes-principle':
+        specifier: workspace:*
+        version: link:../../sims/fluids/archimedes-principle
       '@aperi21/sim-atmospheric-pressure':
         specifier: workspace:*
         version: link:../../sims/fluids/atmospheric-pressure
@@ -303,6 +306,9 @@ importers:
       '@aperi21/sim-center-of-mass-motion':
         specifier: workspace:*
         version: link:../../sims/mechanics/center-of-mass-motion
+      '@aperi21/sim-centripetal-acceleration':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/centripetal-acceleration
       '@aperi21/sim-centripetal-force':
         specifier: workspace:*
         version: link:../../sims/mechanics/centripetal-force
@@ -390,6 +396,9 @@ importers:
       '@aperi21/sim-damping-regimes':
         specifier: workspace:*
         version: link:../../sims/oscillation/damping-regimes
+      '@aperi21/sim-dc-circuit':
+        specifier: workspace:*
+        version: link:../../sims/electronics/dc-circuit
       '@aperi21/sim-de-broglie-wavelength':
         specifier: workspace:*
         version: link:../../sims/modern/de-broglie-wavelength
@@ -726,6 +735,9 @@ importers:
       '@aperi21/sim-lagrange-points':
         specifier: workspace:*
         version: link:../../sims/astro/lagrange-points
+      '@aperi21/sim-laminar-vs-turbulent':
+        specifier: workspace:*
+        version: link:../../sims/fluids/laminar-vs-turbulent
       '@aperi21/sim-laplace-pressure':
         specifier: workspace:*
         version: link:../../sims/fluids/laplace-pressure
@@ -1005,12 +1017,21 @@ importers:
       '@aperi21/sim-poynting-vector':
         specifier: workspace:*
         version: link:../../sims/em/poynting-vector
+      '@aperi21/sim-pressure-and-container-shape':
+        specifier: workspace:*
+        version: link:../../sims/fluids/pressure-and-container-shape
       '@aperi21/sim-pressure-from-collisions':
         specifier: workspace:*
         version: link:../../sims/thermal/pressure-from-collisions
+      '@aperi21/sim-pressure-isotropy':
+        specifier: workspace:*
+        version: link:../../sims/fluids/pressure-isotropy
       '@aperi21/sim-prism':
         specifier: workspace:*
         version: link:../../sims/optics/prism
+      '@aperi21/sim-projectile':
+        specifier: workspace:*
+        version: link:../../sims/physics/projectile
       '@aperi21/sim-projectile-motion':
         specifier: workspace:*
         version: link:../../sims/kinematics/projectile-motion
@@ -1053,6 +1074,9 @@ importers:
       '@aperi21/sim-random-walk':
         specifier: workspace:*
         version: link:../../sims/thermal/random-walk
+      '@aperi21/sim-ray-tracing':
+        specifier: workspace:*
+        version: link:../../sims/optics/ray-tracing
       '@aperi21/sim-rayleigh-scattering':
         specifier: workspace:*
         version: link:../../sims/optics/rayleigh-scattering
@@ -1335,6 +1359,9 @@ importers:
       '@aperi21/sim-torque':
         specifier: workspace:*
         version: link:../../sims/oscillation/torque
+      '@aperi21/sim-torricellis-law':
+        specifier: workspace:*
+        version: link:../../sims/fluids/torricellis-law
       '@aperi21/sim-total-internal-reflection':
         specifier: workspace:*
         version: link:../../sims/optics/total-internal-reflection
@@ -1386,6 +1413,9 @@ importers:
       '@aperi21/sim-velocity-selector':
         specifier: workspace:*
         version: link:../../sims/em/velocity-selector
+      '@aperi21/sim-velocity-time-graph':
+        specifier: workspace:*
+        version: link:../../sims/kinematics/velocity-time-graph
       '@aperi21/sim-venturi-effect':
         specifier: workspace:*
         version: link:../../sims/fluids/venturi-effect
@@ -1456,36 +1486,6 @@ importers:
       '@aperi21/plugin-optics':
         specifier: workspace:*
         version: link:../plugin-optics
-      '@aperi21/sim-archimedes-principle':
-        specifier: workspace:*
-        version: link:../../sims/fluids/archimedes-principle
-      '@aperi21/sim-centripetal-acceleration':
-        specifier: workspace:*
-        version: link:../../sims/kinematics/centripetal-acceleration
-      '@aperi21/sim-dc-circuit':
-        specifier: workspace:*
-        version: link:../../sims/electronics/dc-circuit
-      '@aperi21/sim-laminar-vs-turbulent':
-        specifier: workspace:*
-        version: link:../../sims/fluids/laminar-vs-turbulent
-      '@aperi21/sim-pressure-and-container-shape':
-        specifier: workspace:*
-        version: link:../../sims/fluids/pressure-and-container-shape
-      '@aperi21/sim-pressure-isotropy':
-        specifier: workspace:*
-        version: link:../../sims/fluids/pressure-isotropy
-      '@aperi21/sim-projectile':
-        specifier: workspace:*
-        version: link:../../sims/physics/projectile
-      '@aperi21/sim-ray-tracing':
-        specifier: workspace:*
-        version: link:../../sims/optics/ray-tracing
-      '@aperi21/sim-torricellis-law':
-        specifier: workspace:*
-        version: link:../../sims/fluids/torricellis-law
-      '@aperi21/sim-velocity-time-graph':
-        specifier: workspace:*
-        version: link:../../sims/kinematics/velocity-time-graph
       typescript:
         specifier: ^5.6.3
         version: 5.9.3

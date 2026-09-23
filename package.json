@@ -21,7 +21,8 @@
     "screen:gen": "tsx scripts/gen-screen-labels.mts",
     "concept:index": "tsx scripts/gen-concept-index.mts",
     "concept:audit": "tsx scripts/concept-audit.mts",
-    "gap:ledger": "tsx scripts/gen-topic-gap-ledger.mts"
+    "gap:ledger": "tsx scripts/gen-topic-gap-ledger.mts",
+    "registry:gen": "tsx scripts/gen-bundle-registry.mts"
   },
   "devDependencies": {
     "@aperi21/bootstrap": "workspace:*",
