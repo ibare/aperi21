@@ -46,6 +46,7 @@ const GENERATORS = [
   'messages:gen', // 호출부 en 리터럴 → messages/en.json
   'catalog:topics', // topics.yaml + 조각 → 사이트 데이터
   'gap:ledger', // 간극 entries → LEDGER
+  'surface:gen', // LEDGER + sim 선언 → 선언된 표면 (장부를 맞댈 사실)
 ] as const;
 
 function status(): Set<string> {
