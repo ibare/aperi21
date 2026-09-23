@@ -81,6 +81,10 @@ export const manometerConcept: Aperi21ConceptSource = {
         concept: 'hydrostatic-pressure',
         note: 'One is where the tie between a height of liquid and a pressure is the claim under test; the other takes it as settled and makes an instrument of it.',
       },
+      {
+        concept: 'capillary-action',
+        note: 'Both have one liquid standing at two unequal levels, but one has the gap forced by a pressure applied from outside and reads the gap as the measure of it, while the other has the liquid refuse to stand level of itself, the gap settled by the curve of its surface in a narrow bore.',
+      },
     ],
   },
 };

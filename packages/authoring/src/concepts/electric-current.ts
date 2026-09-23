@@ -93,6 +93,14 @@ export const electricCurrentConcept: Aperi21ConceptSource = {
         concept: 'continuity-equation',
         note: 'Both take a section and ask what passes it in a given time, but one counts discrete carriers to give a rate its meaning, and the other takes the rate as settled and asks what a narrowing does to the speed.',
       },
+      {
+        concept: 'ohms-law',
+        note: 'One says what the count of charge past a section means, and that speed and crowding are two roads to the same doubled count; the other takes the count as a single figure and claims only that it follows the voltage in proportion.',
+      },
+      {
+        concept: 'kirchhoffs-current-law',
+        note: 'One counts what crosses a single section and is how a rate gets its meaning; the other takes the sections where a wire divides and claims the counts through the branches come to the count in the trunk.',
+      },
     ],
   },
 };

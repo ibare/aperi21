@@ -102,6 +102,10 @@ export const ionizingRadiationConcept: Aperi21ConceptSource = {
         concept: 'compton-scattering',
         note: 'Both are about a single energetic photon meeting matter, but one follows what the photon keeps after the encounter and the other only whether the thing it struck came apart.',
       },
+      {
+        concept: 'decay-types',
+        note: 'Both sort radiation by what it does on its way through matter, but one sorts three kinds leaving a nucleus by the thickness of material that halts each, while the other sorts the whole spectrum by whether a single photon carries enough to break a bond.',
+      },
     ],
   },
 };

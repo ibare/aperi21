@@ -93,6 +93,14 @@ export const dragInFluidConcept: Aperi21ConceptSource = {
         concept: 'reynolds-number',
         note: 'One changes the body and keeps everything about the stream the same; the other leaves the body aside and changes the stream, asking when two of them count as the same flow.',
       },
+      {
+        concept: 'stokes-drag',
+        note: 'Opposite regimes of the same resistance: one is a fast flow, where what comes away behind the body settles what it costs; the other is a creeping flow, where the cost rises with the radius and with the speed and with nothing else.',
+      },
+      {
+        concept: 'lift-force',
+        note: 'Both put one body in a stream and ask what its form does there — one what the trailing shape costs in resistance along the flow, the other what an angle to the flow wins as a push across it.',
+      },
     ],
   },
 };

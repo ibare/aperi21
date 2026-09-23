@@ -52,23 +52,62 @@ if (existsSync(entriesDir)) {
 rows.sort((a, b) => (order.get(a.topic) ?? 0) - (order.get(b.topic) ?? 0));
 
 const byKind = (k: string) => rows.filter((r) => r.kind === k).length;
+const byDomain = new Map<string, number>();
+for (const r of rows) byDomain.set(domainOf.get(r.topic)!, (byDomain.get(domainOf.get(r.topic)!) ?? 0) + 1);
+
+/** 갈래마다 무엇을 해야 하는지. 읽는 사람이 목록을 보기 전에 알아야 한다. */
+const KIND_NOTE: Record<string, string> = {
+  조각: '조각이 덜 보여 준다 — **조각을 보강한다.** 보강하면 그 개념 메타를 다시 쓴다(definitionHash 가 바뀌어 호스트가 그 개념만 다시 임베딩한다).',
+  엔진: '덜 보여 준 까닭이 엔진 어휘다 — `tasks/engine-requirements/gap-ledger.md`(G) 로 넘긴다.',
+  설명: '주제 설명이 실제보다 넓거나 어긋난다 — **`docs/topics/topics.yaml` 의 `desc` · `visualNote` 를 화면에 맞춘다.**',
+};
+
+/** 손이 가는 순서 — 조각이 가장 무겁고, 설명이 가장 가볍다. */
+const KIND_ORDER = ['조각', '엔진', '설명'];
+
+const id = (i: number) => `T${String(i + 1).padStart(2, '0')}`;
+const idOf = new Map(rows.map((r, i) => [r, id(i)]));
+
 const lines = [
   '# 주제 ↔ 조각 간극 장부',
   '',
   '자동 생성 — 직접 편집하지 말 것. 원본은 `entries/<분과>-<n>.md`, 규약은 `README.md`.',
   '',
-  `생성: pnpm gap:ledger · 전체 ${rows.length}건 (설명 ${byKind('설명')} · 조각 ${byKind('조각')} · 엔진 ${byKind('엔진')})`,
+  `생성: \`pnpm gap:ledger\` · **전체 ${rows.length}건** — 조각 ${byKind('조각')} · 엔진 ${byKind('엔진')} · 설명 ${byKind('설명')}`,
   '',
-  '갈래는 쓰는 사람이 본 **가장 그럴듯한 것**이고 판정이 아니다. 한 건씩 읽고 사람이 정한다.',
+  '갈래는 쓴 사람이 본 **가장 그럴듯한 것**이고 판정이 아니다. 한 건씩 읽고 사람이 정한다.',
   '',
-  '| id | 분과 | 주제 | 주제가 약속한 것 | 화면이 하는 것 | 개념에서 처리한 방식 | 갈래 |',
-  '|---|---|---|---|---|---|---|',
-  ...rows.map((r, i) => {
-    const id = `T${String(i + 1).padStart(2, '0')}`;
-    return `| ${id} | ${domainOf.get(r.topic)} | \`${r.topic}\` | ${r.promised} | ${r.screen} | ${r.handled} | ${r.kind} |`;
-  }),
+  '분과별: ' +
+    topics.domains
+      .filter((d) => byDomain.has(d.id))
+      .map((d) => `${d.id} ${byDomain.get(d.id)}`)
+      .join(' · '),
+  '',
+  '## 한눈에',
+  '',
+  '| id | 분과 | 주제 | 갈래 |',
+  '|---|---|---|---|',
+  ...rows.map((r) => `| [${idOf.get(r)}](#${idOf.get(r)!.toLowerCase()}) | ${domainOf.get(r.topic)} | \`${r.topic}\` | ${r.kind} |`),
   '',
 ];
+
+for (const kind of KIND_ORDER) {
+  const ofKind = rows.filter((r) => r.kind === kind);
+  if (ofKind.length === 0) continue;
+  lines.push(`## ${kind} — ${ofKind.length}건`, '', KIND_NOTE[kind] ?? '', '');
+  for (const r of ofKind) {
+    lines.push(
+      `### ${idOf.get(r)} · \`${r.topic}\``,
+      '',
+      `\`${domainOf.get(r.topic)}\` · 원본 \`entries/${r.file}\``,
+      '',
+      `- **주제가 약속한 것** — ${r.promised}`,
+      `- **화면이 하는 것** — ${r.screen}`,
+      `- **개념에서 처리한 방식** — ${r.handled}`,
+      '',
+    );
+  }
+}
 
 writeFileSync(out, lines.join('\n'), 'utf8');
 process.stdout.write(`[gap] ${rows.length}건 → tasks/topic-gaps/LEDGER.md\n`);

@@ -81,6 +81,10 @@ export const earthRevolutionConstellationsConcept: Aperi21ConceptSource = {
         concept: 'stellar-parallax',
         note: 'One uses Earth’s place in its orbit to change which stars are on view; the other uses the same journey to shift one near star slightly against stars that hold still.',
       },
+      {
+        concept: 'seasonal-sun-path',
+        note: 'Both are what one year does to the sky over a single place: one is the direction the night side is turned toward, which settles the stars on view, and the other is the Sun’s own daily track, which the same year raises and lowers.',
+      },
     ],
   },
 };

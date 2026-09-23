@@ -88,6 +88,10 @@ export const energyInInductorConcept: Aperi21ConceptSource = {
         concept: 'elastic-potential-energy',
         note: 'Both bank work against something that pushes back and return it in full, and both grow as a square, but one is banked by deforming matter and the other by setting up a field with no moving part.',
       },
+      {
+        concept: 'energy-in-capacitor',
+        note: 'Both bank work against an opposition that the banking itself raises, but one is opposed by a voltage growing with how much has already been stored, while the other is opposed only while the current is changing and not at all once it holds steady.',
+      },
     ],
   },
 };

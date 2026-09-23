@@ -97,6 +97,10 @@ export const rayleighScatteringConcept: Aperi21ConceptSource = {
         concept: 'albedo',
         note: 'One asks what share of arriving light a surface turns back regardless of its colour; the other asks which wavelengths are removed from a beam as it crosses air.',
       },
+      {
+        concept: 'scattering',
+        note: 'One keeps the scatterer fixed as air and makes wavelength the variable, so the claim is which colour is thrown sideways and which survives a long path; the other makes the size of the scattering particle the variable, so a split of colour is only one of the outcomes a size can produce.',
+      },
     ],
   },
 };

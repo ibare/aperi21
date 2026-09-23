@@ -86,6 +86,14 @@ export const charlesLawConcept: Aperi21ConceptSource = {
         concept: 'maxwell-boltzmann-distribution',
         note: 'Both turn on what a temperature is, one by asking what the gas as a whole does as the temperature falls towards nothing, the other by asking how the molecules inside it are spread at a temperature it actually has.',
       },
+      {
+        concept: 'isobaric-isochoric',
+        note: 'Both hold a gas at one pressure while it is warmed, but one asks what the volume does as the temperature climbs and where the line it traces points; the other sets that holding against holding the volume instead, and asks which of the two leaves the gas hotter for the same heat.',
+      },
+      {
+        concept: 'pv-diagram',
+        note: 'Both put a gas’s state on a plot and read unlike things off it: one continues a straight line back past everything measured to a temperature no gas reaches, the other takes the area beneath a path as the work the gas has done.',
+      },
     ],
   },
 };

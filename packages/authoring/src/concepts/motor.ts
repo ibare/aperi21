@@ -85,6 +85,10 @@ export const motorConcept: Aperi21ConceptSource = {
         concept: 'uniform-circular-motion',
         note: 'One is a body already going round and what must act on it to keep it on the circle; the other is about getting something to go round at all and why it would otherwise stop after a quarter of a turn.',
       },
+      {
+        concept: 'force-on-current-wire',
+        note: 'One has a single wire pushed one way and asks what makes the push larger or turns it about; the other has two sides of a loop pushed opposite ways, so the pushes make a couple, and the question becomes what must be reversed for the turning to go on.',
+      },
     ],
   },
 };

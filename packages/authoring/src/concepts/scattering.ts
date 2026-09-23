@@ -95,6 +95,10 @@ export const scatteringConcept: Aperi21ConceptSource = {
         concept: 'diffraction',
         note: 'Both have light arrive somewhere it was not heading, by different means — one from particles in its path throwing it out, the other from an opening or an edge in a wall it has passed.',
       },
+      {
+        concept: 'rayleigh-scattering',
+        note: 'One answers what a particle of a given size does with light of every colour at once; the other fixes the scatterer and follows one medium over distance, so what is claimed is the colour of the sky and of a low sun rather than the behaviour of a particle.',
+      },
     ],
   },
 };

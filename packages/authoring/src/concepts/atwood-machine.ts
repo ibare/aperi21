@@ -78,6 +78,10 @@ export const atwoodMachineConcept: Aperi21ConceptSource = {
         concept: 'free-fall',
         note: 'One says a body coming down with nothing attached goes the same way whatever it weighs; the other ties a body to a second one and finds the pair’s descent then turning on how unequal the two are.',
       },
+      {
+        concept: 'connected-bodies',
+        note: 'One is driven by the inequality of its two masses, so how the mass is divided is the whole of the answer; the other is driven by a force from outside, whose effect turns on the total however that total is divided.',
+      },
     ],
   },
 };

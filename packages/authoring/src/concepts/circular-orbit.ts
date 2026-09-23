@@ -95,6 +95,10 @@ export const circularOrbitConcept: Aperi21ConceptSource = {
         concept: 'free-fall',
         note: 'Both are bodies with nothing but gravity on them, but one is going sideways fast enough that its falling never arrives, while the other falls straight to the ground.',
       },
+      {
+        concept: 'escape-velocity',
+        note: 'Both are bodies under gravity alone that never come down, for different reasons: one goes sideways fast enough that the pull only turns it and the falling never arrives, while the other is sent straight out fast enough that a pull weakening with distance never gets it back.',
+      },
     ],
   },
 };

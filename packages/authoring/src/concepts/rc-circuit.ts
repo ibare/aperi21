@@ -85,6 +85,10 @@ export const rcCircuitConcept: Aperi21ConceptSource = {
         concept: 'charging-methods',
         note: 'One has charge driven along a wire until what has already gathered holds the flow back; the other is about how a body comes to be charged at all, and which way the electrons went.',
       },
+      {
+        concept: 'energy-in-capacitor',
+        note: 'One never asks what filling a capacitor costs and is entirely about how long the filling takes; the other never mentions time and is entirely about the cost, which comes to half of charge times voltage.',
+      },
     ],
   },
 };

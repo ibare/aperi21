@@ -85,6 +85,10 @@ export const photoelectricEffectConcept: Aperi21ConceptSource = {
         concept: 'blackbody-radiation',
         note: 'Both are places where the older, continuous account of light fails; one fails in the shape of what a hot body gives off, the other in whether a metal surrenders a single electron.',
       },
+      {
+        concept: 'photovoltaic-effect',
+        note: 'Both turn on a single photon carrying more than a threshold, but one asks only whether an electron is freed from the surface at all, while the other keeps what the photon makes inside the material and is about the voltage that separating it produces.',
+      },
     ],
   },
 };

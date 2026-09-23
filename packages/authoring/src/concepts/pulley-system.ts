@@ -79,6 +79,10 @@ export const pulleySystemConcept: Aperi21ConceptSource = {
         concept: 'connected-bodies',
         note: 'Both hang several things on one rope, but here the rope is rigged to hold a load up, and there it is there to drag bodies along together.',
       },
+      {
+        concept: 'mechanical-advantage',
+        note: 'One settles the factor by counting the strands that share the load; the other is the trade behind any such factor — force cut and distance lengthened by the same amount, whatever the tool.',
+      },
     ],
   },
 };

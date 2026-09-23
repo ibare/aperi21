@@ -90,6 +90,10 @@ export const transverseWaveConcept: Aperi21ConceptSource = {
         concept: 'wavefront-and-ray',
         note: 'Both end at a right angle, between different pairs — here between the medium’s motion and the wave’s advance, there between a surface of equal phase and the line the wave runs along, which is geometry on a map rather than motion of matter.',
       },
+      {
+        concept: 'standing-wave',
+        note: 'One sorts waves by which way the medium moves relative to the travel; the other asks whether the shape travels at all, which can be asked of either sort and is answered by what two opposite waves make together.',
+      },
     ],
   },
 };

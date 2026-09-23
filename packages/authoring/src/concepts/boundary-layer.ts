@@ -82,6 +82,10 @@ export const boundaryLayerConcept: Aperi21ConceptSource = {
         concept: 'drag-in-fluid',
         note: 'One follows the slowed fluid while it still clings to the surface; the other is about what it costs once that fluid comes away from the body and leaves a churning trail behind.',
       },
+      {
+        concept: 'viscosity',
+        note: 'One asks what a fluid’s own friction amounts to, weighed as the force it takes to shear it; the other takes that friction as given and asks how far out from a surface its effect reaches before the stream behaves as though there were none.',
+      },
     ],
   },
 };

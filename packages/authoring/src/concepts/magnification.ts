@@ -94,6 +94,10 @@ export const magnificationConcept: Aperi21ConceptSource = {
         concept: 'pinhole-camera',
         note: 'Both put an inverted picture where the light really arrives, and in both its size follows from two distances; one gets there by bending a whole cone of light, the other by admitting a narrow pencil of it.',
       },
+      {
+        concept: 'real-vs-virtual-image',
+        note: 'One measures an image against its object and reports a ratio that the object’s position sets; the other asks the prior question of an image — whether light truly arrived where it appears — and answers it without any number at all.',
+      },
     ],
   },
 };

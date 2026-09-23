@@ -89,6 +89,10 @@ export const buoyancyConcept: Aperi21ConceptSource = {
         concept: 'hydrostatic-pressure',
         note: 'One takes the tie between depth and pressure for granted and works only with the difference between two depths; the other is where that tie is itself the claim.',
       },
+      {
+        concept: 'pressure-isotropy',
+        note: 'One turns on faces lying at different depths, where the opposed side faces cancel and only the disagreement between top and bottom is left over; the other stays at one place and turns a surface there, finding the strength of the push unaltered by which way it faces.',
+      },
     ],
   },
 };

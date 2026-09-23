@@ -102,6 +102,10 @@ export const meissnerEffectConcept: Aperi21ConceptSource = {
         concept: 'magnetic-materials',
         note: 'Both sort a body by how it answers a magnet, but one ranges over the ordinary degrees of attraction and weak repulsion, while the other is a complete refusal that switches on at a temperature.',
       },
+      {
+        concept: 'superconductivity',
+        note: 'Both mark the same critical temperature, but one makes the refusal of a magnetic field the whole claim, while the other never mentions a field and has the electrical resistance drop outright to nothing.',
+      },
     ],
   },
 };

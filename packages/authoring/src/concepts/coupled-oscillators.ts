@@ -85,6 +85,10 @@ export const coupledOscillatorsConcept: Aperi21ConceptSource = {
         concept: 'conical-pendulum',
         note: 'Both hang a bob on a string, but one is about a swing crossing between two of them, while the other is about a single bob held in a steady circle and the forces that keep it there.',
       },
+      {
+        concept: 'shm-energy',
+        note: 'Both have a fixed total shared between two parts, each filling as the other empties, but here the two parts are two bodies holding the same kind of energy, and there they are two forms of energy within one body.',
+      },
     ],
   },
 };

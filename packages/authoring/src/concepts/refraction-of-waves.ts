@@ -83,6 +83,10 @@ export const refractionOfWavesConcept: Aperi21ConceptSource = {
         concept: 'seismic-waves',
         note: 'One is the bending itself, isolated at a single boundary; the other uses bending inside a body as a means, and its question is which parts of the far surface end up receiving nothing.',
       },
+      {
+        concept: 'wave-basics',
+        note: 'One states the lock between a wave’s wavelength, period and speed while nothing about the wave changes; the other is what that lock forces when the speed changes at a boundary and the period cannot, which is why the crest ends up pointing elsewhere.',
+      },
     ],
   },
 };

@@ -89,6 +89,10 @@ export const physicalPendulumConcept: Aperi21ConceptSource = {
         concept: 'pendulum-amplitude-dependence',
         note: 'Both are about something that shifts the timing, but one shifts it by moving the pivot along the body and the other by opening the swing wider.',
       },
+      {
+        concept: 'parallel-axis-theorem',
+        note: 'One follows the timing of a swing, which answers both to the resistance about the pivot and to how far the weight now pulls from it; the other follows that resistance alone and says what moving the axis off the centre adds to it.',
+      },
     ],
   },
 };

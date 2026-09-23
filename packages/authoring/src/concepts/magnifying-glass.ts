@@ -93,6 +93,10 @@ export const magnifyingGlassConcept: Aperi21ConceptSource = {
         concept: 'concave-mirror',
         note: 'Both give an upright enlarged image when the object is brought inside the focus; one goes on to ask what that is worth to an eye, the other what happens on either side of that threshold.',
       },
+      {
+        concept: 'converging-diverging-lens',
+        note: 'One judges a lens by what it does to parallel light, with no object and no observer in the account; the other places an object nearer than the focus and judges by the angle the light ends up taking at an eye, measured against what that eye could manage unaided.',
+      },
     ],
   },
 };

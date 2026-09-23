@@ -95,6 +95,10 @@ export const firstLawOfThermodynamicsConcept: Aperi21ConceptSource = {
         concept: 'energy-dissipation',
         note: 'One shows heat arriving and being divided deliberately; the other shows ordered motion leaking into warmth that is not divided but lost.',
       },
+      {
+        concept: 'isothermal-process',
+        note: 'One divides the heat between what stays in the gas and what leaves as work, with a pinned piston as the case where none leaves; the other is the opposite extreme, where the temperature is held so that none can stay and the whole of it goes out as work.',
+      },
     ],
   },
 };

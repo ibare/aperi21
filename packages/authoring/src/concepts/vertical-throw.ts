@@ -80,6 +80,10 @@ export const verticalThrowConcept: Aperi21ConceptSource = {
         concept: 'free-fall',
         note: 'Both drop a body under gravity alone, but one asks whether the journey back repeats the journey out, and the other asks whether the journey depends on what is falling.',
       },
+      {
+        concept: 'projectile-motion',
+        note: 'One takes a single flight along one line and sets its rising half against its falling half; the other sets whole flights beside one another and finds that differing forward speeds leave the descent untouched.',
+      },
     ],
   },
 };

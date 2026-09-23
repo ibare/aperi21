@@ -69,6 +69,10 @@ export const springForceConcept: Aperi21ConceptSource = {
         concept: 'tension',
         note: 'Here a spring being stretched is the whole claim; there a stretched spring is only the instrument, and the claim is about what a rope carries.',
       },
+      {
+        concept: 'newtons-second-law',
+        note: 'Both are proportions that force takes part in, but here the force is what follows from a stretch, and there the force is what is given and the gain of motion is what follows from it.',
+      },
     ],
   },
 };

@@ -95,6 +95,10 @@ export const singleSlitDiffractionConcept: Aperi21ConceptSource = {
         concept: 'resolving-power',
         note: 'Both hinge on the first dark ring of a pattern from an opening, for opposite purposes — one uses it to bound a single pattern, the other to say when two patterns can still be told apart.',
       },
+      {
+        concept: 'youngs-double-slit',
+        note: 'One changes the width of its one opening and asks where the bright band comes to an end; the other leaves the openings as they are and changes how many there are, so its claim is about light being removed from places rather than about where a band stops.',
+      },
     ],
   },
 };

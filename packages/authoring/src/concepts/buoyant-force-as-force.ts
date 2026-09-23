@@ -73,6 +73,10 @@ export const buoyantForceAsForceConcept: Aperi21ConceptSource = {
         concept: 'equilibrium-of-forces',
         note: 'One has a body already standing still and asks how three forces on it share out as conditions change; the other asks what it takes for such a set of forces to add to nothing in the first place.',
       },
+      {
+        concept: 'normal-force',
+        note: 'Both hold a body up from what it rests in or on, but one is sized by how much of the body the fluid has closed around, and the other by however much is needed to keep the body from being driven through.',
+      },
     ],
   },
 };

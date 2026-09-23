@@ -7,8 +7,8 @@
  * 이쪽만 매질 · 굴절률 · 법선 쪽으로 꺾임 · 물 → 유리 → 다이아몬드 어휘를 갖는다.
  * 들어오는 각(45°)은 한 주기 내내 움직이지 않는다 — 주장은 **바뀌는 것이 매질 하나**라는 것이다.
  *
- * 파동 묶음(`refraction-of-waves`)과 `total-internal-reflection` 은 아직 선언되지 않아
- * contrastWith 로 잇지 못한다. 그쪽 글은 avoidWhen 으로 되돌린다.
+ * `total-internal-reflection` 은 뒤늦게 이었다 — 매질을 고정하고 각을 여는 쪽이라 변수가
+ * 이 조각과 정확히 맞바뀐다. 파동 묶음(`refraction-of-waves`)은 avoidWhen 으로 되돌린다.
  *
  * 조작기가 없다. affordances 에 **저절로 일어나는 것**을 적는다.
  */
@@ -90,6 +90,14 @@ export const snellsLawConcept: Aperi21ConceptSource = {
       {
         concept: 'convex-mirror',
         note: 'Both turn a beam away from the path it arrived on, but one does it at the boundary between two materials, and the other by the shape of a surface the light never enters.',
+      },
+      {
+        concept: 'total-internal-reflection',
+        note: 'One holds the angle of arrival fixed and changes the material, so light always crosses and only how much it turns is at issue; the other holds the materials fixed and opens the angle, reaching a point past which nothing crosses at all and the bending has no answer left to give.',
+      },
+      {
+        concept: 'thin-lens',
+        note: 'One takes a single flat boundary and asks how far one beam turns as it crosses; the other stacks two curved boundaries and asks what they do together to a whole family of beams leaving one point, taking the turning at each face for granted and never naming it.',
       },
     ],
   },

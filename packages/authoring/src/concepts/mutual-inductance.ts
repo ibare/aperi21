@@ -84,6 +84,10 @@ export const mutualInductanceConcept: Aperi21ConceptSource = {
         concept: 'transformer',
         note: 'One says only whether and when a neighbouring coil answers at all; the other takes that answer for granted and asks what fixes its size, which is the count of turns on each side.',
       },
+      {
+        concept: 'self-inductance',
+        note: 'Both turn on a current changing rather than merely being large, but one has that change answered by a voltage in a second coil no wire joins, and the other by a voltage in the very coil carrying it.',
+      },
     ],
   },
 };

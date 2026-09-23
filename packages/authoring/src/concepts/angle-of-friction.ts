@@ -74,6 +74,10 @@ export const angleOfFrictionConcept: Aperi21ConceptSource = {
         concept: 'free-fall',
         note: 'Both end with the weight of the body dropping out of the answer — there for how quickly it falls, here for the tilt at which it starts to slide.',
       },
+      {
+        concept: 'static-friction',
+        note: 'One is about the limit alone, read off as the tilt at which holding gives way and unmoved by how much weight is stacked on; the other is about the hold below that limit, which matches every pull exactly as the pull grows.',
+      },
     ],
   },
 };

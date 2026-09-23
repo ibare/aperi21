@@ -89,6 +89,10 @@ export const angularMomentumVectorConcept: Aperi21ConceptSource = {
         concept: 'vector-addition',
         note: 'Both are about arrows standing for physical quantities, but one is about how the direction of such an arrow is decided for a rotation and the other about combining arrows once they exist.',
       },
+      {
+        concept: 'angular-momentum',
+        note: 'One fixes which way a rotation points and which end of the axis is chosen; the other is about how much of it there is, and that having more of it makes the axis harder to turn aside.',
+      },
     ],
   },
 };

@@ -82,6 +82,10 @@ export const relativisticMomentumConcept: Aperi21ConceptSource = {
         concept: 'kinetic-energy',
         note: 'One is a quantity that rises with the square of a speed and is spent in stopping; the other is a quantity that rises without bound while the speed it belongs to stalls at a ceiling.',
       },
+      {
+        concept: 'relativistic-velocity-addition',
+        note: 'Both arrive at the same ceiling by different routes: one keeps pushing a single body and finds each push buying less speed than the last, while the other combines the speed of a carrier with what it sends forward and finds the total falling short of the sum.',
+      },
     ],
   },
 };

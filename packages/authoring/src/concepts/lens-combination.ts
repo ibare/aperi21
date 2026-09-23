@@ -96,6 +96,10 @@ export const lensCombinationConcept: Aperi21ConceptSource = {
         concept: 'chromatic-aberration',
         note: 'One shows that a diverging lens laid against a converging one takes strength away in a definite amount; the other shows the defect that such a pairing is chosen to undo, without correcting it.',
       },
+      {
+        concept: 'converging-diverging-lens',
+        note: 'One asks where the gathering place of a single shape stands — behind the lens, or in front of it for the other shape; the other keeps a converging lens in hand and asks only how far that place shifts when a second is laid against it, so a diverging lens figures as something that subtracts rather than something that spreads.',
+      },
     ],
   },
 };

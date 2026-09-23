@@ -91,6 +91,10 @@ export const fieldOfLoopAndSolenoidConcept: Aperi21ConceptSource = {
         concept: 'field-lines',
         note: 'One takes the crowding of lines as an already-agreed way of showing strength and uses it to say what stacking does; the other puts that agreement itself on trial.',
       },
+      {
+        concept: 'biot-savart-law',
+        note: 'Both build a field by adding, but one adds whole loops to one another and asks what becomes of the field through the space they enclose, while the other adds the contributions of the short lengths within a single loop to reach the field at one point.',
+      },
     ],
   },
 };

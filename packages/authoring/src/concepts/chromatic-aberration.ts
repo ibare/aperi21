@@ -93,6 +93,10 @@ export const chromaticAberrationConcept: Aperi21ConceptSource = {
         concept: 'telescope',
         note: 'One shows what a single lens does wrong to white light; the other builds an instrument out of lenses and asks only what happens to the angle, taking the gathering itself for granted.',
       },
+      {
+        concept: 'dispersion',
+        note: 'One takes it as given that glass bends each colour by its own amount and asks what that costs an instrument; the other is that difference itself, stated at a single face as a dependence of bending on wavelength, where nothing is gathered and so nothing is yet at fault.',
+      },
     ],
   },
 };

@@ -88,6 +88,10 @@ export const displacementCurrentConcept: Aperi21ConceptSource = {
         concept: 'field-of-straight-wire',
         note: 'One asks whether a loop around nothing can carry a field; the other asks what shape the field of a plain current takes and how it answers when the current is reversed.',
       },
+      {
+        concept: 'lc-oscillation',
+        note: 'Both have a capacitor whose charge is changing and magnetism in the same account, but one claims the changing field in the gap is attended by a magnetic field exactly as a current would be, while the other takes both fields as given and follows the store passing from one to the other.',
+      },
     ],
   },
 };

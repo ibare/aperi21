@@ -89,6 +89,10 @@ export const multipleMirrorImagesConcept: Aperi21ConceptSource = {
         concept: 'specular-diffuse-reflection',
         note: 'One has two flat surfaces set at an angle, each keeping light orderly enough to build an image; the other has a single surface whose tilts are irregular, so no image forms at all.',
       },
+      {
+        concept: 'real-vs-virtual-image',
+        note: 'One asks how many images an arrangement yields and answers with a count the angle sets; the other asks of a single image what kind it is — whether light genuinely arrived where the image appears or only the backward continuations agree there.',
+      },
     ],
   },
 };

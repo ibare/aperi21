@@ -85,6 +85,14 @@ export const noiseCancellationConcept: Aperi21ConceptSource = {
         concept: 'beats-in-oscillation',
         note: 'Both are two waves added together with the sum as the thing to watch. One has a sum that swells and dies over and over because the two rates differ; the other has a sum meant to stay at nothing, and what spoils it is timing rather than rate.',
       },
+      {
+        concept: 'constructive-destructive',
+        note: 'One varies how far out of step two identical waves are and finds their sum taking every size between twice over and nothing; the other aims at that nothing deliberately, and its difficulty is holding the timing for a sound that is not one steady wave.',
+      },
+      {
+        concept: 'superposition',
+        note: 'One establishes that two waves add where they meet and each carries on unchanged; the other puts that adding to work to leave silence, which is not either sound being destroyed — what is annulled is the sum at one place.',
+      },
     ],
   },
 };

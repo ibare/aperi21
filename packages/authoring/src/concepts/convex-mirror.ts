@@ -89,6 +89,10 @@ export const convexMirrorConcept: Aperi21ConceptSource = {
         concept: 'law-of-reflection',
         note: 'One takes the equal angles as settled and asks what follows when the line square to the surface swings from one end of a mirror to the other; the other holds the surface flat, where that line is the same everywhere.',
       },
+      {
+        concept: 'real-vs-virtual-image',
+        note: 'One reports an image that stays on the far side of the surface wherever the object is put, so its kind never turns over and the claim can be made without testing it; the other makes that kind the question itself and settles it by whether light has truly gathered at the place.',
+      },
     ],
   },
 };

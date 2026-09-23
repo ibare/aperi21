@@ -92,6 +92,10 @@ export const diffractionGratingConcept: Aperi21ConceptSource = {
         concept: 'huygens-principle',
         note: 'One counts the sources and finds the sum growing sharper; the other asks how sources spread along a front conspire into the front itself.',
       },
+      {
+        concept: 'youngs-double-slit',
+        note: 'One starts from a single opening and claims that adding a second takes light away from places it had been falling on; the other starts from a pattern already standing and claims that adding many more openings leaves every bright place exactly where it was while narrowing it.',
+      },
     ],
   },
 };

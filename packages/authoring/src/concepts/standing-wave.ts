@@ -90,6 +90,10 @@ export const standingWaveConcept: Aperi21ConceptSource = {
         concept: 'air-column-resonance',
         note: 'One is about how a non-travelling pattern arises at all; the other is about what the ends of a body do to which such patterns are permitted.',
       },
+      {
+        concept: 'interference',
+        note: 'Both are waves adding to leave places that never move, but one has two waves running opposite ways along one line, so the whole pattern ceases to travel, while the other has two sources on a surface, where the still places lie along lines the ripples go on streaming through.',
+      },
     ],
   },
 };

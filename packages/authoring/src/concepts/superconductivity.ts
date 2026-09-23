@@ -103,6 +103,10 @@ export const superconductivityConcept: Aperi21ConceptSource = {
         concept: 'resistance-and-geometry',
         note: 'One keeps every sample as it is and changes only the temperature; the other keeps the temperature fixed and asks what the length and thickness of a conductor do to its resistance.',
       },
+      {
+        concept: 'meissner-effect',
+        note: 'Both are about the same transition at the same critical temperature, but one claims only that the electrical resistance goes to nothing and says nothing of magnetism; the other says nothing of resistance and claims that a magnetic field already inside is driven out.',
+      },
     ],
   },
 };

@@ -84,6 +84,10 @@ export const triplePointConcept: Aperi21ConceptSource = {
         concept: 'thermal-equilibrium',
         note: 'Both are states that stay put, but of different kinds — one is two bodies having settled on a common temperature, the other is three phases of one substance holding together at a condition that permits it.',
       },
+      {
+        concept: 'charles-law',
+        note: 'Both end at one temperature that a scale can be anchored to, but one is a condition a substance actually occupies and can be brought back to, while the other is arrived at only by continuing a line past everything measured, with nothing sitting there.',
+      },
     ],
   },
 };

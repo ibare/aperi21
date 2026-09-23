@@ -87,6 +87,10 @@ export const isobaricIsochoricConcept: Aperi21ConceptSource = {
         concept: 'cyclic-process',
         note: 'One shows two changes parting from one state and never meeting; the other strings changes of exactly these two kinds into a closed loop and asks what survives it.',
       },
+      {
+        concept: 'first-law-of-thermodynamics',
+        note: 'One names the two constraints and compares where the same heat leaves the gas; the other is the account behind that comparison — heat divides between warming the gas and the work it does, so taking the work away leaves the whole of it inside.',
+      },
     ],
   },
 };

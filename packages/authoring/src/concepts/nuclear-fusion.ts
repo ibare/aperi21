@@ -93,6 +93,14 @@ export const nuclearFusionConcept: Aperi21ConceptSource = {
         concept: 'star-radiation-gravity-balance',
         note: 'One is the source of the energy, taken one reaction at a time; the other is what that energy does once it is being made — holding a star open against its own weight.',
       },
+      {
+        concept: 'nuclear-fission',
+        note: 'One joins two light nuclei, with every particle surviving and a fraction of the mass gone; the other has a heavy nucleus made to break by a neutron striking it, with the particle count balancing across the break.',
+      },
+      {
+        concept: 'binding-energy-curve',
+        note: 'One weighs a single merger and finds the energy in the mass that went missing; the other never weighs anything and locates the same energy as a height gained on a comparison across nuclei, which is why joining light ones and splitting heavy ones both give something up.',
+      },
     ],
   },
 };

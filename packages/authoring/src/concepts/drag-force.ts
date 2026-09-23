@@ -75,6 +75,10 @@ export const dragForceConcept: Aperi21ConceptSource = {
         concept: 'free-fall',
         note: 'One says a fall with nothing opposing it comes out the same for every weight; the other is about the thing that opposes, and about how sharply it grows once a body is quick.',
       },
+      {
+        concept: 'kinetic-friction',
+        note: 'Both oppose a body that is already moving, but one grows with the speed and grows the faster the quicker the body goes, while the other comes out the same size at any speed.',
+      },
     ],
   },
 };

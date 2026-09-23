@@ -84,6 +84,14 @@ export const rlCircuitConcept: Aperi21ConceptSource = {
         concept: 'lc-oscillation',
         note: 'One has a resistor, so the current climbs once and settles for good; the other has none, so nothing ever settles and the same quantity keeps being handed back and forth.',
       },
+      {
+        concept: 'self-inductance',
+        note: 'One is that a coil answers a change in its own current with a voltage at all, and that the answer is fiercest where the change is most abrupt; the other takes that answer for granted and asks how the coil and a resistor share the supply while the current climbs.',
+      },
+      {
+        concept: 'kirchhoffs-voltage-law',
+        note: 'One claims that the rises and falls around a closed loop cancel at every instant, whatever the loop is made of; the other holds that total fixed and is about the share of it passing from the coil to the resistor as time goes on.',
+      },
     ],
   },
 };

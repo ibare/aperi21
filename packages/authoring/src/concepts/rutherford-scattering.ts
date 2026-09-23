@@ -98,6 +98,10 @@ export const rutherfordScatteringConcept: Aperi21ConceptSource = {
         concept: 'millikan-experiment',
         note: 'Both settle a fact about charge by gathering many separate results into a pattern; one finds that charge comes in whole steps, the other that positive charge sits in one tiny place.',
       },
+      {
+        concept: 'nuclear-structure',
+        note: 'One stays outside and concludes only that the positive charge is gathered in one tiny place; the other takes that place as given and asks what the counts of the particles inside it decide.',
+      },
     ],
   },
 };

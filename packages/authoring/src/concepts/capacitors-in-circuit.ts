@@ -91,6 +91,10 @@ export const capacitorsInCircuitConcept: Aperi21ConceptSource = {
         concept: 'uniform-field',
         note: 'One works only with plate lengths, gap widths and counts of charge and never draws what is in a gap; the other is about the field in such a gap and nothing else.',
       },
+      {
+        concept: 'series-parallel-resistors',
+        note: 'Both join two identical components in the same two ways and ask what the pair amounts to, but joining them end to end raises a resistance while it lowers a capacitance, because one counts what gets through and the other what is held.',
+      },
     ],
   },
 };

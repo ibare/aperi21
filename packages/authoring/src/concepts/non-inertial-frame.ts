@@ -80,6 +80,10 @@ export const nonInertialFrameConcept: Aperi21ConceptSource = {
         concept: 'reference-frame',
         note: 'One has two observers in steady relative motion, where both accounts stand as they are; the other has one of them speeding up, so his account contains a motion with nothing behind it.',
       },
+      {
+        concept: 'newtons-first-law',
+        note: 'One tells the scene from a frame that is itself picking up speed, where an untouched body appears to take on a motion nobody gave it; the other tells it from a frame where an untouched body simply keeps the motion it had.',
+      },
     ],
   },
 };

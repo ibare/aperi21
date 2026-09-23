@@ -68,6 +68,10 @@ export const gravitationalAccelerationConcept: Aperi21ConceptSource = {
         concept: 'free-fall',
         note: 'One asks what gravity does to a single velocity moment by moment; the other asks whether what it does depends on the body, and answers that it does not.',
       },
+      {
+        concept: 'average-acceleration',
+        note: 'One is a motion whose velocity changes by the same amount in every equal interval, so that no stretch of it hides anything; the other is a figure taken from the two end velocities alone, which is blind to whatever happened between them.',
+      },
     ],
   },
 };

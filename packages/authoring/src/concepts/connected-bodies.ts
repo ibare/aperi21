@@ -78,6 +78,10 @@ export const connectedBodiesConcept: Aperi21ConceptSource = {
         concept: 'uniformly-accelerated-motion',
         note: 'One asks what sets the acceleration when one force is shared among tied bodies; the other asks what a steady acceleration looks like in the marks it leaves behind.',
       },
+      {
+        concept: 'newtons-second-law',
+        note: 'One keeps a single push and asks what mass answers to it when bodies are tied together — the total, however unevenly it is split; the other keeps the body and varies the push, finding the gain of motion follow it.',
+      },
     ],
   },
 };

@@ -92,6 +92,10 @@ export const lorentzForceConcept: Aperi21ConceptSource = {
         concept: 'centripetal-force',
         note: 'One arrives at a force square to the motion from the way a magnetic field acts on a charge; the other takes such a force as given and is about what taking it away does to the path.',
       },
+      {
+        concept: 'motional-emf',
+        note: 'One varies the angle and the sign to settle where the force points and lets it do nothing further; the other has the same force acting along a conductor until the two ends stand at different potentials, which is what a voltage is made of.',
+      },
     ],
   },
 };

@@ -7,8 +7,8 @@
  *   pinhole-camera           통과한 빛 → **상**. 구멍을 키우면 밝아지는 대신 번진다 — **맞바꿈**이 주장이다
  * 이쪽만 상 · 거꾸로 섬 · 밝기 ↔ 또렷함 · 구멍 크기 어휘를 갖는다. 그림자의 크기 · 가장자리는 쓰지 않는다.
  *
- * 렌즈 조각(`ray-tracing` · `magnification` 등)은 아직 선언되지 않아 contrastWith 로 잇지 못한다.
- * 상 쪽 이웃은 이 묶음의 `concave-mirror` 로 이었다 — 둘 다 빛이 실제로 모이는 상이다.
+ * 상 쪽 이웃은 `concave-mirror` 와 `thin-lens` 로 이었다 — 셋 다 빛이 실제로 모이는 상이지만
+ * 이쪽만 **아무것도 꺾지 않는다**. 크기 쪽(`magnification`)은 그쪽에서 이리로 잇는다.
  *
  * 조작기가 없다. affordances 에 **저절로 일어나는 것**을 적는다.
  */
@@ -88,6 +88,10 @@ export const pinholeCameraConcept: Aperi21ConceptSource = {
       {
         concept: 'concave-mirror',
         note: 'Both end with a real inverted picture where light genuinely crosses; one gets there by throwing away all but a narrow pencil of light, the other by bending a wide cone of it back onto itself.',
+      },
+      {
+        concept: 'thin-lens',
+        note: 'One does no bending at all — the picture exists only because almost all the light is stopped, so sharpness has to be bought back by narrowing the opening; the other admits a whole cone and bends it, so nothing is thrown away and where the picture falls is settled by the distances and the focal length rather than by wherever the wall happens to stand.',
       },
     ],
   },

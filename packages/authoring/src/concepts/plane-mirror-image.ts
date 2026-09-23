@@ -96,6 +96,10 @@ export const planeMirrorImageConcept: Aperi21ConceptSource = {
         concept: 'convex-mirror',
         note: 'One puts an eye before a flat mirror to find where one object’s image stands; the other sets a flat and a curved mirror of equal width side by side and compares how much of the surroundings each can show.',
       },
+      {
+        concept: 'magnification',
+        note: 'One fixes an image by a distance alone — as far behind the glass as the object stands in front — and has nothing to compare it against; the other makes the comparison of image to object the whole claim, so moving the object is what decides how much larger or smaller the image comes out.',
+      },
     ],
   },
 };

@@ -86,6 +86,10 @@ export const angularMomentumConcept: Aperi21ConceptSource = {
         concept: 'newtons-first-law',
         note: 'One is a body keeping the direction its axis points until something turns it aside; the other a body keeping the velocity it has until something changes it.',
       },
+      {
+        concept: 'gyroscopic-precession',
+        note: 'One says how far an outside blow shifts the axis, and that a faster spin is shifted less; the other says which way that shift goes — the axis is carried round sideways rather than over the way the push leans.',
+      },
     ],
   },
 };

@@ -96,6 +96,10 @@ export const reflectionOfWavesConcept: Aperi21ConceptSource = {
         concept: 'string-vibration',
         note: 'Both are strings with ends that hold them, but one sends a single pulse at those ends to see how it comes back, while the other leaves the ends alone and moves where the string is pressed.',
       },
+      {
+        concept: 'wave-vs-particle-transport',
+        note: 'Both send a single pulse down to the far end of a string, for different questions: one asks what the end sends back and which way up, the other asks what reached the end at all, and answers that the string itself went nowhere.',
+      },
     ],
   },
 };

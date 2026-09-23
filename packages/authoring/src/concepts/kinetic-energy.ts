@@ -90,6 +90,10 @@ export const kineticEnergyConcept: Aperi21ConceptSource = {
         concept: 'kinetic-friction',
         note: 'One takes a fixed friction force as its measuring instrument; the other asks what that force itself depends on.',
       },
+      {
+        concept: 'conservation-of-mechanical-energy',
+        note: 'One asks how much a body holds at a given speed and answers with a square; the other asks nothing about the amount, only that the total stays whole while it passes from one form to the other.',
+      },
     ],
   },
 };

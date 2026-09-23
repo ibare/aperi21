@@ -89,6 +89,10 @@ export const bernoullisPrincipleConcept: Aperi21ConceptSource = {
         concept: 'torricellis-law',
         note: 'One keeps the fluid inside and watches pressure and speed swap along the way; the other lets it out and asks only what speed it leaves with.',
       },
+      {
+        concept: 'viscosity',
+        note: 'One has pressure and speed as two shares of a total that holds all along the stream; the other is the fluid’s own friction between layers, which is the thing that has to be left out for any such total to hold.',
+      },
     ],
   },
 };

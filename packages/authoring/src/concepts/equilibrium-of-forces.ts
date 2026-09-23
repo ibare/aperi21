@@ -79,6 +79,10 @@ export const equilibriumOfForcesConcept: Aperi21ConceptSource = {
         concept: 'uniform-motion',
         note: 'One says forces adding to nothing leaves a body exactly where it is; the other says the same nothing equally permits a body to keep going as it was.',
       },
+      {
+        concept: 'net-force',
+        note: 'One asks what arrangement leaves no remainder at all, so that the closing is itself the claim; the other takes a remainder as given and says the body follows it rather than the strongest pull among them.',
+      },
     ],
   },
 };

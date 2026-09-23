@@ -93,6 +93,10 @@ export const impedanceMismatchConcept: Aperi21ConceptSource = {
         concept: 'elastic-collision',
         note: 'The same arithmetic in another dress: matched impedances hand the whole disturbance on and leave nothing behind, exactly as equal masses pass a speed across whole and leave the striker at rest.',
       },
+      {
+        concept: 'reflection-of-waves',
+        note: 'One has a join where the wave divides, the share that turns back settled by how unlike the two sides are; the other has ends that return the whole of it and asks only which way up it comes back — a tied end and a free one being the extremes such a join is graded between.',
+      },
     ],
   },
 };

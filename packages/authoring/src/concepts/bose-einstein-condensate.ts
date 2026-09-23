@@ -98,6 +98,10 @@ export const boseEinsteinCondensateConcept: Aperi21ConceptSource = {
         concept: 'de-broglie-wavelength',
         note: 'One gives a moving particle a wavelength that grows as it slows; the other is what a whole cold population does, which is the reason the first one matters at these temperatures.',
       },
+      {
+        concept: 'pauli-exclusion',
+        note: 'The two are opposite rules about sharing a state: one forbids a second occupant outright and pushes the rest upward, while the other has a great many particles settle into the one lowest state together below a threshold temperature.',
+      },
     ],
   },
 };

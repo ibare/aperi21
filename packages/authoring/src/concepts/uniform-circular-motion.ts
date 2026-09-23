@@ -82,6 +82,10 @@ export const uniformCircularMotionConcept: Aperi21ConceptSource = {
         concept: 'average-velocity',
         note: 'One watches the velocity turn continuously through a lap; the other is a single figure got from two endpoints, which over a full lap returns nothing at all.',
       },
+      {
+        concept: 'centripetal-acceleration',
+        note: 'One says the velocity keeps its size while its direction never rests; the other says what that costs — the difference between two such velocities, which leans toward the centre wherever it is taken.',
+      },
     ],
   },
 };

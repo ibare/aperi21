@@ -83,6 +83,14 @@ export const barometerConcept: Aperi21ConceptSource = {
         concept: 'hydrostatic-pressure',
         note: 'One takes the tie between a height of liquid and a pressure as settled and builds an instrument on it; the other is where that tie is itself the claim being made.',
       },
+      {
+        concept: 'pressure-and-container-shape',
+        note: 'One reads a pressure off the height of a single column of liquid; the other is where that height is all that counts — neither the shape of the vessel nor the quantity it holds alters what the liquid at the bottom presses with.',
+      },
+      {
+        concept: 'capillary-action',
+        note: 'Both have liquid standing above the level of the liquid around it, but one is held there by the air pressing on the open surface outside and so reports that pressure, while the other is drawn up by the shortfall beneath its own curved surface and so reports how narrow the tube is.',
+      },
     ],
   },
 };

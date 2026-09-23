@@ -90,6 +90,10 @@ export const nonlinearOscillationConcept: Aperi21ConceptSource = {
         concept: 'phase-space',
         note: 'Both show a swing departing from the plain repeating case, but one draws the departure as a trace against time running ahead of its reference, while the other drops time and reads the departure as the shape of a loop.',
       },
+      {
+        concept: 'simple-harmonic-motion',
+        note: 'One has the restoring push out of proportion with the displacement, so that how far the body was pulled decides the shape of the motion and how long a cycle takes; the other has that proportion hold, and with it a plain sine.',
+      },
     ],
   },
 };

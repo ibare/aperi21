@@ -86,6 +86,10 @@ export const gravitationalTimeDilationConcept: Aperi21ConceptSource = {
         concept: 'gravitational-potential-energy-general',
         note: 'One says what changes with depth in a gravity well for a body being moved about; the other says that the rate of time itself is among the things that change with depth.',
       },
+      {
+        concept: 'time-dilation',
+        note: 'Both end with two clocks disagreeing, but one has the disagreement follow from how fast one of them was moving, while the other needs no motion at all and has it follow from how low the clock was held.',
+      },
     ],
   },
 };

@@ -108,6 +108,10 @@ export const spinConcept: Aperi21ConceptSource = {
         concept: 'magnetic-dipole',
         note: 'One is a small magnet with a definite direction that can be turned and lined up; the other is what a particle has instead of that, and it is not found pointing anywhere until an axis is chosen and measured.',
       },
+      {
+        concept: 'stern-gerlach',
+        note: 'One needs only that a measurement along an axis has two answers and goes on to ask what a measurement on a crosswise axis does to that answer; the other is where the count of two is established in the first place, for a property expected to take any value at all.',
+      },
     ],
   },
 };

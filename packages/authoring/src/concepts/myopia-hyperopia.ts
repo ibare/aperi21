@@ -89,6 +89,10 @@ export const myopiaHyperopiaConcept: Aperi21ConceptSource = {
         concept: 'real-vs-virtual-image',
         note: 'Both distinguish a place light truly reaches from one that only the continued lines agree on; one uses the difference to say how an eye is failing, the other to say what an image is.',
       },
+      {
+        concept: 'converging-diverging-lens',
+        note: 'One names the two lens shapes by what each alone does to parallel light and stops there; the other puts the same two shapes to work as a remedy, where which one is called for is settled not by the lens but by whether the eyeball is too long or too short.',
+      },
     ],
   },
 };

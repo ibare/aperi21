@@ -102,6 +102,10 @@ export const sternGerlachConcept: Aperi21ConceptSource = {
         concept: 'measurement-collapse',
         note: 'One is about how many different answers a measurement can possibly give; the other about what the measurement does to the thing measured once an answer has been given.',
       },
+      {
+        concept: 'spin',
+        note: 'One settles how many answers a measurement of this property can give and stops there; the other takes the two answers as settled and finds that having one of them is not a direction the particle carries about with it.',
+      },
     ],
   },
 };
