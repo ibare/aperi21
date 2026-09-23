@@ -86,7 +86,7 @@ export const refrigeratorHeatPumpConcept: Aperi21ConceptSource = {
         note: 'One shows that work must be paid to move heat uphill; the other prices the opposite trade, fixing how much work heat running downhill can be made to yield.',
       },
       {
-        concept: 'entropy-and-irreversibility',
+        concept: 'irreversibility',
         note: 'One asks what it would take to call scattered motion back; the other is a case where the going-back is arranged, paid for, and shown to stop the instant the payment does.',
       },
     ],

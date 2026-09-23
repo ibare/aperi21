@@ -1,5 +1,5 @@
 {
-  "id": "entropy-and-irreversibility",
+  "id": "irreversibility",
   "claim": "튀다 멈춘 공의 장면을 거꾸로 돌리면, 바닥 곳곳에 흩어져 있던 알갱이들의 잔떨림이 한 점으로 모여 공을 차 올려야 한다",
   "verb": "흩어진 떨림이 공 밑 한 점으로 모여 공을 띄운다",
   "probeTimes": [1.6, 4.0, 7.5, 16.0, 17.2],

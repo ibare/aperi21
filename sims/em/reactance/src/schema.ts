@@ -1,5 +1,5 @@
 // ========================================================================
-// reactance-and-impedance — 선언
+// reactance — 선언
 // ========================================================================
 // 질문: 교류에서 코일과 축전기는 전류를 얼마나 막는가 — 진동수에 따라 어떻게 달라지는가.
 //
@@ -14,8 +14,8 @@
 
 import type { BundleSchema, LocalizedText } from '@aperi21/schema';
 
-/** 등록 키 `aperi21:reactance-and-impedance` 와 문자 그대로 일치한다 (C4). */
-export const REACTANCE_AND_IMPEDANCE_ID = 'reactance-and-impedance';
+/** 등록 키 `aperi21:reactance` 와 문자 그대로 일치한다 (C4). */
+export const REACTANCE_ID = 'reactance';
 
 // ------------------------------------------------------------------------
 // 물리 — 스테이지 상수의 기본값이다. 저작자가 스테이지에서 바꾼다 (원칙 2).
@@ -95,7 +95,7 @@ export const SCENE_BOUNDS = { minX: -8.4, maxX: 8.3, minY: -3.05, maxY: 2.75 } a
 // 문안
 // ------------------------------------------------------------------------
 
-export const reactanceAndImpedanceMessages = Object.freeze({
+export const reactanceMessages = Object.freeze({
   'label.title': { ko: '리액턴스와 임피던스', en: 'Reactance and impedance' },
   'label.operation': { ko: '주파수에 의존하는 저항', en: 'A resistance that depends on frequency' },
   'label.stage': { ko: '코일 하나 · 축전기 하나', en: 'One coil, one capacitor' },
@@ -130,13 +130,13 @@ export const reactanceAndImpedanceMessages = Object.freeze({
   },
 } satisfies Record<string, LocalizedText>);
 
-export type ReactanceAndImpedanceMessageKey = keyof typeof reactanceAndImpedanceMessages;
+export type ReactanceMessageKey = keyof typeof reactanceMessages;
 
 /** 선언에서 문안을 꺼낸다. 호출부에 문자열 리터럴을 두지 않기 위한 유일한 통로. */
-export const text = (key: ReactanceAndImpedanceMessageKey): LocalizedText => reactanceAndImpedanceMessages[key];
+export const text = (key: ReactanceMessageKey): LocalizedText => reactanceMessages[key];
 
 /** 시간표 · 캡션 슬롯이 부르는 문안 키. 없는 키를 쓰면 여기서 타입이 막는다. */
-function key(k: ReactanceAndImpedanceMessageKey): string {
+function key(k: ReactanceMessageKey): string {
   return k;
 }
 
@@ -158,8 +158,8 @@ export const FALL_PHASE = 'fall';
 // BundleSchema
 // ------------------------------------------------------------------------
 
-export const reactanceAndImpedanceSchema: BundleSchema = {
-  id: REACTANCE_AND_IMPEDANCE_ID,
+export const reactanceSchema: BundleSchema = {
+  id: REACTANCE_ID,
   label: text('label.title'),
   category: 'em',
   operation: text('label.operation'),
@@ -231,5 +231,5 @@ export const reactanceAndImpedanceSchema: BundleSchema = {
   /** 지금 진동수 표지(강조색)가 두 곡선 위에 놓여야 한다 — scene 에 쓴 순서대로 그린다. */
   drawOrder: 'scene',
 
-  messages: reactanceAndImpedanceMessages,
+  messages: reactanceMessages,
 };

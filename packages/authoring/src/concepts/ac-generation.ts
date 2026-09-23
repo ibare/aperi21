@@ -3,7 +3,7 @@
  *
  * 교류 넷 가운데 이쪽만 **「사인파가 어디서 오는가」** 를 맡는다 — 회로의 응답이 아니라 파형의 출처다.
  *   ac-generation          도는 **자세**와 파형의 짝, 빨리 돌리면 **높고 촘촘**
- *   reactance-and-impedance 같은 전압에서 **얼마나 흐르는가** (진동수에 따라)
+ *   reactance 같은 전압에서 **얼마나 흐르는가** (진동수에 따라)
  *   phase-in-ac-circuit     전압과 전류의 마루가 **언제** 오는가
  *   series-rlc-resonance    두 막음이 **지워지는** 진동수에서 전류가 솟는다
  * 이쪽만 「돌린다 · 코일 자세 · 마루와 0 의 짝」 어휘를 갖는다. 소자 · 임피던스 · 위상차는 쓰지 않는다.
@@ -73,7 +73,7 @@ export const acGenerationConcept: Aperi21ConceptSource = {
 
     contrastWith: [
       {
-        concept: 'reactance-and-impedance',
+        concept: 'reactance',
         note: 'One is about where an alternating output comes from and what its shape answers to; the other takes such a supply as given and asks how much current it drives through different parts.',
       },
       {

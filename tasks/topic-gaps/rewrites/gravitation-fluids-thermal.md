@@ -24,7 +24,7 @@
 | T49 | `thermal-expansion` | desc | 온도에 따른 길이·부피 변화 | 온도에 따른 고체의 길이 변화 | 「부피」. 부피가 느는 장면도 액체가 관을 타고 오르는 장면도 없다. 다만 thermal 분과에 부피 팽창 조각이 **하나도 없다** — 여기서 빼는 것은 새 주제 후보를 하나 세워 두자는 뜻이기도 하다 |
 | T50 | `pv-diagram` | visualNote | 둘러싼 넓이가 한 일로 읽힌다 | 같은 두 상태를 잇는 두 길의 아래 넓이가 서로 다르다 | 「둘러싼」. 고리를 그리지 않는다 — 돌아오는 길이 없고 견주는 것은 두 길 아래 넓이다. 둘러싼 넓이는 `cyclic-process` 의 몫이다 |
 | T51 | `isothermal-process` | visualNote | 온도를 붙들면 곡선이 정해진 모양을 따른다 | 온도를 붙들면 들어온 열이 남김없이 일로 나간다 | 「정해진 모양」. 비교 곡선도 P×V 확인도 없다 — 곱이 일정하다는 확인은 `boyles-law` 의 몫이고, 화면의 주장은 열의 행방이다 |
-| T52 | `entropy-and-irreversibility` | name | 엔트로피와 비가역성 | 비가역성 | 「엔트로피」. 재는 값 · 식 · 눈금이 화면에 하나도 없고 서는 것은 되감은 장면의 방향뿐이다. desc · visualNote 는 이미 화면과 맞아 그대로 둔다. **주의** — id · sim · curricula 대응은 그대로라 이름만 좁히면 셋이 어긋난다. 이름을 좁힐지 주제를 그대로 두고 엔트로피 쪽을 다른 조각에 맡길지는 사람이 정할 일이다 |
+| T52 | `irreversibility` | name | 엔트로피와 비가역성 | 비가역성 | 「엔트로피」. 재는 값 · 식 · 눈금이 화면에 하나도 없고 서는 것은 되감은 장면의 방향뿐이다. desc · visualNote 는 이미 화면과 맞아 그대로 둔다. **주의** — id · sim · curricula 대응은 그대로라 이름만 좁히면 셋이 어긋난다. 이름을 좁힐지 주제를 그대로 두고 엔트로피 쪽을 다른 조각에 맡길지는 사람이 정할 일이다 |
 | T56 | `maxwells-demon` | desc | 정보와 엔트로피의 관계 | 살펴본 만큼 갈라지는 기체 | 「정보와 엔트로피의 관계」. 두 양의 값 · 식 · 눈금이 없고 판정 횟수조차 글자로 없다. k ln 2 · 비트는 문단의 몫이라 화면이 실제로 보이는 것(가름과 공책 줄이 나란히 자란다)으로 좁혔다 |
 
 ## 고치지 않는 필드
@@ -43,7 +43,7 @@
 - T49 `thermal-expansion` visualNote — 「데우면 늘어나 틈이 메워진다」
 - T50 `pv-diagram` desc — 「넓이가 일인 표현」
 - T51 `isothermal-process` desc — 「온도를 유지하는 변화」
-- T52 `entropy-and-irreversibility` desc · visualNote — 되감기만 말해 화면과 맞다
+- T52 `irreversibility` desc · visualNote — 되감기만 말해 화면과 맞다
 - T56 `maxwells-demon` visualNote — 「빠른 분자만 골라 보내면 저절로 갈라지는 것처럼 보인다」
 
 ## 이웃과의 자리

@@ -6,7 +6,7 @@
  *   series-rlc-resonance 한 고리 · 구동 진동수를 **쓸며** 두 막음이 같아지는 곳에서 **지워진다**
  *   resonance            같은 흔들림을 받는 **여럿 가운데 맞는 하나**가 쌓인다
  *   quality-factor       그 맞음이 **얼마나 좁아야** 하는가, 그리고 울림의 길이
- *   reactance-and-impedance 코일 · 축전기 **하나씩**의 진동수 반응 (섞지 않는다)
+ *   reactance 코일 · 축전기 **하나씩**의 진동수 반응 (섞지 않는다)
  *   phase-in-ac-circuit  같은 소자들의 **때**
  * 이쪽만 「상쇄 · 남은 몫 · 저항이 봉우리의 높이와 폭을 정한다」 어휘를 갖는다.
  * 화면에 Z 는 없다(전류 곡선이 1/Z 모양) — 간극 장부에 올렸다.
@@ -78,7 +78,7 @@ export const seriesRlcResonanceConcept: Aperi21ConceptSource = {
 
     contrastWith: [
       {
-        concept: 'reactance-and-impedance',
+        concept: 'reactance',
         note: 'One keeps a coil and a capacitor in separate circuits so that their opposite responses to frequency can be seen plainly; the other puts them in one loop, where being opposite is what allows them to cancel at a single frequency.',
       },
       {

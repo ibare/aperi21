@@ -4,7 +4,7 @@
  * 방향 · 기관 다섯 중 하나. 다섯이 전부 「되돌릴 수 없다」 둘레라 definition 이 붙기 쉽다.
  * **무엇을 주장하는가**로 갈랐다.
  *   second-law-of-thermodynamics **규칙** — 퍼진 것은 저절로 안 모인다 (기다려 보인다)
- *   entropy-and-irreversibility  **거꾸로 돌려 본다** — 되감은 장면의 어색함이 곧 뜻이다
+ *   irreversibility  **거꾸로 돌려 본다** — 되감은 장면의 어색함이 곧 뜻이다
  *   heat-engine                  **값** — 받은 열의 일부만 일, 버릴 곳이 없으면 선다
  *   carnot-cycle                 **한계** — 버려야 할 몫의 크기는 두 온도가 정한다
  *   refrigerator-heat-pump       **거꾸로 사기** — 일을 넣으면 찬 곳에서 더운 곳으로 간다
@@ -76,7 +76,7 @@ export const secondLawOfThermodynamicsConcept: Aperi21ConceptSource = {
 
     contrastWith: [
       {
-        concept: 'entropy-and-irreversibility',
+        concept: 'irreversibility',
         note: 'Both say a change has a direction — one lets the forward run go on long enough that the return is plainly not coming, the other plays the return itself so its absurdity can be judged.',
       },
       {

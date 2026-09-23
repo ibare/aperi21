@@ -1,4 +1,4 @@
-# entropy-and-irreversibility — 엔트로피와 비가역성
+# irreversibility — 엔트로피와 비가역성
 
 자유 구현 원본이 없다. 엔진 어휘로 곧바로 지었다.
 쓴 어휘: `scalarField`(순차형 `{ high: 'accent' }`) · `particleSystem`(꼬리) · `body` · `trajectory`(점선) · `readout`

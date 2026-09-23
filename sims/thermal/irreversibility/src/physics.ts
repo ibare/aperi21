@@ -1,5 +1,5 @@
 // ========================================================================
-// entropy-and-irreversibility — 순수 물리
+// irreversibility — 순수 물리
 // ========================================================================
 // DOM · 캔버스 · 실시간을 모른다. 난수는 스테이지 상수의 시드에서만 나온다.
 //
@@ -16,7 +16,7 @@
 // ========================================================================
 
 import type { StageDef, Vec2 } from '@aperi21/schema';
-import type { EntropyAndIrreversibilityState } from './state';
+import type { IrreversibilityState } from './state';
 
 /**
  * 충돌 목록을 끊는 체공 시간(초). 이보다 짧게 튀는 것은 화면에서 구별되지 않으므로
@@ -244,6 +244,6 @@ export function grainsAt(
  * 상태가 쌓는 것이 없다 — 모든 것이 필름 시각의 닫힌 식이고, 시각은 엔진이 scene 에
  * `params.timeline` 으로 준다. 빈 걸음을 둔다 (S-sim 「상태가 시계뿐인 조각」).
  */
-export function step(params: { state: EntropyAndIrreversibilityState }): EntropyAndIrreversibilityState {
+export function step(params: { state: IrreversibilityState }): IrreversibilityState {
   return params.state;
 }

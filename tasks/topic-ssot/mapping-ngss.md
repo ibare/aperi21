@@ -85,7 +85,7 @@ Assessment Boundary 에 같은 일을 한다. 그것을 함께 읽었으면 여�
 | HS-PS3-1 | 계 안팎의 에너지 출입 계산 | `first-law-of-thermodynamics` · `internal-energy` · `energy-flow-diagram` |
 | HS-PS3-2 | 거시 에너지 = 입자 운동 + 상대 위치 | `internal-energy` · `kinetic-theory-of-gases` · `gravitational-potential-energy` |
 | HS-PS3-3 | 에너지를 다른 형태로 바꾸는 장치 | `generator` · `photovoltaic-effect` · `efficiency` |
-| HS-PS3-4 | 열이 오가 균일해진다 (2법칙) | `thermal-equilibrium` · `second-law-of-thermodynamics` · `entropy` · `entropy-and-irreversibility` |
+| HS-PS3-4 | 열이 오가 균일해진다 (2법칙) | `thermal-equilibrium` · `second-law-of-thermodynamics` · `entropy` · `irreversibility` |
 | HS-PS3-5 | 전기·자기장으로 상호작용하는 두 물체 | `electric-field` · `magnetic-field` · `electric-potential` |
 | HS-PS4-1 | 진동수 · 파장 · 속력의 관계 | `wave-basics` · `wave-speed-in-medium` · `wave-equation` |
 | HS-PS4-2 | 디지털 전송·저장의 이점 | `digital-vs-analog-signal` |

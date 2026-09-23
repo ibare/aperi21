@@ -1,5 +1,5 @@
 // ========================================================================
-// entropy-and-irreversibility — Scene Graph 선언
+// irreversibility — Scene Graph 선언
 // ========================================================================
 // 그리지 않는다, 선언한다. 자유 렌더 없이 표준 어휘만 쓴다.
 //
@@ -28,7 +28,7 @@ import type {
 } from '@aperi21/schema';
 import { ballHeight, grainsAt, heatAt, readConstants } from './physics';
 import { SCENE_BOUNDS, text } from './schema';
-import type { EntropyAndIrreversibilityState } from './state';
+import type { IrreversibilityState } from './state';
 
 /**
  * 정방향 단계와 그것을 되짚는 거꾸로 단계의 짝. 시간표에 선언된 단계 id 다 — 거꾸로 단계는
@@ -67,14 +67,14 @@ const MARKER_PX = 22;
 const MARKER_OFFSET: Vec2 = [0, 0];
 
 export function scene(params: {
-  state: EntropyAndIrreversibilityState;
+  state: IrreversibilityState;
   view: ViewDef;
   stage: StageDef;
   environments: EnvironmentDef[];
   timeline?: TimelineFrame;
 }): SceneGraph {
   const { state, stage, timeline: tl } = params;
-  if (!tl) throw new Error('entropy-and-irreversibility: schema.timeline 이 선언되어야 한다');
+  if (!tl) throw new Error('irreversibility: schema.timeline 이 선언되어야 한다');
   const c = readConstants(stage);
 
   // ---- 필름 시각 ----

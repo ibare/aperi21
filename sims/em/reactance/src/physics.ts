@@ -1,5 +1,5 @@
 // ========================================================================
-// reactance-and-impedance — 순수 물리
+// reactance — 순수 물리
 // ========================================================================
 // 진동수 f 에서 (ω = 2πf)
 //   코일:   X_L = ωL,     전류 진폭 I_L = V / X_L
@@ -23,9 +23,9 @@ import {
   SCOPE_WINDOW_MS,
   VOLTAGE_V,
 } from './schema';
-import type { ReactanceAndImpedanceState } from './state';
+import type { ReactanceState } from './state';
 
-export interface ReactanceAndImpedanceConstants {
+export interface ReactanceConstants {
   /** 전원 전압 진폭(V). */
   voltage: number;
   /** 인덕턴스(mH). */
@@ -50,7 +50,7 @@ const FREQ_DEFAULTS: Record<(typeof FREQ_STEPS)[number]['constant'], number> = {
   freq3: FREQ3_HZ,
 };
 
-export function readConstants(stage: StageDef): ReactanceAndImpedanceConstants {
+export function readConstants(stage: StageDef): ReactanceConstants {
   const c = (stage.constants ?? {}) as Record<string, number>;
   return {
     voltage: c.voltage ?? VOLTAGE_V,
@@ -65,12 +65,12 @@ export function readConstants(stage: StageDef): ReactanceAndImpedanceConstants {
 }
 
 /** 코일이 막는 정도 X_L(Ω). */
-export function inductiveReactance(f: number, c: ReactanceAndImpedanceConstants): number {
+export function inductiveReactance(f: number, c: ReactanceConstants): number {
   return 2 * Math.PI * f * c.inductance * 1e-3;
 }
 
 /** 축전기가 막는 정도 X_C(Ω). */
-export function capacitiveReactance(f: number, c: ReactanceAndImpedanceConstants): number {
+export function capacitiveReactance(f: number, c: ReactanceConstants): number {
   return 1 / (2 * Math.PI * f * c.capacitance * 1e-6);
 }
 
@@ -79,7 +79,7 @@ export function capacitiveReactance(f: number, c: ReactanceAndImpedanceConstants
  * 한 단계를 오르고, 내림 단계의 진행도만큼 처음으로 내려온다. 지나간 단계는 1, 오지 않은
  * 단계는 0 이라 분기가 없다 (S-piece 「시간표는 선언이다」).
  */
-export function frequencyNow(tl: TimelineFrame, c: ReactanceAndImpedanceConstants): number {
+export function frequencyNow(tl: TimelineFrame, c: ReactanceConstants): number {
   const logs = c.freqs.map(Math.log);
   let logF = logs[0]!;
   FREQ_STEPS.forEach((s, k) => {
@@ -94,7 +94,7 @@ export function frequencyNow(tl: TimelineFrame, c: ReactanceAndImpedanceConstant
  * 남아 뒤따르는 머묾 단계 끝까지 간다. 첫 머묾과 내림 단계에는 없다(`null`) — 비교할
  * 「한 단계 낮은 것」 이 없다.
  */
-export function previousFrequency(tl: TimelineFrame, c: ReactanceAndImpedanceConstants): number | null {
+export function previousFrequency(tl: TimelineFrame, c: ReactanceConstants): number | null {
   if (tl.at(FALL_PHASE) > 0) return null;
   let prev: number | null = null;
   FREQ_STEPS.forEach((s, k) => {
@@ -113,7 +113,7 @@ export interface CircuitReading {
 /** 진동수 f 에서 두 회로를 읽는다. */
 export function readCircuits(
   f: number,
-  c: ReactanceAndImpedanceConstants,
+  c: ReactanceConstants,
 ): { coil: CircuitReading; capacitor: CircuitReading } {
   const xl = inductiveReactance(f, c);
   const xc = capacitiveReactance(f, c);
@@ -124,6 +124,6 @@ export function readCircuits(
 }
 
 /** 쌓는 상태가 없다 — 모든 것이 시각의 함수다. */
-export function step(params: { state: ReactanceAndImpedanceState }): ReactanceAndImpedanceState {
+export function step(params: { state: ReactanceState }): ReactanceState {
   return params.state;
 }

@@ -513,9 +513,6 @@ importers:
       '@aperi21/sim-energy-in-inductor':
         specifier: workspace:*
         version: link:../../sims/em/energy-in-inductor
-      '@aperi21/sim-entropy-and-irreversibility':
-        specifier: workspace:*
-        version: link:../../sims/thermal/entropy-and-irreversibility
       '@aperi21/sim-equilibrium-of-forces':
         specifier: workspace:*
         version: link:../../sims/mechanics/equilibrium-of-forces
@@ -690,6 +687,9 @@ importers:
       '@aperi21/sim-ionizing-radiation':
         specifier: workspace:*
         version: link:../../sims/modern/ionizing-radiation
+      '@aperi21/sim-irreversibility':
+        specifier: workspace:*
+        version: link:../../sims/thermal/irreversibility
       '@aperi21/sim-isobaric-isochoric':
         specifier: workspace:*
         version: link:../../sims/thermal/isobaric-isochoric
@@ -1059,9 +1059,9 @@ importers:
       '@aperi21/sim-rc-circuit':
         specifier: workspace:*
         version: link:../../sims/em/rc-circuit
-      '@aperi21/sim-reactance-and-impedance':
+      '@aperi21/sim-reactance':
         specifier: workspace:*
-        version: link:../../sims/em/reactance-and-impedance
+        version: link:../../sims/em/reactance
       '@aperi21/sim-real-vs-virtual-image':
         specifier: workspace:*
         version: link:../../sims/optics/real-vs-virtual-image
@@ -2718,7 +2718,7 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
-  sims/em/reactance-and-impedance:
+  sims/em/reactance:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
@@ -5364,15 +5364,6 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
-  sims/thermal/entropy-and-irreversibility:
-    devDependencies:
-      '@aperi21/schema':
-        specifier: workspace:*
-        version: link:../../../packages/schema
-      typescript:
-        specifier: ^5.6.3
-        version: 5.9.3
-
   sims/thermal/first-law-of-thermodynamics:
     devDependencies:
       '@aperi21/schema':
@@ -5428,6 +5419,15 @@ importers:
         version: 5.9.3
 
   sims/thermal/insulation:
+    devDependencies:
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/thermal/irreversibility:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*

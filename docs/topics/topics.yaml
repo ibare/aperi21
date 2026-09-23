@@ -1728,14 +1728,14 @@ topics:
     curricula: [kr, ib, ngss, ap]
     visualNote: 섞인 것이 저절로 갈라지지 않는다
     sim: aperi21:second-law-of-thermodynamics
-  - id: entropy-and-irreversibility
+  - id: irreversibility
     name: 비가역성
     desc: 되돌릴 수 없는 이유
     domain: thermodynamics
     level: upper
     curricula: [kr, ib, ngss]
     visualNote: 되감으면 어색해지는 장면이 바로 그 뜻이다
-    sim: aperi21:entropy-and-irreversibility
+    sim: aperi21:irreversibility
   - id: heat-engine
     name: 열기관
     desc: 열을 일로 바꾸는 순환
@@ -2887,14 +2887,14 @@ topics:
     curricula: [ib, uk]
     visualNote: 코일을 돌리면 사인파가 나온다
     sim: aperi21:ac-generation
-  - id: reactance-and-impedance
+  - id: reactance
     name: 리액턴스
     desc: 주파수에 의존하는 저항
     domain: electromagnetism
     level: null
     curricula: []
     visualNote: 진동수를 바꾸면 막는 정도가 달라진다
-    sim: aperi21:reactance-and-impedance
+    sim: aperi21:reactance
   - id: phase-in-ac-circuit
     name: 교류의 위상차
     desc: 전압과 전류가 어긋나는 것

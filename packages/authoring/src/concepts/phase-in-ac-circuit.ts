@@ -3,7 +3,7 @@
  *
  * 교류 넷 가운데 이쪽은 **「때」** 하나만 맡는다 — 크기는 일절 말하지 않는다.
  *   phase-in-ac-circuit     저항 같이 · 축전기 1/4 주기 먼저 · 코일 1/4 주기 늦게
- *   reactance-and-impedance 같은 두 소자의 **크기**(진동수에 따라 얼마나 흐르나)
+ *   reactance 같은 두 소자의 **크기**(진동수에 따라 얼마나 흐르나)
  *   series-rlc-resonance    셋을 한 고리에 이어 두 막음이 **지워지는** 진동수
  *   ac-generation           그 사인파 자체의 출처
  * 이쪽만 「마루가 먼저 · 같이 · 늦게」 어휘를 갖는다. 진동수는 고정이고 진폭 비교가 없다.
@@ -75,7 +75,7 @@ export const phaseInAcCircuitConcept: Aperi21ConceptSource = {
 
     contrastWith: [
       {
-        concept: 'reactance-and-impedance',
+        concept: 'reactance',
         note: 'The same two parts asked about differently: one asks how much current the supply drives through them at each frequency, the other says nothing about size and only which of the two peaks arrives first.',
       },
       {

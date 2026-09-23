@@ -1378,10 +1378,10 @@
           "simId": "aperi21:second-law-of-thermodynamics"
         },
         {
-          "id": "entropy-and-irreversibility",
+          "id": "irreversibility",
           "name": "비가역성",
           "desc": "되돌릴 수 없는 이유",
-          "simId": "aperi21:entropy-and-irreversibility"
+          "simId": "aperi21:irreversibility"
         },
         {
           "id": "heat-engine",
@@ -2277,10 +2277,10 @@
           "simId": "aperi21:ac-generation"
         },
         {
-          "id": "reactance-and-impedance",
+          "id": "reactance",
           "name": "리액턴스",
           "desc": "주파수에 의존하는 저항",
-          "simId": "aperi21:reactance-and-impedance"
+          "simId": "aperi21:reactance"
         },
         {
           "id": "phase-in-ac-circuit",

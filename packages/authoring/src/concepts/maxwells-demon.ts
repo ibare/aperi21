@@ -88,7 +88,7 @@ export const maxwellsDemonConcept: Aperi21ConceptSource = {
         note: 'One is about the fact that molecules at one temperature already have a spread of speeds; the other is about someone exploiting that spread by picking from it at a door.',
       },
       {
-        concept: 'entropy-and-irreversibility',
+        concept: 'irreversibility',
         note: 'One shows what a settled scene would have to do to run backwards; the other shows an agent apparently making it run backwards, and the record that piles up while it does.',
       },
       {

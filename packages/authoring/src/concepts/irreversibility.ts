@@ -1,5 +1,5 @@
 /**
- * entropy-and-irreversibility 개념 선언.
+ * irreversibility 개념 선언.
  *
  * 방향 · 기관 다섯 중 하나(가름은 `second-law-of-thermodynamics.ts` 머리 참조).
  * 이 조각은 **되감은 장면**을 주장한다 — 바닥 전체로 흩어진 떨림이 공 밑 한 점으로 모여
@@ -10,10 +10,10 @@
 
 import type { Aperi21ConceptSource } from '../concept-types.js';
 
-export const entropyAndIrreversibilityConcept: Aperi21ConceptSource = {
-  id: 'entropy-and-irreversibility',
+export const irreversibilityConcept: Aperi21ConceptSource = {
+  id: 'irreversibility',
   label: 'Irreversibility Seen by Reversing the Film',
-  canonicalSim: 'aperi21:entropy-and-irreversibility',
+  canonicalSim: 'aperi21:irreversibility',
 
   surface: {
     definition:

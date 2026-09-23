@@ -63,7 +63,7 @@
 | [T49](#t49) | thermodynamics | `thermal-expansion` | 설명 |
 | [T50](#t50) | thermodynamics | `pv-diagram` | 설명 |
 | [T51](#t51) | thermodynamics | `isothermal-process` | 설명 |
-| [T52](#t52) | thermodynamics | `entropy-and-irreversibility` | 설명 |
+| [T52](#t52) | thermodynamics | `irreversibility` | 설명 |
 | [T53](#t53) | thermodynamics | `carnot-cycle` | 설명 |
 | [T54](#t54) | thermodynamics | `refrigerator-heat-pump` | 조각 |
 | [T55](#t55) | thermodynamics | `diffusion` | 설명 |
@@ -95,7 +95,7 @@
 | [T81](#t81) | electromagnetism | `field-of-straight-wire` | 설명 |
 | [T82](#t82) | electromagnetism | `faradays-law` | 설명 |
 | [T83](#t83) | electromagnetism | `eddy-current` | 설명 |
-| [T84](#t84) | electromagnetism | `reactance-and-impedance` | 설명 |
+| [T84](#t84) | electromagnetism | `reactance` | 설명 |
 | [T85](#t85) | electromagnetism | `series-rlc-resonance` | 설명 |
 | [T86](#t86) | electromagnetism | `generator` | 설명 |
 | [T87](#t87) | electromagnetism | `maxwells-equations` | 설명 |
@@ -597,7 +597,7 @@
 - **화면이 하는 것** — 곡선은 그리지만 그 모양을 주장하지 않는다. 비교 곡선도 P×V 확인도 없고 (조각 NOTES (b) 「P×V 직사각형을 두지 않았다 — boyles-law 몫」), 화면의 주장은 **들어온 알갱이가 기체에 하나도 남지 않고 모두 나간다** 는 열의 행방이다
 - **개념에서 처리한 방식** — definition 을 「항온조가 온도를 붙들어 들어온 열이 남김없이 피스톤 일로 나간다」로 쓰고, 압력·부피가 어떻게 맞바뀌는지나 곱이 일정하다는 것을 기대하는 글은 avoidWhen 으로 되돌렸다. 가파름의 견줌은 `adiabatic-process` 로 이었다
 
-### T52 · `entropy-and-irreversibility`
+### T52 · `irreversibility`
 
 `thermodynamics` · 원본 `entries/thermodynamics-4.md`
 
@@ -789,7 +789,7 @@
 - **화면이 하는 것** — 판이 아니라 **관**이다. 플라스틱 관과 구리 관을 나란히 세우고 같은 자석 둘을 동시에 떨어뜨려 스트로보 눈금 간격으로 견준다. 맴돌이 고리도 관 벽을 휘감는 모양이라 판 위를 미끄러지는 그림과 배치가 다르다
 - **개념에서 처리한 방식** — definition 과 observable 을 관 두 개의 화면으로 썼다. 주장(덩어리 도체 속 전류가 움직임을 막는다)은 같으므로 좁히지 않았고, 판을 기대하는 배치만 어긋난다
 
-### T84 · `reactance-and-impedance`
+### T84 · `reactance`
 
 `electromagnetism` · 원본 `entries/electromagnetism-7.md`
 
@@ -803,7 +803,7 @@
 
 - **주제가 약속한 것** — desc 「**임피던스가 최소**가 되는 주파수」 — 임피던스가 줄어드는 것을 보게 되리라 기대한다
 - **화면이 하는 것** — 임피던스가 화면에 없다. 두 막는 정도(위 팔 · 아래 팔)가 같아져 **남은 몫이 사라지는** 것과 전류 곡선이 솟는 것으로 말한다 (조각 NOTES (b) 「Z 는 화면에 없다. 전류 곡선이 1/Z 모양이다」 — 같은 배율에서 R 이 막는 정도의 1/7~1/16 이라 임피던스 삼각형이 읽히지 않아 뺐다). visualNote 「공진 진동수에서 전류가 최대가 된다」 쪽은 화면과 맞는다
-- **개념에서 처리한 방식** — definition 을 「두 막음이 같아지는 진동수에서 서로를 지워 저항만 남고 전류가 가장 크게 흐른다」로 써서 상쇄를 주어로 삼고, 임피던스 값·대역폭을 기대하는 글은 avoidWhen 으로 되돌렸다. 「막음이 진동수를 따라간다」 는 `reactance-and-impedance` 로 이었다
+- **개념에서 처리한 방식** — definition 을 「두 막음이 같아지는 진동수에서 서로를 지워 저항만 남고 전류가 가장 크게 흐른다」로 써서 상쇄를 주어로 삼고, 임피던스 값·대역폭을 기대하는 글은 avoidWhen 으로 되돌렸다. 「막음이 진동수를 따라간다」 는 `reactance` 로 이었다
 
 ### T86 · `generator`
 

@@ -1,5 +1,5 @@
 // ========================================================================
-// reactance-and-impedance — Scene Graph 선언
+// reactance — Scene Graph 선언
 // ========================================================================
 // 그리지 않는다, 선언한다. 자유 렌더 계층을 쓰지 않는다.
 //
@@ -36,7 +36,7 @@ import {
   previousFrequency,
   readCircuits,
   readConstants,
-  type ReactanceAndImpedanceConstants,
+  type ReactanceConstants,
 } from './physics';
 import {
   COIL_BUMP,
@@ -61,9 +61,9 @@ import {
   SOURCE_WAVE_HALF_H,
   SOURCE_WAVE_HALF_W,
   text,
-  type ReactanceAndImpedanceMessageKey,
+  type ReactanceMessageKey,
 } from './schema';
-import type { ReactanceAndImpedanceState } from './state';
+import type { ReactanceState } from './state';
 
 // ------------------------------------------------------------------------
 // 굵기 · 글자 · 짙기 · 표본 (화면 px · 0~1 · 개수)
@@ -138,7 +138,7 @@ function circuitRow(
   prefix: string,
   y0: number,
   element: 'coil' | 'capacitor',
-  c: ReactanceAndImpedanceConstants,
+  c: ReactanceConstants,
 ): void {
   const top = y0 + LOOP_HALF_H;
   const bottom = y0 - LOOP_HALF_H;
@@ -209,8 +209,8 @@ function circuitRow(
   }
   // 이름표는 고리 안쪽(소자 왼쪽)에 둔다 — 고리 오른쪽은 기록지가 바로 붙는다.
   const side = LOOP_RIGHT - (element === 'coil' ? 0 : PLATE_HALF_W);
-  const symbol: ReactanceAndImpedanceMessageKey = element === 'coil' ? 'label.inductor' : 'label.capacitor';
-  const valueKey: ReactanceAndImpedanceMessageKey = element === 'coil' ? 'label.inductance' : 'label.capacitance';
+  const symbol: ReactanceMessageKey = element === 'coil' ? 'label.inductor' : 'label.capacitor';
+  const valueKey: ReactanceMessageKey = element === 'coil' ? 'label.inductance' : 'label.capacitance';
   const value = element === 'coil' ? c.inductance : c.capacitance;
   out.push(label(`${prefix}-symbol`, text(symbol), [side, y0], [-LABEL_GAP, -LABEL_GAP], 'right', SYMBOL_PX, INK, { italic: true }));
   out.push(
@@ -221,7 +221,7 @@ function circuitRow(
 }
 
 /** 기록지 위 파형 — 한 폭 동안의 전류. 폭 왼쪽 끝에서 0 으로 출발한다(맞춰 멈춘 기록). */
-function tracePoints(y0: number, amplitude: number, f: number, c: ReactanceAndImpedanceConstants): Vec2[] {
+function tracePoints(y0: number, amplitude: number, f: number, c: ReactanceConstants): Vec2[] {
   const pts: Vec2[] = [];
   const windowS = c.scopeWindow * 1e-3;
   const h = amplitude * c.currentScale;
@@ -240,7 +240,7 @@ function scopeRow(
   amplitude: number,
   f: number,
   ghost: { amplitude: number; f: number } | null,
-  c: ReactanceAndImpedanceConstants,
+  c: ReactanceConstants,
 ): void {
   out.push({
     type: 'lineSet',
@@ -280,14 +280,14 @@ function scopeRow(
 }
 
 export function scene(params: {
-  state: ReactanceAndImpedanceState;
+  state: ReactanceState;
   view: ViewDef;
   stage: StageDef;
   environments: EnvironmentDef[];
   timeline?: TimelineFrame;
 }): SceneGraph {
   const { stage, timeline } = params;
-  if (!timeline) throw new Error('reactance-and-impedance: schema.timeline 이 선언되어야 한다');
+  if (!timeline) throw new Error('reactance: schema.timeline 이 선언되어야 한다');
   const c = readConstants(stage);
   const f = frequencyNow(timeline, c);
   const now = readCircuits(f, c);

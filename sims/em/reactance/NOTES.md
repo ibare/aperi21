@@ -1,4 +1,4 @@
-# reactance-and-impedance — 리액턴스와 임피던스
+# reactance — 리액턴스와 임피던스
 
 자유 구현 원본이 없다. 엔진 어휘로 곧바로 지었다.
 
@@ -74,7 +74,7 @@
 
 ## (d) 주장이 화면에서 서는가
 
-`pnpm -s piece:report --sims=http://localhost:5173/aperi21/ reactance-and-impedance` 로 시각 5개를 라이트 · 다크로 찍었다.
+`pnpm -s piece:report --sims=http://localhost:5173/aperi21/ reactance` 로 시각 5개를 라이트 · 다크로 찍었다.
 첫 촬영에서 두 가지를 고치고 다시 찍었다. 가로축 이름 `f (Hz)` 가 `200` 눈금 숫자와 겹쳐 있어서 축 끝 오른쪽으로 옮겼다.
 소자 값 이름표(`100 mH`)가 기록지 세로축에 붙어 있어서 고리 안쪽으로 옮기고 기록지를 넓혔다(캔버스 400 → 360).
 아래는 두 번째 촬영이다.

@@ -129,7 +129,6 @@ import { energyFlowDiagramConcept } from './energy-flow-diagram.js';
 import { energyInCapacitorConcept } from './energy-in-capacitor.js';
 import { energyInCollisionConcept } from './energy-in-collision.js';
 import { energyInInductorConcept } from './energy-in-inductor.js';
-import { entropyAndIrreversibilityConcept } from './entropy-and-irreversibility.js';
 import { equilibriumOfForcesConcept } from './equilibrium-of-forces.js';
 import { equilibriumPointsConcept } from './equilibrium-points.js';
 import { equipotentialSurfaceConcept } from './equipotential-surface.js';
@@ -186,6 +185,7 @@ import { insulationConcept } from './insulation.js';
 import { interferenceConcept } from './interference.js';
 import { inverseSquareLawConcept } from './inverse-square-law.js';
 import { ionizingRadiationConcept } from './ionizing-radiation.js';
+import { irreversibilityConcept } from './irreversibility.js';
 import { isobaricIsochoricConcept } from './isobaric-isochoric.js';
 import { isothermalProcessConcept } from './isothermal-process.js';
 import { ivCharacteristicConcept } from './iv-characteristic.js';
@@ -314,7 +314,7 @@ import { rainbowConcept } from './rainbow.js';
 import { randomWalkConcept } from './random-walk.js';
 import { rayleighScatteringConcept } from './rayleigh-scattering.js';
 import { rcCircuitConcept } from './rc-circuit.js';
-import { reactanceAndImpedanceConcept } from './reactance-and-impedance.js';
+import { reactanceConcept } from './reactance.js';
 import { realVsVirtualImageConcept } from './real-vs-virtual-image.js';
 import { rectilinearPropagationConcept } from './rectilinear-propagation.js';
 import { referenceFrameConcept } from './reference-frame.js';
@@ -572,7 +572,6 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   energyInCapacitorConcept,
   energyInCollisionConcept,
   energyInInductorConcept,
-  entropyAndIrreversibilityConcept,
   equilibriumOfForcesConcept,
   equilibriumPointsConcept,
   equipotentialSurfaceConcept,
@@ -629,6 +628,7 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   interferenceConcept,
   inverseSquareLawConcept,
   ionizingRadiationConcept,
+  irreversibilityConcept,
   isobaricIsochoricConcept,
   isothermalProcessConcept,
   ivCharacteristicConcept,
@@ -757,7 +757,7 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   randomWalkConcept,
   rayleighScatteringConcept,
   rcCircuitConcept,
-  reactanceAndImpedanceConcept,
+  reactanceConcept,
   realVsVirtualImageConcept,
   rectilinearPropagationConcept,
   referenceFrameConcept,

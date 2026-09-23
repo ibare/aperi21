@@ -1,8 +1,8 @@
 /**
- * reactance-and-impedance 개념 선언.
+ * reactance 개념 선언.
  *
  * 교류 넷 가운데 이쪽은 **「얼마나 흐르는가 — 진동수를 올리면 둘이 반대로 간다」** 다.
- *   reactance-and-impedance 코일은 **더 막고** 축전기는 **덜 막는다** (따로 놓인 두 회로)
+ *   reactance 코일은 **더 막고** 축전기는 **덜 막는다** (따로 놓인 두 회로)
  *   phase-in-ac-circuit     같은 두 소자의 **때**(마루의 앞뒤) — 크기가 아니다
  *   series-rlc-resonance    **한 고리에 섞어** 둘이 지워지는 진동수
  *   ac-generation           그 교류 자체가 어디서 오는가
@@ -12,10 +12,10 @@
 
 import type { Aperi21ConceptSource } from '../concept-types.js';
 
-export const reactanceAndImpedanceConcept: Aperi21ConceptSource = {
-  id: 'reactance-and-impedance',
+export const reactanceConcept: Aperi21ConceptSource = {
+  id: 'reactance',
   label: 'Frequency-Dependent Opposition of a Coil and a Capacitor',
-  canonicalSim: 'aperi21:reactance-and-impedance',
+  canonicalSim: 'aperi21:reactance',
 
   surface: {
     definition:

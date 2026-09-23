@@ -2571,12 +2571,12 @@ export function registerAperi21Bundles(): void {
     return registerBundle('aperi21:motional-emf', m.motionalEmfBundle, caps.capabilities);
   });
 
-  registerBundleLoader('aperi21:reactance-and-impedance', async () => {
+  registerBundleLoader('aperi21:reactance', async () => {
     const [m, caps] = await Promise.all([
-      import('@aperi21/sim-reactance-and-impedance'),
-      import('./capabilities/em/reactance-and-impedance.generated.js'),
+      import('@aperi21/sim-reactance'),
+      import('./capabilities/em/reactance.generated.js'),
     ]);
-    return registerBundle('aperi21:reactance-and-impedance', m.reactanceAndImpedanceBundle, caps.capabilities);
+    return registerBundle('aperi21:reactance', m.reactanceBundle, caps.capabilities);
   });
 
   registerBundleLoader('aperi21:displacement-current', async () => {
@@ -3155,12 +3155,12 @@ export function registerAperi21Bundles(): void {
     return registerBundle('aperi21:isothermal-process', m.isothermalProcessBundle, caps.capabilities);
   });
 
-  registerBundleLoader('aperi21:entropy-and-irreversibility', async () => {
+  registerBundleLoader('aperi21:irreversibility', async () => {
     const [m, caps] = await Promise.all([
-      import('@aperi21/sim-entropy-and-irreversibility'),
-      import('./capabilities/thermal/entropy-and-irreversibility.generated.js'),
+      import('@aperi21/sim-irreversibility'),
+      import('./capabilities/thermal/irreversibility.generated.js'),
     ]);
-    return registerBundle('aperi21:entropy-and-irreversibility', m.entropyAndIrreversibilityBundle, caps.capabilities);
+    return registerBundle('aperi21:irreversibility', m.irreversibilityBundle, caps.capabilities);
   });
 
   registerBundleLoader('aperi21:latent-heat', async () => {

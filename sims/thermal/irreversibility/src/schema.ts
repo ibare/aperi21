@@ -1,5 +1,5 @@
 // ========================================================================
-// entropy-and-irreversibility — 선언
+// irreversibility — 선언
 // ========================================================================
 // 질문: 튀다 멈춘 공을 거꾸로 돌리면 왜 어색한가.
 //
@@ -13,8 +13,8 @@
 
 import type { BundleSchema, LocalizedText } from '@aperi21/schema';
 
-/** 등록 키 `aperi21:entropy-and-irreversibility` 와 문자 그대로 일치한다 (C4). */
-export const ENTROPY_AND_IRREVERSIBILITY_ID = 'entropy-and-irreversibility';
+/** 등록 키 `aperi21:irreversibility` 와 문자 그대로 일치한다 (C4). */
+export const IRREVERSIBILITY_ID = 'irreversibility';
 
 // ------------------------------------------------------------------------
 // 배치 — 월드 단위(m). 바닥 윗면 가운데(공이 부딪히는 자리)가 원점, y 는 위가 양수.
@@ -32,7 +32,7 @@ export const SCENE_BOUNDS = { minX: -1.75, maxX: 1.75, minY: -0.78, maxY: 1.26 }
 // 문안
 // ------------------------------------------------------------------------
 
-export const entropyAndIrreversibilityMessages = Object.freeze({
+export const irreversibilityMessages = Object.freeze({
   'label.title': { ko: '엔트로피와 비가역성', en: 'Entropy and irreversibility' },
   'label.operation': { ko: '되돌릴 수 없는 이유', en: 'Why it cannot be undone' },
   'label.stage': { ko: '알갱이 바닥 위의 공', en: 'Ball on a grainy floor' },
@@ -76,14 +76,14 @@ export const entropyAndIrreversibilityMessages = Object.freeze({
   },
 } satisfies Record<string, LocalizedText>);
 
-export type EntropyAndIrreversibilityMessageKey = keyof typeof entropyAndIrreversibilityMessages;
+export type IrreversibilityMessageKey = keyof typeof irreversibilityMessages;
 
 /** 선언에서 문안을 꺼낸다. 호출부에 문자열 리터럴을 두지 않기 위한 유일한 통로. */
-export const text = (key: EntropyAndIrreversibilityMessageKey): LocalizedText =>
-  entropyAndIrreversibilityMessages[key];
+export const text = (key: IrreversibilityMessageKey): LocalizedText =>
+  irreversibilityMessages[key];
 
 /** 시간표·캡션 슬롯이 부르는 문안 키. 없는 키를 쓰면 여기서 타입이 막는다. */
-function key(k: EntropyAndIrreversibilityMessageKey): string {
+function key(k: IrreversibilityMessageKey): string {
   return k;
 }
 
@@ -91,8 +91,8 @@ function key(k: EntropyAndIrreversibilityMessageKey): string {
 // BundleSchema
 // ------------------------------------------------------------------------
 
-export const entropyAndIrreversibilitySchema: BundleSchema = {
-  id: ENTROPY_AND_IRREVERSIBILITY_ID,
+export const irreversibilitySchema: BundleSchema = {
+  id: IRREVERSIBILITY_ID,
   label: text('label.title'),
   category: 'thermal',
   operation: text('label.operation'),
@@ -186,5 +186,5 @@ export const entropyAndIrreversibilitySchema: BundleSchema = {
     style: { colorRole: 'muted', emphasis: 'strong' },
   },
 
-  messages: entropyAndIrreversibilityMessages,
+  messages: irreversibilityMessages,
 };
