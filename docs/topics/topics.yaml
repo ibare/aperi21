@@ -89,7 +89,7 @@ topics:
     sim: aperi21:uniform-motion
   - id: uniformly-accelerated-motion
     name: 등가속도 운동
-    desc: 가속도가 일정한 운동의 세 식
+    desc: 같은 시간마다 나아간 거리가 일정한 몫씩 길어지는 운동
     domain: kinematics
     level: upper
     curricula: [kr, ib, ap, uk]
@@ -221,7 +221,7 @@ topics:
     sim: aperi21:uniform-circular-motion
   - id: centripetal-acceleration
     name: 구심 가속도
-    desc: 방향만 바뀌는 운동의 가속도
+    desc: 속력이 그대로인 운동에서 속도 변화가 향하는 곳
     domain: kinematics
     level: upper
     curricula: [ib, ap, uk]
@@ -267,7 +267,7 @@ topics:
     domain: newtonian-mechanics
     level: lower
     curricula: [kr, ib, ap, uk]
-    visualNote: 기준틀을 바꾸면 같은 운동이 달라 보인다
+    visualNote: 버스의 자국은 브레이크에 몰리는데 승객의 자국은 간격 그대로 찍힌다
     sim: aperi21:inertial-frame
     batch: 01-broad
   - id: newtons-second-law
@@ -308,7 +308,7 @@ topics:
     domain: newtonian-mechanics
     level: null
     curricula: []
-    visualNote: 같이 떨어지는 것이 두 질량이 같다는 증거다
+    visualNote: 저울이 수평이 되는 추 개수에서 얼음 위 밀기도 똑같이 맞아떨어진다
     sim: aperi21:inertial-vs-gravitational-mass
   - id: normal-force
     name: 수직항력
@@ -316,7 +316,7 @@ topics:
     domain: newtonian-mechanics
     level: upper
     curricula: [ib, ap]
-    visualNote: 면을 기울이면 수직항력이 줄고 미끄러진다
+    visualNote: 위로 당길수록 바닥이 미는 힘이 줄다가 상자가 뜨면 0이 된다
     sim: aperi21:normal-force
   - id: apparent-weight
     name: 겉보기 무게
@@ -392,7 +392,7 @@ topics:
     sim: aperi21:spring-force
   - id: centripetal-force
     name: 구심력
-    desc: 원운동을 유지시키는 힘의 정체
+    desc: 원운동을 붙드는 안쪽 힘과 그것이 사라졌을 때의 진로
     domain: newtonian-mechanics
     level: upper
     curricula: [kr, ib, ap, uk]
@@ -416,11 +416,11 @@ topics:
     sim: aperi21:banked-curve
   - id: vertical-loop
     name: 연직 원운동
-    desc: 꼭대기에서 떨어지지 않는 최소 속력
+    desc: 고리를 돌기에 속력이 모자라면 레일을 떠나는 자리
     domain: newtonian-mechanics
     level: null
     curricula: []
-    visualNote: 꼭대기에서 최소 속력을 못 넘기면 떨어진다
+    visualNote: 느린 공은 꼭대기에 닿기도 전에 레일을 떠나고 그 자리에 고리가 남는다
     sim: aperi21:vertical-loop
   - id: drag-force
     name: 공기 저항
@@ -452,7 +452,7 @@ topics:
     domain: newtonian-mechanics
     level: null
     curricula: []
-    visualNote: 회전 원판 위에서 공이 휘어 보인다
+    visualNote: 무거운 추와 가벼운 추가 같은 각도로 기운다
     sim: aperi21:fictitious-force
   - id: coriolis-effect
     name: 코리올리 효과
@@ -504,7 +504,7 @@ topics:
     sim: aperi21:mechanical-advantage
   - id: youngs-modulus
     name: 영률
-    desc: 재료가 늘어나는 정도를 정하는 값
+    desc: 한 가닥이 아니라 재료에 속하는 뻣뻣함
     domain: newtonian-mechanics
     level: upper
     curricula: [uk]
@@ -537,7 +537,7 @@ topics:
     sim: aperi21:kinetic-energy
   - id: work-energy-theorem
     name: 일-운동 에너지 정리
-    desc: 알짜일이 운동 에너지 변화와 같음
+    desc: 힘과 거리를 어떻게 나누든 해 준 일이 같으면 끝 속력도 같음
     domain: energy-momentum
     level: lower
     curricula: [kr, ib, ngss, ap]
@@ -561,7 +561,7 @@ topics:
     sim: aperi21:elastic-potential-energy
   - id: conservative-force
     name: 보존력
-    desc: 경로에 무관한 힘과 퍼텐셜의 존재
+    desc: 어느 길로 가든 한 일이 같은 힘
     domain: energy-momentum
     level: upper
     curricula: [ap]
@@ -590,7 +590,7 @@ topics:
     domain: energy-momentum
     level: lower
     curricula: [kr, ib, ap, uk]
-    visualNote: 마찰이 있는 쪽이 덜 올라간다
+    visualNote: 잦아드는 동안 문지른 자리마다 열이 두께로 쌓인다
     sim: aperi21:energy-dissipation
   - id: potential-energy-curve
     name: 퍼텐셜 곡선
@@ -634,19 +634,19 @@ topics:
     sim: aperi21:conservation-of-momentum
   - id: elastic-collision
     name: 탄성 충돌
-    desc: 운동 에너지까지 보존되는 충돌
+    desc: 부딪힌 뒤에도 빠르기를 잃지 않는 충돌
     domain: energy-momentum
     level: lower
     curricula: [ib, ngss, ap, uk]
-    visualNote: 튕겨 나가며 운동 에너지까지 그대로다
+    visualNote: 같은 질량끼리 정면으로 부딪히면 속도가 통째로 넘어간다
     sim: aperi21:elastic-collision
   - id: inelastic-collision
     name: 비탄성 충돌
-    desc: 에너지가 사라지는 충돌
+    desc: 되돌려 받지 못하는 몫이 생기는 충돌
     domain: energy-momentum
     level: upper
     curricula: [ib, ap, uk]
-    visualNote: 부딪힌 뒤 에너지가 줄어 있다
+    visualNote: 튈 때마다 같은 비율로 낮아져 못 올라간 높이가 잃은 몫이 된다
     sim: aperi21:inelastic-collision
   - id: perfectly-inelastic-collision
     name: 완전 비탄성 충돌
@@ -686,7 +686,7 @@ topics:
     domain: energy-momentum
     level: upper
     curricula: [kr]
-    visualNote: 버린 만큼 앞으로 나아간다
+    visualNote: 같은 몫을 버려도 나중에 버린 칸일수록 속도를 더 얻는다
     sim: aperi21:rocket-equation
   - id: ballistic-pendulum
     name: 탄동 진자
@@ -694,7 +694,7 @@ topics:
     domain: energy-momentum
     level: null
     curricula: []
-    visualNote: 박혀 함께 올라간 높이로 처음 속력을 되짚는다
+    visualNote: 박힐 때는 운동량 막대가 오를 때는 에너지 막대가 높이를 지킨다
     sim: aperi21:ballistic-pendulum
   - id: energy-in-collision
     name: 충돌에서의 에너지
@@ -747,7 +747,7 @@ topics:
     sim: aperi21:rotational-kinetic-energy
   - id: angular-momentum
     name: 각운동량
-    desc: 회전의 운동량
+    desc: 돌고 있는 것이 축을 지키게 하는 양
     domain: rotation-oscillation
     level: upper
     curricula: [ib, ap]
@@ -928,7 +928,7 @@ topics:
     domain: rotation-oscillation
     level: null
     curricula: []
-    visualNote: 위치와 운동량 평면에 그린 궤적이 닫히거나 감긴다
+    visualNote: 위치와 속도의 평면에 그린 궤적이 닫히거나 안으로 감긴다
     sim: aperi21:phase-space
   - id: nonlinear-oscillation
     name: 비선형 진동
@@ -961,7 +961,7 @@ topics:
     domain: gravitation
     level: lower
     curricula: [kr, ib, ngss, ap, uk]
-    visualNote: 질량 주위에서 화살표가 촘촘해지고 성겨진다
+    visualNote: 질량 곁에서는 화살표가 길고 멀어질수록 짧아진다
     sim: aperi21:gravitational-field
   - id: shell-theorem
     name: 껍질 정리
@@ -1037,11 +1037,11 @@ topics:
     sim: aperi21:keplers-second-law
   - id: keplers-third-law
     name: 케플러 제3법칙
-    desc: 주기와 긴반지름의 관계
+    desc: 궤도 반지름과 한 바퀴 시간의 관계
     domain: gravitation
     level: upper
     curricula: [kr, ib, ngss, uk]
-    visualNote: 긴반지름을 늘리면 주기가 따라 길어진다
+    visualNote: 궤도를 넓히면 한 바퀴 시간이 반지름보다 훨씬 빨리 길어진다
     sim: aperi21:keplers-third-law
   - id: two-body-problem
     name: 이체 문제
@@ -1093,15 +1093,15 @@ topics:
     sim: aperi21:gravitational-slingshot
   - id: lagrange-points
     name: 라그랑주 점
-    desc: 두 천체 사이의 평형 위치
+    desc: 함께 도는 두 천체와 보조를 맞추는 다섯 자리
     domain: gravitation
     level: null
     curricula: []
-    visualNote: 두 중력이 만드는 다섯 자리가 드러난다
+    visualNote: 함께 도는 틀의 지형 위에 다섯 자리가 드러난다
     sim: aperi21:lagrange-points
   - id: orbital-transfer
     name: 궤도 전이
-    desc: 호만 전이와 그 비용
+    desc: 낮은 궤도에서 높은 궤도로 옮기는 호만 전이
     domain: gravitation
     level: null
     curricula: []
@@ -1117,7 +1117,7 @@ topics:
     sim: aperi21:black-hole-horizon
   - id: diurnal-motion
     name: 일주 운동
-    desc: 하루 동안 태양과 별이 하늘을 가로지르는 길
+    desc: 하루 동안 밤하늘 전체가 한 점을 두고 도는 길
     domain: gravitation
     level: primary
     curricula: [kr]
@@ -1141,7 +1141,7 @@ topics:
     sim: aperi21:earth-revolution-constellations
   - id: solar-altitude-shadow
     name: 태양 고도와 그림자
-    desc: 고도가 바뀌면 그림자 길이와 기온이 함께 바뀐다
+    desc: 고도가 바뀌면 그림자 길이와 햇빛이 퍼지는 넓이가 함께 바뀐다
     domain: gravitation
     level: primary
     curricula: [kr]
@@ -1242,7 +1242,7 @@ topics:
     domain: gravitation
     level: upper
     curricula: [ib, ngss]
-    visualNote: 한쪽을 키우면 별이 부풀거나 무너진다
+    visualNote: 한쪽을 키우면 둘이 다시 같아지는 크기까지 부풀거나 줄어든다
     sim: aperi21:star-radiation-gravity-balance
   - id: orbital-decay
     name: 궤도 감쇠
@@ -1359,15 +1359,15 @@ topics:
     sim: aperi21:pascals-principle
   - id: buoyancy
     name: 부력
-    desc: 밀려난 유체의 무게만큼
+    desc: 아랫면이 더 세게 밀리는 만큼 남는 위쪽 힘
     domain: fluids
     level: lower
     curricula: [ap, uk]
-    visualNote: 잠긴 부피만큼 밀려난 유체가 되밀어 올린다
+    visualNote: 윗면보다 아랫면을 미는 힘이 더 커서 그 차이가 남는다
     sim: aperi21:buoyancy
   - id: archimedes-principle
     name: 아르키메데스 원리
-    desc: 뜨고 가라앉는 조건
+    desc: 받는 힘은 밀려난 유체의 무게와 같다
     domain: fluids
     level: lower
     curricula: [ap, uk]
@@ -1435,7 +1435,7 @@ topics:
     domain: fluids
     level: null
     curricula: []
-    visualNote: 끈적한 유체일수록 층이 느리게 끌린다
+    visualNote: 끈적한 유체일수록 같은 빠르기로 끌려면 힘이 더 든다
     sim: aperi21:viscosity
   - id: poiseuille-flow
     name: 관 속의 층류
@@ -1463,11 +1463,11 @@ topics:
     sim: aperi21:laminar-vs-turbulent
   - id: reynolds-number
     name: 레이놀즈 수
-    desc: 전이를 가르는 무차원 수
+    desc: 흐름의 결을 정하는 무차원 수
     domain: fluids
     level: null
     curricula: []
-    visualNote: 한 수를 넘기면 흐름의 결이 바뀐다
+    visualNote: 값이 같으면 굵기와 빠르기가 달라도 같은 결로 흐른다
     sim: aperi21:reynolds-number
   - id: boundary-layer
     name: 경계층
@@ -1511,7 +1511,7 @@ topics:
     sim: aperi21:wetting-and-contact-angle
   - id: drag-in-fluid
     name: 유체 속 항력
-    desc: 형상과 속도가 정하는 저항
+    desc: 빠른 흐름에서 뒤 모양이 정하는 저항
     domain: fluids
     level: lower
     curricula: [uk]
@@ -1556,7 +1556,7 @@ topics:
     domain: thermodynamics
     level: null
     curricula: []
-    visualNote: 압력과 온도를 옮기면 어느 상태에 있는지 자리가 바뀐다
+    visualNote: 압력을 낮추면 같은 가열이 액체 구간을 건너뛴다
     sim: aperi21:phase-diagram
   - id: triple-point
     name: 삼중점
@@ -1601,7 +1601,7 @@ topics:
     sim: aperi21:stefan-boltzmann-law
   - id: thermal-expansion
     name: 열팽창
-    desc: 온도에 따른 길이·부피 변화
+    desc: 온도에 따른 고체의 길이 변화
     domain: thermodynamics
     level: lower
     curricula: [kr, ib]
@@ -1686,7 +1686,7 @@ topics:
     domain: thermodynamics
     level: upper
     curricula: [kr, ib, ap]
-    visualNote: 둘러싼 넓이가 한 일로 읽힌다
+    visualNote: 같은 두 상태를 잇는 두 길의 아래 넓이가 서로 다르다
     sim: aperi21:pv-diagram
   - id: isothermal-process
     name: 등온 과정
@@ -1694,7 +1694,7 @@ topics:
     domain: thermodynamics
     level: upper
     curricula: [ib, ap]
-    visualNote: 온도를 붙들면 곡선이 정해진 모양을 따른다
+    visualNote: 온도를 붙들면 들어온 열이 남김없이 일로 나간다
     sim: aperi21:isothermal-process
   - id: adiabatic-process
     name: 단열 과정
@@ -1794,7 +1794,7 @@ topics:
     sim: aperi21:statistical-fluctuation
   - id: maxwells-demon
     name: 맥스웰의 도깨비
-    desc: 정보와 엔트로피의 관계
+    desc: 살펴본 만큼 갈라지는 기체
     domain: thermodynamics
     level: null
     curricula: []
@@ -1867,7 +1867,7 @@ topics:
     sim: aperi21:longitudinal-wave
   - id: wave-speed-in-medium
     name: 매질과 파동 속도
-    desc: 장력·밀도·탄성이 정하는 속도
+    desc: 장력과 선밀도가 정하는 속도
     domain: waves-acoustics
     level: lower
     curricula: [ib, ngss, ap, uk]
@@ -1931,7 +1931,7 @@ topics:
     sim: aperi21:harmonics
   - id: string-vibration
     name: 줄의 진동
-    desc: 양끝이 고정된 줄의 모드
+    desc: 흔들리는 길이가 정하는 음높이
     domain: waves-acoustics
     level: upper
     curricula: [kr, ib, ap, uk]
@@ -1943,7 +1943,7 @@ topics:
     domain: waves-acoustics
     level: upper
     curricula: [kr, ib, ap]
-    visualNote: 관을 막으면 울리는 길이가 달라진다
+    visualNote: 막은 관은 절반 진동수에서 먼저 울린다
     sim: aperi21:air-column-resonance
   - id: beats
     name: 맥놀이
@@ -2029,7 +2029,7 @@ topics:
     sim: aperi21:wave-energy
   - id: wave-attenuation
     name: 파동의 감쇠
-    desc: 매질이 흡수하는 에너지
+    desc: 같은 거리마다 같은 비율로 낮아지는 진폭
     domain: waves-acoustics
     level: lower
     curricula: [ngss, uk]
@@ -2061,11 +2061,11 @@ topics:
     sim: aperi21:sound-source-vibration
   - id: sound-through-materials
     name: 물질을 통한 소리 전달
-    desc: 매질에 따라 달라지는 소리의 전달
+    desc: 매질이 정하는 소리의 빠르기와 건너감
     domain: waves-acoustics
     level: primary
     curricula: [kr, ngss]
-    visualNote: 매질을 바꾸면 전달되는 정도가 달라진다
+    visualNote: 쇠에서 먼저 닿고 진공에서는 닿지 않는다
     sim: aperi21:sound-through-materials
   - id: digital-vs-analog-signal
     name: 디지털 신호와 아날로그
@@ -2090,7 +2090,7 @@ topics:
     domain: optics
     level: primary
     curricula: [kr, ap]
-    visualNote: 가린 만큼 그림자가 생긴다
+    visualNote: 가림판을 광원 쪽으로 옮기면 그림자가 커진다
     sim: aperi21:rectilinear-propagation
   - id: shadow-umbra-penumbra
     name: 본그림자와 반그림자
@@ -2126,7 +2126,7 @@ topics:
     sim: aperi21:specular-diffuse-reflection
   - id: plane-mirror-image
     name: 평면거울의 상
-    desc: 허상의 위치와 좌우 반전
+    desc: 되짚은 빛이 만나는 거울 뒤의 허상
     domain: optics
     level: primary
     curricula: [kr, ap]
@@ -2398,7 +2398,7 @@ topics:
     sim: aperi21:birefringence
   - id: scattering
     name: 산란
-    desc: 하늘과 노을의 색
+    desc: 파란 하늘과 흰 구름을 가르는 입자 크기
     domain: optics
     level: null
     curricula: []
@@ -2406,7 +2406,7 @@ topics:
     sim: aperi21:scattering
   - id: rayleigh-scattering
     name: 레일리 산란
-    desc: 파장 4제곱에 반비례하는 산란
+    desc: 파장이 짧을수록 가파르게 느는 산란
     domain: optics
     level: null
     curricula: []
@@ -2447,7 +2447,7 @@ topics:
   # ── 전자기
   - id: electric-charge
     name: 전하
-    desc: 두 종류의 전하와 보존
+    desc: 두 종류뿐인 전하
     domain: electromagnetism
     level: primary
     curricula: [kr, ib, ngss, ap, uk]
@@ -2555,7 +2555,7 @@ topics:
     domain: electromagnetism
     level: null
     curricula: []
-    visualNote: 도체 상자 안으로 장이 들어오지 못한다
+    visualNote: 겉면에 전하가 모이며 속의 장이 사라진다
     sim: aperi21:electrostatic-shielding
   - id: charge-on-conductor-surface
     name: 도체 표면의 전하
@@ -2591,7 +2591,7 @@ topics:
     sim: aperi21:capacitors-in-circuit
   - id: energy-in-capacitor
     name: 축전기의 에너지
-    desc: 전기장에 저장된 에너지
+    desc: 전하를 옮기는 데 든 일
     domain: electromagnetism
     level: upper
     curricula: [kr, ap, uk]
@@ -2607,7 +2607,7 @@ topics:
     sim: aperi21:electric-current
   - id: drift-velocity
     name: 표류 속도
-    desc: 느린 전자와 빠른 신호
+    desc: 도선 속 전자가 기어가는 속도
     domain: electromagnetism
     level: upper
     curricula: [ib, ap]
@@ -2719,11 +2719,11 @@ topics:
     sim: aperi21:lorentz-force
   - id: charged-particle-in-magnetic-field
     name: 자기장 속 전하의 원운동
-    desc: 속도에 수직인 힘
+    desc: 속력이 달라도 같은 한 바퀴 시간
     domain: electromagnetism
     level: upper
     curricula: [kr, ib, ap, uk]
-    visualNote: 힘이 늘 수직이라 원을 그린다
+    visualNote: 빠른 전하가 큰 원을 돌고도 같은 때 돌아온다
     sim: aperi21:charged-particle-in-magnetic-field
   - id: velocity-selector
     name: 속도 선택기
@@ -2759,7 +2759,7 @@ topics:
     sim: aperi21:biot-savart-law
   - id: field-of-straight-wire
     name: 직선 전류의 자기장
-    desc: 거리에 반비례하는 세기
+    desc: 거리가 멀수록 주는 세기
     domain: electromagnetism
     level: lower
     curricula: [kr, ib, ngss, ap, uk]
@@ -2837,7 +2837,7 @@ topics:
     domain: electromagnetism
     level: upper
     curricula: [ap]
-    visualNote: 자석이 금속판 위에서 느리게 떨어진다
+    visualNote: 구리 관 속의 자석만 느리게 떨어진다
     sim: aperi21:eddy-current
   - id: self-inductance
     name: 자체 인덕턴스
@@ -2929,7 +2929,7 @@ topics:
     sim: aperi21:motor
   - id: generator
     name: 발전기
-    desc: 회전이 만드는 기전력
+    desc: 전구를 켜면 손잡이가 무거워진다
     domain: electromagnetism
     level: lower
     curricula: [kr, ib, ngss, ap, uk]
@@ -2945,11 +2945,11 @@ topics:
     sim: aperi21:displacement-current
   - id: maxwells-equations
     name: 맥스웰 방정식
-    desc: 전자기를 묶는 네 식
+    desc: 전기와 자기가 서로를 낳는 사슬
     domain: electromagnetism
     level: upper
     curricula: [ap]
-    visualNote: 네 식이 어떻게 파동으로 이어지는지 그림으로 잇는다
+    visualNote: 바뀌는 한쪽 둘레에 다른 쪽 고리가 생기며 사슬이 번져 간다
     sim: aperi21:maxwells-equations
   - id: electromagnetic-wave
     name: 전자기파
@@ -2957,11 +2957,11 @@ topics:
     domain: electromagnetism
     level: lower
     curricula: [ib, uk]
-    visualNote: 전기장과 자기장이 서로를 낳으며 나아간다
+    visualNote: 흔들기를 멈춰도 끊겨 나간 고리는 계속 나아간다
     sim: aperi21:electromagnetic-wave
   - id: poynting-vector
     name: 포인팅 벡터
-    desc: 전자기파가 나르는 에너지 흐름
+    desc: 도선 둘레 공간을 지나는 에너지
     domain: electromagnetism
     level: null
     curricula: []
@@ -3122,11 +3122,11 @@ topics:
     sim: aperi21:relativistic-velocity-addition
   - id: twin-paradox
     name: 쌍둥이 역설
-    desc: 비대칭을 만드는 가속
+    desc: 비대칭을 만드는 돌아섬
     domain: modern-physics
     level: null
     curricula: []
-    visualNote: 두 세계선의 길이가 달라 나이가 갈린다
+    visualNote: 꺾인 쪽이 더 길어 보이는데 찍히는 해의 점은 더 적다
     sim: aperi21:twin-paradox
   - id: spacetime-diagram
     name: 시공간 도표
@@ -3178,7 +3178,7 @@ topics:
     sim: aperi21:gravitational-time-dilation
   - id: gravitational-redshift
     name: 중력 적색 이동
-    desc: 빠져나오며 잃는 에너지
+    desc: 빠져나오며 붉어지는 빛
     domain: modern-physics
     level: null
     curricula: []
@@ -3218,11 +3218,11 @@ topics:
     sim: aperi21:photoelectric-effect
   - id: work-function-and-threshold
     name: 일함수와 문턱 진동수
-    desc: 세기가 아니라 진동수가 정하는 것
+    desc: 금속마다 다른 문턱, 모두 같은 기울기
     domain: modern-physics
     level: upper
     curricula: [kr, ib, uk]
-    visualNote: 문턱을 넘는 순간부터 전자가 튀어나온다
+    visualNote: 문턱을 넘어서야 점이 가로축을 떠나 곧은 선을 그린다
     sim: aperi21:work-function-and-threshold
   - id: compton-scattering
     name: 콤프턴 산란
@@ -3242,7 +3242,7 @@ topics:
     sim: aperi21:pair-production
   - id: de-broglie-wavelength
     name: 드브로이 파장
-    desc: 물질의 파동성
+    desc: 빠르기가 정하는 물질의 파장
     domain: modern-physics
     level: upper
     curricula: [kr, ib, ap, uk]
@@ -3302,7 +3302,7 @@ topics:
     domain: modern-physics
     level: null
     curricula: []
-    visualNote: 벽 사이에 정상파처럼 몇 가지 모양만 허용된다
+    visualNote: 벽에서 0 이 되는 모양마다 에너지가 1·4·9·16 자리에 놓인다
     sim: aperi21:particle-in-a-box
   - id: finite-well
     name: 유한 우물
@@ -3382,7 +3382,7 @@ topics:
     domain: modern-physics
     level: null
     curricula: []
-    visualNote: 슈테른-게를라흐에서 두 값만 나온다
+    visualNote: 한 축으로 걸러 둔 값이 가로축을 재고 나면 되살아난다
     sim: aperi21:spin
   - id: stern-gerlach
     name: 슈테른-게를라흐 실험
@@ -3589,7 +3589,7 @@ topics:
 
   - id: exchange-particles
     name: 교환 입자
-    desc: 힘을 주고받는 입자
+    desc: 전자 사이의 광자, 쿼크 사이의 글루온
     domain: modern-physics
     level: upper
     curricula: [uk]

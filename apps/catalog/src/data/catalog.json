@@ -52,7 +52,7 @@
         {
           "id": "uniformly-accelerated-motion",
           "name": "등가속도 운동",
-          "desc": "가속도가 일정한 운동의 세 식",
+          "desc": "같은 시간마다 나아간 거리가 일정한 몫씩 길어지는 운동",
           "simId": "aperi21:uniformly-accelerated-motion",
           "labUrl": "piece-lab/uniformly-accelerated-motion/index.html"
         },
@@ -163,7 +163,7 @@
         {
           "id": "centripetal-acceleration",
           "name": "구심 가속도",
-          "desc": "방향만 바뀌는 운동의 가속도",
+          "desc": "속력이 그대로인 운동에서 속도 변화가 향하는 곳",
           "simId": "aperi21:centripetal-acceleration",
           "labUrl": "piece-lab/centripetal-acceleration/index.html"
         },
@@ -315,7 +315,7 @@
         {
           "id": "centripetal-force",
           "name": "구심력",
-          "desc": "원운동을 유지시키는 힘의 정체",
+          "desc": "원운동을 붙드는 안쪽 힘과 그것이 사라졌을 때의 진로",
           "simId": "aperi21:centripetal-force",
           "labUrl": "piece-lab/centripetal-force/index.html"
         },
@@ -336,7 +336,7 @@
         {
           "id": "vertical-loop",
           "name": "연직 원운동",
-          "desc": "꼭대기에서 떨어지지 않는 최소 속력",
+          "desc": "고리를 돌기에 속력이 모자라면 레일을 떠나는 자리",
           "simId": "aperi21:vertical-loop",
           "labUrl": "piece-lab/vertical-loop/index.html"
         },
@@ -413,7 +413,7 @@
         {
           "id": "youngs-modulus",
           "name": "영률",
-          "desc": "재료가 늘어나는 정도를 정하는 값",
+          "desc": "한 가닥이 아니라 재료에 속하는 뻣뻣함",
           "simId": "aperi21:youngs-modulus",
           "labUrl": "piece-lab/youngs-modulus/index.html"
         },
@@ -445,7 +445,7 @@
         {
           "id": "work-energy-theorem",
           "name": "일-운동 에너지 정리",
-          "desc": "알짜일이 운동 에너지 변화와 같음",
+          "desc": "힘과 거리를 어떻게 나누든 해 준 일이 같으면 끝 속력도 같음",
           "simId": "aperi21:work-energy-theorem"
         },
         {
@@ -463,7 +463,7 @@
         {
           "id": "conservative-force",
           "name": "보존력",
-          "desc": "경로에 무관한 힘과 퍼텐셜의 존재",
+          "desc": "어느 길로 가든 한 일이 같은 힘",
           "simId": "aperi21:conservative-force"
         },
         {
@@ -518,13 +518,13 @@
         {
           "id": "elastic-collision",
           "name": "탄성 충돌",
-          "desc": "운동 에너지까지 보존되는 충돌",
+          "desc": "부딪힌 뒤에도 빠르기를 잃지 않는 충돌",
           "simId": "aperi21:elastic-collision"
         },
         {
           "id": "inelastic-collision",
           "name": "비탄성 충돌",
-          "desc": "에너지가 사라지는 충돌",
+          "desc": "되돌려 받지 못하는 몫이 생기는 충돌",
           "simId": "aperi21:inelastic-collision"
         },
         {
@@ -610,7 +610,7 @@
         {
           "id": "angular-momentum",
           "name": "각운동량",
-          "desc": "회전의 운동량",
+          "desc": "돌고 있는 것이 축을 지키게 하는 양",
           "simId": "aperi21:angular-momentum"
         },
         {
@@ -837,7 +837,7 @@
         {
           "id": "keplers-third-law",
           "name": "케플러 제3법칙",
-          "desc": "주기와 긴반지름의 관계",
+          "desc": "궤도 반지름과 한 바퀴 시간의 관계",
           "simId": "aperi21:keplers-third-law"
         },
         {
@@ -880,14 +880,14 @@
         {
           "id": "lagrange-points",
           "name": "라그랑주 점",
-          "desc": "두 천체 사이의 평형 위치",
+          "desc": "함께 도는 두 천체와 보조를 맞추는 다섯 자리",
           "simId": "aperi21:lagrange-points",
           "labUrl": "piece-lab/lagrange-points/index.html"
         },
         {
           "id": "orbital-transfer",
           "name": "궤도 전이",
-          "desc": "호만 전이와 그 비용",
+          "desc": "낮은 궤도에서 높은 궤도로 옮기는 호만 전이",
           "simId": "aperi21:orbital-transfer"
         },
         {
@@ -899,7 +899,7 @@
         {
           "id": "diurnal-motion",
           "name": "일주 운동",
-          "desc": "하루 동안 태양과 별이 하늘을 가로지르는 길",
+          "desc": "하루 동안 밤하늘 전체가 한 점을 두고 도는 길",
           "simId": "aperi21:diurnal-motion"
         },
         {
@@ -917,7 +917,7 @@
         {
           "id": "solar-altitude-shadow",
           "name": "태양 고도와 그림자",
-          "desc": "고도가 바뀌면 그림자 길이와 기온이 함께 바뀐다",
+          "desc": "고도가 바뀌면 그림자 길이와 햇빛이 퍼지는 넓이가 함께 바뀐다",
           "simId": "aperi21:solar-altitude-shadow"
         },
         {
@@ -1088,13 +1088,13 @@
         {
           "id": "buoyancy",
           "name": "부력",
-          "desc": "밀려난 유체의 무게만큼",
+          "desc": "아랫면이 더 세게 밀리는 만큼 남는 위쪽 힘",
           "simId": "aperi21:buoyancy"
         },
         {
           "id": "archimedes-principle",
           "name": "아르키메데스 원리",
-          "desc": "뜨고 가라앉는 조건",
+          "desc": "받는 힘은 밀려난 유체의 무게와 같다",
           "simId": "aperi21:archimedes-principle"
         },
         {
@@ -1172,7 +1172,7 @@
         {
           "id": "reynolds-number",
           "name": "레이놀즈 수",
-          "desc": "전이를 가르는 무차원 수",
+          "desc": "흐름의 결을 정하는 무차원 수",
           "simId": "aperi21:reynolds-number"
         },
         {
@@ -1209,7 +1209,7 @@
         {
           "id": "drag-in-fluid",
           "name": "유체 속 항력",
-          "desc": "형상과 속도가 정하는 저항",
+          "desc": "빠른 흐름에서 뒤 모양이 정하는 저항",
           "simId": "aperi21:drag-in-fluid"
         }
       ]
@@ -1283,7 +1283,7 @@
         {
           "id": "thermal-expansion",
           "name": "열팽창",
-          "desc": "온도에 따른 길이·부피 변화",
+          "desc": "온도에 따른 고체의 길이 변화",
           "simId": "aperi21:thermal-expansion"
         },
         {
@@ -1429,7 +1429,7 @@
         {
           "id": "maxwells-demon",
           "name": "맥스웰의 도깨비",
-          "desc": "정보와 엔트로피의 관계",
+          "desc": "살펴본 만큼 갈라지는 기체",
           "simId": "aperi21:maxwells-demon"
         },
         {
@@ -1490,7 +1490,7 @@
         {
           "id": "wave-speed-in-medium",
           "name": "매질과 파동 속도",
-          "desc": "장력·밀도·탄성이 정하는 속도",
+          "desc": "장력과 선밀도가 정하는 속도",
           "simId": "aperi21:wave-speed-in-medium"
         },
         {
@@ -1541,7 +1541,7 @@
         {
           "id": "string-vibration",
           "name": "줄의 진동",
-          "desc": "양끝이 고정된 줄의 모드",
+          "desc": "흔들리는 길이가 정하는 음높이",
           "simId": "aperi21:string-vibration"
         },
         {
@@ -1616,7 +1616,7 @@
         {
           "id": "wave-attenuation",
           "name": "파동의 감쇠",
-          "desc": "매질이 흡수하는 에너지",
+          "desc": "같은 거리마다 같은 비율로 낮아지는 진폭",
           "simId": "aperi21:wave-attenuation"
         },
         {
@@ -1640,7 +1640,7 @@
         {
           "id": "sound-through-materials",
           "name": "물질을 통한 소리 전달",
-          "desc": "매질에 따라 달라지는 소리의 전달",
+          "desc": "매질이 정하는 소리의 빠르기와 건너감",
           "simId": "aperi21:sound-through-materials"
         },
         {
@@ -1694,7 +1694,7 @@
         {
           "id": "plane-mirror-image",
           "name": "평면거울의 상",
-          "desc": "허상의 위치와 좌우 반전",
+          "desc": "되짚은 빛이 만나는 거울 뒤의 허상",
           "simId": "aperi21:plane-mirror-image"
         },
         {
@@ -1902,13 +1902,13 @@
         {
           "id": "scattering",
           "name": "산란",
-          "desc": "하늘과 노을의 색",
+          "desc": "파란 하늘과 흰 구름을 가르는 입자 크기",
           "simId": "aperi21:scattering"
         },
         {
           "id": "rayleigh-scattering",
           "name": "레일리 산란",
-          "desc": "파장 4제곱에 반비례하는 산란",
+          "desc": "파장이 짧을수록 가파르게 느는 산란",
           "simId": "aperi21:rayleigh-scattering"
         },
         {
@@ -1945,7 +1945,7 @@
         {
           "id": "electric-charge",
           "name": "전하",
-          "desc": "두 종류의 전하와 보존",
+          "desc": "두 종류뿐인 전하",
           "simId": "aperi21:electric-charge"
         },
         {
@@ -2055,7 +2055,7 @@
         {
           "id": "energy-in-capacitor",
           "name": "축전기의 에너지",
-          "desc": "전기장에 저장된 에너지",
+          "desc": "전하를 옮기는 데 든 일",
           "simId": "aperi21:energy-in-capacitor"
         },
         {
@@ -2067,7 +2067,7 @@
         {
           "id": "drift-velocity",
           "name": "표류 속도",
-          "desc": "느린 전자와 빠른 신호",
+          "desc": "도선 속 전자가 기어가는 속도",
           "simId": "aperi21:drift-velocity"
         },
         {
@@ -2152,7 +2152,7 @@
         {
           "id": "charged-particle-in-magnetic-field",
           "name": "자기장 속 전하의 원운동",
-          "desc": "속도에 수직인 힘",
+          "desc": "속력이 달라도 같은 한 바퀴 시간",
           "simId": "aperi21:charged-particle-in-magnetic-field",
           "labUrl": "piece-lab/charged-particle-in-magnetic-field/index.html"
         },
@@ -2183,7 +2183,7 @@
         {
           "id": "field-of-straight-wire",
           "name": "직선 전류의 자기장",
-          "desc": "거리에 반비례하는 세기",
+          "desc": "거리가 멀수록 주는 세기",
           "simId": "aperi21:current-magnetic-field"
         },
         {
@@ -2309,7 +2309,7 @@
         {
           "id": "generator",
           "name": "발전기",
-          "desc": "회전이 만드는 기전력",
+          "desc": "전구를 켜면 손잡이가 무거워진다",
           "simId": "aperi21:generator"
         },
         {
@@ -2321,7 +2321,7 @@
         {
           "id": "maxwells-equations",
           "name": "맥스웰 방정식",
-          "desc": "전자기를 묶는 네 식",
+          "desc": "전기와 자기가 서로를 낳는 사슬",
           "simId": "aperi21:maxwells-equations"
         },
         {
@@ -2334,7 +2334,7 @@
         {
           "id": "poynting-vector",
           "name": "포인팅 벡터",
-          "desc": "전자기파가 나르는 에너지 흐름",
+          "desc": "도선 둘레 공간을 지나는 에너지",
           "simId": "aperi21:poynting-vector"
         },
         {
@@ -2460,7 +2460,7 @@
         {
           "id": "twin-paradox",
           "name": "쌍둥이 역설",
-          "desc": "비대칭을 만드는 가속",
+          "desc": "비대칭을 만드는 돌아섬",
           "simId": "aperi21:twin-paradox"
         },
         {
@@ -2503,7 +2503,7 @@
         {
           "id": "gravitational-redshift",
           "name": "중력 적색 이동",
-          "desc": "빠져나오며 잃는 에너지",
+          "desc": "빠져나오며 붉어지는 빛",
           "simId": "aperi21:gravitational-redshift"
         },
         {
@@ -2533,7 +2533,7 @@
         {
           "id": "work-function-and-threshold",
           "name": "일함수와 문턱 진동수",
-          "desc": "세기가 아니라 진동수가 정하는 것",
+          "desc": "금속마다 다른 문턱, 모두 같은 기울기",
           "simId": "aperi21:work-function-and-threshold"
         },
         {
@@ -2551,7 +2551,7 @@
         {
           "id": "de-broglie-wavelength",
           "name": "드브로이 파장",
-          "desc": "물질의 파동성",
+          "desc": "빠르기가 정하는 물질의 파장",
           "simId": "aperi21:de-broglie-wavelength"
         },
         {
@@ -2813,7 +2813,7 @@
         {
           "id": "exchange-particles",
           "name": "교환 입자",
-          "desc": "힘을 주고받는 입자",
+          "desc": "전자 사이의 광자, 쿼크 사이의 글루온",
           "simId": "aperi21:exchange-particles"
         }
       ]
