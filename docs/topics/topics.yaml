@@ -1729,7 +1729,7 @@ topics:
     visualNote: 섞인 것이 저절로 갈라지지 않는다
     sim: aperi21:second-law-of-thermodynamics
   - id: entropy-and-irreversibility
-    name: 엔트로피와 비가역성
+    name: 비가역성
     desc: 되돌릴 수 없는 이유
     domain: thermodynamics
     level: upper
@@ -2888,7 +2888,7 @@ topics:
     visualNote: 코일을 돌리면 사인파가 나온다
     sim: aperi21:ac-generation
   - id: reactance-and-impedance
-    name: 리액턴스와 임피던스
+    name: 리액턴스
     desc: 주파수에 의존하는 저항
     domain: electromagnetism
     level: null

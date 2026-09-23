@@ -1379,7 +1379,7 @@
         },
         {
           "id": "entropy-and-irreversibility",
-          "name": "엔트로피와 비가역성",
+          "name": "비가역성",
           "desc": "되돌릴 수 없는 이유",
           "simId": "aperi21:entropy-and-irreversibility"
         },
@@ -2278,7 +2278,7 @@
         },
         {
           "id": "reactance-and-impedance",
-          "name": "리액턴스와 임피던스",
+          "name": "리액턴스",
           "desc": "주파수에 의존하는 저항",
           "simId": "aperi21:reactance-and-impedance"
         },
