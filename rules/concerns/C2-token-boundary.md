@@ -43,19 +43,10 @@ last_verified: 2026-09-14
 - 그 대상이 **그 조작기·그 어휘 고유의 치수**일 때만 named 상수로 남긴다 (파라미터
   상자의 행 높이, 견본 칸의 기호 크기 같은 것). 여백·글자·굵기는 축이 정한다.
 
-## 현재 위반
-
-없다. AUDIT-v1 이 잡았던 둘은 해소됐다 — `node-view.ts` 의 배지 색은 `theme` 경유가
-됐고 치수는 `PLACEHOLDER` 상수로, `runBundle.ts` 의 캔버스 치수는 `CANVAS_DEFAULT` +
-선언(`BundleSchema.canvas`)으로 옮겼다.
-
-`sims/**` 색 리터럴은 0건이다 (`_analysis.md` G4). 이 상태를 잠근다.
-
 ## Exception
 
 - `packages/host/src/theme/themes.ts` 는 토큰 정의 자체이므로 색 리터럴을 포함한다.
 - `apps/catalog/src/theme/tokens.css` 는 CSS 토큰 정의 파일이다.
 - 색 공간 변환 같은 **순수 함수의 수학 상수**는 색 리터럴이 아니다.
 - `apps/catalog` 은 카탈로그 사이트이며 자체 CSS 토큰 체계를 쓴다. 이 규칙은 **임베드
-  런타임**(host · plugin · host-tiptap · sims)에 적용된다. `EditorDemoPage.tsx` 의 색
-  리터럴 3건은 적용 범위 밖이다 (AUDIT-v1 예외 판정).
+  런타임**(host · plugin · host-tiptap · sims)에 적용된다.

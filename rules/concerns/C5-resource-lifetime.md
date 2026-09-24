@@ -43,24 +43,6 @@ last_verified: 2026-09-10
 - **"정리할 것 없음" 이라 적어 놓고 타이머나 리스너가 있으면 안 된다.** 그 주석 한 줄이
   다음 사람의 점검을 막는다. 남기기로 했다면 무엇을 왜 남기는지 적는다.
 
-## 현재 상태
-
-대체로 지켜지고 있다 (`_analysis.md` G5).
-
-| | runBundle.ts |
-|---|---:|
-| `addEventListener` / `removeEventListener` | 5 / 5 |
-| `requestAnimationFrame` / `cancelAnimationFrame` | 2 / 1 |
-
-2026-09-14 에 `react/embed/Canvas.tsx` 의 복제 루프가 사라졌다. 러너가 하나이므로
-이 표도 한 줄이다.
-
-RAF 2:1 은 루프 재귀 호출이 한 건 섞인 것으로, 핸들 관리 자체는 있다. 이 규칙은 잠금이
-주목적이다.
-
-`console.*` 2건(`host/host.ts` · `catalog/Header.tsx`)은 Low 로 둔다 — 전자는 logger
-경계라 허용, 후자는 카탈로그 앱이다.
-
 ## PREFER
 
 - 임베드 인스턴스 독립을 **회귀 테스트로 고정한다.** 한 문서에 두 개를 마운트해 한쪽의

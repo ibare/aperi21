@@ -77,19 +77,3 @@ FACET 이 그 종류로 세 번 겪었다 (`c726076` 메시지 로더, `c53f389`
   반드시 `@aperi21/bootstrap` 경유.
 - bootstrap 이 어댑터나 발행 번들을 import 하지 않는다 (역방향).
 - 어댑터가 `SceneGraph` 전처리나 렌더러를 직접 다루지 않는다. 러너가 감추는 추상을 깨지 않는다.
-
-## 이력 — 단일 인스턴스 위반과 해소
-
-`host-tiptap-bundle` 의 rollup `external` 이 `@tiptap/*` 뿐이라 `@aperi21/host` 가
-inline 되어 있었다 (AUDIT-v1 위반 1, Critical). 외부 진입점이 하나뿐이라 발현하지
-않았을 뿐이다.
-
-`e8de66f` 에서 해소 — host 를 0.2.0 공개 패키지로 분리하고 번들에서 `external` +
-`peerDependencies` 로 두었다. 검증: 번들 dist 에 host 런타임 코드 0건, entry 와
-runtime chunk 가 `@aperi21/host` 를 external 로 import.
-
-같은 커밋에서 **발행본 `.d.ts` 결함**도 드러났다. 0.1.0 의 `.d.ts` 가 미발행 private
-패키지(`@aperi21/host-tiptap` · `@aperi21/bootstrap`)를 import 해 소비자 쪽 타입이
-끊겨 있었다. 워크스페이스에서는 멀쩡하고 발행본에서만 죽는 종류라 게이트 3단
-(`pnpm pack` 검증) 없이는 잡히지 않는다. `rollup-plugin-dts` 의 `respectExternal: true`
-로 고쳤고, 그 항목을 위 게이트 3에 명시했다.

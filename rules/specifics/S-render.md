@@ -33,12 +33,7 @@ last_verified: 2026-09-10
 도 무시된다. 엔진이 보장하는 것은 둘뿐이다 — 참조 의존(위상 정렬)과 캡션 슬롯이
 맨 위라는 것. 정렬은 `orderForDrawing` 하나가 한다.
 
-plugin 이 `primitiveTypes` 로 더 확장한다 — optics `['ray','opticalElement']`,
-circuit `['circuitElement','wire','terminal']`.
-
-> 2026-09-10 에 자유 렌더 정찰에서 일곱이 승격됐다 — `region` · `stream` · `readout` ·
-> `scale` · `dimension` · `vortexField` · `filament`
-> (`tasks/engine-requirements/REQUIREMENTS.md` §3).
+plugin 이 `primitiveTypes` 로 더 확장한다.
 
 ## MUST
 
@@ -53,9 +48,7 @@ circuit `['circuitElement','wire','terminal']`.
   타입도 통과하고 예외도 안 났다.
 - **알파는 `setAlpha(c, a)` 로만 넣는다.** `globalAlpha` 에 직접 대입하면 `applyBaseMeta` 가
   붙인 기준 알파(강조 상태 × `opacity`)가 지워진다 — 잔상이 옅어지지 않는데 예외도 없고
-  타입도 통과한다. 한계: plugin 렌더러는 host 에 의존하지 않아 이 헬퍼를 쓸 수 없고
-  `applyBaseMeta` 도 부르지 않는다. 그래서 plugin 프리미티브(`ray` 등)는 `opacity` ·
-  `highlight` · `clip` 을 따르지 않는다.
+  타입도 통과한다.
 - **`rc.store` 를 쓰는 어휘는 순서에 기대지 않는다.** 서로 참조하는 어휘는 어느
   쪽이 먼저 돌아도 되도록 **빈 상태를 만들 수 있어야** 한다.
 - **캔버스 껍데기는 러너가 만든다.** 렌더러가 컨테이너를 만들거나 비우지 않는다.
@@ -91,14 +84,6 @@ circuit `['circuitElement','wire','terminal']`.
 되는 것은 올리지 않는다.
 
 판정 사례는 `S-piece.md` 「판정 사례」를 본다.
-
-> 2026-09-09 에 두 sim 이 자유 렌더를 썼고(342 + 288줄), 2026-09-10 에 일곱 어휘로
-> 승격되며 둘 다 0 이 됐다.
-
-## 현재 위반
-
-없다. AUDIT-v1 이 잡았던 캔버스 높이 하드코딩은 `CANVAS_DEFAULT` 기본값 +
-`BundleSchema.canvas` 선언으로 옮겼다.
 
 ## PREFER
 

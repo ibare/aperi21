@@ -26,18 +26,6 @@ last_verified: 2026-09-09
 - `../../../packages/host/src/...` 처럼 **상대 경로로 다른 패키지를 침범**하지 않는다.
 - `package.json::exports` 에 없는 subpath 를 만들어 쓰지 않는다.
 
-## 현재 상태
-
-**위반 0건.** 실측 결과 `@aperi21/*` import 111건이 전부 패키지 루트 형태이고, 깊은
-상대경로 침범도 없다 (`_analysis.md` G2). 이 규칙은 **고치기 위한 것이 아니라 잠그기
-위한 것**이다.
-
-| import 대상 | 건수 |
-|---|---:|
-| `@aperi21/schema` | 71 |
-| `@aperi21/host` | 22 |
-| 그 외 | 18 |
-
 ## Exception
 
 - 테스트 파일은 편의상 다른 패키지의 심볼을 직접 import 할 수 있다 (devDependencies 선언 시).
