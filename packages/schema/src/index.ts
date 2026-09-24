@@ -764,7 +764,7 @@ export interface Filament extends BaseMeta {
  *
  * 01-broad 배치에서 여섯 조각이 각자 짠 것이다 — 파면이 태어난 자리(doppler),
  * 벽을 때린 자국과 압력 누적(gas-pressure), 바닥을 지난 박자(pendulum), 울렁임의
- * 마디(beats), 0.3 초마다 찍은 위치(newtons-first-law · ramp-energy). 균일 간격이냐
+ * 마디(beats), 0.3 초마다 찍은 위치(newtons-first-law · conservation-of-mechanical-energy). 균일 간격이냐
  * 불규칙한 사건이냐만 다를 뿐 전부 `{자리 · 나이 · 세기}` 목록이라 하나로 둔다
  * (C4 — 같은 대상에 두 이름을 두지 않는다).
  *

@@ -20,7 +20,7 @@ export const G = 9.8;
  *
  * `v = √(2g·Δh)` — 어떤 모양의 길을 지나왔든 내려온 높이가 같으면 속력이 같다.
  * 조각마다 이 식과 적분기를 손으로 짜면 조각마다 다른 수치 오차가 생기고,
- * 에너지 보존이 근사가 되어 주장 자체가 흔들린다 (`ramp-energy` NOTES).
+ * 에너지 보존이 근사가 되어 주장 자체가 흔들린다 (`conservation-of-mechanical-energy` NOTES).
  *
  * 적분기를 고르는 것은 조각의 몫으로 남긴다 — 진자처럼 진폭이 시들면 안 되는
  * 물리는 velocity Verlet 이어야 한다 (`pendulum-isochronism` NOTES).

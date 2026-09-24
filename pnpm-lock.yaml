@@ -56,6 +56,9 @@ importers:
       '@aperi21/sim-beats':
         specifier: workspace:*
         version: link:../../sims/waves/beats
+      '@aperi21/sim-conservation-of-mechanical-energy':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/conservation-of-mechanical-energy
       '@aperi21/sim-doppler-effect':
         specifier: workspace:*
         version: link:../../sims/waves/doppler-effect
@@ -80,9 +83,6 @@ importers:
       '@aperi21/sim-pressure-isotropy':
         specifier: workspace:*
         version: link:../../sims/fluids/pressure-isotropy
-      '@aperi21/sim-ramp-energy':
-        specifier: workspace:*
-        version: link:../../sims/mechanics/ramp-energy
       '@aperi21/sim-thermal-conduction':
         specifier: workspace:*
         version: link:../../sims/thermal/thermal-conduction
@@ -345,6 +345,9 @@ importers:
       '@aperi21/sim-conservation-of-angular-momentum':
         specifier: workspace:*
         version: link:../../sims/oscillation/conservation-of-angular-momentum
+      '@aperi21/sim-conservation-of-mechanical-energy':
+        specifier: workspace:*
+        version: link:../../sims/mechanics/conservation-of-mechanical-energy
       '@aperi21/sim-conservation-of-momentum':
         specifier: workspace:*
         version: link:../../sims/mechanics/conservation-of-momentum
@@ -1059,9 +1062,6 @@ importers:
       '@aperi21/sim-rainbow':
         specifier: workspace:*
         version: link:../../sims/optics/rainbow
-      '@aperi21/sim-ramp-energy':
-        specifier: workspace:*
-        version: link:../../sims/mechanics/ramp-energy
       '@aperi21/sim-random-walk':
         specifier: workspace:*
         version: link:../../sims/thermal/random-walk
@@ -3453,6 +3453,18 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
+  sims/mechanics/conservation-of-mechanical-energy:
+    devDependencies:
+      '@aperi21/plugin-mechanics':
+        specifier: workspace:*
+        version: link:../../../packages/plugin-mechanics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
   sims/mechanics/conservation-of-momentum:
     devDependencies:
       '@aperi21/schema':
@@ -3752,18 +3764,6 @@ importers:
 
   sims/mechanics/pulley-system:
     devDependencies:
-      '@aperi21/schema':
-        specifier: workspace:*
-        version: link:../../../packages/schema
-      typescript:
-        specifier: ^5.6.3
-        version: 5.9.3
-
-  sims/mechanics/ramp-energy:
-    devDependencies:
-      '@aperi21/plugin-mechanics':
-        specifier: workspace:*
-        version: link:../../../packages/plugin-mechanics
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../../../packages/schema

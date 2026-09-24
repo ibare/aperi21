@@ -76,7 +76,7 @@ export const SIM_DOMAINS: Record<string, string> = {
   "aperi21:elastic-potential-energy": "energy-momentum",
   "aperi21:conservative-force": "energy-momentum",
   "aperi21:non-conservative-force": "energy-momentum",
-  "aperi21:ramp-energy": "energy-momentum",
+  "aperi21:conservation-of-mechanical-energy": "energy-momentum",
   "aperi21:energy-dissipation": "energy-momentum",
   "aperi21:potential-energy-curve": "energy-momentum",
   "aperi21:equilibrium-points": "energy-momentum",

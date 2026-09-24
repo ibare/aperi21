@@ -9,7 +9,7 @@
 // 돌려준다. 끝에서 두 막대는 A 와 B 의 높이 차 h 에서 **같이** 멈춘다.
 // 중력이 한 일은 길이 아니라 두 끝의 높이만 센다.
 //
-// 이웃과 겹치지 않게 — ramp-energy 는 「도착 속력이 같다」, non-conservative-force
+// 이웃과 겹치지 않게 — conservation-of-mechanical-energy 는 「도착 속력이 같다」, non-conservative-force
 // 는 「마찰은 긴 길일수록 더 잃는다」 를 말한다. 여기는 **힘이 한 일 자체**를 쌓는다.
 //
 // 엔진 위에서 바로 만든 조각이다 — 자유 구현 원본이 없다.

@@ -1526,6 +1526,14 @@ export function registerGeneratedBundles(): void {
     return registerBundle("aperi21:connected-bodies", m.connectedBodiesBundle, caps.capabilities);
   });
 
+  registerBundleLoader("aperi21:conservation-of-mechanical-energy", async () => {
+    const [m, caps] = await Promise.all([
+      import("@aperi21/sim-conservation-of-mechanical-energy"),
+      import("./capabilities/mechanics/conservation-of-mechanical-energy.generated.js"),
+    ]);
+    return registerBundle("aperi21:conservation-of-mechanical-energy", m.conservationOfMechanicalEnergyBundle, caps.capabilities);
+  });
+
   registerBundleLoader("aperi21:conservation-of-momentum", async () => {
     const [m, caps] = await Promise.all([
       import("@aperi21/sim-conservation-of-momentum"),
@@ -1796,14 +1804,6 @@ export function registerGeneratedBundles(): void {
       import("./capabilities/mechanics/pulley-system.generated.js"),
     ]);
     return registerBundle("aperi21:pulley-system", m.pulleySystemBundle, caps.capabilities);
-  });
-
-  registerBundleLoader("aperi21:ramp-energy", async () => {
-    const [m, caps] = await Promise.all([
-      import("@aperi21/sim-ramp-energy"),
-      import("./capabilities/mechanics/ramp-energy.generated.js"),
-    ]);
-    return registerBundle("aperi21:ramp-energy", m.rampEnergyBundle, caps.capabilities);
   });
 
   registerBundleLoader("aperi21:rocket-equation", async () => {

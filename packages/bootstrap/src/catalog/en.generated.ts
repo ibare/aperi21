@@ -89,7 +89,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:elastic-potential-energy","title":"Elastic potential energy","description":"The energy stored in a deformation","domain":"energy-momentum"},
     {"id":"aperi21:conservative-force","title":"Conservative force","description":"A force whose work ignores the path — and the potential it allows","domain":"energy-momentum"},
     {"id":"aperi21:non-conservative-force","title":"Non-conservative force","description":"Work that depends on the path","domain":"energy-momentum"},
-    {"id":"aperi21:ramp-energy","title":"Ramps and energy","description":"Different paths, same speed at the bottom","domain":"energy-momentum"},
+    {"id":"aperi21:conservation-of-mechanical-energy","title":"Conservation of mechanical energy","description":"The sum that holds while height and motion trade places","domain":"energy-momentum"},
     {"id":"aperi21:energy-dissipation","title":"Energy dissipation","description":"The share friction takes, and where it goes","domain":"energy-momentum"},
     {"id":"aperi21:potential-energy-curve","title":"Potential energy curve","description":"How the shape of the curve decides the motion","domain":"energy-momentum"},
     {"id":"aperi21:equilibrium-points","title":"Equilibrium points","description":"Stable, unstable and neutral equilibrium","domain":"energy-momentum"},

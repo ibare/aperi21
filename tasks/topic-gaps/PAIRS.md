@@ -26,7 +26,7 @@
 | `youngs-modulus` | 한 가닥이 아니라 재료에 속하는 뻣뻣함 | 늘어나는 정도는 선의 길이가 아니라 재료가 정한다 |
 | `work-energy-theorem` | 힘과 거리를 어떻게 나누든 해 준 일이 같으면 끝 속력도 같음 | 알짜일이 운동 에너지 변화와 같음 |
 | `conservative-force` | 어느 길로 가든 한 일이 같은 힘 | 경로에 무관한 힘과 퍼텐셜의 존재 |
-| `conservation-of-mechanical-energy` | 같은 낙차를 다른 길로 내려오면 끝 속력이 같음 | 길이 달라도 바닥에서의 속력은 같다 |
+| `conservation-of-mechanical-energy` | 위치에 담긴 몫과 운동에 담긴 몫이 자리를 바꾸는 동안 둘의 합이 그대로임 | 위치와 운동이 자리를 바꾸는 동안 변하지 않는 합 |
 | `elastic-collision` | 부딪힌 뒤에도 빠르기를 잃지 않는 충돌 | 운동 에너지까지 보존되는 충돌 |
 | `inelastic-collision` | 되돌려 받지 못하는 몫이 생기는 충돌 | 에너지가 사라지는 충돌 |
 | `angular-momentum` | 돌고 있는 것이 축을 지키게 하는 양 | 회전의 운동량 |

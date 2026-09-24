@@ -89,7 +89,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:elastic-potential-energy","title":"탄성 퍼텐셜 에너지","description":"변형에 저장된 에너지","domain":"energy-momentum"},
     {"id":"aperi21:conservative-force","title":"보존력","description":"경로에 무관한 힘과 퍼텐셜의 존재","domain":"energy-momentum"},
     {"id":"aperi21:non-conservative-force","title":"비보존력","description":"경로에 따라 달라지는 일","domain":"energy-momentum"},
-    {"id":"aperi21:ramp-energy","title":"경사면과 에너지","description":"길이 달라도 바닥에서의 속력은 같다","domain":"energy-momentum"},
+    {"id":"aperi21:conservation-of-mechanical-energy","title":"역학적 에너지 보존","description":"위치와 운동이 자리를 바꾸는 동안 변하지 않는 합","domain":"energy-momentum"},
     {"id":"aperi21:energy-dissipation","title":"에너지 소산","description":"마찰이 가져가는 몫과 그 행방","domain":"energy-momentum"},
     {"id":"aperi21:potential-energy-curve","title":"퍼텐셜 곡선","description":"곡선의 모양이 운동을 정하는 방식","domain":"energy-momentum"},
     {"id":"aperi21:equilibrium-points","title":"평형점","description":"안정·불안정·중립 평형","domain":"energy-momentum"},

@@ -475,8 +475,8 @@
         {
           "id": "conservation-of-mechanical-energy",
           "name": "역학적 에너지 보존",
-          "desc": "같은 낙차를 다른 길로 내려오면 끝 속력이 같음",
-          "simId": "aperi21:ramp-energy"
+          "desc": "위치에 담긴 몫과 운동에 담긴 몫이 자리를 바꾸는 동안 둘의 합이 그대로임",
+          "simId": "aperi21:conservation-of-mechanical-energy"
         },
         {
           "id": "energy-dissipation",

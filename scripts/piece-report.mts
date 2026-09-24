@@ -172,7 +172,7 @@ function fileId(id: string): string {
  * 이 조각을 마운트하는 **주제의 id**. 카탈로그에서 `simId` 로 거슬러 찾는다.
  *
  * 조각 id 와 주제 id 가 같다고 가정하지 않는다. 01-broad 배치가 그 가정을 깼다 —
- * `newtons-first-law` 의 주제는 `newtons-first-law`, `ramp-energy` 는
+ * `newtons-first-law` 의 주제는 `newtons-first-law`, `conservation-of-mechanical-energy` 는
  * `conservation-of-mechanical-energy` 다. 주제 이름은 물리 개념의 이름이고
  * 조각 id 는 그 개념의 한 시각화라, 둘이 달라지는 것이 정상이다.
  *

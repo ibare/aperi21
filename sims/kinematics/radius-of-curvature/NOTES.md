@@ -184,5 +184,5 @@ probeTimes 다섯 시각의 달리는 점 · 원의 중심 · 화면 반지름�
 
 `sims/kinematics/radius-of-curvature/package.json` 에 `@aperi21/plugin-mechanics` 를
 peer + dev 로 넣고 `node_modules/@aperi21/plugin-mechanics` 심볼릭 링크를 손으로 걸었다
-(`sims/mechanics/ramp-energy` 와 같은 꼴). **`pnpm install` 은 돌리지 않았다** —
+(`sims/mechanics/conservation-of-mechanical-energy` 와 같은 꼴). **`pnpm install` 은 돌리지 않았다** —
 `pnpm-lock.yaml` 은 다른 조각 이관과 공유하는 파일이라 메인이 합친 뒤 한 번 돌려야 한다.

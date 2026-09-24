@@ -73,7 +73,7 @@
    다시 시작시킬 수 없다. "만지면 다시 던진다" 는 이 조각(과 원본 `engineWish` 의
    사이클 항목)이 요구한 규약인데, 지금은 `heldPath` 로 *기록을 비우는* 것까지만 된다.
    필요한 모양: 선언이 가리키는 상태 경로가 참이 될 때 주기를 0 으로 되돌리는 것
-   (`timeline.restartWhen` 같은 자리). 상태로 주기를 도는 쪽(`ramp-energy`)으로 가면
+   (`timeline.restartWhen` 같은 자리). 상태로 주기를 도는 쪽(`conservation-of-mechanical-energy`)으로 가면
    되돌릴 수는 있으나 시간표 선언을 통째로 포기하게 된다.
 
 2. **값을 감춘 슬라이더.** `slider` 는 언제나 `value.toFixed(2)` 를 찍는다. 값이 물리량이

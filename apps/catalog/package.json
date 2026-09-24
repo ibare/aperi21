@@ -29,7 +29,7 @@
     "@aperi21/sim-pendulum-isochronism": "workspace:*",
     "@aperi21/sim-pressure-and-container-shape": "workspace:*",
     "@aperi21/sim-pressure-isotropy": "workspace:*",
-    "@aperi21/sim-ramp-energy": "workspace:*",
+    "@aperi21/sim-conservation-of-mechanical-energy": "workspace:*",
     "@tiptap/core": "^3.22.3",
     "@tiptap/pm": "^3.22.3",
     "@tiptap/react": "^3.22.3",

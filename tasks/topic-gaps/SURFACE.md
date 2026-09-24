@@ -119,20 +119,22 @@
 
 ### T20 · `conservation-of-mechanical-energy`
 
-- 조각 — `aperi21:ramp-energy` · `sims/mechanics/ramp-energy`
-- 문안 7건
-  - `label.title` — 경사면과 에너지
-  - `label.operation` — 길이 달라도 바닥에서의 속력은 같다
-  - `label.stage` — 경사면
-  - `label.view` — 세 길
-  - `caption.descending` — 같은 높이에서 출발한 공 셋이 서로 다른 길로 내려간다
-  - `caption.settled` — 셋 다 바닥에 내려섰다 — 벌어진 간격이 더는 변하지 않는다
-  - `caption.adjusting` — 출발 높이를 다시 정하는 중 — 놓으면 셋이 같은 높이에서 함께 출발한다
-- 조작기 — drop-steep-first(scale-drag) · drop-straight(scale-drag) · drop-steep-last(scale-drag)
-- 스테이지 — ramps
-- 뷰 — paths
-- 시간표 — 없음
-- 노드 종류 — body · trace · trajectory
+- 조각 — `aperi21:conservation-of-mechanical-energy` · `sims/mechanics/conservation-of-mechanical-energy`
+- 문안 9건
+  - `label.title` — 역학적 에너지 보존
+  - `label.operation` — 위치와 운동이 자리를 바꾸는 동안 변하지 않는 합
+  - `label.stage` — 골짜기 궤도
+  - `label.view` — 한 번의 왕복
+  - `label.height` — 높이
+  - `label.motion` — 운동
+  - `caption.fall` — 내려오는 동안 높이에 있던 몫이 운동으로 옮겨 간다
+  - `caption.rise` — 올라가는 동안 운동에 있던 몫이 다시 높이로 돌아간다
+  - `caption.sum` — 두 몫이 뒤바뀌는 내내 기둥의 위끝은 같은 선에 닿아 있다
+- 조작기 — 없음 (자동 진행)
+- 스테이지 — valley
+- 뷰 — round-trip
+- 시간표 — fall-left→caption.fall · rise-right→caption.rise · fall-right→caption.sum · rise-left→caption.sum
+- 노드 종류 — body · readout · region · trajectory · vector
 
 ### T28 · `pendulum-amplitude-dependence`
 
