@@ -88,7 +88,6 @@ export const PHASE_FADE = 1;
 
 export const comptonScatteringMessages = Object.freeze({
   'label.title': { ko: '콤프턴 산란', en: 'Compton scattering' },
-  'label.operation': { ko: '광자가 운동량을 가진다는 증거', en: 'Evidence that a photon carries momentum' },
   'label.stage': { ko: '센 X선과 전자 하나', en: 'Hard X-ray and one electron' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 들어오는 광자. 값은 선언한 입사 파장을 끼운다 (C1 · S-piece 유효숫자). */
@@ -135,9 +134,8 @@ function key(k: ComptonScatteringMessageKey): string {
 
 export const comptonScatteringSchema: BundleSchema = {
   id: COMPTON_SCATTERING_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 다섯 각이 차례로 쌓여 부채꼴에서 한눈에 견줘진다.

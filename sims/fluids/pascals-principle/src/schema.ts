@@ -89,7 +89,6 @@ export const REST = 0.6;
 
 export const pascalsPrincipleMessages = Object.freeze({
   'label.title': { ko: '파스칼 원리', en: "Pascal's principle" },
-  'label.operation': { ko: '압력의 전달과 유압 장치', en: 'Transmitted pressure and the hydraulic press' },
   'label.stage': { ko: '유압 장치', en: 'Hydraulic press' },
   'label.view': { ko: '옆에서 본 유압관', en: 'Hydraulic press from the side' },
   /**
@@ -134,9 +133,8 @@ function key(k: PascalsPrincipleMessageKey): string {
 
 export const pascalsPrincipleSchema: BundleSchema = {
   id: PASCALS_PRINCIPLE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 손이 누르고, 두 피스톤이 움직이고, 멈추고, 돌아간다.

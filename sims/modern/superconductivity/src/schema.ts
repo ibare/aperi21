@@ -83,7 +83,6 @@ export const START_AT = 1.0;
 
 export const superconductivityMessages = Object.freeze({
   'label.title': { ko: '초전도', en: 'Superconductivity' },
-  'label.operation': { ko: '저항이 사라지는 상태', en: 'The state in which resistance vanishes' },
   'label.stage': { ko: '구리와 수은', en: 'Copper and mercury' },
   'label.view': { ko: '저항-온도 판', en: 'Resistance vs temperature' },
   /** 곡선 이름 — 원소 이름은 문안이다 (C1). */
@@ -135,9 +134,8 @@ function key(k: SuperconductivityMessageKey): string {
 
 export const superconductivitySchema: BundleSchema = {
   id: SUPERCONDUCTIVITY_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 식고 있고, 수은이 떨어지고, 다시 데워져 처음부터 식는다.

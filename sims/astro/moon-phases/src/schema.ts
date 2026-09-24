@@ -77,10 +77,6 @@ export const SCENE_BOUNDS = { minX: 0, maxX: CANVAS_W, minY: -62, maxY: CANVAS_H
 
 export const moonPhasesMessages = Object.freeze({
   'label.title': { ko: '달의 위상', en: 'Phases of the Moon' },
-  'label.operation': {
-    ko: '햇빛을 받는 달의 어느 쪽을 보는가',
-    en: 'Which part of the sunlit Moon faces us',
-  },
   'label.stage': { ko: '지구와 달', en: 'Earth and Moon' },
   'label.view': { ko: '두 시점', en: 'Two views' },
   'label.sunlight': { ko: '← 태양에서 오는 햇빛', en: '← Sunlight from the Sun' },
@@ -115,9 +111,8 @@ function key(k: MoonPhasesMessageKey): string {
 
 export const moonPhasesSchema: BundleSchema = {
   id: MOON_PHASES_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'earth-moon', label: text('label.stage'), constants: {} }],

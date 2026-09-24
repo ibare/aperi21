@@ -88,10 +88,6 @@ export const NARROW = 1.0;
 
 export const parallelPlateCapacitorMessages = Object.freeze({
   'label.title': { ko: '평행판 축전기', en: 'Parallel-plate capacitor' },
-  'label.operation': {
-    ko: '넓이·간격이 정하는 용량',
-    en: 'Capacitance set by area and gap',
-  },
   'label.stage': { ko: '전지에 이은 두 판', en: 'Two plates on a battery' },
   'label.view': { ko: '옆에서 본 판', en: 'Side view' },
   /** 전지 전압 — 값이 끼는 조립이라 문안이다 (C1). */
@@ -154,9 +150,8 @@ function key(k: ParallelPlateCapacitorMessageKey): string {
 
 export const parallelPlateCapacitorSchema: BundleSchema = {
   id: PARALLEL_PLATE_CAPACITOR_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 좁히고, 되돌리고, 넓히는 한 주기로 할 말을 마친다.

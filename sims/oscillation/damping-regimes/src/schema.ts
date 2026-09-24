@@ -82,10 +82,6 @@ export const SCENE_BOUNDS = { minX: -0.4, maxX: 6.04, minY: -1.9, maxY: 1.72 } a
 
 export const dampingRegimesMessages = Object.freeze({
   'label.title': { ko: '감쇠의 세 양상', en: 'Three regimes of damping' },
-  'label.operation': {
-    ko: '부족·임계·과도 감쇠',
-    en: 'Underdamped, critically damped and overdamped motion',
-  },
   'label.stage': { ko: '같은 용수철 셋', en: 'Three identical springs' },
   'label.view': { ko: '시간 곡선', en: 'Time traces' },
 
@@ -130,9 +126,8 @@ function key(k: DampingRegimesMessageKey): string {
 
 export const dampingRegimesSchema: BundleSchema = {
   id: DAMPING_REGIMES_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

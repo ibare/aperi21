@@ -81,7 +81,6 @@ export const SCENE_BOUNDS = { minX: -1.5, maxX: 6.5, minY: -1.05, maxY: 2.45 } a
 
 export const lightClockMessages = Object.freeze({
   'label.title': { ko: '빛 시계', en: 'Light clock' },
-  'label.operation': { ko: '시간 지연을 유도하는 사고 실험', en: 'The thought experiment behind time dilation' },
   'label.stage': { ko: '0.8c 로 움직이는 빛 시계', en: 'A light clock moving at 0.8c' },
   'label.view': { ko: '정지한 틀', en: 'Rest frame' },
   'label.rest': { ko: '정지한 빛 시계', en: 'Light clock at rest' },
@@ -134,9 +133,8 @@ function key(k: LightClockMessageKey): string {
 
 export const lightClockSchema: BundleSchema = {
   id: LIGHT_CLOCK_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 빛이 떠나고, 늦게 닿고, 그 길 위에 삼각형이 선다.

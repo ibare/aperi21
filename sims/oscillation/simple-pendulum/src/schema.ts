@@ -75,7 +75,6 @@ const CAPTION = { x: 1.12, y: -0.58, wrapWidth: 300, fontSize: 14 } as const;
 
 export const simplePendulumMessages = Object.freeze({
   'label.title': { ko: '단진자', en: 'Simple pendulum' },
-  'label.operation': { ko: '작은 진폭에서의 주기', en: 'The period at small amplitude' },
   'label.stage': { ko: '같은 보에 매단 세 진자', en: 'Three pendulums on one beam' },
   'label.view': { ko: '박자 견주기', en: 'Comparing beats' },
 
@@ -117,9 +116,8 @@ function key(k: SimplePendulumMessageKey): string {
 
 export const simplePendulumSchema: BundleSchema = {
   id: SIMPLE_PENDULUM_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

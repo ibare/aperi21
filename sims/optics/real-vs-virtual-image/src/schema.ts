@@ -78,7 +78,6 @@ export const SCENE_BOUNDS = { minX: -2.85, maxX: 3.25, minY: -2.5, maxY: 1.6 } a
 
 export const realVsVirtualImageMessages = Object.freeze({
   'label.title': { ko: '실상과 허상', en: 'Real and virtual images' },
-  'label.operation': { ko: '빛이 실제로 모이는가', en: 'Does the light really meet?' },
   'label.stage': { ko: '볼록 렌즈와 스크린', en: 'A converging lens and a screen' },
   'label.view': { ko: '물체 · 렌즈 · 스크린', en: 'Object, lens, screen' },
 
@@ -139,9 +138,8 @@ function key(k: RealVsVirtualImageMessageKey): string {
 
 export const realVsVirtualImageSchema: BundleSchema = {
   id: REAL_VS_VIRTUAL_IMAGE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 물체를 초점 밖 → 안으로 옮기는 것을 자동 진행으로 보인다 (controllers.ts).

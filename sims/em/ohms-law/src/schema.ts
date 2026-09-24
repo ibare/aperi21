@@ -116,7 +116,6 @@ export const FADE = 0.6;
 
 export const ohmsLawMessages = Object.freeze({
   'label.title': { ko: '옴 법칙', en: "Ohm's law" },
-  'label.operation': { ko: '전압·전류·저항', en: 'Voltage, current and resistance' },
   'label.stage': { ko: '두 저항', en: 'Two resistors' },
   'label.view': { ko: '회로와 I–V 평면', en: 'Circuits and the I–V plane' },
   /** 값이 끼는 이름표 — 단위 기호는 표식이지만 값이 끼므로 문안 키로 둔다 (C1). */
@@ -166,9 +165,8 @@ function key(k: OhmsLawMessageKey): string {
 
 export const ohmsLawSchema: BundleSchema = {
   id: OHMS_LAW_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흐르고, 전압이 한 칸씩 오르고, 점이 한 직선에 놓인다.

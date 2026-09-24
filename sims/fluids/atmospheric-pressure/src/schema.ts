@@ -111,7 +111,6 @@ export const FADE = 0.7;
 
 export const atmosphericPressureMessages = Object.freeze({
   'label.title': { ko: '대기압', en: 'Atmospheric pressure' },
-  'label.operation': { ko: '공기 기둥의 무게', en: 'The weight of the air column' },
   'label.stage': { ko: '산', en: 'Mountain' },
   'label.view': { ko: '옆에서 본 산과 하늘', en: 'Mountain and sky from the side' },
   /** 압력 이름표. 수식 기호라 번역 대상이 아니다 (C1 판정 3). */
@@ -147,9 +146,8 @@ function key(k: AtmosphericPressureMessageKey): string {
 
 export const atmosphericPressureSchema: BundleSchema = {
   id: ATMOSPHERIC_PRESSURE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 센서가 산을 오르고, 정상에서 멈추고, 다시 기슭에서 시작한다.

@@ -135,10 +135,6 @@ export const START_AT = 1.2;
 
 export const earthRevolutionConstellationsMessages = Object.freeze({
   'label.title': { ko: '공전과 별자리', en: 'Earth’s orbit and the constellations' },
-  'label.operation': {
-    ko: '계절마다 보이는 별자리가 달라지는 이유',
-    en: 'Why the constellations we see change with the seasons',
-  },
   'label.stage': { ko: '태양 · 지구 · 황도 별자리', en: 'Sun, Earth and the zodiac' },
   'label.view': { ko: '북극 위에서', en: 'From above the North Pole' },
   'label.sun': { ko: '태양', en: 'Sun' },
@@ -197,9 +193,8 @@ function key(k: EarthRevolutionConstellationsMessageKey): string {
 
 export const earthRevolutionConstellationsSchema: BundleSchema = {
   id: EARTH_REVOLUTION_CONSTELLATIONS_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 지구가 돌고 있고, 한 해 동안 한밤의 별자리가 한 바퀴 바뀐다.

@@ -33,7 +33,6 @@ export const OFFSET = 1;
 
 export const newtonsSecondLawMessages = Object.freeze({
   'label.title': { ko: '가속도 법칙', en: "Newton's second law" },
-  'label.operation': { ko: '알짜힘·질량·가속도의 관계', en: 'Net force, mass and acceleration' },
   'label.stage': { ko: '수레 셋', en: 'Three carts' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 줄 이름 — 무엇을 바꿨는지. */
@@ -66,9 +65,8 @@ function key(k: NewtonsSecondLawMessageKey): string {
 
 export const newtonsSecondLawSchema: BundleSchema = {
   id: NEWTONS_SECOND_LAW_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 자동 진행만으로 1:2:3 이 드러난다.

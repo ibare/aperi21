@@ -99,7 +99,6 @@ export const CLEAR = 0.6;
 
 export const electricFieldMessages = Object.freeze({
   'label.title': { ko: '전기장', en: 'Electric field' },
-  'label.operation': { ko: '단위 전하가 받는 힘', en: 'The force on a unit charge' },
   'label.stage': { ko: '양전하 하나', en: 'One positive charge' },
   'label.view': { ko: '장', en: 'Field' },
   /** 전하 부호 · 기호. 표식이라 번역하지 않는다 (C1 판정 3). */
@@ -145,9 +144,8 @@ function key(k: ElectricFieldMessageKey): string {
 
 export const electricFieldSchema: BundleSchema = {
   id: ELECTRIC_FIELD_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 화살표가 적혀 있고, 전하가 놓이고, 커지고, 밀려 간다.

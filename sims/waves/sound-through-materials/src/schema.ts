@@ -109,10 +109,6 @@ export const START_AT = STRIKE + RECOIL + TRAVEL * 0.05;
 
 export const soundThroughMaterialsMessages = Object.freeze({
   'label.title': { ko: '물질을 통한 소리 전달', en: 'Sound through materials' },
-  'label.operation': {
-    ko: '매질에 따라 달라지는 소리의 전달',
-    en: 'How sound travels differently through different materials',
-  },
   'label.stage': { ko: '네 통', en: 'Four tubes' },
   'label.view': { ko: '같은 떨림, 다른 물질', en: 'Same tap, different materials' },
   /** 통 이름표. 빠르기는 스테이지 상수를 `{v}` 로 그대로 끼운다. */
@@ -151,9 +147,8 @@ function key(k: SoundThroughMaterialsMessageKey): string {
 
 export const soundThroughMaterialsSchema: BundleSchema = {
   id: SOUND_THROUGH_MATERIALS_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 손잡이를 두지 않는다 — 네 통이 이미 네 물질을 같은 순간 나란히 견준다.

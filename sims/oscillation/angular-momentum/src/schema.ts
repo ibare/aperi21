@@ -99,7 +99,6 @@ export const SLOW_MOTION = 0.35;
 
 export const angularMomentumMessages = Object.freeze({
   'label.title': { ko: '각운동량', en: 'Angular momentum' },
-  'label.operation': { ko: '회전의 운동량', en: 'The momentum of rotation' },
   'label.stage': { ko: '바닥 위 팽이 셋', en: 'Three tops on a floor' },
   'label.view': { ko: '비스듬히 내려다본 모습', en: 'Oblique view' },
   'label.still': { ko: '안 돈다', en: 'not spinning' },
@@ -139,9 +138,8 @@ function key(k: AngularMomentumMessageKey): string {
 
 export const angularMomentumSchema: BundleSchema = {
   id: ANGULAR_MOMENTUM_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 셋이 돌고 있고, 곧 같은 충격을 받는다.

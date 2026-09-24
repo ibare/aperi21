@@ -119,10 +119,6 @@ export const START_AT = 1;
 
 export const seeingRequiresLightMessages = Object.freeze({
   'label.title': { ko: '보려면 빛이 있어야', en: 'Seeing needs light' },
-  'label.operation': {
-    ko: '빛이 없으면 물체가 보이지 않는다',
-    en: 'Without light, an object cannot be seen',
-  },
   'label.stage': { ko: '어두운 방', en: 'Dark room' },
   'label.view': { ko: '등 · 사과 · 눈', en: 'Lamp, apple, eye' },
   'label.tile': { ko: '눈에 닿은 빛', en: 'light at the eye' },
@@ -154,9 +150,8 @@ function key(k: SeeingRequiresLightMessageKey): string {
 
 export const seeingRequiresLightSchema: BundleSchema = {
   id: SEEING_REQUIRES_LIGHT_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 줄기가 흐르고, 등이 꺼지고, 다시 켜진다.

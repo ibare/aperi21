@@ -91,10 +91,6 @@ export const GRAB_RADIUS_PX = 24;
 
 export const vectorDecompositionMessages = Object.freeze({
   'label.title': { ko: '벡터의 성분 분해', en: 'Vector components' },
-  'label.operation': {
-    ko: '끝점에서 두 축으로 곧게 내린 자리까지가 두 성분이다',
-    en: 'Drop straight from the tip to each axis — that is where each component ends',
-  },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
 
@@ -127,9 +123,8 @@ function key(k: VectorDecompositionMessageKey): string {
 
 export const vectorDecompositionSchema: BundleSchema = {
   id: VECTOR_DECOMPOSITION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'default', label: text('label.stage'), constants: {} }],

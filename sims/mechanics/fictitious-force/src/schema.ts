@@ -87,7 +87,6 @@ export const MASS_STEP = 1;
 
 export const fictitiousForceMessages = Object.freeze({
   'label.title': { ko: '관성력', en: 'Fictitious force' },
-  'label.operation': { ko: '비관성계에서 도입하는 겉보기 힘', en: 'The apparent force of a non-inertial frame' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   'label.mass': { ko: '오른쪽 추의 질량', en: 'Mass of the right bob' },
@@ -120,9 +119,8 @@ function key(k: FictitiousForceMessageKey): string {
 
 export const fictitiousForceSchema: BundleSchema = {
   id: FICTITIOUS_FORCE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 각도 · ω · 장력은 두지 않는다 (원본 inventory 「hidden」). 오른쪽 추 질량만 조작기로 둔다.

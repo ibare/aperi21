@@ -70,7 +70,6 @@ export const SCENE_BOUNDS = { minX: -3.7, maxX: 2.55, minY: -1.78, maxY: 1.3 } a
 
 export const orbitalVelocityMessages = Object.freeze({
   'label.title': { ko: '궤도 속도', en: 'Orbital velocity' },
-  'label.operation': { ko: '원 궤도를 유지하는 속도', en: 'The speed that keeps an orbit circular' },
   'label.stage': { ko: '뉴턴의 대포', en: "Newton's cannon" },
   'label.view': { ko: '옆으로 쏘기', en: 'Fired sideways' },
   /** 쏜 속도 — 원 궤도 속도의 몇 배. 값은 스테이지 상수 그대로 끼운다. */
@@ -117,9 +116,8 @@ function key(k: OrbitalVelocityMessageKey): string {
 
 export const orbitalVelocitySchema: BundleSchema = {
   id: ORBITAL_VELOCITY_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 속도를 바꿔 보는 일은 다섯 샷의 자동 진행이 한다 — 슬라이더를 두면 독자가

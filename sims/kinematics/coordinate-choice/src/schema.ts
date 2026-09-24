@@ -118,10 +118,6 @@ export const SCENE_BOUNDS = {
 
 export const coordinateChoiceMessages = Object.freeze({
   'label.title': { ko: '좌표계 선택', en: 'Choosing axes' },
-  'label.operation': {
-    ko: '축을 어디에 두느냐가 식을 바꾸는 방식',
-    en: 'How the choice of axes changes the equations',
-  },
   'label.stage': { ko: '빗면', en: 'Incline' },
   'label.view': { ko: '두 벌의 축', en: 'Two sets of axes' },
   /** 축 이름은 기호라 번역 대상이 아니다 (C1 판정 3). 저작자가 바꿀 수 있게 선언에 둔다. */
@@ -151,9 +147,8 @@ function key(k: CoordinateChoiceMessageKey): string {
 
 export const coordinateChoiceSchema: BundleSchema = {
   id: COORDINATE_CHOICE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 어떤 각이든 y′ 는 멈추므로 각을 바꿔 볼 필요가 주장에 들지 않는다.

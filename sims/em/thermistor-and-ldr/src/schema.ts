@@ -122,7 +122,6 @@ export const FALL = 1.8;
 
 export const thermistorAndLdrMessages = Object.freeze({
   'label.title': { ko: '써미스터와 광저항', en: 'Thermistor and LDR' },
-  'label.operation': { ko: '온도와 빛에 따라 변하는 저항', en: 'Resistance that changes with temperature and light' },
   'label.stage': { ko: '분압기 두 벌', en: 'Two potential dividers' },
   'label.view': { ko: '감지 회로', en: 'Sensing circuits' },
   'label.thermistor': { ko: '써미스터', en: 'Thermistor' },
@@ -184,9 +183,8 @@ function key(k: ThermistorAndLdrMessageKey): string {
 
 export const thermistorAndLdrSchema: BundleSchema = {
   id: THERMISTOR_AND_LDR_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 써미스터를 데웠다 식히고, 이어 광저항에 빛을 쬐었다 거둔다.

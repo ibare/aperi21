@@ -68,7 +68,6 @@ export const FRAME_PAD = { left: 0.55, right: 0.45, top: 0.32, bottom: 0.72 } as
 
 export const inelasticCollisionMessages = Object.freeze({
   'label.title': { ko: '비탄성 충돌', en: 'Inelastic collision' },
-  'label.operation': { ko: '에너지가 사라지는 충돌', en: 'A collision that loses energy' },
   'label.stage': { ko: '바닥에 떨어뜨린 공', en: 'A ball dropped on the floor' },
   'label.view': { ko: '튀는 공', en: 'Bouncing ball' },
 
@@ -128,9 +127,8 @@ function key(k: InelasticCollisionMessageKey): string {
 
 export const inelasticCollisionSchema: BundleSchema = {
   id: INELASTIC_COLLISION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

@@ -100,7 +100,6 @@ export const START_AT = 2.8;
 
 export const stefanBoltzmannLawMessages = Object.freeze({
   'label.title': { ko: '슈테판-볼츠만 법칙', en: 'Stefan–Boltzmann law' },
-  'label.operation': { ko: '온도 4제곱에 비례하는 복사', en: 'Radiation that grows as the fourth power of temperature' },
   'label.stage': { ko: '같은 넓이의 판 셋', en: 'Three plates of equal area' },
   'label.view': { ko: '온도와 복사 막대', en: 'Temperature and radiation bars' },
   /** 판 온도 — 값과 단위. 값이 끼는 조립문이라 문안이다 (C1 판정 4). */
@@ -148,9 +147,8 @@ function key(k: StefanBoltzmannLawMessageKey): string {
 
 export const stefanBoltzmannLawSchema: BundleSchema = {
   id: STEFAN_BOLTZMANN_LAW_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 온도 막대가 서고, 복사 막대가 가파르게 서고, 다시 처음으로.

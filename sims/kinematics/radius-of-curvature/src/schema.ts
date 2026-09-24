@@ -68,10 +68,6 @@ export const CANVAS_HEIGHT = 400;
 
 export const radiusOfCurvatureMessages = Object.freeze({
   'label.title': { ko: '곡률 반지름', en: 'Radius of curvature' },
-  'label.operation': {
-    ko: '굽은 정도에 맞는 원이 경로에 얹힌다',
-    en: 'A circle matching the bend rides the path',
-  },
   'label.stage': { ko: '곡률 반지름', en: 'Radius of curvature' },
   'label.view': { ko: '곡률 반지름', en: 'Radius of curvature' },
   /** dR/dφ > 0 — 원이 커지는 중. */
@@ -103,9 +99,8 @@ const CAPTION_FONT_PX = 15;
 
 export const radiusOfCurvatureSchema: BundleSchema = {
   id: RADIUS_OF_CURVATURE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'main', label: text('label.stage'), constants: {} }],

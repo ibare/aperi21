@@ -88,10 +88,6 @@ export const START_AT = 1;
 
 export const stellarParallaxMessages = Object.freeze({
   'label.title': { ko: '연주시차', en: 'Stellar parallax' },
-  'label.operation': {
-    ko: '지구가 공전하며 가까운 별이 어긋나 보이는 각',
-    en: 'The angle by which a nearby star shifts as Earth orbits the Sun',
-  },
   'label.stage': { ko: '태양 · 지구 · 가까운 별 둘', en: 'Sun, Earth and two nearby stars' },
   'label.view': { ko: '공전면 위에서', en: 'From above the orbit' },
   'label.sun': { ko: '태양', en: 'Sun' },
@@ -125,9 +121,8 @@ function key(k: StellarParallaxMessageKey): string {
 
 export const stellarParallaxSchema: BundleSchema = {
   id: STELLAR_PARALLAX_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 지구가 돌고 있고, 두 별이 배경 사이를 오가는 폭이 한 해 동안 드러난다.

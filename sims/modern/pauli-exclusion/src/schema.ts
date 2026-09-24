@@ -76,7 +76,6 @@ export const FADE = 0.9;
 
 export const pauliExclusionMessages = Object.freeze({
   'label.title': { ko: '파울리 배타 원리', en: 'Pauli exclusion principle' },
-  'label.operation': { ko: '같은 상태를 못 가짐', en: 'No two in the same state' },
   'label.stage': { ko: '전자 일곱, 준위 넷', en: 'Seven electrons, four levels' },
   'label.view': { ko: '준위와 자리', en: 'Levels and places' },
   /** 세로축 이름 — 위로 갈수록 에너지가 높다. */
@@ -121,9 +120,8 @@ function key(k: PauliExclusionMessageKey): string {
 
 export const pauliExclusionSchema: BundleSchema = {
   id: PAULI_EXCLUSION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 전자를 차례로 넣는 한 주기 안에 할 말을 마친다.

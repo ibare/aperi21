@@ -73,10 +73,6 @@ export const GRAIN_SEED = 1;
 
 export const fieldLinesMessages = Object.freeze({
   'label.title': { ko: '전기력선', en: 'Electric field lines' },
-  'label.operation': {
-    ko: '선이 촘촘한 곳이 장이 센 곳이다',
-    en: 'Where the lines crowd, the field is strong',
-  },
   'label.stage': { ko: '두 전하', en: 'Two charges' },
   'label.view': { ko: '선과 알갱이', en: 'Lines and grains' },
   'caption.main': {
@@ -101,9 +97,8 @@ function key(k: FieldLinesMessageKey): string {
 
 export const fieldLinesSchema: BundleSchema = {
   id: FIELD_LINES_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'continuous',
 
   // 고를 값이 없다. 손잡이는 음전하 끌기 하나뿐이다 (controllers.ts).

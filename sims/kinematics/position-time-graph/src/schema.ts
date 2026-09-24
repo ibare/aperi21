@@ -63,10 +63,6 @@ function roundPhases(round: number, caption: string): TimelinePhase[] {
 
 export const positionTimeGraphMessages = Object.freeze({
   'label.title': { ko: '위치-시간 그래프', en: 'Position-time graph' },
-  'label.operation': {
-    ko: '빨리 오를수록 남기는 선이 가파르다',
-    en: 'The faster it rises, the steeper the line it leaves',
-  },
   'label.stage': { ko: '오르는 두 길', en: 'Two rising lanes' },
   'label.view': { ko: '통로와 그래프', en: 'Lanes and graph' },
 
@@ -111,9 +107,8 @@ function key(k: PositionTimeGraphMessageKey): string {
 
 export const positionTimeGraphSchema: BundleSchema = {
   id: POSITION_TIME_GRAPH_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 빠르기는 손잡이가 state 경로를 직접 쥔다 (`controllers.ts`). 자동 진행이 같은

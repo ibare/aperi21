@@ -75,7 +75,6 @@ export const SCENE_BOUNDS = { minX: -4.6, maxX: 5.45, minY: -2.45, maxY: 2.5 } a
 
 export const prismMessages = Object.freeze({
   'label.title': { ko: '프리즘', en: 'Prism' },
-  'label.operation': { ko: '분산으로 나뉘는 스펙트럼', en: 'A spectrum spread out by dispersion' },
   'label.stage': { ko: '유리 프리즘', en: 'Glass prism' },
   'label.view': { ko: '프리즘과 스크린', en: 'Prism and screen' },
 
@@ -143,9 +142,8 @@ function key(k: PrismMessageKey): string {
 
 export const prismSchema: BundleSchema = {
   id: PRISM_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

@@ -88,10 +88,6 @@ export const FADE = 0.6;
 
 export const ivCharacteristicMessages = Object.freeze({
   'label.title': { ko: 'I-V 특성 곡선', en: 'I–V characteristic curves' },
-  'label.operation': {
-    ko: '전압과 전류의 관계가 직선이 아닌 소자',
-    en: 'Devices whose current does not follow voltage in a straight line',
-  },
   'label.stage': { ko: '저항 · 전구 · 다이오드', en: 'Resistor, bulb and diode' },
   'label.view': { ko: 'I–V 평면', en: 'The I–V plane' },
   /** 소자 이름표. 조사가 붙지 않아도 언어마다 낱말이 달라 문안이다 (C1 판정 4). */
@@ -143,9 +139,8 @@ function key(k: IvCharacteristicMessageKey): string {
 
 export const ivCharacteristicSchema: BundleSchema = {
   id: IV_CHARACTERISTIC_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 점이 곡선을 긋고, 세 곡선이 차례로 쌓인다.

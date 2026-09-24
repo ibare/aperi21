@@ -96,7 +96,6 @@ export const FADE = 0.6;
 
 export const stokesDragMessages = Object.freeze({
   'label.title': { ko: '스토크스 항력', en: 'Stokes drag' },
-  'label.operation': { ko: '느린 흐름에서의 저항', en: 'Drag in slow, viscous flow' },
   'label.stage': { ko: '끈적한 액체', en: 'Viscous liquid' },
   'label.view': { ko: '두 관', en: 'Two tubes' },
   /** 반지름 기호 · 잰 거리 기호. 수식 표기라 번역 대상이 아니다 (C1 판정 3). */
@@ -134,9 +133,8 @@ function key(k: StokesDragMessageKey): string {
 
 export const stokesDragSchema: BundleSchema = {
   id: STOKES_DRAG_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 가라앉고 있고, 큰 구가 닿으면 다시 놓는다 (controllers.ts).

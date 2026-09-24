@@ -73,10 +73,6 @@ export const SCENE_BOUNDS = { minX: 0, maxX: CANVAS_W, minY: -34, maxY: CANVAS_H
 
 export const standingWaveMessages = Object.freeze({
   'label.title': { ko: '정상파', en: 'Standing wave' },
-  'label.operation': {
-    ko: '반대로 달리는 두 파동이 겹치면 마디가 제자리에 고정된다',
-    en: 'Two waves running in opposite directions pin the nodes in place',
-  },
   'label.stage': { ko: '줄', en: 'String' },
   'label.view': { ko: '줄과 시간 자취', en: 'String and time trace' },
   /** 무늬 세로축 위 끝 — 지금. */
@@ -117,9 +113,8 @@ function key(k: StandingWaveMessageKey): string {
 
 export const standingWaveSchema: BundleSchema = {
   id: STANDING_WAVE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 자동 진행으로 사선 → 세로 빈 줄 전환을 보여 주는 것으로 주장이 끝난다.

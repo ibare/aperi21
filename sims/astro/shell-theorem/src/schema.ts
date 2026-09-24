@@ -106,10 +106,6 @@ export const FADE = 0.6;
 
 export const shellTheoremMessages = Object.freeze({
   'label.title': { ko: '껍질 정리', en: 'Shell theorem' },
-  'label.operation': {
-    ko: '구 껍질 안팎에서의 중력',
-    en: 'Gravity inside and outside a spherical shell',
-  },
   'label.stage': { ko: '속 빈 껍질', en: 'Hollow shell' },
   'label.view': { ko: '단면', en: 'Cross-section' },
   'label.net': { ko: '합 = 0', en: 'net = 0' },
@@ -151,9 +147,8 @@ function key(k: ShellTheoremMessageKey): string {
 
 export const shellTheoremSchema: BundleSchema = {
   id: SHELL_THEOREM_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 질량이 다가오고, 들어가고, 원뿔이 돈다.

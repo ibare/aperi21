@@ -89,7 +89,6 @@ export const SCENE_BOUNDS = { minX: -2.9, maxX: 2.9, minY: -1.0, maxY: 2.15 } as
 
 export const scanningTunnelingMicroscopeMessages = Object.freeze({
   'label.title': { ko: '주사 터널 현미경', en: 'Scanning tunneling microscope' },
-  'label.operation': { ko: '터널 전류로 그리는 표면', en: 'Drawing a surface with tunneling current' },
   'label.stage': { ko: '원자 한 줄을 훑는 탐침', en: 'A tip scanning a row of atoms' },
   'label.view': { ko: '탐침과 높이 기록', en: 'Tip and height record' },
 
@@ -135,9 +134,8 @@ function key(k: ScanningTunnelingMicroscopeMessageKey): string {
 
 export const scanningTunnelingMicroscopeSchema: BundleSchema = {
   id: SCANNING_TUNNELING_MICROSCOPE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 독자가 손댈 만한 것(틈)은 접근 단계가 세 값으로 이미 보인다 — 슬라이더로

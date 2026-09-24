@@ -71,7 +71,6 @@ export const FADE = 0.6;
 
 export const workByVariableForceMessages = Object.freeze({
   'label.title': { ko: '변하는 힘이 한 일', en: 'Work done by a varying force' },
-  'label.operation': { ko: '힘-변위 그래프의 넓이', en: 'The area under the force–displacement graph' },
   'label.stage': { ko: '올랐다 내리는 힘', en: 'A force that rises and falls' },
   'label.view': { ko: '트랙과 그래프', en: 'Track and graph' },
   /** 힘 · 축 · 일 기호. 수식 표기라 번역 대상이 아니다 (C1 판정 3). */
@@ -109,9 +108,8 @@ function key(k: WorkByVariableForceMessageKey): string {
 
 export const workByVariableForceSchema: BundleSchema = {
   id: WORK_BY_VARIABLE_FORCE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 상자가 밀려 가고 그 아래 넓이가 쌓인다.

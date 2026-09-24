@@ -69,7 +69,6 @@ export const SCENE_BOUNDS = { minX: -15.8, maxX: 19.0, minY: -3.2, maxY: 18.6 } 
 
 export const quantumHarmonicOscillatorMessages = Object.freeze({
   'label.title': { ko: '양자 조화 진동자', en: 'Quantum harmonic oscillator' },
-  'label.operation': { ko: '등간격 준위와 영점 에너지', en: 'Evenly spaced levels and zero-point energy' },
   'label.stage': { ko: '포물선 우물', en: 'Parabolic well' },
   'label.view': { ko: '준위와 파동 함수', en: 'Levels and wave functions' },
 
@@ -116,9 +115,8 @@ function key(k: QuantumHarmonicOscillatorMessageKey): string {
 
 export const quantumHarmonicOscillatorSchema: BundleSchema = {
   id: QUANTUM_HARMONIC_OSCILLATOR_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 독자가 고를 만한 것(용수철 세기 · 입자 질량)은 ħω 의 크기만 바꾸고

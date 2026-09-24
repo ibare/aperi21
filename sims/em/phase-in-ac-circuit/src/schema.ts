@@ -70,7 +70,6 @@ export const SCENE_BOUNDS = { minX: -8.6, maxX: 8.6, minY: -4.4, maxY: 4.25 } as
 
 export const phaseInAcCircuitMessages = Object.freeze({
   'label.title': { ko: '교류의 위상차', en: 'Phase difference in AC circuits' },
-  'label.operation': { ko: '전압과 전류가 어긋나는 것', en: 'Voltage and current falling out of step' },
   'label.stage': { ko: '저항 · 축전기 · 코일', en: 'Resistor, capacitor, coil' },
   'label.view': { ko: '세 기록지와 회전 화살표', en: 'Three traces and phasors' },
   /** 도식 표식 — 소자 · 물리량 기호라 번역하지 않는다 (C1 판정 3). */
@@ -125,9 +124,8 @@ export const PHASE_TOGETHER = 'together';
 
 export const phaseInAcCircuitSchema: BundleSchema = {
   id: PHASE_IN_AC_CIRCUIT_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 커서가 세 기록지를 차례로 쓸고, 마루가 오는 순서가 보인다.

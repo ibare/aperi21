@@ -70,7 +70,6 @@ export const SCENE_BOUNDS = { minX: -6.4, maxX: 6.6, minY: -2.25, maxY: 3.2 } as
 
 export const mirageMessages = Object.freeze({
   'label.title': { ko: '신기루', en: 'Mirage' },
-  'label.operation': { ko: '밀도 기울기가 휘게 하는 빛', en: 'Light bent by a density gradient' },
   'label.stage': { ko: '뜨거운 길 위', en: 'Above a hot road' },
   'label.view': { ko: '옆에서 본 길', en: 'Road from the side' },
 
@@ -124,9 +123,8 @@ function key(k: MirageMessageKey): string {
 
 export const mirageSchema: BundleSchema = {
   id: MIRAGE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

@@ -82,7 +82,6 @@ export const SCENE_BOUNDS = { minX: -27, maxX: 4.2, minY: -5.2, maxY: 4.8 } as c
 
 export const magnifyingGlassMessages = Object.freeze({
   'label.title': { ko: '돋보기', en: 'Magnifying glass' },
-  'label.operation': { ko: '가까운 초점 안의 물체', en: 'An object inside the near focal point' },
   'label.stage': { ko: '돋보기와 맨눈', en: 'Magnifying glass and naked eye' },
   'label.view': { ko: '개미 · 렌즈 · 눈', en: 'Ant, lens, eye' },
 
@@ -142,9 +141,8 @@ function key(k: MagnifyingGlassMessageKey): string {
 
 export const magnifyingGlassSchema: BundleSchema = {
   id: MAGNIFYING_GLASS_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 개미를 F 안 두 자리에 두는 것을 자동 진행으로 보인다 (controllers.ts).

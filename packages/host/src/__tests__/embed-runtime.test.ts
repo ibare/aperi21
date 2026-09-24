@@ -29,9 +29,8 @@ const STAGE: StageDef = { id: 'flat', label: { en: 'Flat' }, constants: { g: 9.8
 
 const SCHEMA: BundleSchema = {
   id: 'test',
-  label: { en: 'Test' },
+  title: { en: 'Test' },
   category: 'test',
-  operation: { en: 'Test' },
   timeModel: 'linear',
   parameters: [],
   stages: [STAGE],

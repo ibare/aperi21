@@ -79,7 +79,6 @@ export const FADE = 0.6;
 
 export const biotSavartLawMessages = Object.freeze({
   'label.title': { ko: '비오-사바르 법칙', en: 'Biot–Savart law' },
-  'label.operation': { ko: '전류 요소가 만드는 자기장', en: 'The magnetic field of current elements' },
   'label.stage': { ko: '고리 축 위의 점', en: 'A point on the loop axis' },
   'label.view': { ko: '비스듬히 본 고리', en: 'Loop seen at an angle' },
   /** 도식 기호. 수식 표기라 번역 대상이 아니다 (C1 판정 3). */
@@ -121,9 +120,8 @@ function key(k: BiotSavartLawMessageKey): string {
 
 export const biotSavartLawSchema: BundleSchema = {
   id: BIOT_SAVART_LAW_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 조각이 하나씩 켜지며 사슬이 자라고, 합이 서고, 다시 시작한다.

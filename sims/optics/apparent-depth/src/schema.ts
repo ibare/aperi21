@@ -81,7 +81,6 @@ export const SCENE_BOUNDS = { minX: -17, maxX: 17, minY: -16.4, maxY: 7.8 } as c
 
 export const apparentDepthMessages = Object.freeze({
   'label.title': { ko: '겉보기 깊이', en: 'Apparent depth' },
-  'label.operation': { ko: '물속 물체가 떠 보이는 이유', en: 'Why things under water look raised' },
   'label.stage': { ko: '동전을 바로 위에서', en: 'A coin seen from straight above' },
   'label.view': { ko: '물통 단면', en: 'Tank cross-section' },
 
@@ -134,9 +133,8 @@ function key(k: ApparentDepthMessageKey): string {
 
 export const apparentDepthSchema: BundleSchema = {
   id: APPARENT_DEPTH_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

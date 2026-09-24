@@ -20,7 +20,6 @@ export const PV_DIAGRAM_ID = 'pv-diagram';
 
 export const pvDiagramMessages = Object.freeze({
   'label.title': { ko: 'PV 그림', en: 'PV diagram' },
-  'label.operation': { ko: '넓이가 일인 표현', en: 'Where area is work' },
   'label.stage': { ko: '추를 얹은 기체', en: 'Gas under weights' },
   'label.view': { ko: 'P-V 그림과 실린더', en: 'P-V diagram and cylinder' },
 
@@ -73,9 +72,8 @@ function key(k: PvDiagramMessageKey): string {
 
 export const pvDiagramSchema: BundleSchema = {
   id: PV_DIAGRAM_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
 

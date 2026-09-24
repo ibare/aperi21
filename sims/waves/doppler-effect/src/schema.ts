@@ -149,10 +149,6 @@ export const AMBULANCE_PATH =
 
 export const dopplerEffectMessages = Object.freeze({
   'label.title': { ko: '도플러 효과', en: 'Doppler effect' },
-  'label.operation': {
-    ko: '원천이 방출점을 밀고 가 앞쪽 간격이 좁아진다',
-    en: 'The source drags its emission points, crowding the front',
-  },
   'label.stage': { ko: '매질', en: 'Medium' },
   'label.view': { ko: '파면', en: 'Wavefronts' },
   /** 원천 속도 슬라이더의 이름표. */
@@ -189,9 +185,8 @@ function key(k: DopplerEffectMessageKey): string {
 
 export const dopplerEffectSchema: BundleSchema = {
   id: DOPPLER_EFFECT_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
   timeModel: 'linear',
 
   // 파라미터를 두지 않는다. 독자가 손대는 것은 원천 속도 하나이고 그것은

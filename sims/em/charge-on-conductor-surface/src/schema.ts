@@ -76,7 +76,6 @@ export const SCENE_BOUNDS = { minX: -3.05, maxX: 2.5, minY: -1.75, maxY: 1.4 } a
 
 export const chargeOnConductorSurfaceMessages = Object.freeze({
   'label.title': { ko: '도체 표면의 전하', en: 'Charge on a conductor surface' },
-  'label.operation': { ko: '뾰족한 곳에 몰리는 전하', en: 'Charge crowds at the sharp end' },
   'label.stage': { ko: '물방울 모양 도체', en: 'Teardrop conductor' },
   'label.view': { ko: '단면', en: 'Cross-section' },
 
@@ -122,9 +121,8 @@ function key(k: ChargeOnConductorSurfaceMessageKey): string {
 
 export const chargeOnConductorSurfaceSchema: BundleSchema = {
   id: CHARGE_ON_CONDUCTOR_SURFACE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

@@ -81,7 +81,6 @@ export const SCENE_BOUNDS = { minX: -64, maxX: 64, minY: -7.5, maxY: 48 } as con
 
 export const randomWalkMessages = Object.freeze({
   'label.title': { ko: '무작위 걸음', en: 'Random walk' },
-  'label.operation': { ko: '제곱근에 비례하는 이동 거리', en: 'Distance that grows as a square root' },
   'label.stage': { ko: '동전을 던지며 걷는 사람들', en: 'Walkers flipping coins' },
   'label.view': { ko: '레인과 걸음 막대', en: 'Lanes and step bar' },
   'label.origin': { ko: '처음 자리', en: 'start' },
@@ -125,9 +124,8 @@ function key(k: RandomWalkMessageKey): string {
 
 export const randomWalkSchema: BundleSchema = {
   id: RANDOM_WALK_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 무리가 걷고, 두 번 멈춰 폭을 재고, 다시 모인다.

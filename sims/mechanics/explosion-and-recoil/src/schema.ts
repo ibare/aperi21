@@ -60,7 +60,6 @@ export const SCENE_BOUNDS = { minX: -1.7, maxX: 2.94, minY: -0.5, maxY: 0.78 } a
 
 export const explosionAndRecoilMessages = Object.freeze({
   'label.title': { ko: '폭발과 반동', en: 'Explosion and recoil' },
-  'label.operation': { ko: '정지한 계가 갈라질 때', en: 'When a system at rest splits apart' },
   'label.stage': { ko: '3 대 1 로 갈라지는 덩이', en: 'A block splitting 3 : 1' },
   'label.view': { ko: '바닥 위', en: 'On the floor' },
 
@@ -106,9 +105,8 @@ function key(k: ExplosionAndRecoilMessageKey): string {
 
 export const explosionAndRecoilSchema: BundleSchema = {
   id: EXPLOSION_AND_RECOIL_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

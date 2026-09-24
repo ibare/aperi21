@@ -110,10 +110,6 @@ export const MARKS = {
 
 export const lagrangePointsMessages = Object.freeze({
   'label.title': { ko: '라그랑주 점', en: 'Lagrange points' },
-  'label.operation': {
-    ko: '안장에서는 흘러나가고 꼭대기에서는 맴돈다',
-    en: 'Drifting off the saddles, circling the peaks',
-  },
   'label.stage': { ko: '지구와 달', en: 'Earth and Moon' },
   'label.view': { ko: '함께 도는 틀', en: 'Co-rotating frame' },
   'label.earth': { ko: '지구', en: 'Earth' },
@@ -142,9 +138,8 @@ function key(k: LagrangePointsMessageKey): string {
 
 export const lagrangePointsSchema: BundleSchema = {
   id: LAGRANGE_POINTS_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'continuous',
 
   // 조작기가 없다. 질량비를 바꾸면 L4·L5 도 불안정해지지만 그것은 다른 주장이다 (원본 NOTES (c)).

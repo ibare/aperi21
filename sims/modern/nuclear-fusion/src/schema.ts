@@ -25,7 +25,6 @@ export const NUCLEAR_FUSION_ID = 'nuclear-fusion';
 
 export const nuclearFusionMessages = Object.freeze({
   'label.title': { ko: '핵융합', en: 'Nuclear fusion' },
-  'label.operation': { ko: '가벼운 핵이 합쳐지며 내는 에너지', en: 'Energy released when light nuclei join' },
   'label.stage': { ko: '중수소-삼중수소 반응', en: 'Deuterium–tritium reaction' },
   'label.view': { ko: '질량 결손', en: 'Mass defect' },
 
@@ -160,9 +159,8 @@ export const SCENE_BOUNDS = { minX: -6.7, maxX: 7.5, minY: -2.1, maxY: 2.8 } as 
 
 export const nuclearFusionSchema: BundleSchema = {
   id: NUCLEAR_FUSION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 질량은 자연이 정한 값이라 끌어 바꾸면 거짓 반응이 된다.

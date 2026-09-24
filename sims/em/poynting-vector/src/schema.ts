@@ -91,7 +91,6 @@ const FADE = 0.6;
 
 export const poyntingVectorMessages = Object.freeze({
   'label.title': { ko: '포인팅 벡터', en: 'Poynting vector' },
-  'label.operation': { ko: '전자기파가 나르는 에너지 흐름', en: 'The energy flow carried by electromagnetic waves' },
   'label.stage': { ko: '전지와 저항', en: 'Battery and resistor' },
   'label.view': { ko: '회로 평면', en: 'Circuit plane' },
   /** 장 · 전류 기호와 전지 극 표식. 수식 표기라 번역 대상이 아니다 (C1 판정 3). */
@@ -135,9 +134,8 @@ function key(k: PoyntingVectorMessageKey): string {
 
 export const poyntingVectorSchema: BundleSchema = {
   id: POYNTING_VECTOR_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 장이 서고, S 가 서고, 에너지가 흐른다.

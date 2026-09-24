@@ -84,10 +84,6 @@ export const SCENE_BOUNDS = { minX: -2.72, maxX: 2.62, minY: -1.34, maxY: 1.2 } 
 
 export const parallelAxisTheoremMessages = Object.freeze({
   'label.title': { ko: '평행축 정리', en: 'Parallel axis theorem' },
-  'label.operation': {
-    ko: '축을 옮길 때의 관성 모멘트',
-    en: 'Moment of inertia when the axis is moved',
-  },
   'label.stage': { ko: '누운 원판', en: 'Flat disc' },
   'label.view': { ko: '두 축', en: 'Two axes' },
 
@@ -137,9 +133,8 @@ function key(k: ParallelAxisTheoremMessageKey): string {
 
 export const parallelAxisTheoremSchema: BundleSchema = {
   id: PARALLEL_AXIS_THEOREM_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

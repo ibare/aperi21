@@ -95,7 +95,6 @@ export const TURN = 1.2;
 
 export const kirchhoffsVoltageLawMessages = Object.freeze({
   'label.title': { ko: '키르히호프 전압 법칙', en: "Kirchhoff's voltage law" },
-  'label.operation': { ko: '고리에서의 에너지 보존', en: 'Conservation of energy around a loop' },
   'label.stage': { ko: '전지 둘 · 저항 셋', en: 'Two cells, three resistors' },
   'label.view': { ko: '고리', en: 'Loop' },
   'label.volt': { ko: '{v} V', en: '{v} V' },
@@ -153,9 +152,8 @@ function key(k: KirchhoffsVoltageLawMessageKey): string {
 
 export const kirchhoffsVoltageLawSchema: BundleSchema = {
   id: KIRCHHOFFS_VOLTAGE_LAW_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 점이 돌고, 한 바퀴를 마치고, 거꾸로 다시 돈다.

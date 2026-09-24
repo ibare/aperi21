@@ -40,7 +40,6 @@ export const G_PERCENT = 89;
 
 export const weightlessnessMessages = Object.freeze({
   'label.title': { ko: '무중력', en: 'Weightlessness' },
-  'label.operation': { ko: '자유 낙하 중의 겉보기 무게', en: 'Apparent weight in free fall' },
   'label.stage': { ko: '지구 궤도의 정거장', en: 'Station in Earth orbit' },
   'label.view': { ko: '궤도와 정거장 안', en: 'Orbit and inside the station' },
   'label.earth': { ko: '지구', en: 'Earth' },
@@ -92,9 +91,8 @@ function key(k: WeightlessnessMessageKey): string {
 
 export const weightlessnessSchema: BundleSchema = {
   id: WEIGHTLESSNESS_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 독자가 바꿔 볼 값이 주장에 없다 — 높이를 끌게 하면 「높이에 따라

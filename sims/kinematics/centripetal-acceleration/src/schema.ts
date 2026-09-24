@@ -59,10 +59,6 @@ export const CAPTION_X = 2.2;
 
 export const centripetalAccelerationMessages = Object.freeze({
   'label.title': { ko: '구심 가속도', en: 'Centripetal acceleration' },
-  'label.operation': {
-    ko: '속도의 변화는 늘 중심 쪽으로 꺾인다',
-    en: 'The change in velocity always turns toward the center',
-  },
   'label.stage': { ko: '등속 원운동', en: 'Uniform circular motion' },
   'label.view': { ko: '속도의 변화', en: 'Change in velocity' },
   /** 속도 변화 화살표의 이름표. 기호라 번역하지 않는다 (C1 판정 3). */
@@ -103,9 +99,8 @@ function key(k: CentripetalAccelerationMessageKey): string {
 
 export const centripetalAccelerationSchema: BundleSchema = {
   id: CENTRIPETAL_ACCELERATION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
   timeModel: 'linear',
 
   // 조작기가 없다. 비교 간격이 결과를 바꾸지 않는다는 것은 이어지는 여러 Δv 가

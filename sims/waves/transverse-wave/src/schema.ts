@@ -74,7 +74,6 @@ export const START_AT = PERIOD;
 
 export const transverseWaveMessages = Object.freeze({
   'label.title': { ko: '횡파', en: 'Transverse wave' },
-  'label.operation': { ko: '진동 방향이 진행 방향과 수직', en: 'The medium shakes at right angles to the direction the wave travels' },
   'label.stage': { ko: '구슬 꿴 줄', en: 'Beaded rope' },
   'label.view': { ko: '구슬과 마루의 자취', en: 'Traces of the beads and the crest' },
   'caption.travel': {
@@ -103,9 +102,8 @@ function key(k: TransverseWaveMessageKey): string {
 
 export const transverseWaveSchema: BundleSchema = {
   id: TRANSVERSE_WAVE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 손잡이를 두지 않는다 — 파장 · 진폭 · 진동수를 바꿔도 「세로로 흔들리고 가로로 나아간다」 에

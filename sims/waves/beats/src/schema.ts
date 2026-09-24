@@ -96,10 +96,6 @@ export const PREROLL = 20 / 3;
 
 export const beatsMessages = Object.freeze({
   'label.title': { ko: '맥놀이', en: 'Beats' },
-  'label.operation': {
-    ko: '두 음이 어긋나는 만큼 합이 지워진다',
-    en: 'The sum cancels as the two drift apart',
-  },
   'label.stage': { ko: '두 음', en: 'Two tones' },
   'label.view': { ko: '파형', en: 'Waveform' },
   /** 마디 둘을 잇는 칸의 이름표. 칸이 좁아지면 scene 이 이것을 빼고 선만 남긴다. */
@@ -146,9 +142,8 @@ function key(k: BeatsMessageKey): string {
 
 export const beatsSchema: BundleSchema = {
   id: BEATS_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
   timeModel: 'linear',
 
   /**

@@ -84,7 +84,6 @@ export const SCENE_BOUNDS = { minX: -3.45, maxX: 6.5, minY: -2.55, maxY: 1.95 } 
 
 export const chromaticAberrationMessages = Object.freeze({
   'label.title': { ko: '색수차', en: 'Chromatic aberration' },
-  'label.operation': { ko: '파장마다 다른 초점', en: 'A different focus for each wavelength' },
   'label.stage': { ko: '유리 볼록 렌즈', en: 'Convex glass lens' },
   'label.view': { ko: '렌즈와 스크린', en: 'Lens and screen' },
 
@@ -142,9 +141,8 @@ function key(k: ChromaticAberrationMessageKey): string {
 
 export const chromaticAberrationSchema: BundleSchema = {
   id: CHROMATIC_ABERRATION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 스크린이 두 초점 사이를 옮겨 가는 것까지 자동 진행으로 보인다.

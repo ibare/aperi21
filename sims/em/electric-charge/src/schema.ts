@@ -61,7 +61,6 @@ export const SCENE_BOUNDS = { minX: -1.55, maxX: 1.55, minY: -0.8, maxY: 0.06 } 
 
 export const electricChargeMessages = Object.freeze({
   'label.title': { ko: '전하', en: 'Electric charge' },
-  'label.operation': { ko: '두 종류의 전하와 보존', en: 'Two kinds of charge and their conservation' },
   'label.stage': { ko: '실에 매단 공', en: 'Hanging balls' },
   'label.view': { ko: '세 쌍', en: 'Three pairs' },
 
@@ -102,9 +101,8 @@ function key(k: ElectricChargeMessageKey): string {
 
 export const electricChargeSchema: BundleSchema = {
   id: ELECTRIC_CHARGE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

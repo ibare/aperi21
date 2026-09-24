@@ -171,10 +171,6 @@ export type Round = (typeof ROUNDS)[number];
 
 export const electromagnetMessages = Object.freeze({
   'label.title': { ko: '전자석', en: 'Electromagnet' },
-  'label.operation': {
-    ko: '전류가 흐를 때만 자석이 되는 것',
-    en: 'A magnet only while current flows',
-  },
   'label.stage': { ko: '쇠못과 코일', en: 'Iron nail and coil' },
   'label.view': { ko: '클립 들어 올리기', en: 'Lifting paper clips' },
   /** 극 · 전류 기호. 표식이라 번역하지 않는다 (C1 판정 1 · 3). */
@@ -247,9 +243,8 @@ function roundPhases(r: Round): TimelinePhase[] {
 
 export const electromagnetSchema: BundleSchema = {
   id: ELECTROMAGNET_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 독자가 손으로 해 보고 싶은 셋(닫으면? 열면? 더 감거나 전류를

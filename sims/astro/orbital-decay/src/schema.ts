@@ -78,7 +78,6 @@ export const SCENE_BOUNDS = { minX: -6.3, maxX: 6.2, minY: -2.75, maxY: 2.75 } a
 
 export const orbitalDecayMessages = Object.freeze({
   'label.title': { ko: '궤도 감쇠', en: 'Orbital decay' },
-  'label.operation': { ko: '옅은 대기가 끄는 궤도', en: 'An orbit dragged by thin air' },
   'label.stage': { ko: '옅은 대기', en: 'Thin atmosphere' },
   'label.view': { ko: '나선으로 내려앉기', en: 'Spiralling down' },
   'label.velocity': { ko: '속도', en: 'velocity' },
@@ -121,9 +120,8 @@ function key(k: OrbitalDecayMessageKey): string {
 
 export const orbitalDecaySchema: BundleSchema = {
   id: ORBITAL_DECAY_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 항력 · 대기를 바꾸게 하면 추락 시각이 시간표를 벗어나고(장부 G13), 「얼마나

@@ -83,10 +83,6 @@ export const FONT = { label: 13, caption: 15 } as const;
 
 export const dragForceMessages = Object.freeze({
   'label.title': { ko: '공기 저항', en: 'Air drag' },
-  'label.operation': {
-    ko: '빨라질수록 속도 제곱에 비례하는 저항이 가파르게 불어난다',
-    en: 'The faster it goes, the steeper the part of drag proportional to speed squared grows',
-  },
   'label.stage': { ko: '미는 힘', en: 'Constant push' },
   'label.view': { ko: '지난 자리와 저항 막대', en: 'Strobe and drag bars' },
   /** 미는 힘 기준선 이름. */
@@ -121,9 +117,8 @@ function key(k: DragForceMessageKey): string {
 
 export const dragForceSchema: BundleSchema = {
   id: DRAG_FORCE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
 
   /** 달리고 · 붙잡히고 · 되감긴다. 끝난 화면이 남지 않는다. */
   timeModel: 'periodic',

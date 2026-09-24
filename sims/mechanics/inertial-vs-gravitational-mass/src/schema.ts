@@ -149,7 +149,6 @@ export const SCENE_BOUNDS = { minX: 0, maxX: WIDTH, minY: -85, maxY: HEIGHT } as
 
 export const inertialVsGravitationalMassMessages = Object.freeze({
   'label.title': { ko: '관성 질량과 중력 질량', en: 'Inertial and gravitational mass' },
-  'label.operation': { ko: '서로 다른 정의가 같은 값을 주는 것', en: 'Two different definitions give the same value' },
   'label.stage': { ko: '저울과 얼음', en: 'Balance and ice' },
   'label.view': { ko: '기본', en: 'Default' },
   'label.balance': { ko: '저울 — 끌리는 세기로 비교', en: 'Balance — compared by how hard gravity pulls' },
@@ -195,9 +194,8 @@ function key(k: InertialVsGravitationalMassMessageKey): string {
 
 export const inertialVsGravitationalMassSchema: BundleSchema = {
   id: INERTIAL_VS_GRAVITATIONAL_MASS_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

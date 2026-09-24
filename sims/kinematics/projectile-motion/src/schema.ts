@@ -81,10 +81,6 @@ export const SCENE_BOUNDS = { minX: -0.58, maxX: 7.7, minY: -0.14, maxY: 2.68 } 
 
 export const projectileMotionMessages = Object.freeze({
   'label.title': { ko: '포물선 운동', en: 'Projectile motion' },
-  'label.operation': {
-    ko: '수평과 연직이 서로를 건드리지 않고 따로 간다',
-    en: 'Horizontal and vertical go on untouched',
-  },
   'label.stage': { ko: '포물선 운동', en: 'Projectile motion' },
   'label.view': { ko: '포물선 운동', en: 'Projectile motion' },
   /** 조작기 이름. 독자가 품은 반론을 스스로 시험하는 자리다. */
@@ -120,9 +116,8 @@ const CAPTION_FONT_PX = 14.5;
 
 export const projectileMotionSchema: BundleSchema = {
   id: PROJECTILE_MOTION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 빠르기는 파라미터가 아니라 **조작기가 미는 상태**다. 슬라이더가 state 의

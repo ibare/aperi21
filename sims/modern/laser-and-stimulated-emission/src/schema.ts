@@ -84,7 +84,6 @@ export const PUMP = 1.4;
 
 export const laserAndStimulatedEmissionMessages = Object.freeze({
   'label.title': { ko: '레이저와 유도 방출', en: 'Lasers and stimulated emission' },
-  'label.operation': { ko: '결이 맞는 빛의 증폭', en: 'Amplifying light in step' },
   'label.stage': { ko: '헬륨-네온 레이저', en: 'Helium–neon laser' },
   'label.view': { ko: '공진기', en: 'Cavity' },
   'label.mirror': { ko: '거울', en: 'Mirror' },
@@ -130,9 +129,8 @@ function key(k: LaserAndStimulatedEmissionMessageKey): string {
 
 export const laserAndStimulatedEmissionSchema: BundleSchema = {
   id: LASER_AND_STIMULATED_EMISSION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 광자 하나가 빔이 되며 할 말을 마친다.

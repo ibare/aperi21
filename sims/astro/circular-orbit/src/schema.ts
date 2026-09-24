@@ -51,7 +51,6 @@ export const SCENE_BOUNDS = { minX: -2.05, maxX: 5.6, minY: -1.72, maxY: 1.88 } 
 
 export const circularOrbitMessages = Object.freeze({
   'label.title': { ko: '원 궤도', en: 'Circular orbit' },
-  'label.operation': { ko: '구심력이 중력인 운동', en: 'Motion in which gravity is the centripetal force' },
   'label.stage': { ko: '행성 둘레', en: 'Around a planet' },
   'label.view': { ko: '궤도', en: 'Orbit' },
   /** 화살표 이름. 조사 없는 도식 낱말이지만 기호가 아니라 말이라 번역한다. */
@@ -92,9 +91,8 @@ function key(k: CircularOrbitMessageKey): string {
 
 export const circularOrbitSchema: BundleSchema = {
   id: CIRCULAR_ORBIT_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 이 조각이 답하는 것은 「왜 떨어지지 않는가」 하나이고, 속도를 끌게

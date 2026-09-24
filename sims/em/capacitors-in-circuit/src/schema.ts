@@ -104,7 +104,6 @@ export const SPLIT = 1.0;
 
 export const capacitorsInCircuitMessages = Object.freeze({
   'label.title': { ko: '축전기의 연결', en: 'Connecting capacitors' },
-  'label.operation': { ko: '직렬과 병렬의 합성', en: 'Combining in series and in parallel' },
   'label.stage': { ko: '같은 전지에 같은 축전기 둘', en: 'Two equal capacitors on one battery' },
   'label.view': { ko: '옆에서 본 판', en: 'Side view' },
   /** 패널 이름. 도식 왼쪽에 붙는다. */
@@ -157,9 +156,8 @@ function key(k: CapacitorsInCircuitMessageKey): string {
 
 export const capacitorsInCircuitSchema: BundleSchema = {
   id: CAPACITORS_IN_CIRCUIT_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 떨어진 둘 → 합친 하나 → 다시 둘, 한 주기로 할 말을 마친다.

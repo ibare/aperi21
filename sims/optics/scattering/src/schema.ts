@@ -75,7 +75,6 @@ export const FADE = 0.8;
 
 export const scatteringMessages = Object.freeze({
   'label.title': { ko: '산란', en: 'Scattering' },
-  'label.operation': { ko: '하늘과 노을의 색', en: 'The colours of the sky and the sunset' },
   'label.stage': { ko: '공기 분자와 구름 물방울', en: 'Air molecules and cloud droplets' },
   'label.view': { ko: '두 레인', en: 'Two lanes' },
   'label.small': { ko: '공기 분자', en: 'Air molecules' },
@@ -122,9 +121,8 @@ function key(k: ScatteringMessageKey): string {
 
 export const scatteringSchema: BundleSchema = {
   id: SCATTERING_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 위 레인이 이미 흩고 있고, 아래 레인이 뒤따른다 (controllers.ts).

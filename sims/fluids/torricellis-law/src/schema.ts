@@ -53,10 +53,6 @@ export const SCENE_BOUNDS = { minX: -0.5, maxX: 0.87, minY: -0.28, maxY: 0.97 } 
 
 export const torricellisLawMessages = Object.freeze({
   'label.title': { ko: '토리첼리 법칙', en: "Torricelli's law" },
-  'label.operation': {
-    ko: '깊은 구멍일수록 더 빠르게 뿜는다',
-    en: 'The deeper the hole, the faster the jet',
-  },
   'label.stage': { ko: '물통', en: 'Tank' },
   'label.view': { ko: '물줄기', en: 'Jets' },
   /** 구멍 옆 분출 속도. 수와 단위는 표식이라 번역 대상이 아니다 (C1 판정 3). */
@@ -93,9 +89,8 @@ function key(k: TorricellisLawMessageKey): string {
 
 export const torricellisLawSchema: BundleSchema = {
   id: TORRICELLIS_LAW_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
   timeModel: 'linear',
 
   // 조작기가 없다. 열면 바로 뿜고, 계속 뿜고, 표지가 알아서 돌아온다.

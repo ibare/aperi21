@@ -141,10 +141,6 @@ export const SCENE_BOUNDS = {
 
 export const resonanceMessages = Object.freeze({
   'label.title': { ko: '공명', en: 'Resonance' },
-  'label.operation': {
-    ko: '구동 진동수가 고유 진동수에 맞을 때',
-    en: 'When the driving frequency matches the natural frequency',
-  },
   'label.stage': { ko: '진동자 묶음', en: 'Oscillator row' },
   'label.view': { ko: '흔들림과 이력', en: 'Swing and history' },
   /** 구동 진동수 표시 · 슬라이더 이름표. */
@@ -177,9 +173,8 @@ function key(k: ResonanceMessageKey): string {
 
 export const resonanceSchema: BundleSchema = {
   id: RESONANCE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
   timeModel: 'continuous',
   parameters: [],
   stages: [{ id: 'default', label: text('label.stage'), constants: {} }],

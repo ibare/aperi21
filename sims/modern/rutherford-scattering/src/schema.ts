@@ -107,10 +107,6 @@ export const FADE = 0.8;
 
 export const rutherfordScatteringMessages = Object.freeze({
   'label.title': { ko: '러더퍼드 산란', en: 'Rutherford scattering' },
-  'label.operation': {
-    ko: '대부분 지나가고 일부가 튕겨 나온 실험',
-    en: 'The experiment where most passed through and a few bounced back',
-  },
   'label.stage': { ko: '금박과 알파 입자', en: 'Gold foil and alpha particles' },
   'label.view': { ko: '원자핵 하나 곁', en: 'Beside one nucleus' },
   'label.nucleus': { ko: '금 원자핵', en: 'gold nucleus' },
@@ -147,9 +143,8 @@ function key(k: RutherfordScatteringMessageKey): string {
 
 export const rutherfordScatteringSchema: BundleSchema = {
   id: RUTHERFORD_SCATTERING_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 여러 입자가 지나가고 하나가 되튀며 할 말을 마친다.

@@ -116,7 +116,6 @@ export const SCENE_BOUNDS = { minX: -2.85, maxX: 2.8, minY: -1.75, maxY: 1.9 } a
 
 export const lcOscillationMessages = Object.freeze({
   'label.title': { ko: 'LC 진동', en: 'LC oscillation' },
-  'label.operation': { ko: '전기와 자기 에너지의 교환', en: 'Electric and magnetic energy trade places' },
   'label.stage': { ko: '저항 없는 회로', en: 'Circuit without resistance' },
   'label.view': { ko: '회로와 에너지 막대', en: 'Circuit and energy bars' },
   /** 도식 표식 — 소자 · 전류 기호라 번역하지 않는다 (C1 판정 3). */
@@ -166,9 +165,8 @@ export const QUARTER_PHASES = ['drain', 'refill', 'drainBack', 'refillBack'] as 
 
 export const lcOscillationSchema: BundleSchema = {
   id: LC_OSCILLATION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 오가고, 두 막대가 서로를 채운다.

@@ -96,10 +96,6 @@ export const FADE = 0.6;
 
 export const rollingWithoutSlippingMessages = Object.freeze({
   'label.title': { ko: '미끄러지지 않는 구름', en: 'Rolling without slipping' },
-  'label.operation': {
-    ko: '병진과 회전의 구속 조건',
-    en: 'The constraint that ties translation to rotation',
-  },
   'label.stage': { ko: '두 바퀴', en: 'Two wheels' },
   'label.view': { ko: '두 레인', en: 'Two lanes' },
   /** 화살표 · 레인에 붙는 수식 표기. 번역 대상이 아니다 (C1 판정 3). */
@@ -150,9 +146,8 @@ function key(k: RollingWithoutSlippingMessageKey): string {
 
 export const rollingWithoutSlippingSchema: BundleSchema = {
   id: ROLLING_WITHOUT_SLIPPING_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 굴러가고, 닿는 순간 멈춰 보이고, 다시 굴러간다.

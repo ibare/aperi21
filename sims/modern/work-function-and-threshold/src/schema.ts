@@ -95,7 +95,6 @@ export const PHASE_FADE = 0.8;
 
 export const workFunctionAndThresholdMessages = Object.freeze({
   'label.title': { ko: '일함수와 문턱 진동수', en: 'Work function and threshold frequency' },
-  'label.operation': { ko: '세기가 아니라 진동수가 정하는 것', en: 'Set by frequency, not by intensity' },
   'label.stage': { ko: '나트륨과 구리', en: 'Sodium and copper' },
   'label.view': { ko: '기본', en: 'Default' },
 
@@ -157,9 +156,8 @@ function key(k: WorkFunctionAndThresholdMessageKey): string {
 
 export const workFunctionAndThresholdSchema: BundleSchema = {
   id: WORK_FUNCTION_AND_THRESHOLD_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 두 금속을 훑고 두 직선을 겹쳐 본다 (controllers.ts).

@@ -57,10 +57,6 @@ export const SCENE_BOUNDS = { minX: -3.5, maxX: 3.15, minY: -0.72, maxY: 1.25 } 
 
 export const elasticCollisionMessages = Object.freeze({
   'label.title': { ko: '탄성 충돌', en: 'Elastic collision' },
-  'label.operation': {
-    ko: '운동 에너지까지 보존되는 충돌',
-    en: 'A collision that keeps even the kinetic energy',
-  },
   'label.stage': { ko: '레일 위 같은 공 둘', en: 'Two equal balls on a rail' },
   'label.view': { ko: '속도 화살표', en: 'Velocity arrows' },
 
@@ -186,9 +182,8 @@ export const EPISODES: readonly EpisodeDef[] = [
 
 export const elasticCollisionSchema: BundleSchema = {
   id: ELASTIC_COLLISION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 두 경우를 시간표가 차례로 보이므로 독자가 고를 것이 없다.

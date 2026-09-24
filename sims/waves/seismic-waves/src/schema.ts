@@ -69,7 +69,6 @@ export const SCENE_BOUNDS = { minX: -1.7, maxX: 1.7, minY: -1.3, maxY: 1.16 } as
 
 export const seismicWavesMessages = Object.freeze({
   'label.title': { ko: '지진파', en: 'Seismic waves' },
-  'label.operation': { ko: '지구 속을 지나는 P파와 S파', en: 'P and S waves travelling through the Earth' },
   'label.stage': { ko: '지구 단면', en: 'Earth cross-section' },
   'label.view': { ko: '진원을 지나는 단면', en: 'Section through the focus' },
   'label.focus': { ko: '진원', en: 'focus' },
@@ -110,9 +109,8 @@ function key(k: SeismicWavesMessageKey): string {
 
 export const seismicWavesSchema: BundleSchema = {
   id: SEISMIC_WAVES_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 퍼지고 있고, 멈추고, 그림자대가 드러난다.

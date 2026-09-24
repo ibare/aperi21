@@ -117,7 +117,6 @@ export const RESET = 0.5;
 
 export const rlCircuitMessages = Object.freeze({
   'label.title': { ko: 'RL 회로', en: 'RL circuit' },
-  'label.operation': { ko: '전류가 서서히 오르는 이유', en: 'Why the current rises slowly' },
   'label.stage': { ko: '전지 · 코일 · 저항', en: 'Battery, coil and resistor' },
   'label.view': { ko: '회로와 전압 기둥', en: 'Circuit and voltage column' },
 
@@ -178,9 +177,8 @@ function key(k: RlCircuitMessageKey): string {
 
 export const rlCircuitSchema: BundleSchema = {
   id: RL_CIRCUIT_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
 

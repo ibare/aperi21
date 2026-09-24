@@ -188,7 +188,6 @@ export const SCENE_BOUNDS = { minX: 0, maxX: 8.6, minY: -1.45, maxY: 2.3 } as co
 
 export const freeBodyDiagramMessages = Object.freeze({
   'label.title': { ko: '자유물체도', en: 'Free-body diagram' },
-  'label.operation': { ko: '한 물체에 작용하는 힘만 분리하기', en: 'Isolating the forces on a single body' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
 
@@ -245,9 +244,8 @@ function key(k: FreeBodyDiagramMessageKey): string {
 
 export const freeBodyDiagramSchema: BundleSchema = {
   id: FREE_BODY_DIAGRAM_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 숫자·질량 조절은 두지 않는다 — 주장은 크기가 아니라 소속이다 (원본 inventory 「hidden」).

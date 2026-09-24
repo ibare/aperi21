@@ -20,7 +20,6 @@ export const ISOBARIC_ISOCHORIC_ID = 'isobaric-isochoric';
 
 export const isobaricIsochoricMessages = Object.freeze({
   'label.title': { ko: '등압·등적 과정', en: 'Isobaric and isochoric processes' },
-  'label.operation': { ko: '압력 또는 부피를 고정한 변화', en: 'Changes at fixed pressure or fixed volume' },
   'label.stage': { ko: '단원자 기체 두 통', en: 'Two cylinders of monatomic gas' },
   'label.view': { ko: 'P-V 그림과 두 실린더', en: 'P-V diagram and two cylinders' },
 
@@ -58,9 +57,8 @@ function key(k: IsobaricIsochoricMessageKey): string {
 
 export const isobaricIsochoricSchema: BundleSchema = {
   id: ISOBARIC_ISOCHORIC_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
 

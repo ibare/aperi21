@@ -92,7 +92,6 @@ export const BACK = 1.5;
 
 export const stellarLuminosityMessages = Object.freeze({
   'label.title': { ko: '광도', en: 'Luminosity' },
-  'label.operation': { ko: '별이 실제로 내는 빛의 양', en: 'How much light a star actually gives off' },
   'label.stage': { ko: '똑같이 밝아 보이는 두 별', en: 'Two stars that look equally bright' },
   'label.view': { ko: '하늘과 옆모습', en: 'Sky and side view' },
   'label.sky': { ko: '하늘에서', en: 'In the sky' },
@@ -142,9 +141,8 @@ function key(k: StellarLuminosityMessageKey): string {
 
 export const stellarLuminositySchema: BundleSchema = {
   id: STELLAR_LUMINOSITY_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 받은 빛을 공에 깔고, 되모으고, 다시 처음으로 돌아간다.

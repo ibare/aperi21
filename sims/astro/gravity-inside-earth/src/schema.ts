@@ -77,7 +77,6 @@ export const FADE = 0.8;
 
 export const gravityInsideEarthMessages = Object.freeze({
   'label.title': { ko: '지구 내부의 중력', en: 'Gravity inside the Earth' },
-  'label.operation': { ko: '깊이에 따라 줄어드는 중력', en: 'Gravity that weakens with depth' },
   'label.stage': { ko: '밀도가 고른 지구', en: 'Uniform-density Earth' },
   'label.view': { ko: '단면과 그래프', en: 'Cross-section and graph' },
   'label.axisR': { ko: 'r', en: 'r' },
@@ -121,9 +120,8 @@ function key(k: GravityInsideEarthMessageKey): string {
 
 export const gravityInsideEarthSchema: BundleSchema = {
   id: GRAVITY_INSIDE_EARTH_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 질량이 다가오고, 굴을 따라 중심까지 내려간다.

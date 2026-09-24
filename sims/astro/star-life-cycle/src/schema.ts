@@ -68,7 +68,6 @@ export const SCENE_BOUNDS = { minX: 0, maxX: CANVAS_W, minY: -CANVAS_H, maxY: 0 
 
 export const starLifeCycleMessages = Object.freeze({
   'label.title': { ko: '별의 일생', en: 'Life cycle of a star' },
-  'label.operation': { ko: '질량이 가르는 별의 경로', en: 'How mass decides a star’s path' },
   'label.stage': { ko: '두 별', en: 'Two stars' },
   'label.view': { ko: 'HR 도', en: 'HR diagram' },
 
@@ -159,9 +158,8 @@ function key(k: StarLifeCycleMessageKey): string {
 
 export const starLifeCycleSchema: BundleSchema = {
   id: STAR_LIFE_CYCLE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 시계가 저절로 흐르고 두 별이 차례로 끝난다.

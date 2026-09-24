@@ -106,7 +106,6 @@ export const CLEAR = 0.8;
 
 export const fieldOfChargedSphereMessages = Object.freeze({
   'label.title': { ko: '대전된 구의 전기장', en: 'Field of a charged sphere' },
-  'label.operation': { ko: '안과 밖이 다른 이유', en: 'Why inside and outside differ' },
   'label.stage': { ko: '속 빈 도체 구', en: 'Hollow conducting sphere' },
   'label.view': { ko: '공간과 E–r', en: 'Space and E–r' },
   /** 전하 부호 · 기호 · 축 이름. 표식이라 번역하지 않는다 (C1 판정 3). */
@@ -154,9 +153,8 @@ function key(k: FieldOfChargedSphereMessageKey): string {
 
 export const fieldOfChargedSphereSchema: BundleSchema = {
   id: FIELD_OF_CHARGED_SPHERE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 장이 적혀 있고, 시험 전하가 들어오고, 전하가 한 점으로 모인다.

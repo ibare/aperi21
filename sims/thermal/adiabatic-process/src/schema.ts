@@ -93,7 +93,6 @@ export const SCENE_BOUNDS = { minX: -1.55, maxX: 6.95, minY: -0.8, maxY: 2.55 } 
 
 export const adiabaticProcessMessages = Object.freeze({
   'label.title': { ko: '단열 과정', en: 'Adiabatic process' },
-  'label.operation': { ko: '열 출입이 없는 변화', en: 'A change with no heat in or out' },
   'label.stage': { ko: '단열재로 감싼 실린더', en: 'Insulated cylinder' },
   'label.view': { ko: '실린더와 P–V 그림', en: 'Cylinder and P–V diagram' },
 
@@ -145,9 +144,8 @@ function key(k: AdiabaticProcessMessageKey): string {
 
 export const adiabaticProcessSchema: BundleSchema = {
   id: ADIABATIC_PROCESS_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 피스톤이 오르고, 온도계가 내려가고, 두 점이 갈라진다.

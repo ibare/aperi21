@@ -73,7 +73,6 @@ export const SCENE_BOUNDS = { minX: -1.0, maxX: 7.2, minY: -2.2, maxY: 2.1 } as 
 
 export const harmonicsMessages = Object.freeze({
   'label.title': { ko: '배음', en: 'Harmonics' },
-  'label.operation': { ko: '경계 조건이 정하는 진동수', en: 'Frequencies set by the boundary' },
   'label.stage': { ko: '양끝이 묶인 줄', en: 'String tied at both ends' },
   'label.view': { ko: '줄과 응답 곡선', en: 'String and response' },
 
@@ -116,9 +115,8 @@ function key(k: HarmonicsMessageKey): string {
 
 export const harmonicsSchema: BundleSchema = {
   id: HARMONICS_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 진동수 훑기가 자동으로 모든 후보를 지나가며 거르는 것을 보여 준다 —

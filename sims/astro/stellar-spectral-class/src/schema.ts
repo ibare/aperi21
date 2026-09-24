@@ -213,7 +213,6 @@ export const RETURN = 3.2;
 
 export const stellarSpectralClassMessages = Object.freeze({
   'label.title': { ko: '별의 스펙트럼 분류', en: 'Stellar spectral classes' },
-  'label.operation': { ko: '온도가 정하는 흡수선 무늬', en: 'Absorption-line patterns set by temperature' },
   'label.stage': { ko: 'O 에서 M 까지', en: 'From O to M' },
   'label.view': { ko: '스펙트럼과 분광형', en: 'Spectrum and class' },
   /** 분광형 글자 — 분야 원어로 통용되는 기호라 표식이다 (C1 판정 2). */
@@ -303,9 +302,8 @@ function stageConstants(): Record<string, number> {
 
 export const stellarSpectralClassSchema: BundleSchema = {
   id: STELLAR_SPECTRAL_CLASS_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 별이 O 에서 M 까지 식어 가며 무늬가 바뀌고, 다시 뜨거워진다.

@@ -113,7 +113,6 @@ export const CLEAR = 0.6;
 
 export const uniformFieldMessages = Object.freeze({
   'label.title': { ko: '균일한 전기장', en: 'Uniform electric field' },
-  'label.operation': { ko: '평행판 사이의 장', en: 'The field between parallel plates' },
   'label.stage': { ko: '전지에 이은 두 판', en: 'Two plates on a battery' },
   'label.view': { ko: '옆에서 본 판', en: 'Side view' },
   /** 판 · 시험 전하 부호. 표식이라 번역하지 않는다 (C1 판정 3). */
@@ -163,9 +162,8 @@ function spotConstants(prefix: string, spots: readonly (readonly [number, number
 
 export const uniformFieldSchema: BundleSchema = {
   id: UNIFORM_FIELD_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 장선이 있고, 전하가 놓이고, 옮겨 가고, 하나가 밖으로 나간다.

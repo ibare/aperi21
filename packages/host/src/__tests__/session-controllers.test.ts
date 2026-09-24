@@ -32,9 +32,8 @@ const MOON: StageDef = { id: 'moon', label: { en: 'Moon' }, constants: { g: 1.6 
 function schemaOf(over: Partial<BundleSchema> = {}): BundleSchema {
   return {
     id: 'test',
-    label: { en: 'Test' },
+    title: { en: 'Test' },
     category: 'test',
-    operation: { en: 'Test' },
     timeModel: 'linear',
     parameters: [],
     stages: [EARTH],

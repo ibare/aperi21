@@ -56,7 +56,6 @@ export const EMPTY = 1.5;
 
 export const energyInInductorMessages = Object.freeze({
   'label.title': { ko: '인덕터의 에너지', en: 'Energy in an inductor' },
-  'label.operation': { ko: '자기장에 저장된 에너지', en: 'Energy stored in the magnetic field' },
   'label.stage': { ko: '전류를 키웠다 줄이기', en: 'Raising and lowering the current' },
   'label.view': { ko: '코일과 LI–I 그래프', en: 'Coil and LI–I graph' },
   /** 값이 끼는 조립이라 문안이다 (C1). 값은 스테이지 상수 그대로. */
@@ -102,9 +101,8 @@ function key(k: EnergyInInductorMessageKey): string {
 
 export const energyInInductorSchema: BundleSchema = {
   id: ENERGY_IN_INDUCTOR_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 키우고, 머물고, 줄이는 한 주기로 할 말을 마친다.

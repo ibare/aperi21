@@ -96,7 +96,6 @@ export const LABEL_FONT_PX = 12;
 
 export const rocketEquationMessages = Object.freeze({
   'label.title': { ko: '로켓 방정식', en: 'The rocket equation' },
-  'label.operation': { ko: '연료를 버려 얻는 속도', en: 'Speed bought by throwing fuel away' },
   'label.stage': { ko: '연료 여덟 칸', en: 'Eight fuel compartments' },
   'label.view': { ko: '로켓과 얻은 속도', en: 'Rocket and the speed it gained' },
 
@@ -133,9 +132,8 @@ function key(k: RocketEquationMessageKey): string {
 
 export const rocketEquationSchema: BundleSchema = {
   id: ROCKET_EQUATION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 아무것도 누르지 않아도 여덟 칸이 차례로 타며 할 말을 마친다.

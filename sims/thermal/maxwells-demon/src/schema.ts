@@ -72,7 +72,6 @@ export const SCENE_BOUNDS = { minX: -0.1, maxX: 5.4, minY: -0.62, maxY: 1.56 } a
 
 export const maxwellsDemonMessages = Object.freeze({
   'label.title': { ko: '맥스웰의 도깨비', en: "Maxwell's demon" },
-  'label.operation': { ko: '정보와 엔트로피의 관계', en: 'Information and entropy' },
   'label.stage': { ko: '문 달린 상자', en: 'Box with a trapdoor' },
   'label.view': { ko: '상자 · 온도 막대 · 공책', en: 'Box, temperature bars, notebook' },
   /** 도깨비 이름표. */
@@ -120,9 +119,8 @@ function key(k: MaxwellsDemonMessageKey): string {
 
 export const maxwellsDemonSchema: BundleSchema = {
   id: MAXWELLS_DEMON_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 섞여 있고, 도깨비가 가르고, 멈춘다.

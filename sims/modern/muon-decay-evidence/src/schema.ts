@@ -109,7 +109,6 @@ export const SCENE_BOUNDS = { minX: -13.8, maxX: 13.8, minY: -2.4, maxY: 12.4 } 
 
 export const muonDecayEvidenceMessages = Object.freeze({
   'label.title': { ko: '뮤온의 도달', en: 'Muons reaching the ground' },
-  'label.operation': { ko: '시간 지연의 관측 증거', en: 'Observational evidence for time dilation' },
   'label.stage': { ko: '10 km 에서 0.98c 로 내려오는 뮤온', en: 'Muons falling from 10 km at 0.98c' },
   'label.view': { ko: '지상에서 본 틀', en: 'Ground frame' },
   'label.classical': { ko: '시간이 그대로 흐른다면', en: 'If time ran normally' },
@@ -153,9 +152,8 @@ function key(k: MuonDecayEvidenceMessageKey): string {
 
 export const muonDecayEvidenceSchema: BundleSchema = {
   id: MUON_DECAY_EVIDENCE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 뮤온이 내려오고, 붕괴하고, 닿은 것이 쌓이고, 다시 온다.

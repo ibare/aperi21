@@ -83,7 +83,6 @@ export const SCENE_BOUNDS = { minX: -0.7, maxX: 7.55, minY: -2.72, maxY: 2.28 } 
 
 export const gravitationalSlingshotMessages = Object.freeze({
   'label.title': { ko: '중력 도움', en: 'Gravity assist' },
-  'label.operation': { ko: '천체를 이용한 속도 변화', en: 'Changing speed by passing a planet' },
   'label.stage': { ko: '행성 곁을 스치는 탐사선', en: 'A probe grazing a planet' },
   'label.view': { ko: '두 틀', en: 'Two frames' },
   'label.planetFrame': { ko: '행성과 함께 보면', en: 'Moving with the planet' },
@@ -135,9 +134,8 @@ function key(k: GravitationalSlingshotMessageKey): string {
 
 export const gravitationalSlingshotSchema: BundleSchema = {
   id: GRAVITATIONAL_SLINGSHOT_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 비행 하나를 두 틀로 견주는 것이 전부라, 값을 바꿔 볼 것이 주장에 없다 (NOTES (b)).

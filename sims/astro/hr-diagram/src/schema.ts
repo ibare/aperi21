@@ -73,10 +73,6 @@ export const CLUSTER = {
 
 export const hrDiagramMessages = Object.freeze({
   'label.title': { ko: 'HR 도', en: 'HR diagram' },
-  'label.operation': {
-    ko: '무거운 별부터 주계열 띠를 떠난다',
-    en: 'The heaviest stars leave the main sequence first',
-  },
   'label.stage': { ko: '성단', en: 'Cluster' },
   'label.view': { ko: 'HR 도', en: 'HR diagram' },
 
@@ -125,9 +121,8 @@ function key(k: HrDiagramMessageKey): string {
 
 export const hrDiagramSchema: BundleSchema = {
   id: HR_DIAGRAM_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 나이는 저절로 흐르고 주장은 누르지 않아도 끝난다.

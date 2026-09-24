@@ -91,10 +91,6 @@ export const SUM_LABEL_AT = 0.55;
 
 export const vectorAdditionMessages = Object.freeze({
   'label.title': { ko: '벡터의 합성', en: 'Vector addition' },
-  'label.operation': {
-    ko: '나를 가의 머리에 옮겨 붙이고 이어 걸으면 그 끝이 합이다',
-    en: 'Slide b onto the head of a, walk both, and the far end is the sum',
-  },
   'label.stage': { ko: '두 화살표', en: 'Two arrows' },
   'label.view': { ko: '벡터의 합성', en: 'Vector addition' },
 
@@ -154,9 +150,8 @@ function key(k: VectorAdditionMessageKey): string {
 
 export const vectorAdditionSchema: BundleSchema = {
   id: VECTOR_ADDITION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   parameters: [],

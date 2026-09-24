@@ -75,7 +75,6 @@ export const SCENE_BOUNDS = { minX: -2.0, maxX: 6.9, minY: -1.1, maxY: 3.45 } as
 
 export const birefringenceMessages = Object.freeze({
   'label.title': { ko: '복굴절', en: 'Birefringence' },
-  'label.operation': { ko: '방향에 따라 다른 굴절률', en: 'Refractive index that depends on direction' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   'label.side': { ko: '옆에서 본 단면', en: 'side section' },
@@ -139,9 +138,8 @@ function key(k: BirefringenceMessageKey): string {
 
 export const birefringenceSchema: BundleSchema = {
   id: BIREFRINGENCE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 결정이 스스로 한 바퀴 돌고, 편광판이 스스로 얹혀 돈다.

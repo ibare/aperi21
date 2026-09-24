@@ -63,7 +63,6 @@ export const SCENE_BOUNDS = { minX: -3.2, maxX: 30.8, minY: -3.4, maxY: 19.4 } a
 
 export const particleInABoxMessages = Object.freeze({
   'label.title': { ko: '무한 우물', en: 'Infinite square well' },
-  'label.operation': { ko: '경계가 만드는 에너지 양자화', en: 'Energy quantization made by the walls' },
   'label.stage': { ko: '무한 우물', en: 'Infinite well' },
   'label.view': { ko: '준위와 파동 함수', en: 'Levels and wave functions' },
 
@@ -111,9 +110,8 @@ function key(k: ParticleInABoxMessageKey): string {
 
 export const particleInABoxSchema: BundleSchema = {
   id: PARTICLE_IN_A_BOX_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 준위를 하나씩 올라가는 자동 진행이 간격 셋을 모두 지나간다 —

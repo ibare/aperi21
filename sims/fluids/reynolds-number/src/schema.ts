@@ -92,10 +92,6 @@ export const FALL = 1.8;
 
 export const reynoldsNumberMessages = Object.freeze({
   'label.title': { ko: '레이놀즈 수', en: 'Reynolds number' },
-  'label.operation': {
-    ko: '전이를 가르는 무차원 수',
-    en: 'The dimensionless number that decides the transition',
-  },
   'label.stage': { ko: '세 관', en: 'Three pipes' },
   'label.view': { ko: '염료', en: 'Dye' },
   /** 관 왼쪽 이름표 — 굵기 · 빠르기의 배수. 수식 표기라 번역하지 않는다 (C1 판정 3). */
@@ -138,9 +134,8 @@ function key(k: ReynoldsNumberMessageKey): string {
 
 export const reynoldsNumberSchema: BundleSchema = {
   id: REYNOLDS_NUMBER_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 세 관이 흐르고, 함께 빨라지고, 둘이 함께 흐트러진다.

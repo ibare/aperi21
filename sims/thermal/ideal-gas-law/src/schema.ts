@@ -89,7 +89,6 @@ export const SCENE_BOUNDS = { minX: -0.35, maxX: 9.0, minY: -1.0, maxY: 2.75 } a
 
 export const idealGasLawMessages = Object.freeze({
   'label.title': { ko: '이상 기체 법칙', en: 'Ideal gas law' },
-  'label.operation': { ko: '압력·부피·온도의 관계', en: 'How pressure, volume and temperature relate' },
   'label.stage': { ko: '피스톤 실린더', en: 'Piston cylinder' },
   'label.view': { ko: '실린더와 막대', en: 'Cylinder and bars' },
 
@@ -193,9 +192,8 @@ const RELEASE_S = 1.1;
 
 export const idealGasLawSchema: BundleSchema = {
   id: IDEAL_GAS_LAW_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 자물쇠가 걸리고, 하나가 바뀌고, 하나가 따라간다.

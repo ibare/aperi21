@@ -83,7 +83,6 @@ export const SCENE_BOUNDS = { minX: -3.0, maxX: 4.6, minY: -3.15, maxY: 2.45 } a
 
 export const snellsLawMessages = Object.freeze({
   'label.title': { ko: '굴절 법칙', en: "Snell's law" },
-  'label.operation': { ko: '매질에 따른 경로 꺾임', en: 'How the path bends with the medium' },
   'label.stage': { ko: '공기에서 세 매질로', en: 'From air into three media' },
   'label.view': { ko: '입사점', en: 'Point of incidence' },
 
@@ -137,9 +136,8 @@ function key(k: SnellsLawMessageKey): string {
 
 export const snellsLawSchema: BundleSchema = {
   id: SNELLS_LAW_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

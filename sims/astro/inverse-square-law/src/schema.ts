@@ -53,7 +53,6 @@ export const SCENE_BOUNDS = { minX: -3.5, maxX: 3.5, minY: -3.6, maxY: 3.1 } as 
 
 export const inverseSquareLawMessages = Object.freeze({
   'label.title': { ko: '역제곱 법칙', en: 'Inverse-square law' },
-  'label.operation': { ko: '퍼지는 만큼 옅어지는 것', en: 'Thinning out as it spreads' },
   'label.stage': { ko: '부푸는 구껍질', en: 'Expanding shell' },
   'label.view': { ko: '정면', en: 'Front view' },
   /** 구껍질 반지름 이름표. 수식 표기라 번역 대상이 아니다 (C1 판정 3). */
@@ -100,9 +99,8 @@ function key(k: InverseSquareLawMessageKey): string {
 
 export const inverseSquareLawSchema: BundleSchema = {
   id: INVERSE_SQUARE_LAW_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 퍼지는 중이고, r · 2r · 3r 에서 차례로 멈춘다.

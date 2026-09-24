@@ -79,7 +79,6 @@ export const REJOIN = 1.4;
 
 export const magneticFieldLinesMessages = Object.freeze({
   'label.title': { ko: '자기력선', en: 'Magnetic field lines' },
-  'label.operation': { ko: '끊기지 않고 닫히는 선', en: 'Lines that never break and always close' },
   'label.stage': { ko: '막대자석', en: 'Bar magnet' },
   'label.view': { ko: '자석 둘레', en: 'Around the magnet' },
   /** 자극 표식. 자석에 새겨진 글자라 번역하지 않는다 (C1 판정 1). */
@@ -139,9 +138,8 @@ function key(k: MagneticFieldLinesMessageKey): string {
 
 export const magneticFieldLinesSchema: BundleSchema = {
   id: MAGNETIC_FIELD_LINES_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 점이 선을 따라 돌고, 자석이 잘리고, 다시 붙는다.

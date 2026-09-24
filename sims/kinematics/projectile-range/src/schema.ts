@@ -127,10 +127,6 @@ export const SPLASH_LIFE = 0.55;
 
 export const projectileRangeMessages = Object.freeze({
   'label.title': { ko: '사거리와 발사각', en: 'Range and launch angle' },
-  'label.operation': {
-    ko: '던지는 각도가 날아가는 거리를 바꾸는 방식',
-    en: 'How the launch angle changes how far it flies',
-  },
   'label.stage': { ko: '같은 속력, 다섯 각도', en: 'Same speed, five angles' },
   'label.view': { ko: '다섯 발사', en: 'Five launches' },
   /** 각도 표기. 수식·단위 표기라 번역 대상이 아니다 (C1 판정 3). */
@@ -182,9 +178,8 @@ function key(k: ProjectileRangeMessageKey): string {
 
 export const projectileRangeSchema: BundleSchema = {
   id: PROJECTILE_RANGE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 쏘고, 내려앉고, 다시 겨눈다.

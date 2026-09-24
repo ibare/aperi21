@@ -61,10 +61,6 @@ export const TEMP_RANGE: [number, number] = [300, 1200];
 
 export const maxwellBoltzmannDistributionMessages = Object.freeze({
   'label.title': { ko: '맥스웰-볼츠만 분포', en: 'Maxwell–Boltzmann distribution' },
-  'label.operation': {
-    ko: '데우면 분자 속력 분포가 퍼지며 내려앉는다',
-    en: 'Heating spreads the speed distribution and lowers its peak',
-  },
   'label.stage': { ko: '질소 기체', en: 'Nitrogen gas' },
   'label.view': { ko: '속력 분포', en: 'Speed distribution' },
   'label.temperature': { ko: '온도', en: 'Temperature' },
@@ -106,9 +102,8 @@ function key(k: MaxwellBoltzmannDistributionMessageKey): string {
 
 export const maxwellBoltzmannDistributionSchema: BundleSchema = {
   id: MAXWELL_BOLTZMANN_DISTRIBUTION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
 

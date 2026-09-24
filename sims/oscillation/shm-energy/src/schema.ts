@@ -76,10 +76,6 @@ export const SCENE_BOUNDS = { minX: -2.55, maxX: 3.05, minY: -0.62, maxY: 1.22 }
 
 export const shmEnergyMessages = Object.freeze({
   'label.title': { ko: '조화 운동의 에너지', en: 'Energy in simple harmonic motion' },
-  'label.operation': {
-    ko: '운동 에너지와 퍼텐셜의 교환',
-    en: 'Kinetic and potential energy trade places',
-  },
   'label.stage': { ko: '마찰 없는 바닥', en: 'Frictionless floor' },
   'label.view': { ko: '용수철과 에너지 막대', en: 'Spring and energy bar' },
   /** 도식 표식 — 분야에서 원어로 통용되는 약어 · 기호라 번역하지 않는다 (C1 판정 2 · 3). */
@@ -122,9 +118,8 @@ export const QUARTER_PHASES = ['release', 'compress', 'rebound', 'stretch'] as c
 
 export const shmEnergySchema: BundleSchema = {
   id: SHM_ENERGY_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 오가고, 막대의 경계가 오르내린다.

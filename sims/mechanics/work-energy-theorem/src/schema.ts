@@ -97,10 +97,6 @@ export const COAST_MOTION = 0.3;
 
 export const workEnergyTheoremMessages = Object.freeze({
   'label.title': { ko: '일-운동 에너지 정리', en: 'Work-energy theorem' },
-  'label.operation': {
-    ko: '알짜일이 운동 에너지 변화와 같음',
-    en: 'Net work equals the change in kinetic energy',
-  },
   'label.stage': { ko: '마찰 없는 바닥', en: 'Frictionless floor' },
   'label.view': { ko: '두 레인', en: 'Two lanes' },
   /** 화살표에 붙는 기호. 수식 표기라 번역 대상이 아니다 (C1 판정 3). */
@@ -143,9 +139,8 @@ function key(k: WorkEnergyTheoremMessageKey): string {
 
 export const workEnergyTheoremSchema: BundleSchema = {
   id: WORK_ENERGY_THEOREM_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 밀리고, 같은 속력으로 달리고, 다시 선다.

@@ -36,7 +36,6 @@ export const STROBE = 0.5;
 
 export const connectedBodiesMessages = Object.freeze({
   'label.title': { ko: '연결된 물체', en: 'Connected bodies' },
-  'label.operation': { ko: '함께 움직이는 계의 가속도', en: 'Acceleration of bodies moving together' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 물체에 새긴 질량 — 단위 표기(C1 표식)지만 값이 끼어들어 키로 둔다. */
@@ -66,9 +65,8 @@ function key(k: ConnectedBodiesMessageKey): string {
 
 export const connectedBodiesSchema: BundleSchema = {
   id: CONNECTED_BODIES_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 세 줄이 가능한 나눔(통째 / 가벼운 앞 / 무거운 앞)을 이미 다 보여 준다.

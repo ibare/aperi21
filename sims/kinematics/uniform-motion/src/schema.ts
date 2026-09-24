@@ -78,10 +78,6 @@ export const SPEED_DEFAULT = 0.88;
 
 export const uniformMotionMessages = Object.freeze({
   'label.title': { ko: '등속 운동', en: 'Uniform motion' },
-  'label.operation': {
-    ko: '같은 시간에 같은 간격으로 자리를 옮긴다',
-    en: 'Equal intervals in equal times',
-  },
   'label.stage': { ko: '바닥', en: 'Ground' },
   'label.view': { ko: '자국', en: 'Marks' },
   /**
@@ -114,9 +110,8 @@ function key(k: UniformMotionMessageKey): string {
 
 export const uniformMotionSchema: BundleSchema = {
   id: UNIFORM_MOTION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   /** 빠르기는 조작기가 state 에 직접 쓴다. 파라미터 상자를 띄우지 않는다. */

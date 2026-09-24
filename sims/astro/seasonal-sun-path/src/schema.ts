@@ -99,10 +99,6 @@ export const START_AT = 2.6;
 
 export const seasonalSunPathMessages = Object.freeze({
   'label.title': { ko: '계절과 태양의 길', en: 'The Sun’s path through the seasons' },
-  'label.operation': {
-    ko: '남중 고도와 낮 길이가 함께 달라지는 것',
-    en: 'How the noon altitude and the length of day change together',
-  },
   'label.stage': { ko: '중위도', en: 'Mid-latitude' },
   'label.view': { ko: '땅 위에서', en: 'From the ground' },
   'label.domeTitle': {
@@ -159,9 +155,8 @@ function key(k: SeasonalSunPathMessageKey): string {
 
 export const seasonalSunPathSchema: BundleSchema = {
   id: SEASONAL_SUN_PATH_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 시간표가 동지 · 춘추분 · 하지를 차례로 옮기며 견주기까지 마친다.

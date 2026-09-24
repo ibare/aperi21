@@ -20,7 +20,6 @@ export const FIRST_LAW_OF_THERMODYNAMICS_ID = 'first-law-of-thermodynamics';
 
 export const firstLawOfThermodynamicsMessages = Object.freeze({
   'label.title': { ko: '열역학 제1법칙', en: 'First law of thermodynamics' },
-  'label.operation': { ko: '내부 에너지·일·열의 관계', en: 'How internal energy, work and heat relate' },
   'label.stage': { ko: '단원자 기체', en: 'Monatomic gas' },
   'label.view': { ko: '실린더와 열 알갱이', en: 'Cylinder and heat grains' },
 
@@ -78,9 +77,8 @@ const GRAIN_S = 0.8;
 
 export const firstLawOfThermodynamicsSchema: BundleSchema = {
   id: FIRST_LAW_OF_THERMODYNAMICS_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
 

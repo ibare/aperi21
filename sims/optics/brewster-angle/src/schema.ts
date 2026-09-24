@@ -97,7 +97,6 @@ export const SCENE_BOUNDS = { minX: -3.0, maxX: 8.75, minY: -2.75, maxY: 2.55 } 
 
 export const brewsterAngleMessages = Object.freeze({
   'label.title': { ko: '브루스터 각', en: "Brewster's angle" },
-  'label.operation': { ko: '반사광이 완전 편광되는 각', en: 'The angle at which reflected light is fully polarized' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   'label.air': { ko: '공기', en: 'air' },
@@ -150,9 +149,8 @@ function key(k: BrewsterAngleMessageKey): string {
 
 export const brewsterAngleSchema: BundleSchema = {
   id: BREWSTER_ANGLE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 입사각이 스스로 세 자리를 돌며 두 몫을 보인다.

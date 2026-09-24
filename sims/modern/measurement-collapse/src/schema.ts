@@ -75,7 +75,6 @@ export const SCENE_BOUNDS = { minX: -15.2, maxX: 10.8, minY: -3.6, maxY: 7.6 } a
 
 export const measurementCollapseMessages = Object.freeze({
   'label.title': { ko: '측정과 붕괴', en: 'Measurement and collapse' },
-  'label.operation': { ko: '관측이 상태를 정하는 것', en: 'How observing settles the state' },
   'label.stage': { ko: '두 봉우리로 퍼진 상태', en: 'State spread over two lobes' },
   'label.view': { ko: '분포와 측정 결과', en: 'Distribution and results' },
 
@@ -123,9 +122,8 @@ function key(k: MeasurementCollapseMessageKey): string {
 
 export const measurementCollapseSchema: BundleSchema = {
   id: MEASUREMENT_COLLAPSE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 자동 진행이 측정 · 붕괴 · 다시 재기를 모두 지나가고, 주기마다 새 결과가

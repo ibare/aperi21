@@ -80,7 +80,6 @@ export const SCENE_BOUNDS = { minX: -0.3, maxX: 9.8, minY: -1.0, maxY: 3.75 } as
 
 export const triplePointMessages = Object.freeze({
   'label.title': { ko: '삼중점', en: 'Triple point' },
-  'label.operation': { ko: '세 상이 공존하는 조건', en: 'The condition where three phases coexist' },
   'label.stage': { ko: '물', en: 'Water' },
   'label.view': { ko: '그릇과 상평형 그림', en: 'Vessel and phase diagram' },
 
@@ -219,9 +218,8 @@ const [WARM, COOL, THIN, SQUEEZE] = EXCURSIONS as [Excursion, Excursion, Excursi
 
 export const triplePointSchema: BundleSchema = {
   id: TRIPLE_POINT_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 네 번의 벗어남이 아무것도 누르지 않아도 한 주기 안에 끝난다.

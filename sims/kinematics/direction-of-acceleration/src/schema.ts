@@ -34,10 +34,6 @@ export const LANE_SIGNS: readonly (1 | -1)[] = [1, -1];
 
 export const directionOfAccelerationMessages = Object.freeze({
   'label.title': { ko: '가속도의 방향', en: 'Direction of acceleration' },
-  'label.operation': {
-    ko: '속도와 같은 방향인지 반대인지가 정하는 것',
-    en: 'Whether it points with or against the velocity',
-  },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 화살표 끝 이름. 색으로만 두 화살표를 가르지 않기 위해 둔다. */
@@ -74,9 +70,8 @@ function key(k: DirectionOfAccelerationMessageKey): string {
 
 export const directionOfAccelerationSchema: BundleSchema = {
   id: DIRECTION_OF_ACCELERATION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 가속도 방향을 뒤집게 하면 같은 대조를 독자에게 한 번 더 시키는 것뿐이다.

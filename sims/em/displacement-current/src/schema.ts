@@ -100,7 +100,6 @@ export const EMPTY_S = 1.4;
 
 export const displacementCurrentMessages = Object.freeze({
   'label.title': { ko: '변위 전류', en: 'Displacement current' },
-  'label.operation': { ko: '축전기 사이를 잇는 항', en: 'The term that bridges the capacitor gap' },
   'label.stage': { ko: '도선과 원판 축전기', en: 'Wire and disc capacitor' },
   'label.view': { ko: '비스듬히 옆에서', en: 'From the side, at an angle' },
   /** 물리 기호 — 표식이라 번역하지 않는다 (C1 판정 3). */
@@ -142,9 +141,8 @@ function key(k: DisplacementCurrentMessageKey): string {
 
 export const displacementCurrentSchema: BundleSchema = {
   id: DISPLACEMENT_CURRENT_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 차는 중이고, 멎고, 비우고, 다시 찬다.

@@ -96,10 +96,6 @@ export const START_AT = 1.0;
 
 export const earthRotationDayNightMessages = Object.freeze({
   'label.title': { ko: '자전과 낮과 밤', en: 'Earth’s rotation, day and night' },
-  'label.operation': {
-    ko: '도는 지구 위에서 낮과 밤이 갈리는 이유',
-    en: 'Why day and night alternate on a turning Earth',
-  },
   'label.stage': { ko: '태양과 지구', en: 'Sun and Earth' },
   'label.view': { ko: '북극 위에서', en: 'From above the North Pole' },
   'label.sunlight': { ko: '태양에서 오는 햇빛 →', en: 'Sunlight from the Sun →' },
@@ -145,9 +141,8 @@ function key(k: EarthRotationDayNightMessageKey): string {
 
 export const earthRotationDayNightSchema: BundleSchema = {
   id: EARTH_ROTATION_DAY_NIGHT_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 지구가 돌고 있고, 한 바퀴마다 낮과 밤이 한 번씩 지나간다.

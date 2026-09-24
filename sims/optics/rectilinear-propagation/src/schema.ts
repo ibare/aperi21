@@ -81,7 +81,6 @@ export const START_AT = 1;
 
 export const rectilinearPropagationMessages = Object.freeze({
   'label.title': { ko: '빛의 직진', en: 'Light travels in straight lines' },
-  'label.operation': { ko: '그림자와 광선 모형', en: 'Shadows and the ray model' },
   'label.stage': { ko: '점광원 · 가림판 · 스크린', en: 'Point source, plate, screen' },
   'label.view': { ko: '옆에서 본 모습', en: 'Side view' },
   'label.source': { ko: '광원', en: 'source' },
@@ -116,9 +115,8 @@ function key(k: RectilinearPropagationMessageKey): string {
 
 export const rectilinearPropagationSchema: BundleSchema = {
   id: RECTILINEAR_PROPAGATION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 가림판이 광원 쪽으로 갔다가 돌아온다.

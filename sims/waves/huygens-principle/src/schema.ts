@@ -69,10 +69,6 @@ export const SCENE_BOUNDS = { minX: 0, maxX: FIELD_W, minY: -44, maxY: FIELD_H }
 
 export const huygensPrincipleMessages = Object.freeze({
   'label.title': { ko: '하위헌스 원리', en: "Huygens' principle" },
-  'label.operation': {
-    ko: '파면 위 점마다 나간 동그란 파가 겹쳐 곧게 펴진다',
-    en: 'Circular wavelets from points on a wavefront overlap into a straight front',
-  },
   'label.stage': { ko: '물결', en: 'Waves' },
   'label.view': { ko: '위에서 본 물결', en: 'Waves from above' },
   'caption.single': {
@@ -121,9 +117,8 @@ function key(k: HuygensPrincipleMessageKey): string {
 
 export const huygensPrincipleSchema: BundleSchema = {
   id: HUYGENS_PRINCIPLE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 자동 진행으로 점 수가 늘며 주장이 끝난다.

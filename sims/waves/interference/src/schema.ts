@@ -92,10 +92,6 @@ export const TONE_GAIN = 0.9;
 
 export const interferenceMessages = Object.freeze({
   'label.title': { ko: '간섭', en: 'Interference' },
-  'label.operation': {
-    ko: '두 물결이 서로를 지워 줄지어 잠잠해진다',
-    en: 'Two sets of ripples cancel and leave calm lines',
-  },
   'label.stage': { ko: '수면', en: 'Water surface' },
   'label.view': { ko: '위에서 본 수면', en: 'Surface from above' },
   'caption.solo': {
@@ -132,9 +128,8 @@ function key(k: InterferenceMessageKey): string {
 
 export const interferenceSchema: BundleSchema = {
   id: INTERFERENCE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 파원 거리 · 파장 조절을 두지 않는다 — 「줄 개수가 바뀐다」 는 다른 주장이다.

@@ -95,10 +95,6 @@ export const FADE = 0.6;
 
 export const conservativeForceMessages = Object.freeze({
   'label.title': { ko: '보존력', en: 'Conservative force' },
-  'label.operation': {
-    ko: '경로에 무관한 힘과 퍼텐셜의 존재',
-    en: 'A force whose work ignores the path — and the potential it allows',
-  },
   'label.stage': { ko: '두 길', en: 'Two paths' },
   'label.view': { ko: '중력이 한 일', en: 'Work done by gravity' },
   /** 두 점의 이름. 도식 기호라 번역 대상이 아니다 (C1 판정 3). */
@@ -142,9 +138,8 @@ function key(k: ConservativeForceMessageKey): string {
 
 export const conservativeForceSchema: BundleSchema = {
   id: CONSERVATIVE_FORCE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 두 상자가 이미 옮겨지고 있고, 같은 높이에서 멈추고, 다시 떠난다.

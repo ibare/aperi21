@@ -79,7 +79,6 @@ export const SCENE_BOUNDS = {
 
 export const diffractionGratingMessages = Object.freeze({
   'label.title': { ko: '회절 격자', en: 'Diffraction grating' },
-  'label.operation': { ko: '여러 슬릿이 만드는 날카로운 극대', en: 'Sharp maxima made by many slits' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   'caption.few': {
@@ -132,9 +131,8 @@ function key(k: DiffractionGratingMessageKey): string {
 
 export const diffractionGratingSchema: BundleSchema = {
   id: DIFFRACTION_GRATING_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 틈 수를 늘리는 순서와 흰빛 단계가 저절로 돈다.

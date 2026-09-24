@@ -81,7 +81,6 @@ export const SCENE_BOUNDS = { minX: -8.6, maxX: 8.6, minY: -4.6, maxY: 4.4 } as 
 
 export const noiseCancellationMessages = Object.freeze({
   'label.title': { ko: '능동 소음 제거', en: 'Active noise cancellation' },
-  'label.operation': { ko: '역위상 파동의 중첩', en: 'Superposing an inverted wave' },
   'label.stage': { ko: '헤드폰', en: 'Headphones' },
   'label.view': { ko: '소음 · 뒤집은 소리 · 합', en: 'Noise · flipped copy · sum' },
   'label.noise': { ko: '바깥 소음 (마이크)', en: 'Outside noise (mic)' },
@@ -121,9 +120,8 @@ function key(k: NoiseCancellationMessageKey): string {
 
 export const noiseCancellationSchema: BundleSchema = {
   id: NOISE_CANCELLATION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 소음이 흐르고, 뒤집히고, 지워지고, 늦어지면 남는다.

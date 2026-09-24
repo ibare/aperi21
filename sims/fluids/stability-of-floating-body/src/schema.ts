@@ -139,10 +139,6 @@ export const DRAW = {
 
 export const stabilityOfFloatingBodyMessages = Object.freeze({
   'label.title': { ko: '부유체의 안정', en: 'Stability of a floating body' },
-  'label.operation': {
-    ko: '기울면 부심이 옮겨 가 배를 되세운다',
-    en: 'When a boat heels, its centre of buoyancy shifts and rights it',
-  },
   'label.stage': { ko: '물', en: 'Water' },
   'label.view': { ko: '두 배', en: 'Two boats' },
   /** 배 이름. 폭은 대조의 유일한 변수라 둔다. 수와 단위는 표식이다 (C1 판정 3). */
@@ -239,9 +235,8 @@ const OTHER_CASES: readonly CaptionCase[] = WIDE_PHRASES.flatMap((w) =>
 
 export const stabilityOfFloatingBodySchema: BundleSchema = {
   id: STABILITY_OF_FLOATING_BODY_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'water', label: text('label.stage'), constants: { g: PHYS.g } }],

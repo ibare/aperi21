@@ -89,7 +89,6 @@ export const SCENE_BOUNDS = {
 
 export const antimatterMessages = Object.freeze({
   'label.title': { ko: '반물질', en: 'Antimatter' },
-  'label.operation': { ko: '부호가 반대인 짝', en: 'A partner with the opposite charge' },
   'label.stage': { ko: '양전자 소멸과 PET', en: 'Positron annihilation and PET' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 입자의 정지 에너지. 값은 선언한 정박값을 끼운다 (C1 · S-piece 유효숫자). */
@@ -141,9 +140,8 @@ function key(k: AntimatterMessageKey): string {
 
 export const antimatterSchema: BundleSchema = {
   id: ANTIMATTER_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 소멸 하나를 천천히, 이어 여러 번을 빠르게 보여 할 말을 마친다.

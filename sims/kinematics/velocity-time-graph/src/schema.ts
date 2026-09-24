@@ -53,10 +53,6 @@ export const STAGGER = 0;
 
 export const velocityTimeGraphMessages = Object.freeze({
   'label.title': { ko: '속도-시간 그래프', en: 'Velocity-time graph' },
-  'label.operation': {
-    ko: '그래프 아래 넓이가 간 거리다',
-    en: 'The area under the graph is the distance travelled',
-  },
   'label.stage': { ko: '직선 길', en: 'Straight road' },
   'label.view': { ko: '넓이와 길', en: 'Area and road' },
   /** 그래프 세로축 이름. 주제가 "속도-시간 그래프" 그 자체라 축 이름은 둔다. */
@@ -87,9 +83,8 @@ function key(k: VelocityTimeGraphMessageKey): string {
 
 export const velocityTimeGraphSchema: BundleSchema = {
   id: VELOCITY_TIME_GRAPH_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
   timeModel: 'linear',
 
   // 조작기가 없다. 운동 하나를 끝까지 보여 주면 할 말이 끝난다.

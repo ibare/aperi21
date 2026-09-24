@@ -71,7 +71,6 @@ export const SCENE_BOUNDS = { minX: -5.6, maxX: 4.9, minY: -1.05, maxY: 3.4 } as
 
 export const fermiLevelMessages = Object.freeze({
   'label.title': { ko: '페르미 준위', en: 'Fermi level' },
-  'label.operation': { ko: '전자가 채워진 높이', en: 'How high the electrons fill' },
   'label.stage': { ko: '구리', en: 'Copper' },
   'label.view': { ko: '띠 그림과 채워질 확률', en: 'Band diagram and occupation' },
 
@@ -122,9 +121,8 @@ function key(k: FermiLevelMessageKey): string {
 
 export const fermiLevelSchema: BundleSchema = {
   id: FERMI_LEVEL_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

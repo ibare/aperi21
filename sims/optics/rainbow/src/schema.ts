@@ -79,7 +79,6 @@ export const SCENE_BOUNDS = { minX: -4.6, maxX: 9.1, minY: -5.15, maxY: 1.85 } a
 
 export const rainbowMessages = Object.freeze({
   'label.title': { ko: '무지개', en: 'Rainbow' },
-  'label.operation': { ko: '물방울 속 굴절과 반사', en: 'Refraction and reflection inside raindrops' },
   'label.stage': { ko: '햇빛과 빗방울', en: 'Sunlight and raindrops' },
   'label.view': { ko: '물방울 하나와 하늘', en: 'One drop and the sky' },
 
@@ -143,9 +142,8 @@ function key(k: RainbowMessageKey): string {
 
 export const rainbowSchema: BundleSchema = {
   id: RAINBOW_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

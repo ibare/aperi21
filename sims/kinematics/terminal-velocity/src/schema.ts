@@ -106,10 +106,6 @@ export const RATIO_START = 0.15;
 
 export const terminalVelocityMessages = Object.freeze({
   'label.title': { ko: '종단 속도', en: 'Terminal velocity' },
-  'label.operation': {
-    ko: '공기 저항이 중력을 따라잡는 순간부터 더 빨라지지 않는다',
-    en: 'It stops speeding up the moment drag catches gravity',
-  },
   'label.stage': { ko: '낙하', en: 'Fall' },
   'label.view': { ko: '자국 사다리', en: 'Strobe ladder' },
   /**
@@ -153,9 +149,8 @@ function key(k: TerminalVelocityMessageKey): string {
 
 export const terminalVelocitySchema: BundleSchema = {
   id: TERMINAL_VELOCITY_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
 
   /** 떨어지고 · 붙잡히고 · 되감긴다. 끝난 화면이 남지 않는다. */
   timeModel: 'periodic',

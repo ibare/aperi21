@@ -90,7 +90,6 @@ export const CLEAR = 0.6;
 
 export const chargeInUniformFieldMessages = Object.freeze({
   'label.title': { ko: '균일장 속 전하', en: 'A charge in a uniform field' },
-  'label.operation': { ko: '포물선 운동과의 대응', en: 'Just like a projectile' },
   'label.stage': { ko: '판 사이로 들어온 두 전하', en: 'Two charges sent between the plates' },
   'label.view': { ko: '옆에서 본 판', en: 'Side view' },
   /** 판 부호 · 힘 · 질량 기호. 표식이라 번역하지 않는다 (C1 판정 3). */
@@ -134,9 +133,8 @@ function key(k: ChargeInUniformFieldMessageKey): string {
 
 export const chargeInUniformFieldSchema: BundleSchema = {
   id: CHARGE_IN_UNIFORM_FIELD_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 전하가 날고 있고, 두 번째 전하가 이어서 난다.

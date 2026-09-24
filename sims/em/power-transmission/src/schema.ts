@@ -140,7 +140,6 @@ export const START_AT = 1.0;
 
 export const powerTransmissionMessages = Object.freeze({
   'label.title': { ko: '송전', en: 'Power transmission' },
-  'label.operation': { ko: '전압을 올려 손실을 줄이는 것', en: 'Raising the voltage to cut the loss' },
   'label.stage': { ko: '같은 전력 · 두 전압', en: 'Same power, two voltages' },
   'label.view': { ko: '두 송전선', en: 'Two transmission lines' },
   /** 도식 이름 — 한 낱말이지만 언어마다 다르다. */
@@ -195,9 +194,8 @@ function key(k: PowerTransmissionMessageKey): string {
 
 export const powerTransmissionSchema: BundleSchema = {
   id: POWER_TRANSMISSION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 두 선이 흐르고, 한 주기 안에 손실 차이를 보인다.

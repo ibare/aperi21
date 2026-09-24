@@ -70,10 +70,6 @@ export const SCENE_BOUNDS = { minX: -2.75, maxX: 2.8, minY: -1.3, maxY: 0.9 } as
 
 export const magneticPolesMessages = Object.freeze({
   'label.title': { ko: '자석의 두 극', en: 'The two poles of a magnet' },
-  'label.operation': {
-    ko: '같은 극은 밀고 다른 극은 당긴다',
-    en: 'Like poles repel, unlike poles attract',
-  },
   'label.stage': { ko: '고정 자석과 수레 위 자석', en: 'A fixed magnet and a magnet on a cart' },
   'label.view': { ko: '위에서 본 선로', en: 'Track seen from above' },
 
@@ -123,9 +119,8 @@ function key(k: MagneticPolesMessageKey): string {
 
 export const magneticPolesSchema: BundleSchema = {
   id: MAGNETIC_POLES_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에서 자석이 두 번 돌고, 당김과 밀림이 차례로 일어난다.

@@ -83,7 +83,6 @@ export const START_AT = 0.6;
 
 export const geostationaryOrbitMessages = Object.freeze({
   'label.title': { ko: '정지 궤도', en: 'Geostationary orbit' },
-  'label.operation': { ko: '자전 주기와 같은 궤도', en: 'An orbit as long as one turn of Earth' },
   'label.stage': { ko: '지구와 세 위성', en: 'Earth and three satellites' },
   'label.view': { ko: '북극 위에서', en: 'From above the North Pole' },
   'label.topView': { ko: '북극 위에서 내려다본 지구', en: 'Earth seen from above the North Pole' },
@@ -126,9 +125,8 @@ function key(k: GeostationaryOrbitMessageKey): string {
 
 export const geostationaryOrbitSchema: BundleSchema = {
   id: GEOSTATIONARY_ORBIT_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 지구가 돌고 있고, 세 위성이 제 빠르기로 돈다.

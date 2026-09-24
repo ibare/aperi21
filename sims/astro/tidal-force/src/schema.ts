@@ -45,7 +45,6 @@ export const SCENE_BOUNDS = { minX: 0, maxX: CANVAS_W, minY: -CANVAS_H, maxY: 0 
 
 export const tidalForceMessages = Object.freeze({
   'label.title': { ko: '조석력', en: 'Tidal force' },
-  'label.operation': { ko: '중력의 차이가 만드는 늘어남', en: 'Stretching made by a difference in gravity' },
   'label.stage': { ko: '천체 곁', en: 'Near a massive body' },
   'label.view': { ko: '두 기준틀', en: 'Two frames' },
   /** 확대 화면의 이름 — 기준틀이 바뀌었다는 사실은 그림만으로 알 수 없어 둔다 (원본 NOTES). */
@@ -75,9 +74,8 @@ function key(k: TidalForceMessageKey): string {
 
 export const tidalForceSchema: BundleSchema = {
   id: TIDAL_FORCE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   /**

@@ -64,10 +64,6 @@ export const WALL = { rimWidth: 3, ellipseWidth: 1.5, ellipseRatio: 0.28, cellWi
 
 export const poiseuilleFlowMessages = Object.freeze({
   'label.title': { ko: '관 속의 층류', en: 'Laminar flow in a pipe' },
-  'label.operation': {
-    ko: '반지름 4제곱에 비례하는 유량',
-    en: 'Flow rate grows as the fourth power of the radius',
-  },
   'label.stage': { ko: '두 관', en: 'Two pipes' },
   'label.view': { ko: '옆모습', en: 'Side view' },
   /** 고정 한 문장 — 채우는 중 · 머무는 중 · 비운 직후 어느 순간에도 참이다. */
@@ -98,9 +94,8 @@ export const SCENE_BOUNDS = { minX: 0, maxX: FRAME.width, minY: -34, maxY: FRAME
 
 export const poiseuilleFlowSchema: BundleSchema = {
   id: POISEUILLE_FLOW_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 반지름을 바꾸면 칸 수가 정수가 아니게 되어 「한 칸 대 열여섯 칸」 셈이 흐려진다.

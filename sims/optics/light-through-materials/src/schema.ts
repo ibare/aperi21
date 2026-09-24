@@ -103,7 +103,6 @@ export const START_AT = 1;
 
 export const lightThroughMaterialsMessages = Object.freeze({
   'label.title': { ko: '빛과 재료', en: 'Light and materials' },
-  'label.operation': { ko: '재료에 따라 갈리는 빛의 통과', en: 'How light gets through depends on the material' },
   'label.stage': { ko: '세 판', en: 'Three boards' },
   'label.view': { ko: '램프 · 판 · 스크린', en: 'Lamps, boards, screen' },
   'label.glass': { ko: '유리', en: 'Glass' },
@@ -137,9 +136,8 @@ function key(k: LightThroughMaterialsMessageKey): string {
 
 export const lightThroughMaterialsSchema: BundleSchema = {
   id: LIGHT_THROUGH_MATERIALS_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 판이 들어가고, 갈리고, 다시 빠진다.

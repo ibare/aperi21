@@ -51,7 +51,6 @@ export const SCENE_BOUNDS = { minX: -1.55, maxX: 1.95, minY: -0.5, maxY: 1.28 } 
 
 export const centerOfGravityMessages = Object.freeze({
   'label.title': { ko: '무게 중심', en: 'Center of gravity' },
-  'label.operation': { ko: '넘어지는 조건을 정하는 점', en: 'The point that decides when things tip over' },
   'label.stage': { ko: '바닥 위 상자', en: 'Box on the floor' },
   'label.view': { ko: '기울이기', en: 'Tilting' },
 
@@ -101,9 +100,8 @@ function key(k: CenterOfGravityMessageKey): string {
 
 export const centerOfGravitySchema: BundleSchema = {
   id: CENTER_OF_GRAVITY_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

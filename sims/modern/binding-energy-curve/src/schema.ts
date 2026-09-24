@@ -26,7 +26,6 @@ export const BINDING_ENERGY_CURVE_ID = 'binding-energy-curve';
 
 export const bindingEnergyCurveMessages = Object.freeze({
   'label.title': { ko: '결합 에너지 곡선', en: 'Binding energy curve' },
-  'label.operation': { ko: '철에서 최대가 되는 이유', en: 'Why it peaks at iron' },
   'label.stage': { ko: '안정한 핵종', en: 'Stable nuclides' },
   'label.view': { ko: '융합과 분열', en: 'Fusion and fission' },
 
@@ -217,9 +216,8 @@ export const SCENE_BOUNDS = { minX: -1.1, maxX: 12.2, minY: -1.3, maxY: 5.2 } as
 
 export const bindingEnergyCurveSchema: BundleSchema = {
   id: BINDING_ENERGY_CURVE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 곡선은 자연이 정한 것이라 끌어 바꾸면 거짓 곡선이 된다.

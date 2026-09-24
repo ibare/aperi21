@@ -66,7 +66,6 @@ export const CAPTION_AT = [-1.35, -0.84] as const;
 
 export const conicalPendulumMessages = Object.freeze({
   'label.title': { ko: '원뿔 진자', en: 'Conical pendulum' },
-  'label.operation': { ko: '장력과 중력이 만드는 원운동', en: 'Circular motion from tension and gravity' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   'label.speed': { ko: '돌리는 빠르기', en: 'Spin speed' },
@@ -93,9 +92,8 @@ function key(k: ConicalPendulumMessageKey): string {
 
 export const conicalPendulumSchema: BundleSchema = {
   id: CONICAL_PENDULUM_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

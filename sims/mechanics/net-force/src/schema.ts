@@ -75,7 +75,6 @@ export const SCENE_BOUNDS = {
 
 export const netForceMessages = Object.freeze({
   'label.title': { ko: '알짜힘', en: 'Net force' },
-  'label.operation': { ko: '여러 힘의 벡터 합', en: 'Vector sum of several forces' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   'caption.join': {
@@ -108,9 +107,8 @@ function key(k: NetForceMessageKey): string {
 
 export const netForceSchema: BundleSchema = {
   id: NET_FORCE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 조합 셋을 돌아가며 보이는 것으로 "특정 경우가 아니다" 가 전해진다.

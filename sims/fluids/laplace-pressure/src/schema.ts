@@ -75,7 +75,6 @@ export const FADE = 0.8;
 
 export const laplacePressureMessages = Object.freeze({
   'label.title': { ko: '라플라스 압력', en: 'Laplace pressure' },
-  'label.operation': { ko: '곡률이 만드는 안팎 압력차', en: 'The pressure jump a curved surface makes' },
   'label.stage': { ko: '이어진 두 거품', en: 'Two connected bubbles' },
   'label.view': { ko: '단면', en: 'Cross-section' },
   /** 화살표 기호. 수식 표기라 번역 대상이 아니다 (C1 판정 3). */
@@ -110,9 +109,8 @@ function key(k: LaplacePressureMessageKey): string {
 
 export const laplacePressureSchema: BundleSchema = {
   id: LAPLACE_PRESSURE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 닫힌 채 견주고, 열리고, 쪼그라들고, 멈춘다.

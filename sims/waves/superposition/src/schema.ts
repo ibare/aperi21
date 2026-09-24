@@ -82,7 +82,6 @@ export const SCENE_BOUNDS = { minX: -6.5, maxX: 6.5, minY: -3.7, maxY: 3.5 } as 
 
 export const superpositionMessages = Object.freeze({
   'label.title': { ko: '중첩 원리', en: 'Superposition' },
-  'label.operation': { ko: '파동이 겹칠 때의 합', en: 'What happens when waves overlap' },
   'label.stage': { ko: '마주 오는 두 펄스', en: 'Two pulses meeting' },
   'label.view': { ko: '두 줄', en: 'Two strings' },
   /** 펄스 이름. 도식 기호라 번역 대상이 아니다 (C1 판정 3). */
@@ -118,9 +117,8 @@ function key(k: SuperpositionMessageKey): string {
 
 export const superpositionSchema: BundleSchema = {
   id: SUPERPOSITION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 펄스가 달려오고, 겹치고, 빠져나간다.

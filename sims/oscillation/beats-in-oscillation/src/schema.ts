@@ -92,10 +92,6 @@ export const SCENE_BOUNDS = { minX: -9.85, maxX: 1.05, minY: -1.15, maxY: 3.95 }
 
 export const beatsInOscillationMessages = Object.freeze({
   'label.title': { ko: '진동의 맥놀이', en: 'Beats in oscillation' },
-  'label.operation': {
-    ko: '가까운 두 진동수의 합',
-    en: 'The sum of two nearby frequencies',
-  },
   'label.stage': { ko: '두 쌍의 용수철 추', en: 'Two pairs of spring masses' },
   'label.view': { ko: '장치와 기록지', en: 'Rig and chart' },
   /** 줄 이름표. Δf 는 기호라 번역하지 않지만 앞 낱말은 문안이다 (C1 경계). */
@@ -135,9 +131,8 @@ function key(k: BeatsInOscillationMessageKey): string {
 
 export const beatsInOscillationSchema: BundleSchema = {
   id: BEATS_IN_OSCILLATION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 비교할 두 차이가 처음부터 위아래로 나란히 놓여 있다.

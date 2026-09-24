@@ -133,10 +133,6 @@ export const ARRIVE_INTO_MELT = 0.5;
 
 export const latentHeatMessages = Object.freeze({
   'label.title': { ko: '잠열', en: 'Latent heat' },
-  'label.operation': {
-    ko: '상변화 중 온도가 멈추는 이유',
-    en: 'Why the temperature stops during a change of state',
-  },
   'label.stage': { ko: '얼음 · 일정한 가열', en: 'Ice, steady heating' },
   'label.view': { ko: '그릇과 시간-온도 곡선', en: 'Pot and temperature–time curve' },
   /** 그릇 속 상 이름. */
@@ -192,9 +188,8 @@ function key(k: LatentHeatMessageKey): string {
 
 export const latentHeatSchema: BundleSchema = {
   id: LATENT_HEAT_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 주장은 「같은 세기로 데우는데 멈춘다」 이고, 그것은 누르지 않아도

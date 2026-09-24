@@ -87,7 +87,6 @@ export const SCENE_BOUNDS = { minX: -6.7, maxX: 6.7, minY: -2.75, maxY: 2.3 } as
 
 export const transistorPrincipleMessages = Object.freeze({
   'label.title': { ko: '트랜지스터', en: 'Transistor' },
-  'label.operation': { ko: '작은 신호가 큰 전류를 제어', en: 'A small signal controls a large current' },
   'label.stage': { ko: 'npn 트랜지스터', en: 'npn transistor' },
   'label.view': { ko: '소자 단면과 두 전류', en: 'Device cross-section and two currents' },
 
@@ -142,9 +141,8 @@ function key(k: TransistorPrincipleMessageKey): string {
 
 export const transistorPrincipleSchema: BundleSchema = {
   id: TRANSISTOR_PRINCIPLE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

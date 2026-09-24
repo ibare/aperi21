@@ -75,7 +75,6 @@ export const SCENE_BOUNDS = { minX: -0.9, maxX: 8.5, minY: -4.35, maxY: 1.45 } a
 
 export const soundIntensityMessages = Object.freeze({
   'label.title': { ko: '음의 세기', en: 'Sound intensity' },
-  'label.operation': { ko: '거리 제곱에 반비례하는 감쇠', en: 'Falling off with the square of distance' },
   'label.stage': { ko: '물러나는 귀', en: 'Stepping back' },
   'label.view': { ko: '옆모습', en: 'Side view' },
   'label.source': { ko: '음원', en: 'Source' },
@@ -125,9 +124,8 @@ function key(k: SoundIntensityMessageKey): string {
 
 export const soundIntensitySchema: BundleSchema = {
   id: SOUND_INTENSITY_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 소리가 이미 퍼지고 있고, 귀가 r · 2r · 4r 에서 차례로 멈춘다.

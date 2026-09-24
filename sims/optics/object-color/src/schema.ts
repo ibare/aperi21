@@ -122,10 +122,6 @@ export const START_AT = 1;
 
 export const objectColorMessages = Object.freeze({
   'label.title': { ko: '물체의 색', en: 'The colour of an object' },
-  'label.operation': {
-    ko: '물체가 되쏘는 빛이 정하는 색',
-    en: 'The colour set by the light an object sends back',
-  },
   'label.stage': { ko: '어두운 방', en: 'Dark room' },
   'label.view': { ko: '등 · 사과', en: 'Lamp and apple' },
   'caption.white': {
@@ -161,9 +157,8 @@ function key(k: ObjectColorMessageKey): string {
 
 export const objectColorSchema: BundleSchema = {
   id: OBJECT_COLOR_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흰빛 · 빨간빛 · 파란빛이 차례로 사과를 비춘다.

@@ -108,7 +108,6 @@ export const CAPTION_BAND = 52;
 
 export const equipotentialSurfaceMessages = Object.freeze({
   'label.title': { ko: '등전위면', en: 'Equipotential surfaces' },
-  'label.operation': { ko: '전기장과 수직인 면', en: 'Surfaces perpendicular to the field' },
   'label.stage': { ko: '두 전하', en: 'Two charges' },
   'label.view': { ko: '지형과 지도', en: 'Terrain and map' },
   'caption.main': {
@@ -133,9 +132,8 @@ function key(k: EquipotentialSurfaceMessageKey): string {
 
 export const equipotentialSurfaceSchema: BundleSchema = {
   id: EQUIPOTENTIAL_SURFACE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'continuous',
 
   // 고를 값이 없다. 손잡이는 지도 위 원천 전하 끌기 둘이다 (controllers.ts).

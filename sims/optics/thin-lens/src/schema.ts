@@ -93,10 +93,6 @@ export const FADE = 0.7;
 
 export const thinLensMessages = Object.freeze({
   'label.title': { ko: '얇은 렌즈', en: 'Thin lens' },
-  'label.operation': {
-    ko: '세 광선으로 상을 찾는다',
-    en: 'Locating the image with three rays',
-  },
   'label.stage': { ko: '볼록 렌즈', en: 'Converging lens' },
   'label.view': { ko: '광축', en: 'Optical axis' },
 
@@ -153,9 +149,8 @@ function key(k: ThinLensMessageKey): string {
 
 export const thinLensSchema: BundleSchema = {
   id: THIN_LENS_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 작도가 그어지고, 상이 서고, 다시 처음부터 선다.

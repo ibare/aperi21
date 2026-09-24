@@ -86,7 +86,6 @@ export const FADE = 0.7;
 
 export const hydrostaticPressureMessages = Object.freeze({
   'label.title': { ko: '정수압', en: 'Hydrostatic pressure' },
-  'label.operation': { ko: '깊이에 비례하는 압력', en: 'Pressure that grows with depth' },
   'label.stage': { ko: '물통', en: 'Water tank' },
   'label.view': { ko: '옆에서 본 물통', en: 'Tank from the side' },
   /** 눈금 이름표. 깊이 h · 압력 p 는 수식 기호라 번역 대상이 아니다 (C1 판정 3). */
@@ -128,9 +127,8 @@ function key(k: HydrostaticPressureMessageKey): string {
 
 export const hydrostaticPressureSchema: BundleSchema = {
   id: HYDROSTATIC_PRESSURE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 센서가 내려가고, 두 번 멈추고, 다시 수면에서 시작한다.

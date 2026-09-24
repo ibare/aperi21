@@ -65,10 +65,6 @@ export const SCENE_BOUNDS = { minX: -4.05, maxX: 2.55, minY: -0.72, maxY: 1.78 }
 
 export const perfectlyInelasticCollisionMessages = Object.freeze({
   'label.title': { ko: '완전 비탄성 충돌', en: 'Perfectly inelastic collision' },
-  'label.operation': {
-    ko: '붙어서 함께 움직이는 경우',
-    en: 'When the two move together, stuck',
-  },
   'label.stage': { ko: '레일 위 두 수레', en: 'Two carts on a rail' },
   'label.view': { ko: '운동량 칸', en: 'Momentum tiles' },
 
@@ -169,9 +165,8 @@ export const EPISODES: readonly EpisodeDef[] = [
 
 export const perfectlyInelasticCollisionSchema: BundleSchema = {
   id: PERFECTLY_INELASTIC_COLLISION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 두 경우를 시간표가 차례로 보이므로 독자가 고를 것이 없다.

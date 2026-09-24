@@ -49,7 +49,6 @@ export const SCENE_BOUNDS = { minX: -0.55, maxX: 6.45, minY: -1.36, maxY: 0.42 }
 
 export const newtonsLawOfGravitationMessages = Object.freeze({
   'label.title': { ko: '만유인력 법칙', en: "Newton's law of gravitation" },
-  'label.operation': { ko: '거리 제곱에 반비례하는 힘', en: 'A force that falls with the square of distance' },
   'label.stage': { ko: '두 물체', en: 'Two bodies' },
   'label.view': { ko: '한 줄', en: 'In a line' },
   /** 물체 이름. 수식 기호라 번역 대상이 아니다 (C1 판정 3). */
@@ -104,9 +103,8 @@ function key(k: NewtonsLawOfGravitationMessageKey): string {
 
 export const newtonsLawOfGravitationSchema: BundleSchema = {
   id: NEWTONS_LAW_OF_GRAVITATION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 벌어지고, 줄고, 다시 가까워진다 (controllers.ts).

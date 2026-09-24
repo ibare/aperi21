@@ -76,7 +76,6 @@ export const SCENE_BOUNDS = { minX: -5.75, maxX: 5.75, minY: -1.95, maxY: 2.3 } 
 
 export const heatEngineMessages = Object.freeze({
   'label.title': { ko: '열기관', en: 'Heat engine' },
-  'label.operation': { ko: '열을 일로 바꾸는 순환', en: 'A cycle that turns heat into work' },
   'label.stage': { ko: '두 열원 사이의 기관', en: 'Engine between two reservoirs' },
   'label.view': { ko: '열의 흐름', en: 'Heat flow' },
 
@@ -135,9 +134,8 @@ function key(k: HeatEngineMessageKey): string {
 
 export const heatEngineSchema: BundleSchema = {
   id: HEAT_ENGINE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 열이 흐르고 갈라지고 쌓이고, 찬 열원을 떼면 선다.

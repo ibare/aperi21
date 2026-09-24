@@ -91,7 +91,6 @@ export const SLOW_CLIMB = 0.4;
 
 export const rotationalKineticEnergyMessages = Object.freeze({
   'label.title': { ko: '회전 운동 에너지', en: 'Rotational kinetic energy' },
-  'label.operation': { ko: '각속도가 담은 에너지', en: 'The energy that spin carries' },
   'label.stage': { ko: '고리 둘', en: 'Two hoops' },
   'label.view': { ko: '두 비탈', en: 'Two slopes' },
   /** 화살표 · 높이 막대에 붙는 기호. 수식 표기라 번역 대상이 아니다 (C1 판정 3). */
@@ -133,9 +132,8 @@ function key(k: RotationalKineticEnergyMessageKey): string {
 
 export const rotationalKineticEnergySchema: BundleSchema = {
   id: ROTATIONAL_KINETIC_ENERGY_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 달려 들어와 오르고, 되돌아 내려오고, 다시 들어온다.

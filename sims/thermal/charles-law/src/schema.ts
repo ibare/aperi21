@@ -82,7 +82,6 @@ export const SCENE_BOUNDS = { minX: -0.3, maxX: 8.75, minY: -0.95, maxY: 2.75 } 
 
 export const charlesLawMessages = Object.freeze({
   'label.title': { ko: '샤를 법칙', en: "Charles's law" },
-  'label.operation': { ko: '압력이 일정할 때의 부피-온도', en: 'Volume and temperature at constant pressure' },
   'label.stage': { ko: '무게추 실린더 셋', en: 'Three weighted cylinders' },
   'label.view': { ko: '실린더와 V–t 그림', en: 'Cylinders and V–t graph' },
 
@@ -135,9 +134,8 @@ function key(k: CharlesLawMessageKey): string {
 
 export const charlesLawSchema: BundleSchema = {
   id: CHARLES_LAW_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 데워지고, 점이 찍히고, 선이 이어져 한 점에 모인다.

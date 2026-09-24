@@ -91,7 +91,6 @@ export const BACK = 2.4;
 
 export const potentialDividerMessages = Object.freeze({
   'label.title': { ko: '분압기', en: 'Potential divider' },
-  'label.operation': { ko: '저항으로 전압을 나누어 쓰는 것', en: 'Splitting a voltage with resistors' },
   'label.stage': { ko: '저항선 하나 · 접점 셋', en: 'One resistance wire, three contact points' },
   'label.view': { ko: '저항선', en: 'Slide wire' },
   'label.volt': { ko: '{v} V', en: '{v} V' },
@@ -137,9 +136,8 @@ function key(k: PotentialDividerMessageKey): string {
 
 export const potentialDividerSchema: BundleSchema = {
   id: POTENTIAL_DIVIDER_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 접점이 세 자리를 차례로 옮겨 다니고 처음 자리로 돌아온다.

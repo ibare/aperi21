@@ -89,10 +89,6 @@ export const SCENE_BOUNDS = { minX: 0, maxX: FIELD_W, minY: -FOOT_ROW, maxY: FIE
 
 export const refractionOfWavesMessages = Object.freeze({
   'label.title': { ko: '파동의 굴절', en: 'Refraction of waves' },
-  'label.operation': {
-    ko: '속도 변화가 만드는 방향 전환',
-    en: 'A change of speed turns the direction',
-  },
   'label.stage': { ko: '깊은 물과 얕은 물', en: 'Deep and shallow water' },
   'label.view': { ko: '위에서 본 물결', en: 'Waves from above' },
   'label.ratio': { ko: '느린 쪽 속력 (빠른 쪽 = 1)', en: 'slow-side speed (fast side = 1)' },
@@ -133,9 +129,8 @@ function key(k: RefractionOfWavesMessageKey): string {
 
 export const refractionOfWavesSchema: BundleSchema = {
   id: REFRACTION_OF_WAVES_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작값은 슬라이더가 state 에 직접 쓴다 (controllers.ts).

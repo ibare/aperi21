@@ -71,7 +71,6 @@ export const CAPTION_AT = [2.35, 0.6] as const;
 
 export const forceOnCurrentWireMessages = Object.freeze({
   'label.title': { ko: '전류가 받는 힘', en: 'Force on a current-carrying wire' },
-  'label.operation': { ko: '도선에 작용하는 자기력', en: 'The magnetic force on a wire carrying a current' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
 
@@ -126,9 +125,8 @@ function key(k: ForceOnCurrentWireMessageKey): string {
 
 export const forceOnCurrentWireSchema: BundleSchema = {
   id: FORCE_ON_CURRENT_WIRE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

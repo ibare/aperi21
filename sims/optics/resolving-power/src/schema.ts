@@ -73,7 +73,6 @@ export const SCENE_BOUNDS = {
 
 export const resolvingPowerMessages = Object.freeze({
   'label.title': { ko: '분해능', en: 'Resolving power' },
-  'label.operation': { ko: '두 점을 가르는 한계', en: 'The limit of telling two points apart' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 도식 표식 — 구멍 지름 기호. 번역하지 않는다 (C1 판정 3). */
@@ -128,9 +127,8 @@ function key(k: ResolvingPowerMessageKey): string {
 
 export const resolvingPowerSchema: BundleSchema = {
   id: RESOLVING_POWER_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 다가가기 → 레일리 기준 → 뭉침 → 구멍 키우기가 저절로 돈다.

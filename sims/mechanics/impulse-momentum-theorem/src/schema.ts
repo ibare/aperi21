@@ -103,10 +103,6 @@ export const SCENE_BOUNDS = { minX: -0.42, maxX: 4.86, minY: -0.12, maxY: 1.72 }
 
 export const impulseMomentumTheoremMessages = Object.freeze({
   'label.title': { ko: '충격량-운동량 정리', en: 'Impulse–momentum theorem' },
-  'label.operation': {
-    ko: '충격량이 운동량 변화와 같음',
-    en: 'Impulse equals the change in momentum',
-  },
   'label.stage': { ko: '벽에 튕기는 공', en: 'Ball bouncing off a wall' },
   'label.view': { ko: '운동량과 넓이', en: 'Momentum and area' },
 
@@ -160,9 +156,8 @@ function key(k: ImpulseMomentumTheoremMessageKey): string {
 
 export const impulseMomentumTheoremSchema: BundleSchema = {
   id: IMPULSE_MOMENTUM_THEOREM_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

@@ -110,7 +110,6 @@ export const SLOW_MOTION = 0.25;
 
 export const electricCurrentMessages = Object.freeze({
   'label.title': { ko: '전류', en: 'Electric current' },
-  'label.operation': { ko: '전하의 흐름과 방향 규약', en: 'The flow of charge and its sign convention' },
   'label.stage': { ko: '세 도선', en: 'Three wires' },
   'label.view': { ko: '단면 문', en: 'Cross-section gate' },
   /** 도선 기호. 수식 표기라 번역 대상이 아니다 (C1 판정 3). */
@@ -152,9 +151,8 @@ function key(k: ElectricCurrentMessageKey): string {
 
 export const electricCurrentSchema: BundleSchema = {
   id: ELECTRIC_CURRENT_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흐르고, 세고, 쌓인 것을 보이고, 다시 센다.

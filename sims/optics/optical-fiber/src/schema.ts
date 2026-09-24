@@ -81,7 +81,6 @@ export const SCENE_BOUNDS = { minX: -0.8, maxX: 14.3, minY: -3.3, maxY: 4.5 } as
 
 export const opticalFiberMessages = Object.freeze({
   'label.title': { ko: '광섬유', en: 'Optical fiber' },
-  'label.operation': { ko: '전반사로 가두는 빛', en: 'Light trapped by total internal reflection' },
   'label.stage': { ko: '완만한 휨과 급한 휨', en: 'Gentle bend and sharp bend' },
   'label.view': { ko: '섬유와 입사각 부채', en: 'Fiber and incidence fan' },
 
@@ -134,9 +133,8 @@ function key(k: OpticalFiberMessageKey): string {
 
 export const opticalFiberSchema: BundleSchema = {
   id: OPTICAL_FIBER_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

@@ -1,26 +1,26 @@
 /**
- * 주제 설명과 조각이 띄우는 한 줄을 맞댄다.
+ * 주제 설명과 조각의 한 줄 주장을 맞댄다.
  *
  * 실행: pnpm pairs:gen  →  tasks/topic-gaps/PAIRS.md · PAIRS.html
  *
  * ## 왜
  *
- * 조각의 `label.operation` 은 **화면에 뜨는 조각의 자기 소개 한 줄**이고, 주제의
- * `desc` 는 같은 것을 가리키는 카탈로그의 한 줄이다. 441개 중 351개가 **글자까지
- * 같다** — 조각을 지을 때 주제에서 베껴 왔기 때문이다.
- *
- * 그래서 주제 쪽만 고치면 조각은 옛말을 그대로 띄운다. 실제로 그렇게 됐다 —
- * 「화면이 이 주장을 하지 않는다」며 주제에서 뺀 말을, 화면은 여전히 자기 이름표로
- * 말하고 있었다. 같은 사실이 두 곳에 손으로 적혀 있는데 한쪽만 고친 것이다.
+ * 조각의 `description` 은 **조각의 한 줄 주장**이고 발행 카탈로그의 설명으로 나간다
+ * (FACET `FacetJson.description` 과 같은 자리). 주제의 `desc` 는 같은 것을 가리키는
+ * 사이트의 한 줄이다. 둘은 같은 것을 두 곳에 손으로 적은 것이라, 한쪽만 고치면
+ * 갈라진다.
  *
  * 글자가 같아야 하는 것은 아니다 — 주제는 이름표를 달고 조각은 화면이 하는 일을
  * 말하므로 말투가 다른 것이 오히려 맞다. 그래서 **자동으로 맞추지 않고 갈라진
  * 자리를 보여 주기만 한다.** 판정은 사람이 한다.
  *
+ * 전에는 `operation` 을 맞댔다. 그 필드는 조작기 설명 · 주장 · 주제 desc 사본이
+ * 뒤섞여 있어 FACET 에 맞추며 지웠다 (2026-09-24).
+ *
  * ## 기준선
  *
  * `BASELINE` 은 「설명」 갈래 수정을 적용하기 직전 커밋이다. 그때와 desc 가 달라진
- * 주제를 「우리가 고침」으로 가른다 — 조각 쪽이 낡았을 가능성이 높은 자리다.
+ * 주제를 「우리가 고침」으로 가른다.
  */
 
 import { execFileSync } from 'node:child_process';
@@ -61,16 +61,16 @@ const base = new Map(
   ).map((t) => [t.id, t.desc]),
 );
 
-/** 조각이 띄우는 한 줄. 구세대 조각은 문안 키 없이 schema 에 리터럴로 있다. */
-function operationOf(simId?: string): string {
+/** 조각의 한 줄 주장. 문안 키로 두거나 schema 에 리터럴로 둔다. 아직 없으면 빈 문자열. */
+function descriptionOf(simId?: string): string {
   if (!simId) return '';
   const name = simId.replace(/^aperi21:/, '');
   for (const cat of readdirSync(join(ROOT, 'sims'))) {
     const p = join(ROOT, 'sims', cat, name, 'src/schema.ts');
     if (!existsSync(p)) continue;
     const t = readFileSync(p, 'utf8');
-    const keyed = /'label\.operation':\s*\{\s*ko:\s*'((?:[^'\\]|\\.)*)'/.exec(t);
-    const inline = /\n  operation:\s*\{\s*ko:\s*'((?:[^'\\]|\\.)*)'/.exec(t);
+    const keyed = /'label\.description':\s*\{\s*ko:\s*'((?:[^'\\]|\\.)*)'/.exec(t);
+    const inline = /\n  description:\s*\{\s*ko:\s*'((?:[^'\\]|\\.)*)'/.exec(t);
     return keyed?.[1] ?? inline?.[1] ?? '';
   }
   return '';
@@ -87,7 +87,7 @@ type Row = Topic & { op: string; touched: boolean; onlyDesc: string[]; onlyOp: s
 const rows: Row[] = now
   .filter((t) => t.sim)
   .map((t) => {
-    const op = operationOf(t.sim);
+    const op = descriptionOf(t.sim);
     return {
       ...t,
       op,
@@ -105,14 +105,14 @@ const drift = diff.filter((r) => !r.touched);
 // ---------------------------------------------------------------- markdown
 
 const md = [
-  '# 주제 설명 ↔ 조각이 띄우는 한 줄',
+  '# 주제 설명 ↔ 조각의 한 줄 주장',
   '',
   '자동 생성 — 직접 편집하지 말 것. 생성: `pnpm pairs:gen` (scripts/gen-operation-pairs.mts).',
   '읽기 좋은 쪽은 같은 자리의 `PAIRS.html` 이다.',
   '',
   `주제 ${rows.length} · **글자까지 같음 ${copies.length}** · 갈림 ${diff.length}(우리가 고침 ${touched.length} · 원래 갈림 ${drift.length})`,
   '',
-  '`label.operation` 은 화면에 뜨는 조각의 자기 소개다. 글자까지 같은 것은 조각을 지을 때',
+  '`description` 은 조각의 한 줄 주장이고 발행 카탈로그의 설명으로 나간다. 글자까지 같은 것은',
   '주제에서 베껴 온 것이고, **그 사본을 화면과 맞대 본 적은 없다.**',
   '',
   '말투가 다른 것은 잘못이 아니다 — 주제는 이름표를, 조각은 화면이 하는 일을 말한다.',
@@ -122,7 +122,7 @@ const md = [
   '',
   '조각 쪽이 옛말을 그대로 들고 있을 가능성이 높은 자리다.',
   '',
-  '| 주제 | 주제 desc | 조각이 띄우는 한 줄 |',
+  '| 주제 | 주제 desc | 조각의 한 줄 주장 |',
   '| --- | --- | --- |',
   ...touched.map((r) => `| \`${r.id}\` | ${r.desc} | ${r.op} |`),
   '',
@@ -130,7 +130,7 @@ const md = [
   '',
   '조각이 자기 한 줄을 화면을 보고 따로 쓴 자리가 대부분이다.',
   '',
-  '| 주제 | 주제 desc | 조각이 띄우는 한 줄 |',
+  '| 주제 | 주제 desc | 조각의 한 줄 주장 |',
   '| --- | --- | --- |',
   ...drift.map((r) => `| \`${r.id}\` | ${r.desc} | ${r.op} |`),
   '',
@@ -168,7 +168,7 @@ const card = (r: Row) => `
   <span class="tag ${r.touched ? 't' : 'd'}">${r.touched ? '우리가 고침' : '원래 갈림'}</span></header>
   <div class="pair">
     <div class="side"><span class="k">주제 desc</span><p>${mark(r.desc, r.onlyDesc)}</p></div>
-    <div class="side"><span class="k">조각이 띄우는 한 줄</span><p>${mark(r.op, r.onlyOp)}</p></div>
+    <div class="side"><span class="k">조각의 한 줄 주장</span><p>${mark(r.op, r.onlyOp)}</p></div>
   </div>
   <p class="vn"><span class="k">visualNote</span> ${esc(r.visualNote)}</p>
 </article>`;
@@ -208,7 +208,7 @@ mark{background:var(--mark);color:inherit;border-radius:3px;padding:0 2px}
 </style></head><body>
 <div class="wrap">
 <h1>주제와 조각이 서로 다른 말을 하는 자리</h1>
-<p class="lede">주제의 <code>desc</code> 와 조각이 화면에 띄우는 <code>label.operation</code> 을 ${rows.length}개 전수로 맞댄 것이다.
+<p class="lede">주제의 <code>desc</code> 와 조각이 화면에 띄우는 <code>description</code> 을 ${rows.length}개 전수로 맞댄 것이다.
 ${copies.length}개는 글자까지 같고(조각을 지을 때 주제에서 베꼈다), 여기 ${diff.length}개가 갈렸다.
 칠해진 낱말은 <strong>한쪽에만 있는 말</strong>이다.</p>
 <div class="bar">

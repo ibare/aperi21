@@ -91,10 +91,6 @@ export const SCENE_BOUNDS = { minX: -1.08, maxX: 1.08, minY: -1.08, maxY: 1.08 }
 
 export const centripetalForceMessages = Object.freeze({
   'label.title': { ko: '구심력', en: 'Centripetal force' },
-  'label.operation': {
-    ko: '원운동을 유지시키는 힘의 정체',
-    en: 'What keeps a body moving in a circle',
-  },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   'label.release': { ko: '지금 놓기', en: 'Release now' },
@@ -124,9 +120,8 @@ function key(k: CentripetalForceMessageKey): string {
 
 export const centripetalForceSchema: BundleSchema = {
   id: CENTRIPETAL_FORCE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 각속도·반지름 조절은 주장을 바꾸지 않아 두지 않는다 (원본 inventory 「hidden」).

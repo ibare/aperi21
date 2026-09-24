@@ -25,7 +25,6 @@ export const SCENE_BOUNDS = { minX: 0, maxX: 8.6, minY: -0.45, maxY: 3.2 } as co
 
 export const keplersSecondLawMessages = Object.freeze({
   'label.title': { ko: '케플러 제2법칙', en: "Kepler's second law" },
-  'label.operation': { ko: '같은 시간에 같은 넓이', en: 'Equal areas in equal times' },
   'label.stage': { ko: '이심률 0.8 궤도', en: 'Orbit with eccentricity 0.8' },
   'label.view': { ko: '쓸고 간 넓이', en: 'Swept areas' },
   /** 막대가 무엇을 재는지. 없으면 막대가 읽히지 않는다. */
@@ -81,9 +80,8 @@ const SLOT_PHASES: TimelinePhase[] = SLOTS.map((slot, i) => ({
 
 export const keplersSecondLawSchema: BundleSchema = {
   id: KEPLERS_SECOND_LAW_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 이심률 조작기를 두지 않는다 — 궤도 모양 바꾸기는 다른 질문이다 (NOTES.md).

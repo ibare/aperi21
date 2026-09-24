@@ -99,7 +99,6 @@ export const START_AT = 1;
 
 export const eclipseMessages = Object.freeze({
   'label.title': { ko: '일식과 월식', en: 'Solar and lunar eclipses' },
-  'label.operation': { ko: '해와 지구와 달이 한 줄에 설 때', en: 'When the Sun, Earth and Moon line up' },
   'label.stage': { ko: '해 · 지구 · 달', en: 'Sun, Earth and Moon' },
   'label.view': { ko: '옆에서 본 단면', en: 'Side-on section' },
   'label.sun': { ko: '해', en: 'Sun' },
@@ -169,9 +168,8 @@ function key(k: EclipseMessageKey): string {
 
 export const eclipseSchema: BundleSchema = {
   id: ECLIPSE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 식 계절 · 비껴가는 달 · 다음 식 계절을 자동으로 차례로 보여 견주기까지 마친다.

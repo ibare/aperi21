@@ -72,10 +72,6 @@ export const RETURN = 4.5;
 
 export const starRadiationGravityBalanceMessages = Object.freeze({
   'label.title': { ko: '복사압과 중력의 평형', en: 'Radiation pressure and gravity in balance' },
-  'label.operation': {
-    ko: '별이 무너지지도 흩어지지도 않는 이유',
-    en: 'Why a star neither collapses nor flies apart',
-  },
   'label.stage': { ko: '별 하나', en: 'One star' },
   'label.view': { ko: '별의 단면', en: 'Cross-section of a star' },
   /** 화살표 이름. 한 낱말이지만 분야 원어 약자가 아니라 언어마다 다르다 — 문안. */
@@ -125,9 +121,8 @@ function key(k: StarRadiationGravityBalanceMessageKey): string {
 
 export const starRadiationGravityBalanceSchema: BundleSchema = {
   id: STAR_RADIATION_GRAVITY_BALANCE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 에너지가 늘고, 별이 부풀어 멈추고, 줄고, 오그라들어 멈추고, 돌아간다.

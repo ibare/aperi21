@@ -81,7 +81,6 @@ export const SCENE_BOUNDS = { minX: -6.6, maxX: 6.6, minY: -2.95, maxY: 3.05 } a
 
 export const chainReactionMessages = Object.freeze({
   'label.title': { ko: '연쇄 반응', en: 'Chain reaction' },
-  'label.operation': { ko: '중성자가 이어가는 분열', en: 'Fission carried on by neutrons' },
   'label.stage': { ko: '세 가지 k', en: 'Three values of k' },
   'label.view': { ko: '나란히', en: 'Side by side' },
 
@@ -129,9 +128,8 @@ function key(k: ChainReactionMessageKey): string {
 
 export const chainReactionSchema: BundleSchema = {
   id: CHAIN_REACTION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 세 판이 k 만 다르게 나란히 번지며 주장이 끝난다.

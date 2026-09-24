@@ -72,7 +72,6 @@ export const START_AT = 1.0;
 
 export const meissnerEffectMessages = Object.freeze({
   'label.title': { ko: '마이스너 효과', en: 'Meissner effect' },
-  'label.operation': { ko: '자기장을 밀어내는 초전도체', en: 'A superconductor pushes out the magnetic field' },
   'label.stage': { ko: '시료 위의 자석', en: 'A magnet on the sample' },
   'label.view': { ko: '옆모습', en: 'Side view' },
   /** 시료 이름. 온도와 무관하게 같은 물질이다. */
@@ -125,9 +124,8 @@ function key(k: MeissnerEffectMessageKey): string {
 
 export const meissnerEffectSchema: BundleSchema = {
   id: MEISSNER_EFFECT_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 자기력선이 시료를 지나가고 있고, 식으면 밀려나며 자석이 뜨고,

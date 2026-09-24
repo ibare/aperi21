@@ -64,10 +64,6 @@ export const SCENE_BOUNDS = { minX: -2.2, maxX: 2.2, minY: -1.36, maxY: 1.08 } a
 
 export const staticEquilibriumMessages = Object.freeze({
   'label.title': { ko: '정적 평형', en: 'Static equilibrium' },
-  'label.operation': {
-    ko: '힘과 돌림힘이 모두 0',
-    en: 'Both the net force and the net torque are zero',
-  },
   'label.stage': { ko: '막대 둘', en: 'Two bars' },
   'label.view': { ko: '평면도', en: 'Top view' },
 
@@ -108,9 +104,8 @@ function key(k: StaticEquilibriumMessageKey): string {
 
 export const staticEquilibriumSchema: BundleSchema = {
   id: STATIC_EQUILIBRIUM_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

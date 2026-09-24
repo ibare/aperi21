@@ -72,7 +72,6 @@ export const FADE = 0.7;
 
 export const surfaceTensionMessages = Object.freeze({
   'label.title': { ko: '표면 장력', en: 'Surface tension' },
-  'label.operation': { ko: '표면을 줄이려는 힘', en: 'The pull that shrinks a surface' },
   'label.stage': { ko: '물 위의 바늘', en: 'Needle on water' },
   'label.view': { ko: '단면', en: 'Cross-section' },
   /** 화살표 기호. 수식 표기라 번역 대상이 아니다 (C1 판정 3). */
@@ -120,9 +119,8 @@ function key(k: SurfaceTensionMessageKey): string {
 
 export const surfaceTensionSchema: BundleSchema = {
   id: SURFACE_TENSION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 놓이고, 받쳐지고, 눌리고, 뚫린다. 아무것도 누르지 않아도 끝난다.

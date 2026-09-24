@@ -79,7 +79,6 @@ export const SCENE_BOUNDS = { minX: -3.6, maxX: 4.1, minY: -2.05, maxY: 1.95 } a
 
 export const sphericalAberrationMessages = Object.freeze({
   'label.title': { ko: '구면 수차', en: 'Spherical aberration' },
-  'label.operation': { ko: '가장자리 광선이 다른 곳에 모임', en: 'Edge rays come to focus at a different place' },
   'label.stage': { ko: '두꺼운 구면 렌즈', en: 'Thick spherical lens' },
   'label.view': { ko: '렌즈와 광축', en: 'Lens and axis' },
 
@@ -124,9 +123,8 @@ function key(k: SphericalAberrationMessageKey): string {
 
 export const sphericalAberrationSchema: BundleSchema = {
   id: SPHERICAL_ABERRATION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 조리개를 닫는 것까지 자동 진행으로 보인다 — 조리개 크기를 끌게 해도

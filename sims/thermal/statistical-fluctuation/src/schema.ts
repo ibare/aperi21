@@ -54,7 +54,6 @@ export const SCENE_BOUNDS = { minX: -0.8, maxX: 6.85, minY: -0.62, maxY: 2.78 } 
 
 export const statisticalFluctuationMessages = Object.freeze({
   'label.title': { ko: '요동', en: 'Statistical fluctuation' },
-  'label.operation': { ko: '입자 수가 적을 때 커지는 흔들림', en: 'The wobble that grows when particles are few' },
   'label.stage': { ko: '입자 수가 다른 상자 셋', en: 'Three boxes, three particle counts' },
   'label.view': { ko: '상자와 왼쪽 칸의 몫', en: 'Boxes and left-half share' },
   /** 상자 · 곡선의 입자 수 표식. 기호 + 값이라 두 언어가 같다. */
@@ -93,9 +92,8 @@ function key(k: StatisticalFluctuationMessageKey): string {
 
 export const statisticalFluctuationSchema: BundleSchema = {
   id: STATISTICAL_FLUCTUATION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 세 상자가 움직이고 곡선 셋이 자란다.

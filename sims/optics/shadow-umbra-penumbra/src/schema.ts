@@ -88,7 +88,6 @@ export const START_AT = 1;
 
 export const shadowUmbraPenumbraMessages = Object.freeze({
   'label.title': { ko: '본그림자와 반그림자', en: 'Umbra and penumbra' },
-  'label.operation': { ko: '광원의 크기가 만드는 경계', en: 'How the size of a light source shapes a shadow’s edge' },
   'label.stage': { ko: '광원 · 가림판 · 스크린', en: 'Source, plate, screen' },
   'label.view': { ko: '옆에서 본 모습', en: 'Side view' },
   'label.source': { ko: '광원', en: 'source' },
@@ -132,9 +131,8 @@ function key(k: ShadowUmbraPenumbraMessageKey): string {
 
 export const shadowUmbraPenumbraSchema: BundleSchema = {
   id: SHADOW_UMBRA_PENUMBRA_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 광원이 작다 → 중간 → 크다로 자랐다가 돌아온다.

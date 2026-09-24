@@ -96,10 +96,6 @@ export const START_AT = TRAVEL / 2;
 
 export const waveBasicsMessages = Object.freeze({
   'label.title': { ko: '파동의 기본량', en: 'Basic quantities of a wave' },
-  'label.operation': {
-    ko: '파장·진동수·속력·진폭',
-    en: 'Wavelength, frequency, speed and amplitude',
-  },
   'label.stage': { ko: '한 줄 파동', en: 'Wave on a rope' },
   'label.view': { ko: '줄과 한 점의 자취', en: 'Rope and one point’s trace' },
   /** 조작기 이름표. 값은 슬라이더가 붙인다. */
@@ -137,9 +133,8 @@ function key(k: WaveBasicsMessageKey): string {
 
 export const waveBasicsSchema: BundleSchema = {
   id: WAVE_BASICS_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   parameters: [],

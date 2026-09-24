@@ -89,7 +89,6 @@ export const SCENE_BOUNDS = { minX: -2.6, maxX: 9.6, minY: -2.5, maxY: 2.5 } as 
 
 export const exoplanetDetectionMessages = Object.freeze({
   'label.title': { ko: '외계행성 탐지', en: 'Detecting exoplanets' },
-  'label.operation': { ko: '행성이 남기는 흔적', en: 'The traces a planet leaves' },
   'label.stage': { ko: '별과 행성', en: 'Star and planet' },
   'label.view': { ko: '관측', en: 'Observation' },
   /** 값이 끼어드는 조립문이라 문안이다 (C1). */
@@ -145,9 +144,8 @@ function key(k: ExoplanetDetectionMessageKey): string {
 
 export const exoplanetDetectionSchema: BundleSchema = {
   id: EXOPLANET_DETECTION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 두 흔적이 같은 주기로 묶여 있다는 것은 자동 진행만으로 두 바퀴 안에 드러난다.

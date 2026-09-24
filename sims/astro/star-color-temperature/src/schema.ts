@@ -85,10 +85,6 @@ export const RETURN = 2.5;
 
 export const starColorTemperatureMessages = Object.freeze({
   'label.title': { ko: '별의 색과 표면 온도', en: 'Star color and surface temperature' },
-  'label.operation': {
-    ko: '표면 온도가 정하는 별빛의 색',
-    en: 'How surface temperature sets the color of starlight',
-  },
   'label.stage': { ko: '세 별', en: 'Three stars' },
   'label.view': { ko: '별과 스펙트럼', en: 'Star and spectrum' },
   /** 띠 이름. 조사가 붙지 않는 한 낱말이지만 분야 원어 약자가 아니라 언어마다 다르다 — 문안. */
@@ -140,9 +136,8 @@ function key(k: StarColorTemperatureMessageKey): string {
 
 export const starColorTemperatureSchema: BundleSchema = {
   id: STAR_COLOR_TEMPERATURE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 온도가 오르고, 머물고, 다시 식는다.

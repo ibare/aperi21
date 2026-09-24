@@ -84,10 +84,6 @@ export const MIX_RATE = 1.6;
 
 export const energyFlowDiagramMessages = Object.freeze({
   'label.title': { ko: '에너지 흐름도', en: 'Energy flow diagram' },
-  'label.operation': {
-    ko: '갈래의 굵기로 나타낸 에너지의 행방',
-    en: 'Where the energy goes, shown by branch thickness',
-  },
   'label.stage': { ko: '석탄에서 전구까지', en: 'From coal to bulb' },
   'label.view': { ko: '흐름도', en: 'Flow' },
   'stage.plant': { ko: '발전소', en: 'Power plant' },
@@ -121,9 +117,8 @@ function key(k: EnergyFlowDiagramMessageKey): string {
 
 export const energyFlowDiagramSchema: BundleSchema = {
   id: ENERGY_FLOW_DIAGRAM_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'coal-to-bulb', label: text('label.stage'), constants: { ...FLOWS } }],

@@ -50,7 +50,6 @@ export const DIAL = { cx: 590, cy: 138, r: 108, size: 115, min: 30, max: 90 } as
 
 export const apparentWeightMessages = Object.freeze({
   'label.title': { ko: '겉보기 무게', en: 'Apparent weight' },
-  'label.operation': { ko: '가속하는 엘리베이터 안의 저울', en: 'A scale in an accelerating elevator' },
   'label.stage': { ko: '엘리베이터', en: 'Elevator' },
   'label.view': { ko: '저울', en: 'Scale' },
   /** 칸 옆 속도 화살표의 이름. */
@@ -105,9 +104,8 @@ function key(k: ApparentWeightMessageKey): string {
 
 export const apparentWeightSchema: BundleSchema = {
   id: APPARENT_WEIGHT_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 주장은 자동 진행 한 주기로 끝난다 (원본 NOTES (c)).

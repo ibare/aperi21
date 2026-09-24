@@ -83,7 +83,6 @@ export const REMOVE = 1.2;
 
 export const electrostaticShieldingMessages = Object.freeze({
   'label.title': { ko: '정전기 차폐', en: 'Electrostatic shielding' },
-  'label.operation': { ko: '도체 내부의 장이 0인 이유', en: 'Why the field inside a conductor is zero' },
   'label.stage': { ko: '고른 장 속의 속 빈 도체', en: 'Hollow conductor in a uniform field' },
   'label.view': { ko: '장선', en: 'Field lines' },
   /** 전하 부호 · 기호. 표식이라 번역하지 않는다 (C1 판정 3). */
@@ -128,9 +127,8 @@ function key(k: ElectrostaticShieldingMessageKey): string {
 
 export const electrostaticShieldingSchema: BundleSchema = {
   id: ELECTROSTATIC_SHIELDING_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 장이 흐르고, 도체가 놓이고, 안이 비워진다.

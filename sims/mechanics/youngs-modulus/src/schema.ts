@@ -68,10 +68,6 @@ export const OFFSET = 1.5;
 
 export const youngsModulusMessages = Object.freeze({
   'label.title': { ko: '영률', en: "Young's modulus" },
-  'label.operation': {
-    ko: '늘어나는 정도는 선의 길이가 아니라 재료가 정한다',
-    en: 'How much a wire stretches is set by its material, not its length',
-  },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 선 이름 — 재료와 늘어나기 전 길이. */
@@ -108,9 +104,8 @@ function key(k: YoungsModulusMessageKey): string {
 
 export const youngsModulusSchema: BundleSchema = {
   id: YOUNGS_MODULUS_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 받침대가 알아서 오르내리며 주장이 끝난다.

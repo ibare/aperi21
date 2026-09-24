@@ -78,7 +78,6 @@ export const SPREAD_OUT = 2.6;
 
 export const wettingAndContactAngleMessages = Object.freeze({
   'label.title': { ko: '젖음과 접촉각', en: 'Wetting and contact angle' },
-  'label.operation': { ko: '액체가 고체 위에 퍼지는 정도', en: 'How far a liquid spreads over a solid' },
   'label.stage': { ko: '유리와 왁스 위의 물방울', en: 'A drop on glass and on wax' },
   'label.view': { ko: '단면', en: 'Cross-section' },
   'label.glass': { ko: '깨끗한 유리', en: 'Clean glass' },
@@ -131,9 +130,8 @@ function key(k: WettingAndContactAngleMessageKey): string {
 
 export const wettingAndContactAngleSchema: BundleSchema = {
   id: WETTING_AND_CONTACT_ANGLE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 표면이 바뀌고, 가장자리가 밀리고, 다시 맞선다. 아무것도 누르지 않아도 끝난다.

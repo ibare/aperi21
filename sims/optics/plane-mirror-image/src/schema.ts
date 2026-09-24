@@ -86,7 +86,6 @@ export const SCENE_BOUNDS = { minX: -3.75, maxX: 3.75, minY: -1.55, maxY: 3.45 }
 
 export const planeMirrorImageMessages = Object.freeze({
   'label.title': { ko: '평면거울의 상', en: 'Image in a plane mirror' },
-  'label.operation': { ko: '허상의 위치와 좌우 반전', en: 'Where the virtual image stands, and why it looks reversed' },
   'label.stage': { ko: '평면거울', en: 'Plane mirror' },
   'label.view': { ko: '옆에서', en: 'Side view' },
 
@@ -135,9 +134,8 @@ function key(k: PlaneMirrorImageMessageKey): string {
 
 export const planeMirrorImageSchema: BundleSchema = {
   id: PLANE_MIRROR_IMAGE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 물체를 끌게 하면 멈춘 거리가 선언값이 아니게 되어 치수선 글자를 띄울 수

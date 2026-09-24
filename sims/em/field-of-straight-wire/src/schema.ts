@@ -144,10 +144,6 @@ const currentTimeline: TimelinePhase[] = CURRENT_PHASES.map((p) => ({
 
 export const fieldOfStraightWireMessages = Object.freeze({
   'label.title': { ko: '전류가 만드는 자기장', en: 'The field a current makes' },
-  'label.operation': {
-    ko: '전선을 감아 도는 쪽으로 돌아서고, 멀수록 덜 돌아선다',
-    en: 'Needles turn along the loop, and less so farther out',
-  },
   'label.stage': { ko: '전선 둘레', en: 'Around the wire' },
   'label.view': { ko: '나침반', en: 'Compasses' },
   /** 전류가 흐르는 동안. 공식도 오른손 법칙도 쓰지 않는다 — 문단의 몫이다. */
@@ -182,9 +178,8 @@ function key(k: FieldOfStraightWireMessageKey): string {
 
 export const fieldOfStraightWireSchema: BundleSchema = {
   id: FIELD_OF_STRAIGHT_WIRE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'linear',
 
   // 조작기도 파라미터도 없다. 독자가 손으로 확인하고 싶은 셋(끄면? 거꾸로 흘리면?

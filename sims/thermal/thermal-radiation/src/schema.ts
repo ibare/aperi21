@@ -107,7 +107,6 @@ export const FADE = 0.8;
 
 export const thermalRadiationMessages = Object.freeze({
   'label.title': { ko: '열복사', en: 'Thermal radiation' },
-  'label.operation': { ko: '매질 없이 전달되는 열', en: 'Heat that travels without a medium' },
   'label.stage': { ko: '진공 상자', en: 'Vacuum box' },
   'label.view': { ko: '옆에서 본 상자', en: 'Side view' },
   'label.block': { ko: '뜨거운 덩이 {t} ℃', en: 'Hot block {t} °C' },
@@ -158,9 +157,8 @@ function key(k: ThermalRadiationMessageKey): string {
 
 export const thermalRadiationSchema: BundleSchema = {
   id: THERMAL_RADIATION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 공기가 빠지고, 가리개가 걷히고, 판이 데워지고, 다시 막힌다.

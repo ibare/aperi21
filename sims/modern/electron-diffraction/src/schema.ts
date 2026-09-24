@@ -119,7 +119,6 @@ export const LOWER = 2.2;
 
 export const electronDiffractionMessages = Object.freeze({
   'label.title': { ko: '전자 회절', en: 'Electron diffraction' },
-  'label.operation': { ko: '물질파의 관측 증거', en: 'Seeing matter waves' },
   'label.stage': { ko: '흑연 박막', en: 'Graphite film' },
   'label.view': { ko: '옆모습과 정면', en: 'Side and front' },
   'label.gun': { ko: '전자총', en: 'Electron gun' },
@@ -161,9 +160,8 @@ function key(k: ElectronDiffractionMessageKey): string {
 
 export const electronDiffractionSchema: BundleSchema = {
   id: ELECTRON_DIFFRACTION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 고리가 있고, 전압이 오르고, 고리가 좁아진다.

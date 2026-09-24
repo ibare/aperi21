@@ -48,12 +48,8 @@ export const pressureIsotropyText = {
  */
 export const pressureIsotropySchema: BundleSchema = {
   id: PRESSURE_ISOTROPY_ID,
-  label: { ko: '압력의 등방성', en: 'Pressure isotropy' },
+  title: { ko: '압력의 등방성', en: 'Pressure isotropy' },
   category: 'fluids',
-  operation: {
-    ko: '판이 저절로 반 바퀴 돌아 자취를 원으로 닫고, 그다음 독자가 다이얼로 직접 돌린다',
-    en: 'the plate turns half a revolution to close the trail into a circle, then the reader turns it by hand',
-  },
   // 판을 천천히 돌려 각 방향을 차례로 들르는 준정적 과정이다. 관성도 흐름도 없다.
   timeModel: 'quasistatic',
   parameters: [],

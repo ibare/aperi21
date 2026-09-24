@@ -90,7 +90,6 @@ export const NAME_FADE_IN = 0.5;
 
 export const equilibriumPointsMessages = Object.freeze({
   'label.title': { ko: '평형점', en: 'Equilibrium points' },
-  'label.operation': { ko: '안정·불안정·중립 평형', en: 'Stable, unstable and neutral equilibrium' },
   'label.stage': { ko: '세 바닥', en: 'Three grounds' },
   'label.view': { ko: '나란히', en: 'Side by side' },
   'label.stable': { ko: '안정', en: 'stable' },
@@ -130,9 +129,8 @@ function key(k: EquilibriumPointsMessageKey): string {
 
 export const equilibriumPointsSchema: BundleSchema = {
   id: EQUILIBRIUM_POINTS_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 셋이 옮겨지고, 놓이고, 갈린다.

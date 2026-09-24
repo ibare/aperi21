@@ -98,7 +98,6 @@ export const START_AT = 1.2;
 
 export const pinholeCameraMessages = Object.freeze({
   'label.title': { ko: '바늘구멍 사진기', en: 'Pinhole camera' },
-  'label.operation': { ko: '구멍 하나가 만드는 상', en: 'The image made by a single hole' },
   'label.stage': { ko: '촛불 · 바늘구멍 · 뒷벽', en: 'Candle, pinhole, back wall' },
   'label.view': { ko: '옆에서 본 모습', en: 'Side view' },
   'label.candle': { ko: '촛불', en: 'candle' },
@@ -139,9 +138,8 @@ function key(k: PinholeCameraMessageKey): string {
 
 export const pinholeCameraSchema: BundleSchema = {
   id: PINHOLE_CAMERA_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 구멍이 작은 → 중간 → 큰 폭으로 넓어졌다가 돌아온다.

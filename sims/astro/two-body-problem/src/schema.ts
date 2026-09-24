@@ -69,7 +69,6 @@ export const SCENE_BOUNDS = { minX: -2.6, maxX: 7.4, minY: -2.6, maxY: 2.6 } as 
 
 export const twoBodyProblemMessages = Object.freeze({
   'label.title': { ko: '이체 문제', en: 'Two-body problem' },
-  'label.operation': { ko: '질량 중심 둘레를 도는 두 천체', en: 'Two bodies orbiting their common center of mass' },
   'label.stage': { ko: '두 천체', en: 'Two bodies' },
   'label.view': { ko: '궤도', en: 'Orbits' },
   'label.barycenter': { ko: '질량 중심', en: 'center of mass' },
@@ -115,9 +114,8 @@ function key(k: TwoBodyProblemMessageKey): string {
 
 export const twoBodyProblemSchema: BundleSchema = {
   id: TWO_BODY_PROBLEM_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 질량비는 시간표가 세 값을 차례로 보인다 — 끌게 하면 「어느 값에서

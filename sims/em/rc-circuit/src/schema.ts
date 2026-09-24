@@ -64,10 +64,6 @@ export const SCENE_BOUNDS = { minX: 10, maxX: 870, minY: -34, maxY: 296 } as con
 
 export const rcCircuitMessages = Object.freeze({
   'label.title': { ko: 'RC 회로', en: 'RC circuit' },
-  'label.operation': {
-    ko: '남은 차이가 τ 마다 같은 비율로 줄어든다',
-    en: 'The remaining gap shrinks by the same ratio every τ',
-  },
   'label.stage': { ko: '회로', en: 'Circuit' },
   'label.view': { ko: '회로와 그래프', en: 'Circuit and graph' },
 
@@ -116,9 +112,8 @@ function key(k: RcCircuitMessageKey): string {
 
 export const rcCircuitSchema: BundleSchema = {
   id: RC_CIRCUIT_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'default', label: text('label.stage'), constants: {} }],

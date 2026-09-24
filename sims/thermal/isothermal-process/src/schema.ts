@@ -86,7 +86,6 @@ export const SCENE_BOUNDS = { minX: -1.4, maxX: 7.35, minY: -0.95, maxY: 2.75 } 
 
 export const isothermalProcessMessages = Object.freeze({
   'label.title': { ko: '등온 과정', en: 'Isothermal process' },
-  'label.operation': { ko: '온도를 유지하는 변화', en: 'A change that keeps the temperature fixed' },
   'label.stage': { ko: '항온조 위 실린더', en: 'Cylinder on a heat bath' },
   'label.view': { ko: '실린더와 P–V 그림', en: 'Cylinder and P–V diagram' },
 
@@ -135,9 +134,8 @@ function key(k: IsothermalProcessMessageKey): string {
 
 export const isothermalProcessSchema: BundleSchema = {
   id: ISOTHERMAL_PROCESS_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 피스톤이 오르고, 알갱이가 지나가고, 넓이가 칠해진다.

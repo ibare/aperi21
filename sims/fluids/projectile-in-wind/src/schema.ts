@@ -142,10 +142,6 @@ export const SLOW_MOTION = 0.6;
 
 export const projectileInWindMessages = Object.freeze({
   'label.title': { ko: '바람과 사거리', en: 'Wind and range' },
-  'label.operation': {
-    ko: '같은 발사, 다른 바람',
-    en: 'Same launch, different wind',
-  },
   'label.stage': { ko: '바람 부는 벌판', en: 'Windy field' },
   'label.view': { ko: '세 레인', en: 'Three lanes' },
   'label.headwind': { ko: '앞바람', en: 'Headwind' },
@@ -190,9 +186,8 @@ function key(k: ProjectileInWindMessageKey): string {
 
 export const projectileInWindSchema: BundleSchema = {
   id: PROJECTILE_IN_WIND_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   parameters: [],

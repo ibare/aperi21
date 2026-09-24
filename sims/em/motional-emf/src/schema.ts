@@ -102,7 +102,6 @@ export const VANISH = 0.5;
 
 export const motionalEmfMessages = Object.freeze({
   'label.title': { ko: '운동 기전력', en: 'Motional EMF' },
-  'label.operation': { ko: '도선이 움직여 생기는 전압', en: 'The voltage made by a moving wire' },
   'label.stage': { ko: '레일 위 막대', en: 'Rod on rails' },
   'label.view': { ko: '위에서', en: 'From above' },
   /** 기호 · 표식이라 번역 대상이 아니다 (C1 판정 1 · 3). */
@@ -162,9 +161,8 @@ function key(k: MotionalEmfMessageKey): string {
 
 export const motionalEmfSchema: BundleSchema = {
   id: MOTIONAL_EMF_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 막대가 달리고, 멈추고, 두 배 빠르게 다시 달린다.

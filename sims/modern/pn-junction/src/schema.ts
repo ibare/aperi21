@@ -76,7 +76,6 @@ export const SCENE_BOUNDS = { minX: -6.25, maxX: 6.25, minY: -2.65, maxY: 2.15 }
 
 export const pnJunctionMessages = Object.freeze({
   'label.title': { ko: 'pn 접합', en: 'p–n junction' },
-  'label.operation': { ko: '공핍층과 정류', en: 'Depletion layer and rectification' },
   'label.stage': { ko: '실리콘 pn 접합', en: 'Silicon p–n junction' },
   'label.view': { ko: '접합 단면', en: 'Junction cross-section' },
 
@@ -134,9 +133,8 @@ function key(k: PnJunctionMessageKey): string {
 
 export const pnJunctionSchema: BundleSchema = {
   id: PN_JUNCTION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

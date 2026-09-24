@@ -43,7 +43,6 @@ export const holdId = (i: number): string => `hold${i}`;
 
 export const springForceMessages = Object.freeze({
   'label.title': { ko: '탄성력', en: 'Spring force' },
-  'label.operation': { ko: '변형에 비례하는 복원력', en: 'Restoring force proportional to stretch' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 늘이지 않았을 때 물체 왼쪽 면 자리. */
@@ -97,9 +96,8 @@ const HOLD_CAPTIONS: readonly SpringForceMessageKey[] = [
 
 export const springForceSchema: BundleSchema = {
   id: SPRING_FORCE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 자동 진행만으로 늘임과 힘의 비례가 드러난다.

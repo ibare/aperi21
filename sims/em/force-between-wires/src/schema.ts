@@ -68,7 +68,6 @@ export const CAPTION_AT = [3.1, 0.7] as const;
 
 export const forceBetweenWiresMessages = Object.freeze({
   'label.title': { ko: '도선 사이의 힘', en: 'Force between parallel wires' },
-  'label.operation': { ko: '나란한 두 전류의 인력·척력', en: 'Two parallel currents attract or repel' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
 
@@ -107,9 +106,8 @@ function key(k: ForceBetweenWiresMessageKey): string {
 
 export const forceBetweenWiresSchema: BundleSchema = {
   id: FORCE_BETWEEN_WIRES_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

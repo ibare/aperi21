@@ -69,7 +69,6 @@ export const CAPTION_BAND = 40;
 
 export const electromagneticWaveMessages = Object.freeze({
   'label.title': { ko: '전자기파', en: 'Electromagnetic waves' },
-  'label.operation': { ko: '전기장과 자기장의 자기 전파', en: 'Self-propagating electric and magnetic fields' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   'caption.shaking': {
@@ -98,9 +97,8 @@ function key(k: ElectromagneticWaveMessageKey): string {
 
 export const electromagneticWaveSchema: BundleSchema = {
   id: ELECTROMAGNETIC_WAVE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기 없음. 흔드는 시간을 바꾸는 조작은 질문을 흐린다 (원본 NOTES (c)).

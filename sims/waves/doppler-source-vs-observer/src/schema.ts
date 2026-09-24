@@ -142,10 +142,6 @@ export const OBSERVER_PATH =
 
 export const dopplerSourceVsObserverMessages = Object.freeze({
   'label.title': { ko: '음원과 관찰자', en: 'Moving source vs. moving observer' },
-  'label.operation': {
-    ko: '누가 움직이냐에 따른 비대칭',
-    en: 'The asymmetry of who is moving',
-  },
   'label.stage': { ko: '공기', en: 'Air' },
   'label.view': { ko: '두 칸', en: 'Two lanes' },
 
@@ -196,9 +192,8 @@ function key(k: DopplerSourceVsObserverMessageKey): string {
 
 export const dopplerSourceVsObserverSchema: BundleSchema = {
   id: DOPPLER_SOURCE_VS_OBSERVER_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 파라미터 · 조작기를 두지 않는다. 이 조각의 비교는 「같은 빠르기」 라는 조건

@@ -76,7 +76,6 @@ export const SCENE_BOUNDS = { minX: -13.4, maxX: 10.6, minY: -2.3, maxY: 8.9 } a
 
 export const waveFunctionMessages = Object.freeze({
   'label.title': { ko: '파동 함수', en: 'Wave function' },
-  'label.operation': { ko: '확률 진폭과 그 해석', en: 'Probability amplitude and what it means' },
   'label.stage': { ko: '조화 우물의 겹친 상태', en: 'Superposed harmonic-well state' },
   'label.view': { ko: '진폭 · 분포 · 측정', en: 'Amplitude · distribution · measurements' },
 
@@ -120,9 +119,8 @@ function key(k: WaveFunctionMessageKey): string {
 
 export const waveFunctionSchema: BundleSchema = {
   id: WAVE_FUNCTION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 자동 진행이 제곱 · 한 번씩 측정 · 거듭 측정을 모두 지나간다. 모양을

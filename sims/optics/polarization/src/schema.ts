@@ -87,7 +87,6 @@ export const SCENE_BOUNDS = {
 
 export const polarizationMessages = Object.freeze({
   'label.title': { ko: '편광', en: 'Polarization' },
-  'label.operation': { ko: '진동면의 선택', en: 'Selecting the plane of vibration' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 판 각도 표식. 기호라 두 언어가 같다 (C1 판정 3). */
@@ -143,9 +142,8 @@ function key(k: PolarizationMessageKey): string {
 
 export const polarizationSchema: BundleSchema = {
   id: POLARIZATION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'default', label: text('label.stage'), constants: {} }],

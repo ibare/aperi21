@@ -83,7 +83,6 @@ export const FADE = 0.6;
 
 export const floatingAndDraftMessages = Object.freeze({
   'label.title': { ko: '뜨는 깊이', en: 'How deep a floating body sits' },
-  'label.operation': { ko: '잠기는 부피가 정해지는 방식', en: 'What sets the submerged volume' },
   'label.stage': { ko: '물통', en: 'Water tank' },
   'label.view': { ko: '같은 크기 세 상자', en: 'Three blocks of one size' },
   /** 상자 이름표 — 재료와 밀도. */
@@ -130,9 +129,8 @@ function key(k: FloatingAndDraftMessageKey): string {
 
 export const floatingAndDraftSchema: BundleSchema = {
   id: FLOATING_AND_DRAFT_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기가 세 밀도(물체 쪽)와 두 밀도(물 쪽)를 모두 지나며 주장을 마친다.

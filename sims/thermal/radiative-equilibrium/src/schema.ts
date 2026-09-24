@@ -104,10 +104,6 @@ export const START_AT = 2.1;
 
 export const radiativeEquilibriumMessages = Object.freeze({
   'label.title': { ko: '복사 평형', en: 'Radiative equilibrium' },
-  'label.operation': {
-    ko: '들어온 만큼 내보낼 때 정해지는 온도',
-    en: 'The temperature set when what goes out matches what comes in',
-  },
   'label.stage': { ko: '같은 행성 둘', en: 'Two identical planets' },
   'label.view': { ko: '들어옴 · 나감 막대와 온도 곡선', en: 'In and out bars with temperature curves' },
   /** 온도 — 값과 단위. 값이 끼는 조립문이라 문안이다 (C1 판정 4). */
@@ -150,9 +146,8 @@ function key(k: RadiativeEquilibriumMessageKey): string {
 
 export const radiativeEquilibriumSchema: BundleSchema = {
   id: RADIATIVE_EQUILIBRIUM_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 두 행성의 온도가 움직여 한 값에 모이고, 다시 처음으로.

@@ -104,10 +104,6 @@ export const SCENE_BOUNDS = {
 
 export const staticFrictionMessages = Object.freeze({
   'label.title': { ko: '정지 마찰력', en: 'Static friction' },
-  'label.operation': {
-    ko: '움직이기 전까지 버티는 힘',
-    en: 'The force that holds until the object moves',
-  },
   'label.stage': { ko: '거친 바닥', en: 'Rough floor' },
   'label.view': { ko: '두 힘', en: 'Two forces' },
   /** 주황 눈금이 무엇인지 — 모르면 "문턱" 이라는 주장의 절반이 사라진다. */
@@ -138,9 +134,8 @@ function key(k: StaticFrictionMessageKey): string {
 
 export const staticFrictionSchema: BundleSchema = {
   id: STATIC_FRICTION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 당기는 힘이 스스로 커져야 문턱의 순간이 끊기지 않는다.

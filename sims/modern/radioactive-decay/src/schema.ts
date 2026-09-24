@@ -69,7 +69,6 @@ export const SCENE_BOUNDS = { minX: 0, maxX: CANVAS_W, minY: -34, maxY: CANVAS_H
 
 export const radioactiveDecayMessages = Object.freeze({
   'label.title': { ko: '방사성 붕괴', en: 'Radioactive decay' },
-  'label.operation': { ko: '반감기와 지수 감소', en: 'Half-life and exponential decay' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 곡선 아래 반감기 경계 이름. */
@@ -105,9 +104,8 @@ function key(k: RadioactiveDecayMessageKey): string {
 
 export const radioactiveDecaySchema: BundleSchema = {
   id: RADIOACTIVE_DECAY_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 자동 진행만으로 주장이 끝난다.

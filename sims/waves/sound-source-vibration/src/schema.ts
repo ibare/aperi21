@@ -92,10 +92,6 @@ export const SCENE_BOUNDS = { minX: -7.4, maxX: 7.4, minY: -1.7, maxY: 2.75 } as
 
 export const soundSourceVibrationMessages = Object.freeze({
   'label.title': { ko: '소리와 떨림', en: 'Sound and vibration' },
-  'label.operation': {
-    ko: '소리 나는 물체는 떨리고, 떨림이 멎으면 소리도 멎는다',
-    en: 'A sounding object vibrates, and when the vibration stops, so does the sound',
-  },
   'label.stage': { ko: '소리굽쇠', en: 'Tuning fork' },
   'label.view': { ko: '떨림과 소리', en: 'Vibration and sound' },
   /** 손 이름표. 조사가 붙지 않는 낱말 하나지만 언어마다 다르므로 문안이다 (C1). */
@@ -135,9 +131,8 @@ function key(k: SoundSourceVibrationMessageKey): string {
 
 export const soundSourceVibrationSchema: BundleSchema = {
   id: SOUND_SOURCE_VIBRATION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 손잡이를 두지 않는다 — 「떨림과 소리는 함께 멎는다」 는 보기만 해도 일어난다.

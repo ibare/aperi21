@@ -83,7 +83,6 @@ export const SCENE_BOUNDS = {
 
 export const exchangeParticlesMessages = Object.freeze({
   'label.title': { ko: '교환 입자', en: 'Exchange particles' },
-  'label.operation': { ko: '힘을 주고받는 입자', en: 'Particles that carry a force' },
   'label.stage': { ko: '전자 둘의 광자 주고받기', en: 'Two electrons trading a photon' },
   'label.view': { ko: '기본', en: 'Default' },
   'label.time': { ko: '시간', en: 'time' },
@@ -131,9 +130,8 @@ function key(k: ExchangeParticlesMessageKey): string {
 
 export const exchangeParticlesSchema: BundleSchema = {
   id: EXCHANGE_PARTICLES_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 시간 조각이 아래서 위로 쓸며 주고받음을 한 번 그리고, 매개 입자를 바꿔 보인다.

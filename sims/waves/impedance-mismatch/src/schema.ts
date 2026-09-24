@@ -67,7 +67,6 @@ export const SCENE_BOUNDS = { minX: -0.3, maxX: 12.4, minY: -2.55, maxY: 2.4 } a
 
 export const impedanceMismatchMessages = Object.freeze({
   'label.title': { ko: '임피던스 부정합', en: 'Impedance mismatch' },
-  'label.operation': { ko: '경계에서 반사되는 비율', en: 'How much reflects at a boundary' },
   'label.stage': { ko: '다른 줄을 이은 세 줄', en: 'Three strings, three joins' },
   'label.view': { ko: '나란한 세 줄', en: 'Three strings side by side' },
 
@@ -113,9 +112,8 @@ function key(k: ImpedanceMismatchMessageKey): string {
 
 export const impedanceMismatchSchema: BundleSchema = {
   id: IMPEDANCE_MISMATCH_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 세 비를 나란히 두어 자동 진행만으로 비교가 끝난다.

@@ -24,7 +24,6 @@ export const RADIOMETRIC_DATING_ID = 'radiometric-dating';
 
 export const radiometricDatingMessages = Object.freeze({
   'label.title': { ko: '방사성 연대 측정', en: 'Radiometric dating' },
-  'label.operation': { ko: '남은 비율로 재는 시간', en: 'Telling time by what remains' },
   'label.stage': { ko: '탄소-14', en: 'Carbon-14' },
   'label.view': { ko: '곡선 거꾸로 읽기', en: 'Reading the curve backward' },
 
@@ -124,9 +123,8 @@ export const SCENE_BOUNDS = { minX: -3.0, maxX: 10.9, minY: -2.3, maxY: 4.7 } as
 
 export const radiometricDatingSchema: BundleSchema = {
   id: RADIOMETRIC_DATING_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 읽는 동작은 한 번 보면 되고, 비율을 끌어 바꾸게 하면 연대 글자를

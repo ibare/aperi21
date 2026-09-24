@@ -83,7 +83,6 @@ export const SCENE_BOUNDS = { minX: -5.6, maxX: 3.2, minY: -2.45, maxY: 2.05 } a
 
 export const convexMirrorMessages = Object.freeze({
   'label.title': { ko: '볼록거울', en: 'Convex mirror' },
-  'label.operation': { ko: '확대된 시야와 허상', en: 'A wider view and a virtual image' },
   'label.stage': { ko: '물체 옮기기와 시야', en: 'Moving the object, and the view' },
   'label.view': { ko: '상과 시야', en: 'Image and view' },
 
@@ -149,9 +148,8 @@ function key(k: ConvexMirrorMessageKey): string {
 
 export const convexMirrorSchema: BundleSchema = {
   id: CONVEX_MIRROR_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 물체를 옮기는 것과 두 거울의 시야 견줌을 자동 진행으로 보인다 (controllers.ts).

@@ -118,7 +118,6 @@ export const SCENE_BOUNDS = { minX: -4.0, maxX: 9.6, minY: -2.95, maxY: 1.6 } as
 
 export const telescopeMessages = Object.freeze({
   'label.title': { ko: '망원경', en: 'Telescope' },
-  'label.operation': { ko: '초점 거리 비가 정하는 배율', en: 'Magnification set by the ratio of focal lengths' },
   'label.stage': { ko: '케플러식 망원경', en: 'Keplerian telescope' },
   'label.view': { ko: '광축과 두 각', en: 'Optical axis and two angles' },
 
@@ -168,9 +167,8 @@ function key(k: TelescopeMessageKey): string {
 
 export const telescopeSchema: BundleSchema = {
   id: TELESCOPE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 접안렌즈를 자동 진행으로 바꿔 끼워 나가는 호가 넓어지는 것을 보인다 —

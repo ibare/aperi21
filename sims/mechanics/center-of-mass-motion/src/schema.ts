@@ -71,10 +71,6 @@ export const SCENE_BOUNDS = { minX: -0.5, maxX: 7.3, minY: -1.0, maxY: 2.75 } as
 
 export const centerOfMassMotionMessages = Object.freeze({
   'label.title': { ko: '질량 중심의 운동', en: 'Motion of the centre of mass' },
-  'label.operation': {
-    ko: '내부 힘에 영향받지 않는 운동',
-    en: 'The motion that internal forces cannot change',
-  },
   'label.stage': { ko: '용수철로 이은 두 덩어리', en: 'Two lumps joined by a spring' },
   'label.view': { ko: '던진 뒤', en: 'In flight' },
 
@@ -120,9 +116,8 @@ function key(k: CenterOfMassMotionMessageKey): string {
 
 export const centerOfMassMotionSchema: BundleSchema = {
   id: CENTER_OF_MASS_MOTION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

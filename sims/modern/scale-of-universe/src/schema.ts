@@ -71,10 +71,6 @@ export const SCENE_BOUNDS = { minX: -3.2, maxX: 3.6, minY: -2.05, maxY: 1.9 } as
 
 export const scaleOfUniverseMessages = Object.freeze({
   'label.title': { ko: '우주의 규모', en: 'The scale of the universe' },
-  'label.operation': {
-    ko: '원자에서 우주까지 10의 거듭제곱으로 잇는 크기',
-    en: 'Sizes from the atom to the universe, joined by powers of ten',
-  },
   'label.stage': { ko: '10의 거듭제곱 사다리', en: 'Powers-of-ten ladder' },
   'label.view': { ko: '한 칸씩 물러나기', en: 'Stepping back one power at a time' },
 
@@ -149,9 +145,8 @@ function key(k: ScaleOfUniverseMessageKey): string {
 
 export const scaleOfUniverseSchema: BundleSchema = {
   id: SCALE_OF_UNIVERSE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 물러나는 중이고, 원자에서 우주까지 스스로 간다.

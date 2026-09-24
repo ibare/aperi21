@@ -107,7 +107,6 @@ export const SCENE_BOUNDS = { minX: -3.3, maxX: 4.1, minY: -1.6, maxY: 2.15 } as
 
 export const relativityOfSimultaneityMessages = Object.freeze({
   'label.title': { ko: '동시성의 상대성', en: 'Relativity of simultaneity' },
-  'label.operation': { ko: '기준틀마다 다른 「동시」', en: 'Each frame has its own “at the same time”' },
   'label.stage': { ko: '달리는 기차', en: 'A moving train' },
   'label.view': { ko: '두 틀을 나란히', en: 'Two frames side by side' },
   'label.trainFrame': { ko: '기차 안에서 본 것', en: 'Seen from the train' },
@@ -148,9 +147,8 @@ function key(k: RelativityOfSimultaneityMessageKey): string {
 
 export const relativityOfSimultaneitySchema: BundleSchema = {
   id: RELATIVITY_OF_SIMULTANEITY_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 기차가 오고, 번쩍이고, 두 판의 도착 순서가 남는다.

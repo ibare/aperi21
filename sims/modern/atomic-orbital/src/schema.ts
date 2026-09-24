@@ -126,7 +126,6 @@ export const BOUNDS = { halfWidth: 180, halfHeight: 154 } as const;
 
 export const atomicOrbitalMessages = Object.freeze({
   'label.title': { ko: '원자 궤도', en: 'Atomic orbital' },
-  'label.operation': { ko: '확률 분포로서의 전자', en: 'The electron as a probability distribution' },
   'label.stage': { ko: '수소 원자', en: 'Hydrogen atom' },
   'label.view': { ko: '발견 자리', en: 'Detections' },
   /** 궤도 기호 — 분야에서 원어로 통용되는 표식이라 두 언어가 같다. */
@@ -163,9 +162,8 @@ function key(k: AtomicOrbitalMessageKey): string {
 
 export const atomicOrbitalSchema: BundleSchema = {
   id: ATOMIC_ORBITAL_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'statistical',
   parameters: [],
   stages: [{ id: 'hydrogen', label: text('label.stage'), constants: { ...MEASURE } }],

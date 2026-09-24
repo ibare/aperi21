@@ -89,10 +89,6 @@ export const SPIN = 3.4;
 
 export const lenzLawMessages = Object.freeze({
   'label.title': { ko: '렌츠 법칙', en: "Lenz's law" },
-  'label.operation': {
-    ko: '전류는 뒤집혀도 힘은 늘 움직임을 거스른다',
-    en: 'The current flips, the force never does',
-  },
   'label.stage': { ko: '코일과 자석', en: 'Coil and magnet' },
   'label.view': { ko: '옆에서', en: 'From the side' },
   /** 자석에 새겨진 극 표식. 도형에 새겨진 글자라 번역 대상이 아니다 (C1 판정 1). */
@@ -140,9 +136,8 @@ function key(k: LenzLawMessageKey): string {
 
 export const lenzLawSchema: BundleSchema = {
   id: LENZ_LAW_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'linear',
 
   // 자동 진행만으로 주장은 끝난다. 그와 별개로 자석을 직접 끌 수 있다

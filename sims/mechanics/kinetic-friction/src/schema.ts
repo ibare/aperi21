@@ -119,7 +119,6 @@ export const SCENE_BOUNDS = {
 
 export const kineticFrictionMessages = Object.freeze({
   'label.title': { ko: '운동 마찰력', en: 'Kinetic friction' },
-  'label.operation': { ko: '미끄러지는 동안의 마찰', en: 'Friction while sliding' },
   'label.stage': { ko: '같은 바닥', en: 'Same floor' },
   'label.view': { ko: '두 줄', en: 'Two lanes' },
   'label.laneFast': { ko: '빠르게 출발', en: 'Starts fast' },
@@ -156,9 +155,8 @@ function key(k: KineticFrictionMessageKey): string {
 
 export const kineticFrictionSchema: BundleSchema = {
   id: KINETIC_FRICTION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 두 빠르기를 나란히 두는 것이 이미 비교다.

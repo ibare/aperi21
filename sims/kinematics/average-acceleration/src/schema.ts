@@ -35,7 +35,6 @@ export const DIP = -8;
 
 export const averageAccelerationMessages = Object.freeze({
   'label.title': { ko: '평균 가속도', en: 'Average acceleration' },
-  'label.operation': { ko: '속도 변화의 비율', en: 'Rate of change of velocity' },
   'label.stage': { ko: '두 차로', en: 'Two lanes' },
   'label.view': { ko: '도로와 그래프', en: 'Road and graph' },
   /** 차 이름표. 색으로만 가르지 않기 위해 둔다. */
@@ -82,9 +81,8 @@ function key(k: AverageAccelerationMessageKey): string {
 
 export const averageAccelerationSchema: BundleSchema = {
   id: AVERAGE_ACCELERATION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 자동 진행으로 두 선이 겹치면 할 말이 끝난다.

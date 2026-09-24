@@ -115,7 +115,6 @@ export const CLOSED_SPAN = 6;
 
 export const generatorMessages = Object.freeze({
   'label.title': { ko: '발전기', en: 'Generator' },
-  'label.operation': { ko: '회전이 만드는 기전력', en: 'The EMF made by turning' },
   'label.stage': { ko: '손잡이 발전기', en: 'Hand-crank generator' },
   'label.view': { ko: '굴대 쪽에서', en: 'Along the axle' },
   /** 극에 새겨진 표식 (C1 판정 1). */
@@ -153,9 +152,8 @@ function key(k: GeneratorMessageKey): string {
 
 export const generatorSchema: BundleSchema = {
   id: GENERATOR_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 돌고 있고, 스위치가 저절로 닫혔다 열린다.

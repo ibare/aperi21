@@ -98,7 +98,6 @@ export const CAPTION_FADE_S = 0.25;
 
 export const magneticDipoleMessages = Object.freeze({
   'label.title': { ko: '자기 쌍극자', en: 'Magnetic dipole' },
-  'label.operation': { ko: '고리 전류와 자석의 동일성', en: 'A current loop and a magnet are the same' },
   'label.stage': { ko: '고리와 자석', en: 'Loop and magnet' },
   'label.view': { ko: '축을 품은 단면', en: 'Cross-section through the axis' },
   // 극 표식 — 도형에 새기는 글자라 두 언어가 같다.
@@ -146,9 +145,8 @@ function key(k: MagneticDipoleMessageKey): string {
 
 export const magneticDipoleSchema: BundleSchema = {
   id: MAGNETIC_DIPOLE_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 가까이 → 극 → 겹치기 → 멀리 로 저절로 간다.

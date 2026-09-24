@@ -89,10 +89,6 @@ export const FADE = 0.3 * PERIOD;
 
 export const simpleHarmonicMotionMessages = Object.freeze({
   'label.title': { ko: '단순 조화 운동', en: 'Simple harmonic motion' },
-  'label.operation': {
-    ko: '복원력이 변위에 비례하는 운동',
-    en: 'Motion under a restoring force proportional to displacement',
-  },
   'label.stage': { ko: '매단 용수철', en: 'Hanging spring' },
   'label.view': { ko: '추와 기록지', en: 'Mass and chart' },
   /** 힘 화살표 · 시간축에 붙는 기호. 수식 표기라 번역 대상이 아니다 (C1 판정 3). */
@@ -132,9 +128,8 @@ function key(k: SimpleHarmonicMotionMessageKey): string {
 
 export const simpleHarmonicMotionSchema: BundleSchema = {
   id: SIMPLE_HARMONIC_MOTION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 추가 오르내리고, 펜이 곡선을 펼친다.

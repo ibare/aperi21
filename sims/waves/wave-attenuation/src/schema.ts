@@ -88,7 +88,6 @@ export const START_AT = 1.4;
 
 export const waveAttenuationMessages = Object.freeze({
   'label.title': { ko: '파동의 감쇠', en: 'Attenuation of a wave' },
-  'label.operation': { ko: '매질이 흡수하는 에너지', en: 'Energy absorbed by the medium' },
   'label.stage': { ko: '흡수하는 줄', en: 'An absorbing rope' },
   'label.view': { ko: '줄과 높이 막대', en: 'Rope and height bars' },
   /** 새 막대가 앞 막대 높이의 몇 배인지. 수식 표기라 번역 대상이 아니다 (C1 판정 3). 값은 스테이지 상수다. */
@@ -121,9 +120,8 @@ function key(k: WaveAttenuationMessageKey): string {
 
 export const waveAttenuationSchema: BundleSchema = {
   id: WAVE_ATTENUATION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 마루가 건너가며 막대를 남기고, 다 선 그림을 보인 뒤 다시 시작한다.

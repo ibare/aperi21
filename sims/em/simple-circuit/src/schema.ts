@@ -94,10 +94,6 @@ export const DARK = 1.6;
 
 export const simpleCircuitMessages = Object.freeze({
   'label.title': { ko: '전기 회로 만들기', en: 'Building an electric circuit' },
-  'label.operation': {
-    ko: '이어져야 흐르고 끊기면 꺼진다',
-    en: 'It flows only when joined; break it and the bulb goes out',
-  },
   'label.stage': { ko: '한 고리', en: 'One loop' },
   'label.view': { ko: '회로', en: 'Circuit' },
   'label.battery': { ko: '전지', en: 'battery' },
@@ -148,9 +144,8 @@ function key(k: SimpleCircuitMessageKey): string {
 
 export const simpleCircuitSchema: BundleSchema = {
   id: SIMPLE_CIRCUIT_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흐르고, 세 자리를 차례로 끊었다 잇는다.

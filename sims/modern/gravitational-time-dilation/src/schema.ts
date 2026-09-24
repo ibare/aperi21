@@ -87,7 +87,6 @@ export const SCENE_BOUNDS = { minX: -3.9, maxX: 6.5, minY: -0.75, maxY: 3.65 } a
 
 export const gravitationalTimeDilationMessages = Object.freeze({
   'label.title': { ko: '중력 시간 지연', en: 'Gravitational time dilation' },
-  'label.operation': { ko: '퍼텐셜에 따른 시계의 차이', en: 'Clocks run at different rates at different potentials' },
   'label.stage': { ko: '탑에 다녀온 시계', en: 'A clock taken up a tower' },
   'label.view': { ko: '탑과 기록 띠', en: 'Tower and tick record' },
   /** 시계 이름. 도형에 붙는 표식이라 두 언어가 같다. */
@@ -146,9 +145,8 @@ function key(k: GravitationalTimeDilationMessageKey): string {
 
 export const gravitationalTimeDilationSchema: BundleSchema = {
   id: GRAVITATIONAL_TIME_DILATION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 B 가 올라가 있고, 내려와 앞서 있고, 다시 맞춰진다.

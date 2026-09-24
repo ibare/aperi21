@@ -94,7 +94,6 @@ export const SCENE_BOUNDS = { minX: -5.2, maxX: 5.2, minY: -1.6, maxY: 3.05 } as
 
 export const lengthContractionMessages = Object.freeze({
   'label.title': { ko: '길이 수축', en: 'Length contraction' },
-  'label.operation': { ko: '운동 방향으로의 수축', en: 'Contraction along the direction of motion' },
   'label.stage': { ko: '0.8c 로 지나가는 상자', en: 'A box passing at 0.8c' },
   'label.view': { ko: '정지한 틀', en: 'Rest frame' },
   'label.rest': { ko: '멈춰 있는 상자', en: 'Box at rest' },
@@ -133,9 +132,8 @@ function key(k: LengthContractionMessageKey): string {
 
 export const lengthContractionSchema: BundleSchema = {
   id: LENGTH_CONTRACTION_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 상자가 지나가고, 기록이 남고, 다시 온다.

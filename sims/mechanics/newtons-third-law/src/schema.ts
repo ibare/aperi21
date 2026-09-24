@@ -24,10 +24,6 @@ export const ACCEL = 53.3;
 
 export const newtonsThirdLawMessages = Object.freeze({
   'label.title': { ko: '작용 반작용', en: 'Action and reaction' },
-  'label.operation': {
-    ko: '힘의 쌍과 서로 다른 작용점',
-    en: 'A force pair acting on different bodies',
-  },
   'label.stage': { ko: '얼음판', en: 'Ice' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 이름표는 **받는 쪽**을 말한다 — 한 힘은 이 사람에게, 다른 힘은 저 사람에게. */
@@ -63,9 +59,8 @@ function key(k: NewtonsThirdLawMessageKey): string {
 
 export const newtonsThirdLawSchema: BundleSchema = {
   id: NEWTONS_THIRD_LAW_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 주장에 더하는 것이 없다 (원본 NOTES (c)).

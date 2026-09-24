@@ -100,7 +100,6 @@ export const SWAP = 2;
 
 export const kirchhoffsCurrentLawMessages = Object.freeze({
   'label.title': { ko: '키르히호프 전류 법칙', en: "Kirchhoff's current law" },
-  'label.operation': { ko: '마디에서의 전하 보존', en: 'Conservation of charge at a junction' },
   'label.stage': { ko: '세 가지', en: 'Three branches' },
   'label.view': { ko: '회로', en: 'Circuit' },
   'label.node': { ko: '마디', en: 'junction' },
@@ -160,9 +159,8 @@ function key(k: KirchhoffsCurrentLawMessageKey): string {
 
 export const kirchhoffsCurrentLawSchema: BundleSchema = {
   id: KIRCHHOFFS_CURRENT_LAW_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흐르고, 세고, 포개고, 저항을 바꿔 다시 센다.

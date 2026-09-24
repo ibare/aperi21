@@ -112,10 +112,6 @@ export const FADE = 0.6;
 
 export const thermalEquilibriumMessages = Object.freeze({
   'label.title': { ko: '열평형', en: 'Thermal equilibrium' },
-  'label.operation': {
-    ko: '접촉한 두 계가 도달하는 상태',
-    en: 'The state two systems in contact reach',
-  },
   'label.stage': { ko: '맞붙인 두 덩이', en: 'Two blocks in contact' },
   'label.view': { ko: '덩이와 곡선', en: 'Blocks and curves' },
   /** 온도 글자. 값은 선언한 처음 온도 · 만나는 온도를 끼운다 (C1). */
@@ -164,9 +160,8 @@ function key(k: ThermalEquilibriumMessageKey): string {
 
 export const thermalEquilibriumSchema: BundleSchema = {
   id: THERMAL_EQUILIBRIUM_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 두 처음 온도와 빠르기는 스테이지 상수다. 독자가 바꿔 볼 것이

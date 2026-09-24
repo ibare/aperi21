@@ -85,7 +85,6 @@ export const SCENE_BOUNDS = {
 
 export const momentOfInertiaMessages = Object.freeze({
   'label.title': { ko: '관성 모멘트', en: 'Moment of inertia' },
-  'label.operation': { ko: '질량 분포가 정하는 회전 저항', en: 'How mass distribution sets rotational resistance' },
   'label.stage': { ko: '두 바퀴', en: 'Two wheels' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 바퀴 아래 질량 자리 표시. */
@@ -163,9 +162,8 @@ const PHASES: TimelinePhase[] = [
 
 export const momentOfInertiaSchema: BundleSchema = {
   id: MOMENT_OF_INERTIA_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'default', label: text('label.stage'), constants: {} }],

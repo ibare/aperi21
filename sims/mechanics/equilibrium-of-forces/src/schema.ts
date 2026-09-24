@@ -114,7 +114,6 @@ export const MIDDLE_COUNT = 5;
 
 export const equilibriumOfForcesMessages = Object.freeze({
   'label.title': { ko: '힘의 평형', en: 'Equilibrium of forces' },
-  'label.operation': { ko: '알짜힘이 0인 상태', en: 'Zero net force' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   'caption.closed': {
@@ -147,9 +146,8 @@ function key(k: EquilibriumOfForcesMessageKey): string {
 
 export const equilibriumOfForcesSchema: BundleSchema = {
   id: EQUILIBRIUM_OF_FORCES_ID,
-  label: text('label.title'),
+  title: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
 
