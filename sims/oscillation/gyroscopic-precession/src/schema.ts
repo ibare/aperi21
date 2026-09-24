@@ -68,6 +68,7 @@ export const SCENE_BOUNDS = {
 
 export const gyroscopicPrecessionMessages = Object.freeze({
   'label.title': { ko: '세차 운동', en: 'Gyroscopic precession' },
+  'label.operation': { ko: '돌림힘이 각운동량 방향을 돌리는 것', en: 'Torque turning the direction of angular momentum' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 각운동량 화살표 이름. 기호라 두 언어가 같다 (C1 판정 3). */
@@ -99,8 +100,9 @@ function key(k: GyroscopicPrecessionMessageKey): string {
 
 export const gyroscopicPrecessionSchema: BundleSchema = {
   id: GYROSCOPIC_PRECESSION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'oscillation',
+  operation: text('label.operation'),
   timeModel: 'continuous',
   parameters: [],
   stages: [{ id: 'default', label: text('label.stage'), constants: {} }],

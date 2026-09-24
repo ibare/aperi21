@@ -114,6 +114,7 @@ export const FADE = 0.6;
 
 export const insulationMessages = Object.freeze({
   'label.title': { ko: '보온과 단열', en: 'Insulation' },
+  'label.operation': { ko: '열의 이동을 늦추는 것', en: 'Slowing the flow of heat' },
   'label.stage': { ko: '컵 셋', en: 'Three cups' },
   'label.view': { ko: '컵과 곡선', en: 'Cups and curves' },
   /** 컵 이름 — 감쌈의 재료. 세 컵을 가르는 유일한 조건이라 이름이 없으면 조각이 말을 못 한다. */
@@ -160,8 +161,9 @@ function key(k: InsulationMessageKey): string {
 
 export const insulationSchema: BundleSchema = {
   id: INSULATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 세 감쌈이 이미 나란히 식고 있다. 견줄 것은 「같은 시간 뒤」 하나다.

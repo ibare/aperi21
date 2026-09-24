@@ -83,6 +83,7 @@ export const SCENE_BOUNDS = { minX: -1.25, maxX: 8.35, minY: -2.95, maxY: 1.45 }
 
 export const microscopeMessages = Object.freeze({
   'label.title': { ko: '현미경', en: 'Microscope' },
+  'label.operation': { ko: '대물과 접안의 배율 곱', en: 'Objective and eyepiece magnifications multiply' },
   'label.stage': { ko: '대물렌즈와 접안렌즈', en: 'Objective and eyepiece' },
   'label.view': { ko: '경통과 배율 막대', en: 'Tube and magnification bars' },
 
@@ -160,8 +161,9 @@ function key(k: MicroscopeMessageKey): string {
 
 export const microscopeSchema: BundleSchema = {
   id: MICROSCOPE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'optics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 두 번의 확대를 자동 진행으로 차례로 보인다 (controllers.ts).

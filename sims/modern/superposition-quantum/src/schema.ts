@@ -87,6 +87,7 @@ export const SCENE_BOUNDS = { minX: -13.0, maxX: 26.0, minY: -2.9, maxY: 8.2 } a
 
 export const superpositionQuantumMessages = Object.freeze({
   'label.title': { ko: '양자 중첩', en: 'Quantum superposition' },
+  'label.operation': { ko: '여러 상태의 합으로 있는 것', en: 'Being a sum of several states' },
   'label.stage': { ko: '상자 속 두 준위를 반씩', en: 'Two box levels, half and half' },
   'label.view': { ko: '분포와 위상', en: 'Distribution and phase' },
 
@@ -127,8 +128,9 @@ function key(k: SuperpositionQuantumMessageKey): string {
 
 export const superpositionQuantumSchema: BundleSchema = {
   id: SUPERPOSITION_QUANTUM_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 성분 비를 바꾸면 출렁임의 폭만 달라지고 「둘이 함께 있어야 출렁인다」 에

@@ -114,6 +114,10 @@ export const WRITE_SPEED = 0.6;
 
 export const nonlinearOscillationMessages = Object.freeze({
   'label.title': { ko: '비선형 진동', en: 'Nonlinear oscillation' },
+  'label.operation': {
+    ko: '복원력이 비례를 벗어날 때',
+    en: 'When the restoring force stops being proportional',
+  },
   'label.stage': { ko: '단단해지는 용수철', en: 'Stiffening spring' },
   'label.view': { ko: '두 레인 기록지', en: 'Two-lane chart' },
   /** 시간축 끝 기호. 수식 표기라 번역 대상이 아니다 (C1 판정 3). */
@@ -148,8 +152,9 @@ function key(k: NonlinearOscillationMessageKey): string {
 
 export const nonlinearOscillationSchema: BundleSchema = {
   id: NONLINEAR_OSCILLATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'oscillation',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 두 추가 흔들리고, 두 펜이 점선 위에 기록을 적는다.

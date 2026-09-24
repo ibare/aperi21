@@ -73,6 +73,7 @@ export const CAPTION_AT = [1.7, 0.35] as const;
 
 export const lorentzForceMessages = Object.freeze({
   'label.title': { ko: '로런츠 힘', en: 'Lorentz force' },
+  'label.operation': { ko: '자기장 속 전하가 받는 힘', en: 'The force on a charge moving in a magnetic field' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
 
@@ -125,8 +126,9 @@ function key(k: LorentzForceMessageKey): string {
 
 export const lorentzForceSchema: BundleSchema = {
   id: LORENTZ_FORCE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

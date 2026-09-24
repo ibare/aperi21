@@ -107,6 +107,7 @@ export const SCENE_BOUNDS = { minX: -5.2, maxX: 6.55, minY: -1.9, maxY: 1.85 } a
 
 export const chargingMethodsMessages = Object.freeze({
   'label.title': { ko: '대전 방법', en: 'Charging methods' },
+  'label.operation': { ko: '마찰·접촉·유도', en: 'Friction, contact and induction' },
   'label.stage': { ko: '세 가지 대전', en: 'Three ways to charge' },
   'label.view': { ko: '세 판', en: 'Three panels' },
 
@@ -190,8 +191,9 @@ function key(k: ChargingMethodsMessageKey): string {
 
 export const chargingMethodsSchema: BundleSchema = {
   id: CHARGING_METHODS_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

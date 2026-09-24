@@ -96,6 +96,7 @@ export const SCENE_BOUNDS = {
 
 export const photovoltaicEffectMessages = Object.freeze({
   'label.title': { ko: '광전지 효과', en: 'Photovoltaic effect' },
+  'label.operation': { ko: '빛이 만드는 전위차', en: 'A voltage made by light' },
   'label.stage': { ko: '실리콘 태양 전지', en: 'Silicon solar cell' },
   'label.view': { ko: '접합 단면', en: 'Junction cross-section' },
 
@@ -154,8 +155,9 @@ function key(k: PhotovoltaicEffectMessageKey): string {
 
 export const photovoltaicEffectSchema: BundleSchema = {
   id: PHOTOVOLTAIC_EFFECT_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 「적외선은 안 된다」 와 「초록빛은 전압을 만든다」 가 모두 일어난다.

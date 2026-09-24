@@ -116,6 +116,10 @@ const SCREEN_MARGIN_PX = 24;
 
 export const stoppingDistanceMessages = Object.freeze({
   'label.title': { ko: '정지 거리', en: 'Stopping distance' },
+  'label.operation': {
+    ko: '반응 거리는 비례로, 제동 거리는 제곱으로 늘어난다',
+    en: 'Reaction grows linearly, braking as the square',
+  },
   'label.stage': { ko: '도로', en: 'Road' },
   'label.view': { ko: '정지 거리', en: 'Stopping distance' },
   /** 차 위 속력. 수와 단위는 표식이라 번역 대상이 아니다 (C1 판정 3). */
@@ -160,8 +164,9 @@ function key(k: StoppingDistanceMessageKey): string {
 
 export const stoppingDistanceSchema: BundleSchema = {
   id: STOPPING_DISTANCE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'kinematics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 세 결과가 동시에 화면에 있어야 주장이 성립한다.

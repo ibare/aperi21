@@ -82,6 +82,7 @@ export const FADE = 0.6;
 
 export const buoyancyMessages = Object.freeze({
   'label.title': { ko: '부력', en: 'Buoyancy' },
+  'label.operation': { ko: '밀려난 유체의 무게만큼', en: 'As much as the weight of the fluid pushed aside' },
   'label.stage': { ko: '물통', en: 'Water tank' },
   'label.view': { ko: '면마다 미는 힘', en: 'Push on each face' },
   /** 막대 이름표 — 어느 면이 받는 힘인가. */
@@ -118,8 +119,9 @@ function key(k: BuoyancyMessageKey): string {
 
 export const buoyancySchema: BundleSchema = {
   id: BUOYANCY_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'fluids',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기가 잠겨 드는 구간과 더 깊이 가는 구간을 모두 지나며 주장을 마친다.

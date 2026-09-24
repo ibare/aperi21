@@ -93,6 +93,7 @@ export const FADE = 0.6;
 
 export const rollingRaceMessages = Object.freeze({
   'label.title': { ko: '구르는 물체의 경주', en: 'Rolling race' },
+  'label.operation': { ko: '질량 분포가 정하는 도착 순서', en: 'Arrival order set by mass distribution' },
   'label.stage': { ko: '같은 비탈', en: 'Same incline' },
   'label.view': { ko: '나란한 레인', en: 'Side-by-side lanes' },
   'label.hoop': { ko: '고리', en: 'hoop' },
@@ -139,8 +140,9 @@ export const RANK_LABELS: readonly RollingRaceMessageKey[] = ['label.rank1', 'la
 
 export const rollingRaceSchema: BundleSchema = {
   id: ROLLING_RACE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'oscillation',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 굴러 내려가는 중이고, 닿고, 다시 놓인다.

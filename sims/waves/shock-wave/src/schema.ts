@@ -118,6 +118,7 @@ export const SOURCE_PATH =
 
 export const shockWaveMessages = Object.freeze({
   'label.title': { ko: '충격파', en: 'Shock wave' },
+  'label.operation': { ko: '음속을 넘을 때 생기는 원뿔', en: 'The cone that forms past the speed of sound' },
   'label.stage': { ko: '공기', en: 'Air' },
   'label.view': { ko: '기본', en: 'Default' },
 
@@ -163,8 +164,9 @@ function key(k: ShockWaveMessageKey): string {
 
 export const shockWaveSchema: BundleSchema = {
   id: SHOCK_WAVE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'waves',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 파라미터 · 조작기를 두지 않는다. 주장은 「넘으면 원뿔」 하나이고, 자동 진행이

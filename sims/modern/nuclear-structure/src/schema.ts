@@ -86,6 +86,7 @@ export const SCENE_BOUNDS = { minX: -4.3, maxX: 4.3, minY: -2.2, maxY: 1.62 } as
 
 export const nuclearStructureMessages = Object.freeze({
   'label.title': { ko: '원자핵의 구성', en: 'What a nucleus is made of' },
+  'label.operation': { ko: '양성자와 중성자', en: 'Protons and neutrons' },
   'label.stage': { ko: '탄소와 질소', en: 'Carbon and nitrogen' },
   'label.view': { ko: '세 핵', en: 'Three nuclei' },
 
@@ -144,8 +145,9 @@ function key(k: NuclearStructureMessageKey): string {
 
 export const nuclearStructureSchema: BundleSchema = {
   id: NUCLEAR_STRUCTURE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 세 핵이 차례로 지어지는 자동 진행만으로 주장이 끝난다.

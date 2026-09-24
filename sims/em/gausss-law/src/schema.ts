@@ -103,6 +103,10 @@ export const FADE = 0.6;
 
 export const gausssLawMessages = Object.freeze({
   'label.title': { ko: '가우스 법칙', en: 'Gauss’s law' },
+  'label.operation': {
+    ko: '닫힌 면을 지나는 전기력선속',
+    en: 'Electric flux through a closed surface',
+  },
   'label.stage': { ko: '점전하 둘레의 네 곡선', en: 'Four closed curves around a point charge' },
   'label.view': { ko: '면의 단면', en: 'Cross-section of the surface' },
   /** 기준선 이름표. 값은 스테이지 상수에서 온 가닥 수다 (C1 — 값은 vars 로). */
@@ -175,8 +179,9 @@ function key(k: GausssLawMessageKey): string {
 
 export const gausssLawSchema: BundleSchema = {
   id: GAUSSS_LAW_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 네 곡선을 차례로 세고, 나란히 읽고, 다시 시작한다.

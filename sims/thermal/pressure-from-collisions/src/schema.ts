@@ -88,6 +88,7 @@ export const SCENE_BOUNDS = { minX: -1.45, maxX: 6.0, minY: -0.6, maxY: 2.72 } a
 
 export const pressureFromCollisionsMessages = Object.freeze({
   'label.title': { ko: '충돌이 만드는 압력', en: 'Pressure from collisions' },
+  'label.operation': { ko: '벽에 부딪는 분자의 운동량', en: 'The momentum molecules bring to the wall' },
   'label.stage': { ko: '두 상자', en: 'Two boxes' },
   'label.view': { ko: '상자와 막대', en: 'Boxes and bars' },
 
@@ -157,8 +158,9 @@ const COUNT_S = 4;
 
 export const pressureFromCollisionsSchema: BundleSchema = {
   id: PRESSURE_FROM_COLLISIONS_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 분자가 움직이고, 세기가 서고, 횟수가 쌓이고, 막대가 선다.

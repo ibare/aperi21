@@ -67,6 +67,7 @@ export const SCENE_BOUNDS = { minX: -20.5, maxX: 21.8, minY: -3.8, maxY: 19.4 } 
 
 export const quantumTunnelingMessages = Object.freeze({
   'label.title': { ko: '터널 효과', en: 'Quantum tunneling' },
+  'label.operation': { ko: '장벽을 통과하는 확률', en: 'The chance of passing through a barrier' },
   'label.stage': { ko: '두께가 다른 두 장벽', en: 'Two barriers of different thickness' },
   'label.view': { ko: '장벽과 확률 밀도', en: 'Barrier and probability density' },
 
@@ -111,8 +112,9 @@ function key(k: QuantumTunnelingMessageKey): string {
 
 export const quantumTunnelingSchema: BundleSchema = {
   id: QUANTUM_TUNNELING_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 두께를 바꿔 보는 일은 두 레인이 나란히 이미 하고 있다 — 슬라이더로

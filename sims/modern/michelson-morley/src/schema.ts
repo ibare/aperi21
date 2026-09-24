@@ -93,6 +93,7 @@ export const RETURN = 3;
 
 export const michelsonMorleyMessages = Object.freeze({
   'label.title': { ko: '마이컬슨-몰리 실험', en: 'Michelson–Morley experiment' },
+  'label.operation': { ko: '에테르가 없다는 증거', en: 'Evidence that there is no ether' },
   'label.stage': { ko: '1887 년 간섭계', en: 'The 1887 interferometer' },
   'label.view': { ko: '돌리는 간섭계', en: 'Rotating interferometer' },
 
@@ -146,8 +147,9 @@ function key(k: MichelsonMorleyMessageKey): string {
 
 export const michelsonMorleySchema: BundleSchema = {
   id: MICHELSON_MORLEY_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 돌리는 일은 자동 진행이 한다. 독자가 각을 고르게 해도 주장은

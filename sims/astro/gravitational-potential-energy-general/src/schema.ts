@@ -90,6 +90,7 @@ export const SCENE_BOUNDS = { minX: -8.5, maxX: 8.4, minY: -4.0, maxY: 4.25 } as
 
 export const gravitationalPotentialEnergyGeneralMessages = Object.freeze({
   'label.title': { ko: '중력 퍼텐셜 에너지(일반)', en: 'Gravitational potential energy (general)' },
+  'label.operation': { ko: '무한대를 기준으로 한 음의 에너지', en: 'A negative energy measured from infinity' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '우물과 궤도', en: 'Well and orbit' },
   /** 0 선의 이름. 조사가 붙는 말이라 문안이다 (C1). */
@@ -138,8 +139,9 @@ function key(k: GravitationalPotentialEnergyGeneralMessageKey): string {
 
 export const gravitationalPotentialEnergyGeneralSchema: BundleSchema = {
   id: GRAVITATIONAL_POTENTIAL_ENERGY_GENERAL_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'astro',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 선을 올려 보는 일은 세 샷의 자동 진행이 한다 — NOTES (b).

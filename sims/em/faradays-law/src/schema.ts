@@ -113,6 +113,7 @@ export const CLEAR = 0.8;
 
 export const faradaysLawMessages = Object.freeze({
   'label.title': { ko: '패러데이 법칙', en: "Faraday's law" },
+  'label.operation': { ko: '자속 변화가 만드는 기전력', en: 'The EMF made by a changing flux' },
   'label.stage': { ko: '코일과 자석', en: 'Coil and magnet' },
   'label.view': { ko: '옆에서', en: 'From the side' },
   /** 자석에 새겨진 극 표식 (C1 판정 1). */
@@ -184,8 +185,9 @@ function key(k: FaradaysLawMessageKey): string {
 
 export const faradaysLawSchema: BundleSchema = {
   id: FARADAYS_LAW_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 밀어 넣고, 멈추고, 더 빠르게 다시 민다.

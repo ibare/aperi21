@@ -74,6 +74,7 @@ export const SCENE_BOUNDS = { minX: -1.5, maxX: 7.1, minY: -2.05, maxY: 1.85 } a
 
 export const stringVibrationMessages = Object.freeze({
   'label.title': { ko: '줄의 진동', en: 'Vibrating string' },
+  'label.operation': { ko: '양끝이 고정된 줄의 모드', en: 'Modes of a string fixed at both ends' },
   'label.stage': { ko: '손가락으로 누르는 줄', en: 'String stopped by a finger' },
   'label.view': { ko: '줄과 파형', en: 'String and waveform' },
 
@@ -128,8 +129,9 @@ function key(k: StringVibrationMessageKey): string {
 
 export const stringVibrationSchema: BundleSchema = {
   id: STRING_VIBRATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'waves',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 손가락이 정해진 자리(개방 → 2/3 → 1/2)를 차례로 누르며 주장을 마친다 —

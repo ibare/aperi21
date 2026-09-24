@@ -80,6 +80,7 @@ export const SCENE_BOUNDS = { minX: -5.2, maxX: 5.3, minY: -4.55, maxY: 4.05 } a
 
 export const convergingDivergingLensMessages = Object.freeze({
   'label.title': { ko: '볼록 렌즈와 오목 렌즈', en: 'Converging and diverging lenses' },
+  'label.operation': { ko: '모으는 렌즈와 퍼뜨리는 렌즈', en: 'A lens that gathers light and a lens that spreads it' },
   'label.stage': { ko: '평행광', en: 'Parallel light' },
   'label.view': { ko: '두 렌즈', en: 'Two lenses' },
 
@@ -127,8 +128,9 @@ function key(k: ConvergingDivergingLensMessageKey): string {
 
 export const convergingDivergingLensSchema: BundleSchema = {
   id: CONVERGING_DIVERGING_LENS_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'optics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 두 렌즈를 한 화면에 나란히 두어 같은 평행광이 한쪽은 모이고 한쪽은

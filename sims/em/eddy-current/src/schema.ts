@@ -119,6 +119,7 @@ export const RESET = 0.6;
 
 export const eddyCurrentMessages = Object.freeze({
   'label.title': { ko: '맴돌이 전류', en: 'Eddy currents' },
+  'label.operation': { ko: '덩어리 도체 속의 유도 전류', en: 'Induced currents inside a solid conductor' },
   'label.stage': { ko: '두 관', en: 'Two tubes' },
   'label.view': { ko: '옆에서', en: 'From the side' },
   /** 관 이름표. */
@@ -168,8 +169,9 @@ function key(k: EddyCurrentMessageKey): string {
 
 export const eddyCurrentSchema: BundleSchema = {
   id: EDDY_CURRENT_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 두 자석이 이미 떨어지고 있다.

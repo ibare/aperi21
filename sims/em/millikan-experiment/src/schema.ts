@@ -136,6 +136,7 @@ export const CLEAR = 0.7;
 
 export const millikanExperimentMessages = Object.freeze({
   'label.title': { ko: '밀리컨 실험', en: 'Millikan oil-drop experiment' },
+  'label.operation': { ko: '전하가 띄엄띄엄하다는 증거', en: 'Evidence that charge comes in lumps' },
   'label.stage': { ko: '평행판 사이의 기름방울', en: 'Oil drops between parallel plates' },
   'label.view': { ko: '옆에서 본 장치와 전하 축', en: 'Side view and charge axis' },
   /** 판 부호 · 힘 · 축 기호. 표식이라 번역하지 않는다 (C1 판정 3). */
@@ -218,8 +219,9 @@ function weightConstants(): Record<string, number> {
 
 export const millikanExperimentSchema: BundleSchema = {
   id: MILLIKAN_EXPERIMENT_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 방울이 떨어지고, 멈추고, 점이 쌓인다.

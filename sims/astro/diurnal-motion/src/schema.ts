@@ -117,6 +117,10 @@ export const START_AT = 1.0;
 
 export const diurnalMotionMessages = Object.freeze({
   'label.title': { ko: '일주 운동', en: 'Diurnal motion' },
+  'label.operation': {
+    ko: '하루 동안 태양과 별이 하늘을 가로지르는 길',
+    en: 'The paths the Sun and stars trace across the sky in a day',
+  },
   'label.stage': { ko: '북쪽 하늘', en: 'Northern sky' },
   'label.view': { ko: '땅 위에서', en: 'From the ground' },
   'label.skyTitle': {
@@ -168,8 +172,9 @@ function key(k: DiurnalMotionMessageKey): string {
 
 export const diurnalMotionSchema: BundleSchema = {
   id: DIURNAL_MOTION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'astro',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 하늘이 돌고 있고, 하루를 다 감으면 할 말이 끝난다.

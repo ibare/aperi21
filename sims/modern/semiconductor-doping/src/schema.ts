@@ -85,6 +85,7 @@ export const SCENE_BOUNDS = { minX: -7.75, maxX: 7.75, minY: -2.8, maxY: 2.5 } a
 
 export const semiconductorDopingMessages = Object.freeze({
   'label.title': { ko: '도핑', en: 'Doping' },
+  'label.operation': { ko: '불순물이 만드는 n형과 p형', en: 'How impurities make n-type and p-type' },
   'label.stage': { ko: '실리콘 두 조각', en: 'Two silicon crystals' },
   'label.view': { ko: '격자와 띠 그림', en: 'Lattice and band diagram' },
 
@@ -136,8 +137,9 @@ function key(k: SemiconductorDopingMessageKey): string {
 
 export const semiconductorDopingSchema: BundleSchema = {
   id: SEMICONDUCTOR_DOPING_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

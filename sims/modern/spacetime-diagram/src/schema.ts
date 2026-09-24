@@ -63,6 +63,7 @@ export const SPEED_FOLLOW = 5;
 
 export const spacetimeDiagramMessages = Object.freeze({
   'label.title': { ko: '시공간 도표', en: 'Spacetime diagram' },
+  'label.operation': { ko: '세계선과 동시선', en: 'Worldline and line of simultaneity' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 눈금 없는 축 약속 — 세로가 시간, 가로가 공간. */
@@ -130,8 +131,9 @@ function scenePhases(id: string, caption: SpacetimeDiagramMessageKey): TimelineP
 
 export const spacetimeDiagramSchema: BundleSchema = {
   id: SPACETIME_DIAGRAM_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'default', label: text('label.stage'), constants: {} }],

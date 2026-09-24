@@ -69,6 +69,7 @@ export const SCENE_BOUNDS = { minX: -0.7, maxX: 8.4, minY: -1.05, maxY: 3.65 } a
 
 export const relativisticMomentumMessages = Object.freeze({
   'label.title': { ko: '상대론적 운동량', en: 'Relativistic momentum' },
+  'label.operation': { ko: '속도가 커질 때의 발산', en: 'Momentum diverges as speed grows' },
   'label.stage': { ko: '한결같은 힘으로 미는 물체', en: 'A body pushed by a steady force' },
   'label.view': { ko: '운동량-속도 곡선', en: 'Momentum-speed curve' },
   'label.axisMomentum': { ko: '운동량 p', en: 'momentum p' },
@@ -113,8 +114,9 @@ function key(k: RelativisticMomentumMessageKey): string {
 
 export const relativisticMomentumSchema: BundleSchema = {
   id: RELATIVISTIC_MOMENTUM_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 밀기 시작하고, 곡선을 오르고, c 앞에서 멈칫한 채 다시 온다.

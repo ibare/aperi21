@@ -65,6 +65,7 @@ export const SCENE_BOUNDS = { minX: -0.62, maxX: 0.66, minY: -0.74, maxY: 0.56 }
 
 export const superpositionOfForcesMessages = Object.freeze({
   'label.title': { ko: '전기력의 중첩', en: 'Superposition of electric forces' },
+  'label.operation': { ko: '여러 전하가 주는 힘의 합', en: 'Adding the forces from several charges' },
   'label.stage': { ko: '원천 셋', en: 'Three source charges' },
   'label.view': { ko: '이어 붙이기', en: 'Head to tail' },
 
@@ -118,8 +119,9 @@ function key(k: SuperpositionOfForcesMessageKey): string {
 
 export const superpositionOfForcesSchema: BundleSchema = {
   id: SUPERPOSITION_OF_FORCES_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 화살표가 이어 붙고, 원천 하나가 옮겨 가는 것까지 한 주기에 끝난다.

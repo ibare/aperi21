@@ -90,6 +90,7 @@ export const SCENE_BOUNDS = { minX: -0.35, maxX: 9.2, minY: -0.95, maxY: 3.4 } a
 
 export const boylesLawMessages = Object.freeze({
   'label.title': { ko: '보일 법칙', en: "Boyle's law" },
+  'label.operation': { ko: '온도가 일정할 때의 압력-부피', en: 'Pressure and volume at constant temperature' },
   'label.stage': { ko: '피스톤 실린더', en: 'Piston cylinder' },
   'label.view': { ko: '실린더와 P–V 그림', en: 'Cylinder and P–V diagram' },
 
@@ -160,8 +161,9 @@ export type PhaseId = (typeof PHASE_IDS)[number];
 
 export const boylesLawSchema: BundleSchema = {
   id: BOYLES_LAW_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 피스톤이 눌리고, 점이 곡선을 따라가고, 넓이가 같은 직사각형이 쌓인다.

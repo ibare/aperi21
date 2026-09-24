@@ -34,6 +34,7 @@ export const SCENE_BOUNDS = { minX: -1.75, maxX: 1.75, minY: -0.78, maxY: 1.26 }
 
 export const irreversibilityMessages = Object.freeze({
   'label.title': { ko: '엔트로피와 비가역성', en: 'Entropy and irreversibility' },
+  'label.operation': { ko: '되돌릴 수 없는 이유', en: 'Why it cannot be undone' },
   'label.stage': { ko: '알갱이 바닥 위의 공', en: 'Ball on a grainy floor' },
   'label.view': { ko: '정방향 · 거꾸로', en: 'Forward · reversed' },
   /** 재생 방향 표식 — 기호라 번역하지 않는다 (C1 판정 1). 글자 모양 선택자(U+FE0E)로 그림 글자가 되지 않게 한다. */
@@ -92,8 +93,9 @@ function key(k: IrreversibilityMessageKey): string {
 
 export const irreversibilitySchema: BundleSchema = {
   id: IRREVERSIBILITY_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 공이 떨어져 튀다 멈추고, 같은 장면이 거꾸로 돈다.

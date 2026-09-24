@@ -101,6 +101,7 @@ export const PHASE = {
 
 export const dragInFluidMessages = Object.freeze({
   'label.title': { ko: '유체 속 항력', en: 'Drag in a fluid' },
+  'label.operation': { ko: '형상과 속도가 정하는 저항', en: 'Drag set by shape and speed' },
   'label.stage': { ko: '같은 흐름', en: 'Same flow' },
   'label.view': { ko: '두 레인', en: 'Two lanes' },
   'label.cylinder': { ko: '원기둥', en: 'cylinder' },
@@ -136,8 +137,9 @@ function key(k: DragInFluidMessageKey): string {
 
 export const dragInFluidSchema: BundleSchema = {
   id: DRAG_IN_FLUID_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'fluids',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 자동 진행으로 주장이 끝난다 (controllers.ts).

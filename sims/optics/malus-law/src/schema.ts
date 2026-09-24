@@ -83,6 +83,7 @@ export const SCENE_BOUNDS = { minX: -2.05, maxX: 9.2, minY: -2.45, maxY: 1.75 } 
 
 export const malusLawMessages = Object.freeze({
   'label.title': { ko: '말뤼스 법칙', en: "Malus's law" },
+  'label.operation': { ko: '편광판을 지난 세기', en: 'Intensity through a polarizer' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   'label.analyzer': { ko: '검광판', en: 'Analyzer' },
@@ -141,8 +142,9 @@ function key(k: MalusLawMessageKey): string {
 
 export const malusLawSchema: BundleSchema = {
   id: MALUS_LAW_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'optics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 판이 스스로 다섯 각을 차례로 돌며 막대를 세운다.

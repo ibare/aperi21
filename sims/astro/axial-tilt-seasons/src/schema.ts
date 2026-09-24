@@ -91,6 +91,10 @@ export const START_AT = 0.8;
 
 export const axialTiltSeasonsMessages = Object.freeze({
   'label.title': { ko: '자전축 기울기와 계절', en: 'Axial tilt and the seasons' },
+  'label.operation': {
+    ko: '기울어진 채 도는 것이 만드는 계절',
+    en: 'The seasons made by an Earth that orbits tilted',
+  },
   'label.stage': { ko: '태양과 지구', en: 'Sun and Earth' },
   'label.view': { ko: '궤도를 비스듬히 위에서', en: 'The orbit seen from slightly above' },
   'label.sun': { ko: '태양', en: 'Sun' },
@@ -157,8 +161,9 @@ function key(k: AxialTiltSeasonsMessageKey): string {
 
 export const axialTiltSeasonsSchema: BundleSchema = {
   id: AXIAL_TILT_SEASONS_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'astro',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 기운 해와 기울기 0 인 해를 자동으로 차례로 보여 견주기까지 마친다.

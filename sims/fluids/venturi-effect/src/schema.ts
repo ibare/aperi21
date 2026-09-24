@@ -115,6 +115,7 @@ export const BLOW_DOWN = 1.8;
 
 export const venturiEffectMessages = Object.freeze({
   'label.title': { ko: '벤투리 효과', en: 'Venturi effect' },
+  'label.operation': { ko: '좁아진 곳에서 낮아지는 압력', en: 'Lower pressure where the pipe narrows' },
   'label.stage': { ko: '벤투리관과 액체 통', en: 'Venturi tube over a liquid tank' },
   'label.view': { ko: '옆에서 본 장치', en: 'Side view' },
   'caption.still': {
@@ -151,8 +152,9 @@ function key(k: VenturiEffectMessageKey): string {
 
 export const venturiEffectSchema: BundleSchema = {
   id: VENTURI_EFFECT_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'fluids',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바람이 세지고, 뿜고, 잦아들고, 다시 분다.

@@ -89,6 +89,10 @@ export const START_AT = RACE * 0.3;
 
 export const waveSpeedInMediumMessages = Object.freeze({
   'label.title': { ko: '매질과 파동 속도', en: 'Wave speed and the medium' },
+  'label.operation': {
+    ko: '장력·밀도·탄성이 정하는 속도',
+    en: 'Speed set by tension, density and elasticity',
+  },
   'label.stage': { ko: '세 줄 경주', en: 'Three-string race' },
   'label.view': { ko: '같은 펄스, 다른 줄', en: 'Same pulse, different strings' },
   /** 줄 이름표. 수식 표기라 번역 대상이 아니다 (C1 판정 3). 배수는 스테이지 상수를 `{k}` 로 끼운다. */
@@ -121,8 +125,9 @@ function key(k: WaveSpeedInMediumMessageKey): string {
 
 export const waveSpeedInMediumSchema: BundleSchema = {
   id: WAVE_SPEED_IN_MEDIUM_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'waves',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 손잡이를 두지 않는다 — 세 줄이 이미 「장력을 올린 줄」 과 「무거운 줄」 의 대조를 동시에 보인다.

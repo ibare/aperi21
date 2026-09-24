@@ -123,6 +123,10 @@ export const CLEAR = 0.8;
 
 export const mutualInductanceMessages = Object.freeze({
   'label.title': { ko: '상호 인덕턴스', en: 'Mutual inductance' },
+  'label.operation': {
+    ko: '이웃 회로에 유도되는 기전력',
+    en: 'An EMF induced in a neighbouring circuit',
+  },
   'label.stage': { ko: '나란한 두 코일', en: 'Two coils on one axis' },
   'label.view': { ko: '코일과 기록', en: 'Coils and record' },
   'label.primary': { ko: '1차 코일', en: 'primary' },
@@ -176,8 +180,9 @@ function key(k: MutualInductanceMessageKey): string {
 
 export const mutualInductanceSchema: BundleSchema = {
   id: MUTUAL_INDUCTANCE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 1차 전류가 오르고 있고, 일정해지고, 내려간다.

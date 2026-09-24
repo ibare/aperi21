@@ -75,6 +75,7 @@ export const SCENE_BOUNDS = { minX: 0, maxX: FRAME.width, minY: -58, maxY: FRAME
 
 export const capillaryActionMessages = Object.freeze({
   'label.title': { ko: '모세관 현상', en: 'Capillary action' },
+  'label.operation': { ko: '좁은 관에서의 상승과 하강', en: 'Rise and fall in narrow tubes' },
   'label.stage': { ko: '세 관', en: 'Three tubes' },
   'label.view': { ko: '옆모습', en: 'Side view' },
   'label.outerLevel': { ko: '바깥 수면 높이', en: 'Outside level' },
@@ -120,8 +121,9 @@ function key(k: CapillaryActionMessageKey): string {
 
 export const capillaryActionSchema: BundleSchema = {
   id: CAPILLARY_ACTION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'fluids',
+  operation: text('label.operation'),
   // 멈춘 상태가 결론이라 되감지 않는다 — 시간표도 주기도 없다.
   timeModel: 'continuous',
 

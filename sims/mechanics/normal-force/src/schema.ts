@@ -76,6 +76,7 @@ export const CAPTION_Y = 306;
 
 export const normalForceMessages = Object.freeze({
   'label.title': { ko: '수직항력', en: 'Normal force' },
+  'label.operation': { ko: '접촉면이 수직으로 미는 힘', en: 'The perpendicular push of a contact surface' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 무게 화살표 이름. 값은 vars 로 끼운다 (C1). */
@@ -128,8 +129,9 @@ function key(k: NormalForceMessageKey): string {
 
 export const normalForceSchema: BundleSchema = {
   id: NORMAL_FORCE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 자동 진행 한 바퀴가 당김 · 뜸 · 0 · 누름을 모두 보여 준다 (원본 NOTES (c)).

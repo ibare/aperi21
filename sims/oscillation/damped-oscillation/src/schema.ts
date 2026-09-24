@@ -99,6 +99,7 @@ export const RESET = 0.7 * PERIOD;
 
 export const dampedOscillationMessages = Object.freeze({
   'label.title': { ko: '감쇠 진동', en: 'Damped oscillation' },
+  'label.operation': { ko: '에너지가 빠져나가는 진동', en: 'An oscillation that loses energy' },
   'label.stage': { ko: '액체 속 용수철', en: 'Spring in liquid' },
   'label.view': { ko: '추와 기록지', en: 'Mass and chart' },
   /** 시간축 기호. 수식 표기라 번역 대상이 아니다 (C1 판정 3). */
@@ -139,8 +140,9 @@ function key(k: DampedOscillationMessageKey): string {
 
 export const dampedOscillationSchema: BundleSchema = {
   id: DAMPED_OSCILLATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'oscillation',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 추가 잦아들며 오르내리고, 펜이 물결을 펼친다.

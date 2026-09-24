@@ -87,6 +87,7 @@ export const FADE = 0.6;
 
 export const newtonsRingsMessages = Object.freeze({
   'label.title': { ko: '뉴턴 링', en: "Newton's rings" },
+  'label.operation': { ko: '곡면과 평면 사이의 간섭', en: 'Interference between a curved and a flat surface' },
   'label.stage': { ko: '평판에 얹은 볼록 렌즈', en: 'Convex lens resting on a flat plate' },
   'label.view': { ko: '단면과 위에서 본 무늬', en: 'Cross-section and top view' },
   'label.side': { ko: '옆에서 본 단면', en: 'Side section' },
@@ -143,8 +144,9 @@ export const ringPhaseId = (m: number): string => `ring-${m}`;
 
 export const newtonsRingsSchema: BundleSchema = {
   id: NEWTONS_RINGS_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'optics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 두 그림이 있고, 계단이 하나씩 그어지고, 다시 처음으로.

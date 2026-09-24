@@ -59,6 +59,7 @@ export const SCENE_BOUNDS = { minX: -1.1, maxX: 11.4, minY: -0.75, maxY: 2.8 } a
 
 export const boundaryLayerMessages = Object.freeze({
   'label.title': { ko: '경계층', en: 'Boundary layer' },
+  'label.operation': { ko: '벽 근처에서 속도가 0이 되는 층', en: 'The layer near a wall where the flow slows to zero' },
   'label.stage': { ko: '판 위의 흐름', en: 'Flow over a plate' },
   'label.view': { ko: '옆모습', en: 'Side view' },
 
@@ -92,8 +93,9 @@ function key(k: BoundaryLayerMessageKey): string {
 
 export const boundaryLayerSchema: BundleSchema = {
   id: BOUNDARY_LAYER_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'fluids',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 자동 진행 한 번으로 「얇은 층 안에서만 · 내려갈수록 두꺼워진다」 가 끝난다.

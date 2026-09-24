@@ -93,6 +93,7 @@ export const SCENE_BOUNDS = { minX: -18.5, maxX: 26.5, minY: -16.2, maxY: 12.4 }
 
 export const humanEyeAccommodationMessages = Object.freeze({
   'label.title': { ko: '눈의 조절', en: 'Accommodation of the eye' },
+  'label.operation': { ko: '수정체가 초점을 맞추는 방식', en: 'How the lens of the eye brings things into focus' },
   'label.stage': { ko: '먼 곳과 가까운 곳', en: 'Far and near' },
   'label.view': { ko: '눈 단면', en: 'Eye cross-section' },
 
@@ -150,8 +151,9 @@ function key(k: HumanEyeAccommodationMessageKey): string {
 
 export const humanEyeAccommodationSchema: BundleSchema = {
   id: HUMAN_EYE_ACCOMMODATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'optics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 먼 곳 → 가까운 곳 → 수정체가 두꺼워짐을 자동 진행으로 보인다 —

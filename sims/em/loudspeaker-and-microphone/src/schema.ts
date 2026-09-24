@@ -86,6 +86,7 @@ const FADE = 0.6;
 
 export const loudspeakerAndMicrophoneMessages = Object.freeze({
   'label.title': { ko: '스피커와 마이크', en: 'Loudspeaker and microphone' },
+  'label.operation': { ko: '전류와 진동을 오가는 변환', en: 'Turning current into vibration and back' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
 
@@ -151,8 +152,9 @@ function key(k: LoudspeakerAndMicrophoneMessageKey): string {
 
 export const loudspeakerAndMicrophoneSchema: BundleSchema = {
   id: LOUDSPEAKER_AND_MICROPHONE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

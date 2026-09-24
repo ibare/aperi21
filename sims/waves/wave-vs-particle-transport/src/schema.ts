@@ -83,6 +83,10 @@ export const START_AT = 1.8;
 
 export const waveVsParticleTransportMessages = Object.freeze({
   'label.title': { ko: '파동이 나르는 것', en: 'What a wave carries' },
+  'label.operation': {
+    ko: '매질은 제자리, 에너지는 이동',
+    en: 'The medium stays put, the energy moves on',
+  },
   'label.stage': { ko: '펄스 하나와 끝의 추', en: 'One pulse and a weight at the end' },
   'label.view': { ko: '줄과 표시한 조각', en: 'The rope and its marked pieces' },
   'caption.travel': {
@@ -116,8 +120,9 @@ function key(k: WaveVsParticleTransportMessageKey): string {
 
 export const waveVsParticleTransportSchema: BundleSchema = {
   id: WAVE_VS_PARTICLE_TRANSPORT_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'waves',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 펄스가 건너가고, 추가 흔들리고, 다음 펄스가 나간다.

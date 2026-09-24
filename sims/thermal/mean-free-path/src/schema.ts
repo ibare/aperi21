@@ -87,6 +87,7 @@ export const SCENE_BOUNDS = { minX: -0.75, maxX: 9.65, minY: -2.15, maxY: 3.5 } 
 
 export const meanFreePathMessages = Object.freeze({
   'label.title': { ko: '평균 자유 행로', en: 'Mean free path' },
+  'label.operation': { ko: '충돌과 충돌 사이의 거리', en: 'The distance between collisions' },
   'label.stage': { ko: '밀도가 다른 두 상자', en: 'Two boxes of different density' },
   'label.view': { ko: '두 상자 나란히', en: 'Two boxes side by side' },
   'label.boxSparse': { ko: '밀도 n', en: 'density n' },
@@ -127,8 +128,9 @@ function key(k: MeanFreePathMessageKey): string {
 
 export const meanFreePathSchema: BundleSchema = {
   id: MEAN_FREE_PATH_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 두 분자가 부딪히며 가고, 평균 막대가 자라 멈춘다.

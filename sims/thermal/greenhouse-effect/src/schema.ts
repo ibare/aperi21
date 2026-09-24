@@ -125,6 +125,10 @@ export const START_AT = 2.0;
 
 export const greenhouseEffectMessages = Object.freeze({
   'label.title': { ko: '온실 효과', en: 'Greenhouse effect' },
+  'label.operation': {
+    ko: '적외선을 되돌리는 층이 지표를 덥히는 것',
+    en: 'A layer that sends infrared back down warms the ground',
+  },
   'label.stage': { ko: '한 층 대기', en: 'One-layer atmosphere' },
   'label.view': { ko: '단면 · 막대 · 온도 곡선', en: 'Cross-section, bars and temperature curve' },
   /** 온도 — 값과 단위. 값이 끼는 조립문이라 문안이다 (C1 판정 4). */
@@ -176,8 +180,9 @@ function key(k: GreenhouseEffectMessageKey): string {
 
 export const greenhouseEffectSchema: BundleSchema = {
   id: GREENHOUSE_EFFECT_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 층이 들어오고 지표가 데워져 새 온도에 서고, 다시 처음으로.

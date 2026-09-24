@@ -129,6 +129,7 @@ export const START_AT = 2.2;
 
 export const jouleHeatingMessages = Object.freeze({
   'label.title': { ko: '줄 열', en: 'Joule heating' },
+  'label.operation': { ko: '저항이 만드는 열', en: 'Heat made by resistance' },
   'label.stage': { ko: '직렬 두 저항', en: 'Two resistors in series' },
   'label.view': { ko: '회로와 온도계', en: 'Circuit and thermometers' },
   /** 값이 끼는 이름표 — 단위 기호는 표식이지만 값이 끼므로 문안 키로 둔다 (C1). */
@@ -174,8 +175,9 @@ function key(k: JouleHeatingMessageKey): string {
 
 export const jouleHeatingSchema: BundleSchema = {
   id: JOULE_HEATING_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흐르고, 큰 저항 쪽이 먼저 달아오른다.

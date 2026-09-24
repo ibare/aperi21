@@ -108,6 +108,7 @@ export const FADE = 0.6;
 
 export const gravitationalPotentialEnergyMessages = Object.freeze({
   'label.title': { ko: '중력 퍼텐셜 에너지', en: 'Gravitational potential energy' },
+  'label.operation': { ko: '높이에 저장된 에너지', en: 'Energy stored in height' },
   'label.stage': { ko: '말뚝 박기', en: 'Pile driving' },
   'label.view': { ko: '두 말뚝', en: 'Two stakes' },
   /** 높이 · 깊이 이름표. 수식 기호라 번역 대상이 아니다 (C1 판정 3). */
@@ -154,8 +155,9 @@ function key(k: GravitationalPotentialEnergyMessageKey): string {
 
 export const gravitationalPotentialEnergySchema: BundleSchema = {
   id: GRAVITATIONAL_POTENTIAL_ENERGY_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 들어 올리는 중이고, 놓고, 박히고, 다시 올린다.

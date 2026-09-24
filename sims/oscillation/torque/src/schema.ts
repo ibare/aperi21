@@ -71,6 +71,10 @@ export const SCENE_BOUNDS = { minX: -2.66, maxX: 2.0, minY: -0.66, maxY: 1.12 } 
 
 export const torqueMessages = Object.freeze({
   'label.title': { ko: '돌림힘', en: 'Torque' },
+  'label.operation': {
+    ko: '회전을 일으키는 양과 팔 길이',
+    en: 'What makes things turn, and the length of the lever arm',
+  },
   'label.stage': { ko: '문 둘', en: 'Two doors' },
   'label.view': { ko: '평면도', en: 'Top view' },
 
@@ -109,8 +113,9 @@ function key(k: TorqueMessageKey): string {
 
 export const torqueSchema: BundleSchema = {
   id: TORQUE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'oscillation',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

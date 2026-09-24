@@ -66,6 +66,7 @@ export const CLOSE = 2;
 
 export const ellipticalOrbitMessages = Object.freeze({
   'label.title': { ko: '타원 궤도', en: 'Elliptical orbit' },
+  'label.operation': { ko: '초점에 놓인 중심 천체', en: 'The central body sits at a focus' },
   'label.stage': { ko: '긴반지름이 같은 궤도', en: 'Orbits with the same semi-major axis' },
   'label.view': { ko: '초점 벌리기', en: 'Pulling the foci apart' },
   'label.sun': { ko: '중심 천체', en: 'central body' },
@@ -108,8 +109,9 @@ function key(k: EllipticalOrbitMessageKey): string {
 
 export const ellipticalOrbitSchema: BundleSchema = {
   id: ELLIPTICAL_ORBIT_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'astro',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 시간표가 원에서 가장 길쭉한 타원까지 정박 이심률을 차례로 훑는다.

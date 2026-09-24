@@ -108,6 +108,10 @@ export const SCENE_BOUNDS = { minX: -0.62, maxX: 7.98, minY: -1.8, maxY: 1.24 } 
 
 export const apparentBrightnessMessages = Object.freeze({
   'label.title': { ko: '겉보기 밝기', en: 'Apparent brightness' },
+  'label.operation': {
+    ko: '같은 빛이 넓은 면에 나뉜다',
+    en: 'The same light divides over a wider area',
+  },
   'label.stage': { ko: '밤하늘', en: 'Night sky' },
   'label.view': { ko: '빛 묶음', en: 'A bundle of light' },
   /** 자리 이름 — 거리는 절대값이 아니라 배수로만 말한다. */
@@ -148,8 +152,9 @@ function key(k: ApparentBrightnessMessageKey): string {
 
 export const apparentBrightnessSchema: BundleSchema = {
   id: APPARENT_BRIGHTNESS_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'astro',
+  operation: text('label.operation'),
   timeModel: 'linear',
 
   /**

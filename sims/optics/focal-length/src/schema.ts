@@ -69,6 +69,10 @@ export const SCENE_BOUNDS = { minX: -29, maxX: 30, minY: -17.5, maxY: 14.5 } as 
 /** 화면에 뜨는 모든 문자는 여기를 지난다 (C1). en 은 원본이지 번역이 아니다. */
 export const focalLengthMessages = Object.freeze({
   'label.title': { ko: '초점 거리', en: 'Focal length' },
+  'label.operation': {
+    ko: '상이 맺히는 자리를 정하는 것',
+    en: 'What decides where the image forms',
+  },
   'label.stage': {
     ko: '초점 거리가 오가는 볼록 렌즈',
     en: 'A converging lens whose focal length changes',
@@ -118,8 +122,9 @@ function key(k: FocalLengthMessageKey): string {
 
 export const focalLengthSchema: BundleSchema = {
   id: FOCAL_LENGTH_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'optics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 시간표가 초점 거리를 두 정박값 사이로 오가게 한다 (controllers.ts).

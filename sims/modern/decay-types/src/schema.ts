@@ -86,6 +86,7 @@ export const SCENE_BOUNDS = { minX: -1.1, maxX: 10.9, minY: -2.9, maxY: 1.95 } a
 
 export const decayTypesMessages = Object.freeze({
   'label.title': { ko: '붕괴의 종류', en: 'Types of decay radiation' },
+  'label.operation': { ko: '알파·베타·감마', en: 'Alpha, beta, gamma' },
   'label.stage': { ko: '종이 · 알루미늄 · 납', en: 'Paper, aluminium, lead' },
   'label.view': { ko: '세 벽', en: 'Three absorbers' },
 
@@ -131,8 +132,9 @@ function key(k: DecayTypesMessageKey): string {
 
 export const decayTypesSchema: BundleSchema = {
   id: DECAY_TYPES_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 벽이 하나씩 들어서는 자동 진행만으로 주장이 끝난다.

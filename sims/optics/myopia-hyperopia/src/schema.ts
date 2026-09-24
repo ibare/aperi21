@@ -110,6 +110,7 @@ export const SCENE_BOUNDS = { minX: -18.5, maxX: 26.5, minY: -15.2, maxY: 14.6 }
 
 export const myopiaHyperopiaMessages = Object.freeze({
   'label.title': { ko: '근시와 원시', en: 'Nearsightedness and farsightedness' },
+  'label.operation': { ko: '상이 맺히는 위치와 교정', en: 'Where the image forms, and how glasses correct it' },
   'label.stage': { ko: '근시 눈과 원시 눈', en: 'Nearsighted and farsighted eyes' },
   'label.view': { ko: '눈 단면', en: 'Eye cross-section' },
 
@@ -181,8 +182,9 @@ function key(k: MyopiaHyperopiaMessageKey): string {
 
 export const myopiaHyperopiaSchema: BundleSchema = {
   id: MYOPIA_HYPEROPIA_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'optics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 근시 눈 → 오목 렌즈 → 원시 눈 → 볼록 렌즈를 자동 진행으로 보인다 —

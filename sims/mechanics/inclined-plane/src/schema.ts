@@ -90,6 +90,10 @@ export const SLIDER_STEP = 1;
 
 export const inclinedPlaneMessages = Object.freeze({
   'label.title': { ko: '빗면', en: 'Inclined plane' },
+  'label.operation': {
+    ko: '중력을 면에 나란한 성분과 수직 성분으로',
+    en: 'Splitting gravity along and into the slope',
+  },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
 
@@ -121,8 +125,9 @@ function key(k: InclinedPlaneMessageKey): string {
 
 export const inclinedPlaneSchema: BundleSchema = {
   id: INCLINED_PLANE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'default', label: text('label.stage'), constants: {} }],

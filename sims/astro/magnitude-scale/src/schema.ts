@@ -79,6 +79,10 @@ export const SCENE_BOUNDS = { minX: -0.4, maxX: 16.1, minY: -1.35, maxY: 4.15 } 
 
 export const magnitudeScaleMessages = Object.freeze({
   'label.title': { ko: '별의 등급', en: 'Stellar magnitude' },
+  'label.operation': {
+    ko: '밝기를 등급으로 나타내는 방식',
+    en: 'How brightness is written as magnitude',
+  },
   'label.stage': { ko: '1등성부터 6등성까지', en: 'First to sixth magnitude' },
   'label.view': { ko: '등급 사다리', en: 'Magnitude ladder' },
   /** 판 아래 등급 이름. 값이 끼어드는 조립문이라 문안이다 (C1). */
@@ -127,8 +131,9 @@ function key(k: MagnitudeScaleMessageKey): string {
 
 export const magnitudeScaleSchema: BundleSchema = {
   id: MAGNITUDE_SCALE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'astro',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   /**

@@ -97,6 +97,7 @@ export const SCENE_BOUNDS = { minX: -1.95, maxX: 1.95, minY: -1.98, maxY: 1.42 }
 
 export const gearsMessages = Object.freeze({
   'label.title': { ko: '기어', en: 'Gears' },
+  'label.operation': { ko: '톱니 수가 바꾸는 회전과 힘', en: 'How tooth counts trade turning for force' },
   'label.stage': { ko: '맞물린 두 기어', en: 'Two meshed gears' },
   'label.view': { ko: '옆에서 본 기어', en: 'Gear pair' },
 
@@ -144,8 +145,9 @@ function key(k: GearsMessageKey): string {
 
 export const gearsSchema: BundleSchema = {
   id: GEARS_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'oscillation',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

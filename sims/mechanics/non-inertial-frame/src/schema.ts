@@ -70,6 +70,7 @@ export const PANEL_SPLIT = H / 2;
 
 export const nonInertialFrameMessages = Object.freeze({
   'label.title': { ko: '비관성계', en: 'Non-inertial frame' },
+  'label.operation': { ko: '가속하는 기준틀에서의 운동', en: 'Motion seen from an accelerating frame' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 판 이름표 — 두 판이 어느 기준틀에서 본 것인지가 주장에 필요하다 (원본 NOTES (c)). */
@@ -104,8 +105,9 @@ function key(k: NonInertialFrameMessageKey): string {
 
 export const nonInertialFrameSchema: BundleSchema = {
   id: NON_INERTIAL_FRAME_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 가속도 크기는 주장을 바꾸지 않는다 (원본 NOTES (c)).

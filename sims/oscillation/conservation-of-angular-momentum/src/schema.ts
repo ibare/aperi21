@@ -65,6 +65,10 @@ export const SCENE_BOUNDS = { minX: -1.45, maxX: 4.55, minY: -1.62, maxY: 1.4 } 
 
 export const conservationOfAngularMomentumMessages = Object.freeze({
   'label.title': { ko: '각운동량 보존', en: 'Conservation of angular momentum' },
+  'label.operation': {
+    ko: '팔을 오므리면 빨라지는 이유',
+    en: 'Why pulling your arms in makes you spin faster',
+  },
   'label.stage': { ko: '두 손에 든 추', en: 'Weights in both hands' },
   'label.view': { ko: '위에서 본 회전', en: 'Spin seen from above' },
 
@@ -112,8 +116,9 @@ function key(k: ConservationOfAngularMomentumMessageKey): string {
 
 export const conservationOfAngularMomentumSchema: BundleSchema = {
   id: CONSERVATION_OF_ANGULAR_MOMENTUM_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'oscillation',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

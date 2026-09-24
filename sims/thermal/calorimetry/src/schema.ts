@@ -106,6 +106,7 @@ export const FADE = 0.5;
 
 export const calorimetryMessages = Object.freeze({
   'label.title': { ko: '열량 측정', en: 'Calorimetry' },
+  'label.operation': { ko: '섞었을 때의 최종 온도', en: 'The final temperature of a mixture' },
   'label.stage': { ko: '뜨거운 물을 찬 물에', en: 'Hot water into cold water' },
   'label.view': { ko: '비커와 열 직사각형', en: 'Beaker and heat rectangles' },
   /** 온도 글자. 값은 선언한 온도를 끼운다 (C1). */
@@ -161,8 +162,9 @@ function key(k: CalorimetryMessageKey): string {
 
 export const calorimetrySchema: BundleSchema = {
   id: CALORIMETRY_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 질량 · 온도 · 비열은 스테이지 상수다. 「질량을 바꾸면 멈추는 자리가

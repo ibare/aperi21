@@ -95,6 +95,7 @@ export const SCENE_BOUNDS = { minX: -0.2, maxX: 11.8, minY: -0.95, maxY: 4.95 } 
 
 export const brownianMotionMessages = Object.freeze({
   'label.title': { ko: '브라운 운동', en: 'Brownian motion' },
+  'label.operation': { ko: '분자 충돌이 만드는 무작위 운동', en: 'Random motion driven by molecular collisions' },
   'label.stage': { ko: '물에 뜬 꽃가루 알갱이', en: 'A pollen grain in water' },
   'label.view': { ko: '보통 배율과 확대', en: 'Ordinary and magnified' },
   'label.plain': { ko: '보통 배율', en: 'ordinary magnification' },
@@ -141,8 +142,9 @@ function key(k: BrownianMotionMessageKey): string {
 
 export const brownianMotionSchema: BundleSchema = {
   id: BROWNIAN_MOTION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 알갱이가 비틀거리고, 창이 열려 까닭을 보이고, 다시 닫힌다.

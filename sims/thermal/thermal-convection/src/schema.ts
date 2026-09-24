@@ -91,6 +91,7 @@ export const SCENE_BOUNDS = {
 
 export const thermalConvectionMessages = Object.freeze({
   'label.title': { ko: '대류', en: 'Convection' },
+  'label.operation': { ko: '유체의 이동이 나르는 열', en: 'Heat carried by moving fluid' },
   'label.stage': { ko: '데운 바닥과 식힌 천장', en: 'Heated floor, cooled ceiling' },
   'label.view': { ko: '온도장', en: 'Temperature field' },
   'label.flow': { ko: '흐름 세기', en: 'Flow strength' },
@@ -122,8 +123,9 @@ function key(k: ThermalConvectionMessageKey): string {
 
 export const thermalConvectionSchema: BundleSchema = {
   id: THERMAL_CONVECTION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'continuous',
   parameters: [],
   stages: [{ id: 'default', label: text('label.stage'), constants: {} }],

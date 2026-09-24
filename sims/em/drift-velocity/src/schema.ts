@@ -104,6 +104,7 @@ export const UNTAG = 0.6;
 
 export const driftVelocityMessages = Object.freeze({
   'label.title': { ko: '표류 속도', en: 'Drift velocity' },
+  'label.operation': { ko: '느린 전자와 빠른 신호', en: 'Slow electrons, fast signal' },
   'label.stage': { ko: '작은 회로', en: 'A small circuit' },
   'label.view': { ko: '고리 회로', en: 'Circuit loop' },
   /** 전자 · 전지 극 기호 (C1 판정 3 — 표식). */
@@ -150,8 +151,9 @@ function key(k: DriftVelocityMessageKey): string {
 
 export const driftVelocitySchema: BundleSchema = {
   id: DRIFT_VELOCITY_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흔들리고, 닫히면 켜지며 밀리고, 표시한 전자를 견주고, 다시 연다.

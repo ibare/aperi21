@@ -84,6 +84,10 @@ export const CAPTION_HOT_ABOVE = 570;
 
 export const gasPressureMessages = Object.freeze({
   'label.title': { ko: '기체 분자와 압력', en: 'Molecules and pressure' },
+  'label.operation': {
+    ko: '두드림이 쌓여 압력이 된다',
+    en: 'Pressure is the sum of the knocks',
+  },
   'label.stage': { ko: '상자', en: 'Box' },
   'label.view': { ko: '분자', en: 'Molecules' },
 
@@ -169,8 +173,9 @@ export const PREROLL_SECONDS = 2;
 
 export const gasPressureSchema: BundleSchema = {
   id: GAS_PRESSURE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'linear',
 
   // 읽는 사람이 고를 것은 없다. 손잡이는 조작기 하나뿐이다 (controllers.ts).

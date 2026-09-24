@@ -83,6 +83,7 @@ export const WIDEN = 3.2;
 
 export const uncertaintyPrincipleMessages = Object.freeze({
   'label.title': { ko: '불확정성 원리', en: 'Uncertainty principle' },
+  'label.operation': { ko: '켤레량의 동시 결정 한계', en: 'How sharply two conjugate quantities can be fixed at once' },
   'label.stage': { ko: '가우스 파동 묶음', en: 'Gaussian wave packet' },
   'label.view': { ko: '두 분포와 곱', en: 'Two distributions and their product' },
 
@@ -132,8 +133,9 @@ function key(k: UncertaintyPrincipleMessageKey): string {
 
 export const uncertaintyPrincipleSchema: BundleSchema = {
   id: UNCERTAINTY_PRINCIPLE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 위치를 좁혔다 풀기를 되풀이한다 (controllers.ts).

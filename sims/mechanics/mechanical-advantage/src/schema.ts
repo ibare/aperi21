@@ -132,6 +132,10 @@ export const TOOL_FONT_PX = 13;
 
 export const mechanicalAdvantageMessages = Object.freeze({
   'label.title': { ko: '힘의 이득', en: 'Mechanical advantage' },
+  'label.operation': {
+    ko: '지레와 빗면이 드는 힘을 줄이는 방식',
+    en: 'How levers and ramps cut the force you need',
+  },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
 
@@ -172,8 +176,9 @@ function key(k: MechanicalAdvantageMessageKey): string {
 
 export const mechanicalAdvantageSchema: BundleSchema = {
   id: MECHANICAL_ADVANTAGE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 자동 진행만으로 주장이 끝난다 (원본 NOTES (c)).

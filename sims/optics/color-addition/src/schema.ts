@@ -107,6 +107,7 @@ export function comboKey(on: readonly number[]): string {
 
 export const colorAdditionMessages = Object.freeze({
   'label.title': { ko: '빛의 합성', en: 'Adding light' },
+  'label.operation': { ko: '세 색의 빛이 겹쳐 만드는 색', en: 'The colour three lights make where they overlap' },
   'label.stage': { ko: '스크린', en: 'Screen' },
   'label.view': { ko: '겹친 빛', en: 'Overlapping light' },
   'label.red': { ko: '빨강', en: 'red' },
@@ -173,8 +174,9 @@ const MANUAL_CASES = ['000', '100', '010', '001', '110', '011', '101', '111'].ma
 
 export const colorAdditionSchema: BundleSchema = {
   id: COLOR_ADDITION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'optics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'screen', label: text('label.stage'), constants: {} }],

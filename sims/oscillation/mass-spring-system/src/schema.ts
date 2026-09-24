@@ -78,6 +78,10 @@ export const SCENE_BOUNDS = { minX: -2.72, maxX: 1.98, minY: -1.0, maxY: 1.32 } 
 
 export const massSpringSystemMessages = Object.freeze({
   'label.title': { ko: '용수철 진자', en: 'Mass on a spring' },
+  'label.operation': {
+    ko: '질량과 탄성 계수가 정하는 주기',
+    en: 'The period set by mass and spring constant',
+  },
   'label.stage': { ko: '같은 용수철 셋', en: 'Three identical springs' },
   'label.view': { ko: '나란한 세 레인', en: 'Three lanes' },
 
@@ -121,8 +125,9 @@ function key(k: MassSpringSystemMessageKey): string {
 
 export const massSpringSystemSchema: BundleSchema = {
   id: MASS_SPRING_SYSTEM_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'oscillation',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

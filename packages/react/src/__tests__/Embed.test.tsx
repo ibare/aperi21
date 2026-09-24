@@ -20,8 +20,9 @@ function bundleOf(schema: Partial<BundleSchema> = {}): Bundle {
   return {
     schema: {
       id: 'test-bundle',
-      title: { ko: '테스트', en: 'Test' },
+      label: { ko: '테스트', en: 'Test' },
       category: 'mechanics',
+      operation: { ko: '테스트 조작', en: 'Test operation' },
       timeModel: 'linear',
       parameters: [],
       stages: [EARTH],

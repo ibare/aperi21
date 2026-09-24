@@ -101,6 +101,7 @@ export const CAPTION_FADE_S = 0.25;
 
 export const fieldOfLoopAndSolenoidMessages = Object.freeze({
   'label.title': { ko: '고리와 솔레노이드', en: 'Loop and solenoid' },
+  'label.operation': { ko: '축 위의 자기장', en: 'The magnetic field along the axis' },
   'label.stage': { ko: '고리 겹치기', en: 'Stacking loops' },
   'label.view': { ko: '축을 품은 단면', en: 'Cross-section through the axis' },
   'caption.one': {
@@ -145,8 +146,9 @@ function key(k: FieldOfLoopAndSolenoidMessageKey): string {
 
 export const fieldOfLoopAndSolenoidSchema: BundleSchema = {
   id: FIELD_OF_LOOP_AND_SOLENOID_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 고리가 하나 → 몇 개 → 많이 로 늘었다가 돌아간다.

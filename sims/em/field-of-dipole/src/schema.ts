@@ -92,6 +92,7 @@ export const RESET_S = 0.8;
 
 export const fieldOfDipoleMessages = Object.freeze({
   'label.title': { ko: '쌍극자의 전기장', en: 'Electric field of a dipole' },
+  'label.operation': { ko: '가까운 두 반대 전하', en: 'Two nearby opposite charges' },
   'label.stage': { ko: '쌍극자 하나', en: 'One dipole' },
   'label.view': { ko: '선 모양과 멀어질 때의 세기', en: 'Line shape and strength with distance' },
   'mark.plus': { ko: '+', en: '+' },
@@ -140,8 +141,9 @@ function key(k: FieldOfDipoleMessageKey): string {
 
 export const fieldOfDipoleSchema: BundleSchema = {
   id: FIELD_OF_DIPOLE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 전하를 끄는 그림은 이웃 `field-lines` 의 몫이다.

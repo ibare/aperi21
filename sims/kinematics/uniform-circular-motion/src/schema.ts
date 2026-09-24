@@ -60,6 +60,10 @@ export const SCENE_BOUNDS = { minX: -2.3, maxX: 6.1, minY: -1.5, maxY: 1.5 } as 
 
 export const uniformCircularMotionMessages = Object.freeze({
   'label.title': { ko: '등속 원운동', en: 'Uniform circular motion' },
+  'label.operation': {
+    ko: '속도 화살표는 길이가 그대로인 채 방향만 바뀐다',
+    en: 'The velocity arrow keeps its length and only turns',
+  },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   'label.gathered': {
@@ -88,8 +92,9 @@ function key(k: UniformCircularMotionMessageKey): string {
 
 export const uniformCircularMotionSchema: BundleSchema = {
   id: UNIFORM_CIRCULAR_MOTION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'kinematics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 주장을 마치는 데 필요하지 않다 (원본 NOTES).

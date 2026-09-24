@@ -16,8 +16,9 @@
 ### T02 · `velocity-time-graph`
 
 - 조각 — `aperi21:velocity-time-graph` · `sims/kinematics/velocity-time-graph`
-- 문안 6건
+- 문안 7건
   - `label.title` — 속도-시간 그래프
+  - `label.operation` — 그래프 아래 넓이가 간 거리다
   - `label.stage` — 직선 길
   - `label.view` — 넓이와 길
   - `label.axisV` — 속도
@@ -32,8 +33,9 @@
 ### T04 · `projectile-range`
 
 - 조각 — `aperi21:projectile-range` · `sims/kinematics/projectile-range`
-- 문안 14건
+- 문안 15건
   - `label.title` — 사거리와 발사각
+  - `label.operation` — 던지는 각도가 날아가는 거리를 바꾸는 방식
   - `label.stage` — 같은 속력, 다섯 각도
   - `label.view` — 다섯 발사
   - `label.deg15` — 15°
@@ -56,8 +58,9 @@
 ### T05 · `trajectory-equation`
 
 - 조각 — `aperi21:trajectory-equation` · `sims/kinematics/trajectory-equation`
-- 문안 8건
+- 문안 9건
   - `label.title` — 궤적 방정식
+  - `label.operation` — 시간을 소거해 얻은 경로의 식
   - `label.stage` — 기본
   - `label.view` — 기본
   - `label.tick` — {t}초
@@ -74,8 +77,9 @@
 ### T08 · `newtons-second-law`
 
 - 조각 — `aperi21:newtons-second-law` · `sims/mechanics/newtons-second-law`
-- 문안 7건
+- 문안 8건
   - `label.title` — 가속도 법칙
+  - `label.operation` — 알짜힘·질량·가속도의 관계
   - `label.stage` — 수레 셋
   - `label.view` — 기본
   - `label.force` — 힘 {f}배
@@ -91,8 +95,9 @@
 ### T16 · `impulse-force-relation`
 
 - 조각 — `aperi21:impulse-force-relation` · `sims/mechanics/impulse-force-relation`
-- 문안 14건
+- 문안 15건
   - `label.title` — 힘과 충격량
+  - `label.operation` — 짧고 큰 힘과 길고 작은 힘
   - `label.stage` — 벽과 방석
   - `label.view` — 나란히
   - `label.hard` — 딱딱한 벽
@@ -115,8 +120,9 @@
 ### T20 · `conservation-of-mechanical-energy`
 
 - 조각 — `aperi21:conservation-of-mechanical-energy` · `sims/mechanics/conservation-of-mechanical-energy`
-- 문안 8건
+- 문안 9건
   - `label.title` — 역학적 에너지 보존
+  - `label.operation` — 위치와 운동이 자리를 바꾸는 동안 변하지 않는 합
   - `label.stage` — 골짜기 궤도
   - `label.view` — 한 번의 왕복
   - `label.height` — 높이
@@ -133,8 +139,9 @@
 ### T28 · `pendulum-amplitude-dependence`
 
 - 조각 — `aperi21:pendulum-amplitude-dependence` · `sims/oscillation/pendulum-amplitude-dependence`
-- 문안 7건
+- 문안 8건
   - `label.title` — 진자의 등시성
+  - `label.operation` — 흔들림 크기를 끌어 다섯 진자의 폭을 함께 키운다
   - `label.stage` — 진자
   - `label.view` — 다섯 진자
   - `label.amplitude` — {deg}°
@@ -150,8 +157,9 @@
 ### T29 · `normal-modes`
 
 - 조각 — `aperi21:normal-modes` · `sims/oscillation/normal-modes`
-- 문안 12건
+- 문안 13건
   - `label.title` — 정규 모드
+  - `label.operation` — 계가 가진 고유 진동 형태
   - `label.stage` — 구슬 사슬
   - `label.view` — 모드 분해
   - `label.equals` — =
@@ -172,8 +180,9 @@
 ### T41 · `lift-force`
 
 - 조각 — `aperi21:lift-force` · `sims/fluids/lift-force`
-- 문안 6건
+- 문안 7건
   - `label.title` — 양력
+  - `label.operation` — 날개 위아래의 흐름 차이
   - `label.stage` — 날개 단면
   - `label.view` — 연기 줄
   - `label.aoa` — 받음각
@@ -188,8 +197,9 @@
 ### T43 · `stokes-drag`
 
 - 조각 — `aperi21:stokes-drag` · `sims/fluids/stokes-drag`
-- 문안 10건
+- 문안 11건
   - `label.title` — 스토크스 항력
+  - `label.operation` — 느린 흐름에서의 저항
   - `label.stage` — 끈적한 액체
   - `label.view` — 두 관
   - `label.radiusSmall` — r
@@ -208,8 +218,9 @@
 ### T45 · `surface-tension`
 
 - 조각 — `aperi21:surface-tension` · `sims/fluids/surface-tension`
-- 문안 11건
+- 문안 12건
   - `label.title` — 표면 장력
+  - `label.operation` — 표면을 줄이려는 힘
   - `label.stage` — 물 위의 바늘
   - `label.view` — 단면
   - `label.tension` — T
@@ -229,8 +240,9 @@
 ### T54 · `refrigerator-heat-pump`
 
 - 조각 — `aperi21:refrigerator-heat-pump` · `sims/thermal/refrigerator-heat-pump`
-- 문안 15건
+- 문안 16건
   - `label.title` — 냉장고와 열펌프
+  - `label.operation` — 일을 넣어 열을 옮기는 것
   - `label.stage` — 부엌의 냉장고
   - `label.view` — 열의 흐름
   - `label.fridge` — 냉장고 안
@@ -254,8 +266,9 @@
 ### T61 · `doppler-effect`
 
 - 조각 — `aperi21:doppler-effect` · `sims/waves/doppler-effect`
-- 문안 7건
+- 문안 8건
   - `label.title` — 도플러 효과
+  - `label.operation` — 원천이 방출점을 밀고 가 앞쪽 간격이 좁아진다
   - `label.stage` — 매질
   - `label.view` — 파면
   - `label.speed` — 원천 속도
@@ -271,8 +284,9 @@
 ### T66 · `thin-lens`
 
 - 조각 — `aperi21:thin-lens` · `sims/optics/thin-lens`
-- 문안 14건
+- 문안 15건
   - `label.title` — 얇은 렌즈
+  - `label.operation` — 세 광선으로 상을 찾는다
   - `label.stage` — 볼록 렌즈
   - `label.view` — 광축
   - `label.focusNear` — F
@@ -295,8 +309,9 @@
 ### T67 · `thin-lens`
 
 - 조각 — `aperi21:thin-lens` · `sims/optics/thin-lens`
-- 문안 14건
+- 문안 15건
   - `label.title` — 얇은 렌즈
+  - `label.operation` — 세 광선으로 상을 찾는다
   - `label.stage` — 볼록 렌즈
   - `label.view` — 광축
   - `label.focusNear` — F
@@ -319,8 +334,9 @@
 ### T73 · `coulombs-law`
 
 - 조각 — `aperi21:coulombs-law` · `sims/em/coulombs-law`
-- 문안 13건
+- 문안 14건
   - `label.title` — 쿨롱 법칙
+  - `label.operation` — 전하 사이의 힘
   - `label.stage` — 벌어지는 세 쌍
   - `label.view` — 세 줄
   - `mark.plus` — +
@@ -342,8 +358,9 @@
 ### T75 · `equipotential-surface`
 
 - 조각 — `aperi21:equipotential-surface` · `sims/em/equipotential-surface`
-- 문안 4건
+- 문안 5건
   - `label.title` — 등전위면
+  - `label.operation` — 전기장과 수직인 면
   - `label.stage` — 두 전하
   - `label.view` — 지형과 지도
   - `caption.main` — 양전하에서 풀려난 시험 전하가 전위 지형의 가장 가파른 내리막을 따라 내려가며, 등전위선을 만날 때마다 직각으로 가로지른다.
@@ -356,8 +373,9 @@
 ### T79 · `series-parallel-resistors`
 
 - 조각 — `aperi21:series-parallel-resistors` · `sims/electronics/series-parallel-resistors`
-- 문안 12건
+- 문안 13건
   - `label.title` — 저항의 직렬과 병렬
+  - `label.operation` — 연결을 바꾸면 같은 전지가 내주는 전류가 달라지는 것
   - `label.stage` — 같은 전지 · 같은 저항 둘
   - `label.view` — 나란한 배치 셋
   - `label.single` — 하나만
@@ -378,8 +396,9 @@
 ### T57 · `wave-basics`
 
 - 조각 — `aperi21:wave-basics` · `sims/waves/wave-basics`
-- 문안 12건
+- 문안 13건
   - `label.title` — 파동의 기본량
+  - `label.operation` — 파장·진동수·속력·진폭
   - `label.stage` — 한 줄 파동
   - `label.view` — 줄과 한 점의 자취
   - `label.wavelengthControl` — 파장 λ
@@ -400,8 +419,9 @@
 ### T01 · `uniformly-accelerated-motion`
 
 - 조각 — `aperi21:uniformly-accelerated-motion` · `sims/kinematics/uniformly-accelerated-motion`
-- 문안 5건
+- 문안 6건
   - `label.title` — 등가속도 운동
+  - `label.operation` — 같은 시간 동안 간 거리가 같은 만큼씩 늘어난다
   - `label.stage` — 선로
   - `label.view` — 간격
   - `caption.stamp` — 같은 시간마다 물체가 있던 자리를 찍는다
@@ -415,8 +435,9 @@
 ### T03 · `relative-velocity`
 
 - 조각 — `aperi21:relative-velocity` · `sims/kinematics/relative-velocity`
-- 문안 9건
+- 문안 10건
   - `label.title` — 상대 속도
+  - `label.operation` — 보는 사람이 달라지면 배가 지나온 길이 기운다
   - `label.stage` — 강
   - `label.view` — 강을 건너는 배
   - `label.observer` — 보는 사람의 속도 · 강물 1.2
@@ -434,8 +455,9 @@
 ### T06 · `centripetal-acceleration`
 
 - 조각 — `aperi21:centripetal-acceleration` · `sims/kinematics/centripetal-acceleration`
-- 문안 8건
+- 문안 9건
   - `label.title` — 구심 가속도
+  - `label.operation` — 속도의 변화는 늘 중심 쪽으로 꺾인다
   - `label.stage` — 등속 원운동
   - `label.view` — 속도의 변화
   - `label.dv` — Δv
@@ -452,8 +474,9 @@
 ### T07 · `newtons-first-law`
 
 - 조각 — `aperi21:newtons-first-law` · `sims/mechanics/newtons-first-law`
-- 문안 11건
+- 문안 12건
   - `label.title` — 관성 기준계
+  - `label.operation` — 버스만 느려지고 승객은 그대로 간다
   - `label.stage` — 도로
   - `label.view` — 땅에서 본 장면
   - `label.bus` — 버스
@@ -473,8 +496,9 @@
 ### T09 · `inertial-vs-gravitational-mass`
 
 - 조각 — `aperi21:inertial-vs-gravitational-mass` · `sims/mechanics/inertial-vs-gravitational-mass`
-- 문안 14건
+- 문안 15건
   - `label.title` — 관성 질량과 중력 질량
+  - `label.operation` — 서로 다른 정의가 같은 값을 주는 것
   - `label.stage` — 저울과 얼음
   - `label.view` — 기본
   - `label.balance` — 저울 — 끌리는 세기로 비교
@@ -497,8 +521,9 @@
 ### T10 · `normal-force`
 
 - 조각 — `aperi21:normal-force` · `sims/mechanics/normal-force`
-- 문안 14건
+- 문안 15건
   - `label.title` — 수직항력
+  - `label.operation` — 접촉면이 수직으로 미는 힘
   - `label.stage` — 기본
   - `label.view` — 기본
   - `label.weight` — 무게 {w} N
@@ -521,8 +546,9 @@
 ### T11 · `pulley-system`
 
 - 조각 — `aperi21:pulley-system` · `sims/mechanics/pulley-system`
-- 문안 12건
+- 문안 13건
   - `label.title` — 도르래
+  - `label.operation` — 힘의 방향과 크기를 바꾸는 장치
   - `label.stage` — 기본
   - `label.view` — 기본
   - `label.weight` — {w} N
@@ -543,8 +569,9 @@
 ### T12 · `centripetal-force`
 
 - 조각 — `aperi21:centripetal-force` · `sims/mechanics/centripetal-force`
-- 문안 6건
+- 문안 7건
   - `label.title` — 구심력
+  - `label.operation` — 원운동을 유지시키는 힘의 정체
   - `label.stage` — 기본
   - `label.view` — 기본
   - `label.release` — 지금 놓기
@@ -559,8 +586,9 @@
 ### T13 · `conical-pendulum`
 
 - 조각 — `aperi21:conical-pendulum` · `sims/mechanics/conical-pendulum`
-- 문안 5건
+- 문안 6건
   - `label.title` — 원뿔 진자
+  - `label.operation` — 장력과 중력이 만드는 원운동
   - `label.stage` — 기본
   - `label.view` — 기본
   - `label.speed` — 돌리는 빠르기
@@ -574,8 +602,9 @@
 ### T14 · `vertical-loop`
 
 - 조각 — `aperi21:vertical-loop` · `sims/mechanics/vertical-loop`
-- 문안 11건
+- 문안 12건
   - `label.title` — 연직 원운동
+  - `label.operation` — 꼭대기에서 떨어지지 않는 최소 속력
   - `label.stage` — 기본
   - `label.view` — 기본
   - `label.minSpeed` — 꼭대기에서 필요한 최소 속력
@@ -595,8 +624,9 @@
 ### T15 · `fictitious-force`
 
 - 조각 — `aperi21:fictitious-force` · `sims/mechanics/fictitious-force`
-- 문안 9건
+- 문안 10건
   - `label.title` — 관성력
+  - `label.operation` — 비관성계에서 도입하는 겉보기 힘
   - `label.stage` — 기본
   - `label.view` — 기본
   - `label.mass` — 오른쪽 추의 질량
@@ -614,8 +644,9 @@
 ### T17 · `youngs-modulus`
 
 - 조각 — `aperi21:youngs-modulus` · `sims/mechanics/youngs-modulus`
-- 문안 9건
+- 문안 10건
   - `label.title` — 영률
+  - `label.operation` — 늘어나는 정도는 선의 길이가 아니라 재료가 정한다
   - `label.stage` — 기본
   - `label.view` — 기본
   - `label.wire.steel` — 강철 {l} m
@@ -633,8 +664,9 @@
 ### T18 · `work-energy-theorem`
 
 - 조각 — `aperi21:work-energy-theorem` · `sims/mechanics/work-energy-theorem`
-- 문안 13건
+- 문안 14건
   - `label.title` — 일-운동 에너지 정리
+  - `label.operation` — 알짜일이 운동 에너지 변화와 같음
   - `label.stage` — 마찰 없는 바닥
   - `label.view` — 두 레인
   - `label.forceBig` — 2F
@@ -656,8 +688,9 @@
 ### T19 · `conservative-force`
 
 - 조각 — `aperi21:conservative-force` · `sims/mechanics/conservative-force`
-- 문안 14건
+- 문안 15건
   - `label.title` — 보존력
+  - `label.operation` — 경로에 무관한 힘과 퍼텐셜의 존재
   - `label.stage` — 두 길
   - `label.view` — 중력이 한 일
   - `label.pointA` — A
@@ -680,8 +713,9 @@
 ### T21 · `energy-dissipation`
 
 - 조각 — `aperi21:energy-dissipation` · `sims/mechanics/energy-dissipation`
-- 문안 9건
+- 문안 10건
   - `label.title` — 에너지 소산
+  - `label.operation` — 마찰이 가져가는 몫과 그 행방
   - `label.stage` — 거친 바닥
   - `label.view` — 기본
   - `label.mechanical` — 역학적 에너지
@@ -699,8 +733,9 @@
 ### T22 · `elastic-collision`
 
 - 조각 — `aperi21:elastic-collision` · `sims/mechanics/elastic-collision`
-- 문안 11건
+- 문안 12건
   - `label.title` — 탄성 충돌
+  - `label.operation` — 운동 에너지까지 보존되는 충돌
   - `label.stage` — 레일 위 같은 공 둘
   - `label.view` — 속도 화살표
   - `label.mass` — m
@@ -720,8 +755,9 @@
 ### T23 · `inelastic-collision`
 
 - 조각 — `aperi21:inelastic-collision` · `sims/mechanics/inelastic-collision`
-- 문안 15건
+- 문안 16건
   - `label.title` — 비탄성 충돌
+  - `label.operation` — 에너지가 사라지는 충돌
   - `label.stage` — 바닥에 떨어뜨린 공
   - `label.view` — 튀는 공
   - `label.restitution` — e = {e}
@@ -745,8 +781,9 @@
 ### T24 · `rocket-equation`
 
 - 조각 — `aperi21:rocket-equation` · `sims/mechanics/rocket-equation`
-- 문안 7건
+- 문안 8건
   - `label.title` — 로켓 방정식
+  - `label.operation` — 연료를 버려 얻는 속도
   - `label.stage` — 연료 여덟 칸
   - `label.view` — 로켓과 얻은 속도
   - `label.gain` — 한 칸이 붙인 속도
@@ -762,8 +799,9 @@
 ### T25 · `ballistic-pendulum`
 
 - 조각 — `aperi21:ballistic-pendulum` · `sims/mechanics/ballistic-pendulum`
-- 문안 18건
+- 문안 19건
   - `label.title` — 탄동 진자
+  - `label.operation` — 충돌과 에너지 보존을 잇는 측정
   - `label.stage` — 매단 나무토막
   - `label.view` — 두 막대
   - `label.momentum` — 운동량
@@ -790,8 +828,9 @@
 ### T26 · `angular-momentum`
 
 - 조각 — `aperi21:angular-momentum` · `sims/oscillation/angular-momentum`
-- 문안 10건
+- 문안 11건
   - `label.title` — 각운동량
+  - `label.operation` — 회전의 운동량
   - `label.stage` — 바닥 위 팽이 셋
   - `label.view` — 비스듬히 내려다본 모습
   - `label.still` — 안 돈다
@@ -810,8 +849,9 @@
 ### T27 · `mass-spring-system`
 
 - 조각 — `aperi21:mass-spring-system` · `sims/oscillation/mass-spring-system`
-- 문안 11건
+- 문안 12건
   - `label.title` — 용수철 진자
+  - `label.operation` — 질량과 탄성 계수가 정하는 주기
   - `label.stage` — 같은 용수철 셋
   - `label.view` — 나란한 세 레인
   - `label.massLight` — m
@@ -831,8 +871,9 @@
 ### T30 · `phase-space`
 
 - 조각 — `aperi21:phase-space` · `sims/oscillation/phase-space`
-- 문안 11건
+- 문안 12건
   - `label.title` — 위상 공간
+  - `label.operation` — 위치-속도 평면에서 본 운동
   - `label.stage` — 감쇠 진자
   - `label.view` — 위상 평면
   - `axis.angle` — 각도 →
@@ -852,8 +893,9 @@
 ### T31 · `gravitational-field`
 
 - 조각 — `aperi21:gravitational-field` · `sims/astro/gravitational-field`
-- 문안 7건
+- 문안 8건
   - `label.title` — 중력장
+  - `label.operation` — 공간에 분포한 중력의 세기
   - `label.stage` — 행성 하나
   - `label.view` — 장
   - `caption.field` — 행성 둘레 모든 자리에 화살표가 깔려 있다 — 가까울수록 길고, 멀수록 짧다
@@ -869,8 +911,9 @@
 ### T32 · `shell-theorem`
 
 - 조각 — `aperi21:shell-theorem` · `sims/astro/shell-theorem`
-- 문안 9건
+- 문안 10건
   - `label.title` — 껍질 정리
+  - `label.operation` — 구 껍질 안팎에서의 중력
   - `label.stage` — 속 빈 껍질
   - `label.view` — 단면
   - `label.net` — 합 = 0
@@ -888,8 +931,9 @@
 ### T33 · `keplers-third-law`
 
 - 조각 — `aperi21:keplers-third-law` · `sims/astro/keplers-third-law`
-- 문안 16건
+- 문안 17건
   - `label.title` — 케플러 제3법칙
+  - `label.operation` — 주기와 긴반지름의 관계
   - `label.stage` — 반지름이 다른 두 궤도
   - `label.view` — 두 행성
   - `label.strip` — 한 바퀴에 걸린 시간
@@ -914,8 +958,9 @@
 ### T34 · `lagrange-points`
 
 - 조각 — `aperi21:lagrange-points` · `sims/astro/lagrange-points`
-- 문안 7건
+- 문안 8건
   - `label.title` — 라그랑주 점
+  - `label.operation` — 안장에서는 흘러나가고 꼭대기에서는 맴돈다
   - `label.stage` — 지구와 달
   - `label.view` — 함께 도는 틀
   - `label.earth` — 지구
@@ -931,8 +976,9 @@
 ### T35 · `orbital-transfer`
 
 - 조각 — `aperi21:orbital-transfer` · `sims/astro/orbital-transfer`
-- 문안 11건
+- 문안 12건
   - `label.title` — 궤도 전이
+  - `label.operation` — 호만 전이와 그 비용
   - `label.stage` — 호만 전이
   - `label.view` — 두 번 밀기
   - `label.dv1` — Δv₁
@@ -952,8 +998,9 @@
 ### T36 · `diurnal-motion`
 
 - 조각 — `aperi21:diurnal-motion` · `sims/astro/diurnal-motion`
-- 문안 19건
+- 문안 20건
   - `label.title` — 일주 운동
+  - `label.operation` — 하루 동안 태양과 별이 하늘을 가로지르는 길
   - `label.stage` — 북쪽 하늘
   - `label.view` — 땅 위에서
   - `label.skyTitle` — 북쪽 하늘을 바라볼 때 — 북위 {lat}°
@@ -981,8 +1028,9 @@
 ### T37 · `solar-altitude-shadow`
 
 - 조각 — `aperi21:solar-altitude-shadow` · `sims/astro/solar-altitude-shadow`
-- 문안 15건
+- 문안 16건
   - `label.title` — 태양 고도와 그림자
+  - `label.operation` — 고도가 바뀌면 그림자 길이와 기온이 함께 바뀐다
   - `label.stage` — 땅 위의 막대
   - `label.view` — 옆에서
   - `label.sun` — 태양
@@ -1006,8 +1054,9 @@
 ### T38 · `star-radiation-gravity-balance`
 
 - 조각 — `aperi21:star-radiation-gravity-balance` · `sims/astro/star-radiation-gravity-balance`
-- 문안 12건
+- 문안 13건
   - `label.title` — 복사압과 중력의 평형
+  - `label.operation` — 별이 무너지지도 흩어지지도 않는 이유
   - `label.stage` — 별 하나
   - `label.view` — 별의 단면
   - `label.gravity` — 중력
@@ -1028,8 +1077,9 @@
 ### T39 · `buoyancy`
 
 - 조각 — `aperi21:buoyancy` · `sims/fluids/buoyancy`
-- 문안 9건
+- 문안 10건
   - `label.title` — 부력
+  - `label.operation` — 밀려난 유체의 무게만큼
   - `label.stage` — 물통
   - `label.view` — 면마다 미는 힘
   - `label.topFace` — 윗면
@@ -1047,8 +1097,9 @@
 ### T40 · `archimedes-principle`
 
 - 조각 — `aperi21:archimedes-principle` · `sims/fluids/archimedes-principle`
-- 문안 10건
+- 문안 11건
   - `label.title` — 아르키메데스 원리 — 부력의 크기
+  - `label.operation` — 2.0 kg · 1.0 L 물체를 주둥이까지 가득 찬 물에 천천히 담근다. 밀려난 물이 주둥이로 넘쳐 컵에 모이고, 물체 쪽 저울이 줄어드는 만큼 넘친 물 쪽 저울이 늘어난다.
   - `label.stage` — 실험대
   - `label.stageNote` — 물 밀도 1000 kg/m³, 중력 가속도 9.8 m/s²
   - `label.view` — 두 저울
@@ -1067,8 +1118,9 @@
 ### T42 · `viscosity`
 
 - 조각 — `aperi21:viscosity` · `sims/fluids/viscosity`
-- 문안 12건
+- 문안 13건
   - `label.title` — 점성
+  - `label.operation` — 층 사이의 마찰
   - `label.stage` — 두 판 사이
   - `label.view` — 옆모습
   - `label.thin` — 묽은 유체
@@ -1089,8 +1141,9 @@
 ### T44 · `reynolds-number`
 
 - 조각 — `aperi21:reynolds-number` · `sims/fluids/reynolds-number`
-- 문안 11건
+- 문안 12건
   - `label.title` — 레이놀즈 수
+  - `label.operation` — 전이를 가르는 무차원 수
   - `label.stage` — 세 관
   - `label.view` — 염료
   - `label.pipeTop` — D · v
@@ -1110,8 +1163,9 @@
 ### T46 · `drag-in-fluid`
 
 - 조각 — `aperi21:drag-in-fluid` · `sims/fluids/drag-in-fluid`
-- 문안 9건
+- 문안 10건
   - `label.title` — 유체 속 항력
+  - `label.operation` — 형상과 속도가 정하는 저항
   - `label.stage` — 같은 흐름
   - `label.view` — 두 레인
   - `label.cylinder` — 원기둥
@@ -1129,8 +1183,9 @@
 ### T47 · `latent-heat`
 
 - 조각 — `aperi21:latent-heat` · `sims/thermal/latent-heat`
-- 문안 16건
+- 문안 17건
   - `label.title` — 잠열
+  - `label.operation` — 상변화 중 온도가 멈추는 이유
   - `label.stage` — 얼음 · 일정한 가열
   - `label.view` — 그릇과 시간-온도 곡선
   - `label.ice` — 얼음
@@ -1155,8 +1210,9 @@
 ### T48 · `phase-diagram`
 
 - 조각 — `aperi21:phase-diagram` · `sims/thermal/phase-diagram`
-- 문안 22건
+- 문안 23건
   - `label.title` — 상평형 그림
+  - `label.operation` — 삼중점보다 낮은 압력에서는 액체 구간을 건너뛴다
   - `label.stage` — 기본
   - `label.view` — 기본
   - `label.solid` — 고체
@@ -1187,8 +1243,9 @@
 ### T49 · `thermal-expansion`
 
 - 조각 — `aperi21:thermal-expansion` · `sims/thermal/thermal-expansion`
-- 문안 10건
+- 문안 11건
   - `label.title` — 열팽창
+  - `label.operation` — 온도에 따른 길이·부피 변화
   - `label.stage` — 철로 이음매
   - `label.view` — 옆에서 본 레일
   - `label.temp` — {t} ℃
@@ -1207,8 +1264,9 @@
 ### T50 · `pv-diagram`
 
 - 조각 — `aperi21:pv-diagram` · `sims/thermal/pv-diagram`
-- 문안 12건
+- 문안 13건
   - `label.title` — PV 그림
+  - `label.operation` — 넓이가 일인 표현
   - `label.stage` — 추를 얹은 기체
   - `label.view` — P-V 그림과 실린더
   - `label.heat` — 가열
@@ -1229,8 +1287,9 @@
 ### T51 · `isothermal-process`
 
 - 조각 — `aperi21:isothermal-process` · `sims/thermal/isothermal-process`
-- 문안 15건
+- 문안 16건
   - `label.title` — 등온 과정
+  - `label.operation` — 온도를 유지하는 변화
   - `label.stage` — 항온조 위 실린더
   - `label.view` — 실린더와 P–V 그림
   - `label.pressure` — P
@@ -1254,8 +1313,9 @@
 ### T52 · `irreversibility`
 
 - 조각 — `aperi21:irreversibility` · `sims/thermal/irreversibility`
-- 문안 14건
+- 문안 15건
   - `label.title` — 엔트로피와 비가역성
+  - `label.operation` — 되돌릴 수 없는 이유
   - `label.stage` — 알갱이 바닥 위의 공
   - `label.view` — 정방향 · 거꾸로
   - `label.forward` — ▶︎
@@ -1278,8 +1338,9 @@
 ### T53 · `carnot-cycle`
 
 - 조각 — `aperi21:carnot-cycle` · `sims/thermal/carnot-cycle`
-- 문안 16건
+- 문안 17건
   - `label.title` — 카르노 순환
+  - `label.operation` — 이론적 최대 효율
   - `label.stage` — 이상 기관
   - `label.view` — 온도-엔트로피 도표
   - `label.floor` — 0 K 절대 영도
@@ -1304,8 +1365,9 @@
 ### T55 · `diffusion`
 
 - 조각 — `aperi21:diffusion` · `sims/thermal/diffusion`
-- 문안 7건
+- 문안 8건
   - `label.title` — 확산
+  - `label.operation` — 농도 차이가 만드는 흐름
   - `label.stage` — 물에 떨어뜨린 잉크
   - `label.view` — 물통과 농도
   - `label.bars` — 구간마다 든 알갱이 수
@@ -1321,8 +1383,9 @@
 ### T56 · `maxwells-demon`
 
 - 조각 — `aperi21:maxwells-demon` · `sims/thermal/maxwells-demon`
-- 문안 13건
+- 문안 14건
   - `label.title` — 맥스웰의 도깨비
+  - `label.operation` — 정보와 엔트로피의 관계
   - `label.stage` — 문 달린 상자
   - `label.view` — 상자 · 온도 막대 · 공책
   - `label.demon` — 도깨비
@@ -1344,8 +1407,9 @@
 ### T58 · `wave-speed-in-medium`
 
 - 조각 — `aperi21:wave-speed-in-medium` · `sims/waves/wave-speed-in-medium`
-- 문안 8건
+- 문안 9건
   - `label.title` — 매질과 파동 속도
+  - `label.operation` — 장력·밀도·탄성이 정하는 속도
   - `label.stage` — 세 줄 경주
   - `label.view` — 같은 펄스, 다른 줄
   - `label.laneTaut` — {k}T · μ
@@ -1362,8 +1426,9 @@
 ### T59 · `string-vibration`
 
 - 조각 — `aperi21:string-vibration` · `sims/waves/string-vibration`
-- 문안 16건
+- 문안 17건
   - `label.title` — 줄의 진동
+  - `label.operation` — 양끝이 고정된 줄의 모드
   - `label.stage` — 손가락으로 누르는 줄
   - `label.view` — 줄과 파형
   - `label.finger` — 손가락
@@ -1388,8 +1453,9 @@
 ### T60 · `air-column-resonance`
 
 - 조각 — `aperi21:air-column-resonance` · `sims/waves/air-column-resonance`
-- 문안 14건
+- 문안 15건
   - `label.title` — 기주 공명
+  - `label.operation` — 열린 관과 닫힌 관의 차이
   - `label.stage` — 같은 길이의 관 둘
   - `label.view` — 관과 울린 진동수
   - `label.openTube` — 양쪽이 열린 관
@@ -1412,8 +1478,9 @@
 ### T62 · `wave-attenuation`
 
 - 조각 — `aperi21:wave-attenuation` · `sims/waves/wave-attenuation`
-- 문안 7건
+- 문안 8건
   - `label.title` — 파동의 감쇠
+  - `label.operation` — 매질이 흡수하는 에너지
   - `label.stage` — 흡수하는 줄
   - `label.view` — 줄과 높이 막대
   - `label.stepRatio` — ×{q}
@@ -1429,8 +1496,9 @@
 ### T63 · `sound-through-materials`
 
 - 조각 — `aperi21:sound-through-materials` · `sims/waves/sound-through-materials`
-- 문안 11건
+- 문안 12건
   - `label.title` — 물질을 통한 소리 전달
+  - `label.operation` — 매질에 따라 달라지는 소리의 전달
   - `label.stage` — 네 통
   - `label.view` — 같은 떨림, 다른 물질
   - `label.steel` — 쇠 · {v} m/s
@@ -1450,8 +1518,9 @@
 ### T64 · `rectilinear-propagation`
 
 - 조각 — `aperi21:rectilinear-propagation` · `sims/optics/rectilinear-propagation`
-- 문안 11건
+- 문안 12건
   - `label.title` — 빛의 직진
+  - `label.operation` — 그림자와 광선 모형
   - `label.stage` — 점광원 · 가림판 · 스크린
   - `label.view` — 옆에서 본 모습
   - `label.source` — 광원
@@ -1471,8 +1540,9 @@
 ### T65 · `plane-mirror-image`
 
 - 조각 — `aperi21:plane-mirror-image` · `sims/optics/plane-mirror-image`
-- 문안 12건
+- 문안 13건
   - `label.title` — 평면거울의 상
+  - `label.operation` — 허상의 위치와 좌우 반전
   - `label.stage` — 평면거울
   - `label.view` — 옆에서
   - `label.object` — 물체
@@ -1493,8 +1563,9 @@
 ### T68 · `spherical-aberration`
 
 - 조각 — `aperi21:spherical-aberration` · `sims/optics/spherical-aberration`
-- 문안 9건
+- 문안 10건
   - `label.title` — 구면 수차
+  - `label.operation` — 가장자리 광선이 다른 곳에 모임
   - `label.stage` — 두꺼운 구면 렌즈
   - `label.view` — 렌즈와 광축
   - `label.stop` — 조리개
@@ -1512,8 +1583,9 @@
 ### T69 · `birefringence`
 
 - 조각 — `aperi21:birefringence` · `sims/optics/birefringence`
-- 문안 22건
+- 문안 23건
   - `label.title` — 복굴절
+  - `label.operation` — 방향에 따라 다른 굴절률
   - `label.stage` — 기본
   - `label.view` — 기본
   - `label.side` — 옆에서 본 단면
@@ -1544,8 +1616,9 @@
 ### T70 · `scattering`
 
 - 조각 — `aperi21:scattering` · `sims/optics/scattering`
-- 문안 13건
+- 문안 14건
   - `label.title` — 산란
+  - `label.operation` — 하늘과 노을의 색
   - `label.stage` — 공기 분자와 구름 물방울
   - `label.view` — 두 레인
   - `label.small` — 공기 분자
@@ -1567,8 +1640,9 @@
 ### T71 · `rayleigh-scattering`
 
 - 조각 — `aperi21:rayleigh-scattering` · `sims/optics/rayleigh-scattering`
-- 문안 14건
+- 문안 15건
   - `label.title` — 레일리 산란
+  - `label.operation` — 파장 4제곱에 반비례하는 산란
   - `label.stage` — 햇빛과 공기
   - `label.view` — 막대와 대기 단면
   - `label.nm` — {nm} nm
@@ -1591,8 +1665,9 @@
 ### T72 · `electric-charge`
 
 - 조각 — `aperi21:electric-charge` · `sims/em/electric-charge`
-- 문안 10건
+- 문안 11건
   - `label.title` — 전하
+  - `label.operation` — 두 종류의 전하와 보존
   - `label.stage` — 실에 매단 공
   - `label.view` — 세 쌍
   - `mark.plus` — +
@@ -1611,8 +1686,9 @@
 ### T74 · `field-lines`
 
 - 조각 — `aperi21:field-lines` · `sims/em/field-lines`
-- 문안 4건
+- 문안 5건
   - `label.title` — 전기력선
+  - `label.operation` — 선이 촘촘한 곳이 장이 센 곳이다
   - `label.stage` — 두 전하
   - `label.view` — 선과 알갱이
   - `caption.main` — 선이 몰린 곳을 지나는 알갱이는 빨라지고, 선이 성긴 곳에서는 느려진다
@@ -1625,8 +1701,9 @@
 ### T76 · `electrostatic-shielding`
 
 - 조각 — `aperi21:electrostatic-shielding` · `sims/em/electrostatic-shielding`
-- 문안 11건
+- 문안 12건
   - `label.title` — 정전기 차폐
+  - `label.operation` — 도체 내부의 장이 0인 이유
   - `label.stage` — 고른 장 속의 속 빈 도체
   - `label.view` — 장선
   - `mark.plus` — +
@@ -1646,8 +1723,9 @@
 ### T77 · `energy-in-capacitor`
 
 - 조각 — `aperi21:energy-in-capacitor` · `sims/em/energy-in-capacitor`
-- 문안 15건
+- 문안 16건
   - `label.title` — 축전기의 에너지
+  - `label.operation` — 전기장에 저장된 에너지
   - `label.stage` — 한 몫씩 옮겨 충전
   - `label.view` — 판과 V–Q 그래프
   - `label.capacitance` — {c} μF
@@ -1671,8 +1749,9 @@
 ### T78 · `drift-velocity`
 
 - 조각 — `aperi21:drift-velocity` · `sims/em/drift-velocity`
-- 문안 12건
+- 문안 13건
   - `label.title` — 표류 속도
+  - `label.operation` — 느린 전자와 빠른 신호
   - `label.stage` — 작은 회로
   - `label.view` — 고리 회로
   - `label.electron` — e⁻
@@ -1693,8 +1772,9 @@
 ### T80 · `charged-particle-in-magnetic-field`
 
 - 조각 — `aperi21:charged-particle-in-magnetic-field` · `sims/em/charged-particle-in-magnetic-field`
-- 문안 6건
+- 문안 7건
   - `label.title` — 자기장 속 전하의 원운동
+  - `label.operation` — 빠른 전하도 한 바퀴 시간은 같다
   - `label.stage` — 기본
   - `label.view` — 기본
   - `caption.main` — 빠른 전하는 큰 원을 돌지만, 모두 한 줄로 선 채 함께 돈다
@@ -1709,8 +1789,9 @@
 ### T81 · `field-of-straight-wire`
 
 - 조각 — `aperi21:field-of-straight-wire` · `sims/em/field-of-straight-wire`
-- 문안 6건
+- 문안 7건
   - `label.title` — 전류가 만드는 자기장
+  - `label.operation` — 전선을 감아 도는 쪽으로 돌아서고, 멀수록 덜 돌아선다
   - `label.stage` — 전선 둘레
   - `label.view` — 나침반
   - `caption.on` — 전류가 흐르는 동안 — 바늘은 전선을 감아 도는 고리 쪽으로 돌아선다, 멀수록 덜
@@ -1725,8 +1806,9 @@
 ### T82 · `faradays-law`
 
 - 조각 — `aperi21:faradays-law` · `sims/em/faradays-law`
-- 문안 21건
+- 문안 22건
   - `label.title` — 패러데이 법칙
+  - `label.operation` — 자속 변화가 만드는 기전력
   - `label.stage` — 코일과 자석
   - `label.view` — 옆에서
   - `label.poleN` — N
@@ -1756,8 +1838,9 @@
 ### T83 · `eddy-current`
 
 - 조각 — `aperi21:eddy-current` · `sims/em/eddy-current`
-- 문안 14건
+- 문안 15건
   - `label.title` — 맴돌이 전류
+  - `label.operation` — 덩어리 도체 속의 유도 전류
   - `label.stage` — 두 관
   - `label.view` — 옆에서
   - `label.plastic` — 플라스틱 관
@@ -1780,8 +1863,9 @@
 ### T84 · `reactance`
 
 - 조각 — `aperi21:reactance` · `sims/em/reactance`
-- 문안 17건
+- 문안 18건
   - `label.title` — 리액턴스와 임피던스
+  - `label.operation` — 주파수에 의존하는 저항
   - `label.stage` — 코일 하나 · 축전기 하나
   - `label.view` — 두 회로와 X–f 평면
   - `label.inductor` — L
@@ -1807,8 +1891,9 @@
 ### T85 · `series-rlc-resonance`
 
 - 조각 — `aperi21:series-rlc-resonance` · `sims/em/series-rlc-resonance`
-- 문안 22건
+- 문안 23건
   - `label.title` — RLC 공진
+  - `label.operation` — 임피던스가 최소가 되는 주파수
   - `label.stage` — 저항 두 가지
   - `label.view` — 회로 · 막는 몫 · I–f 평면
   - `label.resistor` — R
@@ -1839,8 +1924,9 @@
 ### T86 · `generator`
 
 - 조각 — `aperi21:generator` · `sims/em/generator`
-- 문안 9건
+- 문안 10건
   - `label.title` — 발전기
+  - `label.operation` — 회전이 만드는 기전력
   - `label.stage` — 손잡이 발전기
   - `label.view` — 굴대 쪽에서
   - `label.poleN` — N
@@ -1858,8 +1944,9 @@
 ### T87 · `maxwells-equations`
 
 - 조각 — `aperi21:maxwells-equations` · `sims/em/maxwells-equations`
-- 문안 9건
+- 문안 10건
   - `label.title` — 맥스웰 방정식
+  - `label.operation` — 전자기를 묶는 네 식
   - `label.stage` — 고리 사슬
   - `label.view` — 비스듬히 위에서
   - `label.e` — E
@@ -1877,8 +1964,9 @@
 ### T88 · `electromagnetic-wave`
 
 - 조각 — `aperi21:electromagnetic-wave` · `sims/em/electromagnetic-wave`
-- 문안 5건
+- 문안 6건
   - `label.title` — 전자기파
+  - `label.operation` — 전기장과 자기장의 자기 전파
   - `label.stage` — 기본
   - `label.view` — 기본
   - `caption.shaking` — 전하가 흔들리는 동안, 그 흔들림이 전기장과 자기장이 되어 바깥으로 퍼진다
@@ -1892,8 +1980,9 @@
 ### T89 · `poynting-vector`
 
 - 조각 — `aperi21:poynting-vector` · `sims/em/poynting-vector`
-- 문안 13건
+- 문안 14건
   - `label.title` — 포인팅 벡터
+  - `label.operation` — 전자기파가 나르는 에너지 흐름
   - `label.stage` — 전지와 저항
   - `label.view` — 회로 평면
   - `label.e` — E
@@ -1915,8 +2004,9 @@
 ### T90 · `relativity-of-simultaneity`
 
 - 조각 — `aperi21:relativity-of-simultaneity` · `sims/modern/relativity-of-simultaneity`
-- 문안 13건
+- 문안 14건
   - `label.title` — 동시성의 상대성
+  - `label.operation` — 기준틀마다 다른 「동시」
   - `label.stage` — 달리는 기차
   - `label.view` — 두 틀을 나란히
   - `label.trainFrame` — 기차 안에서 본 것
@@ -1938,8 +2028,9 @@
 ### T91 · `twin-paradox`
 
 - 조각 — `aperi21:twin-paradox` · `sims/modern/twin-paradox`
-- 문안 14건
+- 문안 15건
   - `label.title` — 쌍둥이 역설
+  - `label.operation` — 비대칭을 만드는 가속
   - `label.stage` — 0.6c 로 6 광년 왕복
   - `label.view` — 지구 틀의 시공간 도표
   - `label.earthAge` — 지구 {n}년
@@ -1962,8 +2053,9 @@
 ### T92 · `twin-paradox`
 
 - 조각 — `aperi21:twin-paradox` · `sims/modern/twin-paradox`
-- 문안 14건
+- 문안 15건
   - `label.title` — 쌍둥이 역설
+  - `label.operation` — 비대칭을 만드는 가속
   - `label.stage` — 0.6c 로 6 광년 왕복
   - `label.view` — 지구 틀의 시공간 도표
   - `label.earthAge` — 지구 {n}년
@@ -1986,8 +2078,9 @@
 ### T93 · `gravitational-redshift`
 
 - 조각 — `aperi21:gravitational-redshift` · `sims/modern/gravitational-redshift`
-- 문안 11건
+- 문안 12건
   - `label.title` — 중력 적색 이동
+  - `label.operation` — 빠져나오며 잃는 에너지
   - `label.stage` — 중성자별에서 낸 빛
   - `label.view` — 빛의 길과 퍼텐셜 우물
   - `label.star` — 중성자별
@@ -2007,8 +2100,9 @@
 ### T94 · `work-function-and-threshold`
 
 - 조각 — `aperi21:work-function-and-threshold` · `sims/modern/work-function-and-threshold`
-- 문안 17건
+- 문안 18건
   - `label.title` — 일함수와 문턱 진동수
+  - `label.operation` — 세기가 아니라 진동수가 정하는 것
   - `label.stage` — 나트륨과 구리
   - `label.view` — 기본
   - `label.axisF` — 진동수 (×10¹⁴ Hz)
@@ -2034,8 +2128,9 @@
 ### T95 · `de-broglie-wavelength`
 
 - 조각 — `aperi21:de-broglie-wavelength` · `sims/modern/de-broglie-wavelength`
-- 문안 11건
+- 문안 12건
   - `label.title` — 드브로이 파장
+  - `label.operation` — 물질의 파동성
   - `label.stage` — 전자 두 개
   - `label.view` — 따라가는 시점
   - `label.electron` — e⁻
@@ -2055,8 +2150,9 @@
 ### T96 · `particle-in-a-box`
 
 - 조각 — `aperi21:particle-in-a-box` · `sims/modern/particle-in-a-box`
-- 문안 12건
+- 문안 13건
   - `label.title` — 무한 우물
+  - `label.operation` — 경계가 만드는 에너지 양자화
   - `label.stage` — 무한 우물
   - `label.view` — 준위와 파동 함수
   - `label.n` — n = {n}
@@ -2077,8 +2173,9 @@
 ### T97 · `spin`
 
 - 조각 — `aperi21:spin` · `sims/modern/spin`
-- 문안 14건
+- 문안 15건
   - `label.title` — 스핀
+  - `label.operation` — 고전 대응물이 없는 각운동량
   - `label.stage` — 은 원자 빔 · 장치 셋
   - `label.view` — 이어 놓은 장치 도식
   - `label.oven` — 은 원자
@@ -2101,8 +2198,9 @@
 ### T98 · `binding-energy-curve`
 
 - 조각 — `aperi21:binding-energy-curve` · `sims/modern/binding-energy-curve`
-- 문안 19건
+- 문안 20건
   - `label.title` — 결합 에너지 곡선
+  - `label.operation` — 철에서 최대가 되는 이유
   - `label.stage` — 안정한 핵종
   - `label.view` — 융합과 분열
   - `label.axisBinding` — 핵자당 결합 에너지
@@ -2130,8 +2228,9 @@
 ### T99 · `pn-junction`
 
 - 조각 — `aperi21:pn-junction` · `sims/modern/pn-junction`
-- 문안 17건
+- 문안 18건
   - `label.title` — pn 접합
+  - `label.operation` — 공핍층과 정류
   - `label.stage` — 실리콘 pn 접합
   - `label.view` — 접합 단면
   - `label.pType` — p형
@@ -2157,8 +2256,9 @@
 ### T100 · `exchange-particles`
 
 - 조각 — `aperi21:exchange-particles` · `sims/modern/exchange-particles`
-- 문안 15건
+- 문안 16건
   - `label.title` — 교환 입자
+  - `label.operation` — 힘을 주고받는 입자
   - `label.stage` — 전자 둘의 광자 주고받기
   - `label.view` — 기본
   - `label.time` — 시간

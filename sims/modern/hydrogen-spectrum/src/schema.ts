@@ -108,6 +108,7 @@ export const SCENE_BOUNDS = {
 
 export const hydrogenSpectrumMessages = Object.freeze({
   'label.title': { ko: '수소 스펙트럼', en: 'Hydrogen spectrum' },
+  'label.operation': { ko: '불연속한 선 스펙트럼', en: 'A discrete line spectrum' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 준위 번호 — 주양자수 기호라 표식이다 (C1 판정 3). */
@@ -146,8 +147,9 @@ function key(k: HydrogenSpectrumMessageKey): string {
 
 export const hydrogenSpectrumSchema: BundleSchema = {
   id: HYDROGEN_SPECTRUM_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'continuous',
 
   // 조작기가 없다 — 자동 진행만으로 「같은 자리에만 쌓인다」 가 완결된다.

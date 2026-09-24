@@ -99,6 +99,7 @@ export const FADE = 0.6;
 
 export const bohrModelMessages = Object.freeze({
   'label.title': { ko: '보어 모형', en: 'Bohr model' },
+  'label.operation': { ko: '궤도의 양자화', en: 'Quantized orbits' },
   'label.stage': { ko: '수소 원자', en: 'Hydrogen atom' },
   'label.view': { ko: '궤도와 준위', en: 'Orbits and levels' },
   /** 준위 번호 · 궤도 반지름 · 에너지 — 기호와 단위라 표식이다 (C1 판정 3). 값은 vars 로 끼운다. */
@@ -143,8 +144,9 @@ function key(k: BohrModelMessageKey): string {
 
 export const bohrModelSchema: BundleSchema = {
   id: BOHR_MODEL_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 두 번 건너뛰고 빛 둘을 내며 할 말을 마친다.

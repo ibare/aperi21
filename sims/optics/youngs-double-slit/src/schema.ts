@@ -55,6 +55,7 @@ export const BOTTOM_BAND_PX = 44;
 
 export const youngsDoubleSlitMessages = Object.freeze({
   'label.title': { ko: '이중 슬릿 간섭', en: "Young's double slit" },
+  'label.operation': { ko: '빛의 파동성 증거', en: 'Evidence that light is a wave' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   'label.ghost': { ko: '슬릿 하나일 때', en: 'one slit' },
@@ -98,8 +99,9 @@ function key(k: YoungsDoubleSlitMessageKey): string {
 
 export const youngsDoubleSlitSchema: BundleSchema = {
   id: YOUNGS_DOUBLE_SLIT_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'optics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'default', label: text('label.stage'), constants: {} }],

@@ -148,6 +148,10 @@ export const SCENE_BOUNDS = {
 
 export const phaseSpaceMessages = Object.freeze({
   'label.title': { ko: '위상 공간', en: 'Phase space' },
+  'label.operation': {
+    ko: '위치-속도 평면에서 본 운동',
+    en: 'Motion seen on the position–velocity plane',
+  },
   'label.stage': { ko: '감쇠 진자', en: 'Damped pendulum' },
   'label.view': { ko: '위상 평면', en: 'Phase plane' },
   /** 평면 가로축 이름. */
@@ -207,8 +211,9 @@ export const PHASE_SPACE_TIMELINE: TimelineDef = {
 
 export const phaseSpaceSchema: BundleSchema = {
   id: PHASE_SPACE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'oscillation',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 마찰은 조작기가 쥔다 (controllers.ts). 파라미터 상자를 띄우지 않는다.

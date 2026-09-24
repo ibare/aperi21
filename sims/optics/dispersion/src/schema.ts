@@ -78,6 +78,7 @@ export const SCENE_BOUNDS = { minX: -3.05, maxX: 7.75, minY: -4.0, maxY: 2.05 } 
 
 export const dispersionMessages = Object.freeze({
   'label.title': { ko: '분산', en: 'Dispersion' },
+  'label.operation': { ko: '파장에 따른 굴절률 차이', en: 'Refractive index that depends on wavelength' },
   'label.stage': { ko: '공기에서 유리로', en: 'From air into glass' },
   'label.view': { ko: '입사점과 곡선', en: 'Point of incidence and curve' },
 
@@ -136,8 +137,9 @@ function key(k: DispersionMessageKey): string {
 
 export const dispersionSchema: BundleSchema = {
   id: DISPERSION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'optics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

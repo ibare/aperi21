@@ -98,6 +98,10 @@ export const SETTLE = 1.2;
 
 export const slitWidthAndDiffractionMessages = Object.freeze({
   'label.title': { ko: '슬릿 폭과 회절', en: 'Slit Width and Diffraction' },
+  'label.operation': {
+    ko: '파장과 폭의 비가 정하는 퍼짐',
+    en: 'How the gap-to-wavelength ratio sets the spread',
+  },
   'label.stage': { ko: '폭이 다른 두 틈', en: 'Two gaps of different width' },
   'label.view': { ko: '위에서 본 두 수조', en: 'Two ripple tanks from above' },
   'label.ratio': { ko: '틈 폭 = 파장 × {n}', en: 'gap = wavelength × {n}' },
@@ -132,8 +136,9 @@ function key(k: SlitWidthAndDiffractionMessageKey): string {
 
 export const slitWidthAndDiffractionSchema: BundleSchema = {
   id: SLIT_WIDTH_AND_DIFFRACTION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'waves',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 두 폭을 나란히 두어 자동 진행만으로 견줌이 끝난다.

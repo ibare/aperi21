@@ -102,6 +102,7 @@ export const SCRIPT: Readonly<Record<string, Leg>> = {
 
 export const tangentialNormalAccelerationMessages = Object.freeze({
   'label.title': { ko: '접선·법선 가속도', en: 'Tangential and normal acceleration' },
+  'label.operation': { ko: '속력 변화와 방향 변화의 분리', en: 'Separating change of speed from change of direction' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   'label.speedPart': { ko: '속력 몫', en: 'speed part' },
@@ -171,8 +172,9 @@ export const SCENE_BOUNDS = {
 
 export const tangentialNormalAccelerationSchema: BundleSchema = {
   id: TANGENTIAL_NORMAL_ACCELERATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'kinematics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 다섯 경우를 대본이 모두 돌며 보여 준다 (원본 NOTES).

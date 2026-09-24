@@ -69,6 +69,7 @@ export const SCENE_BOUNDS = { minX: -5.25, maxX: 2.45, minY: -2.5, maxY: 2.05 } 
 
 export const concaveMirrorMessages = Object.freeze({
   'label.title': { ko: '오목거울', en: 'Concave mirror' },
+  'label.operation': { ko: '초점과 실상', en: 'The focal point and the real image' },
   'label.stage': { ko: '거울 앞 세 자리', en: 'Three spots before the mirror' },
   'label.view': { ko: '물체와 상', en: 'Object and image' },
 
@@ -129,8 +130,9 @@ function key(k: ConcaveMirrorMessageKey): string {
 
 export const concaveMirrorSchema: BundleSchema = {
   id: CONCAVE_MIRROR_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'optics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 물체를 세 자리로 옮기는 것을 자동 진행으로 보인다 (controllers.ts).

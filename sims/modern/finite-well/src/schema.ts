@@ -72,6 +72,7 @@ export const SCENE_BOUNDS = { minX: -13, maxX: 16.5, minY: -2.6, maxY: 11 } as c
 
 export const finiteWellMessages = Object.freeze({
   'label.title': { ko: '유한 우물', en: 'Finite square well' },
+  'label.operation': { ko: '벽 바깥으로 새는 파동 함수', en: 'A wave function that leaks past the walls' },
   'label.stage': { ko: '벽이 낮아지는 우물', en: 'A well whose walls come down' },
   'label.view': { ko: '준위와 파동 함수', en: 'Levels and wave functions' },
 
@@ -116,8 +117,9 @@ function key(k: FiniteWellMessageKey): string {
 
 export const finiteWellSchema: BundleSchema = {
   id: FINITE_WELL_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 독자가 해 볼 만한 것(벽 높이)은 자동 진행이 끝없는 높이에서 V₀ 까지

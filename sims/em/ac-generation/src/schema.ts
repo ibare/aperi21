@@ -98,6 +98,7 @@ export const CLEAR_SPAN = 0.6;
 
 export const acGenerationMessages = Object.freeze({
   'label.title': { ko: '교류의 발생', en: 'Generating alternating current' },
+  'label.operation': { ko: '회전하는 코일과 사인파', en: 'A turning coil and a sine wave' },
   'label.stage': { ko: '자기장 속 코일', en: 'Coil in a magnetic field' },
   'label.view': { ko: '굴대 쪽에서', en: 'Along the axle' },
   /** 극에 새겨진 표식 (C1 판정 1). */
@@ -139,8 +140,9 @@ function key(k: AcGenerationMessageKey): string {
 
 export const acGenerationSchema: BundleSchema = {
   id: AC_GENERATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 돌고 있고, 느린 돌림과 빠른 돌림을 저절로 되풀이한다.

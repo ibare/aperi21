@@ -124,6 +124,7 @@ export const SCENE_BOUNDS = {
 
 export const liftForceMessages = Object.freeze({
   'label.title': { ko: '양력', en: 'Lift' },
+  'label.operation': { ko: '날개 위아래의 흐름 차이', en: 'How air flows over and under a wing' },
   'label.stage': { ko: '날개 단면', en: 'Wing section' },
   'label.view': { ko: '연기 줄', en: 'Smoke lines' },
   'label.aoa': { ko: '받음각', en: 'Angle of attack' },
@@ -153,8 +154,9 @@ function key(k: LiftForceMessageKey): string {
 
 export const liftForceSchema: BundleSchema = {
   id: LIFT_FORCE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'fluids',
+  operation: text('label.operation'),
   timeModel: 'continuous',
   parameters: [],
   stages: [{ id: 'default', label: text('label.stage'), constants: {} }],

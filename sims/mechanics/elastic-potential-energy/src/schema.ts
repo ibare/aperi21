@@ -99,6 +99,7 @@ export const SLOW_MOTION = 0.3;
 
 export const elasticPotentialEnergyMessages = Object.freeze({
   'label.title': { ko: '탄성 퍼텐셜 에너지', en: 'Elastic potential energy' },
+  'label.operation': { ko: '변형에 저장된 에너지', en: 'The energy stored in a deformation' },
   'label.stage': { ko: '두 발사대', en: 'Two launchers' },
   'label.view': { ko: '나란히', en: 'Side by side' },
   /** 누른 깊이 · 오른 높이 기호. 수식 표기라 번역 대상이 아니다 (C1 판정 3). */
@@ -150,8 +151,9 @@ export const RISE_LABELS: readonly ElasticPotentialEnergyMessageKey[] = [
 
 export const elasticPotentialEnergySchema: BundleSchema = {
   id: ELASTIC_POTENTIAL_ENERGY_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 눌리고, 튀어 오르고, 다시 눌린다.

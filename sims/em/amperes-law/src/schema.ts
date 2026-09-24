@@ -99,6 +99,7 @@ export const FADE = 0.6;
 
 export const amperesLawMessages = Object.freeze({
   'label.title': { ko: '앙페르 법칙', en: 'Ampère’s law' },
+  'label.operation': { ko: '전류와 자기장의 순환', en: 'Circulation of the magnetic field around a current' },
   'label.stage': { ko: '곧은 전선 둘레의 세 길', en: 'Three paths around a straight wire' },
   'label.view': { ko: '위에서 본 전선', en: 'Wire seen end-on' },
   /** 도식 기호. 수식 표기라 번역 대상이 아니다 (C1 판정 3). */
@@ -152,8 +153,9 @@ function key(k: AmperesLawMessageKey): string {
 
 export const amperesLawSchema: BundleSchema = {
   id: AMPERES_LAW_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 세 길을 차례로 걸으며 막대가 쌓이고, 나란히 읽고, 다시 시작한다.

@@ -36,6 +36,10 @@ export const CONTROL_Y = 380;
 
 export const phaseDiagramMessages = Object.freeze({
   'label.title': { ko: '상평형 그림', en: 'Phase diagram' },
+  'label.operation': {
+    ko: '삼중점보다 낮은 압력에서는 액체 구간을 건너뛴다',
+    en: 'Below the triple point, the liquid range is skipped',
+  },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
 
@@ -143,8 +147,9 @@ export const RUNS: readonly RunDef[] = [
 
 export const phaseDiagramSchema: BundleSchema = {
   id: PHASE_DIAGRAM_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   parameters: [],

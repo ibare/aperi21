@@ -79,6 +79,7 @@ export const SCENE_BOUNDS = { minX: -3.45, maxX: 10, minY: -3.45, maxY: 3.45 } a
 
 export const rocheLimitMessages = Object.freeze({
   'label.title': { ko: '로슈 한계', en: 'Roche limit' },
+  'label.operation': { ko: '조석력이 천체를 부수는 거리', en: 'The distance at which tides tear a body apart' },
   'label.stage': { ko: '행성과 알갱이 덩어리', en: 'A planet and a rubble moon' },
   'label.view': { ko: '위에서 본 궤도', en: 'Orbit from above' },
 
@@ -128,8 +129,9 @@ function key(k: RocheLimitMessageKey): string {
 
 export const rocheLimitSchema: BundleSchema = {
   id: ROCHE_LIMIT_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'astro',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 다가오는 한 번이 모든 거리를 훑으므로 거리를 끌어 새로 알게 되는 것이

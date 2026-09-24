@@ -122,8 +122,12 @@ export function vesselText(id: VesselId): LocalizedText {
 
 export const pressureAndContainerShapeSchema: BundleSchema = {
   id: PRESSURE_AND_CONTAINER_SHAPE_ID,
-  title: { ko: '그릇 모양과 바닥 압력', en: 'Container shape and bottom pressure' },
+  label: { ko: '그릇 모양과 바닥 압력', en: 'Container shape and bottom pressure' },
   category: 'fluids',
+  operation: {
+    ko: '수면 높이를 옮겨 세 그릇을 다시 채운다',
+    en: 'Move the water level and refill all three',
+  },
   timeModel: 'linear',
   parameters: [
     {

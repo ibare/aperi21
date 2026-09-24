@@ -68,6 +68,10 @@ export const SCENE_BOUNDS = { minX: -8.6, maxX: 9.1, minY: -4.0, maxY: 3.2 } as 
 
 export const constructiveDestructiveMessages = Object.freeze({
   'label.title': { ko: '보강과 상쇄', en: 'Constructive and destructive interference' },
+  'label.operation': {
+    ko: '위상차가 정하는 합의 크기',
+    en: 'How phase difference sets the size of the sum',
+  },
   'label.stage': { ko: '같은 두 파동', en: 'Two identical waves' },
   'label.view': { ko: '두 파동과 합', en: 'Two waves and their sum' },
   'label.waves': { ko: '두 파동', en: 'Two waves' },
@@ -110,8 +114,9 @@ function key(k: ConstructiveDestructiveMessageKey): string {
 
 export const constructiveDestructiveSchema: BundleSchema = {
   id: CONSTRUCTIVE_DESTRUCTIVE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'waves',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 위상차가 벌어지는 중이고, 0 과 π 에서 한 번씩 머문다.

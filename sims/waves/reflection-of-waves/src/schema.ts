@@ -71,6 +71,7 @@ export const SCENE_BOUNDS = { minX: -0.3, maxX: 9.1, minY: -2.35, maxY: 1.95 } a
 
 export const reflectionOfWavesMessages = Object.freeze({
   'label.title': { ko: '파동의 반사', en: 'Reflection of waves' },
+  'label.operation': { ko: '고정단과 자유단에서의 위상', en: 'Phase at a fixed end and at a free end' },
   'label.stage': { ko: '끝이 다른 두 줄', en: 'Two strings, two kinds of end' },
   'label.view': { ko: '나란한 두 줄', en: 'Two strings side by side' },
 
@@ -110,8 +111,9 @@ function key(k: ReflectionOfWavesMessageKey): string {
 
 export const reflectionOfWavesSchema: BundleSchema = {
   id: REFLECTION_OF_WAVES_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'waves',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 두 끝을 나란히 두어 자동 진행만으로 비교가 끝난다 — 독자가 고를 것이

@@ -66,6 +66,7 @@ export const OFFSET = 2;
 
 export const thinFilmInterferenceMessages = Object.freeze({
   'label.title': { ko: '박막 간섭', en: 'Thin-film interference' },
+  'label.operation': { ko: '두께가 만드는 색', en: 'Colour made by thickness' },
   'label.stage': { ko: '비누막', en: 'Soap film' },
   'label.view': { ko: '정면에서 본 비누막', en: 'Soap film seen face-on' },
   'caption.main': {
@@ -96,8 +97,9 @@ function key(k: ThinFilmInterferenceMessageKey): string {
 
 export const thinFilmInterferenceSchema: BundleSchema = {
   id: THIN_FILM_INTERFERENCE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'optics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 굴절률 · 입사각 조절을 두지 않는다 — 원본 「hidden」. 비스듬히 보는 색은 다른 질문이다.

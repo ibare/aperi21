@@ -103,6 +103,10 @@ export const CYCLE = 8.0;
 
 export const newtonsFirstLawMessages = Object.freeze({
   'label.title': { ko: '관성 기준계', en: 'Inertial frame' },
+  'label.operation': {
+    ko: '버스만 느려지고 승객은 그대로 간다',
+    en: 'Only the bus slows; the passenger keeps going',
+  },
   'label.stage': { ko: '도로', en: 'Road' },
   'label.view': { ko: '땅에서 본 장면', en: 'From the ground' },
 
@@ -155,8 +159,9 @@ function key(k: NewtonsFirstLawMessageKey): string {
 
 export const newtonsFirstLawSchema: BundleSchema = {
   id: NEWTONS_FIRST_LAW_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'linear',
 
   /** 조작기는 하나뿐이고 그것은 `controllers` 의 슬라이더다. 파라미터 패널을 띄우지 않는다. */

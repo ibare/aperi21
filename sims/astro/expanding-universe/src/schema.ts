@@ -56,6 +56,7 @@ export const SCENE_BOUNDS = { minX: -4.5, maxX: 4.5, minY: -2.7, maxY: 2.3 } as 
 
 export const expandingUniverseMessages = Object.freeze({
   'label.title': { ko: '우주의 팽창', en: 'The expanding universe' },
+  'label.operation': { ko: '모든 방향으로 멀어지는 은하들', en: 'Galaxies receding in every direction' },
   'label.stage': { ko: '고르게 늘어나는 공간', en: 'Evenly stretching space' },
   'label.view': { ko: '은하에 서서 보기', en: 'Standing on a galaxy' },
   /** 관찰 은하에 붙는 이름표. */
@@ -103,8 +104,9 @@ function key(k: ExpandingUniverseMessageKey): string {
 
 export const expandingUniverseSchema: BundleSchema = {
   id: EXPANDING_UNIVERSE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'astro',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 늘어나는 중이고, 관찰 은하를 옮겨 한 번 더 늘인다.

@@ -67,6 +67,7 @@ export const CAPTION_AT = [0.45, -0.75] as const;
 
 export const massSpectrometerMessages = Object.freeze({
   'label.title': { ko: '질량 분석기', en: 'Mass spectrometer' },
+  'label.operation': { ko: '반지름으로 가르는 질량', en: 'Sorting masses by radius' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
 
@@ -107,8 +108,9 @@ function key(k: MassSpectrometerMessageKey): string {
 
 export const massSpectrometerSchema: BundleSchema = {
   id: MASS_SPECTROMETER_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

@@ -96,6 +96,10 @@ export const SCENE_BOUNDS = { minX: 0, maxX: WIDTH, minY: -44, maxY: HEIGHT } as
 
 export const impulseForceRelationMessages = Object.freeze({
   'label.title': { ko: '힘과 충격량', en: 'Force and impulse' },
+  'label.operation': {
+    ko: '짧고 큰 힘과 길고 작은 힘',
+    en: 'A short, large force and a long, small one',
+  },
   'label.stage': { ko: '벽과 방석', en: 'Wall and cushion' },
   'label.view': { ko: '나란히', en: 'Side by side' },
   'label.hard': { ko: '딱딱한 벽', en: 'Hard wall' },
@@ -146,8 +150,9 @@ function key(k: ImpulseForceRelationMessageKey): string {
 
 export const impulseForceRelationSchema: BundleSchema = {
   id: IMPULSE_FORCE_RELATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

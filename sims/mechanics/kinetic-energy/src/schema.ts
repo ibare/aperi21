@@ -108,6 +108,10 @@ export const SLOW_MOTION = 0.5;
 
 export const kineticEnergyMessages = Object.freeze({
   'label.title': { ko: '운동 에너지', en: 'Kinetic energy' },
+  'label.operation': {
+    ko: '속력이 담고 있는 에너지',
+    en: 'The energy that speed carries',
+  },
   'label.stage': { ko: '거친 바닥', en: 'Rough floor' },
   'label.view': { ko: '두 레인', en: 'Two lanes' },
   /** 화살표에 붙는 기호. 수식 표기라 번역 대상이 아니다 (C1 판정 3). */
@@ -161,8 +165,9 @@ export const CELL_LABELS: readonly KineticEnergyMessageKey[] = [
 
 export const kineticEnergySchema: BundleSchema = {
   id: KINETIC_ENERGY_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 미끄러지고, 멈추고, 다시 들어온다.

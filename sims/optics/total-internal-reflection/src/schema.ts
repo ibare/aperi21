@@ -100,6 +100,7 @@ export const SCENE_BOUNDS = {
 
 export const totalInternalReflectionMessages = Object.freeze({
   'label.title': { ko: '전반사', en: 'Total internal reflection' },
+  'label.operation': { ko: '임계각과 그 조건', en: 'The critical angle and its condition' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 매질 이름과 굴절률. 이름이 조사 없이 붙지만 어순이 언어마다 같지 않을 수 있어 문안으로 둔다. */
@@ -148,8 +149,9 @@ function key(k: TotalInternalReflectionMessageKey): string {
 
 export const totalInternalReflectionSchema: BundleSchema = {
   id: TOTAL_INTERNAL_REFLECTION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'optics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'default', label: text('label.stage'), constants: {} }],

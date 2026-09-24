@@ -94,6 +94,7 @@ export const SCENE_BOUNDS = { minX: -6.3, maxX: 4.3, minY: -2.35, maxY: 1.95 } a
 
 export const relativisticVelocityAdditionMessages = Object.freeze({
   'label.title': { ko: '속도의 상대론적 덧셈', en: 'Relativistic velocity addition' },
+  'label.operation': { ko: '광속을 넘지 못하는 합성', en: 'Composition that never exceeds light speed' },
   'label.stage': { ko: '0.5c 배에서 0.5c 탄환', en: 'A 0.5c bullet from a 0.5c ship' },
   'label.view': { ko: '땅의 틀', en: 'Ground frame' },
   'label.ship': { ko: '배 {v}c →', en: 'Ship {v}c →' },
@@ -149,8 +150,9 @@ function key(k: RelativisticVelocityAdditionMessageKey): string {
 
 export const relativisticVelocityAdditionSchema: BundleSchema = {
   id: RELATIVISTIC_VELOCITY_ADDITION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 배가 오고, 쏘고, 멈춘 자리를 읽고, 다시 온다.

@@ -90,6 +90,7 @@ export const FADE = 0.8;
 
 export const energyInCapacitorMessages = Object.freeze({
   'label.title': { ko: '축전기의 에너지', en: 'Energy in a capacitor' },
+  'label.operation': { ko: '전기장에 저장된 에너지', en: 'Energy stored in the electric field' },
   'label.stage': { ko: '한 몫씩 옮겨 충전', en: 'Charging one chunk at a time' },
   'label.view': { ko: '판과 V–Q 그래프', en: 'Plates and V–Q graph' },
   /** 값이 끼는 조립이라 문안이다 (C1). 값은 스테이지 상수 그대로. */
@@ -136,8 +137,9 @@ function key(k: EnergyInCapacitorMessageKey): string {
 
 export const energyInCapacitorSchema: BundleSchema = {
   id: ENERGY_IN_CAPACITOR_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 옮기고, 채우고, 직사각형과 견주는 한 주기로 할 말을 마친다.

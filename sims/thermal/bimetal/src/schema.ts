@@ -101,6 +101,7 @@ export const REWARM = 1.8;
 
 export const bimetalMessages = Object.freeze({
   'label.title': { ko: '바이메탈', en: 'Bimetallic strip' },
+  'label.operation': { ko: '팽창률 차이가 만드는 휨', en: 'Bending from unequal expansion' },
   'label.stage': { ko: '황동 · 강철 띠', en: 'Brass–steel strip' },
   'label.view': { ko: '옆에서 본 띠', en: 'Strip from the side' },
   /** 두 장의 이름표 — 색 대신 이름과 결로 가른다. */
@@ -159,8 +160,9 @@ function key(k: BimetalMessageKey): string {
 
 export const bimetalSchema: BundleSchema = {
   id: BIMETAL_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — α 둘 · 두께 · 길이 · 세 온도 · 배율은 스테이지 상수다. 자동 진행이

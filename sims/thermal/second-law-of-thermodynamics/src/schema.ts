@@ -50,6 +50,7 @@ export const SCENE_BOUNDS = { minX: -0.12, maxX: 6.2, minY: -0.5, maxY: 1.52 } a
 
 export const secondLawOfThermodynamicsMessages = Object.freeze({
   'label.title': { ko: '열역학 제2법칙', en: 'Second law of thermodynamics' },
+  'label.operation': { ko: '방향이 있는 변화', en: 'Change that runs one way' },
   'label.stage': { ko: '칸막이 상자', en: 'Divided box' },
   'label.view': { ko: '상자와 왼쪽 칸 분자 수', en: 'Box and left-half count' },
   /** 그래프 세로축 이름. */
@@ -93,8 +94,9 @@ function key(k: SecondLawOfThermodynamicsMessageKey): string {
 
 export const secondLawOfThermodynamicsSchema: BundleSchema = {
   id: SECOND_LAW_OF_THERMODYNAMICS_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 칸막이가 걷히고, 퍼지고, 기다린다.

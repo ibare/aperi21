@@ -83,6 +83,7 @@ export const CLEAR = 1;
 
 export const wienDisplacementLawMessages = Object.freeze({
   'label.title': { ko: '빈 변위 법칙', en: "Wien's displacement law" },
+  'label.operation': { ko: '온도와 최대 파장', en: 'Temperature and peak wavelength' },
   'label.stage': { ko: '두 배씩 오르는 온도', en: 'Temperature doubling' },
   'label.view': { ko: '복사 곡선과 봉우리 막대', en: 'Radiation curve and peak bars' },
   'label.wavelength': { ko: '파장', en: 'wavelength' },
@@ -132,8 +133,9 @@ function key(k: WienDisplacementLawMessageKey): string {
 
 export const wienDisplacementLawSchema: BundleSchema = {
   id: WIEN_DISPLACEMENT_LAW_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 온도가 두 배씩 오르고 막대가 이어 붙는다.

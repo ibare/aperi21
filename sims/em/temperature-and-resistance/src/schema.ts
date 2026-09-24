@@ -143,6 +143,7 @@ export const COOL_SPAN = 1.6;
 
 export const temperatureAndResistanceMessages = Object.freeze({
   'label.title': { ko: '온도와 저항', en: 'Temperature and resistance' },
+  'label.operation': { ko: '금속과 반도체의 반대 경향', en: 'Metals and semiconductors go opposite ways' },
   'label.stage': { ko: '금속과 반도체', en: 'A metal and a semiconductor' },
   'label.view': { ko: '나란히 건 두 막대', en: 'Two bars side by side' },
   /** 값이 끼는 이름표 — 단위 기호는 표식이지만 값이 끼므로 문안 키로 둔다 (C1). */
@@ -188,8 +189,9 @@ function key(k: TemperatureAndResistanceMessageKey): string {
 
 export const temperatureAndResistanceSchema: BundleSchema = {
   id: TEMPERATURE_AND_RESISTANCE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흐르고, 데워지고, 흐름 막대가 줄고 는다.

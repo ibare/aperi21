@@ -124,6 +124,7 @@ export const LABEL_UP = 0.8;
 
 export const transformerMessages = Object.freeze({
   'label.title': { ko: '변압기', en: 'Transformer' },
+  'label.operation': { ko: '감은 수와 전압비', en: 'Turns and the voltage ratio' },
   'label.stage': { ko: '철심에 감은 두 코일', en: 'Two coils on one iron core' },
   'label.view': { ko: '변압기와 기록', en: 'Transformer and record' },
   /** 감은 수 이름표 — 값이 끼는 조립문이라 문안이다 (C1). */
@@ -179,8 +180,9 @@ function key(k: TransformerMessageKey): string {
 
 export const transformerSchema: BundleSchema = {
   id: TRANSFORMER_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 1 : 2 로 감은 변압기가 돌고 있고, 다음에 2 : 1 로 바뀐다.

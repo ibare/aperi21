@@ -98,6 +98,7 @@ export const PHASE_FADE = 0.8;
 
 export const photoelectricEffectMessages = Object.freeze({
   'label.title': { ko: '광전 효과', en: 'Photoelectric effect' },
+  'label.operation': { ko: '빛의 입자성 증거', en: 'Evidence that light comes in particles' },
   'label.stage': { ko: '나트륨 금속', en: 'Sodium metal' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 광자 하나가 나르는 에너지. 값은 선언한 정박값을 끼운다 (C1 · S-piece 유효숫자). */
@@ -139,8 +140,9 @@ function key(k: PhotoelectricEffectMessageKey): string {
 
 export const photoelectricEffectSchema: BundleSchema = {
   id: PHOTOELECTRIC_EFFECT_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 「세게 해도 안 나온다」 와 「약해도 나온다」 가 모두 일어난다.

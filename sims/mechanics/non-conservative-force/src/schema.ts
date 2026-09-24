@@ -98,6 +98,7 @@ export const FADE = 0.6;
 
 export const nonConservativeForceMessages = Object.freeze({
   'label.title': { ko: '비보존력', en: 'Non-conservative force' },
+  'label.operation': { ko: '경로에 따라 달라지는 일', en: 'Work that depends on the path' },
   'label.stage': { ko: '거친 바닥', en: 'Rough floor' },
   'label.view': { ko: '두 레인', en: 'Two lanes' },
   /** 기준점 이름 · 거리 · 힘 기호. 도식 표식이라 번역 대상이 아니다 (C1 판정 3). */
@@ -148,8 +149,9 @@ function key(k: NonConservativeForceMessageKey): string {
 
 export const nonConservativeForceSchema: BundleSchema = {
   id: NON_CONSERVATIVE_FORCE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 밀려 가고, 지나치고, 돌아오고, 막대가 한 칸과 두 칸으로 남는다.

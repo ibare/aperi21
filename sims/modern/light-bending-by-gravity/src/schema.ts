@@ -43,6 +43,7 @@ export const EXAGGERATION = 18000;
 
 export const lightBendingByGravityMessages = Object.freeze({
   'label.title': { ko: '빛의 휨', en: 'Bending of light' },
+  'label.operation': { ko: '질량 근처에서 휘는 경로', en: 'The path of light bends near a mass' },
   'label.stage': { ko: '태양 가장자리를 스치는 별빛', en: 'Starlight grazing the Sun' },
   'label.view': { ko: '별 · 태양 · 지구', en: 'Star, Sun and Earth' },
   'label.sun': { ko: '태양', en: 'Sun' },
@@ -92,8 +93,9 @@ function key(k: LightBendingByGravityMessageKey): string {
 
 export const lightBendingByGravitySchema: BundleSchema = {
   id: LIGHT_BENDING_BY_GRAVITY_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 독자가 바꿔 볼 만한 것은 스치는 거리(멀수록 덜 휜다)인데, 그것은 이 조각의

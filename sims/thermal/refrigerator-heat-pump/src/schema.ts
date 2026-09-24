@@ -101,6 +101,7 @@ export const SCENE_BOUNDS = { minX: -4.5, maxX: 4.5, minY: -1.95, maxY: 2.55 } a
 
 export const refrigeratorHeatPumpMessages = Object.freeze({
   'label.title': { ko: '냉장고와 열펌프', en: 'Refrigerators and heat pumps' },
+  'label.operation': { ko: '일을 넣어 열을 옮기는 것', en: 'Moving heat by putting in work' },
   'label.stage': { ko: '부엌의 냉장고', en: 'Fridge in a kitchen' },
   'label.view': { ko: '열의 흐름', en: 'Heat flow' },
   /** 칸 이름. */
@@ -151,8 +152,9 @@ function key(k: RefrigeratorHeatPumpMessageKey): string {
 
 export const refrigeratorHeatPumpSchema: BundleSchema = {
   id: REFRIGERATOR_HEAT_PUMP_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흐르고, 합쳐지고, 끊기고, 새어 든다.

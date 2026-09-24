@@ -97,6 +97,7 @@ export const SCENE_BOUNDS = { minX: -8.4, maxX: 8.3, minY: -3.05, maxY: 2.75 } a
 
 export const reactanceMessages = Object.freeze({
   'label.title': { ko: '리액턴스와 임피던스', en: 'Reactance and impedance' },
+  'label.operation': { ko: '주파수에 의존하는 저항', en: 'A resistance that depends on frequency' },
   'label.stage': { ko: '코일 하나 · 축전기 하나', en: 'One coil, one capacitor' },
   'label.view': { ko: '두 회로와 X–f 평면', en: 'Two circuits and the X–f plane' },
   /** 도식 표식 — 소자 · 물리량 기호라 번역하지 않는다 (C1 판정 3). */
@@ -159,8 +160,9 @@ export const FALL_PHASE = 'fall';
 
 export const reactanceSchema: BundleSchema = {
   id: REACTANCE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 진동수가 스스로 오르내리고 두 파형이 서로 반대로 움직인다.

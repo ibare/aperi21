@@ -113,6 +113,7 @@ export const BACK = 3;
 
 export const wheatstoneBridgeMessages = Object.freeze({
   'label.title': { ko: '휘트스톤 브리지', en: 'Wheatstone bridge' },
+  'label.operation': { ko: '평형으로 재는 저항', en: 'Measuring a resistance by balance' },
   'label.stage': { ko: '비율 가지 · 가변 저항 · 모르는 저항', en: 'Ratio arms, variable resistor, unknown resistor' },
   'label.view': { ko: '브리지', en: 'Bridge' },
   'label.volt': { ko: '{v} V', en: '{v} V' },
@@ -172,8 +173,9 @@ function key(k: WheatstoneBridgeMessageKey): string {
 
 export const wheatstoneBridgeSchema: BundleSchema = {
   id: WHEATSTONE_BRIDGE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 R₃ 가 처음 자리에서 평형을 지나 끝까지 돌았다가 되돌아온다.

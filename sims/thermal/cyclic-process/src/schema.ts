@@ -20,6 +20,7 @@ export const CYCLIC_PROCESS_ID = 'cyclic-process';
 
 export const cyclicProcessMessages = Object.freeze({
   'label.title': { ko: '순환 과정', en: 'Cyclic process' },
+  'label.operation': { ko: '제자리로 돌아오는 변화', en: 'A change that comes back to where it began' },
   'label.stage': { ko: '직사각형 순환', en: 'Rectangular cycle' },
   'label.view': { ko: 'P-V 그림과 온도계', en: 'P-V diagram and thermometer' },
 
@@ -74,8 +75,9 @@ function key(k: CyclicProcessMessageKey): string {
 
 export const cyclicProcessSchema: BundleSchema = {
   id: CYCLIC_PROCESS_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
 

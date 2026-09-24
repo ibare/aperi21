@@ -20,8 +20,9 @@ const DEF: TimelineDef = {
 
 const SCHEMA: BundleSchema = {
   id: 'test',
-  title: { en: 'Test' },
+  label: { en: 'Test' },
   category: 'test',
+  operation: { en: 'Test' },
   timeModel: 'linear',
   parameters: [],
   stages: [{ id: 'main', label: { en: 'Main' }, constants: {} }],

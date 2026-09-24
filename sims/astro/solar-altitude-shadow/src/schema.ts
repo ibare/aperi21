@@ -82,6 +82,10 @@ export const START_AT = 0.6;
 
 export const solarAltitudeShadowMessages = Object.freeze({
   'label.title': { ko: '태양 고도와 그림자', en: 'Solar altitude and shadows' },
+  'label.operation': {
+    ko: '고도가 바뀌면 그림자 길이와 기온이 함께 바뀐다',
+    en: 'As the Sun’s altitude changes, shadow length and warmth change together',
+  },
   'label.stage': { ko: '땅 위의 막대', en: 'A stick on the ground' },
   'label.view': { ko: '옆에서', en: 'From the side' },
   'label.sun': { ko: '태양', en: 'Sun' },
@@ -129,8 +133,9 @@ function key(k: SolarAltitudeShadowMessageKey): string {
 
 export const solarAltitudeShadowSchema: BundleSchema = {
   id: SOLAR_ALTITUDE_SHADOW_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'astro',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 시간표가 고도를 낮게 → 중간 → 높게 → 다시 낮게 옮기며 견주기까지 마친다.

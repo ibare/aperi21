@@ -88,6 +88,7 @@ const FADE = 0.8;
 
 export const radiationPressureMessages = Object.freeze({
   'label.title': { ko: '복사압', en: 'Radiation pressure' },
+  'label.operation': { ko: '빛이 미는 힘', en: 'The push of light' },
   'label.stage': { ko: '햇빛', en: 'Sunlight' },
   'label.view': { ko: '옆에서 본 두 판', en: 'Two plates, side view' },
   'label.absorber': { ko: '검은 판', en: 'Black plate' },
@@ -130,8 +131,9 @@ function key(k: RadiationPressureMessageKey): string {
 
 export const radiationPressureSchema: BundleSchema = {
   id: RADIATION_PRESSURE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 빛이 두 판을 밀고 있다.

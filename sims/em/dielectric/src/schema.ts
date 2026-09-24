@@ -85,6 +85,7 @@ export const WITHDRAW = 1.8;
 
 export const dielectricMessages = Object.freeze({
   'label.title': { ko: '유전체', en: 'Dielectric' },
+  'label.operation': { ko: '분극과 전기장의 약화', en: 'Polarization weakens the field' },
   'label.stage': { ko: '전지에서 뗀 대전 판', en: 'Charged plates cut off from the battery' },
   'label.view': { ko: '옆에서 본 판', en: 'Side view' },
   /** 판 전하 · 장 · 유전율 기호. 수식 표기라 표식이고, κ 는 스테이지 상수를 vars 로 끼운다. */
@@ -127,8 +128,9 @@ function key(k: DielectricMessageKey): string {
 
 export const dielectricSchema: BundleSchema = {
   id: DIELECTRIC_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 밀어 넣고, 읽고, 빼는 한 주기로 할 말을 마친다.

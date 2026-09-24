@@ -35,6 +35,7 @@ export const SCENE_BOUNDS = { minX: 0, maxX: W, minY: -34, maxY: H } as const;
 
 export const doubleSlitWithElectronsMessages = Object.freeze({
   'label.title': { ko: '전자의 이중 슬릿', en: 'Double slit with electrons' },
+  'label.operation': { ko: '하나씩 보내도 생기는 무늬', en: 'A pattern that forms one electron at a time' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   'label.source': { ko: '전자원', en: 'Electron source' },
@@ -87,8 +88,9 @@ const T_STRIPES = timeOfCount(ELECTRONS, COUNT_STRIPES);
 
 export const doubleSlitWithElectronsSchema: BundleSchema = {
   id: DOUBLE_SLIT_WITH_ELECTRONS_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 누르지 않아도 점이 쌓여 무늬가 된다.

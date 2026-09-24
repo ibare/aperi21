@@ -131,6 +131,10 @@ export const CLOSE = 0.9;
 
 export const selfInductanceMessages = Object.freeze({
   'label.title': { ko: '자체 인덕턴스', en: 'Self-inductance' },
+  'label.operation': {
+    ko: '자기 자신의 자속 변화',
+    en: 'A coil opposing changes in its own flux',
+  },
   'label.stage': { ko: '코일 · 전지 · 스위치', en: 'Coil, battery and switch' },
   'label.view': { ko: '회로와 기록', en: 'Circuit and record' },
   /** 전지 전압 · 기준선 이름표. 값은 스테이지 상수를 그대로 끼운다. */
@@ -177,8 +181,9 @@ function key(k: SelfInductanceMessageKey): string {
 
 export const selfInductanceSchema: BundleSchema = {
   id: SELF_INDUCTANCE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 전류가 흐르고 있고, 스위치를 끊고, 다시 닫는다.

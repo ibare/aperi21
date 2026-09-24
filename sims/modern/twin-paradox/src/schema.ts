@@ -71,6 +71,7 @@ export const SCENE_BOUNDS = { minX: -6, maxX: 12, minY: -2.4, maxY: 21.2 } as co
 
 export const twinParadoxMessages = Object.freeze({
   'label.title': { ko: '쌍둥이 역설', en: 'Twin paradox' },
+  'label.operation': { ko: '비대칭을 만드는 가속', en: 'The acceleration that breaks the symmetry' },
   'label.stage': { ko: '0.6c 로 6 광년 왕복', en: 'A round trip of 6 light-years at 0.6c' },
   'label.view': { ko: '지구 틀의 시공간 도표', en: 'Spacetime diagram in Earth’s frame' },
   /** 머리 옆에서 센 햇수 — 지나온 해마다의 점을 센 정수다. */
@@ -117,8 +118,9 @@ function key(k: TwinParadoxMessageKey): string {
 
 export const twinParadoxSchema: BundleSchema = {
   id: TWIN_PARADOX_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 여행자가 가고, 돌아서고, 돌아와 두 햇수가 갈린다.

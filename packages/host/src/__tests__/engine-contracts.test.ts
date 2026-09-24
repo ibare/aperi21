@@ -18,8 +18,9 @@ function bundleWith(preroll?: number): Bundle<CountState> {
   return {
     schema: {
       id: 'test',
-      title: { en: 'T' },
+      label: { en: 'T' },
       category: 'test',
+      operation: { en: 'T' },
       timeModel: 'linear',
       parameters: [],
       stages: [STAGE],
@@ -93,8 +94,9 @@ describe('caption.cases — 시각이 아니라 상태로 고른다', () => {
   const schema = (cases?: readonly { when: string; text: string }[]): BundleSchema =>
     ({
       id: 't',
-      title: { en: 'T' },
+      label: { en: 'T' },
       category: 't',
+      operation: { en: 'T' },
       timeModel: 'linear',
       parameters: [],
       stages: [STAGE],

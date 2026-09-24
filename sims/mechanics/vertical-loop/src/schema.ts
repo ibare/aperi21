@@ -71,6 +71,10 @@ const FADE_OUT = 0.4;
 
 export const verticalLoopMessages = Object.freeze({
   'label.title': { ko: '연직 원운동', en: 'Vertical loop' },
+  'label.operation': {
+    ko: '꼭대기에서 떨어지지 않는 최소 속력',
+    en: 'The minimum speed that keeps a ball on the loop at the top',
+  },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   'label.minSpeed': { ko: '꼭대기에서 필요한 최소 속력', en: 'Minimum speed needed at the top' },
@@ -111,8 +115,9 @@ const FADE_START = CYCLE - FADE_OUT;
 
 export const verticalLoopSchema: BundleSchema = {
   id: VERTICAL_LOOP_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 두 속력의 대비로 주장이 끝나고, 속력을 바꿔 보게 하면 주장이

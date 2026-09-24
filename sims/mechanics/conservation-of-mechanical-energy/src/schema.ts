@@ -97,6 +97,10 @@ export const SWING_SLOW = 0.4;
 
 export const conservationOfMechanicalEnergyMessages = Object.freeze({
   'label.title': { ko: '역학적 에너지 보존', en: 'Conservation of mechanical energy' },
+  'label.operation': {
+    ko: '위치와 운동이 자리를 바꾸는 동안 변하지 않는 합',
+    en: 'The sum that holds while height and motion trade places',
+  },
   'label.stage': { ko: '골짜기 궤도', en: 'Valley track' },
   'label.view': { ko: '한 번의 왕복', en: 'One round trip' },
   /** 기둥의 두 몫에 붙는 이름. 조사가 붙는 낱말이라 표식이 아니라 문안이다 (C1 판정 4). */
@@ -134,8 +138,9 @@ function key(k: ConservationOfMechanicalEnergyMessageKey): string {
 
 export const conservationOfMechanicalEnergySchema: BundleSchema = {
   id: CONSERVATION_OF_MECHANICAL_ENERGY_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 (controllers.ts 에 이유를 적었다).

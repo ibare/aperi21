@@ -66,6 +66,7 @@ export const SCENE_BOUNDS = { minX: -0.12, maxX: 1.78, minY: -0.47, maxY: 0.38 }
 
 export const coulombsLawMessages = Object.freeze({
   'label.title': { ko: '쿨롱 법칙', en: "Coulomb's law" },
+  'label.operation': { ko: '전하 사이의 힘', en: 'The force between charges' },
   'label.stage': { ko: '벌어지는 세 쌍', en: 'Three pairs pulled apart' },
   'label.view': { ko: '세 줄', en: 'Three rows' },
 
@@ -115,8 +116,9 @@ function key(k: CoulombsLawMessageKey): string {
 
 export const coulombsLawSchema: BundleSchema = {
   id: COULOMBS_LAW_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 두 쌍이 차례로 벌어지고, 멈춘 그림을 보인 뒤 다시 모인다.

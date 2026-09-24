@@ -81,6 +81,7 @@ export const SCENE_BOUNDS = { minX: -1.5, maxX: 10.2, minY: -1.85, maxY: 2.05 } 
 
 export const airColumnResonanceMessages = Object.freeze({
   'label.title': { ko: '기주 공명', en: 'Air-column resonance' },
+  'label.operation': { ko: '열린 관과 닫힌 관의 차이', en: 'Open pipe versus closed pipe' },
   'label.stage': { ko: '같은 길이의 관 둘', en: 'Two pipes of equal length' },
   'label.view': { ko: '관과 울린 진동수', en: 'Pipes and resonances' },
 
@@ -130,8 +131,9 @@ function key(k: AirColumnResonanceMessageKey): string {
 
 export const airColumnResonanceSchema: BundleSchema = {
   id: AIR_COLUMN_RESONANCE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'waves',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 계단이 자동으로 모든 후보를 지나며 두 관이 번갈아 울리는 것을 보인다 —

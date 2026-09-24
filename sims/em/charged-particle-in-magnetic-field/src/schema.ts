@@ -56,6 +56,10 @@ export const CAPTION_BAND = 36;
 
 export const chargedParticleInMagneticFieldMessages = Object.freeze({
   'label.title': { ko: '자기장 속 전하의 원운동', en: 'Charges circling in a magnetic field' },
+  'label.operation': {
+    ko: '빠른 전하도 한 바퀴 시간은 같다',
+    en: 'A faster charge takes the same time per turn',
+  },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   'caption.main': {
@@ -88,8 +92,9 @@ function key(k: ChargedParticleInMagneticFieldMessageKey): string {
 
 export const chargedParticleInMagneticFieldSchema: BundleSchema = {
   id: CHARGED_PARTICLE_IN_MAGNETIC_FIELD_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기 없음. 자기장 세기를 바꾸면 주기가 바뀌어 두 번째 주장이 된다 (원본 NOTES (c)).

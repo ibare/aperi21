@@ -122,6 +122,7 @@ export const RELEASE_BLEND = 0.8;
 
 export const tensionMessages = Object.freeze({
   'label.title': { ko: '장력', en: 'Tension' },
+  'label.operation': { ko: '줄이 당기는 힘과 그 전달', en: 'How a rope carries a pull' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 저울이 읽은 값. 값은 반올림한 정수 하나에서 온다. */
@@ -148,8 +149,9 @@ function key(k: TensionMessageKey): string {
 
 export const tensionSchema: BundleSchema = {
   id: TENSION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
 

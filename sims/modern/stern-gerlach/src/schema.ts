@@ -103,6 +103,7 @@ export const FADE = 0.8;
 
 export const sternGerlachMessages = Object.freeze({
   'label.title': { ko: '슈테른-게를라흐 실험', en: 'Stern–Gerlach experiment' },
+  'label.operation': { ko: '갈라지는 원자 빔', en: 'An atomic beam that splits' },
   'label.stage': { ko: '은 원자 빔', en: 'Silver atom beam' },
   'label.view': { ko: '옆에서 본 장치와 스크린 정면', en: 'Side view and screen, face-on' },
   'label.oven': { ko: '은 원자', en: 'silver atoms' },
@@ -145,8 +146,9 @@ function key(k: SternGerlachMessageKey): string {
 
 export const sternGerlachSchema: BundleSchema = {
   id: STERN_GERLACH_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 예상한 띠와 실제 두 점을 차례로 보이며 할 말을 마친다.

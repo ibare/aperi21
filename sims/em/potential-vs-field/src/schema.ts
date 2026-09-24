@@ -127,6 +127,7 @@ export const FADE = 0.6;
 
 export const potentialVsFieldMessages = Object.freeze({
   'label.title': { ko: '전위와 전기장', en: 'Potential and electric field' },
+  'label.operation': { ko: '기울기 관계', en: 'The slope relation' },
   'label.stage': { ko: '전하 띠 셋', en: 'Three charged slabs' },
   'label.view': { ko: '곡선과 화살표', en: 'Curve and arrows' },
   /** 축 기호. 수식 표기라 번역 대상이 아니다 (C1 판정 3). */
@@ -171,8 +172,9 @@ function key(k: PotentialVsFieldMessageKey): string {
 
 export const potentialVsFieldSchema: BundleSchema = {
   id: POTENTIAL_VS_FIELD_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 탐침이 이미 곡선을 훑고 있다.

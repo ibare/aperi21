@@ -74,6 +74,7 @@ export const SCENE_BOUNDS = { minX: -6.2, maxX: 6.8, minY: -1.35, maxY: 2.55 } a
 
 export const specularDiffuseReflectionMessages = Object.freeze({
   'label.title': { ko: '정반사와 난반사', en: 'Specular and diffuse reflection' },
+  'label.operation': { ko: '표면 거칠기가 정하는 반사', en: 'Reflection set by surface roughness' },
   'label.stage': { ko: '매끈한 면과 거친 면', en: 'Smooth and rough surfaces' },
   'label.view': { ko: '두 면 나란히', en: 'Side by side' },
 
@@ -119,8 +120,9 @@ function key(k: SpecularDiffuseReflectionMessageKey): string {
 
 export const specularDiffuseReflectionSchema: BundleSchema = {
   id: SPECULAR_DIFFUSE_REFLECTION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'optics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 한 주기로 「나란히 → 흩어짐 → 법선이 제각각」 이 끝난다.

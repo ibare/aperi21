@@ -71,6 +71,7 @@ export const FADE_S = 1.0;
 
 export const maxwellsEquationsMessages = Object.freeze({
   'label.title': { ko: '맥스웰 방정식', en: "Maxwell's equations" },
+  'label.operation': { ko: '전자기를 묶는 네 식', en: 'Four equations that bind electromagnetism' },
   'label.stage': { ko: '고리 사슬', en: 'Chain of loops' },
   'label.view': { ko: '비스듬히 위에서', en: 'From above, at an angle' },
   /** 물리 기호 — 표식이라 번역하지 않는다 (C1 판정 3). */
@@ -110,8 +111,9 @@ function key(k: MaxwellsEquationsMessageKey): string {
 
 export const maxwellsEquationsSchema: BundleSchema = {
   id: MAXWELLS_EQUATIONS_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 사슬이 번지는 중이다. 독자가 직접 해 볼 것이 없다.

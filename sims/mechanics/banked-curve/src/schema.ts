@@ -113,6 +113,7 @@ export const SLIDER_STEP = 0.1;
 
 export const bankedCurveMessages = Object.freeze({
   'label.title': { ko: '경사진 커브', en: 'Banked curve' },
+  'label.operation': { ko: '마찰 없이도 도는 각도', en: 'The bank angle that turns a car without friction' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   'label.slider': { ko: '경사각', en: 'Bank angle' },
@@ -159,8 +160,9 @@ function key(k: BankedCurveMessageKey): string {
 
 export const bankedCurveSchema: BundleSchema = {
   id: BANKED_CURVE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 빠르기·반지름은 주장이 아니다 (원본 inventory 「hidden」). 경사각만 조작기로 둔다.

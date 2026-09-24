@@ -95,6 +95,10 @@ export const AUTO = 'auto';
 
 export const freeFallMessages = Object.freeze({
   'label.title': { ko: '자유 낙하', en: 'Free fall' },
+  'label.operation': {
+    ko: '무게가 달라도 두 공은 나란히 내려가 함께 닿는다',
+    en: 'However different their weights, the two balls fall together and land together',
+  },
   'label.stage': { ko: '낙하', en: 'The drop' },
   'label.view': { ko: '나란한 낙하', en: 'Side by side' },
 
@@ -152,8 +156,9 @@ function key(k: FreeFallMessageKey): string {
 
 export const freeFallSchema: BundleSchema = {
   id: FREE_FALL_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'kinematics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   /**

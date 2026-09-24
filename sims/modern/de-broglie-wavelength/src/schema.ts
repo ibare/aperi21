@@ -100,6 +100,7 @@ export const FADE = 0.6;
 
 export const deBroglieWavelengthMessages = Object.freeze({
   'label.title': { ko: '드브로이 파장', en: 'de Broglie wavelength' },
+  'label.operation': { ko: '물질의 파동성', en: 'The wave nature of matter' },
   'label.stage': { ko: '전자 두 개', en: 'Two electrons' },
   'label.view': { ko: '따라가는 시점', en: 'Following view' },
   /** 전자 기호. 표식이다 (C1 판정 3). */
@@ -139,8 +140,9 @@ function key(k: DeBroglieWavelengthMessageKey): string {
 
 export const deBroglieWavelengthSchema: BundleSchema = {
   id: DE_BROGLIE_WAVELENGTH_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 날고, 빨라지고, 재어 본다.

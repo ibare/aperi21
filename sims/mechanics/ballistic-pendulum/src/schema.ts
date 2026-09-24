@@ -89,6 +89,10 @@ export const SCENE_BOUNDS = { minX: -1.86, maxX: 3.34, minY: -0.52, maxY: 1.26 }
 
 export const ballisticPendulumMessages = Object.freeze({
   'label.title': { ko: '탄동 진자', en: 'Ballistic pendulum' },
+  'label.operation': {
+    ko: '충돌과 에너지 보존을 잇는 측정',
+    en: 'The measurement that links a collision to energy conservation',
+  },
   'label.stage': { ko: '매단 나무토막', en: 'Hanging block' },
   'label.view': { ko: '두 막대', en: 'Two bars' },
 
@@ -146,8 +150,9 @@ function key(k: BallisticPendulumMessageKey): string {
 
 export const ballisticPendulumSchema: BundleSchema = {
   id: BALLISTIC_PENDULUM_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

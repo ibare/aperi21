@@ -84,6 +84,10 @@ export const CLEAR = 0.7;
 
 export const magnetAttractionMessages = Object.freeze({
   'label.title': { ko: '자석에 붙는 것', en: 'What sticks to a magnet' },
+  'label.operation': {
+    ko: '자석이 당기는 물체와 당기지 않는 물체',
+    en: 'Things a magnet pulls and things it does not',
+  },
   'label.stage': { ko: '책상 위 물건 한 줄', en: 'A row of things on a desk' },
   'label.view': { ko: '옆에서 본 책상', en: 'Desk seen from the side' },
   /** 자극 표식. 자석에 새겨진 글자라 번역하지 않는다 (C1 판정 1). */
@@ -125,8 +129,9 @@ function key(k: MagnetAttractionMessageKey): string {
 
 export const magnetAttractionSchema: BundleSchema = {
   id: MAGNET_ATTRACTION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 자석이 줄 위를 지나가는 것을 시간표가 보여 준다.

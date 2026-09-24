@@ -101,6 +101,7 @@ export const FADE = 0.6;
 
 export const specificHeatMessages = Object.freeze({
   'label.title': { ko: '비열', en: 'Specific heat' },
+  'label.operation': { ko: '물질마다 다른 온도 변화', en: 'How much the temperature changes, material by material' },
   'label.stage': { ko: '세 물질 · 같은 가열기', en: 'Three materials, identical heaters' },
   'label.view': { ko: '덩이와 온도 막대', en: 'Blocks and temperature bars' },
   /** 물질 이름. */
@@ -153,8 +154,9 @@ function key(k: SpecificHeatMessageKey): string {
 
 export const specificHeatSchema: BundleSchema = {
   id: SPECIFIC_HEAT_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 비열 · 질량 · 열 · 처음 온도는 스테이지 상수다. 주장은 「같은 열에

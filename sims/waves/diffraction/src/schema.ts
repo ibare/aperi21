@@ -82,6 +82,7 @@ export const SETTLE = 1.2;
 
 export const diffractionMessages = Object.freeze({
   'label.title': { ko: '회절', en: 'Diffraction' },
+  'label.operation': { ko: '장애물을 돌아가는 파동', en: 'Waves bending around obstacles' },
   'label.stage': { ko: '틈이 난 벽', en: 'Wall with a gap' },
   'label.view': { ko: '위에서 본 수조', en: 'Ripple tank from above' },
   'label.shadow': { ko: '곧게 지났다면 그늘', en: 'Shadow, if waves went straight' },
@@ -115,8 +116,9 @@ function key(k: DiffractionMessageKey): string {
 
 export const diffractionSchema: BundleSchema = {
   id: DIFFRACTION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'waves',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 틈 폭을 바꿔 보는 것은 slit-width-and-diffraction 의 일이다.

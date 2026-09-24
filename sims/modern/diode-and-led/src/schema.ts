@@ -112,6 +112,7 @@ export const SCENE_BOUNDS = { minX: -3.05, maxX: 8.45, minY: -1.3, maxY: 3.45 } 
 
 export const diodeAndLedMessages = Object.freeze({
   'label.title': { ko: '다이오드와 LED', en: 'Diodes and LEDs' },
+  'label.operation': { ko: '한 방향 전류와 빛의 방출', en: 'One-way current and the emission of light' },
   'label.stage': { ko: '실리콘 · 빨강 · 파랑', en: 'Silicon, red, blue' },
   'label.view': { ko: '전류-전압 곡선과 띠 간격', en: 'Current–voltage curve and band gap' },
 
@@ -199,8 +200,9 @@ function key(k: DiodeAndLedMessageKey): string {
 
 export const diodeAndLedSchema: BundleSchema = {
   id: DIODE_AND_LED_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

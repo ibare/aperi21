@@ -85,6 +85,10 @@ export const CLEAR = 0.8;
 
 export const antennaRadiationMessages = Object.freeze({
   'label.title': { ko: '안테나의 복사', en: 'Antenna radiation' },
+  'label.operation': {
+    ko: '가속하는 전하가 내는 파동',
+    en: 'The waves an accelerating charge sends out',
+  },
   'label.stage': { ko: '세로 안테나', en: 'Vertical antenna' },
   'label.view': { ko: '옆에서 본 단면', en: 'Side cross-section' },
   'caption.ripple': {
@@ -117,8 +121,9 @@ function key(k: AntennaRadiationMessageKey): string {
 
 export const antennaRadiationSchema: BundleSchema = {
   id: ANTENNA_RADIATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 물결이 퍼지고 있고, 두 잎이 자랐다가 옅어진다.

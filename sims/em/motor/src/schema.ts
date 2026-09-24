@@ -70,6 +70,7 @@ export const CAPTION_AT = [3.05, 0.55] as const;
 
 export const motorMessages = Object.freeze({
   'label.title': { ko: '전동기', en: 'Electric motor' },
+  'label.operation': { ko: '전류가 받는 힘으로 도는 것', en: 'Turning by the force on a current' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
 
@@ -127,8 +128,9 @@ function key(k: MotorMessageKey): string {
 
 export const motorSchema: BundleSchema = {
   id: MOTOR_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

@@ -64,6 +64,7 @@ export const SCENE_BOUNDS = { minX: 24, maxX: CANVAS_W, minY: -30, maxY: CANVAS_
 
 export const carnotCycleMessages = Object.freeze({
   'label.title': { ko: '카르노 순환', en: 'Carnot cycle' },
+  'label.operation': { ko: '이론적 최대 효율', en: 'The theoretical maximum efficiency' },
   'label.stage': { ko: '이상 기관', en: 'Ideal engine' },
   'label.view': { ko: '온도-엔트로피 도표', en: 'Temperature–entropy diagram' },
   'label.floor': { ko: '0 K 절대 영도', en: '0 K absolute zero' },
@@ -112,8 +113,9 @@ function key(k: CarnotCycleMessageKey): string {
 
 export const carnotCycleSchema: BundleSchema = {
   id: CARNOT_CYCLE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
 

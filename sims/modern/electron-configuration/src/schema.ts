@@ -72,6 +72,7 @@ export const FADE = 1;
 
 export const electronConfigurationMessages = Object.freeze({
   'label.title': { ko: '전자 배치', en: 'Electron configuration' },
+  'label.operation': { ko: '주기율표가 나오는 방식', en: 'How the periodic table arises' },
   'label.stage': { ko: '수소에서 크립톤까지', en: 'Hydrogen to krypton' },
   'label.view': { ko: '채우는 순서대로 놓은 원소', en: 'Elements in filling order' },
   /** 줄 번호 열의 머리. */
@@ -159,8 +160,9 @@ function fill(subshell: string, seats: number, seat: number, caption: ElectronCo
 
 export const electronConfigurationSchema: BundleSchema = {
   id: ELECTRON_CONFIGURATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 표가 다 나온다.

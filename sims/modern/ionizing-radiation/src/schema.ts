@@ -117,6 +117,7 @@ export const PHASE_FADE = 0.8;
 
 export const ionizingRadiationMessages = Object.freeze({
   'label.title': { ko: '이온화 복사', en: 'Ionizing radiation' },
+  'label.operation': { ko: '결합을 끊을 만큼 큰 광자 에너지', en: 'Photon energy large enough to break bonds' },
   'label.stage': { ko: '분자 결합', en: 'Molecular bonds' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 결합을 끊는 문턱. 값은 선언한 정박값을 끼운다 (C1 · S-piece 유효숫자). */
@@ -183,8 +184,9 @@ function key(k: IonizingRadiationMessageKey): string {
 
 export const ionizingRadiationSchema: BundleSchema = {
   id: IONIZING_RADIATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 스펙트럼 전체를 훑어 문턱의 양쪽을 모두 보인다.

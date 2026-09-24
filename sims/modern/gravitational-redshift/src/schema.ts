@@ -82,6 +82,7 @@ export const SCENE_BOUNDS = { minX: -5.6, maxX: 6.2, minY: -2.45, maxY: 2.85 } a
 
 export const gravitationalRedshiftMessages = Object.freeze({
   'label.title': { ko: '중력 적색 이동', en: 'Gravitational redshift' },
+  'label.operation': { ko: '빠져나오며 잃는 에너지', en: 'Energy lost climbing out of a gravity well' },
   'label.stage': { ko: '중성자별에서 낸 빛', en: 'Light from a neutron star' },
   'label.view': { ko: '빛의 길과 퍼텐셜 우물', en: 'Light path and potential well' },
   'label.star': { ko: '중성자별', en: 'neutron star' },
@@ -121,8 +122,9 @@ function key(k: GravitationalRedshiftMessageKey): string {
 
 export const gravitationalRedshiftSchema: BundleSchema = {
   id: GRAVITATIONAL_REDSHIFT_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 빛이 우물을 올라오며 늘어나고, 먼 곳에서 떠날 때 모습과 견준다.

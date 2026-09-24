@@ -91,6 +91,7 @@ export const SCENE_BOUNDS = { minX: -1.25, maxX: 10.5, minY: -1.62, maxY: 2.45 }
 
 export const digitalVsAnalogSignalMessages = Object.freeze({
   'label.title': { ko: '디지털 신호와 아날로그', en: 'Digital and analog signals' },
+  'label.operation': { ko: '잡음을 견디는 방식의 차이', en: 'Two ways of standing up to noise' },
   'label.stage': { ko: '중계기 세 개', en: 'Three repeaters' },
   'label.view': { ko: '두 줄', en: 'Two lanes' },
 
@@ -134,8 +135,9 @@ function key(k: DigitalVsAnalogSignalMessageKey): string {
 
 export const digitalVsAnalogSignalSchema: BundleSchema = {
   id: DIGITAL_VS_ANALOG_SIGNAL_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'waves',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

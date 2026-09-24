@@ -5,7 +5,7 @@
  *
  * 원본은 셋이고 이 스크립트는 그것을 합칠 뿐 새 사실을 선언하지 않는다.
  *   - 어떤 시각화가 있는가      → registerAperi21Bundles() 의 loader id
- *   - 제목 · 설명               → 각 sim 의 schema(title/description)
+ *   - 제목 · 설명               → 각 sim 의 schema(label/operation)
  *   - 분야와 그 이름 · 순서     → docs/topics/topics.yaml (주제의 `sim` 이 가리키는 것)
  *   - 어떤 언어가 있는가        → messages/<locale>.json 파일 목록
  *
@@ -79,9 +79,9 @@ async function main(): Promise<void> {
       const leaf = id.replace(/^aperi21:/, '');
       const schema = schemaByLeaf.get(leaf);
       if (!schema) throw new Error(`loader id ${id} 에 대응하는 sims/<category>/${leaf}/src/schema.ts 가 없다`);
-      const title = resolveText(schema.title, locale);
-      if (!title) throw new Error(`${id} 의 schema.title 에 en 이 없다 (C1)`);
-      const description = schema.description ? resolveText(schema.description, locale) : undefined;
+      const title = resolveText(schema.label, locale);
+      if (!title) throw new Error(`${id} 의 schema.label 에 en 이 없다 (C1)`);
+      const description = resolveText(schema.operation, locale);
       return { id, title, ...(description ? { description } : {}), domain };
     });
     const used = new Set(entries.map((e) => e.domain));
@@ -108,7 +108,7 @@ async function main(): Promise<void> {
     writeFileSync(
       join(CATALOG_DIR, `${locale}.generated.ts`),
       [
-        HEADER('각 sim 의 schema(title/description) + docs/topics/topics.yaml(분야).'),
+        HEADER('각 sim 의 schema(label/operation) + docs/topics/topics.yaml(분야).'),
         '',
         "import type { Aperi21Catalog } from '../catalog-types.js';",
         '',

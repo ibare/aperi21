@@ -99,6 +99,7 @@ export function snapColumn(j: number): Vec2[] {
 
 export const normalModesMessages = Object.freeze({
   'label.title': { ko: '정규 모드', en: 'Normal modes' },
+  'label.operation': { ko: '계가 가진 고유 진동 형태', en: 'The natural shapes a system vibrates in' },
   'label.stage': { ko: '구슬 사슬', en: 'Bead chain' },
   'label.view': { ko: '모드 분해', en: 'Mode decomposition' },
   /** 합의 관계 기호. 수식 기호라 표식이다 (C1 판정 3). */
@@ -150,8 +151,9 @@ function key(k: NormalModesMessageKey): string {
 
 export const normalModesSchema: BundleSchema = {
   id: NORMAL_MODES_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'oscillation',
+  operation: text('label.operation'),
   timeModel: 'continuous',
   parameters: [],
   stages: [{ id: 'chain', label: text('label.stage'), constants: {} }],

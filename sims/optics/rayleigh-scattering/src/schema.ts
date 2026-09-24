@@ -105,6 +105,7 @@ export const FADE = 0.8;
 
 export const rayleighScatteringMessages = Object.freeze({
   'label.title': { ko: '레일리 산란', en: 'Rayleigh scattering' },
+  'label.operation': { ko: '파장 4제곱에 반비례하는 산란', en: 'Scattering that falls with the fourth power of wavelength' },
   'label.stage': { ko: '햇빛과 공기', en: 'Sunlight and air' },
   'label.view': { ko: '막대와 대기 단면', en: 'Bars and a slice of sky' },
   /** 파장 눈금. 값만 끼우고 단위는 표식이다 (C1 판정 3). */
@@ -157,8 +158,9 @@ function key(k: RayleighScatteringMessageKey): string {
 
 export const rayleighScatteringSchema: BundleSchema = {
   id: RAYLEIGH_SCATTERING_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'optics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 막대가 서고, 해가 머리 위에서 지평선으로 내려간다.

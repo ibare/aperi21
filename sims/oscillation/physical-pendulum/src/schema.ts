@@ -67,6 +67,7 @@ export const SCENE_BOUNDS = { minX: -2.4, maxX: 2.4, minY: -1.86, maxY: 0.58 } a
 
 export const physicalPendulumMessages = Object.freeze({
   'label.title': { ko: '물리 진자', en: 'Physical pendulum' },
+  'label.operation': { ko: '크기가 있는 물체의 진동', en: 'Oscillation of an extended body' },
   'label.stage': { ko: '같은 막대 넷', en: 'Four identical rods' },
   'label.view': { ko: '나란히', en: 'Side by side' },
 
@@ -112,8 +113,9 @@ function key(k: PhysicalPendulumMessageKey): string {
 
 export const physicalPendulumSchema: BundleSchema = {
   id: PHYSICAL_PENDULUM_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'oscillation',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

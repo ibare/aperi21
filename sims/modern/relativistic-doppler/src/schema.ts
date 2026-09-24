@@ -82,6 +82,7 @@ export const SCENE_BOUNDS = { minX: -6.5, maxX: 6.5, minY: -2.75, maxY: 2.75 } a
 
 export const relativisticDopplerMessages = Object.freeze({
   'label.title': { ko: '상대론적 도플러', en: 'Relativistic Doppler effect' },
+  'label.operation': { ko: '시간 지연이 더해진 진동수 변화', en: 'Frequency shift with time dilation added' },
   'label.stage': { ko: '0.28c 로 달리는 광원', en: 'A source moving at 0.28c' },
   'label.view': { ko: '실험실에서 본 파면', en: 'Wavefronts in the lab frame' },
   /** 파장. 값은 선언값을 그대로 끼운다 (S-piece 유효숫자). */
@@ -116,8 +117,9 @@ function key(k: RelativisticDopplerMessageKey): string {
 
 export const relativisticDopplerSchema: BundleSchema = {
   id: RELATIVISTIC_DOPPLER_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 광원이 달리며 앞은 푸르고 뒤는 붉은 파면을 낸다. β 슬라이더는 두지

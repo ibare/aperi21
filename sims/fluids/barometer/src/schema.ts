@@ -85,6 +85,7 @@ export const RISE = 2.2;
 
 export const barometerMessages = Object.freeze({
   'label.title': { ko: '기압계', en: 'Barometer' },
+  'label.operation': { ko: '수은 기둥의 높이', en: 'The height of a mercury column' },
   'label.stage': { ko: '바닷가와 낮은 기압', en: 'Sea level and low pressure' },
   'label.view': { ko: '옆에서 본 토리첼리 관', en: "Torricelli's tube from the side" },
   /** 기압 기호. 수식 글자라 번역 대상이 아니다 (C1 판정 3). */
@@ -127,8 +128,9 @@ function key(k: BarometerMessageKey): string {
 
 export const barometerSchema: BundleSchema = {
   id: BAROMETER_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'fluids',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 기압이 낮아졌다 돌아오고, 기둥이 따라 내려앉았다 올라선다.

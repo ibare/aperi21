@@ -23,6 +23,10 @@ export const UNIFORMLY_ACCELERATED_MOTION_ID = 'uniformly-accelerated-motion';
 
 export const uniformlyAcceleratedMotionMessages = Object.freeze({
   'label.title': { ko: '등가속도 운동', en: 'Uniformly accelerated motion' },
+  'label.operation': {
+    ko: '같은 시간 동안 간 거리가 같은 만큼씩 늘어난다',
+    en: 'Distance in equal times grows by equal amounts',
+  },
   'label.stage': { ko: '선로', en: 'Track' },
   'label.view': { ko: '간격', en: 'Gaps' },
   /** 첫 1초 — 지금 벌어지는 일. */
@@ -54,8 +58,9 @@ function key(k: UniformlyAcceleratedMotionMessageKey): string {
 
 export const uniformlyAcceleratedMotionSchema: BundleSchema = {
   id: UNIFORMLY_ACCELERATED_MOTION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'kinematics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 자동 진행만으로 주장이 끝난다 (원본 NOTES (c)).

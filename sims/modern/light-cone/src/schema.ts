@@ -79,6 +79,7 @@ export const SCENE_BOUNDS = { minX: -4.3, maxX: 4.3, minY: -1.85, maxY: 3.55 } a
 
 export const lightConeMessages = Object.freeze({
   'label.title': { ko: '광원뿔', en: 'Light cone' },
+  'label.operation': { ko: '인과가 닿는 영역', en: 'Where a cause can reach' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 사건 이름. 도식의 기호라 표식이다 (C1 판정 3). */
@@ -134,8 +135,9 @@ function key(k: LightConeMessageKey): string {
 
 export const lightConeSchema: BundleSchema = {
   id: LIGHT_CONE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 퍼짐 · 판정 · 틀 바꾸기가 한 주기 안에 끝난다.

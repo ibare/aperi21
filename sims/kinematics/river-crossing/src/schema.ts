@@ -133,6 +133,10 @@ export const START_TAU = 1.5;
 
 export const riverCrossingMessages = Object.freeze({
   'label.title': { ko: '강 건너기', en: 'Crossing a river' },
+  'label.operation': {
+    ko: '뱃머리를 맞은편에 두어도 물살에 떠밀려 하류에 닿는다',
+    en: 'Aimed straight across, the boat is pushed downstream by the current',
+  },
   'label.stage': { ko: '강', en: 'River' },
   'label.view': { ko: '강 건너기', en: 'Crossing' },
   /** 건너편 강둑의 기준점. 주장이 "맞은편에 닿지 않는다" 라 이름이 있어야 한다. */
@@ -181,8 +185,9 @@ function key(k: RiverCrossingMessageKey): string {
 
 export const riverCrossingSchema: BundleSchema = {
   id: RIVER_CROSSING_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'kinematics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   parameters: [],

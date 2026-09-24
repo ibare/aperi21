@@ -76,6 +76,7 @@ export const SCENE_BOUNDS = { minX: -0.8, maxX: 0.8, minY: -0.68, maxY: 0.03 } a
 
 export const coupledOscillatorsMessages = Object.freeze({
   'label.title': { ko: '결합 진동자', en: 'Coupled oscillators' },
+  'label.operation': { ko: '에너지가 오가는 두 진동자', en: 'Two oscillators trading energy' },
   'label.stage': { ko: '약한 용수철로 이은 두 진자', en: 'Two pendulums joined by a weak spring' },
   'label.view': { ko: '흔들림의 폭', en: 'Swing width' },
 
@@ -108,8 +109,9 @@ function key(k: CoupledOscillatorsMessageKey): string {
 
 export const coupledOscillatorsSchema: BundleSchema = {
   id: COUPLED_OSCILLATORS_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'oscillation',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

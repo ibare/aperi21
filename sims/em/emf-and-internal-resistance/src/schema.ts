@@ -131,6 +131,7 @@ export const FADE = 0.6;
 
 export const emfAndInternalResistanceMessages = Object.freeze({
   'label.title': { ko: '기전력과 내부 저항', en: 'EMF and internal resistance' },
+  'label.operation': { ko: '단자 전압이 낮아지는 이유', en: 'Why the terminal voltage drops' },
   'label.stage': { ko: '부하 줄이기', en: 'Shrinking the load' },
   'label.view': { ko: '회로와 V–I 평면', en: 'Circuit and the V–I plane' },
   /** 값이 끼는 이름표 — 기호 · 단위는 표식이지만 값이 끼므로 문안 키로 둔다 (C1). */
@@ -192,8 +193,9 @@ function key(k: EmfAndInternalResistanceMessageKey): string {
 
 export const emfAndInternalResistanceSchema: BundleSchema = {
   id: EMF_AND_INTERNAL_RESISTANCE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 스위치가 닫히고, 바깥 저항이 한 단계씩 줄고, 점이 한 직선에 놓인다.

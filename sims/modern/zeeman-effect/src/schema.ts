@@ -114,6 +114,7 @@ export const REST = 0.8;
 
 export const zeemanEffectMessages = Object.freeze({
   'label.title': { ko: '제이만 효과', en: 'Zeeman effect' },
+  'label.operation': { ko: '자기장이 가르는 준위', en: 'Energy levels split by a magnetic field' },
   'label.stage': { ko: '카드뮴 빨간 선', en: 'Cadmium red line' },
   'label.view': { ko: '준위와 분광기 창', en: 'Levels and spectroscope window' },
   /** 준위 · 상태 · 자기장 · 단위 기호 — 표식이다 (C1 판정 3). 값은 vars 로 끼운다. */
@@ -159,8 +160,9 @@ function key(k: ZeemanEffectMessageKey): string {
 
 export const zeemanEffectSchema: BundleSchema = {
   id: ZEEMAN_EFFECT_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 자기장을 켜고 키우고 끄며 할 말을 마친다.

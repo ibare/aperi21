@@ -143,6 +143,10 @@ export const SCENE_BOUNDS = {
 
 export const bernoullisPrincipleMessages = Object.freeze({
   'label.title': { ko: '베르누이 원리', en: "Bernoulli's principle" },
+  'label.operation': {
+    ko: '빨라진 만큼 압력이 내려간다',
+    en: 'Where water speeds up, its pressure drops',
+  },
   'label.stage': { ko: '벤투리관', en: 'Venturi tube' },
   'label.view': { ko: '물기둥', en: 'Water columns' },
   'label.throat': { ko: '좁은 곳의 굵기', en: 'Throat width' },
@@ -175,8 +179,9 @@ function key(k: BernoullisPrincipleMessageKey): string {
 
 export const bernoullisPrincipleSchema: BundleSchema = {
   id: BERNOULLIS_PRINCIPLE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'fluids',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'venturi', label: text('label.stage'), constants: {} }],

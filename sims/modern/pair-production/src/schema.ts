@@ -95,6 +95,7 @@ export const PHASE_FADE = 1;
 
 export const pairProductionMessages = Object.freeze({
   'label.title': { ko: '쌍생성', en: 'Pair production' },
+  'label.operation': { ko: '에너지가 물질이 되는 것', en: 'Energy turning into matter' },
   'label.stage': { ko: '거품 상자 속 감마선', en: 'Gamma rays in a bubble chamber' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 날아가는 광자. 값은 선언한 광자 에너지를 끼운다 (C1 · S-piece 유효숫자). */
@@ -148,8 +149,9 @@ function key(k: PairProductionMessageKey): string {
 
 export const pairProductionSchema: BundleSchema = {
   id: PAIR_PRODUCTION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 문턱 아래 · 위 · 더 위 세 광자가 차례로 나와 할 말을 마친다.

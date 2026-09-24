@@ -67,6 +67,7 @@ export const CAPTION_AT = [1.55, 0.15] as const;
 
 export const angularMomentumVectorMessages = Object.freeze({
   'label.title': { ko: '각운동량의 방향', en: 'Direction of angular momentum' },
+  'label.operation': { ko: '오른손 규칙과 회전축', en: 'The right-hand rule and the axis of rotation' },
   'label.stage': { ko: '도는 바퀴', en: 'Spinning wheel' },
   'label.view': { ko: '기본', en: 'Default' },
 
@@ -109,8 +110,9 @@ function key(k: AngularMomentumVectorMessageKey): string {
 
 export const angularMomentumVectorSchema: BundleSchema = {
   id: ANGULAR_MOMENTUM_VECTOR_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'oscillation',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

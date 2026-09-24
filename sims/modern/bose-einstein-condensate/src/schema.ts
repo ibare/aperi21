@@ -108,6 +108,7 @@ export const START_AT = 2.0;
 
 export const boseEinsteinCondensateMessages = Object.freeze({
   'label.title': { ko: '보스-아인슈타인 응축', en: 'Bose–Einstein condensation' },
+  'label.operation': { ko: '같은 상태로 몰리는 저온의 입자', en: 'Cold particles crowding into one state' },
   'label.stage': { ko: '루비듐 원자 기체', en: 'A gas of rubidium atoms' },
   'label.view': { ko: '덫 속 원자와 속도 분포', en: 'Trapped atoms and their velocity distribution' },
   /** 판 이름. */
@@ -159,8 +160,9 @@ function key(k: BoseEinsteinCondensateMessageKey): string {
 
 export const boseEinsteinCondensateSchema: BundleSchema = {
   id: BOSE_EINSTEIN_CONDENSATE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 식고 있고, 봉우리가 서고, 다시 데워져 처음부터 식는다.

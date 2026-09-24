@@ -98,6 +98,10 @@ export const COOL = 2.4;
 
 export const thermalExpansionMessages = Object.freeze({
   'label.title': { ko: '열팽창', en: 'Thermal expansion' },
+  'label.operation': {
+    ko: '온도에 따른 길이·부피 변화',
+    en: 'How length and volume change with temperature',
+  },
   'label.stage': { ko: '철로 이음매', en: 'Rail joint' },
   'label.view': { ko: '옆에서 본 레일', en: 'Rails from the side' },
   /** 온도계 눈금 글자. 값은 선언한 두 온도를 끼운다 (C1). */
@@ -143,8 +147,9 @@ function key(k: ThermalExpansionMessageKey): string {
 
 export const thermalExpansionSchema: BundleSchema = {
   id: THERMAL_EXPANSION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 두 온도 · 길이 · α · 틈은 스테이지 상수다. 주장은 「여름에 틈이 거의

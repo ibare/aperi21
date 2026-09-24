@@ -22,6 +22,7 @@ export const SUPERNOVA_AND_NEUTRON_STAR_ID = 'supernova-and-neutron-star';
 
 export const supernovaAndNeutronStarMessages = Object.freeze({
   'label.title': { ko: '초신성과 중성자별', en: 'Supernova and neutron star' },
+  'label.operation': { ko: '무너지고 튕겨 나가는 최후', en: 'A final collapse and rebound' },
   'label.stage': { ko: '무거운 별의 철 핵', en: 'Iron core of a massive star' },
   'label.view': { ko: '중심 부근의 단면', en: 'Cross-section near the core' },
   /** 무너지기 전 핵의 이름표. 조사가 붙는 문장이라 문안이다 (C1 판정 4). */
@@ -150,8 +151,9 @@ export const FADE = 0.8;
 
 export const supernovaAndNeutronStarSchema: BundleSchema = {
   id: SUPERNOVA_AND_NEUTRON_STAR_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'astro',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 핵이 무너지고, 튕기고, 중성자별이 남고, 다시 처음부터.

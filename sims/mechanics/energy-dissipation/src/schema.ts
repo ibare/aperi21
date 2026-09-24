@@ -88,6 +88,10 @@ export const SPRING_COILS = 11;
 
 export const energyDissipationMessages = Object.freeze({
   'label.title': { ko: '에너지 소산', en: 'Energy dissipation' },
+  'label.operation': {
+    ko: '마찰이 가져가는 몫과 그 행방',
+    en: 'The share friction takes, and where it goes',
+  },
   'label.stage': { ko: '거친 바닥', en: 'Rough floor' },
   'label.view': { ko: '기본', en: 'Default' },
 
@@ -130,8 +134,9 @@ function key(k: EnergyDissipationMessageKey): string {
 
 export const energyDissipationSchema: BundleSchema = {
   id: ENERGY_DISSIPATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'rough-floor', label: text('label.stage'), constants: {} }],

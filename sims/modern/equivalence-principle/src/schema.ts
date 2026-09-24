@@ -41,6 +41,7 @@ export const STAR_SEED = 7;
 
 export const equivalencePrincipleMessages = Object.freeze({
   'label.title': { ko: '등가 원리', en: 'Equivalence principle' },
+  'label.operation': { ko: '가속과 중력의 구별 불가', en: 'Acceleration and gravity are indistinguishable' },
   'label.stage': { ko: '가속하는 상자와 지구 위 상자', en: 'Accelerating box and box on Earth' },
   'label.view': { ko: '두 상자 나란히', en: 'Two boxes side by side' },
   'label.space': { ko: '우주 — 가속하는 상자', en: 'In space — accelerating' },
@@ -89,8 +90,9 @@ function key(k: EquivalencePrincipleMessageKey): string {
 
 export const equivalencePrincipleSchema: BundleSchema = {
   id: EQUIVALENCE_PRINCIPLE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 주장의 조건이 「가속도 = g」 하나라, 독자가 한쪽 값을 끌면 두 상자가 달라져

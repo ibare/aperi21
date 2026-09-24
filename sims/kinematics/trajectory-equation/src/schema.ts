@@ -66,6 +66,10 @@ export const SCENE_BOUNDS = {
 
 export const trajectoryEquationMessages = Object.freeze({
   'label.title': { ko: '궤적 방정식', en: 'Trajectory equation' },
+  'label.operation': {
+    ko: '시간을 소거해 얻은 경로의 식',
+    en: 'The path left when time is eliminated',
+  },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 경로 위 시각 눈금. 값이 끼어드는 조립문이라 문안이다 (C1). */
@@ -100,8 +104,9 @@ const CAPTION_FONT_PX = 15;
 
 export const trajectoryEquationSchema: BundleSchema = {
   id: TRAJECTORY_EQUATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'kinematics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 발사각 슬라이더는 "각에 따라 경로가 달라진다" 는 다른 주장이다.

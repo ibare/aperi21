@@ -88,6 +88,7 @@ export const FADE = 0.8;
 
 export const continuityEquationMessages = Object.freeze({
   'label.title': { ko: '연속 방정식', en: 'Continuity equation' },
+  'label.operation': { ko: '단면적과 유속의 반비례', en: 'Cross-section and flow speed trade off' },
   'label.stage': { ko: '가늘어지는 관', en: 'Narrowing pipe' },
   'label.view': { ko: '옆에서 본 관', en: 'Side view' },
   /** 문의 단면적 기호. 수식 표기라 번역하지 않는다 (C1 판정 3). */
@@ -126,8 +127,9 @@ function key(k: ContinuityEquationMessageKey): string {
 
 export const continuityEquationSchema: BundleSchema = {
   id: CONTINUITY_EQUATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'fluids',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흐르고, 칠하고, 견주고, 다시 흐른다.

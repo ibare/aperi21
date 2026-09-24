@@ -80,6 +80,10 @@ export const SCENE_BOUNDS = { minX: -2.15, maxX: 3.5, minY: -0.62, maxY: 1.8 } a
 
 export const conservationOfMomentumMessages = Object.freeze({
   'label.title': { ko: '운동량 보존', en: 'Conservation of momentum' },
+  'label.operation': {
+    ko: '외력이 없을 때의 총 운동량',
+    en: 'Total momentum when no external force acts',
+  },
   'label.stage': { ko: '두 수레와 벽', en: 'Two carts and a wall' },
   'label.view': { ko: '이어 붙인 화살표', en: 'Arrows laid tip to tail' },
 
@@ -132,8 +136,9 @@ function key(k: ConservationOfMomentumMessageKey): string {
 
 export const conservationOfMomentumSchema: BundleSchema = {
   id: CONSERVATION_OF_MOMENTUM_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

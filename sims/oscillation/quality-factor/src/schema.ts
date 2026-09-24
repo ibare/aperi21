@@ -99,6 +99,7 @@ export const FADE = 0.6;
 
 export const qualityFactorMessages = Object.freeze({
   'label.title': { ko: 'Q 인자', en: 'Quality factor' },
+  'label.operation': { ko: '공명의 날카로움', en: 'How sharp a resonance is' },
   'label.stage': { ko: '두 진동자', en: 'Two oscillators' },
   'label.view': { ko: '봉우리와 울림', en: 'Peak and ringing' },
   /** 레인 이름표. 수식 표기라 번역 대상이 아니다 (C1 판정 3). */
@@ -142,8 +143,9 @@ function key(k: QualityFactorMessageKey): string {
 
 export const qualityFactorSchema: BundleSchema = {
   id: QUALITY_FACTOR_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'oscillation',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 훑고, 맞추고, 멈추고, 울리는 것이 아무것도 누르지 않아도 한 주기 안에 끝난다.

@@ -108,6 +108,7 @@ export const CLEAR = 1;
 
 export const blackbodyRadiationMessages = Object.freeze({
   'label.title': { ko: '흑체 복사', en: 'Blackbody radiation' },
+  'label.operation': { ko: '고전 이론의 파탄', en: 'Where classical theory breaks down' },
   'label.stage': { ko: '5000 K 흑체', en: 'A 5000 K blackbody' },
   'label.view': { ko: '복사 곡선', en: 'Radiation curves' },
   'label.classical': { ko: '고전 이론 (레일리-진스)', en: 'classical theory (Rayleigh–Jeans)' },
@@ -159,8 +160,9 @@ function key(k: BlackbodyRadiationMessageKey): string {
 
 export const blackbodyRadiationSchema: BundleSchema = {
   id: BLACKBODY_RADIATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 긴 파장에서 짧은 파장 쪽으로 두 곡선이 함께 그려진다.

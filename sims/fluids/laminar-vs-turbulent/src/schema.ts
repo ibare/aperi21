@@ -79,6 +79,10 @@ export const SCENE_BOUNDS = { minX: -0.02, maxX: 1.02, minY: -0.04, maxY: 0.31 }
 
 export const laminarVsTurbulentMessages = Object.freeze({
   'label.title': { ko: '층류와 난류', en: 'Laminar and turbulent flow' },
+  'label.operation': {
+    ko: '흐름이 갑자기 흐트러지는 지점',
+    en: 'Where flow suddenly breaks up',
+  },
   'label.stage': { ko: '관', en: 'Pipe' },
   'label.view': { ko: '염료', en: 'Dye' },
   'caption.damping': {
@@ -125,8 +129,9 @@ export function text(key: LaminarMessageKey): LocalizedText {
 
 export const laminarVsTurbulentSchema: BundleSchema = {
   id: LAMINAR_VS_TURBULENT_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'fluids',
+  operation: text('label.operation'),
   timeModel: 'linear',
 
   // 아무것도 누르지 않아도 여섯 값을 훑으며 할 말을 마친다. 그와 별개로 눈금을 직접

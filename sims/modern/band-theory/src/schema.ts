@@ -81,6 +81,10 @@ export const SCENE_BOUNDS = { minX: -4.0, maxX: 4.3, minY: -0.5, maxY: 3.62 } as
 
 export const bandTheoryMessages = Object.freeze({
   'label.title': { ko: '띠 이론', en: 'Band theory' },
+  'label.operation': {
+    ko: '도체·부도체·반도체의 구분',
+    en: 'What separates conductors, insulators and semiconductors',
+  },
   'label.stage': { ko: '세 고체', en: 'Three solids' },
   'label.view': { ko: '띠 그림', en: 'Band diagrams' },
 
@@ -129,8 +133,9 @@ function key(k: BandTheoryMessageKey): string {
 
 export const bandTheorySchema: BundleSchema = {
   id: BAND_THEORY_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

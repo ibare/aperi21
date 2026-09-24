@@ -70,6 +70,7 @@ export const SCENE_BOUNDS = { minX: -1.75, maxX: 8.55, minY: -0.78, maxY: 2.9 } 
 
 export const viscosityMessages = Object.freeze({
   'label.title': { ko: '점성', en: 'Viscosity' },
+  'label.operation': { ko: '층 사이의 마찰', en: 'Friction between layers' },
   'label.stage': { ko: '두 판 사이', en: 'Between two plates' },
   'label.view': { ko: '옆모습', en: 'Side view' },
 
@@ -113,8 +114,9 @@ function key(k: ViscosityMessageKey): string {
 
 export const viscositySchema: BundleSchema = {
   id: VISCOSITY_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'fluids',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 자동 진행 한 번으로 「모양은 같고 힘만 다르다」 가 끝난다.

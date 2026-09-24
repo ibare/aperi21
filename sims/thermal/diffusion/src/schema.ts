@@ -74,6 +74,7 @@ export const SCENE_BOUNDS = { minX: -0.4, maxX: 12.4, minY: -0.9, maxY: 5.5 } as
 
 export const diffusionMessages = Object.freeze({
   'label.title': { ko: '확산', en: 'Diffusion' },
+  'label.operation': { ko: '농도 차이가 만드는 흐름', en: 'Flow driven by a difference in concentration' },
   'label.stage': { ko: '물에 떨어뜨린 잉크', en: 'Ink dropped into water' },
   'label.view': { ko: '물통과 농도', en: 'Tank and concentration' },
   'label.bars': { ko: '구간마다 든 알갱이 수', en: 'grains in each strip' },
@@ -107,8 +108,9 @@ function key(k: DiffusionMessageKey): string {
 
 export const diffusionSchema: BundleSchema = {
   id: DIFFUSION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 무리가 퍼지고, 고르게 되고, 다시 떨어뜨린다.

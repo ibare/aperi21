@@ -79,6 +79,7 @@ export const SCENE_BOUNDS = { minX: -0.4, maxX: 8.3, minY: -0.78, maxY: 1.86 } a
 
 export const drivenOscillationMessages = Object.freeze({
   'label.title': { ko: '강제 진동', en: 'Driven oscillation' },
+  'label.operation': { ko: '외부 구동에 대한 응답', en: 'The response to an external drive' },
   'label.stage': { ko: '손으로 흔드는 용수철', en: 'Spring shaken by hand' },
   'label.view': { ko: '두 박자', en: 'Two tempos' },
 
@@ -119,8 +120,9 @@ function key(k: DrivenOscillationMessageKey): string {
 
 export const drivenOscillationSchema: BundleSchema = {
   id: DRIVEN_OSCILLATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'oscillation',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 두 박자를 나란히 두는 것으로 주장이 끝난다.

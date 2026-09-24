@@ -141,6 +141,7 @@ export const STACK_STEP = 1;
 
 export const angleOfFrictionMessages = Object.freeze({
   'label.title': { ko: '마찰각', en: 'Angle of friction' },
+  'label.operation': { ko: '미끄러지기 시작하는 경사', en: 'The slope at which sliding begins' },
   'label.stage': { ko: '같은 재질의 판', en: 'Board of one material' },
   'label.view': { ko: '기본', en: 'Default' },
 
@@ -185,8 +186,9 @@ function key(k: AngleOfFrictionMessageKey): string {
 
 export const angleOfFrictionSchema: BundleSchema = {
   id: ANGLE_OF_FRICTION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'default', label: text('label.stage'), constants: {} }],

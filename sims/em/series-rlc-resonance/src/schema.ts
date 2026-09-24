@@ -99,6 +99,7 @@ export const SCENE_BOUNDS = { minX: -8.9, maxX: 6.4, minY: -2.95, maxY: 2.75 } a
 
 export const seriesRlcResonanceMessages = Object.freeze({
   'label.title': { ko: 'RLC 공진', en: 'RLC resonance' },
+  'label.operation': { ko: '임피던스가 최소가 되는 주파수', en: 'The frequency where impedance is smallest' },
   'label.stage': { ko: '저항 두 가지', en: 'Two resistances' },
   'label.view': { ko: '회로 · 막는 몫 · I–f 평면', en: 'Circuit, reactance chain and the I–f plane' },
   /** 도식 표식 — 소자 · 물리량 기호라 번역하지 않는다 (C1 판정 3). */
@@ -185,8 +186,9 @@ export const PHASE = {
 
 export const seriesRlcResonanceSchema: BundleSchema = {
   id: SERIES_RLC_RESONANCE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 진동수가 스스로 쓸리고 저항 둘의 봉우리가 차례로 그려진다.

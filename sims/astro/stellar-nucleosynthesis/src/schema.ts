@@ -23,6 +23,10 @@ export const STELLAR_NUCLEOSYNTHESIS_ID = 'stellar-nucleosynthesis';
 
 export const stellarNucleosynthesisMessages = Object.freeze({
   'label.title': { ko: '별의 원소 합성', en: 'Stellar nucleosynthesis' },
+  'label.operation': {
+    ko: '무거운 원소가 별에서 만들어지는 것',
+    en: 'How heavier elements are made inside stars',
+  },
   'label.stage': { ko: '무거운 별의 중심', en: 'Core of a massive star' },
   'label.view': { ko: '양파 껍질과 결합 에너지', en: 'Onion shells and binding energy' },
   /** 곡선 축 이름. 조사가 붙는 문장이라 문안이다 (C1 판정 4). */
@@ -237,8 +241,9 @@ export const FADE = 0.8;
 
 export const stellarNucleosynthesisSchema: BundleSchema = {
   id: STELLAR_NUCLEOSYNTHESIS_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'astro',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 한 겹씩 쌓이고, 철에서 멈추고, 다시 처음부터.

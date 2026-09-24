@@ -71,6 +71,7 @@ export const FADE = 2;
 
 export const keplersFirstLawMessages = Object.freeze({
   'label.title': { ko: '케플러 제1법칙', en: "Kepler's first law" },
+  'label.operation': { ko: '궤도는 타원이다', en: 'Orbits are ellipses' },
   'label.stage': { ko: '이심률 0.6 궤도', en: 'Orbit with eccentricity 0.6' },
   'label.view': { ko: '두 초점', en: 'Two foci' },
   'label.sun': { ko: '태양', en: 'Sun' },
@@ -107,8 +108,9 @@ function key(k: KeplersFirstLawMessageKey): string {
 
 export const keplersFirstLawSchema: BundleSchema = {
   id: KEPLERS_FIRST_LAW_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'astro',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 이심률을 바꿔 보는 것은 이웃 조각(elliptical-orbit)의 질문이다.

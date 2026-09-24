@@ -77,6 +77,7 @@ export const SCENE_BOUNDS = {
 
 export const singleSlitDiffractionMessages = Object.freeze({
   'label.title': { ko: '단일 슬릿 회절', en: 'Single-slit diffraction' },
+  'label.operation': { ko: '폭이 만드는 무늬', en: 'The pattern a width makes' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 도식 표식 — 파장 기호와 짝 번호. 번역하지 않는다 (C1 판정 3). */
@@ -137,8 +138,9 @@ function key(k: SingleSlitDiffractionMessageKey): string {
 
 export const singleSlitDiffractionSchema: BundleSchema = {
   id: SINGLE_SLIT_DIFFRACTION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'optics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 넓은 틈의 작도 → 좁히기 → 좁은 틈의 작도가 저절로 돈다.

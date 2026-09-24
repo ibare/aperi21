@@ -92,6 +92,7 @@ export const REFROZEN = 0.5;
 
 export const albedoMessages = Object.freeze({
   'label.title': { ko: '반사율', en: 'Albedo' },
+  'label.operation': { ko: '되돌아가는 빛의 몫', en: 'The share of light sent back' },
   'label.stage': { ko: '네 표면', en: 'Four surfaces' },
   'label.view': { ko: '옆에서 본 땅', en: 'Side view' },
   'label.snow': { ko: '눈', en: 'Snow' },
@@ -137,8 +138,9 @@ function key(k: AlbedoMessageKey): string {
 
 export const albedoSchema: BundleSchema = {
   id: ALBEDO_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 햇빛이 네 표면에 떨어지고, 눈이 녹고, 막대가 갈린다.

@@ -85,6 +85,7 @@ export const START_AT = 1.1;
 
 export const referenceFrameMessages = Object.freeze({
   'label.title': { ko: '기준틀', en: 'Reference frame' },
+  'label.operation': { ko: '관찰자에 따라 달라지는 운동 기술', en: 'How the description of motion depends on the observer' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 판 이름표 — 두 판이 누구의 눈인지가 주장에 필요하다 (원본 NOTES (c)). */
@@ -111,8 +112,9 @@ function key(k: ReferenceFrameMessageKey): string {
 
 export const referenceFrameSchema: BundleSchema = {
   id: REFERENCE_FRAME_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'kinematics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 속력을 바꾸게 하면 "곡률이 속력에 따른다" 는 두 번째 주장이 생긴다.

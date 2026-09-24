@@ -73,6 +73,7 @@ export const CAPTION_AT = [3.1, -2.1] as const;
 
 export const velocitySelectorMessages = Object.freeze({
   'label.title': { ko: '속도 선택기', en: 'Velocity selector' },
+  'label.operation': { ko: '전기력과 자기력의 균형', en: 'Balancing the electric and magnetic forces' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
 
@@ -123,8 +124,9 @@ function key(k: VelocitySelectorMessageKey): string {
 
 export const velocitySelectorSchema: BundleSchema = {
   id: VELOCITY_SELECTOR_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

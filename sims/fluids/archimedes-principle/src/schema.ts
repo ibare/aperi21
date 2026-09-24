@@ -31,6 +31,10 @@ export const archimedesPrincipleMessages = defineMessages({
     ko: '아르키메데스 원리 — 부력의 크기',
     en: 'Archimedes principle — the size of the buoyant force',
   },
+  'label.operation': {
+    ko: '2.0 kg · 1.0 L 물체를 주둥이까지 가득 찬 물에 천천히 담근다. 밀려난 물이 주둥이로 넘쳐 컵에 모이고, 물체 쪽 저울이 줄어드는 만큼 넘친 물 쪽 저울이 늘어난다.',
+    en: 'A 2.0 kg, 1.0 L object is lowered into a can filled to its spout. The displaced water pours into the cup, and the scale holding the water gains exactly what the scale holding the object loses.',
+  },
   'label.stage': { ko: '실험대', en: 'lab bench' },
   'label.stageNote': {
     ko: '물 밀도 1000 kg/m³, 중력 가속도 9.8 m/s²',
@@ -69,8 +73,9 @@ export const FORCE_UNIT: LocalizedText = 'N';
 
 export const archimedesPrincipleSchema: BundleSchema = {
   id: ARCHIMEDES_PRINCIPLE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'fluids',
+  operation: text('label.operation'),
   timeModel: 'linear',
 
   // 조각이다. 읽는 사람이 고를 것은 없다.

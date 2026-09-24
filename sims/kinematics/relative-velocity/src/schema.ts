@@ -215,6 +215,10 @@ export const U_EPS = 0.03;
 
 export const relativeVelocityMessages = Object.freeze({
   'label.title': { ko: '상대 속도', en: 'Relative velocity' },
+  'label.operation': {
+    ko: '보는 사람이 달라지면 배가 지나온 길이 기운다',
+    en: 'Change who is watching and the path the boat left tilts',
+  },
   'label.stage': { ko: '강', en: 'River' },
   'label.view': { ko: '강을 건너는 배', en: 'A boat crossing' },
   /** 조작기 이름표. 강물의 속도를 곁들여 둔다 — 길이 똑바로 서는 자리를 찾는 실마리다. */
@@ -267,8 +271,9 @@ const phases: TimelinePhase[] = FRAME_TOUR.map((p) => ({
 
 export const relativeVelocitySchema: BundleSchema = {
   id: RELATIVE_VELOCITY_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'kinematics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   parameters: [],

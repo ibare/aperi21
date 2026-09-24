@@ -117,6 +117,7 @@ export const FADE = 0.6;
 
 export const resistanceAndGeometryMessages = Object.freeze({
   'label.title': { ko: '저항과 형태', en: 'Resistance and shape' },
+  'label.operation': { ko: '길이와 단면적의 영향', en: 'How length and cross-section matter' },
   'label.stage': { ko: '같은 재료 도선 셋', en: 'Three wires of one material' },
   'label.view': { ko: '나란히 건 도선', en: 'Wires side by side' },
   /** 값이 끼는 이름표 — 단위 기호는 표식이지만 값이 끼므로 문안 키로 둔다 (C1). */
@@ -157,8 +158,9 @@ function key(k: ResistanceAndGeometryMessageKey): string {
 
 export const resistanceAndGeometrySchema: BundleSchema = {
   id: RESISTANCE_AND_GEOMETRY_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흐르고, 세고, 무더기가 비를 보인다.

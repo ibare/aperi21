@@ -87,6 +87,10 @@ export const SCENE_BOUNDS = {
 
 export const atwoodMachineMessages = Object.freeze({
   'label.title': { ko: '애트우드 기계', en: 'Atwood machine' },
+  'label.operation': {
+    ko: '두 추의 합이 같으면 차이가 가속도를 정한다',
+    en: 'With the same total mass, the difference sets the acceleration',
+  },
   'label.stage': { ko: '두 기계', en: 'Two machines' },
   'label.view': { ko: '자취', en: 'Strobe' },
   /** 기계 아래 이름표. 값은 소수 첫째 자리로 끼운다. */
@@ -137,8 +141,9 @@ function key(k: AtwoodMachineMessageKey): string {
 
 export const atwoodMachineSchema: BundleSchema = {
   id: ATWOOD_MACHINE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

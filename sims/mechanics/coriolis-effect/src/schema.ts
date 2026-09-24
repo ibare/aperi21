@@ -56,6 +56,7 @@ export const START_AT = 1.0;
 
 export const coriolisEffectMessages = Object.freeze({
   'label.title': { ko: '코리올리 효과', en: 'Coriolis effect' },
+  'label.operation': { ko: '회전 기준틀에서 휘는 경로', en: 'A path that curves in a rotating frame' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 판 이름표 — 어느 쪽이 도는 틀인지 무늬로만 추리하지 않게 한다 (원본 NOTES (c)). */
@@ -82,8 +83,9 @@ function key(k: CoriolisEffectMessageKey): string {
 
 export const coriolisEffectSchema: BundleSchema = {
   id: CORIOLIS_EFFECT_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 누를 것 없이 되풀이만으로 주장이 끝난다 (원본 NOTES (c)).

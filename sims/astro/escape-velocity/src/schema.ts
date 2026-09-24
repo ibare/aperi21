@@ -81,6 +81,7 @@ export const SCENE_BOUNDS = { minX: -1.55, maxX: 7.2, minY: -1.45, maxY: 1.5 } a
 
 export const escapeVelocityMessages = Object.freeze({
   'label.title': { ko: '탈출 속도', en: 'Escape velocity' },
+  'label.operation': { ko: '중력을 벗어나는 최소 속도', en: 'The least speed that breaks free of gravity' },
   'label.stage': { ko: '지구', en: 'Earth' },
   'label.view': { ko: '곧장 위로', en: 'Straight up' },
   /** 화살표 이름. 조사 없는 도식 낱말이지만 기호가 아니라 말이라 번역한다. */
@@ -126,8 +127,9 @@ function key(k: EscapeVelocityMessageKey): string {
 
 export const escapeVelocitySchema: BundleSchema = {
   id: ESCAPE_VELOCITY_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'astro',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 속도를 조금씩 올려 보는 일은 다섯 샷의 자동 진행이 한다 — 슬라이더를 두면

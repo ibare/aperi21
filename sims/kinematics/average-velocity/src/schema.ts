@@ -53,6 +53,7 @@ export const START_AT = 0.8;
 
 export const averageVelocityMessages = Object.freeze({
   'label.title': { ko: '평균 속도', en: 'Average velocity' },
+  'label.operation': { ko: '구간 전체를 대표하는 속도', en: 'One velocity standing for a whole interval' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 축 이름. 단위 표기는 표식이지만 낱말이 붙어 문안이다 (C1). */
@@ -95,8 +96,9 @@ function key(k: AverageVelocityMessageKey): string {
 
 export const averageVelocitySchema: BundleSchema = {
   id: AVERAGE_VELOCITY_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'kinematics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 구간이 알아서 움직이고 직선이 알아서 기운다.

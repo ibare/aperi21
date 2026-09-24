@@ -79,6 +79,7 @@ export const RETURN = 3;
 
 export const wavefrontAndRayMessages = Object.freeze({
   'label.title': { ko: '파면과 광선', en: 'Wavefronts and rays' },
+  'label.operation': { ko: '같은 위상의 면과 그 수직선', en: 'Surfaces of equal phase and the lines normal to them' },
   'label.stage': { ko: '점파원', en: 'Point source' },
   'label.view': { ko: '위에서 본 수조', en: 'Ripple tank from above' },
   'caption.near': {
@@ -115,8 +116,9 @@ function key(k: WavefrontAndRayMessageKey): string {
 
 export const wavefrontAndRaySchema: BundleSchema = {
   id: WAVEFRONT_AND_RAY_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'waves',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 자동 진행으로 파원 곁에서 먼 곳까지 옮겨 가며 주장이 끝난다.

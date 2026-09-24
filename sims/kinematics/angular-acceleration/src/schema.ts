@@ -80,6 +80,10 @@ export const ALPHA_RANGE: [number, number] = [0, 0.11];
 
 export const angularAccelerationMessages = Object.freeze({
   'label.title': { ko: '각가속도', en: 'Angular acceleration' },
+  'label.operation': {
+    ko: '같은 0.5초에 도는 각이 매번 더 커진다',
+    en: 'Each half-second sweeps a wider angle than the last',
+  },
   'label.stage': { ko: '도는 바퀴', en: 'A turning wheel' },
   'label.view': { ko: '0.5초 눈금', en: 'Half-second marks' },
   /** 화면에 뜨는 문장은 이 하나뿐이다. 숫자는 한 개도 두지 않는다. */
@@ -109,8 +113,9 @@ function key(k: AngularAccelerationMessageKey): string {
 
 export const angularAccelerationSchema: BundleSchema = {
   id: ANGULAR_ACCELERATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'kinematics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   /**

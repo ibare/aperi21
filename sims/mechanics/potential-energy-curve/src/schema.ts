@@ -101,6 +101,10 @@ export const DROP_BOTTOM_Y = (CANVAS_H_PX / 2 - (CANVAS_H_PX - 4)) * PX;
 
 export const potentialEnergyCurveMessages = Object.freeze({
   'label.title': { ko: '퍼텐셜 곡선', en: 'Potential energy curve' },
+  'label.operation': {
+    ko: '곡선의 모양이 운동을 정하는 방식',
+    en: 'How the shape of the curve decides the motion',
+  },
   'label.stage': { ko: '이중 우물', en: 'Double well' },
   'label.view': { ko: '에너지 도표', en: 'Energy diagram' },
   /**
@@ -141,8 +145,9 @@ function key(k: PotentialEnergyCurveMessageKey): string {
 
 export const potentialEnergyCurveSchema: BundleSchema = {
   id: POTENTIAL_ENERGY_CURVE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

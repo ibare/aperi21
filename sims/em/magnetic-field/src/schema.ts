@@ -83,6 +83,7 @@ export const CLEAR = 0.7;
 
 export const magneticFieldMessages = Object.freeze({
   'label.title': { ko: '자기장', en: 'Magnetic field' },
+  'label.operation': { ko: '자기력의 분포', en: 'How magnetic force is spread around a magnet' },
   'label.stage': { ko: '막대자석과 쇳가루', en: 'Bar magnet and iron filings' },
   'label.view': { ko: '종이 위', en: 'On the paper' },
   /** 자극 표식. 자석에 새겨진 글자라 번역하지 않는다 (C1 판정 1). */
@@ -122,8 +123,9 @@ function key(k: MagneticFieldMessageKey): string {
 
 export const magneticFieldSchema: BundleSchema = {
   id: MAGNETIC_FIELD_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흩어진 쇳가루 위에 자석이 놓이고, 무늬가 드러나고, 다시 털린다.

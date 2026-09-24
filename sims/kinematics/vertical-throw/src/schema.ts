@@ -85,6 +85,7 @@ export const SCENE_BOUNDS = {
 
 export const verticalThrowMessages = Object.freeze({
   'label.title': { ko: '연직 투상', en: 'Vertical throw' },
+  'label.operation': { ko: '올라갔다 내려오는 운동의 대칭', en: 'The symmetry of going up and coming down' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   'caption.main': {
@@ -108,8 +109,9 @@ function key(k: VerticalThrowMessageKey): string {
 
 export const verticalThrowSchema: BundleSchema = {
   id: VERTICAL_THROW_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'kinematics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   // 조작기 없음 — 던지는 속력을 바꿔도 주장이 달라지지 않고, 섬광이 어긋나면 짝이 안 맞는다.
   parameters: [],

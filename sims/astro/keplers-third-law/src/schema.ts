@@ -57,6 +57,7 @@ export const SCENE_BOUNDS = { minX: -2.35, maxX: 8.35, minY: -2.3, maxY: 2.3 } a
 
 export const keplersThirdLawMessages = Object.freeze({
   'label.title': { ko: '케플러 제3법칙', en: "Kepler's third law" },
+  'label.operation': { ko: '주기와 긴반지름의 관계', en: 'How the period depends on the semi-major axis' },
   'label.stage': { ko: '반지름이 다른 두 궤도', en: 'Two orbits of different radius' },
   'label.view': { ko: '두 행성', en: 'Two planets' },
   /** 시간 띠 이름. */
@@ -105,8 +106,9 @@ function key(k: KeplersThirdLawMessageKey): string {
 
 export const keplersThirdLawSchema: BundleSchema = {
   id: KEPLERS_THIRD_LAW_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'astro',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 반지름을 끌게 하면 주기가 변하는 것은 보이지만 「얼마나 빨리」 는

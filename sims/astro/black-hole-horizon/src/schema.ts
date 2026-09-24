@@ -87,6 +87,7 @@ export const SCENE_BOUNDS = { minX: -1.35, maxX: 7.6, minY: -1.55, maxY: 1.55 } 
 
 export const blackHoleHorizonMessages = Object.freeze({
   'label.title': { ko: '사건 지평선', en: 'Event horizon' },
+  'label.operation': { ko: '탈출 속도가 광속이 되는 반지름', en: 'The radius where escape speed reaches light speed' },
   'label.stage': { ko: '태양 질량', en: 'One solar mass' },
   'label.view': { ko: '짜부라뜨리기', en: 'Squeezing' },
   /** 별 반지름. 값은 스테이지 상수 그대로 끼운다. */
@@ -137,8 +138,9 @@ function key(k: BlackHoleHorizonMessageKey): string {
 
 export const blackHoleHorizonSchema: BundleSchema = {
   id: BLACK_HOLE_HORIZON_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'astro',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 반지름을 줄여 가는 일은 자동 진행이 한다 — 슬라이더를 주면 지평선 근처

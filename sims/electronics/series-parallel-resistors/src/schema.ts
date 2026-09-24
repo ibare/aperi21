@@ -126,6 +126,10 @@ export const FADE = 0.8;
 
 export const seriesParallelResistorsMessages = Object.freeze({
   'label.title': { ko: '저항의 직렬과 병렬', en: 'Resistors in series and parallel' },
+  'label.operation': {
+    ko: '연결을 바꾸면 같은 전지가 내주는 전류가 달라지는 것',
+    en: 'How the connection changes the current one battery delivers',
+  },
   'label.stage': { ko: '같은 전지 · 같은 저항 둘', en: 'One battery, two identical resistors' },
   'label.view': { ko: '나란한 배치 셋', en: 'Three arrangements side by side' },
 
@@ -171,8 +175,9 @@ function key(k: SeriesParallelResistorsMessageKey): string {
 
 export const seriesParallelResistorsSchema: BundleSchema = {
   id: SERIES_PARALLEL_RESISTORS_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'electronics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 세 배치가 한 화면에 함께 있어 누를 것이 없다.

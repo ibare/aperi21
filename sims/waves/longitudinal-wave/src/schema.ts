@@ -102,6 +102,10 @@ export const SCENE_BOUNDS = { minX: 0, maxX: FIELD_W, minY: 0, maxY: FIELD_H_TOT
 
 export const longitudinalWaveMessages = Object.freeze({
   'label.title': { ko: '종파', en: 'Longitudinal wave' },
+  'label.operation': {
+    ko: '입자는 제자리에서 흔들리고, 빽빽한 자리가 나아간다',
+    en: 'Particles sway in place while the crowded places travel on',
+  },
   'label.stage': { ko: '공기', en: 'Air' },
   'label.view': { ko: '입자와 빽빽함', en: 'Particles and crowding' },
   'label.strip': { ko: '입자가 몰린 정도', en: 'How crowded the particles are' },
@@ -127,8 +131,9 @@ function key(k: LongitudinalWaveMessageKey): string {
 
 export const longitudinalWaveSchema: BundleSchema = {
   id: LONGITUDINAL_WAVE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'waves',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 진폭 · 파장 손잡이를 두지 않는다 — 「무엇이 나아가는가」 에 답을 더하지 않는다.

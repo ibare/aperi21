@@ -96,6 +96,10 @@ export const GRAB_RADIUS_PX = 34;
 
 export const balanceScaleMessages = Object.freeze({
   'label.title': { ko: '수평잡기', en: 'Balancing a scale' },
+  'label.operation': {
+    ko: '양팔의 길이와 무게가 함께 정하는 균형',
+    en: 'Balance set by both arm length and weight',
+  },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   'caption.near': {
@@ -148,8 +152,9 @@ function key(k: BalanceScaleMessageKey): string {
 
 export const balanceScaleSchema: BundleSchema = {
   id: BALANCE_SCALE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
 

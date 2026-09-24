@@ -108,6 +108,7 @@ export const SCENE_BOUNDS = { minX: -6.2, maxX: 6.2, minY: -3.1, maxY: 2.7 } as 
 
 export const nuclearFissionMessages = Object.freeze({
   'label.title': { ko: '핵분열', en: 'Nuclear fission' },
+  'label.operation': { ko: '무거운 핵이 갈라지며 내는 에너지', en: 'The energy released when a heavy nucleus splits' },
   'label.stage': { ko: '우라늄-235', en: 'Uranium-235' },
   'label.view': { ko: '한 번의 분열', en: 'One fission' },
 
@@ -155,8 +156,9 @@ function key(k: NuclearFissionMessageKey): string {
 
 export const nuclearFissionSchema: BundleSchema = {
   id: NUCLEAR_FISSION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 한 번의 분열이 자동으로 일어나며 주장이 끝난다.

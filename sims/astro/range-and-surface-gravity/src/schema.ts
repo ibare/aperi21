@@ -101,6 +101,7 @@ export const FADE = 0.6;
 
 export const rangeAndSurfaceGravityMessages = Object.freeze({
   'label.title': { ko: '중력과 사거리', en: 'Gravity and range' },
+  'label.operation': { ko: '같은 발사, 다른 중력', en: 'Same launch, different gravity' },
   'label.stage': { ko: '지구와 달', en: 'Earth and Moon' },
   'label.view': { ko: '두 레인', en: 'Two lanes' },
   /** 레인 이름. 어순 · 조사가 언어마다 다른 낱말이라 문안이다 (C1 판정 4). */
@@ -158,8 +159,9 @@ export const CELL_LABELS: readonly RangeAndSurfaceGravityMessageKey[] = [
 
 export const rangeAndSurfaceGravitySchema: BundleSchema = {
   id: RANGE_AND_SURFACE_GRAVITY_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'astro',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 두 공이 이미 날고 있고, 떨어지고, 다시 떠난다.

@@ -68,6 +68,7 @@ export const ELASTIC_PULL_DURATION = (() => {
 
 export const stressStrainCurveMessages = Object.freeze({
   'label.title': { ko: '응력-변형률 곡선', en: 'Stress–strain curve' },
+  'label.operation': { ko: '당길수록 달라지는 재료의 반응', en: 'How a material responds as it is pulled' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 막대 끝이 처음 있던 자리. */
@@ -112,8 +113,9 @@ function key(k: StressStrainCurveMessageKey): string {
 
 export const stressStrainCurveSchema: BundleSchema = {
   id: STRESS_STRAIN_CURVE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 작은 당김 / 큰 당김의 대조만으로 주장이 끝난다.

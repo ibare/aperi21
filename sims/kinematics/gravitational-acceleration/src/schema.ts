@@ -74,6 +74,10 @@ export const SCENE_BOUNDS = {
 
 export const gravitationalAccelerationMessages = Object.freeze({
   'label.title': { ko: '중력 가속도', en: 'Gravitational acceleration' },
+  'label.operation': {
+    ko: '속도가 0인 순간에도 멈추지 않는 가속',
+    en: 'Acceleration that does not stop even when the velocity is zero',
+  },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   'caption.rise': {
@@ -113,8 +117,9 @@ const SLOW = 0.5;
 
 export const gravitationalAccelerationSchema: BundleSchema = {
   id: GRAVITATIONAL_ACCELERATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'kinematics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   // 조작기 없음 — 던지는 속력을 바꾸면 꼭대기 자리만 옮겨지고 주장(조각 길이 불변)은 같다.
   parameters: [],

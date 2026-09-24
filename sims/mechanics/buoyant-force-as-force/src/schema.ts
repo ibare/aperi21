@@ -59,6 +59,7 @@ export const START_AT = (1.75 / (2 * Math.PI)) * PERIOD;
 
 export const buoyantForceAsForceMessages = Object.freeze({
   'label.title': { ko: '부력(힘으로서)', en: 'Buoyant force as a force' },
+  'label.operation': { ko: '유체가 위로 미는 힘', en: 'The upward push of a fluid' },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 화살표 이름 셋. 색이 아니라 이름으로 가른다. */
@@ -95,8 +96,9 @@ function key(k: BuoyantForceAsForceMessageKey): string {
 
 export const buoyantForceAsForceSchema: BundleSchema = {
   id: BUOYANT_FORCE_AS_FORCE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 한 주기가 물 밖 · 일부 잠김 · 다 잠김 세 상태를 모두 지나며 주장을 마친다.

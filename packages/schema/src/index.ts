@@ -1306,17 +1306,9 @@ export type ControllerKind =
 /** Bundle의 정적 스키마. */
 export interface BundleSchema {
   id: string;
-  /** 조각 제목. 발행 카탈로그의 `title` 이 여기서 온다 — FACET `FacetJson.title` 과 같은 자리. */
-  title: LocalizedText;
+  label: LocalizedText;
   category: string;
-  /**
-   * 조각의 한 줄 주장. 발행 카탈로그의 `description` 이 여기서 온다 — FACET
-   * `FacetJson.description` 과 같은 자리다.
-   *
-   * 좋은 글이면서 검색어에는 안 걸릴 수 있다. 검색(임베딩)은 이 필드가 아니라
-   * `@aperi21/authoring` 개념의 `surface` 가 맡는다 — 한 필드에 두 용도를 겹치지 않는다.
-   */
-  description?: LocalizedText;
+  operation: LocalizedText;
   timeModel:
     | 'linear' | 'periodic' | 'orbit'
     | 'continuous' | 'steady_state' | 'static'

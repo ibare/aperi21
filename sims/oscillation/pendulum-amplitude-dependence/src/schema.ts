@@ -141,6 +141,10 @@ export const SCENE_BOUNDS = {
 
 export const pendulumAmplitudeDependenceMessages = Object.freeze({
   'label.title': { ko: '진자의 등시성', en: 'Isochronism of the pendulum' },
+  'label.operation': {
+    ko: '흔들림 크기를 끌어 다섯 진자의 폭을 함께 키운다',
+    en: 'Drag the swing size to widen all five together',
+  },
   'label.stage': { ko: '진자', en: 'Pendulums' },
   'label.view': { ko: '다섯 진자', en: 'Five pendulums' },
   /**
@@ -180,8 +184,9 @@ function key(k: PendulumAmplitudeDependenceMessageKey): string {
 
 export const pendulumAmplitudeDependenceSchema: BundleSchema = {
   id: PENDULUM_AMPLITUDE_DEPENDENCE_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'oscillation',
+  operation: text('label.operation'),
   timeModel: 'linear',
 
   // 진폭은 조작기가 쥔다 (controllers.ts). 파라미터 패널을 띄우지 않는다 —

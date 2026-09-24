@@ -84,6 +84,10 @@ export const UNSCALE = 1.2;
 
 export const efficiencyMessages = Object.freeze({
   'label.title': { ko: '효율', en: 'Efficiency' },
+  'label.operation': {
+    ko: '넣은 것과 얻은 것의 비',
+    en: 'The ratio of what comes out to what goes in',
+  },
   'label.stage': { ko: '두 기계', en: 'Two machines' },
   'label.view': { ko: '흐름', en: 'Flow' },
   /** 기계 이름. 도형에 붙는 기호라 번역 대상이 아니다 (C1 판정 1). */
@@ -126,8 +130,9 @@ function key(k: EfficiencyMessageKey): string {
 
 export const efficiencySchema: BundleSchema = {
   id: EFFICIENCY_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흐르고, 입구가 맞춰지고, 되돌아간다.

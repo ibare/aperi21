@@ -112,6 +112,10 @@ export const CLEAR = 0.8;
 
 export const magneticMaterialsMessages = Object.freeze({
   'label.title': { ko: '자성체', en: 'Magnetic materials' },
+  'label.operation': {
+    ko: '강자성 · 상자성 · 반자성',
+    en: 'Ferromagnetic, paramagnetic and diamagnetic',
+  },
   'label.stage': { ko: '센 자석 옆에 매단 세 막대', en: 'Three hanging bars beside a strong magnet' },
   'label.view': { ko: '옆에서 본 모습', en: 'Side view' },
   /** 자극 표식. 자석에 새겨진 글자라 번역하지 않는다 (C1 판정 1). */
@@ -157,8 +161,9 @@ function key(k: MagneticMaterialsMessageKey): string {
 
 export const magneticMaterialsSchema: BundleSchema = {
   id: MAGNETIC_MATERIALS_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'em',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 자석이 다가오는 것을 시간표가 보여 준다.

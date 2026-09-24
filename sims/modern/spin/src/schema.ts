@@ -103,6 +103,10 @@ export const FADE = 0.9;
 
 export const spinMessages = Object.freeze({
   'label.title': { ko: '스핀', en: 'Spin' },
+  'label.operation': {
+    ko: '고전 대응물이 없는 각운동량',
+    en: 'Angular momentum with no classical counterpart',
+  },
   'label.stage': { ko: '은 원자 빔 · 장치 셋', en: 'Silver atom beam through three magnets' },
   'label.view': { ko: '이어 놓은 장치 도식', en: 'Chained magnets, schematic' },
   'label.oven': { ko: '은 원자', en: 'silver atoms' },
@@ -147,8 +151,9 @@ function key(k: SpinMessageKey): string {
 
 export const spinSchema: BundleSchema = {
   id: SPIN_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 「같은 축 → 모두 ↑」 와 「x 를 거치면 ↓ 가 되살아남」 을 차례로 보인다.

@@ -68,6 +68,7 @@ export const SCENE_BOUNDS = { minX: -3.95, maxX: 4.15, minY: -2.55, maxY: 1.6 } 
 
 export const magnificationMessages = Object.freeze({
   'label.title': { ko: '배율', en: 'Magnification' },
+  'label.operation': { ko: '상의 크기와 물체의 크기', en: 'The size of the image and the size of the object' },
   'label.stage': { ko: '볼록 렌즈 앞 세 자리', en: 'Three spots before a converging lens' },
   'label.view': { ko: '물체와 상', en: 'Object and image' },
 
@@ -117,8 +118,9 @@ function key(k: MagnificationMessageKey): string {
 
 export const magnificationSchema: BundleSchema = {
   id: MAGNIFICATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'optics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 물체를 세 자리로 옮기는 것을 자동 진행으로 보인다 (controllers.ts).

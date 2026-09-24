@@ -75,6 +75,10 @@ export const SLAB_TIMING = { flight: 0.9, erase: 0.5 } as const;
 
 export const accelerationTimeGraphMessages = Object.freeze({
   'label.title': { ko: '가속도-시간 그래프', en: 'Acceleration-time graph' },
+  'label.operation': {
+    ko: '넓이가 속도 변화인 표현',
+    en: 'The area under the graph is the change in velocity',
+  },
   'label.stage': { ko: '기본', en: 'Default' },
   'label.view': { ko: '기본', en: 'Default' },
   /** 그래프 세로축 이름. */
@@ -128,8 +132,9 @@ function key(k: AccelerationTimeGraphMessageKey): string {
 
 export const accelerationTimeGraphSchema: BundleSchema = {
   id: ACCELERATION_TIME_GRAPH_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'kinematics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 한 바퀴(11 초)에 주장이 끝난다.

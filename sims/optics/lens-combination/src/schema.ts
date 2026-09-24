@@ -113,6 +113,7 @@ export const SCENE_BOUNDS = { minX: -2.9, maxX: 7.6, minY: -2.35, maxY: 2.45 } a
 
 export const lensCombinationMessages = Object.freeze({
   'label.title': { ko: '렌즈의 조합', en: 'Combining lenses' },
+  'label.operation': { ko: '두 렌즈가 만드는 합성 초점', en: 'The combined focus of two lenses' },
   'label.stage': { ko: '붙인 두 렌즈', en: 'Two lenses in contact' },
   'label.view': { ko: '광축과 굴절력 막대', en: 'Optical axis and power bar' },
 
@@ -184,8 +185,9 @@ function key(k: LensCombinationMessageKey): string {
 
 export const lensCombinationSchema: BundleSchema = {
   id: LENS_COMBINATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'optics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 붙이는 렌즈를 자동 진행으로 바꿔 끼워 초점이 다가오고 멀어지는 것을

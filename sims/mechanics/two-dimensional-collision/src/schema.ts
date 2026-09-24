@@ -68,6 +68,10 @@ export const SCENE_BOUNDS = { minX: -1.7, maxX: 4.65, minY: -1.5, maxY: 1.72 } a
 
 export const twoDimensionalCollisionMessages = Object.freeze({
   'label.title': { ko: '2차원 충돌', en: 'Two-dimensional collision' },
+  'label.operation': {
+    ko: '성분마다 따로 성립하는 보존',
+    en: 'Conservation that holds separately for each component',
+  },
   'label.stage': { ko: '비스듬한 충돌', en: 'Glancing collision' },
   'label.view': { ko: '성분 장부', en: 'Component ledger' },
 
@@ -117,8 +121,9 @@ function key(k: TwoDimensionalCollisionMessageKey): string {
 
 export const twoDimensionalCollisionSchema: BundleSchema = {
   id: TWO_DIMENSIONAL_COLLISION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'mechanics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

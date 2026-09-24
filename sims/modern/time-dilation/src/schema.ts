@@ -92,6 +92,7 @@ export const SCENE_BOUNDS = { minX: -2.3, maxX: 6.4, minY: -1.35, maxY: 2.2 } as
 
 export const timeDilationMessages = Object.freeze({
   'label.title': { ko: '시간 지연', en: 'Time dilation' },
+  'label.operation': { ko: '운동하는 시계가 느려짐', en: 'A moving clock runs slow' },
   'label.stage': { ko: '0.8c 로 지나가는 시계', en: 'A clock passing at 0.8c' },
   'label.view': { ko: '정지한 틀', en: 'Rest frame' },
   'label.rest': { ko: '서로 맞춘 정지 시계들', en: 'Synchronized clocks at rest' },
@@ -134,8 +135,9 @@ function key(k: TimeDilationMessageKey): string {
 
 export const timeDilationSchema: BundleSchema = {
   id: TIME_DILATION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'modern',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 시계가 지나가고, 기록이 남고, 다시 온다.

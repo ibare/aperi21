@@ -90,6 +90,10 @@ export const FADE = 0.6;
 
 export const gravitationalFieldMessages = Object.freeze({
   'label.title': { ko: '중력장', en: 'Gravitational field' },
+  'label.operation': {
+    ko: '공간에 분포한 중력의 세기',
+    en: 'The strength of gravity spread through space',
+  },
   'label.stage': { ko: '행성 하나', en: 'One planet' },
   'label.view': { ko: '장', en: 'Field' },
   'caption.field': {
@@ -126,8 +130,9 @@ function key(k: GravitationalFieldMessageKey): string {
 
 export const gravitationalFieldSchema: BundleSchema = {
   id: GRAVITATIONAL_FIELD_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'astro',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 장이 깔려 있고, 질량이 놓이고, 끌려간다.

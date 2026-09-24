@@ -66,6 +66,7 @@ export const SCENE_BOUNDS = { minX: -4.4, maxX: 4.4, minY: -0.95, maxY: 3.65 } a
 
 export const lawOfReflectionMessages = Object.freeze({
   'label.title': { ko: '반사 법칙', en: 'Law of reflection' },
+  'label.operation': { ko: '입사각과 반사각', en: 'Angle of incidence and angle of reflection' },
   'label.stage': { ko: '평면거울', en: 'Flat mirror' },
   'label.view': { ko: '거울 앞', en: 'In front of the mirror' },
 
@@ -115,8 +116,9 @@ function key(k: LawOfReflectionMessageKey): string {
 
 export const lawOfReflectionSchema: BundleSchema = {
   id: LAW_OF_REFLECTION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'optics',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 세 입사각을 차례로 멈춰 보여 주는 것으로 비교가 끝난다 — 각을 끌게

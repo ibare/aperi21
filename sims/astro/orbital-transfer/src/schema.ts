@@ -65,6 +65,7 @@ export const SCENE_BOUNDS = { minX: -7.8, maxX: 3.25, minY: -3.2, maxY: 3.45 } a
 
 export const orbitalTransferMessages = Object.freeze({
   'label.title': { ko: '궤도 전이', en: 'Orbital transfer' },
+  'label.operation': { ko: '호만 전이와 그 비용', en: 'The Hohmann transfer and what it costs' },
   'label.stage': { ko: '호만 전이', en: 'Hohmann transfer' },
   'label.view': { ko: '두 번 밀기', en: 'Two pushes' },
   /** 밀기 화살표의 기호 — 수식 표기라 두 언어가 같다 (C1 표식). */
@@ -112,8 +113,9 @@ function key(k: OrbitalTransferMessageKey): string {
 
 export const orbitalTransferSchema: BundleSchema = {
   id: ORBITAL_TRANSFER_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'astro',
+  operation: text('label.operation'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 두 번의 밀기는 정해진 자리 · 정해진 크기에서만 원에서 원으로 옮긴다 —

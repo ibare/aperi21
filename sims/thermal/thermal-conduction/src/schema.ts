@@ -142,6 +142,10 @@ export const SCENE_BOUNDS = {
 
 export const thermalConductionMessages = Object.freeze({
   'label.title': { ko: '열전도', en: 'Heat conduction' },
+  'label.operation': {
+    ko: '쇠에서는 번져 나가고 나무에서는 머문다',
+    en: 'It spreads in steel and stays in wood',
+  },
   'label.stage': { ko: '두 막대', en: 'Two rods' },
   'label.view': { ko: '나란히', en: 'Side by side' },
   /** 재질 이름표. 두 막대를 가르는 유일한 조건이라 이름이 없으면 조각이 말을 못 한다. */
@@ -175,8 +179,9 @@ function key(k: ThermalConductionMessageKey): string {
 
 export const thermalConductionSchema: BundleSchema = {
   id: THERMAL_CONDUCTION_ID,
-  title: text('label.title'),
+  label: text('label.title'),
   category: 'thermal',
+  operation: text('label.operation'),
   timeModel: 'linear',
 
   // 조작기도 파라미터도 없다. 조건이 재질 하나뿐이고 그 두 값이 이미 나란히 돌고 있다.
