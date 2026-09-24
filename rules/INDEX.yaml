@@ -45,6 +45,7 @@ concerns:
         - "packages/host/src/renderer/**"
         - "packages/host/src/i18n/**"
         - "sims/**/schema.ts"
+        - "docs/i18n/**"
       patterns:
         - "ko ?"
         - "LocalizedText"

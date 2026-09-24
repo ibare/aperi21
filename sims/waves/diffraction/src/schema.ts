@@ -138,7 +138,7 @@ export const diffractionMessages = Object.freeze({
     es: 'Sombra, si las ondas siguieran rectas',
     fr: 'Ombre, si les ondes allaient tout droit',
     hi: 'छाया, यदि तरंगें सीधी जातीं',
-    id: 'Bayangan, jika gelombang berjalan lurus',
+    id: 'Bayang-bayang, jika gelombang berjalan lurus',
     pt: 'Sombra, se as ondas seguissem retas',
   },
   'caption.approach': {
@@ -174,7 +174,7 @@ export const diffractionMessages = Object.freeze({
     es: 'Más allá de las líneas discontinuas, las ondas se han curvado hacia lo que debería ser la sombra tras la pared',
     fr: 'Au-delà des pointillés, les ondes ont contourné le mur jusque dans ce qui devrait être son ombre',
     hi: 'बिंदुकित रेखाओं के बाहर, तरंगें मुड़कर दीवार के पीछे उस जगह तक पहुँच गई हैं जहाँ छाया होनी चाहिए थी',
-    id: 'Di luar garis putus-putus, gelombang telah membelok masuk ke daerah yang seharusnya menjadi bayangan di balik dinding',
+    id: 'Di luar garis putus-putus, gelombang telah membelok masuk ke daerah yang seharusnya menjadi bayang-bayang di balik dinding',
     pt: 'Além das linhas tracejadas, as ondas se curvaram para dentro do que deveria ser a sombra atrás da parede',
   },
 } satisfies Record<string, LocalizedText>);

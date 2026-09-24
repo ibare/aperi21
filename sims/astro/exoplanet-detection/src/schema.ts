@@ -293,7 +293,7 @@ export const exoplanetDetectionMessages = Object.freeze({
     fr: 'Une orbite plus tard, l’éclat baisse à nouveau, tout aussi profondément — au moment précis où la raie passe par sa position au repos',
     hi: 'एक परिक्रमा बाद चमक फिर उतनी ही गहराई तक घटती है — ठीक उसी क्षण जब रेखा अपनी विराम स्थिति से गुज़रती है',
     id: 'Satu orbit kemudian kecerahan turun lagi, sama dalamnya — tepat saat garisnya melewati posisi diam',
-    pt: 'Uma órbita depois, o brilho cai de novo, com a mesma profundidade — no exato momento em que a linha passa pela posição de repouso',
+    pt: 'Uma órbita depois, o brilho cai de novo, com a mesma profundidade — no exato instante em que a linha passa pela posição de repouso',
   },
   'caption.approach2': {
     ko: '밝기가 파이는 간격과 선이 한 번 오가는 간격이 같다 — 둘 다 행성이 한 바퀴 도는 시간 P',
@@ -301,7 +301,7 @@ export const exoplanetDetectionMessages = Object.freeze({
     ja: 'くぼみの間隔は線が一往復する間隔に等しい — どちらも惑星の公転周期 P だ',
     zh: '两次下凹的间隔等于谱线来回一次的间隔 — 两者都是行星的公转周期 P',
     ar: 'الفاصل بين الانخفاضين يساوي ذهاب الخط وإيابه مرة واحدة — كلاهما هو الدور المداري للكوكب P',
-    es: 'El intervalo entre caídas es igual a una oscilación de la línea — ambos son el período orbital P del planeta',
+    es: 'El intervalo entre caídas es igual a una oscilación de la línea — ambos son el periodo orbital P del planeta',
     fr: 'L’intervalle entre deux baisses égale un aller-retour de la raie — les deux valent la période orbitale P de la planète',
     hi: 'दो गिरावटों के बीच का अंतराल रेखा के एक आने-जाने के बराबर है — दोनों ग्रह का कक्षीय आवर्तकाल P हैं',
     id: 'Jarak antarpenurunan sama dengan satu ayunan garis — keduanya adalah periode orbit planet P',

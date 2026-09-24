@@ -133,7 +133,7 @@ export const uniformFieldMessages = Object.freeze({
     es: 'El campo entre placas paralelas',
     fr: 'Le champ entre des plaques parallèles',
     hi: 'समांतर प्लेटों के बीच का क्षेत्र',
-    id: 'Medan di antara pelat sejajar',
+    id: 'Medan di antara keping sejajar',
     pt: 'O campo entre placas paralelas',
   },
   'label.stage': {
@@ -145,13 +145,13 @@ export const uniformFieldMessages = Object.freeze({
     es: 'Dos placas conectadas a una batería',
     fr: 'Deux plaques reliées à une pile',
     hi: 'बैटरी से जुड़ी दो प्लेटें',
-    id: 'Dua pelat yang terhubung ke baterai',
+    id: 'Dua keping yang terhubung ke baterai',
     pt: 'Duas placas ligadas a uma bateria',
   },
   'label.view': {
     ko: '옆에서 본 판',
     en: 'Side view',
-    ja: '横から見た図',
+    ja: '側面図',
     zh: '侧视图',
     ar: 'منظر جانبي',
     es: 'Vista lateral',
@@ -194,7 +194,7 @@ export const uniformFieldMessages = Object.freeze({
     es: 'Entre las dos placas las líneas de campo bajan rectas, igualmente espaciadas',
     fr: 'Entre les deux plaques, les lignes de champ descendent tout droit, régulièrement espacées',
     hi: 'दोनों प्लेटों के बीच क्षेत्र रेखाएँ समान दूरी पर सीधी नीचे जाती हैं',
-    id: 'Di antara kedua pelat, garis medan lurus ke bawah dengan jarak yang sama',
+    id: 'Di antara kedua keping, garis medan lurus ke bawah dengan jarak yang sama',
     pt: 'Entre as duas placas as linhas de campo descem retas, igualmente espaçadas',
   },
   'caption.place': {
@@ -206,7 +206,7 @@ export const uniformFieldMessages = Object.freeze({
     es: 'Coloca cargas de prueba en distintos puntos entre las placas — todas las flechas de fuerza tienen la misma longitud y dirección',
     fr: 'Placez des charges d’essai à différents endroits entre les plaques — chaque flèche de force a la même longueur et la même direction',
     hi: 'प्लेटों के बीच अलग-अलग स्थानों पर परीक्षण आवेश रखें — हर बल-तीर की लंबाई और दिशा एक समान है',
-    id: 'Letakkan muatan uji di berbagai titik di antara pelat — setiap panah gaya memiliki panjang dan arah yang sama',
+    id: 'Letakkan muatan uji di berbagai titik di antara keping — setiap panah gaya memiliki panjang dan arah yang sama',
     pt: 'Coloque cargas de prova em pontos diferentes entre as placas — toda seta de força tem o mesmo comprimento e a mesma direção',
   },
   'caption.move': {
@@ -218,7 +218,7 @@ export const uniformFieldMessages = Object.freeze({
     es: 'Muévelas — cerca de una placa o en el medio — y las flechas siguen iguales',
     fr: 'Déplacez-les — près d’une plaque ou au milieu — et les flèches restent les mêmes',
     hi: 'इन्हें इधर-उधर ले जाएँ — किसी प्लेट के पास या बीच में — तीर वैसे ही रहते हैं',
-    id: 'Pindahkan muatan itu — dekat pelat atau di tengah — dan panahnya tetap sama',
+    id: 'Pindahkan muatan itu — dekat keping atau di tengah — dan panahnya tetap sama',
     pt: 'Mova-as de lugar — perto de uma placa ou no meio — e as setas continuam iguais',
   },
   'caption.exit': {
@@ -230,7 +230,7 @@ export const uniformFieldMessages = Object.freeze({
     es: 'Más allá del borde de las placas las líneas de campo se curvan, y la fuerza se inclina y se acorta',
     fr: 'Au-delà du bord des plaques, les lignes de champ se courbent, et la force s’incline et raccourcit',
     hi: 'प्लेटों के किनारे से बाहर क्षेत्र रेखाएँ मुड़ जाती हैं, और बल झुककर छोटा हो जाता है',
-    id: 'Melewati tepi pelat, garis medan melengkung, dan gaya miring serta memendek',
+    id: 'Melewati tepi keping, garis medan melengkung, dan gaya miring serta memendek',
     pt: 'Além da borda das placas as linhas de campo se curvam, e a força se inclina e encolhe',
   },
 } satisfies Record<string, LocalizedText>);

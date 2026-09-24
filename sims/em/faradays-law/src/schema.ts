@@ -152,7 +152,7 @@ export const faradaysLawMessages = Object.freeze({
     ko: '옆에서',
     en: 'From the side',
     ja: '横から',
-    zh: '从侧面看',
+    zh: '侧视',
     ar: 'من الجانب',
     es: 'De lado',
     fr: 'De côté',

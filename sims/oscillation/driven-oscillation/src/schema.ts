@@ -83,7 +83,7 @@ export const drivenOscillationMessages = Object.freeze({
     en: 'Driven oscillation',
     ja: '強制振動',
     zh: '受迫振动',
-    ar: 'الاهتزاز القسري',
+    ar: 'التذبذب القسري',
     es: 'Oscilación forzada',
     fr: 'Oscillations forcées',
     hi: 'प्रणोदित दोलन',

@@ -103,7 +103,7 @@ export const continuityEquationMessages = Object.freeze({
     ko: '단면적과 유속의 반비례',
     en: 'Cross-section and flow speed trade off',
     ja: '断面積と流速は反比例する',
-    zh: '截面积与流速此消彼长',
+    zh: '横截面积与流速此消彼长',
     ar: 'مساحة المقطع وسرعة التدفق تتبادلان',
     es: 'Sección transversal y rapidez del flujo se compensan',
     fr: 'Section et vitesse d’écoulement se compensent',

@@ -223,7 +223,7 @@ export const coordinateChoiceMessages = Object.freeze({
     es: 'Un deslizamiento, dos pares de ejes — inclina los ejes a lo largo del plano y una sombra se queda quieta.',
     fr: 'Une glissade, deux systèmes d’axes — inclinez les axes le long du plan et une ombre s’immobilise.',
     hi: 'एक फिसलन, अक्षों के दो समुच्चय — अक्षों को आनत तल के अनुदिश झुकाएँ तो एक छाया स्थिर हो जाती है।',
-    id: 'Satu luncuran, dua pasang sumbu — miringkan sumbu searah bidang miring dan satu bayangan diam di tempat.',
+    id: 'Satu luncuran, dua pasang sumbu — miringkan sumbu searah bidang miring dan satu bayang-bayang diam di tempat.',
     pt: 'Um deslizamento, dois pares de eixos — incline os eixos ao longo do plano e uma sombra fica parada.',
   },
 } satisfies Record<string, LocalizedText>);

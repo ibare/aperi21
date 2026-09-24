@@ -110,7 +110,7 @@ export const newtonsSecondLawMessages = Object.freeze({
     ko: '같은 수레를 2배, 3배 힘으로 밀면 1초마다 붙는 속도(막대 한 칸)도 2배, 3배다.',
     en: 'Push the same cart 2 or 3 times harder and the speed gained each second (one block) is 2 or 3 times larger.',
     ja: '同じ台車を2倍、3倍の力で押すと、1秒ごとに増える速さ(棒の1マス)も2倍、3倍になる。',
-    zh: '用2倍、3倍的力推同一辆小车，每秒增加的速度（一格）也变为2倍、3倍。',
+    zh: '用2倍、3倍的力推同一辆小车，每秒增加的速率（一格）也变为2倍、3倍。',
     ar: 'ادفع العربة نفسها بقوة أكبر 2 أو 3 مرات، فتصبح السرعة المكتسبة كل ثانية (خانة واحدة) أكبر 2 أو 3 مرات.',
     es: 'Empuja el mismo carrito con 2 o 3 veces más fuerza y la rapidez ganada cada segundo (un bloque) es 2 o 3 veces mayor.',
     fr: 'Poussez le même chariot 2 ou 3 fois plus fort, et la vitesse gagnée chaque seconde (un bloc) est 2 ou 3 fois plus grande.',

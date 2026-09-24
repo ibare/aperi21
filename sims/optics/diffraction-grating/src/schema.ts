@@ -194,7 +194,7 @@ export const diffractionGratingMessages = Object.freeze({
     ar: 'يُسلَّط ضوء أبيض',
     es: 'Se ilumina con luz blanca',
     fr: 'On éclaire en lumière blanche',
-    hi: 'सफ़ेद प्रकाश डाला जाता है',
+    hi: 'श्वेत प्रकाश डाला जाता है',
     id: 'Sinari dengan cahaya putih',
     pt: 'Incide luz branca',
   },

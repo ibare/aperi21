@@ -258,7 +258,7 @@ export const magnetAttractionMessages = Object.freeze({
     ja: 'くっついたものだけが磁石についていく — ほかは磁石が真上を通ってもそのままだ',
     zh: '只有被吸住的东西跟着磁铁走了 — 其余的即使磁铁从正上方经过也纹丝不动',
     ar: 'لم يرافق المغناطيس إلا ما التصق به — وبقي الباقي في مكانه مع أنه مرّ فوقه مباشرة',
-    es: 'Solo lo que se pegó se fue con el imán — lo demás se quedó quieto aunque pasó justo por encima',
+    es: 'Solo lo que se pegó se fue con el imán — lo demás se quedó quieto aunque el imán pasó justo por encima',
     fr: 'Seul ce qui a collé est parti avec l’aimant — le reste n’a pas bougé, même s’il est passé juste au-dessus',
     hi: 'केवल जो चिपका वही चुंबक के साथ चला गया — बाकी चीज़ें अपनी जगह रहीं, भले चुंबक ठीक ऊपर से गुज़रा',
     id: 'Hanya yang menempel ikut terbawa magnet — sisanya tetap diam meski magnet lewat tepat di atasnya',

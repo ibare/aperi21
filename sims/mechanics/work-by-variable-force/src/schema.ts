@@ -194,7 +194,7 @@ export const workByVariableForceMessages = Object.freeze({
   'caption.total': {
     ko: '띠가 모두 모여 곡선 아래를 채웠다 — 이 넓이 W 가 미는 힘이 한 일 전부다',
     en: 'The strips now fill the whole area under the curve — this area W is all the work the push did',
-    ja: '帯がすべて集まって曲線の下を埋めた — この面積 W が、押す力がした仕事のすべてだ',
+    ja: '帯がすべて集まって曲線の下の面積全体を埋めた — この面積 W が、押す力がした仕事のすべてだ',
     zh: '条带合在一起填满了曲线下方的全部面积 — 这块面积 W 就是推力所做的全部功',
     ar: 'تملأ الأشرطة الآن كل المساحة تحت المنحنى — هذه المساحة W هي كل الشغل الذي بذله الدفع',
     es: 'Las franjas llenan ya toda el área bajo la curva — esta área W es todo el trabajo que hizo el empuje',

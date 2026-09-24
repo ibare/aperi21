@@ -110,7 +110,7 @@ export const poyntingVectorMessages = Object.freeze({
     ar: 'تدفق الطاقة الذي تحمله الموجات الكهرومغناطيسية',
     es: 'El flujo de energía que transportan las ondas electromagnéticas',
     fr: 'Le flux d’énergie transporté par les ondes électromagnétiques',
-    hi: 'विद्युतचुंबकीय तरंगों द्वारा ले जाया गया ऊर्जा प्रवाह',
+    hi: 'विद्युत चुंबकीय तरंगों द्वारा ले जाया गया ऊर्जा प्रवाह',
     id: 'Aliran energi yang dibawa gelombang elektromagnetik',
     pt: 'O fluxo de energia transportado pelas ondas eletromagnéticas',
   },

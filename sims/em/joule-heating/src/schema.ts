@@ -169,7 +169,7 @@ export const jouleHeatingMessages = Object.freeze({
     en: 'Circuit and thermometers',
     ja: '回路と温度計',
     zh: '电路与温度计',
-    ar: 'الدائرة وموازين الحرارة',
+    ar: 'الدائرة ومقاييس الحرارة',
     es: 'Circuito y termómetros',
     fr: 'Circuit et thermomètres',
     hi: 'परिपथ और तापमापी',

@@ -105,7 +105,7 @@ export const shmEnergyMessages = Object.freeze({
     ja: '摩擦のない床',
     zh: '无摩擦的地面',
     ar: 'أرضية عديمة الاحتكاك',
-    es: 'Suelo sin fricción',
+    es: 'Suelo sin rozamiento',
     fr: 'Sol sans frottement',
     hi: 'घर्षणरहित फ़र्श',
     id: 'Lantai tanpa gesekan',

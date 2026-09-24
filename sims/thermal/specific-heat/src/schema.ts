@@ -157,7 +157,7 @@ export const specificHeatMessages = Object.freeze({
     ar: 'الماء',
     es: 'Agua',
     fr: 'Eau',
-    hi: 'पानी',
+    hi: 'जल',
     id: 'Air',
     pt: 'Água',
   },

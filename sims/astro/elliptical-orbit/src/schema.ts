@@ -170,7 +170,7 @@ export const ellipticalOrbitMessages = Object.freeze({
     es: 'órbita circular',
     fr: 'orbite circulaire',
     hi: 'वृत्ताकार कक्षा',
-    id: 'orbit lingkaran',
+    id: 'orbit melingkar',
     pt: 'órbita circular',
   },
   'label.eccentricity': {

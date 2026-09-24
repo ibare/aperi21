@@ -114,7 +114,7 @@ export const apparentBrightnessMessages = Object.freeze({
     zh: '视亮度',
     ar: 'السطوع الظاهري',
     es: 'Brillo aparente',
-    fr: 'Luminosité apparente',
+    fr: 'Éclat apparent',
     hi: 'आभासी चमक',
     id: 'Kecerahan semu',
     pt: 'Brilho aparente',

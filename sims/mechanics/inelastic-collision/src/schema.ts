@@ -76,7 +76,7 @@ export const inelasticCollisionMessages = Object.freeze({
     es: 'Choque inelástico',
     fr: 'Collision inélastique',
     hi: 'अप्रत्यास्थ टक्कर',
-    id: 'Tumbukan tidak lenting',
+    id: 'Tumbukan lenting sebagian',
     pt: 'Colisão inelástica',
   },
   'label.operation': {
@@ -273,7 +273,7 @@ export const inelasticCollisionMessages = Object.freeze({
     es: 'Cada pico es e² veces el anterior. En cada impacto, la energía de la altura que falta se fue en aplastamiento y calor.',
     fr: 'Chaque sommet vaut e² fois le précédent. À chaque impact, l’énergie de la hauteur manquante est partie en écrasement et en chaleur.',
     hi: 'हर शिखर पिछले का e² गुना है। हर टक्कर पर घटी हुई ऊँचाई जितनी ऊर्जा पिचकने और ऊष्मा में चली गई।',
-    id: 'Setiap puncak sebesar e² kali puncak sebelumnya. Pada setiap tumbukan, energi untuk ketinggian yang hilang berubah menjadi deformasi dan panas.',
+    id: 'Setiap puncak sebesar e² kali puncak sebelumnya. Pada setiap tumbukan, energi untuk ketinggian yang hilang berubah menjadi deformasi dan kalor.',
     pt: 'Cada pico é e² vezes o anterior. A cada batida, a energia da altura que falta foi para o amassamento e o calor.',
   },
 } satisfies Record<string, LocalizedText>);

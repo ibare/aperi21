@@ -180,14 +180,14 @@ export const projectileInWindMessages = Object.freeze({
   'label.view': {
     ko: '세 레인',
     en: 'Three lanes',
-    ja: '3本のレーン',
-    zh: '三条赛道',
+    ja: '三つのレーン',
+    zh: '三条通道',
     ar: 'ثلاثة مسارات',
     es: 'Tres carriles',
     fr: 'Trois couloirs',
     hi: 'तीन लेन',
     id: 'Tiga lajur',
-    pt: 'Três raias',
+    pt: 'Três faixas',
   },
   'label.headwind': {
     ko: '앞바람',

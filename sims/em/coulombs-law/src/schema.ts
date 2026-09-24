@@ -232,7 +232,7 @@ export const coulombsLawMessages = Object.freeze({
     zh: '距离 {mid}× 时，力停在 {midParts} 份中的一份；{far}× 时，停在 {farParts} 份中的一份',
     ar: 'عند {mid}× المسافة تتوقف القوة عند جزء من {midParts} أجزاء؛ وعند {far}×، عند جزء من {farParts}',
     es: 'A {mid}× la distancia la fuerza se queda en una de {midParts} partes; a {far}×, en una de {farParts}',
-    fr: "À {mid}× la distance, la force s'arrête à une part sur {midParts} ; à {far}×, à une sur {farParts}",
+    fr: 'À {mid}× la distance, la force s’arrête à une part sur {midParts} ; à {far}×, à une sur {farParts}',
     hi: '{mid}× दूरी पर बल {midParts} भागों में से एक पर रुकता है; {far}× पर, {farParts} में से एक पर',
     id: 'Pada {mid}× jarak gayanya berhenti di satu dari {midParts} bagian; pada {far}×, di satu dari {farParts}',
     pt: 'A {mid}× a distância a força para em uma de {midParts} partes; a {far}×, em uma de {farParts}',

@@ -265,7 +265,7 @@ export const simpleCircuitMessages = Object.freeze({
   'caption.relit': {
     ko: '다시 이어지자 알갱이가 다시 돌고 전구가 다시 켜졌다',
     en: 'Joined again — the particles circulate once more and the bulb lights up again',
-    ja: '再びつながると、粒がまた回り、電球が再びついた',
+    ja: '再びつながると、粒がまた回り、電球が再び点いた',
     zh: '重新接通 — 粒子再次循环流动，灯泡又亮了',
     ar: 'عاد الاتصال — تدور الجسيمات من جديد ويضيء المصباح مرة أخرى',
     es: 'Unido de nuevo — las partículas vuelven a circular y la bombilla se enciende otra vez',

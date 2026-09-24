@@ -340,7 +340,7 @@ export const rlCircuitMessages = Object.freeze({
     en: 'The switch closes',
     ja: 'スイッチを閉じる',
     zh: '闭合开关',
-    ar: 'يُغلق المفتاح',
+    ar: 'يُغلَق المفتاح',
     es: 'El interruptor se cierra',
     fr: 'L’interrupteur se ferme',
     hi: 'स्विच बंद होता है',

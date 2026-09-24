@@ -217,7 +217,7 @@ export const rainbowMessages = Object.freeze({
 
     es: 'Varios rayos paralelos de luz solar se dirigen a una gota de lluvia grande.',
 
-    fr: 'Des rayons parallèles de lumière solaire se dirigent vers une grosse goutte de pluie.',
+    fr: 'Des rayons parallèles de lumière du Soleil se dirigent vers une grosse goutte de pluie.',
 
     hi: 'सूर्य के प्रकाश की कई समांतर किरणें वर्षा की एक बड़ी बूँद की ओर जाती हैं।',
 

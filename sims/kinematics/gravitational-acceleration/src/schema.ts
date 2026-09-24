@@ -88,8 +88,8 @@ export const gravitationalAccelerationMessages = Object.freeze({
   'label.operation': {
     ko: '속도가 0인 순간에도 멈추지 않는 가속',
     en: 'Acceleration that does not stop even when the velocity is zero',
-    ja: '速度が0になる瞬間にも止まらない加速',
-    zh: '即使速度为零也不会停止的加速',
+    ja: '速度が0になる瞬間にも止まらない加速度',
+    zh: '即使速度为零也不会消失的加速度',
     ar: 'تسارع لا يتوقف حتى حين تكون السرعة صفرًا',
     es: 'Una aceleración que no se detiene ni cuando la velocidad es cero',
     fr: 'Une accélération qui ne s’arrête pas, même quand la vitesse est nulle',

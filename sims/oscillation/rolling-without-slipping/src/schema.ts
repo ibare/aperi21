@@ -135,13 +135,13 @@ export const rollingWithoutSlippingMessages = Object.freeze({
     ko: '두 레인',
     en: 'Two lanes',
     ja: '二つのレーン',
-    zh: '两条跑道',
+    zh: '两条通道',
     ar: 'مساران',
     es: 'Dos carriles',
     fr: 'Deux couloirs',
     hi: 'दो लेन',
-    id: 'Dua lintasan',
-    pt: 'Duas raias',
+    id: 'Dua lajur',
+    pt: 'Duas faixas',
   },
   /** 화살표 · 레인에 붙는 수식 표기. 번역 대상이 아니다 (C1 판정 3). */
   'label.top': {

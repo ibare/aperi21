@@ -239,7 +239,7 @@ export const adiabaticProcessMessages = Object.freeze({
     es: 'aislante',
     fr: 'isolant',
     hi: 'ऊष्मारोधी',
-    id: 'insulator',
+    id: 'isolator',
     pt: 'isolante',
   },
 
@@ -252,7 +252,7 @@ export const adiabaticProcessMessages = Object.freeze({
     es: 'Gas a {t0} K en un cilindro envuelto en aislante — el calor no tiene por dónde entrar ni salir',
     fr: 'Un gaz à {t0} K dans un cylindre enveloppé d’isolant — la chaleur n’a aucun moyen d’entrer ni de sortir',
     hi: 'ऊष्मारोधी से लिपटे सिलिंडर में {t0} K पर गैस — ऊष्मा के अंदर आने या बाहर जाने का कोई रास्ता नहीं',
-    id: 'Gas bersuhu {t0} K dalam silinder yang dibungkus insulator — kalor tidak punya jalan masuk atau keluar',
+    id: 'Gas bersuhu {t0} K dalam silinder yang dibungkus isolator — kalor tidak punya jalan masuk atau keluar',
     pt: 'Gás a {t0} K num cilindro envolto em isolante — o calor não tem por onde entrar nem sair',
   },
   'caption.expand': {
@@ -262,7 +262,7 @@ export const adiabaticProcessMessages = Object.freeze({
     zh: '活塞上升时温度计下降，分子变慢 — 实心点比等温曲线上的空心点下降得更陡',
     ar: 'بينما يرتفع المكبس ينخفض مقياس الحرارة وتتباطأ الجزيئات — تهبط النقطة المصمتة بانحدار أشد من النقطة المفرغة على منحنى تساوي الحرارة',
     es: 'Mientras el pistón sube, el termómetro baja y las moléculas se frenan — el punto relleno cae con más pendiente que el punto hueco de la curva isotérmica',
-    fr: 'Pendant que le piston monte, le thermomètre baisse et les molécules ralentissent — le point plein chute plus vite que le point creux sur l’isotherme',
+    fr: 'Pendant que le piston monte, le thermomètre baisse et les molécules ralentissent — le point plein chute plus fortement que le point creux sur l’isotherme',
     hi: 'पिस्टन के ऊपर उठते समय तापमापी नीचे गिरता है और अणु धीमे पड़ते हैं — भरा बिंदु समतापी वक्र के खाली बिंदु से अधिक तेज़ी से नीचे गिरता है',
     id: 'Saat piston naik, termometer turun dan molekul melambat — titik penuh turun lebih curam daripada titik kosong pada kurva isotermal',
     pt: 'Enquanto o pistão sobe, o termômetro cai e as moléculas ficam mais lentas — o ponto cheio desce mais íngreme que o ponto vazado na curva isotérmica',

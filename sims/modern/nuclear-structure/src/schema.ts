@@ -88,7 +88,7 @@ export const nuclearStructureMessages = Object.freeze({
   'label.title': { ko: '원자핵의 구성', en: 'What a nucleus is made of', ja: '原子核は何でできているか', zh: '原子核由什么构成', ar: 'مِمَّ تتكوّن النواة', es: 'De qué está hecho un núcleo', fr: 'De quoi est fait un noyau', hi: 'नाभिक किससे बना है', id: 'Terbuat dari apa inti atom', pt: 'Do que é feito um núcleo' },
   'label.operation': { ko: '양성자와 중성자', en: 'Protons and neutrons', ja: '陽子と中性子', zh: '质子和中子', ar: 'البروتونات والنيوترونات', es: 'Protones y neutrones', fr: 'Protons et neutrons', hi: 'प्रोटॉन और न्यूट्रॉन', id: 'Proton dan neutron', pt: 'Prótons e nêutrons' },
   'label.stage': { ko: '탄소와 질소', en: 'Carbon and nitrogen', ja: '炭素と窒素', zh: '碳和氮', ar: 'الكربون والنيتروجين', es: 'Carbono y nitrógeno', fr: 'Carbone et azote', hi: 'कार्बन और नाइट्रोजन', id: 'Karbon dan nitrogen', pt: 'Carbono e nitrogênio' },
-  'label.view': { ko: '세 핵', en: 'Three nuclei', ja: '三つの核', zh: '三个原子核', ar: 'ثلاث نوى', es: 'Tres núcleos', fr: 'Trois noyaux', hi: 'तीन नाभिक', id: 'Tiga inti', pt: 'Três núcleos' },
+  'label.view': { ko: '세 핵', en: 'Three nuclei', ja: '三つの原子核', zh: '三个原子核', ar: 'ثلاث نوى', es: 'Tres núcleos', fr: 'Trois noyaux', hi: 'तीन नाभिक', id: 'Tiga inti', pt: 'Três núcleos' },
 
   /** 수 · 기호 하나를 그대로 띄우는 자리. 핵종 표기의 A · Z · 기호는 표식이다 (C1 판정 3). */
   'label.value': { ko: '{v}', en: '{v}', ja: '{v}', zh: '{v}', ar: '{v}', es: '{v}', fr: '{v}', hi: '{v}', id: '{v}', pt: '{v}' },
@@ -110,7 +110,7 @@ export const nuclearStructureMessages = Object.freeze({
   'caption.first': {
     ko: '양성자 {z1}개(+)와 중성자 {n1}개가 뭉친 핵이다.',
     en: 'A nucleus of {z1} protons (+) and {n1} neutrons packed together.',
-    ja: '{z1} 個の陽子（+）と {n1} 個の中性子が固まった核だ。',
+    ja: '{z1} 個の陽子（+）と {n1} 個の中性子が固まった原子核だ。',
     zh: '由 {z1} 个质子（+）和 {n1} 个中子紧紧聚在一起的原子核。',
     ar: 'نواة فيها {z1} من البروتونات (+) و{n1} من النيوترونات متراصّة معًا.',
     es: 'Un núcleo de {z1} protones (+) y {n1} neutrones apretados.',

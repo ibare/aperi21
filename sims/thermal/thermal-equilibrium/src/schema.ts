@@ -119,7 +119,7 @@ export const thermalEquilibriumMessages = Object.freeze({
     ar: 'الاتزان الحراري',
     es: 'Equilibrio térmico',
     fr: 'Équilibre thermique',
-    hi: 'ऊष्मीय साम्य',
+    hi: 'ऊष्मीय संतुलन',
     id: 'Kesetimbangan termal',
     pt: 'Equilíbrio térmico',
   },

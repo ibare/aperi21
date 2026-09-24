@@ -144,7 +144,7 @@ export const gravitationalRedshiftMessages = Object.freeze({
   'label.observer': {
     ko: '먼 곳',
     en: 'far away',
-    ja: '遠方',
+    ja: '遠く',
     zh: '远处',
     ar: 'بعيدًا',
     es: 'lejos',

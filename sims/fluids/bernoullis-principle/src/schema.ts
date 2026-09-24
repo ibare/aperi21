@@ -218,7 +218,7 @@ export const bernoullisPrincipleMessages = Object.freeze({
     ko: '속도 몫',
     en: 'speed share',
     ja: '速さの分',
-    zh: '速度部分',
+    zh: '速率部分',
     ar: 'حصة السرعة',
     es: 'parte de la rapidez',
     fr: 'part de la vitesse',

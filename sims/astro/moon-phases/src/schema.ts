@@ -134,7 +134,7 @@ export const moonPhasesMessages = Object.freeze({
     fr: '← Lumière venant du Soleil',
     hi: '← सूर्य से आने वाला प्रकाश',
     id: '← Sinar dari Matahari',
-    pt: '← Luz vinda do Sol',
+    pt: '← Luz solar vinda do Sol',
   },
   'label.topView': {
     ko: '북쪽 위에서 내려다본 지구와 달',

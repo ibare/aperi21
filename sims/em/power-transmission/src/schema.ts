@@ -245,7 +245,7 @@ export const powerTransmissionMessages = Object.freeze({
     es: 'calor en la línea',
     fr: 'chaleur de la ligne',
     hi: 'लाइन की ऊष्मा',
-    id: 'panas saluran',
+    id: 'kalor saluran',
     pt: 'calor na linha',
   },
   'label.townBar': {
@@ -355,7 +355,7 @@ export const powerTransmissionMessages = Object.freeze({
     es: 'El calor brota de la línea de arriba mientras la de abajo sigue casi en calma — las barras de calor en la línea se llenan',
     fr: 'La chaleur jaillit de la ligne du haut tandis que celle du bas reste presque calme — les barres de chaleur de la ligne se remplissent',
     hi: 'ऊपर की लाइन से ऊष्मा उमड़ती है जबकि नीचे की लाइन लगभग शांत रहती है — लाइन की ऊष्मा के बार भरते जाते हैं',
-    id: 'Panas mengucur dari saluran atas sementara saluran bawah nyaris tenang — batang panas saluran terisi',
+    id: 'Kalor mengucur dari saluran atas sementara saluran bawah nyaris tenang — batang kalor saluran terisi',
     pt: 'O calor jorra da linha de cima enquanto a de baixo fica quase quieta — as barras de calor na linha se enchem',
   },
   'caption.leakNote': {
@@ -367,7 +367,7 @@ export const powerTransmissionMessages = Object.freeze({
     es: 'La barra de calor en la línea de abajo es 1/{d} de la de arriba — pegada al fondo, apenas visible',
     fr: 'La barre de chaleur de la ligne du bas vaut 1/{d} de celle du haut — collée au fond, à peine visible',
     hi: 'नीचे की लाइन की ऊष्मा का बार ऊपर वाले का 1/{d} है — तल से सटा, मुश्किल से दिखता',
-    id: 'Batang panas saluran bawah 1/{d} dari yang atas — menempel di dasar, nyaris tak terlihat',
+    id: 'Batang kalor saluran bawah 1/{d} dari yang atas — menempel di dasar, nyaris tak terlihat',
     pt: 'A barra de calor na linha de baixo é 1/{d} da de cima — colada ao fundo, mal se vê',
   },
   'caption.arrive': {
@@ -379,7 +379,7 @@ export const powerTransmissionMessages = Object.freeze({
     es: 'Potencia que recibe cada pueblo — a la barra del pueblo de arriba le falta lo que mide la barra de calor, la de abajo casi alcanza la línea de {p} kW',
     fr: 'Puissance reçue par chaque ville — la barre de la ville du haut est amputée de la barre de chaleur, celle du bas atteint presque la ligne des {p} kW',
     hi: 'हर कस्बे को मिली शक्ति — ऊपर के कस्बे का बार ऊष्मा बार जितना कम रह जाता है, नीचे वाला {p} kW रेखा को लगभग छू लेता है',
-    id: 'Daya yang diterima tiap kota — batang kota atas kurang sebesar batang panas, yang bawah hampir mencapai garis {p} kW',
+    id: 'Daya yang diterima tiap kota — batang kota atas kurang sebesar batang kalor, yang bawah hampir mencapai garis {p} kW',
     pt: 'Potência recebida por cada cidade — à barra da cidade de cima falta o tamanho da barra de calor, a de baixo quase alcança a linha de {p} kW',
   },
 } satisfies Record<string, LocalizedText>);

@@ -123,10 +123,10 @@ export const relativisticDopplerMessages = Object.freeze({
     ja: '実験室系で見た波面',
     zh: '实验室参考系中的波前',
     ar: 'جبهات الموجة في إطار المختبر',
-    es: 'Frentes de onda en el sistema del laboratorio',
+    es: 'Frentes de onda en el sistema de referencia del laboratorio',
     fr: 'Fronts d’onde dans le référentiel du laboratoire',
     hi: 'प्रयोगशाला निर्देश तंत्र में तरंगाग्र',
-    id: 'Muka gelombang dalam kerangka laboratorium',
+    id: 'Muka gelombang dalam kerangka acuan laboratorium',
     pt: 'Frentes de onda no referencial do laboratório',
   },
   /** 파장. 값은 선언값을 그대로 끼운다 (S-piece 유효숫자). */

@@ -102,7 +102,7 @@ export const fictitiousForceMessages = Object.freeze({
     ko: '비관성계에서 도입하는 겉보기 힘',
     en: 'The apparent force of a non-inertial frame',
     ja: '非慣性系で現れる見かけの力',
-    zh: '非惯性系中的表观力',
+    zh: '非惯性参考系中的表观力',
     ar: 'القوة الظاهرية في إطار مرجعي غير قصوري',
     es: 'La fuerza aparente de un sistema de referencia no inercial',
     fr: 'La force apparente d’un référentiel non inertiel',

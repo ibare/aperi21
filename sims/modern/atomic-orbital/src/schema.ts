@@ -125,7 +125,7 @@ export const BOUNDS = { halfWidth: 180, halfHeight: 154 } as const;
 // ------------------------------------------------------------------------
 
 export const atomicOrbitalMessages = Object.freeze({
-  'label.title': { ko: '원자 궤도', en: 'Atomic orbital', ja: '原子軌道', zh: '原子轨道', ar: 'المدار الذري', es: 'Orbital atómico', fr: 'Orbitale atomique', hi: 'परमाणु कक्षक', id: 'Orbital atom', pt: 'Orbital atômico' },
+  'label.title': { ko: '원자 궤도', en: 'Atomic orbital', ja: '原子軌道', zh: '原子轨道', ar: 'الفلك الذري', es: 'Orbital atómico', fr: 'Orbitale atomique', hi: 'परमाणु कक्षक', id: 'Orbital atom', pt: 'Orbital atômico' },
   'label.operation': { ko: '확률 분포로서의 전자', en: 'The electron as a probability distribution', ja: '確率分布としての電子', zh: '作为概率分布的电子', ar: 'الإلكترون بوصفه توزيعًا احتماليًا', es: 'El electrón como distribución de probabilidad', fr: 'L’électron comme distribution de probabilité', hi: 'प्रायिकता बंटन के रूप में इलेक्ट्रॉन', id: 'Elektron sebagai distribusi probabilitas', pt: 'O elétron como distribuição de probabilidade' },
   'label.stage': { ko: '수소 원자', en: 'Hydrogen atom', ja: '水素原子', zh: '氢原子', ar: 'ذرة الهيدروجين', es: 'Átomo de hidrógeno', fr: 'Atome d’hydrogène', hi: 'हाइड्रोजन परमाणु', id: 'Atom hidrogen', pt: 'Átomo de hidrogênio' },
   'label.view': { ko: '발견 자리', en: 'Detections', ja: '検出された位置', zh: '探测位置', ar: 'مواضع الرصد', es: 'Detecciones', fr: 'Détections', hi: 'संसूचन', id: 'Deteksi', pt: 'Detecções' },
@@ -162,7 +162,7 @@ export const atomicOrbitalMessages = Object.freeze({
     en: 'The shape of the piled-up spots is the orbital — not a path the electron travels, but where it is found.',
     ja: '積み重なった位置の形が軌道だ — 電子がたどる道ではなく、見つかる場所の分布だ。',
     zh: '累积起来的位置所呈现的形状就是轨道 — 不是电子运行的路径，而是它被发现的地方。',
-    ar: 'شكل المواضع المتراكمة هو المدار — ليس مسارًا يسلكه الإلكترون، بل حيث يوجد.',
+    ar: 'شكل المواضع المتراكمة هو الفلك — ليس مسارًا يسلكه الإلكترون، بل حيث يوجد.',
     es: 'La forma de los puntos acumulados es el orbital — no un camino que recorre el electrón, sino dónde se lo encuentra.',
     fr: 'La forme des points accumulés, c’est l’orbitale — non pas un chemin que parcourt l’électron, mais l’endroit où on le trouve.',
     hi: 'जमा हुई जगहों का आकार ही कक्षक है — इलेक्ट्रॉन के चलने का पथ नहीं, बल्कि वह जहाँ पाया जाता है।',

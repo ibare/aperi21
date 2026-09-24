@@ -121,8 +121,8 @@ export const rocheLimitMessages = Object.freeze({
     zh: '从上方看的轨道',
     ar: 'المدار من الأعلى',
     es: 'La órbita vista desde arriba',
-    fr: 'L’orbite vue d’en haut',
-    hi: 'ऊपर से दिखती कक्षा',
+    fr: 'L’orbite vue de dessus',
+    hi: 'ऊपर से देखी गई कक्षा',
     id: 'Orbit dilihat dari atas',
     pt: 'A órbita vista de cima',
   },
@@ -234,10 +234,10 @@ export const rocheLimitMessages = Object.freeze({
     zh: '卫星原来的位置留下了一道环。它在极限以内，无法重新聚合。',
     ar: 'في موضع القمر بقيت حلقة. ولأنها داخل الحد، لا تستطيع أن تتجمع من جديد.',
     es: 'Donde estaba la luna queda un anillo. Dentro del límite, no puede volver a juntarse.',
-    fr: 'Là où était la lune, il reste un anneau. À l’intérieur de la limite, il ne peut pas se rassembler.',
+    fr: 'Là où était la lune, il reste un anneau. À l’intérieur de la limite, elle ne peut pas se rassembler.',
     hi: 'जहाँ चंद्रमा था, वहाँ एक वलय बचा है। सीमा के भीतर होने से वह फिर से जुड़ नहीं पाता।',
     id: 'Di tempat bulan tadi berada, tersisa sebuah cincin. Karena di dalam batas, ia tak bisa menyatu kembali.',
-    pt: 'Onde estava a lua, resta um anel. Dentro do limite, ele não consegue se juntar de novo.',
+    pt: 'Onde estava a lua, resta um anel. Dentro do limite, ela não consegue se juntar de novo.',
   },
 } satisfies Record<string, LocalizedText>);
 

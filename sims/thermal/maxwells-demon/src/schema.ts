@@ -235,7 +235,7 @@ export const maxwellsDemonMessages = Object.freeze({
   'caption.hold': {
     ko: '문이 멈췄다. 오른쪽은 뜨거운 칸, 왼쪽은 찬 칸이 되었고, 공책에는 재어 본 횟수만큼 줄이 남았다.',
     en: 'The door stops. The right side is now hot and the left cold, and the notebook keeps one line for every molecule timed.',
-    ja: '戸が止まった。右は熱い側、左は冷たい側になり、ノートには測った数だけ行が残った。',
+    ja: '戸が止まった。右は熱い側、左は冷たい側になり、ノートには測った分子1個につき1行が残った。',
     zh: '门停下了。右边成了热的一侧，左边成了冷的一侧，笔记本上每测过一个分子就留下一行。',
     ar: 'توقّف الباب. صار الجانب الأيمن ساخنًا والأيسر باردًا، وبقي في الدفتر سطر لكل جزيء قيست سرعته.',
     es: 'La puerta se detiene. El lado derecho ahora está caliente y el izquierdo frío, y el cuaderno guarda una línea por cada molécula cronometrada.',

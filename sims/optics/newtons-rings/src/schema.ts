@@ -150,7 +150,7 @@ export const newtonsRingsMessages = Object.freeze({
     ko: '위에서 본 무늬',
     en: 'Seen from above',
     ja: '上から見たところ',
-    zh: '从上方看',
+    zh: '俯视',
     ar: 'منظر من الأعلى',
     es: 'Visto desde arriba',
     fr: 'Vu de dessus',

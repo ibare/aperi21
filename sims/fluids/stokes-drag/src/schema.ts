@@ -110,7 +110,7 @@ export const stokesDragMessages = Object.freeze({
   'label.operation': {
     ko: '느린 흐름에서의 저항',
     en: 'Drag in slow, viscous flow',
-    ja: '遅い粘性流れでの抵抗',
+    ja: '遅い粘性流れでの抗力',
     zh: '缓慢黏性流动中的阻力',
     ar: 'السحب في جريان لزج بطيء',
     es: 'Arrastre en un flujo lento y viscoso',
@@ -122,7 +122,7 @@ export const stokesDragMessages = Object.freeze({
   'label.stage': {
     ko: '끈적한 액체',
     en: 'Viscous liquid',
-    ja: '粘りけのある液体',
+    ja: '粘性のある液体',
     zh: '黏稠液体',
     ar: 'سائل لزج',
     es: 'Líquido viscoso',
@@ -134,7 +134,7 @@ export const stokesDragMessages = Object.freeze({
   'label.view': {
     ko: '두 관',
     en: 'Two tubes',
-    ja: '2本の管',
+    ja: '二本の管',
     zh: '两根管',
     ar: 'أنبوبان',
     es: 'Dos tubos',

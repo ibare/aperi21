@@ -142,9 +142,9 @@ export const dampedOscillationMessages = Object.freeze({
     ar: 'الثقل وورقة التسجيل',
     es: 'Masa y registro',
     fr: 'Masse et enregistrement',
-    hi: 'भार और अभिलेख-पत्र',
+    hi: 'पिंड और चार्ट',
     id: 'Beban dan kertas rekam',
-    pt: 'Massa e registro',
+    pt: 'Massa e gráfico',
   },
   /** 시간축 기호. 수식 표기라 번역 대상이 아니다 (C1 판정 3). */
   'label.time': {

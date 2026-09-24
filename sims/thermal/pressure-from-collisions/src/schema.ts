@@ -94,7 +94,7 @@ export const pressureFromCollisionsMessages = Object.freeze({
     zh: '碰撞产生的压强',
     ar: 'الضغط الناتج عن التصادمات',
     es: 'Presión debida a los choques',
-    fr: 'La pression due aux chocs',
+    fr: 'La pression due aux collisions',
     hi: 'टक्करों से बनने वाला दाब',
     id: 'Tekanan dari tumbukan',
     pt: 'Pressão devida às colisões',

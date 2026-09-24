@@ -150,10 +150,10 @@ export const earthRotationDayNightMessages = Object.freeze({
     zh: '来自太阳的阳光 →',
     ar: 'ضوء قادم من الشمس →',
     es: 'Luz que llega del Sol →',
-    fr: 'Lumière venue du Soleil →',
+    fr: 'Lumière venant du Soleil →',
     hi: 'सूर्य से आता प्रकाश →',
-    id: 'Cahaya dari Matahari →',
-    pt: 'Luz vinda do Sol →',
+    id: 'Sinar dari Matahari →',
+    pt: 'Luz solar vinda do Sol →',
   },
   'label.topView': {
     ko: '북극 위에서 내려다본 지구',
@@ -293,11 +293,11 @@ export const earthRotationDayNightMessages = Object.freeze({
     ja: '地球は回り続け、観測者を再び日の光のほうへ運んでいく。1回転しきると、また日が昇る。',
     zh: '地球继续转动，把观测者带回阳光一侧。转满一圈，太阳又会升起。',
     ar: 'تواصل الأرض الدوران، فتعيد الراصد نحو ضوء الشمس. بعد دورة كاملة تشرق الشمس من جديد.',
-    es: 'La Tierra sigue girando y devuelve al observador hacia la luz del Sol. Una vuelta completa, y el Sol vuelve a salir.',
+    es: 'La Tierra sigue girando y devuelve al observador hacia la luz solar. Una vuelta completa, y el Sol vuelve a salir.',
     fr: 'La Terre continue de tourner et ramène l’observateur vers la lumière du Soleil. Un tour complet, et le Soleil se lève de nouveau.',
     hi: 'पृथ्वी घूमती रहती है और प्रेक्षक को फिर से सूर्य के प्रकाश की ओर ले जाती है। एक पूरा चक्कर होते ही सूर्य फिर उगता है।',
-    id: 'Bumi terus berputar, membawa pengamat kembali ke arah cahaya Matahari. Satu putaran penuh, dan Matahari terbit lagi.',
-    pt: 'A Terra continua girando, levando o observador de volta à luz do Sol. Uma volta completa, e o Sol nasce de novo.',
+    id: 'Bumi terus berputar, membawa pengamat kembali ke arah sinar Matahari. Satu putaran penuh, dan Matahari terbit lagi.',
+    pt: 'A Terra continua girando, levando o observador de volta à luz solar. Uma volta completa, e o Sol nasce de novo.',
   },
 } satisfies Record<string, LocalizedText>);
 

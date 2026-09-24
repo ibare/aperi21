@@ -150,7 +150,7 @@ export const magneticMaterialsMessages = Object.freeze({
   'label.view': {
     ko: '옆에서 본 모습',
     en: 'Side view',
-    ja: '横から見た図',
+    ja: '側面図',
     zh: '侧视图',
     ar: 'منظر جانبي',
     es: 'Vista lateral',

@@ -114,13 +114,13 @@ export const radiationPressureMessages = Object.freeze({
   'label.stage': {
     ko: '햇빛',
     en: 'Sunlight',
-    ja: '太陽光',
+    ja: '日光',
     zh: '阳光',
     ar: 'ضوء الشمس',
     es: 'Luz solar',
     fr: 'Lumière du Soleil',
     hi: 'सूर्य का प्रकाश',
-    id: 'Sinar matahari',
+    id: 'Sinar Matahari',
     pt: 'Luz solar',
   },
   'label.view': {
@@ -187,7 +187,7 @@ export const radiationPressureMessages = Object.freeze({
   'label.exaggeration': {
     ko: '밀린 거리는 {k}배로 키워 그렸다',
     en: 'Displacement drawn {k}× larger',
-    ja: '押された距離は {k}× に拡大して描いた',
+    ja: '変位は {k}× に拡大して描いた',
     zh: '位移放大 {k}× 绘制',
     ar: 'الإزاحة مرسومة أكبر بـ {k}×',
     es: 'Desplazamiento dibujado {k}× más grande',

@@ -170,7 +170,7 @@ export const pairProductionMessages = Object.freeze({
   'caption.moreOut': {
     ko: '문턱을 넘은 몫은 운동이 된다 — 더 빠른 한 쌍이 더 크게 휘며 감긴다',
     en: 'The energy beyond the threshold becomes motion — a faster pair curls in wider spirals',
-    ja: 'しきい値を超えた分は運動になる — より速い対が、より大きならせんを描いて巻いていく',
+    ja: 'しきい値を超えた分のエネルギーは運動になる — より速い対が、より大きならせんを描いて巻いていく',
     zh: '超出阈值的能量变成运动 — 更快的一对粒子旋出更大的螺旋',
     ar: 'الطاقة الزائدة على العتبة تصير حركة — زوج أسرع يلتف في حلزونات أوسع',
     es: 'La energía por encima del umbral se vuelve movimiento — un par más rápido se enrosca en espirales más amplias',

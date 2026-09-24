@@ -123,7 +123,7 @@ export const efficiencyMessages = Object.freeze({
     ko: '흐름',
     en: 'Flow',
     ja: '流れ',
-    zh: '流动',
+    zh: '流向图',
     ar: 'التدفق',
     es: 'Flujo',
     fr: 'Flux',

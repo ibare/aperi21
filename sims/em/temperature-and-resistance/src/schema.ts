@@ -181,9 +181,9 @@ export const temperatureAndResistanceMessages = Object.freeze({
   'label.view': {
     ko: '나란히 건 두 막대',
     en: 'Two bars side by side',
-    ja: '並んだ二本の棒',
+    ja: '二本の棒を並べて',
     zh: '并排的两根棒',
-    ar: 'قضيبان متجاوران',
+    ar: 'قضيبان جنبًا إلى جنب',
     es: 'Dos barras lado a lado',
     fr: 'Deux barreaux côte à côte',
     hi: 'साथ-साथ रखी दो छड़ें',

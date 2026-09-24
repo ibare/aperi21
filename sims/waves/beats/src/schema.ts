@@ -122,7 +122,7 @@ export const beatsMessages = Object.freeze({
   'label.stage': {
     ko: '두 음',
     en: 'Two tones',
-    ja: '2つの音',
+    ja: '二つの音',
     zh: '两个音',
     ar: 'نغمتان',
     es: 'Dos tonos',

@@ -25,7 +25,7 @@ export const NUCLEAR_FUSION_ID = 'nuclear-fusion';
 
 export const nuclearFusionMessages = Object.freeze({
   'label.title': { ko: '핵융합', en: 'Nuclear fusion', ja: '核融合', zh: '核聚变', ar: 'الاندماج النووي', es: 'Fusión nuclear', fr: 'Fusion nucléaire', hi: 'नाभिकीय संलयन', id: 'Fusi nuklir', pt: 'Fusão nuclear' },
-  'label.operation': { ko: '가벼운 핵이 합쳐지며 내는 에너지', en: 'Energy released when light nuclei join', ja: '軽い核が合わさるときに出るエネルギー', zh: '轻核结合时释放的能量', ar: 'الطاقة المنطلقة عند اتحاد النوى الخفيفة', es: 'Energía liberada cuando se unen núcleos ligeros', fr: 'L’énergie libérée quand des noyaux légers s’unissent', hi: 'हल्के नाभिकों के जुड़ने पर मुक्त होने वाली ऊर्जा', id: 'Energi yang dilepaskan saat inti ringan bergabung', pt: 'Energia liberada quando núcleos leves se unem' },
+  'label.operation': { ko: '가벼운 핵이 합쳐지며 내는 에너지', en: 'Energy released when light nuclei join', ja: '軽い原子核が合わさるときに出るエネルギー', zh: '轻核结合时释放的能量', ar: 'الطاقة المنطلقة عند اتحاد النوى الخفيفة', es: 'Energía liberada cuando se unen núcleos ligeros', fr: 'L’énergie libérée quand des noyaux légers s’unissent', hi: 'हल्के नाभिकों के जुड़ने पर मुक्त होने वाली ऊर्जा', id: 'Energi yang dilepaskan saat inti ringan bergabung', pt: 'Energia liberada quando núcleos leves se unem' },
   'label.stage': { ko: '중수소-삼중수소 반응', en: 'Deuterium–tritium reaction', ja: '重水素–三重水素反応', zh: '氘–氚反应', ar: 'تفاعل الديوتيريوم–التريتيوم', es: 'Reacción deuterio–tritio', fr: 'Réaction deutérium–tritium', hi: 'ड्यूटेरियम–ट्राइटियम अभिक्रिया', id: 'Reaksi deuterium–tritium', pt: 'Reação deutério–trítio' },
   'label.view': { ko: '질량 결손', en: 'Mass defect', ja: '質量欠損', zh: '质量亏损', ar: 'نقص الكتلة', es: 'Defecto de masa', fr: 'Défaut de masse', hi: 'द्रव्यमान क्षति', id: 'Defek massa', pt: 'Defeito de massa' },
 
@@ -49,7 +49,7 @@ export const nuclearFusionMessages = Object.freeze({
   'caption.meet': {
     ko: '중수소(²H)와 삼중수소(³H)가 부딪쳐 합쳐진다 — 가운데 막대는 두 핵의 질량을 쌓은 것이다.',
     en: 'Deuterium (²H) and tritium (³H) collide and fuse — the middle bar stacks up the mass of the two nuclei.',
-    ja: '重水素（²H）と三重水素（³H）がぶつかって融合する — 真ん中の棒は二つの核の質量を積み上げたものだ。',
+    ja: '重水素（²H）と三重水素（³H）がぶつかって融合する — 真ん中の棒は二つの原子核の質量を積み上げたものだ。',
     zh: '氘（²H）和氚（³H）相撞并聚变 — 中间的柱把两个核的质量叠在一起。',
     ar: 'يتصادم الديوتيريوم (²H) والتريتيوم (³H) ويندمجان — العمود الأوسط يكدّس كتلتي النواتين.',
     es: 'El deuterio (²H) y el tritio (³H) chocan y se fusionan — la barra del centro apila la masa de los dos núcleos.',

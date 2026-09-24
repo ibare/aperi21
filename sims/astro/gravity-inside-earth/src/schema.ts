@@ -107,7 +107,7 @@ export const gravityInsideEarthMessages = Object.freeze({
     zh: '密度均匀的地球',
     ar: 'أرض منتظمة الكثافة',
     es: 'Tierra de densidad uniforme',
-    fr: 'Terre de densité uniforme',
+    fr: 'Terre de masse volumique uniforme',
     hi: 'एकसमान घनत्व वाली पृथ्वी',
     id: 'Bumi dengan massa jenis seragam',
     pt: 'Terra de densidade uniforme',

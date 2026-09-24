@@ -123,7 +123,7 @@ export const terminalVelocityMessages = Object.freeze({
     ja: '空気抵抗が重力に追いついた瞬間から、それ以上速くならない',
     zh: '从空气阻力追上重力的那一刻起，它就不再加速',
     ar: 'يكفّ عن التسارع لحظة تلحق مقاومة الهواء بالجاذبية',
-    es: 'Deja de acelerar en el momento en que la resistencia del aire alcanza a la gravedad',
+    es: 'Deja de acelerar en el instante en que la resistencia del aire alcanza a la gravedad',
     fr: 'Il cesse d’accélérer dès que la résistance de l’air rattrape la pesanteur',
     hi: 'जिस क्षण वायु प्रतिरोध गुरुत्व के बराबर पहुँचता है, उसी क्षण से यह और तेज़ नहीं होता',
     id: 'Benda berhenti bertambah cepat begitu hambatan udara menyusul gravitasi',

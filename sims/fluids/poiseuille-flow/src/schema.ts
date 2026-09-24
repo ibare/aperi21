@@ -90,7 +90,7 @@ export const poiseuilleFlowMessages = Object.freeze({
   'label.stage': {
     ko: '두 관',
     en: 'Two pipes',
-    ja: '2本の管',
+    ja: '二本の管',
     zh: '两根管',
     ar: 'أنبوبان',
     es: 'Dos tubos',
@@ -102,7 +102,7 @@ export const poiseuilleFlowMessages = Object.freeze({
   'label.view': {
     ko: '옆모습',
     en: 'Side view',
-    ja: '横から見た図',
+    ja: '側面図',
     zh: '侧视图',
     ar: 'منظر جانبي',
     es: 'Vista lateral',

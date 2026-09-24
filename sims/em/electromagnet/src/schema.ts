@@ -298,7 +298,7 @@ export const electromagnetMessages = Object.freeze({
     ja: 'スイッチを閉じるとコイルに電流が流れ — くぎの両端が N 極・S 極になってクリップを持ち上げる',
     zh: '闭合开关，线圈中有电流流过 — 铁钉两端成为 N 极和 S 极，把回形针吸起',
     ar: 'أغلق المفتاح فيسري التيار في الملف — يصبح طرفا المسمار قطبين N وS ويرفعان المشابك',
-    es: 'Al cerrar el interruptor, la corriente recorre la bobina — los extremos del clavo se vuelven polos N y S y levantan los clips',
+    es: 'Al cerrar el interruptor, circula corriente por la bobina — los extremos del clavo se vuelven polos N y S y levantan los clips',
     fr: 'Fermez l’interrupteur : le courant circule dans la bobine — les extrémités du clou deviennent des pôles N et S et soulèvent les trombones',
     hi: 'स्विच बंद करते ही कुंडली में धारा बहती है — कील के दोनों सिरे N और S ध्रुव बन जाते हैं और क्लिपों को उठा लेते हैं',
     id: 'Tutup sakelar dan arus mengalir di kumparan — kedua ujung paku menjadi kutub N dan S lalu mengangkat penjepit kertas',

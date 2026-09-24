@@ -113,7 +113,7 @@ export const blackHoleHorizonMessages = Object.freeze({
   'label.stage': {
     ko: '태양 질량',
     en: 'One solar mass',
-    ja: '太陽質量1個分',
+    ja: '太陽質量の1倍',
     zh: '一个太阳质量',
     ar: 'كتلة شمسية واحدة',
     es: 'Una masa solar',

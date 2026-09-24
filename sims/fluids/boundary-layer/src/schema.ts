@@ -111,7 +111,7 @@ export const boundaryLayerMessages = Object.freeze({
     ko: '빠른 흐름이 얇은 판 위를 지난다. 판에 닿은 흐름은 멈춰 있고, 조금만 떨어져도 거의 바깥 빠르기다.',
     en: 'A fast stream sweeps over a thin plate. The fluid touching the plate is at rest; a little way up it is already moving almost at full speed.',
     ja: '速い流れが薄い板の上を通り過ぎる。板に触れている流体は止まっていて、少し上ではもうほぼ全速で動いている。',
-    zh: '快速的气流掠过一块薄板。与板接触的流体是静止的；稍往上一点，它就几乎以全速运动了。',
+    zh: '一股快速的流体掠过一块薄板。与板接触的流体是静止的；稍往上一点，它就几乎以全速运动了。',
     ar: 'يمر تيار سريع فوق لوح رقيق. المائع الملامس للوح ساكن؛ وعلى مسافة قليلة فوقه يتحرك بالفعل بالسرعة الكاملة تقريبًا.',
     es: 'Una corriente rápida pasa sobre una placa delgada. El fluido que toca la placa está en reposo; un poco más arriba ya se mueve casi a toda velocidad.',
     fr: 'Un courant rapide balaie une plaque mince. Le fluide au contact de la plaque est immobile ; un peu plus haut, il va déjà presque à pleine vitesse.',

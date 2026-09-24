@@ -100,7 +100,7 @@ export const kirchhoffsVoltageLawMessages = Object.freeze({
     ja: 'キルヒホッフの電圧則',
     zh: '基尔霍夫电压定律',
     ar: 'قانون كيرشوف للجهد',
-    es: 'Ley de tensiones de Kirchhoff',
+    es: 'Ley de voltajes de Kirchhoff',
     fr: 'Loi des mailles de Kirchhoff',
     hi: 'किरखॉफ का वोल्टता नियम',
     id: 'Hukum tegangan Kirchhoff',

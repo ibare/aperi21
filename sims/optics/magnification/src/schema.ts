@@ -94,13 +94,13 @@ export const magnificationMessages = Object.freeze({
   'label.stage': {
     ko: '볼록 렌즈 앞 세 자리',
     en: 'Three spots before a converging lens',
-    ja: '凸レンズの前の三つの位置',
-    zh: '凸透镜前的三个位置',
+    ja: '収束レンズの前の三つの位置',
+    zh: '会聚透镜前的三个位置',
     ar: 'ثلاثة مواضع أمام عدسة مجمِّعة',
     es: 'Tres posiciones ante una lente convergente',
     fr: 'Trois positions devant une lentille convergente',
     hi: 'अभिसारी लेंस के सामने तीन स्थान',
-    id: 'Tiga posisi di depan lensa cembung',
+    id: 'Tiga posisi di depan lensa konvergen',
     pt: 'Três posições diante de uma lente convergente',
   },
   'label.view': {
@@ -123,7 +123,7 @@ export const magnificationMessages = Object.freeze({
     ja: '物体距離',
     zh: '物距',
     ar: 'بُعد الجسم',
-    es: 'distancia objeto',
+    es: 'distancia del objeto',
     fr: 'distance de l’objet',
     hi: 'वस्तु दूरी',
     id: 'jarak benda',
@@ -135,7 +135,7 @@ export const magnificationMessages = Object.freeze({
     ja: '像距離',
     zh: '像距',
     ar: 'بُعد الصورة',
-    es: 'distancia imagen',
+    es: 'distancia de la imagen',
     fr: 'distance de l’image',
     hi: 'प्रतिबिंब दूरी',
     id: 'jarak bayangan',
@@ -180,7 +180,7 @@ export const magnificationMessages = Object.freeze({
 
     ar: 'الجسم بعيد عن العدسة — قوس بُعد الصورة أقصر، والصورة {m1}× حجم الجسم.',
 
-    es: 'El objeto está lejos de la lente — el corchete de la distancia imagen es más corto, y la imagen mide {m1}× el tamaño del objeto.',
+    es: 'El objeto está lejos de la lente — el corchete de la distancia de la imagen es más corto, y la imagen mide {m1}× el tamaño del objeto.',
 
     fr: 'L’objet est loin de la lentille — le crochet de la distance de l’image est plus court, et l’image fait {m1}× la taille de l’objet.',
 
@@ -221,7 +221,7 @@ export const magnificationMessages = Object.freeze({
     ja: '物体が焦点の近くに来た — 像距離の括弧のほうが長く、像の大きさは物体の {m3}×。',
     zh: '物体靠近焦点——像距括号更长，像的大小是物体的 {m3}×。',
     ar: 'الجسم قريب من البؤرة — قوس بُعد الصورة أطول، والصورة {m3}× حجم الجسم.',
-    es: 'El objeto está cerca del foco — el corchete de la distancia imagen es más largo, y la imagen mide {m3}× el tamaño del objeto.',
+    es: 'El objeto está cerca del foco — el corchete de la distancia de la imagen es más largo, y la imagen mide {m3}× el tamaño del objeto.',
     fr: 'L’objet est près du foyer — le crochet de la distance de l’image est plus long, et l’image fait {m3}× la taille de l’objet.',
     hi: 'वस्तु फोकस के पास है — प्रतिबिंब दूरी का कोष्ठक लंबा है, और प्रतिबिंब वस्तु के आकार का {m3}× है।',
     id: 'Benda dekat titik fokus — kurung jarak bayangan lebih panjang, dan ukuran bayangan {m3}× ukuran benda.',
@@ -235,8 +235,8 @@ export const magnificationMessages = Object.freeze({
     ar: 'يعود الجسم إلى موضعه الأول.',
     es: 'El objeto vuelve a su posición inicial.',
     fr: 'L’objet revient à sa position de départ.',
-    hi: 'वस्तु अपनी शुरुआती जगह पर लौटती है।',
-    id: 'Benda kembali ke posisi semula.',
+    hi: 'वस्तु अपनी शुरुआती जगह पर लौट आती है।',
+    id: 'Benda kembali ke posisi awalnya.',
     pt: 'O objeto volta à posição inicial.',
   },
 } satisfies Record<string, LocalizedText>);

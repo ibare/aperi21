@@ -105,9 +105,9 @@ export const impedanceMismatchMessages = Object.freeze({
   'label.view': {
     ko: '나란한 세 줄',
     en: 'Three strings side by side',
-    ja: '並んだ3本のひも',
+    ja: '三本のひもを並べて',
     zh: '并排的三根绳',
-    ar: 'ثلاثة أوتار متجاورة',
+    ar: 'ثلاثة أوتار جنبًا إلى جنب',
     es: 'Tres cuerdas lado a lado',
     fr: 'Trois cordes côte à côte',
     hi: 'साथ-साथ तीन डोरियाँ',

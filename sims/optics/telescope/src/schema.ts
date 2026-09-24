@@ -157,7 +157,7 @@ export const telescopeMessages = Object.freeze({
     ko: '광축과 두 각',
     en: 'Optical axis and two angles',
     ja: '光軸と二つの角',
-    zh: '光轴与两个角',
+    zh: '主光轴与两个角',
     ar: 'المحور البصري والزاويتان',
     es: 'Eje óptico y dos ángulos',
     fr: 'Axe optique et deux angles',
@@ -247,13 +247,13 @@ export const telescopeMessages = Object.freeze({
   'caption.long': {
     ko: '대물 {foL} cm · 접안 {feL} cm. θ 만큼 기울어 들어온 평행 줄기가 공통 초점의 한 점에 모였다가, 접안렌즈를 나와 θ 가 {mL} 번 들어가는 각으로 기울어 나간다.',
     en: 'Objective {foL} cm, eyepiece {feL} cm. Parallel rays tilted by θ meet at one point on the shared focus, then leave the eyepiece tilted by an angle that holds θ {mL} times.',
-    ja: '対物 {foL} cm・接眼 {feL} cm。θ だけ傾いて入った平行光線は共通の焦点の一点に集まり、接眼レンズを出ると θ が {mL} 個入る角だけ傾いて進む。',
+    ja: '対物レンズ {foL} cm・接眼レンズ {feL} cm。θ だけ傾いて入った平行光線は共通の焦点の一点に集まり、接眼レンズを出ると θ が {mL} 個入る角だけ傾いて進む。',
     zh: '物镜 {foL} cm，目镜 {feL} cm。倾斜 θ 射入的平行光线会聚于公共焦点上的一点，再从目镜射出，倾斜的角度可容纳 {mL} 个 θ。',
     ar: 'العدسة الشيئية {foL} cm، والعدسة العينية {feL} cm. تلتقي الأشعة المتوازية المائلة بزاوية θ في نقطة واحدة على البؤرة المشتركة، ثم تخرج من العدسة العينية مائلةً بزاوية تتسع لـ θ {mL} مرات.',
     es: 'Objetivo {foL} cm, ocular {feL} cm. Los rayos paralelos inclinados θ se juntan en un punto del foco común y luego salen del ocular inclinados un ángulo que contiene θ {mL} veces.',
     fr: 'Objectif {foL} cm, oculaire {feL} cm. Les rayons parallèles inclinés de θ se rejoignent en un point du foyer commun, puis sortent de l’oculaire inclinés d’un angle qui contient θ {mL} fois.',
     hi: 'अभिदृश्यक {foL} cm, नेत्रिका {feL} cm। θ झुककर आई समांतर किरणें उभयनिष्ठ फोकस के एक बिंदु पर मिलती हैं, फिर नेत्रिका से ऐसे कोण पर झुककर निकलती हैं जिसमें θ {mL} बार समाता है।',
-    id: 'Objektif {foL} cm, okuler {feL} cm. Sinar sejajar yang miring θ bertemu di satu titik pada fokus bersama, lalu keluar dari okuler dengan kemiringan sudut yang memuat θ sebanyak {mL} kali.',
+    id: 'Lensa objektif {foL} cm, lensa okuler {feL} cm. Sinar sejajar yang miring θ bertemu di satu titik pada fokus bersama, lalu keluar dari lensa okuler dengan kemiringan sudut yang memuat θ sebanyak {mL} kali.',
     pt: 'Objetiva {foL} cm, ocular {feL} cm. Raios paralelos inclinados de θ se encontram num ponto do foco comum e depois saem da ocular inclinados num ângulo que contém θ {mL} vezes.',
   },
   'caption.toShort': {
@@ -265,7 +265,7 @@ export const telescopeMessages = Object.freeze({
     es: 'El ocular se va cambiando por uno de {feS} cm — se acerca manteniendo juntos los dos focos, y los rayos que salen se inclinan más.',
     fr: 'L’oculaire est remplacé peu à peu par un de {feS} cm — il se rapproche en gardant les deux foyers confondus, et les rayons sortants s’inclinent davantage.',
     hi: 'नेत्रिका को धीरे-धीरे {feS} cm वाली से बदला जाता है — दोनों फोकस मिले रहते हुए वह अभिदृश्यक की ओर खिसकती है, और निकलती किरणें और झुकती हैं।',
-    id: 'Okuler diganti perlahan dengan yang {feS} cm — okuler mendekat dengan kedua fokus tetap berimpit, dan sinar yang keluar makin miring.',
+    id: 'Lensa okuler diganti perlahan dengan yang {feS} cm — lensa itu mendekat dengan kedua fokus tetap berimpit, dan sinar yang keluar makin miring.',
     pt: 'A ocular vai sendo trocada por uma de {feS} cm — ela se aproxima mantendo os dois focos juntos, e os raios que saem se inclinam mais.',
   },
   'caption.short': {
@@ -289,7 +289,7 @@ export const telescopeMessages = Object.freeze({
     es: 'El ocular se va cambiando de nuevo por el de {feL} cm — la separación se abre y los rayos que salen se inclinan menos.',
     fr: 'L’oculaire est remplacé peu à peu par celui de {feL} cm — l’écart se creuse et les rayons sortants s’inclinent moins.',
     hi: 'नेत्रिका को फिर धीरे-धीरे {feL} cm वाली से बदला जाता है — दूरी बढ़ती है और निकलती किरणें कम झुकती हैं।',
-    id: 'Okuler diganti perlahan kembali ke yang {feL} cm — jaraknya melebar dan sinar yang keluar kurang miring.',
+    id: 'Lensa okuler diganti perlahan kembali ke yang {feL} cm — jaraknya melebar dan sinar yang keluar kurang miring.',
     pt: 'A ocular vai sendo trocada de volta pela de {feL} cm — o afastamento aumenta e os raios que saem se inclinam menos.',
   },
 } satisfies Record<string, LocalizedText>);

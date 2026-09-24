@@ -168,7 +168,7 @@ export const millikanExperimentMessages = Object.freeze({
     es: 'Gotas de aceite entre placas paralelas',
     fr: 'Gouttes d’huile entre des plaques parallèles',
     hi: 'समांतर प्लेटों के बीच तेल की बूँदें',
-    id: 'Tetes minyak di antara pelat sejajar',
+    id: 'Tetes minyak di antara keping sejajar',
     pt: 'Gotas de óleo entre placas paralelas',
   },
   'label.view': {

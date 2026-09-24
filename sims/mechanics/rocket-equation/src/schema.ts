@@ -111,7 +111,7 @@ export const rocketEquationMessages = Object.freeze({
     ko: '연료를 버려 얻는 속도',
     en: 'Speed bought by throwing fuel away',
     ja: '燃料を捨てて得る速さ',
-    zh: '抛掉燃料换来的速度',
+    zh: '抛掉燃料换来的速率',
     ar: 'سرعة تُكتسب بقذف الوقود',
     es: 'Rapidez obtenida al expulsar combustible',
     fr: 'Vitesse gagnée en rejetant du carburant',
@@ -135,7 +135,7 @@ export const rocketEquationMessages = Object.freeze({
     ko: '로켓과 얻은 속도',
     en: 'Rocket and the speed it gained',
     ja: 'ロケットと得た速さ',
-    zh: '火箭与获得的速度',
+    zh: '火箭与获得的速率',
     ar: 'الصاروخ والسرعة التي اكتسبها',
     es: 'El cohete y la rapidez que ganó',
     fr: 'La fusée et la vitesse gagnée',
@@ -149,7 +149,7 @@ export const rocketEquationMessages = Object.freeze({
     ko: '한 칸이 붙인 속도',
     en: 'speed added by one compartment',
     ja: '1区画が加えた速さ',
-    zh: '一个舱增加的速度',
+    zh: '一个舱增加的速率',
     ar: 'السرعة التي تضيفها حجرة واحدة',
     es: 'rapidez añadida por un compartimento',
     fr: 'vitesse ajoutée par un compartiment',
@@ -166,7 +166,7 @@ export const rocketEquationMessages = Object.freeze({
 
     ja: 'どの区画も同じ量の燃料を同じ噴出速度で後ろへ噴き出す。まだ積んでいる燃料が重いので、1区画が加える速さは小さい。',
 
-    zh: '每个舱都以相同的喷气速度把等量燃料向后喷出。仍在箭上的燃料很重，所以一个舱增加的速度很小。',
+    zh: '每个舱都以相同的喷气速度把等量燃料向后喷出。仍在箭上的燃料很重，所以一个舱增加的速率很小。',
 
     ar: 'تقذف كل حجرة الكمية نفسها من الوقود إلى الخلف بسرعة العادم نفسها. الوقود الذي ما زال على متن الصاروخ ثقيل، لذا تضيف الحجرة الواحدة سرعة قليلة.',
 
@@ -185,7 +185,7 @@ export const rocketEquationMessages = Object.freeze({
     ko: '로켓이 가벼워질수록 같은 한 칸이 붙이는 속도가 커진다 — 아래 막대가 길어지고, 지나가는 별의 획도 길어진다.',
     en: 'As the rocket gets lighter, the same one compartment adds more speed — the bars below grow longer, and so do the star streaks going past.',
     ja: 'ロケットが軽くなるほど、同じ1区画が加える速さは大きくなる — 下の棒が長くなり、通り過ぎる星の筋も長くなる。',
-    zh: '火箭越轻，同样一个舱增加的速度就越大 — 下方的柱条变长，掠过的星星划出的线也变长。',
+    zh: '火箭越轻，同样一个舱增加的速率就越大 — 下方的柱条变长，掠过的星星划出的线也变长。',
     ar: 'كلما خفّ الصاروخ، أضافت الحجرة الواحدة نفسها سرعة أكبر — تطول الأعمدة في الأسفل، وتطول معها خطوط النجوم المارّة.',
     es: 'A medida que el cohete se aligera, el mismo compartimento añade más rapidez — las barras de abajo se alargan, y también las estelas de las estrellas que pasan.',
     fr: 'À mesure que la fusée s’allège, un même compartiment ajoute plus de vitesse — les barres du bas s’allongent, tout comme les traînées des étoiles qui défilent.',

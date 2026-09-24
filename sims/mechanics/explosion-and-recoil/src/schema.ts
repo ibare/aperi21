@@ -209,7 +209,7 @@ export const explosionAndRecoilMessages = Object.freeze({
   'caption.glide': {
     ko: '질량이 세 배인 쪽은 세 배 느리게 밀려난다. 1초마다 남긴 자국의 간격을 보라.',
     en: 'The block with three times the mass recoils three times slower. Compare the spacing of the marks left every second.',
-    ja: '質量が三倍のブロックは三倍ゆっくり押し戻される。1 秒ごとに残る跡の間隔を比べよう。',
+    ja: '質量が三倍のブロックは反動で三倍ゆっくり動く。1 秒ごとに残る跡の間隔を比べよう。',
     zh: '质量为三倍的物块反冲的速度只有三分之一。比较每 1 秒留下的印记之间的间距。',
     ar: 'القطعة التي كتلتها ثلاثة أضعاف ترتد بسرعة أقل بثلاث مرات. قارن تباعد العلامات المتروكة كل ثانية.',
     es: 'El bloque con el triple de masa retrocede tres veces más despacio. Compara la separación de las marcas que quedan cada segundo.',

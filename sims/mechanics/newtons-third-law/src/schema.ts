@@ -50,7 +50,7 @@ export const newtonsThirdLawMessages = Object.freeze({
   'label.stage': {
     ko: '얼음판',
     en: 'Ice',
-    ja: '氷の上',
+    ja: '氷',
     zh: '冰面',
     ar: 'الجليد',
     es: 'Hielo',

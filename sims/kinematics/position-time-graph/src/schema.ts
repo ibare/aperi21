@@ -94,9 +94,9 @@ export const positionTimeGraphMessages = Object.freeze({
     ar: 'مساران صاعدان',
     es: 'Dos carriles que suben',
     fr: 'Deux couloirs qui montent',
-    hi: 'ऊपर चढ़ते दो मार्ग',
-    id: 'Dua lintasan naik',
-    pt: 'Duas pistas que sobem',
+    hi: 'ऊपर चढ़ती दो लेन',
+    id: 'Dua lajur naik',
+    pt: 'Duas faixas que sobem',
   },
   'label.view': {
     ko: '통로와 그래프',
@@ -106,9 +106,9 @@ export const positionTimeGraphMessages = Object.freeze({
     ar: 'المساران والتمثيل البياني',
     es: 'Carriles y gráfica',
     fr: 'Couloirs et graphique',
-    hi: 'मार्ग और ग्राफ़',
-    id: 'Lintasan dan grafik',
-    pt: 'Pistas e gráfico',
+    hi: 'लेन और ग्राफ़',
+    id: 'Lajur dan grafik',
+    pt: 'Faixas e gráfico',
   },
 
   /** 세로축 이름. 통로와 그래프가 공유하는 눈금이라 통로 머리에 한 번만 쓴다. */

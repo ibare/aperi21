@@ -135,10 +135,10 @@ export const lengthContractionMessages = Object.freeze({
     ja: '静止系',
     zh: '静止参考系',
     ar: 'إطار السكون',
-    es: 'Sistema en reposo',
+    es: 'Sistema de referencia en reposo',
     fr: 'Référentiel au repos',
     hi: 'विराम निर्देश तंत्र',
-    id: 'Kerangka diam',
+    id: 'Kerangka acuan diam',
     pt: 'Referencial de repouso',
   },
   'label.rest': {

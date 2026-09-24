@@ -830,7 +830,7 @@
 - 조각 — `aperi21:angular-momentum` · `sims/oscillation/angular-momentum`
 - 문안 11건
   - `label.title` — 각운동량
-  - `label.operation` — 회전의 운동량
+  - `label.operation` — 회전에서 운동량에 해당하는 양
   - `label.stage` — 바닥 위 팽이 셋
   - `label.view` — 비스듬히 내려다본 모습
   - `label.still` — 안 돈다
@@ -1268,7 +1268,7 @@
   - `label.title` — PV 그림
   - `label.operation` — 넓이가 일인 표현
   - `label.stage` — 추를 얹은 기체
-  - `label.view` — P-V 그림과 실린더
+  - `label.view` — P–V 그림과 실린더
   - `label.heat` — 가열
   - `label.cool` — 식힘
   - `caption.a.intro` — 상태 A — 피스톤 받침에 추 {na}개
@@ -1409,7 +1409,7 @@
 - 조각 — `aperi21:wave-speed-in-medium` · `sims/waves/wave-speed-in-medium`
 - 문안 9건
   - `label.title` — 매질과 파동 속도
-  - `label.operation` — 장력·밀도·탄성이 정하는 속도
+  - `label.operation` — 장력과 밀도가 정하는 속도
   - `label.stage` — 세 줄 경주
   - `label.view` — 같은 펄스, 다른 줄
   - `label.laneTaut` — {k}T · μ
@@ -1865,7 +1865,7 @@
 - 조각 — `aperi21:reactance` · `sims/em/reactance`
 - 문안 18건
   - `label.title` — 리액턴스와 임피던스
-  - `label.operation` — 주파수에 의존하는 저항
+  - `label.operation` — 주파수에 따라 달라지는, 전류를 막는 정도
   - `label.stage` — 코일 하나 · 축전기 하나
   - `label.view` — 두 회로와 X–f 평면
   - `label.inductor` — L

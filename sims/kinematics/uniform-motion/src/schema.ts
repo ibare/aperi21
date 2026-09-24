@@ -146,7 +146,7 @@ export const uniformMotionMessages = Object.freeze({
     ko: '빠르기',
     en: 'Speed',
     ja: '速さ',
-    zh: '速度',
+    zh: '速率',
     ar: 'السرعة',
     es: 'Rapidez',
     fr: 'Vitesse',

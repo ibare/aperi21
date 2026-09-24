@@ -73,7 +73,7 @@ export const nonInertialFrameMessages = Object.freeze({
     ko: '비관성계',
     en: 'Non-inertial frame',
     ja: '非慣性系',
-    zh: '非惯性系',
+    zh: '非惯性参考系',
     ar: 'الإطار المرجعي غير القصوري',
     es: 'Sistema de referencia no inercial',
     fr: 'Référentiel non inertiel',
@@ -84,7 +84,7 @@ export const nonInertialFrameMessages = Object.freeze({
   'label.operation': {
     ko: '가속하는 기준틀에서의 운동',
     en: 'Motion seen from an accelerating frame',
-    ja: '加速する系から見た運動',
+    ja: '加速する座標系から見た運動',
     zh: '从加速参考系看到的运动',
     ar: 'الحركة كما تُرى من إطار مرجعي متسارع',
     es: 'El movimiento visto desde un sistema de referencia acelerado',

@@ -98,7 +98,7 @@ export const superpositionMessages = Object.freeze({
     en: 'What happens when waves overlap',
     ja: '波が重なるとき何が起こるか',
     zh: '波相互重叠时会发生什么',
-    ar: 'ماذا يحدث حين تتداخل الموجات',
+    ar: 'ماذا يحدث حين تتراكب الموجات',
     es: 'Qué ocurre cuando las ondas se superponen',
     fr: 'Ce qui se passe quand des ondes se superposent',
     hi: 'तरंगें एक-दूसरे पर पड़ें तो क्या होता है',

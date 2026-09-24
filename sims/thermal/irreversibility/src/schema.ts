@@ -209,7 +209,7 @@ export const irreversibilityMessages = Object.freeze({
     ja: '最初の場面に戻った。再生マークが再び順方向に変わる。',
     zh: '回到第一帧。播放标记又变回正向。',
     ar: 'عدنا إلى اللقطة الأولى. تعود العلامة إلى الاتجاه الأمامي.',
-    es: 'De vuelta al primer fotograma. El indicador vuelve a hacia adelante.',
+    es: 'De vuelta al primer fotograma. El indicador vuelve a apuntar hacia adelante.',
     fr: 'Retour à la première image. Le repère repasse en lecture normale.',
     hi: 'पहले फ़्रेम पर वापस। चिह्न फिर से सीधी दिशा में बदल जाता है।',
     id: 'Kembali ke bingkai pertama. Penanda berubah lagi menjadi maju.',

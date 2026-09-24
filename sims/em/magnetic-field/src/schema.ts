@@ -97,7 +97,7 @@ export const magneticFieldMessages = Object.freeze({
   'label.operation': {
     ko: '자기력의 분포',
     en: 'How magnetic force is spread around a magnet',
-    ja: '磁石のまわりに磁力がどう広がっているか',
+    ja: '磁石のまわりに磁気力がどう広がっているか',
     zh: '磁力如何分布在磁铁周围',
     ar: 'كيف تتوزع القوة المغناطيسية حول المغناطيس',
     es: 'Cómo se reparte la fuerza magnética alrededor de un imán',

@@ -137,7 +137,7 @@ export const centripetalAccelerationMessages = Object.freeze({
     ja: '少し後の速度と始点をそろえる',
     zh: '把它与稍后的速度起点对齐',
     ar: 'نضع ذيله عند ذيل السرعة بعد لحظة',
-    es: 'Se junta su origen con el de la velocidad un momento después',
+    es: 'Se junta su origen con el de la velocidad un instante después',
     fr: 'On fait coïncider son origine avec celle de la vitesse un instant plus tard',
     hi: 'थोड़ी देर बाद के वेग से उसकी पूँछ मिलाते हैं',
     id: 'Pangkalnya disatukan dengan pangkal kecepatan sesaat kemudian',

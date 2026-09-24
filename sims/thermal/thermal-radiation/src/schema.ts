@@ -145,7 +145,7 @@ export const thermalRadiationMessages = Object.freeze({
   'label.view': {
     ko: '옆에서 본 상자',
     en: 'Side view',
-    ja: '横から見た箱',
+    ja: '側面図',
     zh: '侧视图',
     ar: 'منظر جانبي',
     es: 'Vista lateral',
@@ -183,7 +183,7 @@ export const thermalRadiationMessages = Object.freeze({
     en: 'Plate temp.',
     ja: '板の温度',
     zh: '板的温度',
-    ar: 'حرارة اللوح',
+    ar: 'درجة حرارة اللوح',
     es: 'Temp. de la placa',
     fr: 'Temp. de la plaque',
     hi: 'प्लेट का ताप',

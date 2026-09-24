@@ -90,9 +90,9 @@ export const NAME_FADE_IN = 0.5;
 
 export const equilibriumPointsMessages = Object.freeze({
   'label.title': { ko: '평형점', en: 'Equilibrium points', ja: '平衡点', zh: '平衡点', ar: 'نقاط الاتزان', es: 'Puntos de equilibrio', fr: 'Points d’équilibre', hi: 'संतुलन बिंदु', id: 'Titik kesetimbangan', pt: 'Pontos de equilíbrio' },
-  'label.operation': { ko: '안정·불안정·중립 평형', en: 'Stable, unstable and neutral equilibrium', ja: '安定・不安定・中立のつり合い', zh: '稳定、不稳定与随遇平衡', ar: 'الاتزان المستقر وغير المستقر والمحايد', es: 'Equilibrio estable, inestable e indiferente', fr: 'Équilibre stable, instable et indifférent', hi: 'स्थायी, अस्थायी और उदासीन संतुलन', id: 'Kesetimbangan stabil, labil, dan netral', pt: 'Equilíbrio estável, instável e indiferente' },
+  'label.operation': { ko: '안정·불안정·중립 평형', en: 'Stable, unstable and neutral equilibrium', ja: '安定・不安定・中立の平衡', zh: '稳定、不稳定与随遇平衡', ar: 'الاتزان المستقر وغير المستقر والمحايد', es: 'Equilibrio estable, inestable e indiferente', fr: 'Équilibre stable, instable et indifférent', hi: 'स्थायी, अस्थायी और उदासीन संतुलन', id: 'Kesetimbangan stabil, labil, dan netral', pt: 'Equilíbrio estável, instável e indiferente' },
   'label.stage': { ko: '세 바닥', en: 'Three grounds', ja: '3つの地面', zh: '三种地面', ar: 'ثلاث أرضيات', es: 'Tres suelos', fr: 'Trois sols', hi: 'तीन धरातल', id: 'Tiga permukaan', pt: 'Três terrenos' },
-  'label.view': { ko: '나란히', en: 'Side by side', ja: '並べて', zh: '并排', ar: 'جنبًا إلى جنب', es: 'Lado a lado', fr: 'Côte à côte', hi: 'अगल-बगल', id: 'Berdampingan', pt: 'Lado a lado' },
+  'label.view': { ko: '나란히', en: 'Side by side', ja: '並べて', zh: '并排', ar: 'جنبًا إلى جنب', es: 'Lado a lado', fr: 'Côte à côte', hi: 'साथ-साथ', id: 'Berdampingan', pt: 'Lado a lado' },
   'label.stable': { ko: '안정', en: 'stable', ja: '安定', zh: '稳定', ar: 'مستقر', es: 'estable', fr: 'stable', hi: 'स्थायी', id: 'stabil', pt: 'estável' },
   'label.unstable': { ko: '불안정', en: 'unstable', ja: '不安定', zh: '不稳定', ar: 'غير مستقر', es: 'inestable', fr: 'instable', hi: 'अस्थायी', id: 'labil', pt: 'instável' },
   'label.neutral': { ko: '중립', en: 'neutral', ja: '中立', zh: '随遇', ar: 'محايد', es: 'indiferente', fr: 'indifférent', hi: 'उदासीन', id: 'netral', pt: 'indiferente' },
@@ -112,7 +112,7 @@ export const equilibriumPointsMessages = Object.freeze({
     ko: '셋을 똑같이 오른쪽으로 조금 옮긴다 — 골은 되밀고, 마루는 더 밀어내고, 평지는 밀지 않는다',
     en: 'Move all three the same small step right — the valley pushes back, the crest pushes on, the flat does not push',
     ja: '3つとも同じだけ右へ少し動かす — 谷は押し戻し、山はさらに押し出し、平地は押さない',
-    zh: '把三个球都向右移动同样的一小步 — 山谷把球推回，山峰把球继续推开，平地不推',
+    zh: '把三个球都向右移动同样的一小步 — 山谷把球推回，峰顶把球继续推开，平地不推',
     ar: 'حرّك الثلاث الخطوة الصغيرة نفسها إلى اليمين — الوادي يدفع إلى الخلف، والقمة تدفع إلى الأمام، والأرض المستوية لا تدفع',
     es: 'Mueve las tres el mismo pequeño paso a la derecha — el valle empuja de vuelta, la cresta empuja más lejos, el llano no empuja',
     fr: 'Déplacez les trois d’un même petit pas vers la droite — le creux repousse, la crête pousse plus loin, le plat ne pousse pas',

@@ -87,7 +87,7 @@ export const referenceFrameMessages = Object.freeze({
   'label.title': {
     ko: '기준틀',
     en: 'Reference frame',
-    ja: '基準系',
+    ja: '座標系',
     zh: '参考系',
     ar: 'الإطار المرجعي',
     es: 'Sistema de referencia',
@@ -160,7 +160,7 @@ export const referenceFrameMessages = Object.freeze({
   'caption.main': {
     ko: '같은 공 하나가 땅에서 보면 휘어지며, 기차에서 보면 곧게 떨어진다',
     en: 'The same ball curves as seen from the ground, and falls straight as seen from the train',
-    ja: '同じ一つのボールが、地面から見ると曲がり、列車から見るとまっすぐ落ちる',
+    ja: '同じ一つのボールが、地上から見ると曲がり、列車から見るとまっすぐ落ちる',
     zh: '同一个球，从地面上看沿曲线落下，从火车上看竖直落下',
     ar: 'الكرة نفسها تنحني كما تُرى من الأرض، وتسقط مستقيمةً كما تُرى من القطار',
     es: 'La misma pelota se curva vista desde el suelo y cae recta vista desde el tren',

@@ -110,7 +110,7 @@ export const buoyancyMessages = Object.freeze({
     en: 'Water tank',
     ja: '水槽',
     zh: '水槽',
-    ar: 'حوض ماء',
+    ar: 'خزان ماء',
     es: 'Tanque de agua',
     fr: 'Cuve d’eau',
     hi: 'पानी की टंकी',

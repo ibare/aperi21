@@ -117,7 +117,7 @@ export const conicalPendulumMessages = Object.freeze({
     ko: '돌리는 빠르기',
     en: 'Spin speed',
     ja: '回す速さ',
-    zh: '旋转快慢',
+    zh: '转速',
     ar: 'سرعة الدوران',
     es: 'Rapidez de giro',
     fr: 'Vitesse de rotation',

@@ -181,7 +181,7 @@ export const circularOrbitMessages = Object.freeze({
     fr: 'La vitesse ne change pas, seule la direction s’infléchit, encore et encore — et les inflexions referment un cercle',
     hi: 'चाल वही रहती है, केवल दिशा बार-बार मुड़ती है — और ये मोड़ मिलकर एक वृत्त पूरा करते हैं',
     id: 'Kelajuan tetap, hanya arah yang berbelok, lagi dan lagi — dan belokan itu menutup menjadi lingkaran',
-    pt: 'A rapidez não muda, só a direção se curva, de novo e de novo — e as curvas fecham um círculo',
+    pt: 'A velocidade não muda, só a direção se curva, de novo e de novo — e as curvas fecham um círculo',
   },
 } satisfies Record<string, LocalizedText>);
 

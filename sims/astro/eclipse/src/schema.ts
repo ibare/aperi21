@@ -191,7 +191,7 @@ export const eclipseMessages = Object.freeze({
     es: 'luz solar',
     fr: 'lumière du Soleil',
     hi: 'सूर्य का प्रकाश',
-    id: 'cahaya Matahari',
+    id: 'sinar Matahari',
     pt: 'luz solar',
   },
   'label.ecliptic': {
@@ -275,7 +275,7 @@ export const eclipseMessages = Object.freeze({
     es: 'Luna nueva — el Sol, la Luna y la Tierra quedan en línea. La punta de la sombra de la Luna llega a la Tierra, y allí el Sol queda oculto: un eclipse solar.',
     fr: 'Nouvelle lune — le Soleil, la Lune et la Terre sont alignés. La pointe de l’ombre de la Lune atteint la Terre, et là le Soleil est caché : une éclipse de Soleil.',
     hi: 'अमावस्या — सूर्य, चंद्रमा और पृथ्वी एक सीध में हैं। चंद्रमा की छाया का सिरा पृथ्वी तक पहुँचता है, और वहाँ सूर्य छिप जाता है: सूर्य ग्रहण।',
-    id: 'Bulan baru — Matahari, Bulan, dan Bumi berada dalam satu garis. Ujung bayangan Bulan mencapai Bumi, dan di sana Matahari tertutup: gerhana Matahari.',
+    id: 'Bulan baru — Matahari, Bulan, dan Bumi berada dalam satu garis. Ujung bayang-bayang Bulan mencapai Bumi, dan di sana Matahari tertutup: gerhana Matahari.',
     pt: 'Lua nova — Sol, Lua e Terra ficam em linha. A ponta da sombra da Lua atinge a Terra, e ali o Sol fica encoberto: um eclipse solar.',
   },
   'caption.lunarA': {
@@ -287,7 +287,7 @@ export const eclipseMessages = Object.freeze({
     es: 'Luna llena — ahora la Tierra está en medio. La Luna entra en la sombra que proyecta la Tierra y se oscurece: un eclipse lunar.',
     fr: 'Pleine lune — cette fois la Terre est au milieu. La Lune entre dans l’ombre projetée par la Terre et s’assombrit : une éclipse de Lune.',
     hi: 'पूर्णिमा — अब पृथ्वी बीच में है। चंद्रमा पृथ्वी की डाली छाया में प्रवेश करता है और अँधेरा हो जाता है: चंद्र ग्रहण।',
-    id: 'Bulan purnama — kini Bumi berada di tengah. Bulan masuk ke bayangan yang dijatuhkan Bumi dan menjadi gelap: gerhana Bulan.',
+    id: 'Bulan purnama — kini Bumi berada di tengah. Bulan masuk ke bayang-bayang yang dijatuhkan Bumi dan menjadi gelap: gerhana Bulan.',
     pt: 'Lua cheia — agora a Terra está no meio. A Lua entra na sombra projetada pela Terra e escurece: um eclipse lunar.',
   },
   'caption.driftA': {
@@ -299,7 +299,7 @@ export const eclipseMessages = Object.freeze({
     es: 'Pasan los meses. La Tierra avanza alrededor del Sol, así que la luz solar llega ahora a la órbita lunar inclinada desde otro lado.',
     fr: 'Les mois passent. La Terre avance autour du Soleil, si bien que la lumière du Soleil frappe désormais l’orbite lunaire inclinée par un autre côté.',
     hi: 'महीने बीतते हैं। पृथ्वी सूर्य के चारों ओर आगे बढ़ती है, इसलिए अब सूर्य का प्रकाश झुकी हुई चंद्र कक्षा पर दूसरी ओर से पड़ता है।',
-    id: 'Bulan demi bulan berlalu. Bumi bergerak mengelilingi Matahari, sehingga cahaya Matahari kini mengenai orbit Bulan yang miring dari sisi lain.',
+    id: 'Bulan demi bulan berlalu. Bumi bergerak mengelilingi Matahari, sehingga sinar Matahari kini mengenai orbit Bulan yang miring dari sisi lain.',
     pt: 'Os meses passam. A Terra avança ao redor do Sol, e a luz solar agora atinge a órbita lunar inclinada por outro lado.',
   },
   'caption.solarMiss': {
@@ -311,7 +311,7 @@ export const eclipseMessages = Object.freeze({
     es: 'Llega otra luna nueva, pero la Luna pasa por debajo de la línea y su sombra se desliza bajo la Tierra — no hay eclipse.',
     fr: 'La nouvelle lune revient, mais la Lune passe sous la ligne et son ombre glisse sous la Terre — pas d’éclipse.',
     hi: 'अमावस्या फिर आती है, पर चंद्रमा सीध से नीचे होकर गुज़रता है और उसकी छाया पृथ्वी के नीचे से निकल जाती है — कोई ग्रहण नहीं।',
-    id: 'Bulan baru datang lagi, tetapi Bulan lewat di bawah garis, dan bayangannya meleset di bawah Bumi — tidak ada gerhana.',
+    id: 'Bulan baru datang lagi, tetapi Bulan lewat di bawah garis, dan bayang-bayangnya meleset di bawah Bumi — tidak ada gerhana.',
     pt: 'A lua nova volta, mas a Lua passa abaixo da linha, e sua sombra escapa por baixo da Terra — nenhum eclipse.',
   },
   'caption.lunarMiss': {
@@ -323,7 +323,7 @@ export const eclipseMessages = Object.freeze({
     es: 'En luna llena la Luna pasa por encima de la sombra de la Tierra. Las sombras siempre están ahí, pero solo alcanzan su blanco cuando los tres se alinean.',
     fr: 'À la pleine lune, la Lune passe au-dessus de l’ombre de la Terre. Les ombres sont toujours là, mais elles ne tombent sur l’autre astre que lorsque les trois s’alignent.',
     hi: 'पूर्णिमा पर चंद्रमा पृथ्वी की छाया के ऊपर से गुज़रता है। छायाएँ हमेशा रहती हैं, पर वे तभी पड़ती हैं जब तीनों एक सीध में हों।',
-    id: 'Saat purnama, Bulan lewat di atas bayangan Bumi. Bayangan selalu ada, tetapi baru jatuh mengenai sasaran ketika ketiganya segaris.',
+    id: 'Saat purnama, Bulan lewat di atas bayang-bayang Bumi. Bayang-bayang selalu ada, tetapi baru jatuh mengenai sasaran ketika ketiganya segaris.',
     pt: 'Na lua cheia, a Lua passa acima da sombra da Terra. As sombras estão sempre lá, mas só atingem o alvo quando os três se alinham.',
   },
   'caption.driftB': {
@@ -335,7 +335,7 @@ export const eclipseMessages = Object.freeze({
     es: 'Unos meses más — vista a lo largo de la luz solar, la órbita lunar vuelve a aplanarse.',
     fr: 'Quelques mois de plus — vue dans l’axe de la lumière du Soleil, l’orbite lunaire s’aplatit à nouveau.',
     hi: 'कुछ और महीने — सूर्य के प्रकाश की दिशा से देखने पर चंद्र कक्षा फिर चपटी दिखती है।',
-    id: 'Beberapa bulan lagi — dilihat searah cahaya Matahari, orbit Bulan kembali tampak pipih.',
+    id: 'Beberapa bulan lagi — dilihat searah sinar Matahari, orbit Bulan kembali tampak pipih.',
     pt: 'Mais alguns meses — vista ao longo da luz solar, a órbita lunar volta a se achatar.',
   },
   'caption.solarB': {
@@ -347,7 +347,7 @@ export const eclipseMessages = Object.freeze({
     es: 'Medio año después, la línea vuelve a formarse. En luna nueva la sombra de la Luna cae sobre la Tierra: un eclipse solar.',
     fr: 'Six mois plus tard, l’alignement se reforme. À la nouvelle lune, l’ombre de la Lune tombe sur la Terre : une éclipse de Soleil.',
     hi: 'आधे वर्ष बाद फिर से सीध बनती है। अमावस्या पर चंद्रमा की छाया पृथ्वी पर पड़ती है: सूर्य ग्रहण।',
-    id: 'Setengah tahun kemudian, garis itu terbentuk lagi. Saat bulan baru, bayangan Bulan jatuh di Bumi: gerhana Matahari.',
+    id: 'Setengah tahun kemudian, garis itu terbentuk lagi. Saat bulan baru, bayang-bayang Bulan jatuh di Bumi: gerhana Matahari.',
     pt: 'Meio ano depois, a linha se forma de novo. Na lua nova, a sombra da Lua cai sobre a Terra: um eclipse solar.',
   },
   'caption.lunarB': {
@@ -358,8 +358,8 @@ export const eclipseMessages = Object.freeze({
     ar: 'في البدر التالي يدخل القمر ظل الأرض: خسوف القمر. تأتي الكسوفات والخسوفات في موسمين كل عام، حين يمكن أن يتشكل الخط.',
     es: 'En la siguiente luna llena la Luna entra en la sombra de la Tierra: un eclipse lunar. Los eclipses llegan en dos temporadas al año, cuando la línea puede formarse.',
     fr: 'À la pleine lune suivante, la Lune entre dans l’ombre de la Terre : une éclipse de Lune. Les éclipses viennent en deux saisons par an, quand l’alignement peut se former.',
-    hi: 'अगली पूर्णिमा पर चंद्रमा पृथ्वी की छाया में प्रवेश करता है: चंद्र ग्रहण। ग्रहण साल में दो मौसमों में आते हैं, जब सीध बन सकती है।',
-    id: 'Pada purnama berikutnya Bulan masuk ke bayangan Bumi: gerhana Bulan. Gerhana datang dalam dua musim setiap tahun, saat garis itu bisa terbentuk.',
+    hi: 'अगली पूर्णिमा पर चंद्रमा पृथ्वी की छाया में प्रवेश करता है: चंद्र ग्रहण। ग्रहण साल में दो ऋतुओं में आते हैं, जब सीध बन सकती है।',
+    id: 'Pada purnama berikutnya Bulan masuk ke bayang-bayang Bumi: gerhana Bulan. Gerhana datang dalam dua musim setiap tahun, saat garis itu bisa terbentuk.',
     pt: 'Na lua cheia seguinte, a Lua entra na sombra da Terra: um eclipse lunar. Os eclipses vêm em duas temporadas por ano, quando a linha pode se formar.',
   },
   'caption.driftC': {
@@ -371,7 +371,7 @@ export const eclipseMessages = Object.freeze({
     es: 'Durante los demás meses, las sombras pasan por encima o por debajo en cada luna nueva y cada luna llena.',
     fr: 'Les autres mois, les ombres passent au-dessus ou au-dessous à chaque nouvelle et pleine lune.',
     hi: 'बाकी महीनों में हर अमावस्या और पूर्णिमा पर छायाएँ ऊपर या नीचे से निकल जाती हैं।',
-    id: 'Pada bulan-bulan lainnya, bayangan meleset ke atas atau ke bawah setiap bulan baru dan purnama.',
+    id: 'Pada bulan-bulan lainnya, bayang-bayang meleset ke atas atau ke bawah setiap bulan baru dan purnama.',
     pt: 'Nos demais meses, as sombras passam por cima ou por baixo a cada lua nova e lua cheia.',
   },
 } satisfies Record<string, LocalizedText>);

@@ -102,7 +102,7 @@ export const staticEquilibriumMessages = Object.freeze({
   'label.view': {
     ko: '평면도',
     en: 'Top view',
-    ja: '上から見た図',
+    ja: '上から',
     zh: '俯视图',
     ar: 'منظر علوي',
     es: 'Vista superior',

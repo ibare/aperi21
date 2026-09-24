@@ -114,7 +114,7 @@ export const atwoodMachineMessages = Object.freeze({
     ko: '두 기계',
     en: 'Two machines',
     ja: '二つの装置',
-    zh: '两台装置',
+    zh: '两台机器',
     ar: 'آلتان',
     es: 'Dos máquinas',
     fr: 'Deux machines',

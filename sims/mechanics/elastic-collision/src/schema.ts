@@ -65,7 +65,7 @@ export const elasticCollisionMessages = Object.freeze({
     es: 'Choque elástico',
     fr: 'Collision élastique',
     hi: 'प्रत्यास्थ टक्कर',
-    id: 'Tumbukan lenting',
+    id: 'Tumbukan lenting sempurna',
     pt: 'Colisão elástica',
   },
   'label.operation': {

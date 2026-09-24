@@ -145,7 +145,7 @@ export const soundSourceVibrationMessages = Object.freeze({
     en: 'Hand',
     ja: '手',
     zh: '手',
-    ar: 'يد',
+    ar: 'اليد',
     es: 'Mano',
     fr: 'Main',
     hi: 'हाथ',

@@ -265,7 +265,7 @@ export const relativeVelocityMessages = Object.freeze({
   /** 조작기 이름표. 강물의 속도를 곁들여 둔다 — 길이 똑바로 서는 자리를 찾는 실마리다. */
   'label.observer': {
     ko: '보는 사람의 속도 · 강물 1.2',
-    en: 'Observer speed · river 1.2',
+    en: 'Observer velocity · river 1.2',
     ja: '観測者の速度 · 川 1.2',
     zh: '观察者的速度 · 河水 1.2',
     ar: 'سرعة الراصد · النهر 1.2',

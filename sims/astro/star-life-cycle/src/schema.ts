@@ -237,7 +237,7 @@ export const starLifeCycleMessages = Object.freeze({
     ar: 'درجة حرارة السطح — أسخن نحو اليسار',
     es: 'Temperatura superficial — más caliente a la izquierda',
     fr: 'Température de surface — plus chaude à gauche',
-    hi: 'सतह का तापमान — बाईं ओर अधिक गर्म',
+    hi: 'सतह का ताप — बाईं ओर अधिक गर्म',
     id: 'Suhu permukaan — makin ke kiri makin panas',
     pt: 'Temperatura da superfície — mais quente à esquerda',
   },

@@ -125,7 +125,7 @@ export const transistorPrincipleMessages = Object.freeze({
   'label.view': {
     ko: '소자 단면과 두 전류',
     en: 'Device cross-section and two currents',
-    ja: '素子の断面と2つの電流',
+    ja: '素子の断面と二つの電流',
     zh: '器件截面与两种电流',
     ar: 'مقطع عرضي للجهاز والتياران',
     es: 'Sección transversal del dispositivo y las dos corrientes',

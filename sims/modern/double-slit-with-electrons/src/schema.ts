@@ -49,7 +49,7 @@ export const doubleSlitWithElectronsMessages = Object.freeze({
   'label.operation': {
     ko: '하나씩 보내도 생기는 무늬',
     en: 'A pattern that forms one electron at a time',
-    ja: '一つずつ送ってもできる模様',
+    ja: '電子一個ずつでできていく模様',
     zh: '一次一个电子也会形成的图样',
     ar: 'نمط يتكوّن إلكترونًا تلو الآخر',
     es: 'Un patrón que se forma electrón a electrón',

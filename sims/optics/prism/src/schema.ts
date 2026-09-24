@@ -91,7 +91,7 @@ export const prismMessages = Object.freeze({
     en: 'A spectrum spread out by dispersion',
     ja: '分散によって広がるスペクトル',
     zh: '由色散展开的光谱',
-    ar: 'طيف ينتشر بفعل التشتت',
+    ar: 'طيف ينتشر بفعل تفريق الضوء',
     es: 'Un espectro que se abre por dispersión',
     fr: 'Un spectre étalé par la dispersion',
     hi: 'वर्ण-विक्षेपण से फैला स्पेक्ट्रम',
@@ -228,7 +228,7 @@ export const prismMessages = Object.freeze({
 
     en: 'A single beam of white light enters the first face of the prism.',
 
-    ja: '白色光の光線が1本、プリズムの第1面に入る。',
+    ja: '白色光の光束が1本、プリズムの第1面に入る。',
 
     zh: '一束白光射入棱镜的第一面。',
 
@@ -238,7 +238,7 @@ export const prismMessages = Object.freeze({
 
     fr: 'Un seul faisceau de lumière blanche entre par la première face du prisme.',
 
-    hi: 'श्वेत प्रकाश की एक किरण प्रिज़्म के पहले फलक से प्रवेश करती है।',
+    hi: 'श्वेत प्रकाश का एक किरण-पुंज प्रिज़्म के पहले फलक से प्रवेश करता है।',
 
     id: 'Seberkas cahaya putih masuk melalui bidang pertama prisma.',
 
@@ -248,48 +248,48 @@ export const prismMessages = Object.freeze({
   'caption.inside': {
     ko: '첫 면에서 꺾이며 흰빛이 색 줄기로 조금 벌어진다.',
     en: 'Bending at the first face, the white light opens slightly into coloured beams.',
-    ja: '第1面で曲がり、白色光が色ごとの光線にわずかに広がる。',
+    ja: '第1面で曲がり、白色光が色ごとの光束にわずかに広がる。',
     zh: '在第一面发生偏折，白光稍稍分开成各色光束。',
     ar: 'ينكسر الضوء الأبيض عند الوجه الأول فينفتح قليلًا إلى حزم ملوّنة.',
     es: 'Al desviarse en la primera cara, la luz blanca se abre un poco en haces de colores.',
     fr: 'En se déviant à la première face, la lumière blanche s’ouvre légèrement en faisceaux colorés.',
-    hi: 'पहले फलक पर मुड़ते हुए श्वेत प्रकाश थोड़ा-सा रंगीन किरणों में फैल जाता है।',
+    hi: 'पहले फलक पर मुड़ते हुए श्वेत प्रकाश थोड़ा-सा रंगीन किरण-पुंजों में फैल जाता है।',
     id: 'Membelok di bidang pertama, cahaya putih sedikit terurai menjadi berkas-berkas berwarna.',
     pt: 'Ao se desviar na primeira face, a luz branca se abre um pouco em feixes coloridos.',
   },
   'caption.bracketIn': {
     ko: '첫 면을 지난 색 줄기 사이에 괄호를 댄다.',
     en: 'A bracket marks the angle between the coloured beams after the first face.',
-    ja: '第1面を通った色の光線の間の角を弧で示す。',
+    ja: '第1面を通った色の光束の間の角を弧で示す。',
     zh: '用一段弧线标出经过第一面后各色光束之间的夹角。',
     ar: 'قوس يحدّد الزاوية بين الحزم الملوّنة بعد الوجه الأول.',
     es: 'Un arco marca el ángulo entre los haces de colores tras la primera cara.',
     fr: 'Un arc marque l’angle entre les faisceaux colorés après la première face.',
-    hi: 'एक चाप पहले फलक के बाद रंगीन किरणों के बीच का कोण दिखाता है।',
+    hi: 'एक चाप पहले फलक के बाद रंगीन किरण-पुंजों के बीच का कोण दिखाता है।',
     id: 'Sebuah busur menandai sudut antara berkas-berkas berwarna setelah bidang pertama.',
     pt: 'Um arco marca o ângulo entre os feixes coloridos após a primeira face.',
   },
   'caption.holdIn': {
     ko: '첫 면 뒤의 괄호는 좁다 — 색 줄기가 아직 가깝게 모여 간다.',
     en: 'The bracket after the first face is narrow — the coloured beams still travel close together.',
-    ja: '第1面の後の弧は狭い — 色の光線はまだ寄り添って進む。',
+    ja: '第1面の後の弧は狭い — 色の光束はまだ寄り添って進む。',
     zh: '第一面之后的弧线很窄——各色光束仍然靠得很近。',
     ar: 'القوس بعد الوجه الأول ضيّق — ما زالت الحزم الملوّنة تسير متقاربة.',
     es: 'El arco tras la primera cara es estrecho — los haces de colores aún viajan muy juntos.',
     fr: 'L’arc après la première face est étroit — les faisceaux colorés avancent encore serrés.',
-    hi: 'पहले फलक के बाद का चाप संकरा है — रंगीन किरणें अभी भी पास-पास चलती हैं।',
+    hi: 'पहले फलक के बाद का चाप संकरा है — रंगीन किरण-पुंज अभी भी पास-पास चलते हैं।',
     id: 'Busur setelah bidang pertama sempit — berkas-berkas berwarna masih berjalan berdekatan.',
     pt: 'O arco após a primeira face é estreito — os feixes coloridos ainda seguem bem próximos.',
   },
   'caption.exit': {
     ko: '둘째 면에서 한 번 더 꺾이며 색 줄기가 더 벌어진다.',
     en: 'Bending once more at the second face, the coloured beams fan out further.',
-    ja: '第2面でもう一度曲がり、色の光線はさらに広がる。',
+    ja: '第2面でもう一度曲がり、色の光束はさらに広がる。',
     zh: '在第二面再偏折一次，各色光束散得更开。',
     ar: 'تنكسر الحزم الملوّنة مرة أخرى عند الوجه الثاني فتتباعد أكثر.',
     es: 'Al desviarse otra vez en la segunda cara, los haces de colores se abren aún más.',
     fr: 'En se déviant encore à la deuxième face, les faisceaux colorés s’écartent davantage.',
-    hi: 'दूसरे फलक पर एक बार और मुड़कर रंगीन किरणें और फैल जाती हैं।',
+    hi: 'दूसरे फलक पर एक बार और मुड़कर रंगीन किरण-पुंज और फैल जाते हैं।',
     id: 'Membelok sekali lagi di bidang kedua, berkas-berkas berwarna makin menyebar.',
     pt: 'Ao se desviar mais uma vez na segunda face, os feixes coloridos se abrem ainda mais.',
   },

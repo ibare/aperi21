@@ -34,7 +34,7 @@ export const bindingEnergyCurveMessages = Object.freeze({
   'label.axisBinding': { ko: '핵자당 결합 에너지', en: 'Binding energy per nucleon', ja: '核子あたりの結合エネルギー', zh: '比结合能', ar: 'طاقة الربط لكل نيوكليون', es: 'Energía de enlace por nucleón', fr: 'Énergie de liaison par nucléon', hi: 'प्रति न्यूक्लिऑन बंधन ऊर्जा', id: 'Energi ikat per nukleon', pt: 'Energia de ligação por núcleon' },
   'label.axisMass': { ko: '질량수 A →', en: 'Mass number A →', ja: '質量数 A →', zh: '质量数 A →', ar: 'العدد الكتلي A →', es: 'Número másico A →', fr: 'Nombre de masse A →', hi: 'द्रव्यमान संख्या A →', id: 'Nomor massa A →', pt: 'Número de massa A →' },
   /** 오른 높이 화살표에 붙는 말 — 나오는 에너지. */
-  'label.energy': { ko: '에너지', en: 'energy', ja: 'エネルギー', zh: '能量', ar: 'طاقة', es: 'energía', fr: 'énergie', hi: 'ऊर्जा', id: 'energi', pt: 'energia' },
+  'label.energy': { ko: '에너지', en: 'energy', ja: 'エネルギー', zh: '能量', ar: 'الطاقة', es: 'energía', fr: 'énergie', hi: 'ऊर्जा', id: 'energi', pt: 'energia' },
   /** 두 길의 이름. */
   'label.fusion': { ko: '융합', en: 'fusion', ja: '核融合', zh: '聚变', ar: 'اندماج', es: 'fusión', fr: 'fusion', hi: 'संलयन', id: 'fusi', pt: 'fusão' },
   'label.fission': { ko: '분열', en: 'fission', ja: '核分裂', zh: '裂变', ar: 'انشطار', es: 'fisión', fr: 'fission', hi: 'विखंडन', id: 'fisi', pt: 'fissão' },
@@ -54,7 +54,7 @@ export const bindingEnergyCurveMessages = Object.freeze({
   'caption.fuse': {
     ko: '가벼운 핵은 합쳐서 오른다 — 수소 넷이 헬륨 하나가 되며 곡선을 크게 오르고, 오른 만큼 에너지가 나온다.',
     en: 'Light nuclei climb by joining — four hydrogens become one helium, a big step up the curve, and the height gained comes out as energy.',
-    ja: '軽い核は合わさって上る — 水素四つがヘリウム一つになって曲線を大きく上り、上った分がエネルギーとして出てくる。',
+    ja: '軽い原子核は合わさって上る — 水素四つがヘリウム一つになって曲線を大きく上り、上った分がエネルギーとして出てくる。',
     zh: '轻核靠结合向上攀升 — 四个氢核变成一个氦核，沿曲线大幅上升，升高的部分以能量的形式释放出来。',
     ar: 'تصعد النوى الخفيفة بالاتحاد — تصير أربع نوى هيدروجين نواة هيليوم واحدة، فتصعد خطوة كبيرة على المنحنى، ويخرج الارتفاع المكتسب طاقةً.',
     es: 'Los núcleos ligeros suben uniéndose — cuatro hidrógenos se vuelven un helio, un gran escalón en la curva, y la altura ganada sale como energía.',
@@ -66,7 +66,7 @@ export const bindingEnergyCurveMessages = Object.freeze({
   'caption.fission': {
     ko: '무거운 핵은 쪼개서 오른다 — 우라늄-235 가 바륨과 크립톤으로 갈라지며 곡선을 조금 오른다.',
     en: 'Heavy nuclei climb by splitting — uranium-235 breaks into barium and krypton, a small step up the curve.',
-    ja: '重い核は分かれて上る — ウラン235 がバリウムとクリプトンに分かれ、曲線を少し上る。',
+    ja: '重い原子核は分かれて上る — ウラン235 がバリウムとクリプトンに分かれ、曲線を少し上る。',
     zh: '重核靠分裂向上攀升 — 铀-235 分裂成钡和氪，沿曲线小幅上升。',
     ar: 'تصعد النوى الثقيلة بالانقسام — ينشطر اليورانيوم-235 إلى باريوم وكريبتون، فيصعد خطوة صغيرة على المنحنى.',
     es: 'Los núcleos pesados suben dividiéndose — el uranio-235 se parte en bario y kriptón, un pequeño escalón en la curva.',

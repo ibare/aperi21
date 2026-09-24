@@ -214,7 +214,7 @@ export const harmonicsMessages = Object.freeze({
     ja: '半波長がちょうど弦の長さに合った — 点線の形が結び目に届き、弦がその形で大きく揺れる。',
     zh: '半波长正好与弦长相合 — 虚线形状落在结点上，弦按这个形状大幅摆动。',
     ar: 'أنصاف الأطوال الموجية تناسب الوتر تمامًا — يصل الشكل المتقطع إلى العقدة ويتأرجح الوتر بذلك الشكل.',
-    es: 'Las semilongitudes de onda encajan justo en la cuerda — la forma punteada cae en el nudo y la cuerda oscila con esa forma.',
+    es: 'Las medias longitudes de onda encajan justo en la cuerda — la forma punteada cae en el nudo y la cuerda oscila con esa forma.',
     fr: 'Les demi-longueurs d’onde tiennent exactement dans la corde — la forme en pointillés tombe sur le nœud et la corde oscille selon cette forme.',
     hi: 'अर्ध-तरंगदैर्घ्य डोरी में ठीक-ठीक समा जाते हैं — बिंदुदार आकार गाँठ पर जा टिकता है और डोरी उसी आकार में झूलती है।',
     id: 'Setengah panjang gelombang pas persis dengan tali — bentuk putus-putus jatuh tepat di simpul ikat dan tali berayun dengan bentuk itu.',

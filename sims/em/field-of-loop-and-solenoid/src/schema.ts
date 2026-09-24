@@ -170,7 +170,7 @@ export const fieldOfLoopAndSolenoidMessages = Object.freeze({
     fr: 'On place des spires identiques côte à côte — {few} en tout',
     hi: 'एक जैसे लूप अगल-बगल रखे जाते हैं — कुल {few}',
     id: 'Kawat melingkar yang sama diletakkan berdampingan — {few} seluruhnya',
-    pt: 'Espiras idênticas lado a lado — {few} ao todo',
+    pt: 'Coloque espiras idênticas lado a lado — {few} ao todo',
   },
   'caption.few': {
     ko: '고리 {few}개 — 안쪽 선이 곧게 펴지고 더 촘촘해진다',

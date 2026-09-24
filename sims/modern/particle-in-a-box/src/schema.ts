@@ -86,7 +86,7 @@ export const particleInABoxMessages = Object.freeze({
     es: 'La forma más sencilla que vale cero en ambas paredes — media onda llena el pozo. Es el nivel más bajo.',
     fr: 'La forme la plus simple qui s’annule aux deux parois — une demi-onde remplit le puits. C’est le niveau le plus bas.',
     hi: 'दोनों दीवारों पर शून्य होने वाला सबसे सरल आकार — एक अर्ध-तरंग कूप को भर देती है। यही सबसे निचला स्तर है।',
-    id: 'Bentuk paling sederhana yang bernilai nol di kedua dinding — satu setengah gelombang mengisi sumur. Inilah tingkat terendah.',
+    id: 'Bentuk paling sederhana yang bernilai nol di kedua dinding — setengah gelombang mengisi sumur. Inilah tingkat terendah.',
     pt: 'A forma mais simples que é zero nas duas paredes — meia onda preenche o poço. Este é o nível mais baixo.',
   },
   'caption.climb': {
@@ -98,7 +98,7 @@ export const particleInABoxMessages = Object.freeze({
     es: 'Meter una media onda más cuesta más energía — subiendo al siguiente nivel a ritmo constante.',
     fr: 'Loger une demi-onde de plus demande plus d’énergie — on monte au niveau suivant à vitesse constante.',
     hi: 'एक और अर्ध-तरंग समाने के लिए अधिक ऊर्जा लगती है — स्थिर गति से अगले स्तर तक चढ़ाई जारी है।',
-    id: 'Memuat satu setengah gelombang lagi butuh energi lebih — sedang naik ke tingkat berikutnya dengan laju tetap.',
+    id: 'Memuat setengah gelombang lagi butuh energi lebih — sedang naik ke tingkat berikutnya dengan laju tetap.',
     pt: 'Encaixar mais meia onda exige mais energia — subindo ao próximo nível num ritmo constante.',
   },
   'caption.land': {
@@ -110,7 +110,7 @@ export const particleInABoxMessages = Object.freeze({
     es: 'La forma con una media onda más se asienta en el nuevo nivel — sigue valiendo cero en ambas paredes.',
     fr: 'La forme à une demi-onde de plus se pose sur le nouveau niveau — toujours nulle aux deux parois.',
     hi: 'एक अर्ध-तरंग अधिक वाला आकार नए स्तर पर टिकता है — दोनों दीवारों पर अब भी शून्य।',
-    id: 'Bentuk dengan satu setengah gelombang tambahan duduk di tingkat baru — tetap nol di kedua dinding.',
+    id: 'Bentuk dengan tambahan setengah gelombang duduk di tingkat baru — tetap nol di kedua dinding.',
     pt: 'A forma com mais meia onda se assenta no novo nível — ainda zero nas duas paredes.',
   },
   'caption.rest': {

@@ -133,9 +133,9 @@ export const freeFallMessages = Object.freeze({
   'label.view': {
     ko: '나란한 낙하',
     en: 'Side by side',
-    ja: '並んで落ちる',
-    zh: '并排下落',
-    ar: 'سقوط جنبًا إلى جنب',
+    ja: '並べて',
+    zh: '并排',
+    ar: 'جنبًا إلى جنب',
     es: 'Lado a lado',
     fr: 'Côte à côte',
     hi: 'साथ-साथ',

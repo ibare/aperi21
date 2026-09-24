@@ -280,7 +280,7 @@ export const insulationMessages = Object.freeze({
     ar: 'تنخفض أعمدة درجة الحرارة الثلاثة بمعدلات مختلفة، وتتباعد المنحنيات الثلاثة',
     es: 'Las tres barras de temperatura bajan a ritmos distintos, y las tres curvas se separan',
     fr: 'Les trois barres de température baissent à des rythmes différents, et les trois courbes s’écartent',
-    hi: 'तीनों तापमान पट्टियाँ अलग-अलग दर से गिरती हैं, और तीनों वक्र अलग होते जाते हैं',
+    hi: 'तीनों ताप पट्टियाँ अलग-अलग दर से गिरती हैं, और तीनों वक्र अलग होते जाते हैं',
     id: 'Tiga batang suhu turun dengan laju berbeda, dan tiga kurva saling menjauh',
     pt: 'As três barras de temperatura caem em ritmos diferentes, e as três curvas se afastam',
   },

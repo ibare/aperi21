@@ -241,7 +241,7 @@ export const decayTypesMessages = Object.freeze({
     ar: '{pb} cm من الرصاص تمتص معظم γ — لكن بعضها ما يزال يعبر.',
     es: '{pb} cm de plomo absorben la mayor parte de γ — pero una parte aún pasa.',
     fr: '{pb} cm de plomb absorbent l’essentiel de γ — mais une partie passe encore.',
-    hi: '{pb} cm सीसा γ का अधिकांश भाग सोख लेता है — फिर भी कुछ पार निकल जाता है।',
+    hi: '{pb} cm सीसा γ का अधिकांश भाग अवशोषित कर लेता है — फिर भी कुछ पार निकल जाता है।',
     id: 'Timbal {pb} cm menyerap sebagian besar γ — tetapi sebagian masih bisa lewat.',
     pt: '{pb} cm de chumbo absorvem a maior parte de γ — mas uma parte ainda passa.',
   },

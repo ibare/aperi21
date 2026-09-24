@@ -148,7 +148,7 @@ export const gausssLawMessages = Object.freeze({
     fr: 'Coupe de la surface',
     hi: 'पृष्ठ का अनुप्रस्थ काट',
     id: 'Penampang permukaan',
-    pt: 'Seção transversal da superfície',
+    pt: 'Corte transversal da superfície',
   },
   /** 기준선 이름표. 값은 스테이지 상수에서 온 가닥 수다 (C1 — 값은 vars 로). */
   'label.count': {

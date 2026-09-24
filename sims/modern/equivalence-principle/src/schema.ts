@@ -79,7 +79,7 @@ export const equivalencePrincipleMessages = Object.freeze({
   'label.view': {
     ko: '두 상자 나란히',
     en: 'Two boxes side by side',
-    ja: '並んだ二つの箱',
+    ja: '二つの箱を並べて',
     zh: '并排的两个箱子',
     ar: 'صندوقان جنبًا إلى جنب',
     es: 'Dos cajas lado a lado',

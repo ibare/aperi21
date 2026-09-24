@@ -100,7 +100,7 @@ export const noiseCancellationMessages = Object.freeze({
     ar: 'تراكب موجة معكوسة',
     es: 'Superposición de una onda invertida',
     fr: 'Superposition d’une onde inversée',
-    hi: 'उलटी तरंग का अध्यारोपण',
+    hi: 'उल्टी तरंग का अध्यारोपण',
     id: 'Superposisi gelombang terbalik',
     pt: 'Superposição de uma onda invertida',
   },
@@ -197,7 +197,7 @@ export const noiseCancellationMessages = Object.freeze({
     es: 'Al sonar juntas, cada cresta se encuentra con un valle y el sonido en el oído queda casi plano',
     fr: 'Joués ensemble, chaque crête rencontre un creux et le son à l’oreille devient presque plat',
     hi: 'साथ बजाने पर हर शिखर एक गर्त से मिलता है और कान पर ध्वनि लगभग सपाट हो जाती है',
-    id: 'Diputar bersamaan, setiap puncak bertemu lembah dan suara di telinga menjadi hampir datar',
+    id: 'Diputar bersamaan, setiap puncak bertemu lembah dan bunyi di telinga menjadi hampir datar',
     pt: 'Tocadas juntas, cada crista encontra um vale e o som no ouvido fica quase plano',
   },
   'caption.lag': {

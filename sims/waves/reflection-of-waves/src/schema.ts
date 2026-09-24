@@ -109,9 +109,9 @@ export const reflectionOfWavesMessages = Object.freeze({
   'label.view': {
     ko: '나란한 두 줄',
     en: 'Two strings side by side',
-    ja: '並んだ二本のひも',
+    ja: '二本のひもを並べて',
     zh: '并排的两根绳',
-    ar: 'حبلان متجاوران',
+    ar: 'حبلان جنبًا إلى جنب',
     es: 'Dos cuerdas lado a lado',
     fr: 'Deux cordes côte à côte',
     hi: 'साथ-साथ दो डोरियाँ',

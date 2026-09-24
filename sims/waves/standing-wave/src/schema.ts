@@ -124,7 +124,7 @@ export const standingWaveMessages = Object.freeze({
   'label.now': {
     ko: '지금',
     en: 'now',
-    ja: '現在',
+    ja: '今',
     zh: '现在',
     ar: 'الآن',
     es: 'ahora',

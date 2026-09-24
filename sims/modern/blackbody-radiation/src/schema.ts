@@ -333,11 +333,11 @@ export const blackbodyRadiationMessages = Object.freeze({
     ja: '短い波長の端では観測値は 0、古典論は無限大 — 二つの曲線は完全に食い違った',
     zh: '在短波一端，观测值为零，经典值却是无穷大 — 两条曲线彻底分道扬镳',
     ar: 'عند طرف الأطوال الموجية القصيرة تكون القيمة المرصودة صفرًا والقيمة الكلاسيكية لا نهائية — افترق المنحنيان تمامًا',
-    es: 'En el extremo de onda corta, el valor observado es cero y el clásico es infinito — las curvas se han separado por completo',
+    es: 'En el extremo de longitudes de onda cortas, el valor observado es cero y el clásico es infinito — las curvas se han separado por completo',
     fr: 'À l’extrémité des courtes longueurs d’onde, la valeur observée est nulle et la valeur classique infinie — les courbes se sont complètement séparées',
     hi: 'छोटी तरंगदैर्घ्य वाले सिरे पर प्रेक्षित मान शून्य है और चिरसम्मत मान अनंत — दोनों वक्र पूरी तरह अलग हो चुके हैं',
     id: 'Di ujung panjang gelombang pendek, nilai teramati nol dan nilai klasik tak hingga — kedua kurva sudah berpisah sepenuhnya',
-    pt: 'Na extremidade de ondas curtas, o valor observado é zero e o clássico é infinito — as curvas se separaram por completo',
+    pt: 'Na extremidade de comprimentos de onda curtos, o valor observado é zero e o clássico é infinito — as curvas se separaram por completo',
   },
 } satisfies Record<string, LocalizedText>);
 

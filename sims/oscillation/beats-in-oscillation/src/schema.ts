@@ -96,7 +96,7 @@ export const beatsInOscillationMessages = Object.freeze({
     en: 'Beats in oscillation',
     ja: '振動のうなり',
     zh: '振动中的拍',
-    ar: 'الضربات في الاهتزاز',
+    ar: 'الضربات في التذبذب',
     es: 'Pulsaciones en la oscilación',
     fr: 'Battements dans une oscillation',
     hi: 'दोलन में विस्पंद',

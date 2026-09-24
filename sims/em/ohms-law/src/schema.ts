@@ -116,7 +116,7 @@ export const FADE = 0.6;
 
 export const ohmsLawMessages = Object.freeze({
   'label.title': { ko: '옴 법칙', en: "Ohm's law", ja: 'オームの法則', zh: '欧姆定律', ar: 'قانون أوم', es: 'Ley de Ohm', fr: 'Loi d’Ohm', hi: 'ओम का नियम', id: 'Hukum Ohm', pt: 'Lei de Ohm' },
-  'label.operation': { ko: '전압·전류·저항', en: 'Voltage, current and resistance', ja: '電圧、電流、抵抗', zh: '电压、电流与电阻', ar: 'الجهد والتيار والمقاومة', es: 'Tensión, corriente y resistencia', fr: 'Tension, courant et résistance', hi: 'वोल्टता, धारा और प्रतिरोध', id: 'Tegangan, arus, dan hambatan', pt: 'Tensão, corrente e resistência' },
+  'label.operation': { ko: '전압·전류·저항', en: 'Voltage, current and resistance', ja: '電圧、電流、抵抗', zh: '电压、电流与电阻', ar: 'الجهد والتيار والمقاومة', es: 'Voltaje, corriente y resistencia', fr: 'Tension, courant et résistance', hi: 'वोल्टता, धारा और प्रतिरोध', id: 'Tegangan, arus, dan hambatan', pt: 'Tensão, corrente e resistência' },
   'label.stage': { ko: '두 저항', en: 'Two resistors', ja: '二つの抵抗', zh: '两个电阻', ar: 'مقاومتان', es: 'Dos resistencias', fr: 'Deux résistances', hi: 'दो प्रतिरोध', id: 'Dua hambatan', pt: 'Dois resistores' },
   'label.view': { ko: '회로와 I–V 평면', en: 'Circuits and the I–V plane', ja: '回路と I–V 平面', zh: '电路与 I–V 平面', ar: 'الدوائر ومستوى I–V', es: 'Circuitos y el plano I–V', fr: 'Les circuits et le plan I–V', hi: 'परिपथ और I–V तल', id: 'Rangkaian dan bidang I–V', pt: 'Circuitos e o plano I–V' },
   /** 값이 끼는 이름표 — 단위 기호는 표식이지만 값이 끼므로 문안 키로 둔다 (C1). */
@@ -182,7 +182,7 @@ export const ohmsLawMessages = Object.freeze({
     ja: '同じ電圧でも {r} Ω には電流が少ししか流れないので、その直線はより緩やかになる',
     zh: '在相同电压下，流过 {r} Ω 的电流更小，所以它的直线更平',
     ar: 'عند الجهد نفسه يمر عبر {r} Ω تيار أقل، فيكون خطها أقل انحدارًا',
-    es: 'Con la misma tensión, por {r} Ω pasa menos corriente, así que su recta queda más tendida',
+    es: 'Con el mismo voltaje, por {r} Ω circula menos corriente, así que su recta queda más tendida',
     fr: 'À tension égale, moins de courant traverse {r} Ω, donc sa droite est plus couchée',
     hi: 'समान वोल्टता पर {r} Ω से कम धारा बहती है, इसलिए उसकी रेखा अधिक सपाट है',
     id: 'Pada tegangan yang sama, arus yang melalui {r} Ω lebih kecil, sehingga garisnya lebih landai',

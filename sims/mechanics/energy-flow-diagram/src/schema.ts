@@ -96,11 +96,11 @@ export const energyFlowDiagramMessages = Object.freeze({
     id: 'Ke mana energi pergi, ditunjukkan oleh tebal cabang',
     pt: 'Para onde vai a energia, mostrado pela espessura dos ramos',
   },
-  'label.stage': { ko: '석탄에서 전구까지', en: 'From coal to bulb', ja: '石炭から電球まで', zh: '从煤到灯泡', ar: 'من الفحم إلى المصباح', es: 'Del carbón a la bombilla', fr: 'Du charbon à l’ampoule', hi: 'कोयले से बल्ब तक', id: 'Dari batu bara ke bola lampu', pt: 'Do carvão à lâmpada' },
-  'label.view': { ko: '흐름도', en: 'Flow', ja: '流れ図', zh: '流向图', ar: 'التدفق', es: 'Flujo', fr: 'Flux', hi: 'प्रवाह', id: 'Aliran', pt: 'Fluxo' },
+  'label.stage': { ko: '석탄에서 전구까지', en: 'From coal to bulb', ja: '石炭から電球まで', zh: '从煤到灯泡', ar: 'من الفحم إلى المصباح', es: 'Del carbón a la bombilla', fr: 'Du charbon à l’ampoule', hi: 'कोयले से बल्ब तक', id: 'Dari batu bara ke lampu', pt: 'Do carvão à lâmpada' },
+  'label.view': { ko: '흐름도', en: 'Flow', ja: '流れ', zh: '流向图', ar: 'التدفق', es: 'Flujo', fr: 'Flux', hi: 'प्रवाह', id: 'Aliran', pt: 'Fluxo' },
   'stage.plant': { ko: '발전소', en: 'Power plant', ja: '発電所', zh: '发电厂', ar: 'محطة الكهرباء', es: 'Central eléctrica', fr: 'Centrale électrique', hi: 'बिजलीघर', id: 'Pembangkit listrik', pt: 'Usina elétrica' },
   'stage.line': { ko: '송전선', en: 'Power line', ja: '送電線', zh: '输电线', ar: 'خط النقل', es: 'Línea eléctrica', fr: 'Ligne électrique', hi: 'पारेषण लाइन', id: 'Saluran transmisi', pt: 'Linha de transmissão' },
-  'stage.bulb': { ko: '전구', en: 'Bulb', ja: '電球', zh: '灯泡', ar: 'المصباح', es: 'Bombilla', fr: 'Ampoule', hi: 'बल्ब', id: 'Bola lampu', pt: 'Lâmpada' },
+  'stage.bulb': { ko: '전구', en: 'Bulb', ja: '電球', zh: '灯泡', ar: 'مصباح', es: 'Bombilla', fr: 'Ampoule', hi: 'बल्ब', id: 'Lampu', pt: 'Lâmpada' },
   /** 출발점. 두 줄로 쌓는다. */
   'value.source': { ko: '석탄\n{amount}', en: 'Coal\n{amount}', ja: '石炭\n{amount}', zh: '煤\n{amount}', ar: 'الفحم\n{amount}', es: 'Carbón\n{amount}', fr: 'Charbon\n{amount}', hi: 'कोयला\n{amount}', id: 'Batu bara\n{amount}', pt: 'Carvão\n{amount}' },
   'value.heat': { ko: '열 {n}', en: 'Heat {n}', ja: '熱 {n}', zh: '热 {n}', ar: 'حرارة {n}', es: 'Calor {n}', fr: 'Chaleur {n}', hi: 'ऊष्मा {n}', id: 'Kalor {n}', pt: 'Calor {n}' },
@@ -116,7 +116,7 @@ export const energyFlowDiagramMessages = Object.freeze({
     es: 'De 100 unidades de energía del carbón, {light} llega a ser luz; las otras {rest} se escapan como calor en la central, la línea y la bombilla, una tras otra.',
     fr: 'Sur 100 unités d’énergie du charbon, {light} devient de la lumière ; les {rest} autres s’échappent en chaleur à la centrale, dans la ligne et dans l’ampoule, l’une après l’autre.',
     hi: 'कोयले की ऊर्जा की 100 इकाइयों में से {light} प्रकाश तक पहुँचती है; बाकी {rest} बिजलीघर, लाइन और बल्ब पर एक के बाद एक ऊष्मा बनकर निकल जाती है।',
-    id: 'Dari 100 satuan energi batu bara, {light} sampai menjadi cahaya; {rest} sisanya bocor sebagai kalor di pembangkit, saluran, dan bola lampu, satu demi satu.',
+    id: 'Dari 100 satuan energi batu bara, {light} sampai menjadi cahaya; {rest} sisanya bocor sebagai kalor di pembangkit, saluran, dan lampu, satu demi satu.',
     pt: 'De 100 unidades de energia do carvão, {light} chega à luz; as outras {rest} escapam como calor na usina, na linha e na lâmpada, uma após a outra.',
   },
 } satisfies Record<string, LocalizedText>);

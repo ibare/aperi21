@@ -144,7 +144,7 @@ export const inclinedPlaneMessages = Object.freeze({
 
     en: 'Slope angle',
 
-    ja: '斜面の傾き',
+    ja: '斜面の角度',
 
     zh: '斜面倾角',
 

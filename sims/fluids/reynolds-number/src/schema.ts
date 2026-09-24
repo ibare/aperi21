@@ -136,7 +136,7 @@ export const reynoldsNumberMessages = Object.freeze({
     es: 'Tinte',
     fr: 'Colorant',
     hi: 'रंजक',
-    id: 'Pewarna',
+    id: 'Zat warna',
     pt: 'Corante',
   },
   /** 관 왼쪽 이름표 — 굵기 · 빠르기의 배수. 수식 표기라 번역하지 않는다 (C1 판정 3). */

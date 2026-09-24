@@ -180,7 +180,7 @@ export const measurementCollapseMessages = Object.freeze({
     ja: '測った瞬間、結果は1か所だ',
     zh: '测量的一瞬间，结果只是一个位置',
     ar: 'لحظة القياس، تكون النتيجة موضعًا واحدًا',
-    es: 'En el momento de medirla, el resultado es un solo punto',
+    es: 'En el instante de medirla, el resultado es un solo punto',
     fr: 'Au moment de la mesure, le résultat est un seul point',
     hi: 'मापते ही परिणाम एक ही जगह आता है',
     id: 'Begitu diukur, hasilnya satu titik',

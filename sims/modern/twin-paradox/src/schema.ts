@@ -109,10 +109,10 @@ export const twinParadoxMessages = Object.freeze({
   'label.view': {
     ko: '지구 틀의 시공간 도표',
     en: 'Spacetime diagram in Earth’s frame',
-    ja: '地球の系での時空図',
+    ja: '地球の座標系での時空図',
     zh: '地球参考系中的时空图',
     ar: 'مخطط الزمكان في إطار الأرض',
-    es: 'Diagrama espaciotemporal en el sistema de la Tierra',
+    es: 'Diagrama espaciotemporal en el sistema de referencia de la Tierra',
     fr: 'Diagramme d’espace-temps dans le référentiel de la Terre',
     hi: 'पृथ्वी के निर्देश तंत्र में दिक्काल आरेख',
     id: 'Diagram ruang-waktu dalam kerangka acuan Bumi',
@@ -220,7 +220,7 @@ export const twinParadoxMessages = Object.freeze({
   'caption.turn': {
     ko: '돌아서는 쪽은 여행자뿐 — 틀을 바꾸는 순간 ‘지금’ 선이 돌아 지구 세계선의 한 토막을 건너뛴다',
     en: 'Only the traveler turns — as it switches frames, its ‘now’ swings and skips a whole stretch of Earth’s worldline',
-    ja: '向きを変えるのは旅行者だけ — 系を乗り換える瞬間、「今」の線が回って地球の世界線の一区間を飛び越える',
+    ja: '向きを変えるのは旅行者だけ — 座標系を乗り換える瞬間、「今」の線が回って地球の世界線の一区間を飛び越える',
     zh: '只有旅行者掉头 — 在切换参考系的瞬间，它的“现在”线一转，跳过地球世界线的一整段',
     ar: 'المسافر وحده يستدير — لحظة تبديله الإطار يدور خط «الآن» عنده ويقفز فوق قطعة كاملة من خط عالم الأرض',
     es: 'Solo el viajero da la vuelta — al cambiar de sistema, su ‘ahora’ gira y se salta todo un tramo de la línea de universo de la Tierra',

@@ -109,7 +109,7 @@ export const keplersFirstLawMessages = Object.freeze({
   'label.view': {
     ko: '두 초점',
     en: 'Two foci',
-    ja: '2つの焦点',
+    ja: '二つの焦点',
     zh: '两个焦点',
     ar: 'البؤرتان',
     es: 'Dos focos',
@@ -138,7 +138,7 @@ export const keplersFirstLawMessages = Object.freeze({
     ar: 'البؤرة الفارغة',
     es: 'foco vacío',
     fr: 'foyer vide',
-    hi: 'खाली नाभि',
+    hi: 'रिक्त नाभि',
     id: 'fokus kosong',
     pt: 'foco vazio',
   },

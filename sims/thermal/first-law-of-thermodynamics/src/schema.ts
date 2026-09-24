@@ -169,8 +169,8 @@ export const firstLawOfThermodynamicsMessages = Object.freeze({
   'caption.free.heat': {
     ko: '아래에서 열 알갱이 {grains}개를 넣는다 — 기체에 남는 것과 피스톤으로 가는 것이 갈린다',
     en: 'Feeding in {grains} grains of heat — some stay in the gas, some go to the piston',
-    ja: '下から熱の粒を {grains} 個入れる — 気体に残るものとピストンへ行くものに分かれる',
-    zh: '从下方送入 {grains} 颗热量颗粒 — 一部分留在气体中，一部分去推活塞',
+    ja: '熱の粒を {grains} 個入れる — 気体に残るものとピストンへ行くものに分かれる',
+    zh: '送入 {grains} 颗热量颗粒 — 一部分留在气体中，一部分去推活塞',
     ar: 'تُدخَل {grains} حبيبات من الحرارة — بعضها يبقى في الغاز وبعضها يذهب إلى المكبس',
     es: 'Entran {grains} granos de calor — unos se quedan en el gas y otros van al pistón',
     fr: 'On fournit {grains} grains de chaleur — certains restent dans le gaz, d’autres vont au piston',

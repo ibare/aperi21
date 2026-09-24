@@ -203,8 +203,8 @@ export const earthRevolutionConstellationsMessages = Object.freeze({
     es: 'ocultas por la luz solar',
     fr: 'noyées dans la lumière du Soleil',
     hi: 'सूर्य के प्रकाश में छिपे',
-    id: 'tenggelam dalam cahaya Matahari',
-    pt: 'ofuscadas pela luz do Sol',
+    id: 'tenggelam dalam sinar Matahari',
+    pt: 'ofuscadas pela luz solar',
   },
   'label.sky.spring': {
     ko: '봄 · 한밤의 남쪽 하늘',

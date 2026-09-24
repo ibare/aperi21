@@ -113,7 +113,7 @@ export const maxwellsEquationsMessages = Object.freeze({
     zh: '从斜上方看',
     ar: 'من الأعلى بزاوية مائلة',
     es: 'Desde arriba, en ángulo',
-    fr: 'D’en haut, en biais',
+    fr: 'Vu de dessus, en biais',
     hi: 'ऊपर से, तिरछे कोण से',
     id: 'Dari atas, miring',
     pt: 'De cima, em ângulo',

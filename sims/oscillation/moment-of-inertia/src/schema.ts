@@ -116,7 +116,7 @@ export const momentOfInertiaMessages = Object.freeze({
     ar: 'عجلتان',
     es: 'Dos ruedas',
     fr: 'Deux roues',
-    hi: 'दो पहिये',
+    hi: 'दो पहिए',
     id: 'Dua roda',
     pt: 'Duas rodas',
   },
