@@ -1,0 +1,13 @@
+{
+  "ui.angleDial.label": "कोण",
+  "ui.envToggles.label": "परिवेश",
+  "ui.nodeView.error": "[bundle] {message}",
+  "ui.nodeView.loading": "[bundle] लोड हो रहा है…",
+  "ui.paramPanel.reset": "रीसेट",
+  "ui.paramPanel.title": "पैरामीटर",
+  "ui.pinballLauncher.label": "लॉन्चर · {power}%",
+  "ui.placement.label": "रखें",
+  "ui.resetButtons.camera": "कैमरा",
+  "ui.resetButtons.state": "रीसेट",
+  "ui.stageTabs.label": "चरण"
+}

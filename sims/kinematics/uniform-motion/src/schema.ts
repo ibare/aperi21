@@ -77,13 +77,54 @@ export const SPEED_DEFAULT = 0.88;
 // ------------------------------------------------------------------------
 
 export const uniformMotionMessages = Object.freeze({
-  'label.title': { ko: '등속 운동', en: 'Uniform motion' },
+  'label.title': {
+    ko: '등속 운동',
+    en: 'Uniform motion',
+    ja: '等速運動',
+    zh: '匀速运动',
+    ar: 'الحركة المنتظمة',
+    es: 'Movimiento uniforme',
+    fr: 'Mouvement uniforme',
+    hi: 'एकसमान गति',
+    id: 'Gerak lurus beraturan',
+    pt: 'Movimento uniforme',
+  },
   'label.operation': {
     ko: '같은 시간에 같은 간격으로 자리를 옮긴다',
     en: 'Equal intervals in equal times',
+    ja: '等しい時間に等しい間隔',
+    zh: '相等时间内，相等间隔',
+    ar: 'مسافات متساوية في أزمنة متساوية',
+    es: 'Intervalos iguales en tiempos iguales',
+    fr: 'Des intervalles égaux en des temps égaux',
+    hi: 'समान समय में समान अंतराल',
+    id: 'Jarak sama dalam selang waktu sama',
+    pt: 'Intervalos iguais em tempos iguais',
   },
-  'label.stage': { ko: '바닥', en: 'Ground' },
-  'label.view': { ko: '자국', en: 'Marks' },
+  'label.stage': {
+    ko: '바닥',
+    en: 'Ground',
+    ja: '地面',
+    zh: '地面',
+    ar: 'الأرض',
+    es: 'Suelo',
+    fr: 'Sol',
+    hi: 'ज़मीन',
+    id: 'Tanah',
+    pt: 'Chão',
+  },
+  'label.view': {
+    ko: '자국',
+    en: 'Marks',
+    ja: '跡',
+    zh: '痕迹',
+    ar: 'العلامات',
+    es: 'Marcas',
+    fr: 'Traces',
+    hi: 'निशान',
+    id: 'Jejak',
+    pt: 'Marcas',
+  },
   /**
    * 한 문장으로 고정한다. 빠르기를 바꾸든 말든 화면이 말하는 것은 하나다
    * (원본 NOTES (d) 「누가 강제하면 안 되는 것」).
@@ -91,9 +132,28 @@ export const uniformMotionMessages = Object.freeze({
   'caption.main': {
     ko: '1초마다 자국 하나. 자국과 자국 사이가 모두 같다.',
     en: 'One mark every second — every gap the same.',
+    ja: '1秒ごとに跡が1つ — 間隔はすべて同じ。',
+    zh: '每秒一个痕迹——每个间隔都相同。',
+    ar: 'علامة واحدة كل ثانية — وكل الفجوات متساوية.',
+    es: 'Una marca cada segundo — todos los espacios iguales.',
+    fr: 'Une trace chaque seconde — tous les écarts égaux.',
+    hi: 'हर सेकंड एक निशान — हर अंतराल बराबर।',
+    id: 'Satu jejak tiap detik — setiap jarak sama.',
+    pt: 'Uma marca a cada segundo — todos os espaços iguais.',
   },
   /** 원본은 슬라이더 양옆에 「느리게 ↔ 빠르게」를 두었다. 코어 슬라이더는 이름표가 하나다. */
-  'control.speed': { ko: '빠르기', en: 'Speed' },
+  'control.speed': {
+    ko: '빠르기',
+    en: 'Speed',
+    ja: '速さ',
+    zh: '速度',
+    ar: 'السرعة',
+    es: 'Rapidez',
+    fr: 'Vitesse',
+    hi: 'चाल',
+    id: 'Kelajuan',
+    pt: 'Velocidade',
+  },
 }) satisfies Record<string, LocalizedText>;
 
 export type UniformMotionMessageKey = keyof typeof uniformMotionMessages;

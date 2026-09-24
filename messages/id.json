@@ -1,0 +1,13 @@
+{
+  "ui.angleDial.label": "SUDUT",
+  "ui.envToggles.label": "lingkungan",
+  "ui.nodeView.error": "[bundle] {message}",
+  "ui.nodeView.loading": "[bundle] memuat…",
+  "ui.paramPanel.reset": "atur ulang",
+  "ui.paramPanel.title": "parameter",
+  "ui.pinballLauncher.label": "PELONTAR · {power}%",
+  "ui.placement.label": "TEMPATKAN",
+  "ui.resetButtons.camera": "Kamera",
+  "ui.resetButtons.state": "Atur ulang",
+  "ui.stageTabs.label": "tahap"
+}

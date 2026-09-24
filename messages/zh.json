@@ -1,0 +1,13 @@
+{
+  "ui.angleDial.label": "角度",
+  "ui.envToggles.label": "环境",
+  "ui.nodeView.error": "[bundle] {message}",
+  "ui.nodeView.loading": "[bundle] 加载中…",
+  "ui.paramPanel.reset": "重置",
+  "ui.paramPanel.title": "参数",
+  "ui.pinballLauncher.label": "发射器 · {power}%",
+  "ui.placement.label": "放置",
+  "ui.resetButtons.camera": "相机",
+  "ui.resetButtons.state": "重置",
+  "ui.stageTabs.label": "阶段"
+}

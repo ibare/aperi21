@@ -136,6 +136,9 @@ const jsBundle = {
       target: 'es2022',
       sourceMap: true,
       tsconfig: '../../tsconfig.base.json',
+      // 비 ASCII 문자열을 \uXXXX 로 풀지 않는다 — 풀면 언어별 카탈로그와 열 언어를 담은
+      // 조각 chunk 가 부푼다 (FACET `0782fa6`: 한국어 카탈로그 76KB → 110KB).
+      charset: 'utf8',
       // 타입체크는 pnpm typecheck (tsc --noEmit) 가 담당. 여기는 transpile only.
     }),
     VISUALIZE &&

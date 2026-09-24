@@ -10,5 +10,13 @@ import type { Aperi21Catalog } from '../catalog-types.js';
 /** 언어 → 그 언어 카탈로그 모듈. 경로가 정적 리터럴이어야 번들러가 chunk 로 가른다. */
 export const CATALOG_LOADERS: Record<string, () => Promise<{ CATALOG: Aperi21Catalog }>> = {
   "en": () => import('./en.generated.js'),
+  "ar": () => import('./ar.generated.js'),
+  "es": () => import('./es.generated.js'),
+  "fr": () => import('./fr.generated.js'),
+  "hi": () => import('./hi.generated.js'),
+  "id": () => import('./id.generated.js'),
+  "ja": () => import('./ja.generated.js'),
   "ko": () => import('./ko.generated.js'),
+  "pt": () => import('./pt.generated.js'),
+  "zh": () => import('./zh.generated.js'),
 };

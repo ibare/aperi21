@@ -1,0 +1,13 @@
+{
+  "ui.angleDial.label": "الزاوية",
+  "ui.envToggles.label": "البيئة",
+  "ui.nodeView.error": "[bundle] {message}",
+  "ui.nodeView.loading": "[bundle] جارٍ التحميل…",
+  "ui.paramPanel.reset": "إعادة الضبط",
+  "ui.paramPanel.title": "المعاملات",
+  "ui.pinballLauncher.label": "المُطلِق · {power}%",
+  "ui.placement.label": "وضع",
+  "ui.resetButtons.camera": "الكاميرا",
+  "ui.resetButtons.state": "إعادة الضبط",
+  "ui.stageTabs.label": "المرحلة"
+}

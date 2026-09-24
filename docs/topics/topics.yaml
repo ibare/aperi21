@@ -15,27 +15,27 @@
 # 호스트 카탈로그의 분야 원본이기도 하다 — 이름은 언어 → 문자열 (pnpm catalog:gen).
 domains:
   - id: kinematics
-    name: { ko: 운동학, en: "Kinematics" }
+    name: { ko: 운동학, en: "Kinematics", ja: "運動学", zh: "运动学", ar: "علم الحركة", es: "Cinemática", fr: "Cinématique", hi: "गतिकी", id: "Kinematika", pt: "Cinemática" }
   - id: newtonian-mechanics
-    name: { ko: 뉴턴 역학, en: "Newtonian Mechanics" }
+    name: { ko: 뉴턴 역학, en: "Newtonian Mechanics", ja: "ニュートン力学", zh: "牛顿力学", ar: "الميكانيكا النيوتونية", es: "Mecánica newtoniana", fr: "Mécanique newtonienne", hi: "न्यूटनी यांत्रिकी", id: "Mekanika Newton", pt: "Mecânica newtoniana" }
   - id: energy-momentum
-    name: { ko: 일·에너지·운동량, en: "Work, Energy and Momentum" }
+    name: { ko: 일·에너지·운동량, en: "Work, Energy and Momentum", ja: "仕事・エネルギー・運動量", zh: "功、能量与动量", ar: "الشغل والطاقة وكمية الحركة", es: "Trabajo, energía y momento lineal", fr: "Travail, énergie et quantité de mouvement", hi: "कार्य, ऊर्जा और संवेग", id: "Usaha, Energi, dan Momentum", pt: "Trabalho, energia e momento linear" }
   - id: rotation-oscillation
-    name: { ko: 회전과 진동, en: "Rotation and Oscillation" }
+    name: { ko: 회전과 진동, en: "Rotation and Oscillation", ja: "回転と振動", zh: "转动与振动", ar: "الدوران والاهتزاز", es: "Rotación y oscilación", fr: "Rotation et oscillations", hi: "घूर्णन और दोलन", id: "Rotasi dan Osilasi", pt: "Rotação e oscilação" }
   - id: gravitation
-    name: { ko: 중력과 천체, en: "Gravitation and Astronomy" }
+    name: { ko: 중력과 천체, en: "Gravitation and Astronomy", ja: "重力と天文学", zh: "引力与天文", ar: "الجاذبية وعلم الفلك", es: "Gravitación y astronomía", fr: "Gravitation et astronomie", hi: "गुरुत्वाकर्षण और खगोलिकी", id: "Gravitasi dan Astronomi", pt: "Gravitação e astronomia" }
   - id: fluids
-    name: { ko: 유체, en: "Fluids" }
+    name: { ko: 유체, en: "Fluids", ja: "流体", zh: "流体", ar: "الموائع", es: "Fluidos", fr: "Fluides", hi: "तरल", id: "Fluida", pt: "Fluidos" }
   - id: thermodynamics
-    name: { ko: 열과 통계, en: "Thermal and Statistical Physics" }
+    name: { ko: 열과 통계, en: "Thermal and Statistical Physics", ja: "熱・統計物理", zh: "热学与统计物理", ar: "الفيزياء الحرارية والإحصائية", es: "Física térmica y estadística", fr: "Physique thermique et statistique", hi: "ऊष्मीय और सांख्यिकीय भौतिकी", id: "Fisika Termal dan Statistik", pt: "Física térmica e estatística" }
   - id: waves-acoustics
-    name: { ko: 파동과 음향, en: "Waves and Acoustics" }
+    name: { ko: 파동과 음향, en: "Waves and Acoustics", ja: "波動と音響", zh: "波动与声学", ar: "الموجات والصوتيات", es: "Ondas y acústica", fr: "Ondes et acoustique", hi: "तरंगें और ध्वनिकी", id: "Gelombang dan Akustik", pt: "Ondas e acústica" }
   - id: optics
-    name: { ko: 광학, en: "Optics" }
+    name: { ko: 광학, en: "Optics", ja: "光学", zh: "光学", ar: "البصريات", es: "Óptica", fr: "Optique", hi: "प्रकाशिकी", id: "Optika", pt: "Óptica" }
   - id: electromagnetism
-    name: { ko: 전자기, en: "Electromagnetism" }
+    name: { ko: 전자기, en: "Electromagnetism", ja: "電磁気学", zh: "电磁学", ar: "الكهرومغناطيسية", es: "Electromagnetismo", fr: "Électromagnétisme", hi: "विद्युतचुंबकत्व", id: "Elektromagnetisme", pt: "Eletromagnetismo" }
   - id: modern-physics
-    name: { ko: 현대물리, en: "Modern Physics" }
+    name: { ko: 현대물리, en: "Modern Physics", ja: "現代物理学", zh: "近代物理", ar: "الفيزياء الحديثة", es: "Física moderna", fr: "Physique moderne", hi: "आधुनिक भौतिकी", id: "Fisika Modern", pt: "Física moderna" }
 
 topics:
   # ── 운동학

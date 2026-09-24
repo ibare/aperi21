@@ -1,0 +1,13 @@
+{
+  "ui.angleDial.label": "角度",
+  "ui.envToggles.label": "環境",
+  "ui.nodeView.error": "[bundle] {message}",
+  "ui.nodeView.loading": "[bundle] 読み込み中…",
+  "ui.paramPanel.reset": "リセット",
+  "ui.paramPanel.title": "パラメータ",
+  "ui.pinballLauncher.label": "発射台 · {power}%",
+  "ui.placement.label": "配置",
+  "ui.resetButtons.camera": "カメラ",
+  "ui.resetButtons.state": "リセット",
+  "ui.stageTabs.label": "ステージ"
+}
