@@ -1,5 +1,5 @@
 // ========================================================================
-// pendulum-isochronism — Scene Graph 선언
+// pendulum-amplitude-dependence — Scene Graph 선언
 // ========================================================================
 // 그리지 않는다, 선언한다.
 //
@@ -38,7 +38,7 @@ import {
   SCENE_BOUNDS,
   text,
 } from './schema';
-import type { PendulumIsochronismState } from './state';
+import type { PendulumAmplitudeDependenceState } from './state';
 
 /** 기준선 — 옅은 점선 하나(원본 1 px · 불투명도 0.18). */
 const BASELINE_WIDTH_PX = 1;
@@ -70,7 +70,7 @@ const BAND_ALPHA = 0.88;
 const LABEL_FONT_PX = 11;
 
 export function scene(params: {
-  state: PendulumIsochronismState;
+  state: PendulumAmplitudeDependenceState;
   view: ViewDef;
   stage: StageDef;
   environments: EnvironmentDef[];

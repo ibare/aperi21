@@ -2910,12 +2910,12 @@ export function registerGeneratedBundles(): void {
     return registerBundle("aperi21:parallel-axis-theorem", m.parallelAxisTheoremBundle, caps.capabilities);
   });
 
-  registerBundleLoader("aperi21:pendulum-isochronism", async () => {
+  registerBundleLoader("aperi21:pendulum-amplitude-dependence", async () => {
     const [m, caps] = await Promise.all([
-      import("@aperi21/sim-pendulum-isochronism"),
-      import("./capabilities/oscillation/pendulum-isochronism.generated.js"),
+      import("@aperi21/sim-pendulum-amplitude-dependence"),
+      import("./capabilities/oscillation/pendulum-amplitude-dependence.generated.js"),
     ]);
-    return registerBundle("aperi21:pendulum-isochronism", m.pendulumIsochronismBundle, caps.capabilities);
+    return registerBundle("aperi21:pendulum-amplitude-dependence", m.pendulumAmplitudeDependenceBundle, caps.capabilities);
   });
 
   registerBundleLoader("aperi21:phase-space", async () => {

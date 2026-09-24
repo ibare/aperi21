@@ -1,5 +1,5 @@
 // ========================================================================
-// pendulum-isochronism — 런타임 상태
+// pendulum-amplitude-dependence — 런타임 상태
 // ========================================================================
 
 import type { EnvironmentDef, StageDef } from '@aperi21/schema';
@@ -27,7 +27,7 @@ export interface PendulumBob {
   readonly count: number;
 }
 
-export interface PendulumIsochronismState {
+export interface PendulumAmplitudeDependenceState {
   /** 조각의 시계(초). 프리롤이 여기까지 미리 굴려 둔다. */
   readonly t: number;
   /** 슬라이더가 미는 진폭(도). */
@@ -50,7 +50,7 @@ export function initialState(_params: {
   values: Record<string, number>;
   stage: StageDef;
   environments: EnvironmentDef[];
-}): PendulumIsochronismState {
+}): PendulumAmplitudeDependenceState {
   const amp = (AMP_DEFAULT_DEG * Math.PI) / 180;
   return {
     t: 0,

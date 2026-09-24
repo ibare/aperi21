@@ -1,5 +1,5 @@
 // ========================================================================
-// pendulum-isochronism — 선언
+// pendulum-amplitude-dependence — 선언
 // ========================================================================
 // 질문: 크게 흔들리는 진자는 더 먼 길을 가는데, 왜 작게 흔들리는 진자와 같이
 // 돌아오는가.
@@ -7,13 +7,13 @@
 // 더 먼 길을 더 빠르게 지나기 때문이다. 그래서 같은 순간 바닥에서 다시 만난다.
 // 다만 이것은 **작은 흔들림에서만** 성립하는 근사다.
 //
-// 원본: tasks/piece-lab/pendulum-isochronism/ (자유 구현)
+// 원본: tasks/piece-lab/pendulum-amplitude-dependence/ (자유 구현)
 // ========================================================================
 
 import type { BundleSchema, LocalizedText, Vec2 } from '@aperi21/schema';
 
-/** 등록 키 `aperi21:pendulum-isochronism` 와 문자 그대로 일치한다 (C4). */
-export const PENDULUM_ISOCHRONISM_ID = 'pendulum-isochronism';
+/** 등록 키 `aperi21:pendulum-amplitude-dependence` 와 문자 그대로 일치한다 (C4). */
+export const PENDULUM_AMPLITUDE_DEPENDENCE_ID = 'pendulum-amplitude-dependence';
 
 // ------------------------------------------------------------------------
 // 원본의 논리 좌표
@@ -139,11 +139,11 @@ export const SCENE_BOUNDS = {
 // 문안
 // ------------------------------------------------------------------------
 
-export const pendulumIsochronismMessages = Object.freeze({
+export const pendulumAmplitudeDependenceMessages = Object.freeze({
   'label.title': { ko: '진자의 등시성', en: 'Isochronism of the pendulum' },
   'label.operation': {
-    ko: '폭이 달라도 같은 박자로 돌아온다',
-    en: 'Different amplitudes, same beat',
+    ko: '흔들림 크기를 끌어 다섯 진자의 폭을 함께 키운다',
+    en: 'Drag the swing size to widen all five together',
   },
   'label.stage': { ko: '진자', en: 'Pendulums' },
   'label.view': { ko: '다섯 진자', en: 'Five pendulums' },
@@ -166,15 +166,15 @@ export const pendulumIsochronismMessages = Object.freeze({
   },
 } satisfies Record<string, LocalizedText>);
 
-export type PendulumIsochronismMessageKey = keyof typeof pendulumIsochronismMessages;
+export type PendulumAmplitudeDependenceMessageKey = keyof typeof pendulumAmplitudeDependenceMessages;
 
 /** 선언에서 문안을 꺼낸다. 호출부에 문자열 리터럴을 두지 않기 위한 유일한 통로. */
-export function text(key: PendulumIsochronismMessageKey): LocalizedText {
-  return pendulumIsochronismMessages[key];
+export function text(key: PendulumAmplitudeDependenceMessageKey): LocalizedText {
+  return pendulumAmplitudeDependenceMessages[key];
 }
 
 /** 캡션 슬롯이 부르는 문안 키. 없는 키를 쓰면 여기서 타입이 막는다. */
-function key(k: PendulumIsochronismMessageKey): string {
+function key(k: PendulumAmplitudeDependenceMessageKey): string {
   return k;
 }
 
@@ -182,8 +182,8 @@ function key(k: PendulumIsochronismMessageKey): string {
 // BundleSchema
 // ------------------------------------------------------------------------
 
-export const pendulumIsochronismSchema: BundleSchema = {
-  id: PENDULUM_ISOCHRONISM_ID,
+export const pendulumAmplitudeDependenceSchema: BundleSchema = {
+  id: PENDULUM_AMPLITUDE_DEPENDENCE_ID,
   label: text('label.title'),
   category: 'oscillation',
   operation: text('label.operation'),
@@ -236,5 +236,5 @@ export const pendulumIsochronismSchema: BundleSchema = {
   // 그리드도 카메라 버튼도 없다 (기본값). 이 그림에서 잴 것은 거리가 아니라
   // 획끼리의 정렬이다.
 
-  messages: pendulumIsochronismMessages,
+  messages: pendulumAmplitudeDependenceMessages,
 };

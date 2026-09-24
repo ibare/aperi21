@@ -23,7 +23,7 @@ export const G = 9.8;
  * 에너지 보존이 근사가 되어 주장 자체가 흔들린다 (`conservation-of-mechanical-energy` NOTES).
  *
  * 적분기를 고르는 것은 조각의 몫으로 남긴다 — 진자처럼 진폭이 시들면 안 되는
- * 물리는 velocity Verlet 이어야 한다 (`pendulum-isochronism` NOTES).
+ * 물리는 velocity Verlet 이어야 한다 (`pendulum-amplitude-dependence` NOTES).
  */
 export function speedFromDrop(drop: number, g: number = G): number {
   return Math.sqrt(2 * g * Math.max(0, drop));

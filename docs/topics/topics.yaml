@@ -864,7 +864,7 @@ topics:
     level: null
     curricula: []
     visualNote: 진폭을 키우면 주기가 조금씩 길어진다
-    sim: aperi21:pendulum-isochronism
+    sim: aperi21:pendulum-amplitude-dependence
     batch: 01-broad
   - id: damped-oscillation
     name: 감쇠 진동

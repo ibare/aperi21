@@ -110,7 +110,7 @@ export const SIM_DOMAINS: Record<string, string> = {
   "aperi21:mass-spring-system": "rotation-oscillation",
   "aperi21:simple-pendulum": "rotation-oscillation",
   "aperi21:physical-pendulum": "rotation-oscillation",
-  "aperi21:pendulum-isochronism": "rotation-oscillation",
+  "aperi21:pendulum-amplitude-dependence": "rotation-oscillation",
   "aperi21:damped-oscillation": "rotation-oscillation",
   "aperi21:damping-regimes": "rotation-oscillation",
   "aperi21:driven-oscillation": "rotation-oscillation",

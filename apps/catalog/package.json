@@ -26,7 +26,7 @@
     "@aperi21/sim-thermal-conduction": "workspace:*",
     "@aperi21/sim-newtons-first-law": "workspace:*",
     "@aperi21/sim-lenzs-law": "workspace:*",
-    "@aperi21/sim-pendulum-isochronism": "workspace:*",
+    "@aperi21/sim-pendulum-amplitude-dependence": "workspace:*",
     "@aperi21/sim-pressure-and-container-shape": "workspace:*",
     "@aperi21/sim-pressure-isotropy": "workspace:*",
     "@aperi21/sim-conservation-of-mechanical-energy": "workspace:*",

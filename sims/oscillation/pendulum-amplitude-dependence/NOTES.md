@@ -1,6 +1,6 @@
 # 진자의 등시성 — sim 노트
 
-원본: `tasks/piece-lab/pendulum-isochronism/` (자유 구현). 원본의 결정과 근거는 그쪽 `NOTES.md`.
+원본: `tasks/piece-lab/pendulum-amplitude-dependence/` (자유 구현). 원본의 결정과 근거는 그쪽 `NOTES.md`.
 이 파일은 sim 으로 옮긴 뒤 **달라진 것**과 **어휘 부족**을 적는다.
 
 ## 쓴 어휘
@@ -76,13 +76,13 @@
 
 ### 막힌 것 — 대조 스크린샷
 
-`apps/catalog` 의 카탈로그 데이터에 **id 가 `pendulum-isochronism` 인 주제가 없다.**
+`apps/catalog` 의 카탈로그 데이터에 **id 가 `pendulum-amplitude-dependence` 인 주제가 없다.**
 `scripts/piece-report.mts` 의 `simIdOf` 는 조각 id 와 같은 id 의 주제에서 `simId` 를 찾으므로
 `--sims` 를 줘도 sims 쪽 화면을 한 장도 찍지 못한다(원본 쪽 5장만 나온다). `catalog:gen` 과
 `catalog.json` 편집은 이 작업의 금지 목록이라 손대지 않았다.
 
 가장 가까운 주제는 `pendulum-amplitude-dependence`("진폭과 주기 — 큰 진폭에서 깨지는 등시성")
-이고 아직 `simId` 가 없다. 로더(`aperi21:pendulum-isochronism`)와 능력 목록은 이미 있으므로,
+이고 아직 `simId` 가 없다. 로더(`aperi21:pendulum-amplitude-dependence`)와 능력 목록은 이미 있으므로,
 주제에 `simId` 만 붙으면 그대로 열린다.
 
 ## 어휘 부족

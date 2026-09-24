@@ -284,7 +284,7 @@
     "@aperi21/sim-particle-in-a-box": "workspace:*",
     "@aperi21/sim-pascals-principle": "workspace:*",
     "@aperi21/sim-pauli-exclusion": "workspace:*",
-    "@aperi21/sim-pendulum-isochronism": "workspace:*",
+    "@aperi21/sim-pendulum-amplitude-dependence": "workspace:*",
     "@aperi21/sim-perfectly-inelastic-collision": "workspace:*",
     "@aperi21/sim-phase-diagram": "workspace:*",
     "@aperi21/sim-phase-in-ac-circuit": "workspace:*",

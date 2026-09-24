@@ -94,7 +94,7 @@
 
 같은 자리에 눈금 양 끝의 이름(`약`·`강`)을 둘 선언도 없다. 필요한 것: 값 표시를
 끄는 선언과 양끝 이름. `step`(눈금 간격)도 없어 정수 9 단은 `physics` 가
-`Math.round` 로 되돌려 쓴다 (`heldPath` 규약, `pendulum-isochronism` 선례).
+`Math.round` 로 되돌려 쓴다 (`heldPath` 규약, `pendulum-amplitude-dependence` 선례).
 
 ### 5. `Trace.size` 가 `tick` 에서만 월드 단위다
 

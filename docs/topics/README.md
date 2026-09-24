@@ -168,7 +168,7 @@ aperi21 은 글로벌 서비스가 임베딩하는 모듈이라, 최소 보장�
 
 **`id` 와 `sim` 의 문자열은 다를 수 있다.** `newtons-first-law` 의 조각은
 `aperi21:newtons-first-law` 이고, `pendulum-amplitude-dependence` 의 조각은
-`aperi21:pendulum-isochronism` 이다 — 조각이 **주제보다 좁은 주장**을 한다고 이름으로
+`aperi21:pendulum-amplitude-dependence` 이다 — 조각이 **주제보다 좁은 주장**을 한다고 이름으로
 말하는 자리다. 같은 표기 규약(kebab-case)을 쓸 뿐 같은 문자열이어야 하는 것은 아니다.
 
 **다만 낱말만 다른 것은 맞춘다.** 2026-09-23 에 셋을 주제 id 로 개명했다 —

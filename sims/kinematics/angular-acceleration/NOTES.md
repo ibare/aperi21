@@ -62,7 +62,7 @@
 
 **2. `Trace.size` 의 단위가 문서와 다르다.** 주석은 "자국 크기(화면 px)" 라고 하는데
 `shape: 'tick'` 만은 방향 벡터를 **월드 좌표에 더한 뒤** `toScreen` 하므로 실제 길이가
-`size × scale` 이다 (`dot`·`ring` 은 진짜 화면 px). `pendulum-isochronism` 도 이미
+`size × scale` 이다 (`dot`·`ring` 은 진짜 화면 px). `pendulum-amplitude-dependence` 도 이미
 `lengthFromPx(10)` 로 우회하고 있다. 여기서는 `0.18`(= 원본 18 px)을 월드로 넘겼다.
 셋 중 하나를 골라야 한다 — tick 을 화면 px 로 고치거나, 주석을 고치거나, `sizeWorld` 를
 따로 두거나.

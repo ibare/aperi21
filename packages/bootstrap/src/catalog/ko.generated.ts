@@ -123,7 +123,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:mass-spring-system","title":"용수철 진자","description":"질량과 탄성 계수가 정하는 주기","domain":"rotation-oscillation"},
     {"id":"aperi21:simple-pendulum","title":"단진자","description":"작은 진폭에서의 주기","domain":"rotation-oscillation"},
     {"id":"aperi21:physical-pendulum","title":"물리 진자","description":"크기가 있는 물체의 진동","domain":"rotation-oscillation"},
-    {"id":"aperi21:pendulum-isochronism","title":"진자의 등시성","description":"폭이 달라도 같은 박자로 돌아온다","domain":"rotation-oscillation"},
+    {"id":"aperi21:pendulum-amplitude-dependence","title":"진자의 등시성","description":"흔들림 크기를 끌어 다섯 진자의 폭을 함께 키운다","domain":"rotation-oscillation"},
     {"id":"aperi21:damped-oscillation","title":"감쇠 진동","description":"에너지가 빠져나가는 진동","domain":"rotation-oscillation"},
     {"id":"aperi21:damping-regimes","title":"감쇠의 세 양상","description":"부족·임계·과도 감쇠","domain":"rotation-oscillation"},
     {"id":"aperi21:driven-oscillation","title":"강제 진동","description":"외부 구동에 대한 응답","domain":"rotation-oscillation"},

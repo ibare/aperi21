@@ -89,7 +89,7 @@
 | `drag-force` | 속도의 1차·2차에 비례하는 저항 | 빨라질수록 속도 제곱에 비례하는 저항이 가파르게 불어난다 |
 | `projectile-in-wind` | 같은 발사라도 바람이 착지점을 옮기는 것 | 같은 발사, 다른 바람 |
 | `atwood-machine` | 두 추가 도르래로 연결된 계 | 두 추의 합이 같으면 차이가 가속도를 정한다 |
-| `pendulum-amplitude-dependence` | 큰 진폭에서 깨지는 등시성 | 폭이 달라도 같은 박자로 돌아온다 |
+| `pendulum-amplitude-dependence` | 큰 진폭에서 깨지는 등시성 | 흔들림 크기를 끌어 다섯 진자의 폭을 함께 키운다 |
 | `range-and-surface-gravity` | 같은 발사가 중력이 약한 곳에서 더 멀리 가는 것 | 같은 발사, 다른 중력 |
 | `apparent-brightness` | 같은 별도 거리에 따라 다르게 밝아 보이는 것 | 같은 빛이 넓은 면에 나뉜다 |
 | `hr-diagram` | 온도와 광도로 별을 늘어놓은 그림 | 무거운 별부터 주계열 띠를 떠난다 |

@@ -17,7 +17,7 @@ const STRING_ALPHA = 0.55;
 /**
  * Constraint 렌더러 — 잡아 두는 것. 매단 줄 · 단단한 막대 · 용수철 · 레일.
  *
- * 선언만 있고 렌더러가 없던 어휘다. 01-broad 의 `pendulum-isochronism`(같은 피벗에
+ * 선언만 있고 렌더러가 없던 어휘다. 01-broad 의 `pendulum-amplitude-dependence`(같은 피벗에
  * 겹쳐 매단 진자 다섯)이 이 자리를 밟아 구현했다. 진자 · 매단 추 · 용수철은 물리에서
  * 가장 흔한 그림인데 어휘가 비어 있었다.
  *

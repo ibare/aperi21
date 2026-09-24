@@ -1,5 +1,5 @@
 // ========================================================================
-// pendulum-isochronism — 순수 물리
+// pendulum-amplitude-dependence — 순수 물리
 // ========================================================================
 //
 // 소진폭 근사를 쓰지 않는다. θ = A cos(ωt) 로 그렸다면 다섯은 영원히 완벽하게
@@ -11,7 +11,7 @@
 
 import type { EnvironmentDef, StageDef, Vec2 } from '@aperi21/schema';
 import { AMP_RANGE, BAND_WINDOW, G_OVER_L, LAG_LIMIT, TRAIL_SPAN } from './schema';
-import type { PendulumBob, PendulumIsochronismState, TrailSample } from './state';
+import type { PendulumBob, PendulumAmplitudeDependenceState, TrailSample } from './state';
 
 export interface PendulumConstants {
   /** g/L. */
@@ -80,11 +80,11 @@ function advance(b: PendulumBob, dt: number, t: number, gOverL: number): Pendulu
  * 뒤 무엇으로 돌아갈지는 조각이 안다 (`ControllerInstance.heldPath`).
  */
 export function step(params: {
-  state: PendulumIsochronismState;
+  state: PendulumAmplitudeDependenceState;
   dt: number;
   stage: StageDef;
   environments: EnvironmentDef[];
-}): PendulumIsochronismState {
+}): PendulumAmplitudeDependenceState {
   const { state, dt, stage } = params;
   if (!(dt > 0)) return state;
   const c = readConstants(stage);

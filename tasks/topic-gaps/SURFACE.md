@@ -138,10 +138,10 @@
 
 ### T28 · `pendulum-amplitude-dependence`
 
-- 조각 — `aperi21:pendulum-isochronism` · `sims/oscillation/pendulum-isochronism`
+- 조각 — `aperi21:pendulum-amplitude-dependence` · `sims/oscillation/pendulum-amplitude-dependence`
 - 문안 8건
   - `label.title` — 진자의 등시성
-  - `label.operation` — 폭이 달라도 같은 박자로 돌아온다
+  - `label.operation` — 흔들림 크기를 끌어 다섯 진자의 폭을 함께 키운다
   - `label.stage` — 진자
   - `label.view` — 다섯 진자
   - `label.amplitude` — {deg}°

@@ -18,7 +18,7 @@ import type { Aperi21ConceptSource } from '../concept-types.js';
 export const pendulumAmplitudeDependenceConcept: Aperi21ConceptSource = {
   id: 'pendulum-amplitude-dependence',
   label: 'Amplitude and the Pendulum Period',
-  canonicalSim: 'aperi21:pendulum-isochronism',
+  canonicalSim: 'aperi21:pendulum-amplitude-dependence',
 
   surface: {
     definition:

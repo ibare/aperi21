@@ -11,7 +11,7 @@
 // 위 기록은 그 점선을 거의 그대로 따라가고, 아래 기록은 끝에서 세게 되밀려 봉우리가
 // 뾰족해지고 점선보다 먼저 돌아와 점점 앞서 간다 — 같은 용수철인데 진폭이 주기를 바꾼다.
 //
-// 진자의 큰 진폭(pendulum-isochronism) · 위상 공간(phase-space) · 사인 기록지
+// 진자의 큰 진폭(pendulum-amplitude-dependence) · 위상 공간(phase-space) · 사인 기록지
 // (simple-harmonic-motion)는 이웃 조각의 몫이다. 이 조각은 복원력의 **모양**이 기록의
 // 모양과 주기를 바꾸는 것에 머문다.
 //

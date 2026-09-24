@@ -29,7 +29,7 @@ export const LENGTH_RATIO = 4;
 /**
  * 놓는 각(rad). 약 12.6° — 작은 진폭이다. 이 각에서 실제 주기는 소진폭 식보다
  * 0.3 % 길 뿐이라, 조각은 소진폭 해 θ = θ₀·cos(2πt/T) 를 그대로 쓴다. 진폭이 커지면
- * 주기가 길어지는 쪽은 이웃 조각 `pendulum-isochronism` 의 일이다.
+ * 주기가 길어지는 쪽은 이웃 조각 `pendulum-amplitude-dependence` 의 일이다.
  */
 export const AMPLITUDE = 0.22;
 /** 무거운 추가 가벼운 추의 몇 배인가. **물리는 이 값을 읽지 않는다** — 이름표만 읽는다. */

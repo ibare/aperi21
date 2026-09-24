@@ -690,7 +690,7 @@
           "id": "pendulum-amplitude-dependence",
           "name": "진폭과 주기",
           "desc": "큰 진폭에서 깨지는 등시성",
-          "simId": "aperi21:pendulum-isochronism"
+          "simId": "aperi21:pendulum-amplitude-dependence"
         },
         {
           "id": "damped-oscillation",

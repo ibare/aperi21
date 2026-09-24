@@ -26,7 +26,7 @@
 | 주제 | 조각 |
 |---|---|
 | `projectile-range` | `aperi21:projectile` |
-| `pendulum-amplitude-dependence` | `aperi21:pendulum-isochronism` |
+| `pendulum-amplitude-dependence` | `aperi21:pendulum-amplitude-dependence` |
 | `thin-lens` | `aperi21:ray-tracing` (T66 · T67 이 같은 조각이다) |
 
 ---

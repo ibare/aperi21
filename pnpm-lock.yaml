@@ -74,9 +74,9 @@ importers:
       '@aperi21/sim-newtons-first-law':
         specifier: workspace:*
         version: link:../../sims/mechanics/newtons-first-law
-      '@aperi21/sim-pendulum-isochronism':
+      '@aperi21/sim-pendulum-amplitude-dependence':
         specifier: workspace:*
-        version: link:../../sims/oscillation/pendulum-isochronism
+        version: link:../../sims/oscillation/pendulum-amplitude-dependence
       '@aperi21/sim-pressure-and-container-shape':
         specifier: workspace:*
         version: link:../../sims/fluids/pressure-and-container-shape
@@ -951,9 +951,9 @@ importers:
       '@aperi21/sim-pauli-exclusion':
         specifier: workspace:*
         version: link:../../sims/modern/pauli-exclusion
-      '@aperi21/sim-pendulum-isochronism':
+      '@aperi21/sim-pendulum-amplitude-dependence':
         specifier: workspace:*
-        version: link:../../sims/oscillation/pendulum-isochronism
+        version: link:../../sims/oscillation/pendulum-amplitude-dependence
       '@aperi21/sim-perfectly-inelastic-collision':
         specifier: workspace:*
         version: link:../../sims/mechanics/perfectly-inelastic-collision
@@ -5178,7 +5178,7 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
-  sims/oscillation/pendulum-isochronism:
+  sims/oscillation/pendulum-amplitude-dependence:
     devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
