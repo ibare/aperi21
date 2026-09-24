@@ -92,42 +92,74 @@ export const RETURN = 3;
 // ------------------------------------------------------------------------
 
 export const michelsonMorleyMessages = Object.freeze({
-  'label.title': { ko: '마이컬슨-몰리 실험', en: 'Michelson–Morley experiment' },
-  'label.operation': { ko: '에테르가 없다는 증거', en: 'Evidence that there is no ether' },
-  'label.stage': { ko: '1887 년 간섭계', en: 'The 1887 interferometer' },
-  'label.view': { ko: '돌리는 간섭계', en: 'Rotating interferometer' },
+  'label.title': { ko: '마이컬슨-몰리 실험', en: 'Michelson–Morley experiment', ja: 'マイケルソン・モーリーの実験', zh: '迈克耳孙-莫雷实验', ar: 'تجربة ميكلسون ومورلي', es: 'Experimento de Michelson y Morley', fr: 'Expérience de Michelson et Morley', hi: 'माइकलसन–मॉर्ले प्रयोग', id: 'Eksperimen Michelson–Morley', pt: 'Experimento de Michelson–Morley' },
+  'label.operation': { ko: '에테르가 없다는 증거', en: 'Evidence that there is no ether', ja: 'エーテルが存在しない証拠', zh: '以太不存在的证据', ar: 'دليل على عدم وجود الأثير', es: 'Prueba de que no existe el éter', fr: 'La preuve qu’il n’y a pas d’éther', hi: 'ईथर के न होने का प्रमाण', id: 'Bukti bahwa eter tidak ada', pt: 'Evidência de que não há éter' },
+  'label.stage': { ko: '1887 년 간섭계', en: 'The 1887 interferometer', ja: '1887年の干渉計', zh: '1887 年的干涉仪', ar: 'مقياس التداخل عام 1887', es: 'El interferómetro de 1887', fr: 'L’interféromètre de 1887', hi: '1887 का व्यतिकरणमापी', id: 'Interferometer tahun 1887', pt: 'O interferômetro de 1887' },
+  'label.view': { ko: '돌리는 간섭계', en: 'Rotating interferometer', ja: '回転させる干渉計', zh: '转动的干涉仪', ar: 'مقياس التداخل الدوّار', es: 'Interferómetro giratorio', fr: 'Interféromètre en rotation', hi: 'घूमता व्यतिकरणमापी', id: 'Interferometer yang diputar', pt: 'Interferômetro giratório' },
 
   /** 거울 기호. 표식이다 (C1 판정 3). */
-  'label.mirror1': { ko: 'M₁', en: 'M₁' },
-  'label.mirror2': { ko: 'M₂', en: 'M₂' },
+  'label.mirror1': { ko: 'M₁', en: 'M₁', ja: 'M₁', zh: 'M₁', ar: 'M₁', es: 'M₁', fr: 'M₁', hi: 'M₁', id: 'M₁', pt: 'M₁' },
+  'label.mirror2': { ko: 'M₂', en: 'M₂', ja: 'M₂', zh: 'M₂', ar: 'M₂', es: 'M₂', fr: 'M₂', hi: 'M₂', id: 'M₂', pt: 'M₂' },
   /** 팔 길이 — 값이 끼는 조립이지만 기호 · 단위뿐이다. */
-  'label.arm': { ko: 'L = {l} m', en: 'L = {l} m' },
+  'label.arm': { ko: 'L = {l} m', en: 'L = {l} m', ja: 'L = {l} m', zh: 'L = {l} m', ar: 'L = {l} m', es: 'L = {l} m', fr: 'L = {l} m', hi: 'L = {l} m', id: 'L = {l} m', pt: 'L = {l} m' },
   /** 가정한 바람. 값이 끼는 조립문이라 문안이다. */
-  'label.wind': { ko: '에테르 바람이 있다면 · {v} km/s', en: 'Ether wind, if any · {v} km/s' },
+  'label.wind': { ko: '에테르 바람이 있다면 · {v} km/s', en: 'Ether wind, if any · {v} km/s', ja: 'エーテルの風があるなら · {v} km/s', zh: '若有以太风 · {v} km/s', ar: 'رياح الأثير، إن وُجدت · {v} km/s', es: 'Viento del éter, si lo hay · {v} km/s', fr: 'Vent d’éther, s’il existe · {v} km/s', hi: 'ईथर पवन, यदि हो · {v} km/s', id: 'Angin eter, jika ada · {v} km/s', pt: 'Vento do éter, se houver · {v} km/s' },
   /** 돌린 각. */
-  'label.turned': { ko: '{deg}°', en: '{deg}°' },
+  'label.turned': { ko: '{deg}°', en: '{deg}°', ja: '{deg}°', zh: '{deg}°', ar: '{deg}°', es: '{deg}°', fr: '{deg}°', hi: '{deg}°', id: '{deg}°', pt: '{deg}°' },
   /** 두 띠의 이름 — 가르는 것은 색이 아니라 이 이름이다. */
-  'label.predicted': { ko: '에테르가 있다면 (예측)', en: 'If there were an ether (predicted)' },
-  'label.observed': { ko: '실제로 본 무늬 (1887)', en: 'What was actually seen (1887)' },
+  'label.predicted': { ko: '에테르가 있다면 (예측)', en: 'If there were an ether (predicted)', ja: 'エーテルがあるなら (予測)', zh: '若有以太 (预测)', ar: 'لو كان هناك أثير (متوقَّع)', es: 'Si hubiera éter (predicción)', fr: 'S’il y avait un éther (prédiction)', hi: 'यदि ईथर होता (अनुमानित)', id: 'Jika ada eter (prediksi)', pt: 'Se houvesse éter (previsto)' },
+  'label.observed': { ko: '실제로 본 무늬 (1887)', en: 'What was actually seen (1887)', ja: '実際に見えた縞 (1887)', zh: '实际看到的条纹 (1887)', ar: 'ما رُصد فعلًا (1887)', es: 'Lo que se observó en realidad (1887)', fr: 'Ce qu’on a réellement observé (1887)', hi: 'वास्तव में जो दिखा (1887)', id: 'Yang benar-benar teramati (1887)', pt: 'O que se viu de fato (1887)' },
   /** 예측 이동량. `{n}` 은 선언된 정박값이다. */
-  'label.shift': { ko: '≈ {n} 무늬', en: '≈ {n} fringe' },
-  'label.still': { ko: '제자리', en: 'No shift' },
+  'label.shift': { ko: '≈ {n} 무늬', en: '≈ {n} fringe', ja: '≈ {n} 縞', zh: '≈ {n} 条纹', ar: '≈ {n} هدب', es: '≈ {n} franja', fr: '≈ {n} frange', hi: '≈ {n} फ्रिंज', id: '≈ {n} frinji', pt: '≈ {n} franja' },
+  'label.still': { ko: '제자리', en: 'No shift', ja: 'ずれなし', zh: '无移动', ar: 'لا إزاحة', es: 'Sin desplazamiento', fr: 'Aucun décalage', hi: 'कोई विस्थापन नहीं', id: 'Tidak bergeser', pt: 'Sem deslocamento' },
 
   'caption.rest': {
     ko: 'M₁ 팔은 에테르 바람을 따라, M₂ 팔은 가로질러 놓였다 — 두 띠의 밝은 무늬가 기준선에 있다',
     en: 'The M₁ arm lies along the ether wind, the M₂ arm across it — both bright fringes sit on the reference line',
+    ja: 'M₁ の腕はエーテルの風に沿って、M₂ の腕はそれを横切って置かれている — 二つの帯の明るい縞はどちらも基準線上にある',
+    zh: 'M₁ 臂顺着以太风，M₂ 臂横穿以太风 — 两条带上的亮纹都位于基准线上',
+    ar: 'ذراع M₁ ممتدة مع رياح الأثير، وذراع M₂ معترضة لها — الهدبتان المضيئتان كلتاهما على خط المرجع',
+    es: 'El brazo M₁ está a lo largo del viento del éter y el brazo M₂, de través — ambas franjas brillantes están sobre la línea de referencia',
+    fr: 'Le bras M₁ est dans le sens du vent d’éther, le bras M₂ en travers — les deux franges brillantes sont sur la ligne de référence',
+    hi: 'M₁ भुजा ईथर पवन की दिशा में है, M₂ भुजा उसके आर-पार — दोनों चमकीली फ्रिंज संदर्भ रेखा पर हैं',
+    id: 'Lengan M₁ searah angin eter, lengan M₂ melintanginya — kedua frinji terang berada di garis acuan',
+    pt: 'O braço M₁ fica ao longo do vento do éter, o braço M₂ atravessado — as duas franjas claras estão sobre a linha de referência',
   },
   'caption.turn': {
     ko: '간섭계를 돌린다 — 두 팔의 역할이 바뀌면 예측 무늬는 밀려야 한다',
     en: 'The interferometer turns — as the arms swap roles, the predicted fringes should slide',
+    ja: '干渉計を回す — 二本の腕の役割が入れ替わると、予測の縞はずれるはずだ',
+    zh: '干涉仪转动 — 两臂角色互换时，预测的条纹应当移动',
+    ar: 'يدور مقياس التداخل — ومع تبادل الذراعين دورَيهما، ينبغي أن تنزاح الأهداب المتوقَّعة',
+    es: 'El interferómetro gira — al intercambiar los brazos sus papeles, las franjas predichas deberían desplazarse',
+    fr: 'L’interféromètre tourne — les bras échangeant leurs rôles, les franges prédites devraient glisser',
+    hi: 'व्यतिकरणमापी घूमता है — भुजाओं की भूमिकाएँ बदलने पर अनुमानित फ्रिंज को खिसकना चाहिए',
+    id: 'Interferometer diputar — saat kedua lengan bertukar peran, frinji prediksi seharusnya bergeser',
+    pt: 'O interferômetro gira — ao trocarem os papéis dos braços, as franjas previstas deveriam deslizar',
   },
   'caption.compare': {
     ko: '다 돌렸다 — 예측 무늬는 기준선에서 밀려났지만, 실제 무늬는 움직이지 않았다',
     en: 'Fully turned — the predicted fringes slid off the reference line, but the real ones never moved',
+    ja: '回し終えた — 予測の縞は基準線からずれたが、実際の縞は動かなかった',
+    zh: '转动完毕 — 预测的条纹移离了基准线，而实际的条纹始终没动',
+    ar: 'اكتمل الدوران — انزاحت الأهداب المتوقَّعة عن خط المرجع، أما الحقيقية فلم تتحرك قط',
+    es: 'Giro completo — las franjas predichas se salieron de la línea de referencia, pero las reales nunca se movieron',
+    fr: 'Rotation achevée — les franges prédites ont quitté la ligne de référence, mais les vraies n’ont jamais bougé',
+    hi: 'पूरा घुमा दिया — अनुमानित फ्रिंज संदर्भ रेखा से खिसक गईं, पर वास्तविक फ्रिंज ज़रा भी नहीं हिलीं',
+    id: 'Selesai diputar — frinji prediksi bergeser dari garis acuan, tetapi frinji nyata tak pernah bergerak',
+    pt: 'Giro completo — as franjas previstas saíram da linha de referência, mas as reais nunca se moveram',
   },
   'caption.return': {
     ko: '되돌려도 마찬가지다 — 어느 방향으로 놓아도 실제 무늬는 제자리다',
     en: 'Turning it back changes nothing — in every orientation the real fringes stay put',
+    ja: '戻しても同じだ — どの向きに置いても実際の縞はそのままだ',
+    zh: '转回来也一样 — 无论朝哪个方向，实际的条纹都纹丝不动',
+    ar: 'الإرجاع لا يغيّر شيئًا — في كل اتجاه تبقى الأهداب الحقيقية في مكانها',
+    es: 'Girarlo de vuelta no cambia nada — en cualquier orientación las franjas reales se quedan quietas',
+    fr: 'Le ramener ne change rien — dans toutes les orientations, les vraies franges restent en place',
+    hi: 'वापस घुमाने से भी कुछ नहीं बदलता — किसी भी दिशा में वास्तविक फ्रिंज अपनी जगह रहती हैं',
+    id: 'Memutarnya kembali tidak mengubah apa pun — ke arah mana pun, frinji nyata tetap di tempat',
+    pt: 'Girá-lo de volta não muda nada — em qualquer orientação as franjas reais ficam paradas',
   },
 } satisfies Record<string, LocalizedText>);
 

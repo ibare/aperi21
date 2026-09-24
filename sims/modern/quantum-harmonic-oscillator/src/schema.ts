@@ -68,35 +68,166 @@ export const SCENE_BOUNDS = { minX: -15.8, maxX: 19.0, minY: -3.2, maxY: 18.6 } 
 // ------------------------------------------------------------------------
 
 export const quantumHarmonicOscillatorMessages = Object.freeze({
-  'label.title': { ko: '양자 조화 진동자', en: 'Quantum harmonic oscillator' },
-  'label.operation': { ko: '등간격 준위와 영점 에너지', en: 'Evenly spaced levels and zero-point energy' },
-  'label.stage': { ko: '포물선 우물', en: 'Parabolic well' },
-  'label.view': { ko: '준위와 파동 함수', en: 'Levels and wave functions' },
+  'label.title': {
+    ko: '양자 조화 진동자',
+    en: 'Quantum harmonic oscillator',
+    ja: '量子調和振動子',
+    zh: '量子谐振子',
+    ar: 'المتذبذب التوافقي الكمومي',
+    es: 'Oscilador armónico cuántico',
+    fr: 'Oscillateur harmonique quantique',
+    hi: 'क्वांटम सरल आवर्ती दोलित्र',
+    id: 'Osilator harmonik kuantum',
+    pt: 'Oscilador harmônico quântico',
+  },
+  'label.operation': {
+    ko: '등간격 준위와 영점 에너지',
+    en: 'Evenly spaced levels and zero-point energy',
+    ja: '等間隔の準位と零点エネルギー',
+    zh: '等间距能级与零点能',
+    ar: 'مستويات متساوية التباعد وطاقة نقطة الصفر',
+    es: 'Niveles equiespaciados y energía del punto cero',
+    fr: 'Niveaux équidistants et énergie de point zéro',
+    hi: 'समान अंतराल वाले स्तर और शून्य-बिंदु ऊर्जा',
+    id: 'Tingkat energi berjarak sama dan energi titik nol',
+    pt: 'Níveis igualmente espaçados e energia de ponto zero',
+  },
+  'label.stage': {
+    ko: '포물선 우물',
+    en: 'Parabolic well',
+    ja: '放物線形の井戸',
+    zh: '抛物线势阱',
+    ar: 'بئر على شكل قطع مكافئ',
+    es: 'Pozo parabólico',
+    fr: 'Puits parabolique',
+    hi: 'परवलयिक कूप',
+    id: 'Sumur parabola',
+    pt: 'Poço parabólico',
+  },
+  'label.view': {
+    ko: '준위와 파동 함수',
+    en: 'Levels and wave functions',
+    ja: '準位と波動関数',
+    zh: '能级与波函数',
+    ar: 'المستويات ودوال الموجة',
+    es: 'Niveles y funciones de onda',
+    fr: 'Niveaux et fonctions d’onde',
+    hi: 'स्तर और तरंग फलन',
+    id: 'Tingkat energi dan fungsi gelombang',
+    pt: 'Níveis e funções de onda',
+  },
 
   /** 준위 번호 — 기호라 두 언어가 같다(C1 표식). */
-  'label.n': { ko: 'n = {n}', en: 'n = {n}' },
+  'label.n': {
+    ko: 'n = {n}',
+    en: 'n = {n}',
+    ja: 'n = {n}',
+    zh: 'n = {n}',
+    ar: 'n = {n}',
+    es: 'n = {n}',
+    fr: 'n = {n}',
+    hi: 'n = {n}',
+    id: 'n = {n}',
+    pt: 'n = {n}',
+  },
   /** 벽돌 하나의 크기 — 기호(C1 표식). */
-  'label.quantum': { ko: 'ħω', en: 'ħω' },
+  'label.quantum': {
+    ko: 'ħω',
+    en: 'ħω',
+    ja: 'ħω',
+    zh: 'ħω',
+    ar: 'ħω',
+    es: 'ħω',
+    fr: 'ħω',
+    hi: 'ħω',
+    id: 'ħω',
+    pt: 'ħω',
+  },
   /** 바닥의 반 벽돌 — 영점 에너지. */
-  'label.half': { ko: '½ħω', en: '½ħω' },
+  'label.half': {
+    ko: '½ħω',
+    en: '½ħω',
+    ja: '½ħω',
+    zh: '½ħω',
+    ar: '½ħω',
+    es: '½ħω',
+    fr: '½ħω',
+    hi: '½ħω',
+    id: '½ħω',
+    pt: '½ħω',
+  },
   /** 우물 퍼텐셜 — 기호(C1 표식). */
-  'label.potential': { ko: 'V(x)', en: 'V(x)' },
+  'label.potential': {
+    ko: 'V(x)',
+    en: 'V(x)',
+    ja: 'V(x)',
+    zh: 'V(x)',
+    ar: 'V(x)',
+    es: 'V(x)',
+    fr: 'V(x)',
+    hi: 'V(x)',
+    id: 'V(x)',
+    pt: 'V(x)',
+  },
 
   'caption.ground': {
+
     ko: '가장 낮은 준위도 우물 바닥에 닿지 않는다 — 바닥에서 반 칸(½ħω) 떠 있다.',
+
     en: 'Even the lowest level does not touch the bottom of the well — it floats half a step (½ħω) above it.',
+
+    ja: '最も低い準位でさえ井戸の底には触れない — 底から半段(½ħω)浮いている。',
+
+    zh: '即使最低的能级也不接触势阱底部——它比底部高出半级(½ħω)。',
+
+    ar: 'حتى أدنى مستوى لا يلمس قاع البئر — إنه يطفو فوقه بنصف درجة (½ħω).',
+
+    es: 'Ni siquiera el nivel más bajo toca el fondo del pozo — flota medio escalón (½ħω) por encima de él.',
+
+    fr: 'Même le niveau le plus bas ne touche pas le fond du puits — il flotte un demi-palier (½ħω) au-dessus.',
+
+    hi: 'सबसे निचला स्तर भी कूप के तल को नहीं छूता — वह उससे आधा पायदान (½ħω) ऊपर तैरता है।',
+
+    id: 'Bahkan tingkat terendah tidak menyentuh dasar sumur — ia melayang setengah langkah (½ħω) di atasnya.',
+
+    pt: 'Nem o nível mais baixo toca o fundo do poço — ele flutua meio degrau (½ħω) acima dele.',
+
   },
   'caption.drop': {
     ko: '같은 크기의 ħω 벽돌 하나를 맨 위 준위에 내려놓는 중.',
     en: 'Setting one more ħω brick, the same size as the rest, on the top level.',
+    ja: 'ほかと同じ大きさの ħω ブロックをもう一つ、いちばん上の準位に載せているところ。',
+    zh: '正把又一块与其他一样大的 ħω 砖块放到最上面的能级上。',
+    ar: 'نضع لبنة ħω أخرى، بالحجم نفسه كالبقية، على المستوى الأعلى.',
+    es: 'Colocando un ladrillo ħω más, del mismo tamaño que los demás, sobre el nivel superior.',
+    fr: 'On pose une brique ħω de plus, de même taille que les autres, sur le niveau du haut.',
+    hi: 'बाकी जितनी ही बड़ी एक और ħω ईंट सबसे ऊपरी स्तर पर रखी जा रही है।',
+    id: 'Meletakkan satu bata ħω lagi, seukuran yang lain, di atas tingkat teratas.',
+    pt: 'Colocando mais um tijolo ħω, do mesmo tamanho dos outros, sobre o nível mais alto.',
   },
   'caption.land': {
     ko: '벽돌 윗면에 새 준위가 선다 — 그 위의 파동은 마디가 하나 더 많다.',
     en: 'A new level sits on top of the brick — its wave has one more node.',
+    ja: 'ブロックの上面に新しい準位ができる — その波は節が一つ多い。',
+    zh: '砖块顶面上立起新的能级——它的波多一个波节。',
+    ar: 'يستقر مستوى جديد فوق اللبنة — وفي موجته عقدة إضافية واحدة.',
+    es: 'Un nuevo nivel se asienta sobre el ladrillo — su onda tiene un nodo más.',
+    fr: 'Un nouveau niveau se pose sur la brique — son onde a un nœud de plus.',
+    hi: 'ईंट के ऊपर एक नया स्तर बनता है — उसकी तरंग में एक निस्पंद अधिक है।',
+    id: 'Tingkat baru berdiri di atas bata — gelombangnya punya satu simpul lebih banyak.',
+    pt: 'Um novo nível se assenta sobre o tijolo — sua onda tem um nó a mais.',
   },
   'caption.rest': {
     ko: '벽돌은 모두 같은 크기다 — 준위는 같은 간격으로 쌓이고, 맨 아래만 반 칸이다.',
     en: 'Every brick is the same size — the levels stack at equal spacing, with only a half step at the bottom.',
+    ja: 'ブロックはすべて同じ大きさ — 準位は等間隔に積み重なり、いちばん下だけが半段だ。',
+    zh: '每块砖都一样大——能级等间距地堆叠，只有最底下是半级。',
+    ar: 'كل اللبنات بالحجم نفسه — تتراكم المستويات بتباعد متساوٍ، ولا يوجد نصف درجة إلا في الأسفل.',
+    es: 'Todos los ladrillos son del mismo tamaño — los niveles se apilan con igual espaciado, y solo abajo hay medio escalón.',
+    fr: 'Toutes les briques ont la même taille — les niveaux s’empilent à intervalles égaux, avec seulement un demi-palier en bas.',
+    hi: 'हर ईंट एक ही आकार की है — स्तर समान अंतराल पर जमते हैं, केवल सबसे नीचे आधा पायदान है।',
+    id: 'Semua bata berukuran sama — tingkat-tingkat bertumpuk dengan jarak sama, hanya di dasar ada setengah langkah.',
+    pt: 'Todos os tijolos têm o mesmo tamanho — os níveis se empilham com espaçamento igual, e só embaixo há meio degrau.',
   },
 } satisfies Record<string, LocalizedText>);
 

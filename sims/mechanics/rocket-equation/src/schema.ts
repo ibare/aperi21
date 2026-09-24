@@ -95,25 +95,115 @@ export const LABEL_FONT_PX = 12;
 // ------------------------------------------------------------------------
 
 export const rocketEquationMessages = Object.freeze({
-  'label.title': { ko: '로켓 방정식', en: 'The rocket equation' },
-  'label.operation': { ko: '연료를 버려 얻는 속도', en: 'Speed bought by throwing fuel away' },
-  'label.stage': { ko: '연료 여덟 칸', en: 'Eight fuel compartments' },
-  'label.view': { ko: '로켓과 얻은 속도', en: 'Rocket and the speed it gained' },
+  'label.title': {
+    ko: '로켓 방정식',
+    en: 'The rocket equation',
+    ja: 'ロケット方程式',
+    zh: '火箭方程',
+    ar: 'معادلة الصاروخ',
+    es: 'La ecuación del cohete',
+    fr: 'L’équation de la fusée',
+    hi: 'रॉकेट समीकरण',
+    id: 'Persamaan roket',
+    pt: 'A equação do foguete',
+  },
+  'label.operation': {
+    ko: '연료를 버려 얻는 속도',
+    en: 'Speed bought by throwing fuel away',
+    ja: '燃料を捨てて得る速さ',
+    zh: '抛掉燃料换来的速度',
+    ar: 'سرعة تُكتسب بقذف الوقود',
+    es: 'Rapidez obtenida al expulsar combustible',
+    fr: 'Vitesse gagnée en rejetant du carburant',
+    hi: 'ईंधन फेंककर पाई गई चाल',
+    id: 'Kelajuan yang diperoleh dengan membuang bahan bakar',
+    pt: 'Velocidade obtida ao lançar combustível fora',
+  },
+  'label.stage': {
+    ko: '연료 여덟 칸',
+    en: 'Eight fuel compartments',
+    ja: '8つの燃料区画',
+    zh: '八个燃料舱',
+    ar: 'ثماني حجرات وقود',
+    es: 'Ocho compartimentos de combustible',
+    fr: 'Huit compartiments de carburant',
+    hi: 'आठ ईंधन कक्ष',
+    id: 'Delapan kompartemen bahan bakar',
+    pt: 'Oito compartimentos de combustível',
+  },
+  'label.view': {
+    ko: '로켓과 얻은 속도',
+    en: 'Rocket and the speed it gained',
+    ja: 'ロケットと得た速さ',
+    zh: '火箭与获得的速度',
+    ar: 'الصاروخ والسرعة التي اكتسبها',
+    es: 'El cohete y la rapidez que ganó',
+    fr: 'La fusée et la vitesse gagnée',
+    hi: 'रॉकेट और उसकी पाई गई चाल',
+    id: 'Roket dan kelajuan yang diperolehnya',
+    pt: 'O foguete e a velocidade que ganhou',
+  },
 
   /** 막대 줄의 이름. 막대가 무엇인지 말해 주는 유일한 글자다. */
-  'label.gain': { ko: '한 칸이 붙인 속도', en: 'speed added by one compartment' },
+  'label.gain': {
+    ko: '한 칸이 붙인 속도',
+    en: 'speed added by one compartment',
+    ja: '1区画が加えた速さ',
+    zh: '一个舱增加的速度',
+    ar: 'السرعة التي تضيفها حجرة واحدة',
+    es: 'rapidez añadida por un compartimento',
+    fr: 'vitesse ajoutée par un compartiment',
+    hi: 'एक कक्ष द्वारा जोड़ी गई चाल',
+    id: 'kelajuan yang ditambahkan satu kompartemen',
+    pt: 'velocidade adicionada por um compartimento',
+  },
 
   'caption.early': {
+
     ko: '칸마다 같은 양의 연료를 같은 빠르기로 뒤로 뿜는다. 아직 실려 있는 연료가 무거워 한 칸이 붙이는 속도는 작다.',
+
     en: 'Each compartment throws the same fuel backward at the same exhaust speed. The fuel still aboard is heavy, so one compartment adds little speed.',
+
+    ja: 'どの区画も同じ量の燃料を同じ噴出速度で後ろへ噴き出す。まだ積んでいる燃料が重いので、1区画が加える速さは小さい。',
+
+    zh: '每个舱都以相同的喷气速度把等量燃料向后喷出。仍在箭上的燃料很重，所以一个舱增加的速度很小。',
+
+    ar: 'تقذف كل حجرة الكمية نفسها من الوقود إلى الخلف بسرعة العادم نفسها. الوقود الذي ما زال على متن الصاروخ ثقيل، لذا تضيف الحجرة الواحدة سرعة قليلة.',
+
+    es: 'Cada compartimento expulsa la misma cantidad de combustible hacia atrás con la misma rapidez de expulsión. El combustible que aún va a bordo pesa, así que un compartimento añade poca rapidez.',
+
+    fr: 'Chaque compartiment éjecte la même quantité de carburant vers l’arrière à la même vitesse d’éjection. Le carburant encore à bord est lourd, donc un compartiment ajoute peu de vitesse.',
+
+    hi: 'हर कक्ष उतना ही ईंधन उसी निष्कासन चाल से पीछे की ओर फेंकता है। रॉकेट पर अभी लदा ईंधन भारी है, इसलिए एक कक्ष थोड़ी ही चाल जोड़ता है।',
+
+    id: 'Setiap kompartemen menyemburkan bahan bakar yang sama banyak ke belakang dengan kelajuan buang yang sama. Bahan bakar yang masih terbawa itu berat, jadi satu kompartemen hanya menambah sedikit kelajuan.',
+
+    pt: 'Cada compartimento lança a mesma quantidade de combustível para trás com a mesma velocidade de exaustão. O combustível ainda a bordo é pesado, então um compartimento acrescenta pouca velocidade.',
+
   },
   'caption.later': {
     ko: '로켓이 가벼워질수록 같은 한 칸이 붙이는 속도가 커진다 — 아래 막대가 길어지고, 지나가는 별의 획도 길어진다.',
     en: 'As the rocket gets lighter, the same one compartment adds more speed — the bars below grow longer, and so do the star streaks going past.',
+    ja: 'ロケットが軽くなるほど、同じ1区画が加える速さは大きくなる — 下の棒が長くなり、通り過ぎる星の筋も長くなる。',
+    zh: '火箭越轻，同样一个舱增加的速度就越大 — 下方的柱条变长，掠过的星星划出的线也变长。',
+    ar: 'كلما خفّ الصاروخ، أضافت الحجرة الواحدة نفسها سرعة أكبر — تطول الأعمدة في الأسفل، وتطول معها خطوط النجوم المارّة.',
+    es: 'A medida que el cohete se aligera, el mismo compartimento añade más rapidez — las barras de abajo se alargan, y también las estelas de las estrellas que pasan.',
+    fr: 'À mesure que la fusée s’allège, un même compartiment ajoute plus de vitesse — les barres du bas s’allongent, tout comme les traînées des étoiles qui défilent.',
+    hi: 'रॉकेट जितना हल्का होता है, वही एक कक्ष उतनी अधिक चाल जोड़ता है — नीचे की पट्टियाँ लंबी होती हैं, और गुज़रते तारों की लकीरें भी।',
+    id: 'Makin ringan roket, satu kompartemen yang sama menambah kelajuan makin besar — batang di bawah makin panjang, begitu pula jejak bintang yang lewat.',
+    pt: 'À medida que o foguete fica mais leve, o mesmo compartimento acrescenta mais velocidade — as barras abaixo se alongam, e os rastros das estrelas que passam também.',
   },
   'caption.hold': {
     ko: '마지막 칸이 붙인 속도는 첫 칸의 네 배에 가깝다. 먼저 태운 칸은 뒤에 남은 연료까지 함께 밀어야 했다.',
     en: 'The last compartment added nearly four times what the first did. The earlier ones had to push the fuel still aboard as well.',
+    ja: '最後の区画が加えた速さは、最初の区画のほぼ4倍だ。先に燃やした区画は、まだ積んでいた燃料まで一緒に押さなければならなかった。',
+    zh: '最后一个舱增加的速度接近第一个舱的四倍。先燃烧的舱还得连同仍在箭上的燃料一起推动。',
+    ar: 'أضافت الحجرة الأخيرة قرابة أربعة أضعاف ما أضافته الأولى. كان على الحجرات الأسبق أن تدفع معها الوقود الذي ما زال على متن الصاروخ أيضًا.',
+    es: 'El último compartimento añadió casi cuatro veces lo que añadió el primero. Los anteriores tenían que empujar también el combustible que seguía a bordo.',
+    fr: 'Le dernier compartiment a ajouté près de quatre fois plus que le premier. Les précédents devaient aussi pousser le carburant encore à bord.',
+    hi: 'आखिरी कक्ष ने पहले कक्ष से लगभग चार गुना चाल जोड़ी। पहले वाले कक्षों को रॉकेट पर बचा ईंधन भी साथ धकेलना पड़ा था।',
+    id: 'Kompartemen terakhir menambah hampir empat kali lipat dari yang pertama. Kompartemen sebelumnya juga harus mendorong bahan bakar yang masih terbawa.',
+    pt: 'O último compartimento acrescentou quase quatro vezes o que o primeiro acrescentou. Os anteriores tiveram de empurrar também o combustível ainda a bordo.',
   },
 } satisfies Record<string, LocalizedText>);
 

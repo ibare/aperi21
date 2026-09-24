@@ -25,43 +25,67 @@ export const BINDING_ENERGY_CURVE_ID = 'binding-energy-curve';
 // ------------------------------------------------------------------------
 
 export const bindingEnergyCurveMessages = Object.freeze({
-  'label.title': { ko: '결합 에너지 곡선', en: 'Binding energy curve' },
-  'label.operation': { ko: '철에서 최대가 되는 이유', en: 'Why it peaks at iron' },
-  'label.stage': { ko: '안정한 핵종', en: 'Stable nuclides' },
-  'label.view': { ko: '융합과 분열', en: 'Fusion and fission' },
+  'label.title': { ko: '결합 에너지 곡선', en: 'Binding energy curve', ja: '結合エネルギー曲線', zh: '结合能曲线', ar: 'منحنى طاقة الربط', es: 'Curva de energía de enlace', fr: 'Courbe de l’énergie de liaison', hi: 'बंधन ऊर्जा वक्र', id: 'Kurva energi ikat', pt: 'Curva da energia de ligação' },
+  'label.operation': { ko: '철에서 최대가 되는 이유', en: 'Why it peaks at iron', ja: '鉄で最大になる理由', zh: '为什么在铁处达到最高', ar: 'لماذا تبلغ ذروتها عند الحديد', es: 'Por qué alcanza su máximo en el hierro', fr: 'Pourquoi elle culmine au fer', hi: 'यह लोहे पर शिखर पर क्यों पहुँचता है', id: 'Mengapa puncaknya di besi', pt: 'Por que o pico está no ferro' },
+  'label.stage': { ko: '안정한 핵종', en: 'Stable nuclides', ja: '安定な核種', zh: '稳定核素', ar: 'النويدات المستقرة', es: 'Núclidos estables', fr: 'Nucléides stables', hi: 'स्थायी न्यूक्लाइड', id: 'Nuklida stabil', pt: 'Nuclídeos estáveis' },
+  'label.view': { ko: '융합과 분열', en: 'Fusion and fission', ja: '核融合と核分裂', zh: '聚变与裂变', ar: 'الاندماج والانشطار', es: 'Fusión y fisión', fr: 'Fusion et fission', hi: 'संलयन और विखंडन', id: 'Fusi dan fisi', pt: 'Fusão e fissão' },
 
   /** 곡선 축 이름. 조사가 붙거나 어순이 갈리는 말이라 문안이다 (C1 판정 4). */
-  'label.axisBinding': { ko: '핵자당 결합 에너지', en: 'Binding energy per nucleon' },
-  'label.axisMass': { ko: '질량수 A →', en: 'Mass number A →' },
+  'label.axisBinding': { ko: '핵자당 결합 에너지', en: 'Binding energy per nucleon', ja: '核子あたりの結合エネルギー', zh: '比结合能', ar: 'طاقة الربط لكل نيوكليون', es: 'Energía de enlace por nucleón', fr: 'Énergie de liaison par nucléon', hi: 'प्रति न्यूक्लिऑन बंधन ऊर्जा', id: 'Energi ikat per nukleon', pt: 'Energia de ligação por núcleon' },
+  'label.axisMass': { ko: '질량수 A →', en: 'Mass number A →', ja: '質量数 A →', zh: '质量数 A →', ar: 'العدد الكتلي A →', es: 'Número másico A →', fr: 'Nombre de masse A →', hi: 'द्रव्यमान संख्या A →', id: 'Nomor massa A →', pt: 'Número de massa A →' },
   /** 오른 높이 화살표에 붙는 말 — 나오는 에너지. */
-  'label.energy': { ko: '에너지', en: 'energy' },
+  'label.energy': { ko: '에너지', en: 'energy', ja: 'エネルギー', zh: '能量', ar: 'طاقة', es: 'energía', fr: 'énergie', hi: 'ऊर्जा', id: 'energi', pt: 'energia' },
   /** 두 길의 이름. */
-  'label.fusion': { ko: '융합', en: 'fusion' },
-  'label.fission': { ko: '분열', en: 'fission' },
+  'label.fusion': { ko: '융합', en: 'fusion', ja: '核融合', zh: '聚变', ar: 'اندماج', es: 'fusión', fr: 'fusion', hi: 'संलयन', id: 'fusi', pt: 'fusão' },
+  'label.fission': { ko: '분열', en: 'fission', ja: '核分裂', zh: '裂变', ar: 'انشطار', es: 'fisión', fr: 'fission', hi: 'विखंडन', id: 'fisi', pt: 'fissão' },
   /** 꼭짓점 높이 — 선언된 정박값을 그대로 끼운다 (S-piece 유효숫자). */
-  'label.peak': { ko: '약 {e} MeV', en: '≈ {e} MeV' },
+  'label.peak': { ko: '약 {e} MeV', en: '≈ {e} MeV', ja: '≈ {e} MeV', zh: '≈ {e} MeV', ar: '≈ {e} MeV', es: '≈ {e} MeV', fr: '≈ {e} MeV', hi: '≈ {e} MeV', id: '≈ {e} MeV', pt: '≈ {e} MeV' },
   /** 핵종 표기의 질량수 자리. 수 하나를 그대로 띄운다 — 표식이다 (C1 판정 3). */
-  'label.value': { ko: '{v}', en: '{v}' },
+  'label.value': { ko: '{v}', en: '{v}', ja: '{v}', zh: '{v}', ar: '{v}', es: '{v}', fr: '{v}', hi: '{v}', id: '{v}', pt: '{v}' },
 
   /** 원소 기호. 원어로 통용되는 표식이지만 저작자가 바꿀 수 있게 키로 둔다. */
-  'symbol.H': { ko: 'H', en: 'H' },
-  'symbol.He': { ko: 'He', en: 'He' },
-  'symbol.Fe': { ko: 'Fe', en: 'Fe' },
-  'symbol.Kr': { ko: 'Kr', en: 'Kr' },
-  'symbol.Ba': { ko: 'Ba', en: 'Ba' },
-  'symbol.U': { ko: 'U', en: 'U' },
+  'symbol.H': { ko: 'H', en: 'H', ja: 'H', zh: 'H', ar: 'H', es: 'H', fr: 'H', hi: 'H', id: 'H', pt: 'H' },
+  'symbol.He': { ko: 'He', en: 'He', ja: 'He', zh: 'He', ar: 'He', es: 'He', fr: 'He', hi: 'He', id: 'He', pt: 'He' },
+  'symbol.Fe': { ko: 'Fe', en: 'Fe', ja: 'Fe', zh: 'Fe', ar: 'Fe', es: 'Fe', fr: 'Fe', hi: 'Fe', id: 'Fe', pt: 'Fe' },
+  'symbol.Kr': { ko: 'Kr', en: 'Kr', ja: 'Kr', zh: 'Kr', ar: 'Kr', es: 'Kr', fr: 'Kr', hi: 'Kr', id: 'Kr', pt: 'Kr' },
+  'symbol.Ba': { ko: 'Ba', en: 'Ba', ja: 'Ba', zh: 'Ba', ar: 'Ba', es: 'Ba', fr: 'Ba', hi: 'Ba', id: 'Ba', pt: 'Ba' },
+  'symbol.U': { ko: 'U', en: 'U', ja: 'U', zh: 'U', ar: 'U', es: 'U', fr: 'U', hi: 'U', id: 'U', pt: 'U' },
 
   'caption.fuse': {
     ko: '가벼운 핵은 합쳐서 오른다 — 수소 넷이 헬륨 하나가 되며 곡선을 크게 오르고, 오른 만큼 에너지가 나온다.',
     en: 'Light nuclei climb by joining — four hydrogens become one helium, a big step up the curve, and the height gained comes out as energy.',
+    ja: '軽い核は合わさって上る — 水素四つがヘリウム一つになって曲線を大きく上り、上った分がエネルギーとして出てくる。',
+    zh: '轻核靠结合向上攀升 — 四个氢核变成一个氦核，沿曲线大幅上升，升高的部分以能量的形式释放出来。',
+    ar: 'تصعد النوى الخفيفة بالاتحاد — تصير أربع نوى هيدروجين نواة هيليوم واحدة، فتصعد خطوة كبيرة على المنحنى، ويخرج الارتفاع المكتسب طاقةً.',
+    es: 'Los núcleos ligeros suben uniéndose — cuatro hidrógenos se vuelven un helio, un gran escalón en la curva, y la altura ganada sale como energía.',
+    fr: 'Les noyaux légers montent en s’unissant — quatre hydrogènes deviennent un hélium, une grande marche sur la courbe, et la hauteur gagnée sort sous forme d’énergie.',
+    hi: 'हल्के नाभिक जुड़कर ऊपर चढ़ते हैं — चार हाइड्रोजन एक हीलियम बन जाते हैं, वक्र पर एक बड़ी छलांग, और जितनी ऊँचाई बढ़ी उतनी ऊर्जा निकलती है।',
+    id: 'Inti ringan naik dengan bergabung — empat hidrogen menjadi satu helium, langkah besar menaiki kurva, dan ketinggian yang diperoleh keluar sebagai energi.',
+    pt: 'Núcleos leves sobem se unindo — quatro hidrogênios viram um hélio, um grande degrau na curva, e a altura ganha sai como energia.',
   },
   'caption.fission': {
     ko: '무거운 핵은 쪼개서 오른다 — 우라늄-235 가 바륨과 크립톤으로 갈라지며 곡선을 조금 오른다.',
     en: 'Heavy nuclei climb by splitting — uranium-235 breaks into barium and krypton, a small step up the curve.',
+    ja: '重い核は分かれて上る — ウラン235 がバリウムとクリプトンに分かれ、曲線を少し上る。',
+    zh: '重核靠分裂向上攀升 — 铀-235 分裂成钡和氪，沿曲线小幅上升。',
+    ar: 'تصعد النوى الثقيلة بالانقسام — ينشطر اليورانيوم-235 إلى باريوم وكريبتون، فيصعد خطوة صغيرة على المنحنى.',
+    es: 'Los núcleos pesados suben dividiéndose — el uranio-235 se parte en bario y kriptón, un pequeño escalón en la curva.',
+    fr: 'Les noyaux lourds montent en se scindant — l’uranium 235 se brise en baryum et krypton, une petite marche sur la courbe.',
+    hi: 'भारी नाभिक टूटकर ऊपर चढ़ते हैं — यूरेनियम-235 बेरियम और क्रिप्टॉन में टूटता है, वक्र पर एक छोटी छलांग।',
+    id: 'Inti berat naik dengan membelah — uranium-235 terbelah menjadi barium dan kripton, langkah kecil menaiki kurva.',
+    pt: 'Núcleos pesados sobem se dividindo — o urânio-235 se parte em bário e criptônio, um pequeno degrau na curva.',
   },
   'caption.meet': {
     ko: '두 길 모두 꼭대기 철-56 을 향한다 — 철은 합쳐도 쪼개도 더 오를 곳이 없다.',
     en: 'Both roads lead to the summit, iron-56 — from iron, neither joining nor splitting climbs any higher.',
+    ja: 'どちらの道も頂上の鉄56 に向かう — 鉄からは、合わさっても分かれてもそれ以上は上れない。',
+    zh: '两条路都通向顶峰铁-56 — 从铁出发，无论结合还是分裂都无法再升高。',
+    ar: 'يقود الطريقان كلاهما إلى القمة، الحديد-56 — فمن الحديد لا يرفع الاتحاد ولا الانقسام أعلى من ذلك.',
+    es: 'Ambos caminos llevan a la cima, el hierro-56 — desde el hierro, ni unirse ni dividirse sube más.',
+    fr: 'Les deux chemins mènent au sommet, le fer 56 — à partir du fer, ni s’unir ni se scinder ne fait monter plus haut.',
+    hi: 'दोनों रास्ते शिखर लोहा-56 की ओर जाते हैं — लोहे से न जुड़कर, न टूटकर और ऊपर चढ़ा जा सकता है।',
+    id: 'Kedua jalan menuju puncak, besi-56 — dari besi, baik bergabung maupun membelah tidak bisa naik lebih tinggi lagi.',
+    pt: 'Os dois caminhos levam ao cume, o ferro-56 — a partir do ferro, nem unir nem dividir sobe mais.',
   },
 } satisfies Record<string, LocalizedText>);
 

@@ -62,36 +62,68 @@ export const SCENE_BOUNDS = { minX: -3.2, maxX: 30.8, minY: -3.4, maxY: 19.4 } a
 // ------------------------------------------------------------------------
 
 export const particleInABoxMessages = Object.freeze({
-  'label.title': { ko: '무한 우물', en: 'Infinite square well' },
-  'label.operation': { ko: '경계가 만드는 에너지 양자화', en: 'Energy quantization made by the walls' },
-  'label.stage': { ko: '무한 우물', en: 'Infinite well' },
-  'label.view': { ko: '준위와 파동 함수', en: 'Levels and wave functions' },
+  'label.title': { ko: '무한 우물', en: 'Infinite square well', ja: '無限井戸型ポテンシャル', zh: '无限深方势阱', ar: 'البئر المربع اللانهائي', es: 'Pozo cuadrado infinito', fr: 'Puits carré infini', hi: 'अनंत वर्ग कूप', id: 'Sumur persegi tak berhingga', pt: 'Poço quadrado infinito' },
+  'label.operation': { ko: '경계가 만드는 에너지 양자화', en: 'Energy quantization made by the walls', ja: '壁がつくるエネルギーの量子化', zh: '势壁造成的能量量子化', ar: 'تكميم الطاقة الذي تفرضه الجدران', es: 'Cuantización de la energía producida por las paredes', fr: 'Quantification de l’énergie imposée par les parois', hi: 'दीवारों से बना ऊर्जा का क्वांटीकरण', id: 'Kuantisasi energi yang dibuat oleh dinding', pt: 'Quantização da energia criada pelas paredes' },
+  'label.stage': { ko: '무한 우물', en: 'Infinite well', ja: '無限井戸', zh: '无限深势阱', ar: 'البئر اللانهائي', es: 'Pozo infinito', fr: 'Puits infini', hi: 'अनंत कूप', id: 'Sumur tak berhingga', pt: 'Poço infinito' },
+  'label.view': { ko: '준위와 파동 함수', en: 'Levels and wave functions', ja: '準位と波動関数', zh: '能级与波函数', ar: 'المستويات ودوال الموجة', es: 'Niveles y funciones de onda', fr: 'Niveaux et fonctions d’onde', hi: 'स्तर और तरंग फलन', id: 'Tingkat energi dan fungsi gelombang', pt: 'Níveis e funções de onda' },
 
   /** 준위 번호 — 기호라 두 언어가 같다(C1 표식). */
-  'label.n': { ko: 'n = {n}', en: 'n = {n}' },
+  'label.n': { ko: 'n = {n}', en: 'n = {n}', ja: 'n = {n}', zh: 'n = {n}', ar: 'n = {n}', es: 'n = {n}', fr: 'n = {n}', hi: 'n = {n}', id: 'n = {n}', pt: 'n = {n}' },
   /** 준위 에너지 — 바닥 준위는 계수 없이 E₁. */
-  'label.levelOne': { ko: 'E₁', en: 'E₁' },
-  'label.level': { ko: '{k}E₁', en: '{k}E₁' },
+  'label.levelOne': { ko: 'E₁', en: 'E₁', ja: 'E₁', zh: 'E₁', ar: 'E₁', es: 'E₁', fr: 'E₁', hi: 'E₁', id: 'E₁', pt: 'E₁' },
+  'label.level': { ko: '{k}E₁', en: '{k}E₁', ja: '{k}E₁', zh: '{k}E₁', ar: '{k}E₁', es: '{k}E₁', fr: '{k}E₁', hi: '{k}E₁', id: '{k}E₁', pt: '{k}E₁' },
   /** 이웃 준위 사이 간격. */
-  'label.gap': { ko: '+{g}E₁', en: '+{g}E₁' },
+  'label.gap': { ko: '+{g}E₁', en: '+{g}E₁', ja: '+{g}E₁', zh: '+{g}E₁', ar: '+{g}E₁', es: '+{g}E₁', fr: '+{g}E₁', hi: '+{g}E₁', id: '+{g}E₁', pt: '+{g}E₁' },
   /** 눈금자 이름. */
-  'label.energy': { ko: '에너지', en: 'energy' },
+  'label.energy': { ko: '에너지', en: 'energy', ja: 'エネルギー', zh: '能量', ar: 'الطاقة', es: 'energía', fr: 'énergie', hi: 'ऊर्जा', id: 'energi', pt: 'energia' },
 
   'caption.ground': {
     ko: '양 벽에서 0 이 되는 가장 단순한 모양 — 반파장 하나가 우물을 채운다. 가장 낮은 준위다.',
     en: 'The simplest shape that is zero at both walls — one half-wave fills the well. This is the lowest level.',
+    ja: '両方の壁で 0 になる最も単純な形 — 半波長一つが井戸を満たす。これが最も低い準位だ。',
+    zh: '在两壁处都为 0 的最简单形状 — 一个半波填满势阱。这是最低的能级。',
+    ar: 'أبسط شكل يساوي صفرًا عند الجدارين — نصف موجة واحد يملأ البئر. هذا أدنى مستوى.',
+    es: 'La forma más sencilla que vale cero en ambas paredes — media onda llena el pozo. Es el nivel más bajo.',
+    fr: 'La forme la plus simple qui s’annule aux deux parois — une demi-onde remplit le puits. C’est le niveau le plus bas.',
+    hi: 'दोनों दीवारों पर शून्य होने वाला सबसे सरल आकार — एक अर्ध-तरंग कूप को भर देती है। यही सबसे निचला स्तर है।',
+    id: 'Bentuk paling sederhana yang bernilai nol di kedua dinding — satu setengah gelombang mengisi sumur. Inilah tingkat terendah.',
+    pt: 'A forma mais simples que é zero nas duas paredes — meia onda preenche o poço. Este é o nível mais baixo.',
   },
   'caption.climb': {
     ko: '반파장을 하나 더 넣으려면 에너지가 더 든다 — 다음 준위까지 같은 빠르기로 오르는 중.',
     en: 'Fitting one more half-wave takes more energy — climbing to the next level at a steady pace.',
+    ja: '半波長をもう一つ入れるにはもっとエネルギーがいる — 次の準位まで一定の速さで上っているところ。',
+    zh: '再多容纳一个半波需要更多能量 — 正以恒定的速度升向下一个能级。',
+    ar: 'إدخال نصف موجة آخر يتطلب طاقة أكبر — صعود نحو المستوى التالي بوتيرة ثابتة.',
+    es: 'Meter una media onda más cuesta más energía — subiendo al siguiente nivel a ritmo constante.',
+    fr: 'Loger une demi-onde de plus demande plus d’énergie — on monte au niveau suivant à vitesse constante.',
+    hi: 'एक और अर्ध-तरंग समाने के लिए अधिक ऊर्जा लगती है — स्थिर गति से अगले स्तर तक चढ़ाई जारी है।',
+    id: 'Memuat satu setengah gelombang lagi butuh energi lebih — sedang naik ke tingkat berikutnya dengan laju tetap.',
+    pt: 'Encaixar mais meia onda exige mais energia — subindo ao próximo nível num ritmo constante.',
   },
   'caption.land': {
     ko: '반파장이 하나 더 들어간 모양이 새 준위에 얹힌다 — 양 벽에서는 여전히 0 이다.',
     en: 'The shape with one more half-wave sits on the new level — still zero at both walls.',
+    ja: '半波長が一つ増えた形が新しい準位に載る — 両方の壁ではやはり 0 だ。',
+    zh: '多了一个半波的形状落在新的能级上 — 在两壁处仍为 0。',
+    ar: 'الشكل الذي زاد نصف موجة يستقر على المستوى الجديد — وما زال صفرًا عند الجدارين.',
+    es: 'La forma con una media onda más se asienta en el nuevo nivel — sigue valiendo cero en ambas paredes.',
+    fr: 'La forme à une demi-onde de plus se pose sur le nouveau niveau — toujours nulle aux deux parois.',
+    hi: 'एक अर्ध-तरंग अधिक वाला आकार नए स्तर पर टिकता है — दोनों दीवारों पर अब भी शून्य।',
+    id: 'Bentuk dengan satu setengah gelombang tambahan duduk di tingkat baru — tetap nol di kedua dinding.',
+    pt: 'A forma com mais meia onda se assenta no novo nível — ainda zero nas duas paredes.',
   },
   'caption.rest': {
     ko: '위로 갈수록 준위 사이가 벌어진다 — 다음 준위까지 오르는 칸 수가 매번 두 칸씩 늘었다.',
     en: 'The higher up, the wider the gaps — each climb to the next level took two more steps than the last.',
+    ja: '上へ行くほど準位の間隔が広がる — 次の準位まで上るマス目が毎回二つずつ増えた。',
+    zh: '越往上，能级间隔越宽 — 每次升到下一个能级都比上一次多走两格。',
+    ar: 'كلما صعدنا اتسعت الفجوات — كل صعود إلى المستوى التالي استغرق خطوتين أكثر من سابقه.',
+    es: 'Cuanto más arriba, más anchos los huecos — cada subida al siguiente nivel llevó dos pasos más que la anterior.',
+    fr: 'Plus on monte, plus les écarts s’élargissent — chaque montée au niveau suivant a pris deux pas de plus que la précédente.',
+    hi: 'जितना ऊपर, अंतराल उतने चौड़े — अगले स्तर तक हर चढ़ाई में पिछली से दो खाने अधिक लगे।',
+    id: 'Makin ke atas, makin lebar celahnya — setiap naik ke tingkat berikutnya butuh dua langkah lebih banyak dari sebelumnya.',
+    pt: 'Quanto mais alto, maiores os intervalos — cada subida ao próximo nível levou dois degraus a mais que a anterior.',
   },
 } satisfies Record<string, LocalizedText>);
 

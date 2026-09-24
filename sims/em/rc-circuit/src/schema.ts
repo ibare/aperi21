@@ -63,41 +63,296 @@ export const SCENE_BOUNDS = { minX: 10, maxX: 870, minY: -34, maxY: 296 } as con
 // ------------------------------------------------------------------------
 
 export const rcCircuitMessages = Object.freeze({
-  'label.title': { ko: 'RC 회로', en: 'RC circuit' },
+  'label.title': {
+    ko: 'RC 회로',
+    en: 'RC circuit',
+    ja: 'RC回路',
+    zh: 'RC电路',
+    ar: 'دائرة RC',
+    es: 'Circuito RC',
+    fr: 'Circuit RC',
+    hi: 'RC परिपथ',
+    id: 'Rangkaian RC',
+    pt: 'Circuito RC',
+  },
   'label.operation': {
     ko: '남은 차이가 τ 마다 같은 비율로 줄어든다',
     en: 'The remaining gap shrinks by the same ratio every τ',
+    ja: '残りの差がτごとに同じ割合で縮む',
+    zh: '剩余的差距每经过 τ 按相同比例缩小',
+    ar: 'يتقلص الفرق المتبقي بالنسبة نفسها كل τ',
+    es: 'La diferencia restante se reduce en la misma proporción cada τ',
+    fr: 'L’écart restant diminue du même facteur à chaque τ',
+    hi: 'बचा हुआ अंतर हर τ में समान अनुपात से घटता है',
+    id: 'Selisih yang tersisa menyusut dengan rasio yang sama setiap τ',
+    pt: 'A diferença restante diminui na mesma proporção a cada τ',
   },
-  'label.stage': { ko: '회로', en: 'Circuit' },
-  'label.view': { ko: '회로와 그래프', en: 'Circuit and graph' },
+  'label.stage': {
+    ko: '회로',
+    en: 'Circuit',
+    ja: '回路',
+    zh: '电路',
+    ar: 'الدائرة',
+    es: 'Circuito',
+    fr: 'Circuit',
+    hi: 'परिपथ',
+    id: 'Rangkaian',
+    pt: 'Circuito',
+  },
+  'label.view': {
+    ko: '회로와 그래프',
+    en: 'Circuit and graph',
+    ja: '回路とグラフ',
+    zh: '电路与图',
+    ar: 'الدائرة والمنحنى',
+    es: 'Circuito y gráfica',
+    fr: 'Circuit et graphe',
+    hi: 'परिपथ और ग्राफ़',
+    id: 'Rangkaian dan grafik',
+    pt: 'Circuito e gráfico',
+  },
 
-  'label.battery': { ko: '전지', en: 'battery' },
-  'label.resistor': { ko: '저항', en: 'resistor' },
-  'label.capacitor': { ko: '축전기', en: 'capacitor' },
-  'label.charging': { ko: '충전', en: 'charging' },
-  'label.discharging': { ko: '방전', en: 'discharging' },
+  'label.battery': {
+
+    ko: '전지',
+
+    en: 'battery',
+
+    ja: '電池',
+
+    zh: '电池',
+
+    ar: 'بطارية',
+
+    es: 'batería',
+
+    fr: 'pile',
+
+    hi: 'बैटरी',
+
+    id: 'baterai',
+
+    pt: 'bateria',
+
+  },
+  'label.resistor': {
+    ko: '저항',
+    en: 'resistor',
+    ja: '抵抗',
+    zh: '电阻',
+    ar: 'مقاومة',
+    es: 'resistencia',
+    fr: 'résistance',
+    hi: 'प्रतिरोध',
+    id: 'hambatan',
+    pt: 'resistor',
+  },
+  'label.capacitor': {
+    ko: '축전기',
+    en: 'capacitor',
+    ja: 'コンデンサー',
+    zh: '电容器',
+    ar: 'مكثف',
+    es: 'condensador',
+    fr: 'condensateur',
+    hi: 'संधारित्र',
+    id: 'kapasitor',
+    pt: 'capacitor',
+  },
+  'label.charging': {
+    ko: '충전',
+    en: 'charging',
+    ja: '充電',
+    zh: '充电',
+    ar: 'شحن',
+    es: 'carga',
+    fr: 'charge',
+    hi: 'आवेशन',
+    id: 'pengisian',
+    pt: 'carga',
+  },
+  'label.discharging': {
+    ko: '방전',
+    en: 'discharging',
+    ja: '放電',
+    zh: '放电',
+    ar: 'تفريغ',
+    es: 'descarga',
+    fr: 'décharge',
+    hi: 'निरावेशन',
+    id: 'pengosongan',
+    pt: 'descarga',
+  },
   /** τ 초 값. 자릿수는 조각이 문자열로 정한다. */
-  'label.tau': { ko: 'τ = {tau}초', en: 'τ = {tau} s' },
-  'label.batteryVoltage': { ko: '전지 전압', en: 'battery voltage' },
-  'label.capVoltage': { ko: '축전기 전압', en: 'capacitor voltage' },
+  'label.tau': {
+    ko: 'τ = {tau}초',
+    en: 'τ = {tau} s',
+    ja: 'τ = {tau} s',
+    zh: 'τ = {tau} s',
+    ar: 'τ = {tau} s',
+    es: 'τ = {tau} s',
+    fr: 'τ = {tau} s',
+    hi: 'τ = {tau} s',
+    id: 'τ = {tau} s',
+    pt: 'τ = {tau} s',
+  },
+  'label.batteryVoltage': {
+    ko: '전지 전압',
+    en: 'battery voltage',
+    ja: '電池の電圧',
+    zh: '电池电压',
+    ar: 'جهد البطارية',
+    es: 'voltaje de la batería',
+    fr: 'tension de la pile',
+    hi: 'बैटरी की वोल्टता',
+    id: 'tegangan baterai',
+    pt: 'tensão da bateria',
+  },
+  'label.capVoltage': {
+    ko: '축전기 전압',
+    en: 'capacitor voltage',
+    ja: 'コンデンサーの電圧',
+    zh: '电容器电压',
+    ar: 'جهد المكثف',
+    es: 'voltaje del condensador',
+    fr: 'tension du condensateur',
+    hi: 'संधारित्र की वोल्टता',
+    id: 'tegangan kapasitor',
+    pt: 'tensão do capacitor',
+  },
   /** 축의 영점과 τ 눈금 — 수식 표식이라 번역하지 않는다 (C1 판정 3). */
-  'label.zero': { ko: '0', en: '0' },
-  'label.tick': { ko: '{k}τ', en: '{k}τ' },
+  'label.zero': {
+    ko: '0',
+    en: '0',
+    ja: '0',
+    zh: '0',
+    ar: '0',
+    es: '0',
+    fr: '0',
+    hi: '0',
+    id: '0',
+    pt: '0',
+  },
+  'label.tick': {
+    ko: '{k}τ',
+    en: '{k}τ',
+    ja: '{k}τ',
+    zh: '{k}τ',
+    ar: '{k}τ',
+    es: '{k}τ',
+    fr: '{k}τ',
+    hi: '{k}τ',
+    id: '{k}τ',
+    pt: '{k}τ',
+  },
   /** 이웃한 두 τ 의 남은 차이 비 — 표식 (C1 판정 3). */
-  'label.ratio': { ko: '×0.368', en: '×0.368' },
+  'label.ratio': {
+    ko: '×0.368',
+    en: '×0.368',
+    ja: '×0.368',
+    zh: '×0.368',
+    ar: '×0.368',
+    es: '×0.368',
+    fr: '×0.368',
+    hi: '×0.368',
+    id: '×0.368',
+    pt: '×0.368',
+  },
 
-  'control.resistance': { ko: '저항 R', en: 'Resistance R' },
-  'option.small': { ko: '작게', en: 'low' },
-  'option.default': { ko: '기본', en: 'default' },
-  'option.large': { ko: '크게', en: 'high' },
+  'control.resistance': {
+
+    ko: '저항 R',
+
+    en: 'Resistance R',
+
+    ja: '抵抗 R',
+
+    zh: '电阻 R',
+
+    ar: 'المقاومة R',
+
+    es: 'Resistencia R',
+
+    fr: 'Résistance R',
+
+    hi: 'प्रतिरोध R',
+
+    id: 'Hambatan R',
+
+    pt: 'Resistência R',
+
+  },
+  'option.small': {
+    ko: '작게',
+    en: 'low',
+    ja: '小さい',
+    zh: '小',
+    ar: 'منخفضة',
+    es: 'baja',
+    fr: 'faible',
+    hi: 'कम',
+    id: 'rendah',
+    pt: 'baixa',
+  },
+  'option.default': {
+    ko: '기본',
+    en: 'default',
+    ja: '標準',
+    zh: '默认',
+    ar: 'افتراضية',
+    es: 'predeterminada',
+    fr: 'par défaut',
+    hi: 'डिफ़ॉल्ट',
+    id: 'bawaan',
+    pt: 'padrão',
+  },
+  'option.large': {
+    ko: '크게',
+    en: 'high',
+    ja: '大きい',
+    zh: '大',
+    ar: 'مرتفعة',
+    es: 'alta',
+    fr: 'élevée',
+    hi: 'अधिक',
+    id: 'tinggi',
+    pt: 'alta',
+  },
 
   'caption.charging': {
+
     ko: '충전 중 — 극판에 쌓인 전하가 거슬러 밀수록 흐름이 잦아들고, 남은 차이는 τ마다 같은 비율로 줄어든다',
+
     en: 'Charging — the more charge piles on the plates and pushes back, the more the flow dies down; the remaining gap shrinks by the same ratio every τ',
+
+    ja: '充電中 — 極板にたまった電荷が押し返すほど流れは弱まり、残りの差はτごとに同じ割合で縮む',
+
+    zh: '充电中 — 极板上积累的电荷越多、反推越强，电流就越弱；剩余的差距每经过 τ 按相同比例缩小',
+
+    ar: 'الشحن — كلما تراكمت الشحنة على اللوحين ودفعت إلى الوراء خفت التدفق؛ ويتقلص الفرق المتبقي بالنسبة نفسها كل τ',
+
+    es: 'Cargando — cuanta más carga se acumula en las placas y empuja en contra, más se apaga el flujo; la diferencia restante se reduce en la misma proporción cada τ',
+
+    fr: 'Charge — plus la charge s’accumule sur les armatures et repousse, plus le courant s’éteint ; l’écart restant diminue du même facteur à chaque τ',
+
+    hi: 'आवेशन — प्लेटों पर जितना अधिक आवेश जमा होकर पीछे धकेलता है, प्रवाह उतना ही धीमा पड़ता है; बचा हुआ अंतर हर τ में समान अनुपात से घटता है',
+
+    id: 'Mengisi — makin banyak muatan menumpuk di keping dan mendorong balik, makin surut alirannya; selisih yang tersisa menyusut dengan rasio yang sama setiap τ',
+
+    pt: 'Carregando — quanto mais carga se acumula nas placas e empurra de volta, mais o fluxo diminui; a diferença restante diminui na mesma proporção a cada τ',
+
   },
   'caption.discharging': {
     ko: '방전 중 — 전하가 빠질수록 밀어내는 힘도 약해져 흐름이 잦아들고, 남은 차이는 τ마다 같은 비율로 줄어든다',
     en: 'Discharging — as charge drains away the push weakens and the flow dies down; the remaining gap shrinks by the same ratio every τ',
+    ja: '放電中 — 電荷が抜けるほど押す力も弱まって流れは弱まり、残りの差はτごとに同じ割合で縮む',
+    zh: '放电中 — 电荷流失，推力随之减弱，电流渐渐变小；剩余的差距每经过 τ 按相同比例缩小',
+    ar: 'التفريغ — مع تسرّب الشحنة يضعف الدفع ويخفت التدفق؛ ويتقلص الفرق المتبقي بالنسبة نفسها كل τ',
+    es: 'Descargando — a medida que la carga se va, el empuje se debilita y el flujo se apaga; la diferencia restante se reduce en la misma proporción cada τ',
+    fr: 'Décharge — à mesure que la charge s’écoule, la poussée faiblit et le courant s’éteint ; l’écart restant diminue du même facteur à chaque τ',
+    hi: 'निरावेशन — आवेश निकलने के साथ धक्का कमज़ोर पड़ता है और प्रवाह धीमा हो जाता है; बचा हुआ अंतर हर τ में समान अनुपात से घटता है',
+    id: 'Mengosongkan — seiring muatan terkuras, dorongannya melemah dan aliran surut; selisih yang tersisa menyusut dengan rasio yang sama setiap τ',
+    pt: 'Descarregando — conforme a carga se esvai, o empurrão enfraquece e o fluxo diminui; a diferença restante diminui na mesma proporção a cada τ',
   },
 } satisfies Record<string, LocalizedText>);
 

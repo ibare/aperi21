@@ -44,6 +44,10 @@ last_verified: 2026-09-09
 - sim 고유 키는 네임스페이스 없이 짧게(`label.energy`), 프레임워크 키는
   `ui.<component>.<name>`(`ui.resetButtons.state`). 세그먼트는 lowerCamelCase.
 - 선언의 `LocalizedText` 는 최소 `en` 을 갖는다.
+- **조각 선언의 `LocalizedText` 는 `messages/*.json` 의 열 언어(en · ko · ja · zh · ar · es ·
+  fr · hi · id · pt)를 모두 채운다.** 새 조각도 예외가 없다 (2026-09-24 사용자 결정).
+  번역의 원문은 **en** 이고, 아래 판정표의 표식은 번역하지 않고 en 값을 복사한다.
+  검사: `packages/bootstrap/test/i18n.test.ts`.
 
 ## MUST NOT
 

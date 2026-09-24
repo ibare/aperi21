@@ -89,23 +89,138 @@ export const SLIDER_STEP = 1;
 // ------------------------------------------------------------------------
 
 export const inclinedPlaneMessages = Object.freeze({
-  'label.title': { ko: '빗면', en: 'Inclined plane' },
+  'label.title': {
+    ko: '빗면',
+    en: 'Inclined plane',
+    ja: '斜面',
+    zh: '斜面',
+    ar: 'المستوى المائل',
+    es: 'Plano inclinado',
+    fr: 'Plan incliné',
+    hi: 'आनत तल',
+    id: 'Bidang miring',
+    pt: 'Plano inclinado',
+  },
   'label.operation': {
     ko: '중력을 면에 나란한 성분과 수직 성분으로',
     en: 'Splitting gravity along and into the slope',
+    ja: '重力を斜面に沿う向きと斜面に垂直な向きに分ける',
+    zh: '把重力分解为沿斜面和垂直于斜面的分量',
+    ar: 'تحليل الجاذبية على امتداد المنحدر وعموديًا عليه',
+    es: 'Descomponer la gravedad paralela y perpendicular a la pendiente',
+    fr: 'Décomposer la pesanteur parallèlement et perpendiculairement à la pente',
+    hi: 'गुरुत्व को ढलान के अनुदिश और उसके लंबवत बाँटना',
+    id: 'Menguraikan gravitasi sejajar dan tegak lurus bidang miring',
+    pt: 'Decompor a gravidade paralela e perpendicular à rampa',
   },
-  'label.stage': { ko: '기본', en: 'Default' },
-  'label.view': { ko: '기본', en: 'Default' },
+  'label.stage': {
+    ko: '기본',
+    en: 'Default',
+    ja: '標準',
+    zh: '默认',
+    ar: 'افتراضي',
+    es: 'Predeterminada',
+    fr: 'Par défaut',
+    hi: 'डिफ़ॉल्ट',
+    id: 'Bawaan',
+    pt: 'Padrão',
+  },
+  'label.view': {
+    ko: '기본',
+    en: 'Default',
+    ja: '標準',
+    zh: '默认',
+    ar: 'افتراضي',
+    es: 'Predeterminada',
+    fr: 'Par défaut',
+    hi: 'डिफ़ॉल्ट',
+    id: 'Bawaan',
+    pt: 'Padrão',
+  },
 
-  'label.slider': { ko: '빗면 기울기', en: 'Slope angle' },
-  'label.gravity': { ko: '중력', en: 'Gravity' },
-  'label.parallel': { ko: '면을 따라 끄는 몫', en: 'Pull along the slope' },
+  'label.slider': {
+
+    ko: '빗면 기울기',
+
+    en: 'Slope angle',
+
+    ja: '斜面の傾き',
+
+    zh: '斜面倾角',
+
+    ar: 'زاوية الميل',
+
+    es: 'Ángulo de la pendiente',
+
+    fr: 'Angle de la pente',
+
+    hi: 'ढलान का कोण',
+
+    id: 'Sudut kemiringan',
+
+    pt: 'Ângulo da rampa',
+
+  },
+  'label.gravity': {
+    ko: '중력',
+    en: 'Gravity',
+    ja: '重力',
+    zh: '重力',
+    ar: 'الجاذبية',
+    es: 'Gravedad',
+    fr: 'Pesanteur',
+    hi: 'गुरुत्व',
+    id: 'Gravitasi',
+    pt: 'Gravidade',
+  },
+  'label.parallel': {
+    ko: '면을 따라 끄는 몫',
+    en: 'Pull along the slope',
+    ja: '斜面に沿って引く分',
+    zh: '沿斜面下拉的分量',
+    ar: 'السحب على امتداد المنحدر',
+    es: 'Tirón a lo largo de la pendiente',
+    fr: 'Traction le long de la pente',
+    hi: 'ढलान के अनुदिश खिंचाव',
+    id: 'Tarikan sepanjang bidang miring',
+    pt: 'Puxão ao longo da rampa',
+  },
   /** 각도 표식. 수 뒤에 붙는 기호라 두 언어가 같다. */
-  'label.angle': { ko: '{deg}°', en: '{deg}°' },
+  'label.angle': {
+    ko: '{deg}°',
+    en: '{deg}°',
+    ja: '{deg}°',
+    zh: '{deg}°',
+    ar: '{deg}°',
+    es: '{deg}°',
+    fr: '{deg}°',
+    hi: '{deg}°',
+    id: '{deg}°',
+    pt: '{deg}°',
+  },
 
   'caption.main': {
+
     ko: '중력은 그대로인데, 빗면이 기울수록 면을 따라 끄는 몫이 커진다',
+
     en: 'Gravity stays the same, but the steeper the slope, the larger its pull along the slope',
+
+    ja: '重力は変わらないのに、斜面が急になるほど斜面に沿って引く分が大きくなる',
+
+    zh: '重力保持不变，但斜面越陡，沿斜面下拉的分量就越大',
+
+    ar: 'تبقى الجاذبية كما هي، لكن كلما ازداد انحدار المنحدر ازداد سحبها على امتداده',
+
+    es: 'La gravedad no cambia, pero cuanto más empinada es la pendiente, mayor es su tirón a lo largo de ella',
+
+    fr: 'La pesanteur reste la même, mais plus la pente est raide, plus sa traction le long de la pente est grande',
+
+    hi: 'गुरुत्व वही रहता है, पर ढलान जितनी खड़ी होती है, ढलान के अनुदिश उसका खिंचाव उतना बड़ा होता है',
+
+    id: 'Gravitasi tetap sama, tetapi makin curam bidang miringnya, makin besar tarikannya sepanjang bidang miring',
+
+    pt: 'A gravidade continua a mesma, mas quanto mais íngreme a rampa, maior o seu puxão ao longo dela',
+
   },
 } satisfies Record<string, LocalizedText>);
 

@@ -261,8 +261,8 @@ export const soundIntensityMessages = Object.freeze({
   'caption.far2': {
     ko: '거리 {m2}배 — 세기는 1/{i2} 로 줄었는데, 소리 크기는 {db1} dB 에서 {db2} dB 로 조금 낮아졌을 뿐이다',
     en: 'At {m2}× the distance — the intensity is down to 1/{i2}, yet the loudness only dips from {db1} dB to {db2} dB',
-    ja: '距離{m2}倍 — 強さは1/{i2}に減ったのに、音の大きさは{db1} dBから{db2} dBへ少し下がっただけ',
-    zh: '距离为 {m2} 倍——强度降到 1/{i2}，响度却只从 {db1} dB 略降到 {db2} dB',
+    ja: '距離 {m2}× — 強さは1/{i2}に減ったのに、音の大きさは{db1} dBから{db2} dBへ少し下がっただけ',
+    zh: '距离为 {m2}×——强度降到 1/{i2}，响度却只从 {db1} dB 略降到 {db2} dB',
     ar: 'عند {m2}× المسافة — انخفضت الشدة إلى 1/{i2}، لكن علو الصوت هبط قليلًا فقط من {db1} dB إلى {db2} dB',
     es: 'A {m2}× la distancia — la intensidad baja a 1/{i2}, pero el nivel sonoro solo baja de {db1} dB a {db2} dB',
     fr: "À {m2}× la distance — l'intensité tombe à 1/{i2}, mais le niveau sonore ne baisse que de {db1} dB à {db2} dB",
@@ -273,8 +273,8 @@ export const soundIntensityMessages = Object.freeze({
   'caption.far3': {
     ko: '거리 {m3}배 — 고리는 거의 보이지 않을 만큼 옅어져 세기가 1/{i3} 인데, 귀에는 아직 {db3} dB 다',
     en: 'At {m3}× the distance — the rings are barely visible and the intensity is 1/{i3}, yet the ear still hears {db3} dB',
-    ja: '距離{m3}倍 — 輪はほとんど見えず強さは1/{i3}なのに、耳にはまだ{db3} dB',
-    zh: '距离为 {m3} 倍——圆环几乎看不见，强度只有 1/{i3}，耳朵却仍听到 {db3} dB',
+    ja: '距離 {m3}× — 輪はほとんど見えず強さは1/{i3}なのに、耳にはまだ{db3} dB',
+    zh: '距离为 {m3}×——圆环几乎看不见，强度只有 1/{i3}，耳朵却仍听到 {db3} dB',
     ar: 'عند {m3}× المسافة — بالكاد تُرى الحلقات والشدة 1/{i3}، ومع ذلك ما زالت الأذن تسمع {db3} dB',
     es: 'A {m3}× la distancia — los anillos apenas se ven y la intensidad es 1/{i3}, pero el oído aún oye {db3} dB',
     fr: "À {m3}× la distance — les anneaux se voient à peine et l'intensité vaut 1/{i3}, mais l'oreille entend encore {db3} dB",

@@ -28,9 +28,6 @@ const only = (process.env['SIM_ONLY'] ?? '').split(',').map((s) => s.trim()).fil
 const simIds = (): string[] =>
   listBundleLoaderIds().filter((id) => only.length === 0 || only.includes(id.replace(/^aperi21:/, '')));
 
-/** 이 둘은 조각을 만들 때부터 쓴 언어다. 나머지를 하나라도 가지면 번역에 들어선 조각이다. */
-const BASE = new Set(['en', 'ko']);
-
 type TextMap = Record<string, string>;
 
 /**
@@ -62,24 +59,22 @@ describe('조각 문안', () => {
   });
 
   /*
-   * 조각 단위로 본다. 번역은 조각씩 들어오므로, 들어온 조각은 빠짐없이 채워야 한다.
-   * 한 조각 안에서 버튼만 번역되고 캡션이 영어로 뜨는 것을 막는다.
+   * 모든 조각이 열 언어로 말한다 — 새 조각도 열 언어를 갖춰야 들어온다 (2026-09-24 결정).
+   * 하나라도 빠지면 그 언어 화면에서 그 한 줄만 영어로 뜬다.
    */
-  it('새 언어를 하나라도 가진 조각은 모든 문안이 열 언어를 채운다', async () => {
+  it('모든 조각의 모든 문안이 열 언어를 채운다', async () => {
     const bad: string[] = [];
-    let translated = 0;
+    let counted = 0;
     for (const id of simIds()) {
       const texts = new Map<string, TextMap>();
       collectTexts((await loadBundle(id))!.schema, '', texts, new WeakSet());
-      const started = [...texts.values()].some((t) => Object.keys(t).some((l) => !BASE.has(l)));
-      if (!started) continue;
-      translated += 1;
+      counted += 1;
       for (const [path, t] of texts) {
         const missing = LOCALES.filter((l) => typeof t[l] !== 'string' || t[l]!.trim() === '');
         if (missing.length) bad.push(`${id} ${path} [${missing.join(' ')}]`);
       }
     }
-    expect(translated, '번역에 들어선 조각 수 — 0 이면 아래가 헛통과한다').toBeGreaterThan(0);
+    expect(counted, '센 조각 수 — 0 이면 아래가 헛통과한다').toBeGreaterThan(0);
     expect(bad.slice(0, 20)).toEqual([]);
     // 첫 테스트라 등록된 번들 전부를 처음 import 하는 비용을 떠안는다 (declarations.test 와 같다).
   }, 120_000);
