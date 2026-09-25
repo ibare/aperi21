@@ -1,0 +1,405 @@
+# 조각 설명 전수 대조 — 판정 (2026-09-25)
+#
+# 대조 444 · 이상 없음 400 · A 4 · B 33 (오독 21 · 누락 12) · D 1 · E 2 · X 5
+# (sound-intensity 는 B 와 X 두 건 — 판정 45건 · 조각 44개)
+#
+# 후속 작업의 입력이다. 양식과 분류는 PLAN.md 「분류」「결과지」. 순서는 분류(A · B오독 · B누락 · E · D · X),
+# 같은 분류 안에서는 topics.yaml 순서.
+# kind (B 만) — 오독: desc 가 틀린 쪽으로 읽힌다 · 누락: 정의로는 맞고 조각의 핵심 주장만 빠졌다.
+# suggest 는 ko 초안이다. 채택하면 topics.yaml desc 10개 언어를 함께 고치고 `pnpm description:gen`.
+# seed-findings.yaml 의 11건은 그 판정을 그대로 옮겼다(OK 2건은 싣지 않는다).
+
+- id: boundary-layer
+  class: A
+  problem: desc 「벽 근처에서 속도가 0이 되는 층」 — 0 인 곳은 벽면뿐이고, 층은 0 에서 바깥 속도까지 회복하는 곳이다. 캡션도 그렇게 말한다 (seed 판정 그대로)
+  evidence: docs/topics/topics.yaml:1490 · sims/fluids/boundary-layer/src/schema.ts:123 (caption.profile 「속도가 0 에서 바깥 빠르기로 오르는 일은 벽에 붙은 얇은 층 안에서만」) · sims/fluids/boundary-layer/src/schema.ts:111 (caption.flow 「판에 닿은 흐름은 멈춰 있고」) · sims/fluids/boundary-layer/src/physics.ts:43 (두께 ∝ √x, 맞음)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 벽의 0 에서 바깥 흐름 속도까지 회복하는 얇은 층
+  confidence: high
+
+- id: elastic-collision
+  class: A
+  problem: desc 「부딪힌 뒤에도 빠르기를 잃지 않는」이 캡션 「부딪친 공은 그 자리에 멈추고」와 모순. 보존되는 것은 운동 에너지의 합이다
+  evidence: docs/topics/topics.yaml:645 · sims/mechanics/elastic-collision/src/schema.ts:171 (caption.afterRest) · sims/mechanics/elastic-collision/src/physics.ts:70 (afterVelocities, 일반식 맞음)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 운동 에너지의 합까지 보존되는 충돌
+  confidence: high
+
+- id: concave-mirror
+  class: A
+  problem: 조각의 핵심 주장은 「초점 안으로 들어가면 실상이 허상으로 뒤바뀐다」인데 desc 「초점과 실상」은 그 절반만 말한다 (seed 판정)
+  evidence: docs/topics/topics.yaml:2161 · sims/optics/concave-mirror/NOTES.md:13 ((a) 주장) · sims/optics/concave-mirror/src/schema.ts:232 (caption.traceBack) · sims/optics/concave-mirror/src/schema.ts:244 (caption.near)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 초점 밖에서는 실상, 안에서는 허상
+  confidence: high
+
+- id: wien-displacement-law
+  class: A
+  problem: ko desc 「온도와 최대 파장」은 「가장 긴 파장」으로 읽힌다. 화면은 세기가 가장 큰 자리(봉우리)의 파장을 재고 캡션도 「봉우리 파장」이라 말한다. en 「peak wavelength」 는 맞다
+  evidence: docs/topics/topics.yaml:3229 · sims/modern/wien-displacement-law/src/schema.ts:221 (caption.first 「봉우리 파장을 잰다」) · sims/modern/wien-displacement-law/src/schema.ts:245 (caption.half) · sims/modern/wien-displacement-law/src/physics.ts:54 (peakNm = b/T, 맞음)
+  fix_at: docs/topics/topics.yaml desc (ko)
+  suggest: 온도와 봉우리 파장
+  langs: [ko]
+  confidence: high
+
+- id: pulley-system
+  class: B
+  kind: 오독
+  problem: desc 「힘의 방향과 크기를 바꾸는 장치」는 힘이 줄어드는 쪽만 말한다. 화면의 핵심은 맞바꿈이다 — 받치는 가닥이 많을수록 힘은 약해지고 당겨 낼 줄은 1 · 2 · 4 m 로 길어진다(캡션 hold 는 줄 길이만 말한다). desc 만 보면 힘을 공짜로 줄이는 장치로 읽힌다
+  evidence: docs/topics/topics.yaml:371 · sims/mechanics/pulley-system/src/schema.ts:209 (caption.rise) · sims/mechanics/pulley-system/src/schema.ts:221 (caption.hold 1.00 · 2.00 · 4.00 m) · sims/mechanics/pulley-system/src/physics.ts:134 (pulledM = n·riseM) · sims/mechanics/pulley-system/src/scene.ts:408 (force = weight / n)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 힘의 방향을 바꾸고, 드는 힘을 줄이는 만큼 당길 줄이 길어지는 장치
+  confidence: high
+
+- id: mechanical-advantage
+  class: B
+  kind: 오독
+  problem: desc 「지레와 빗면이 드는 힘을 줄이는 방식」은 힘이 줄어드는 쪽만 말한다. 화면의 핵심은 맞바꿈 — 힘이 절반이면 두 배, 4분의 1이면 네 배 긴 거리를 밀어야 같은 높이에 닿는다(일은 같다). desc 만 읽으면 공짜로 힘이 줄어드는 것으로 오독될 수 있다
+  evidence: docs/topics/topics.yaml:507 · sims/mechanics/mechanical-advantage/src/schema.ts:258 (caption.lifting 「힘이 작은 쪽일수록 손은 더 긴 거리를 민다」) · sims/mechanics/mechanical-advantage/src/schema.ts:270 (caption.result) · sims/mechanics/mechanical-advantage/src/physics.ts:52 (force = W/ratio, distance = RISE·ratio, 맞음)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 지레와 빗면이 힘을 줄이는 대신 더 먼 거리를 밀게 하는 맞바꿈
+  confidence: high
+
+- id: stokes-drag
+  class: B
+  kind: 오독
+  problem: desc 가 「무엇이 가라앉는 빠르기를 정하는가」만 말하고 조각의 핵심(반지름이 두 배면 네 배 빨리 가라앉는다 — 선형 저항의 지문)을 빠뜨렸다. 게다가 en 「how fast a size sinks」 는 「크기가 가라앉는다」로 읽혀 뜻이 서지 않고, ko 「크기가 가라앉는 빠르기」 도 같은 오독을 허용한다
+  evidence: docs/topics/topics.yaml:1466 · sims/fluids/stokes-drag/NOTES.md:13 (주장 — 반지름이 두 배인 구는 네 배 빠르게 가라앉는다) · sims/fluids/stokes-drag/src/schema.ts:209 (caption.sink 「자국 간격이 네 배 — 네 배 빠르게 가라앉는다」) · sims/fluids/stokes-drag/src/physics.ts:74 (종단 속도 비 = 반지름 비의 제곱, 맞음)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 느린 흐름에서 반지름이 두 배면 네 배 빨리 가라앉는 구 (en 예 — In slow flow, a sphere twice the radius sinks four times as fast)
+  confidence: high
+
+- id: efficiency
+  class: B
+  kind: 오독
+  problem: ko desc 「넣은 것과 얻은 것의 비」는 「A 와 B 의 비」 어순이라 넣은 것 ÷ 얻은 것(효율의 역수)으로 읽힌다. 조각은 쓸모 ÷ 넣은 것을 % 로 보이고, en 「what comes out to what goes in」 은 맞다
+  evidence: docs/topics/topics.yaml:621 · sims/mechanics/efficiency/src/physics.ts:4 (효율 = 쓸모 / 넣은 것) · sims/mechanics/efficiency/src/schema.ts:209 (caption.ratio)
+  fix_at: docs/topics/topics.yaml desc (ko)
+  suggest: 넣은 것 가운데 쓸모로 나온 몫
+  langs: [ko]
+  confidence: high
+
+- id: gears
+  class: B
+  kind: 오독
+  problem: desc 「톱니 수가 바꾸는 회전과 힘」(en 「trade turning for force」)은 힘이 달라진다고 읽힌다. 화면은 맞물린 자리의 힘 F 가 두 기어에서 같고, 달라지는 것은 팔 길이에 따른 돌림힘이라고 짚는다
+  evidence: docs/topics/topics.yaml:951 · sims/oscillation/gears/NOTES.md:10 (주장 — 톱니가 많은 쪽이 느리게 돌고 대신 돌림힘이 크다) · sims/oscillation/gears/NOTES.md:14 · sims/oscillation/gears/src/schema.ts:301 (caption.force 「미는 힘 F 는 같다 … 돌림힘이 크다」) · sims/oscillation/gears/src/physics.ts:69 (angleBig = ω·u/ratio, 맞음)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 톱니 수가 맞바꾸는 빠르기와 돌림힘
+  confidence: high
+
+- id: geostationary-orbit
+  class: B
+  kind: 오독
+  problem: desc 「자전 주기와 같은 궤도」는 동기 궤도의 정의다. 정지 궤도는 적도 위 원 궤도여야 한다. 화면은 적도면 원 궤도라 모순은 없다 (seed 판정 그대로)
+  evidence: docs/topics/topics.yaml:1096 · sims/astro/geostationary-orbit/NOTES.md:20 (북극 위에서 내려다본 적도면 원 궤도) · sims/astro/geostationary-orbit/src/schema.ts:278 (caption.geo)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 적도 위에서 지구 자전과 같은 주기로 도는 궤도
+  confidence: high
+
+- id: keplers-third-law
+  class: B
+  kind: 오독
+  problem: desc 「궤도 반지름과 한 바퀴 시간의 관계」는 관계가 어떤지 말하지 않아 비례로 읽힐 수 있다. 화면은 바로 그 비례 예상(「안쪽과 같은 빠르기라면」 유령)을 깨고, 반지름 4배에 주기 8배 — 주기가 반지름보다 훨씬 빨리 길어진다는 것을 보인다
+  evidence: docs/topics/topics.yaml:1056 · sims/astro/keplers-third-law/NOTES.md:13 (주장 — 반지름 4배에 주기 8배) · sims/astro/keplers-third-law/src/schema.ts:243 (caption.ghost) · sims/astro/keplers-third-law/src/schema.ts:255 (caption.hold) · sims/astro/keplers-third-law/src/physics.ts:11 (유령 주기 = radiusRatio × T_in, 실제 바깥 주기보다 짧다)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 반지름보다 훨씬 빨리 길어지는 한 바퀴 시간
+  confidence: high
+
+- id: stellar-nucleosynthesis
+  class: B
+  kind: 오독
+  problem: desc 「무거운 원소가 별에서 만들어지는 것」은 조각의 핵심(핵융합이 철에서 멈춘다)을 빠뜨렸고, 화면이 「철보다 무거운 금 · 우라늄은 이 불이 아니라 초신성 같은 사건이 만든다」고 따로 말하는데 desc 는 그런 원소까지 별의 핵융합이 만드는 것으로 읽힐 수 있다
+  evidence: docs/topics/topics.yaml:1281 · sims/astro/stellar-nucleosynthesis/NOTES.md:7 (질문 「별은 왜 철까지만 만드는가」) · sims/astro/stellar-nucleosynthesis/NOTES.md:13 · sims/astro/stellar-nucleosynthesis/src/schema.ts:270 (caption.wall) · sims/astro/stellar-nucleosynthesis/src/schema.ts:282 (caption.beyond)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 별 중심에서 철까지 한 겹씩 무거운 원소가 쌓이는 것
+  confidence: high
+
+- id: thermal-conduction
+  class: B
+  kind: 오독
+  problem: desc 「접촉을 통한 전달」(ko 는 무엇이 전달되는지도 없다)은 두 물체가 맞닿는 장면으로 읽힌다. 화면은 한 막대를 따라 물질 속으로 열이 번지는 것과, 같은 조건에서 쇠는 끝까지 번지고 나무는 데운 자리에 머무는 재질 대비가 핵심인데 그것이 빠졌다
+  evidence: docs/topics/topics.yaml:1587 · sims/thermal/thermal-conduction/src/schema.ts:219 (caption.spread) · sims/thermal/thermal-conduction/src/schema.ts:231 (caption.through) · sims/thermal/thermal-conduction/NOTES.md:52 (「조건은 같고 재질만 다르다」)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 물질을 타고 번지는 열 — 쇠는 빨리, 나무는 느리게
+  confidence: high
+
+- id: random-walk
+  class: B
+  kind: 오독
+  problem: desc 「제곱근에 비례하는 이동 거리」 — 화면에 걸음 막대(n 에 비례)와 처음 자리에서의 폭(√n)이 나란히 있어 「이동 거리」가 막대(걸은 거리)로 읽힌다. 캡션은 「처음 자리에서의 제곱평균 거리」라고 가른다
+  evidence: docs/topics/topics.yaml:1797 · sims/thermal/random-walk/NOTES.md:13 (주장 — 걸음 네 배에 거리 두 배) · sims/thermal/random-walk/NOTES.md:15 (막대는 네 배, 괄호는 두 배) · sims/thermal/random-walk/src/schema.ts:193 (caption.first 「처음 자리에서의 제곱평균 거리」)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 걸음 수의 제곱근만큼만 멀어지는 처음 자리와의 거리
+  confidence: high
+
+- id: heat-engine
+  class: B
+  kind: 오독
+  problem: desc 「열을 일로 바꾸는 순환」은 받은 열이 모두 일이 되는 것으로 읽힐 수 있다 — 조각의 핵심은 정확히 그 반대(받은 열의 일부만 일이 되고 나머지는 찬 열원에 버려지며, 버릴 곳을 떼면 기관이 선다)다
+  evidence: docs/topics/topics.yaml:1757 · sims/thermal/heat-engine/NOTES.md:9 (주장 — 일부만 일, 나머지는 찬 열원) · sims/thermal/heat-engine/src/schema.ts:227 (caption.turn2 「위로 꺾여 일이 되는 것은 {w} — 나머지 {qc} 는 찬 열원으로」) · sims/thermal/heat-engine/src/schema.ts:275 (caption.stall)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 받은 열의 일부만 일로 바꾸고 나머지는 찬 쪽에 버리는 순환
+  confidence: high
+
+- id: sound-intensity
+  class: B
+  kind: 오독
+  problem: desc 「거리 제곱에 반비례하는 감쇠」는 무엇이 줄어드는지 말하지 않아 「소리 크기가 거리 제곱으로 준다」로 읽힐 수 있다. 화면의 핵심은 그 반대편 대비 — 세기는 1/4 · 1/16 로 꺼지지만 dB 는 80 → 74 → 68 로 조금만 낮아진다 — 인데 desc 가 이를 빠뜨렸다
+  evidence: docs/topics/topics.yaml:2000 · sims/waves/sound-intensity/NOTES.md:15 (주장 — 세기 1/4 · 1/16, 소리 크기는 74 · 68 dB 로 조금씩만) · sims/waves/sound-intensity/NOTES.md:18 (동사) · sims/waves/sound-intensity/src/schema.ts:264 (caption.far2 「the loudness only dips」) · sims/waves/sound-intensity/src/physics.ts:60 (I = 1/m², 맞음) · sims/waves/sound-intensity/src/physics.ts:66 (L = L1 − 20·log₁₀ m, 맞음)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 거리 제곱에 반비례해 꺼지는 세기, 조금씩만 낮아지는 데시벨
+  confidence: high
+
+- id: seismic-waves
+  class: B
+  kind: 오독
+  problem: desc 「지구 속을 지나는 P파와 S파」는 화면의 핵심(S파는 액체 외핵을 지나지 못하고 P파는 핵에서 꺾여 그림자대가 생긴다)을 빠뜨렸고, 두 파가 모두 지구 속을 지나간다고 읽힐 여지가 있다
+  evidence: docs/topics/topics.yaml:2096 · sims/waves/seismic-waves/NOTES.md:10 (주장 — S파 103° 너머 닿지 못함, P파 103°~142° 비움) · sims/waves/seismic-waves/src/schema.ts:219 (caption.core) · sims/waves/seismic-waves/src/schema.ts:231 (caption.shadow)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 액체 외핵이 S파를 막고 P파를 꺾어 만드는 그림자대
+  confidence: high
+
+- id: convex-mirror
+  class: B
+  kind: 오독
+  problem: ko desc 「확대된 시야와 허상」 — 거울 주제에서 「확대」는 상의 확대로 읽히기 쉬워, 조각의 핵심(상은 늘 물체보다 작고 바로 선다)과 반대로 오독될 수 있다. en 「A wider view」 는 넓어진 시야라 문제없다
+  evidence: docs/topics/topics.yaml:2169 · sims/optics/convex-mirror/NOTES.md:14 ((a) 주장 — 작고 바로 선 허상 · 훨씬 넓은 곳) · sims/optics/convex-mirror/src/schema.ts:223 (caption.far 「작고 바로 선 상」) · sims/optics/convex-mirror/src/schema.ts:247 (caption.near 「상은 물체보다 작고」) · sims/optics/convex-mirror/src/schema.ts:283 (caption.field)
+  fix_at: docs/topics/topics.yaml desc (ko)
+  suggest: 넓어진 시야와 작고 바로 선 허상
+  langs: [ko]
+  confidence: high
+
+- id: birefringence
+  class: B
+  kind: 오독
+  problem: desc 「방향에 따라 다른 굴절률」은 진행 방향으로 읽히기 쉽고, 화면의 핵심(한 줄기가 떨림이 서로 직각인 o · e 두 줄기로 갈라져 글자가 두 겹으로 보인다)을 빠뜨렸다. 화면이 가르는 것은 떨림 방향이다
+  evidence: docs/topics/topics.yaml:2417 · sims/optics/birefringence/NOTES.md:9 (주장) · sims/optics/birefringence/src/schema.ts:274 (caption.split) · sims/optics/birefringence/src/schema.ts:310 (caption.polA)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 한 줄기가 떨림이 직각인 두 줄기로 갈라져 두 겹으로 보이는 것
+  confidence: high
+
+- id: lorentz-force
+  class: B
+  kind: 오독
+  problem: ko desc 「자기장 속 전하가 받는 힘」은 「움직이는」을 빠뜨려 멈춘 전하도 힘을 받는 것으로 읽힌다. en 은 「a charge moving」이라 맞다. 화면은 v 를 돌리고 v 가 B 와 나란하면 힘이 0 이 되는 것까지 보여, 힘이 속도에 달렸다는 것이 핵심이다
+  evidence: docs/topics/topics.yaml:2738 · sims/em/lorentz-force/NOTES.md:9 (F 는 v 와 B 양쪽에 직각) · sims/em/lorentz-force/src/schema.ts:201 (caption.parallel 「v 가 B 와 나란하면 힘이 없다」) · sims/em/lorentz-force/src/physics.ts:153 (v × B, 맞음)
+  fix_at: docs/topics/topics.yaml desc (ko)
+  suggest: 자기장 속에서 움직이는 전하가 받는 힘
+  langs: [ko]
+  confidence: high
+
+- id: field-of-loop-and-solenoid
+  class: B
+  kind: 오독
+  problem: desc 「축 위의 자기장」은 화면을 축 위의 값으로 좁힌다. 화면은 축을 품은 단면 전체의 장선과 화살표로, 고리를 겹칠수록 속은 곧고 고르게 촘촘해지고(세고 고르다) 바깥은 성기고 약해진다는 대비를 보인다. 축 위 세기 곡선은 화면에 없다
+  evidence: docs/topics/topics.yaml:2795 · sims/em/field-of-loop-and-solenoid/NOTES.md:9 (주장 — 속은 곧게 펴져 촘촘, 바깥은 성기고 약함) · sims/em/field-of-loop-and-solenoid/src/schema.ts:201 (caption.many) · sims/em/field-of-loop-and-solenoid/src/physics.ts:4 (고리마다 정확해를 더한 단면 전체의 장, 맞음)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 고리를 겹칠수록 속은 고르고 세지고 바깥은 약해지는 자기장
+  confidence: high
+
+- id: self-inductance
+  class: B
+  kind: 오독
+  problem: ko desc 「자기 자신의 자속 변화」는 무엇이 일어나는지(변화에 맞서는 기전력)를 말하지 않는 명사구다. en 「A coil opposing changes in its own flux」와 뜻이 다르다. 화면의 핵심은 전류를 급히 끊는 순간 코일 전압이 전지 전압을 훌쩍 넘게 치솟는 것이다
+  evidence: docs/topics/topics.yaml:2868 · sims/em/self-inductance/NOTES.md:14 (주장) · sims/em/self-inductance/src/schema.ts:293 (caption.break)
+  fix_at: docs/topics/topics.yaml desc (ko)
+  suggest: 자기 자속의 변화에 맞서는 코일
+  langs: [ko]
+  confidence: high
+
+- id: reactance
+  class: B
+  kind: 오독
+  problem: desc 「주파수에 의존하는 저항」이 조각의 핵심 대비(진동수를 올리면 코일은 더 막고 축전기는 덜 막는다)를 빠뜨림. 「저항」도 엄밀하지 않다 (seed 판정 그대로)
+  evidence: docs/topics/topics.yaml:2916 · sims/em/reactance/NOTES.md:9 (주장) · sims/em/reactance/src/physics.ts:69 (X_L = 2πfL, 맞음) · sims/em/reactance/src/physics.ts:74 (X_C = 1/2πfC, 맞음)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 진동수가 오르면 코일은 더 막고 축전기는 덜 막는 것
+  confidence: high
+
+- id: relativistic-momentum
+  class: B
+  kind: 오독
+  problem: desc 「속도가 커질 때의 발산」은 광속을 말하지 않아, 속도가 커지기만 하면 발산하는 것으로 읽힌다. 조각의 핵심은 같은 힘으로 운동량이 고르게 쌓여도 속도는 c 앞에서 멈칫해 넘지 못한다는 것(곡선이 c 앞에서 치솟음)이다
+  evidence: docs/topics/topics.yaml:3173 · sims/modern/relativistic-momentum/NOTES.md:9 (주장 — c 앞에서 치솟아 c 에 다가갈 뿐 넘지 못한다) · sims/modern/relativistic-momentum/src/schema.ts:219 (caption.fast) · sims/modern/relativistic-momentum/src/schema.ts:231 (caption.hold) · sims/modern/relativistic-momentum/src/physics.ts:57 (v = p/√(m²+p²), 맞음)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 광속에 다가갈수록 끝없이 커지는 운동량
+  confidence: high
+
+- id: finite-well
+  class: B
+  kind: 오독
+  problem: desc 「벽 바깥으로 새는 파동 함수」(en 「leaks past the walls」)는 파동이 벽을 넘어 빠져나가는 것(터널로 새어 나감)으로 읽힌다. 화면은 벽 「속으로」 지수적으로 줄어드는 꼬리이고(벽은 끝없이 두껍다), 주장의 나머지 절반 — 그만큼 준위가 무한 우물보다 낮아진다 — 을 빠뜨렸다
+  evidence: docs/topics/topics.yaml:3333 · sims/modern/finite-well/NOTES.md:13 (주장 — 벽 속으로 꼬리, 준위가 낮다) · sims/modern/finite-well/src/schema.ts:176 (caption.lower 「벽 속으로 꼬리를 내리며, 준위가 점선 아래로 가라앉는다」) · sims/modern/finite-well/src/schema.ts:188 (caption.hold) · sims/modern/finite-well/src/physics.ts:11 (밖 ψ = ψ(±a)·e^{−κ(|x|−a)}, 맞음)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 벽 속으로 스며든 만큼 낮아지는 준위
+  confidence: high
+
+- id: average-acceleration
+  class: B
+  kind: 누락
+  problem: desc 「속도 변화의 비율」은 가속도 일반(순간 가속도)의 정의라 「평균」이 빠졌다. 조각의 핵심은 가는 동안 속도가 어떻게 바뀌었든 처음과 끝만으로 정해지는 하나의 기울기(두 차의 기울기선이 하나로 겹침)다
+  evidence: docs/topics/topics.yaml:68 · sims/kinematics/average-acceleration/src/schema.ts:237 (caption.done 「가는 동안은 달랐어도, 처음과 끝을 잇는 기울기는 하나로 겹친다」) · sims/kinematics/average-acceleration/src/physics.ts:11 (A_AVG = (V1 − V0)/RUN, 맞음) · sims/kinematics/average-acceleration/src/physics.ts:23 (차 나의 속도, 처음·끝이 차 가와 같음)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 가는 길과 상관없이 처음과 끝 속도만으로 정해지는 속도 변화의 비율
+  confidence: high
+
+- id: direction-of-acceleration
+  class: B
+  kind: 누락
+  problem: desc 「속도와 같은 방향인지 반대인지가 정하는 것」은 무엇이 정해지는지를 말하지 않는다. 화면의 핵심인 「같은 쪽이면 빨라지고 반대쪽이면 느려진다(끝내 멈춘다)」가 빠졌다. en 도 같다
+  evidence: docs/topics/topics.yaml:76 · sims/kinematics/direction-of-acceleration/src/schema.ts:123 (caption.run 「속도와 같은 쪽으로 밀리는 공은 빨라지고, 반대쪽으로 밀리는 공은 느려진다」) · sims/kinematics/direction-of-acceleration/src/schema.ts:135 (caption.stop)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 속도와 같은 쪽이면 빨라지고 반대쪽이면 느려지게 하는 가속도의 방향
+  confidence: high
+
+- id: free-fall
+  class: B
+  kind: 누락
+  problem: desc 「중력만 받는 연직 운동」은 정의만 말한다. 조각의 한 주장인 「무게가 달라도 나란히 떨어져 같이 닿는다」(질량과 무관한 낙하)가 빠졌다. topics.yaml 의 visualNote 도 그 주장이다
+  evidence: docs/topics/topics.yaml:125 · docs/topics/topics.yaml:129 (visualNote 「질량이 달라도 나란히 떨어진다」) · sims/kinematics/free-fall/src/schema.ts:174 (caption.parallel) · sims/kinematics/free-fall/src/schema.ts:190 (caption.landed2) · sims/kinematics/free-fall/NOTES.md:72 (질량이 F = mg 에서 들어가 a = F/m 에서 상쇄, 맞음)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 무게와 상관없이 중력만 받아 똑같이 떨어지는 운동
+  confidence: high
+
+- id: quality-factor
+  class: B
+  kind: 누락
+  problem: desc 「공명의 날카로움」은 조각이 잇는 두 얼굴 중 봉우리 폭 하나만 말한다. 조각의 핵심은 봉우리가 좁은 쪽이 구동을 멈춘 뒤 오래 울린다 — 같은 Q 가 좁은 폭과 긴 울림으로 함께 보인다는 것이다
+  evidence: docs/topics/topics.yaml:903 · sims/oscillation/quality-factor/NOTES.md:9 (동사 「봉우리가 좁은 쪽이 오래 울린다」) · sims/oscillation/quality-factor/NOTES.md:25 · sims/oscillation/quality-factor/src/schema.ts:249 (caption.result) · sims/oscillation/quality-factor/src/physics.ts:12 (자유 감쇠 e^(−ω₀s/2Q), Q/f₀ 초, 맞음)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 공명이 날카로울수록 오래 울리는 것
+  confidence: high
+
+- id: keplers-first-law
+  class: B
+  kind: 누락
+  problem: desc 「궤도는 타원이다」는 화면이 전제로 깔고 시작하는 것만 말한다. 화면의 핵심은 태양이 타원의 가운데가 아니라 한 초점에 있고 다른 초점은 비어 있다는 것(끈 길이 일정)인데 desc 에 없다. 법칙의 나머지 절반이기도 하다
+  evidence: docs/topics/topics.yaml:1040 · sims/astro/keplers-first-law/NOTES.md:12 (주장 — 태양은 한가운데가 아니라 한 초점에, 반대편 초점은 비어 있다) · sims/astro/keplers-first-law/src/schema.ts:170 (caption.orbit) · sims/astro/keplers-first-law/src/schema.ts:182 (caption.mirror) · sims/astro/keplers-first-law/src/schema.ts:194 (caption.string)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 태양이 한 초점에 놓인 타원 궤도
+  confidence: high
+
+- id: hr-diagram
+  class: B
+  kind: 누락
+  problem: desc 「온도와 광도로 별을 늘어놓은 그림」은 HR 도의 정의만 말한다. 화면의 핵심은 성단이 나이 들며 무거운 별부터 주계열 띠를 떠나는 것(전향점 질량이 내려감)인데 이것이 빠졌다. NOTES 는 이관 기록이라 (a) 주장이 없어 캡션으로 판정했다(기준 7)
+  evidence: docs/topics/topics.yaml:1249 · sims/astro/hr-diagram/src/schema.ts:253 (caption.young 「the heaviest stars leave the band first」) · sims/astro/hr-diagram/src/schema.ts:265 (caption.old) · sims/astro/hr-diagram/src/physics.ts:157 (turnoffMass — 주계열 수명 = 나이 인 질량)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 성단이 나이 들수록 무거운 별부터 주계열을 떠나는 HR 도
+  confidence: high
+
+- id: pressure-from-collisions
+  class: B
+  kind: 누락
+  problem: desc 「벽에 부딪는 분자의 운동량」은 화면이 곱하는 두 인자 중 하나(한 번의 세기)만 말한다. 조각의 핵심은 속력을 두 배로 하면 한 번의 세기도 두 배, 같은 시간의 횟수도 두 배라 압력이 네 배가 된다는 것이고, 횟수와 v² 비례가 desc 에 없다
+  evidence: docs/topics/topics.yaml:1669 · sims/thermal/pressure-from-collisions/NOTES.md:9 (주장) · sims/thermal/pressure-from-collisions/src/schema.ts:281 (caption.count) · sims/thermal/pressure-from-collisions/src/schema.ts:293 (caption.hold 「한 칸 높이 k배, 칸 수 k배 — k×k배」)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 더 세게, 더 자주 — 속력의 제곱으로 커지는 벽의 압력
+  confidence: high
+
+- id: magnifying-glass
+  class: B
+  kind: 누락
+  problem: desc 「가까운 초점 안의 물체」는 물체를 놓는 조건만 말하고, 화면의 핵심인 결과(개미보다 크고 바로 선 허상이 서서 맨눈보다 넓은 각으로 눈에 든다)를 빠뜨렸다
+  evidence: docs/topics/topics.yaml:2321 · sims/optics/magnifying-glass/NOTES.md:13 (주장) · sims/optics/magnifying-glass/src/schema.ts:224 (caption.near) · sims/optics/magnifying-glass/src/schema.ts:260 (caption.far)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 초점 안의 물체가 크고 바로 선 허상으로 보이는 것
+  confidence: high
+
+- id: single-slit-diffraction
+  class: B
+  kind: 누락
+  problem: desc 「폭이 만드는 무늬」는 폭과 무늬의 관계 방향을 말하지 않는다. 조각의 둘째 동사이자 핵심 대비는 「틈을 좁히면 가운데 밝은 띠가 넓어진다」이다
+  evidence: docs/topics/topics.yaml:2353 · sims/optics/single-slit-diffraction/NOTES.md:5 (주장) · sims/optics/single-slit-diffraction/NOTES.md:28 (동사) · sims/optics/single-slit-diffraction/src/schema.ts:214 (caption.narrow)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 틈이 좁을수록 넓어지는 가운데 밝은 띠
+  confidence: high
+
+- id: antenna-radiation
+  class: B
+  kind: 누락
+  problem: desc 「가속하는 전하가 내는 파동」은 틀리지 않았지만 조각의 핵심 주장(방향마다 세기가 다르다 — 옆으로 가장 세고 안테나 축을 따라서는 0, sin²θ)을 전혀 말하지 않는다. 화면은 파동이 나오는 것 자체보다 두 잎 무늬(방향 분포)를 보인다
+  evidence: docs/topics/topics.yaml:3004 · sims/em/antenna-radiation/NOTES.md:9 (주장 — 옆으로 가장 세게, 축 방향으로는 없음) · sims/em/antenna-radiation/src/schema.ts:137 (caption.ripple) · sims/em/antenna-radiation/src/schema.ts:161 (caption.result) · sims/em/antenna-radiation/src/physics.ts:67 (intensityAt ∝ sin²θ, 맞음)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 옆으로 가장 세고 축 방향으로는 내보내지 않는 안테나의 파동
+  confidence: high
+
+- id: nuclear-structure
+  class: B
+  kind: 누락
+  problem: desc 「양성자와 중성자」는 구성 알갱이 이름만 댈 뿐 조각의 핵심 대비 — 양성자 수가 원소를 정하고 중성자 수는 동위원소를 가른다(질량수가 같아도 Z 가 다르면 다른 원소) — 를 빠뜨렸다
+  evidence: docs/topics/topics.yaml:3437 · sims/modern/nuclear-structure/NOTES.md:9 (주장 한 문장) · sims/modern/nuclear-structure/src/schema.ts:146 (caption.same) · sims/modern/nuclear-structure/src/schema.ts:170 (caption.other)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 양성자 수는 원소를, 중성자 수는 동위원소를 정한다
+  confidence: high
+
+- id: antimatter
+  class: B
+  kind: 누락
+  problem: desc 「부호가 반대인 짝」은 반입자의 정의(첫 캡션 caption.approach 와 같은 말)에 그친다. 화면의 핵심은 전자와 양전자가 만나 둘 다 사라지고 511 keV 광자 둘이 정반대로 나가 PET 가 그 선들로 자리를 찾는다는 것(스테이지 이름도 「양전자 소멸과 PET」)인데 소멸을 빠뜨렸다. ko 「부호」는 무엇의 부호인지도 말하지 않는다
+  evidence: docs/topics/topics.yaml:3501 · sims/modern/antimatter/NOTES.md:14 (주장 — 둘 다 사라지고 511 keV 광자 둘이 정반대로) · sims/modern/antimatter/src/schema.ts:105 (label.stage 「양전자 소멸과 PET」) · sims/modern/antimatter/src/schema.ts:115 (caption.approach — desc 와 같은 말) · sims/modern/antimatter/src/schema.ts:139 (caption.fly)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 전자와 만나 함께 사라지며 광자 둘을 정반대로 내놓는 짝
+  confidence: high
+
+- id: newtons-first-law
+  class: E
+  problem: 주제 이름은 「관성 법칙」인데 조각 제목은 「관성 기준계 / Inertial frame」이다. 화면은 땅에서 본 한 장면으로 「제동은 버스에만 걸리고 승객에게는 힘이 없어 속도가 그대로」를 보여 줄 뿐 기준계를 비교하지 않는다. 비관성계(non-inertial-frame)가 따로 있는 주제라 제목이 다른 개념을 가리킨다. desc 와 구현은 맞다
+  evidence: docs/topics/topics.yaml:265 (name 관성 법칙) · sims/mechanics/newtons-first-law/src/schema.ts:105 (label.title 관성 기준계 / Inertial frame) · sims/mechanics/newtons-first-law/src/schema.ts:207 (caption.busOnly) · sims/mechanics/newtons-first-law/src/physics.ts:4 (주석 — 제동은 버스에만) · sims/mechanics/newtons-first-law/NOTES.md:1 (제목 관성 기준계)
+  fix_at: sims/mechanics/newtons-first-law/src/schema.ts label.title (topics.yaml name 은 그대로)
+  suggest: 관성 법칙 (en Newton's first law)
+  confidence: high
+
+- id: star-radiation-gravity-balance
+  class: E
+  problem: 구현은 기체압 + 복사압을 합친 「압력」 하나로 맞게 다룬다. 이름·제목 「복사압과 중력의 평형」만 복사압이라 한다 — 대부분의 별을 떠받치는 것은 기체의 열적 압력이다
+  evidence: docs/topics/topics.yaml:1256 (name) · sims/astro/star-radiation-gravity-balance/NOTES.md:65 (「가스압과 복사압을 가르지 않는다」) · sims/astro/star-radiation-gravity-balance/src/schema.ts:74 (label.title) · sims/astro/star-radiation-gravity-balance/src/schema.ts:138 (label.pressure 「pressure」)
+  fix_at: docs/topics/topics.yaml name · schema label.title
+  suggest: 압력과 중력의 평형 (또는 정역학 평형)
+  confidence: high
+
+- id: ionizing-radiation
+  class: D
+  problem: (seed 판정 그대로) desc 는 화면과 맞다. 조각 자체가 10 eV 를 「결합을 끊는 문턱」으로 가르친다 — 10 eV 는 이온화 에너지의 관례값이고 화학 결합은 대개 3~5 eV 라 문턱 아래 자외선도 결합을 끊는다(DNA 손상). 주제는 이온화인데 화면에 이온화가 없다
+  evidence: docs/topics/topics.yaml:3607 · sims/modern/ionizing-radiation/NOTES.md:12 (주장 — 결합을 끊는 문턱 10 eV) · sims/modern/ionizing-radiation/src/schema.ts:169 (label.threshold 「bond-breaking threshold」) · sims/modern/ionizing-radiation/src/schema.ts:363 (caption.ultraviolet 「문턱 아래 자외선은 결합을 세게 늘여도 끊지 못한다」)
+  fix_at: sims/modern/ionizing-radiation (조각 주장 재설계) · 그 뒤 desc
+  suggest: 문턱을 이온화(전자를 떼어 냄)로 다시 세우거나, 결합 해리를 말하려면 문턱과 캡션을 실제 결합 에너지에 맞춘다
+  confidence: high
+
+- id: wave-basics
+  class: X
+  problem: desc 는 화면과 맞다. 다만 조각이 「한 줄 파동」(한 가닥 줄) 위에서 주기 T 를 고정한 채 파장 조작기로 λ 를 바꾸게 해, 같은 줄인데 파장을 늘이면 마루가 더 빨리 간다고 가르친다. 같은 매질에서는 속력이 매질로 정해지고(이웃 wave-speed-in-medium 의 주장) λ 는 진동수를 따라 바뀌는 쪽이라 오독될 수 있다. 「다른 줄로 바꾼다」로 읽으면 틀리지 않아 확신이 낮다
+  evidence: sims/waves/wave-basics/NOTES.md:28 (「파장을 늘이면 마루가 **더 빨리** 가지만」) · sims/waves/wave-basics/NOTES.md:55 (「같은 T 에서 λ 가 바뀌면 속력이 바뀐다」) · sims/waves/wave-basics/src/schema.ts:123 (label.stage 「한 줄 파동」) · sims/waves/wave-basics/src/physics.ts:54 (trackedCrestX — 한 주기에 λ, 속력 = λ/T)
+  fix_at: sims/waves/wave-basics (조작기의 뜻 — 사람이 판단)
+  confidence: low
+
+- id: sound-intensity
+  class: X
+  problem: 조각이 dB(음압 준위)를 「소리 크기 / Loudness」라 부르고 「귀가 느끼는 소리 크기는 조금씩만 낮아진다」고 말한다. 음압 준위와 지각 음량(sone)은 다르다 — 12 dB 낮아지면 지각 음량은 대략 절반 아래로 준다. 「조금만」이 세기와 견준 상대 표현으로 읽히면 문제가 없고, 지각을 주장하는 것으로 읽히면 부정확하다. 해석이 갈려 사람이 본다
+  evidence: sims/waves/sound-intensity/src/schema.ts:164 (label.level ko 「소리 크기」) · sims/waves/sound-intensity/src/schema.ts:165 (label.level en 「Loudness」) · sims/waves/sound-intensity/src/schema.ts:263 (caption.far2 ko) · sims/waves/sound-intensity/NOTES.md:15
+  fix_at: sims/waves/sound-intensity (이름표 「소리 크기」 → 「소리 준위(dB)」 검토)
+  confidence: low
+
+- id: resolving-power
+  class: X
+  problem: 주장 · 캡션이 「봉우리가 다른 쪽 첫 어두운 자리보다 안으로 들어오면 골이 사라진다」고 말해, 레일리 기준을 넘자마자 골이 사라지는 것으로 읽힌다. 두 에어리 무늬의 합에서 골이 실제로 사라지는 것은 더 가까운 간격(스패로 기준, 레일리 간격의 약 0.78배)이다. 화면이 보여 주는 간격(0.5)에서는 골이 없어 계산은 맞고, 문장의 인과만 느슨하다 — 교육적 단순화로 볼지 사람이 판단한다
+  evidence: sims/optics/resolving-power/NOTES.md:5 (주장) · sims/optics/resolving-power/src/schema.ts:186 (caption.merged) · sims/optics/resolving-power/src/physics.ts:96 (airy, 계산은 맞음)
+  fix_at: sims/optics/resolving-power (캡션 · 주장 문장)
+  suggest: 「봉우리가 첫 어두운 자리보다 한참 안으로 들어오자 골이 사라졌다」처럼 조건을 느슨하게
+  confidence: low
+
+- id: equipotential-surface
+  class: X
+  problem: desc 「전기장과 수직인 면」은 맞다. 다만 캡션이 「양전하에서 풀려난 시험 전하가 가장 가파른 내리막을 따라 내려간다」고 말하는데, 코드는 전기력선을 일정 속력으로 따라가는 경로(trace)다. 관성이 있는 전하는 휜 전기력선을 그대로 따르지 않으므로 「전기력선 = 궤적」 오해를 줄 수 있다. 원본 NOTES 가 「저항이 큰(느린) 운동의 그림이며 관성 운동이 아님은 문단이 말할 몫」이라 적어 두었으나 조각 · 이관 NOTES · 화면에는 그 모형이 명시되지 않는다
+  evidence: docs/topics/topics.yaml:2562 · sims/em/equipotential-surface/src/schema.ts:159 (caption.main) · sims/em/equipotential-surface/src/physics.ts:272 (trace — 장 방향 단위 걸음) · tasks/piece-lab/equipotential-surface/NOTES.md:39 (속력 일정 · 과감쇠 운동의 그림이라는 원본 결정)
+  fix_at: sims/em/equipotential-surface (캡션에 모형 명시 여부는 사람이 판단) — desc 는 그대로
+  confidence: low
+
+- id: energy-in-inductor
+  class: X
+  problem: desc 는 맞다. ko 캡션 caption.hold 「전류가 멈춰」가 「전류가 끊겨 0 이 됐다」로 읽힐 수 있어, 곧이어 「다 찬 삼각형이 그대로 남아 있다」와 함께 전류 없이 에너지가 남는다는 오독을 부를 수 있다. en 「The current holds」와 NOTES 는 「전류가 일정하다」라 뜻은 맞다 — 조각 캡션(ko)의 문구 문제로 사람이 본다
+  evidence: sims/em/energy-in-inductor/src/schema.ts:206 (caption.hold ko) · sims/em/energy-in-inductor/src/schema.ts:207 (en 「The current holds」) · sims/em/energy-in-inductor/NOTES.md:25 (hold — 전류가 일정하다)
+  fix_at: sims/em/energy-in-inductor/src/schema.ts caption.hold (ko)
+  langs: [ko]
+  confidence: low
