@@ -65,7 +65,7 @@ topics:
     sim: aperi21:average-velocity
   - id: average-acceleration
     name: 평균 가속도
-    desc: { ko: "속도 변화의 비율", en: "Rate of change of velocity", ja: "速度の変化の割合", zh: "速度的变化率", ar: "معدل تغير السرعة", es: "Tasa de cambio de la velocidad", fr: "Taux de variation de la vitesse", hi: "वेग परिवर्तन की दर", id: "Laju perubahan kecepatan", pt: "Taxa de variação da velocidade" }
+    desc: { ko: "구간의 처음과 끝 속도만으로 정해지는 속도 변화의 비율", en: "The rate of change of velocity over an interval, set only by the velocities at its start and end", ja: "区間の最初と最後の速度だけで決まる速度変化の割合", zh: "只由一段时间始末的速度决定的速度变化率", ar: "معدل تغيّر السرعة خلال فترة، الذي تحدده سرعتا بدايتها ونهايتها فقط", es: "La tasa de cambio de la velocidad en un intervalo, fijada solo por las velocidades al inicio y al final", fr: "Le taux de variation de la vitesse sur un intervalle, fixé par les seules vitesses au début et à la fin", hi: "किसी अंतराल में वेग परिवर्तन की दर, जो केवल उसके आरंभ और अंत के वेग से तय होती है", id: "Laju perubahan kecepatan selama suatu selang, yang hanya ditentukan oleh kecepatan di awal dan akhirnya", pt: "A taxa de variação da velocidade num intervalo, fixada só pelas velocidades no início e no fim" }
     domain: kinematics
     level: lower
     curricula: [ib, ap, uk]
@@ -73,7 +73,7 @@ topics:
     sim: aperi21:average-acceleration
   - id: direction-of-acceleration
     name: 가속도의 방향
-    desc: { ko: "속도와 같은 방향인지 반대인지가 정하는 것", en: "Whether it points with or against the velocity", ja: "速度と同じ向きか逆向きか", zh: "与速度同向还是反向", ar: "أيتجه مع السرعة أم عكسها", es: "Si apunta a favor o en contra de la velocidad", fr: "S’il pointe dans le sens de la vitesse ou en sens inverse", hi: "वह वेग की दिशा में है या उसके विपरीत", id: "Apakah searah atau berlawanan dengan kecepatan", pt: "Se aponta a favor ou contra a velocidade" }
+    desc: { ko: "속도와 같은 쪽이면 빨라지고 반대쪽이면 느려진다", en: "Pointing with the velocity speeds a body up; pointing against it slows it down", ja: "速度と同じ向きなら速くなり、逆向きなら遅くなる", zh: "与速度同向就加快，反向就减慢", ar: "إذا اتجه مع السرعة أسرع الجسم، وإذا عاكسها تباطأ", es: "Si apunta con la velocidad, el cuerpo acelera; si apunta en contra, frena", fr: "Dans le sens de la vitesse, le corps accélère ; en sens contraire, il ralentit", hi: "वेग की दिशा में हो तो पिंड तेज़ होता है, उलटी दिशा में हो तो धीमा", id: "Searah kecepatan membuat benda makin cepat; berlawanan arah membuatnya melambat", pt: "No sentido da velocidade, o corpo acelera; em sentido contrário, desacelera" }
     domain: kinematics
     level: upper
     curricula: [kr]
@@ -122,7 +122,7 @@ topics:
     sim: aperi21:acceleration-time-graph
   - id: free-fall
     name: 자유 낙하
-    desc: { ko: "중력만 받는 연직 운동", en: "Vertical motion under gravity alone", ja: "重力だけを受ける鉛直方向の運動", zh: "只受重力作用的竖直运动", ar: "حركة رأسية تحت تأثير الجاذبية وحدها", es: "Movimiento vertical bajo la sola acción de la gravedad", fr: "Mouvement vertical sous l’effet de la seule pesanteur", hi: "केवल गुरुत्व के अधीन ऊर्ध्वाधर गति", id: "Gerak vertikal yang hanya dipengaruhi gravitasi", pt: "Movimento vertical sob a ação apenas da gravidade" }
+    desc: { ko: "무게와 상관없이 나란히 떨어지는, 중력만 받는 운동", en: "Motion under gravity alone, in which heavy and light bodies fall side by side", ja: "重さに関係なく並んで落ちる、重力だけを受ける運動", zh: "只受重力的运动，轻重物体并排下落", ar: "حركة تحت الجاذبية وحدها يسقط فيها الثقيل والخفيف جنبًا إلى جنب", es: "Movimiento bajo la sola gravedad, en el que cuerpos pesados y ligeros caen a la par", fr: "Mouvement sous la seule pesanteur, où corps lourds et légers tombent côte à côte", hi: "केवल गुरुत्व के अधीन गति, जिसमें भारी और हल्के पिंड साथ-साथ गिरते हैं", id: "Gerak di bawah gravitasi saja, benda berat dan ringan jatuh berdampingan", pt: "Movimento só sob a gravidade, em que corpos pesados e leves caem lado a lado" }
     domain: kinematics
     level: primary
     curricula: [kr, ib, ngss, ap, uk]
@@ -368,7 +368,7 @@ topics:
     sim: aperi21:tension
   - id: pulley-system
     name: 도르래
-    desc: { ko: "힘의 방향과 크기를 바꾸는 장치", en: "A device that changes the direction and size of a force", ja: "力の向きと大きさを変える装置", zh: "改变力的方向和大小的装置", ar: "أداة تغيّر اتجاه القوة ومقدارها", es: "Un dispositivo que cambia la dirección y la magnitud de una fuerza", fr: "Un dispositif qui change la direction et l’intensité d’une force", hi: "एक युक्ति जो बल की दिशा और परिमाण बदलती है", id: "Alat yang mengubah arah dan besar gaya", pt: "Um dispositivo que muda a direção e a intensidade de uma força" }
+    desc: { ko: "줄 가닥이 늘수록 드는 힘은 줄고 당길 줄은 길어지는 장치", en: "A device where more strands mean a smaller pull and more rope to draw", ja: "ロープの本数が増えるほど引く力は小さく、たぐるロープは長くなる装置", zh: "绳段越多、拉力越小而要拉的绳越长的装置", ar: "أداة كلما زادت فيها فروع الحبل قلّت قوة الشد وطال الحبل المسحوب", es: "Un dispositivo en el que más tramos de cuerda significan menos fuerza y más cuerda por tirar", fr: "Un dispositif où plus de brins signifient une traction plus faible et plus de corde à tirer", hi: "वह युक्ति जिसमें रस्सी के अधिक भाग होने पर खींचने का बल घटता है और खींचनी पड़ने वाली रस्सी बढ़ती है", id: "Alat yang makin banyak utas talinya makin kecil tarikannya dan makin panjang tali yang ditarik", pt: "Um dispositivo em que mais trechos de corda significam menos força e mais corda a puxar" }
     domain: newtonian-mechanics
     level: upper
     curricula: [ap]
@@ -504,7 +504,7 @@ topics:
     sim: aperi21:balance-scale
   - id: mechanical-advantage
     name: 힘의 이득
-    desc: { ko: "지레와 빗면이 드는 힘을 줄이는 방식", en: "How levers and ramps cut the force you need", ja: "てこと斜面が必要な力を減らすしくみ", zh: "杠杆和斜面如何减小所需的力", ar: "كيف تقلل الروافع والسطوح المائلة القوة اللازمة", es: "Cómo las palancas y las rampas reducen la fuerza necesaria", fr: "Comment leviers et plans inclinés réduisent la force nécessaire", hi: "उत्तोलक और आनत तल आवश्यक बल को कैसे घटाते हैं", id: "Cara tuas dan bidang miring mengurangi gaya yang diperlukan", pt: "Como alavancas e rampas reduzem a força necessária" }
+    desc: { ko: "지레와 빗면이 힘을 줄이는 대신 더 먼 거리를 밀게 하는 맞바꿈", en: "How levers and ramps trade a smaller force for a longer distance", ja: "てこと斜面が、力を小さくする代わりに長い距離を押させる引き換え", zh: "杠杆和斜面以更小的力换取更长的距离", ar: "كيف تقايض الروافع والأسطح المائلة قوةً أصغر بمسافةٍ أطول", es: "Cómo las palancas y las rampas cambian una fuerza menor por una distancia mayor", fr: "Comment leviers et plans inclinés échangent une force plus faible contre une distance plus longue", hi: "उत्तोलक और आनत तल कैसे छोटे बल के बदले लंबी दूरी तय करवाते हैं", id: "Bagaimana tuas dan bidang miring menukar gaya yang lebih kecil dengan jarak yang lebih jauh", pt: "Como alavancas e rampas trocam uma força menor por uma distância maior" }
     domain: newtonian-mechanics
     level: primary
     curricula: [kr]
@@ -618,7 +618,7 @@ topics:
     sim: aperi21:equilibrium-points
   - id: efficiency
     name: 효율
-    desc: { ko: "넣은 것과 얻은 것의 비", en: "The ratio of what comes out to what goes in", ja: "入れたものに対する出てくるものの比", zh: "输出与输入之比", ar: "نسبة ما يخرج إلى ما يدخل", es: "La razón entre lo que sale y lo que entra", fr: "Le rapport entre ce qui sort et ce qui entre", hi: "जो निकलता है और जो डाला जाता है, उनका अनुपात", id: "Perbandingan antara yang keluar dan yang masuk", pt: "A razão entre o que sai e o que entra" }
+    desc: { ko: "넣은 것 가운데 쓸모로 나오는 몫", en: "The share of what goes in that comes out as useful output", ja: "入れたもののうち役に立つ出力として出てくる割合", zh: "输入之中作为有用输出出来的份额", ar: "الحصة مما يدخل التي تخرج ناتجًا مفيدًا", es: "La parte de lo que entra que sale como salida útil", fr: "La part de ce qui entre qui ressort sous forme utile", hi: "जो डाला जाता है उसका वह हिस्सा जो उपयोगी निकास बनकर निकलता है", id: "Bagian dari masukan yang keluar sebagai keluaran berguna", pt: "A parte do que entra que sai como saída útil" }
     domain: energy-momentum
     level: primary
     curricula: [kr, ib, ngss, ap, uk]
@@ -900,7 +900,7 @@ topics:
     sim: aperi21:resonance
   - id: quality-factor
     name: Q 인자
-    desc: { ko: "공명의 날카로움", en: "How sharp a resonance is", ja: "共振の鋭さ", zh: "共振的尖锐程度", ar: "مدى حدّة الرنين", es: "Qué tan aguda es una resonancia", fr: "L’acuité d’une résonance", hi: "अनुनाद कितना तीक्ष्ण है", id: "Seberapa tajam suatu resonansi", pt: "Quão aguda é uma ressonância" }
+    desc: { ko: "공명이 날카로울수록 오래 울린다", en: "The sharper the resonance, the longer it rings", ja: "共振が鋭いほど長く振動し続ける", zh: "共振越尖锐，振动持续越久", ar: "كلما كان الرنين أحدّ طال الاهتزاز", es: "Cuanto más aguda es la resonancia, más tiempo sigue vibrando", fr: "Plus la résonance est aiguë, plus longtemps elle résonne", hi: "अनुनाद जितना तीखा, कंपन उतनी देर चलता है", id: "Makin tajam resonansinya, makin lama getarannya bertahan", pt: "Quanto mais aguda a ressonância, mais tempo continua a vibrar" }
     domain: rotation-oscillation
     level: upper
     curricula: []
@@ -948,7 +948,7 @@ topics:
     sim: aperi21:nonlinear-oscillation
   - id: gears
     name: 기어
-    desc: { ko: "톱니 수가 바꾸는 회전과 힘", en: "How tooth counts trade turning for force", ja: "歯数が回転を力に引き換えるしくみ", zh: "齿数如何以转动换取力", ar: "كيف يبادل عدد الأسنان الدوران بالقوة", es: "Cómo el número de dientes cambia giro por fuerza", fr: "Comment le nombre de dents échange la rotation contre la force", hi: "दाँतों की संख्या घुमाव के बदले बल कैसे देती है", id: "Bagaimana jumlah gigi menukar putaran dengan gaya", pt: "Como o número de dentes troca giro por força" }
+    desc: { ko: "톱니 수가 맞바꾸는 회전 빠르기와 돌림힘", en: "How tooth counts trade turning speed for torque", ja: "歯数が回転の速さとトルクを引き換える仕組み", zh: "齿数如何以转动速率换取力矩", ar: "كيف يقايض عدد الأسنان سرعة الدوران بعزم الدوران", es: "Cómo el número de dientes cambia rapidez de giro por torque", fr: "Comment le nombre de dents échange la vitesse de rotation contre le couple", hi: "दाँतों की संख्या कैसे घूमने की चाल के बदले बल-आघूर्ण देती है", id: "Bagaimana jumlah gigi menukar kelajuan putar dengan torsi", pt: "Como o número de dentes troca velocidade de giro por torque" }
     domain: rotation-oscillation
     level: lower
     curricula: [uk]
@@ -1037,7 +1037,7 @@ topics:
     sim: aperi21:elliptical-orbit
   - id: keplers-first-law
     name: 케플러 제1법칙
-    desc: { ko: "궤도는 타원이다", en: "Orbits are ellipses", ja: "軌道は楕円である", zh: "轨道是椭圆", ar: "المدارات قطوع ناقصة", es: "Las órbitas son elipses", fr: "Les orbites sont des ellipses", hi: "कक्षाएँ दीर्घवृत्त होती हैं", id: "Orbit berbentuk elips", pt: "As órbitas são elipses" }
+    desc: { ko: "태양이 한 초점에 놓인 타원 궤도", en: "Elliptical orbits with the Sun at one focus", ja: "太陽が一方の焦点にある楕円軌道", zh: "太阳位于一个焦点上的椭圆轨道", ar: "مدارات إهليلجية تقع الشمس في إحدى بؤرتيها", es: "Órbitas elípticas con el Sol en uno de los focos", fr: "Des orbites elliptiques dont le Soleil occupe un foyer", hi: "दीर्घवृत्ताकार कक्षाएँ, जिनकी एक नाभि पर सूर्य है", id: "Orbit elips dengan Matahari di salah satu fokus", pt: "Órbitas elípticas com o Sol num dos focos" }
     domain: gravitation
     level: upper
     curricula: [kr, ib, ngss]
@@ -1053,7 +1053,7 @@ topics:
     sim: aperi21:keplers-second-law
   - id: keplers-third-law
     name: 케플러 제3법칙
-    desc: { ko: "궤도 반지름과 한 바퀴 시간의 관계", en: "The relation between orbital radius and the time for one revolution", ja: "軌道半径と一周の時間の関係", zh: "轨道半径与绕行一周时间的关系", ar: "العلاقة بين نصف قطر المدار وزمن الدورة الواحدة", es: "La relación entre el radio de la órbita y el tiempo de una vuelta", fr: "La relation entre le rayon de l’orbite et la durée d’un tour", hi: "कक्षा की त्रिज्या और एक चक्कर के समय का संबंध", id: "Hubungan antara jari-jari orbit dan waktu satu putaran", pt: "A relação entre o raio da órbita e o tempo de uma volta" }
+    desc: { ko: "반지름보다 훨씬 빨리 길어지는 한 바퀴 시간", en: "The time for one orbit, growing far faster than the radius", ja: "半径よりはるかに速く長くなる一周の時間", zh: "绕行一周的时间比半径增长得快得多", ar: "زمن الدورة الواحدة الذي يطول أسرع بكثير من نصف القطر", es: "El tiempo de una vuelta, que crece mucho más deprisa que el radio", fr: "Le temps d’un tour, qui s’allonge bien plus vite que le rayon", hi: "एक परिक्रमा का समय, जो त्रिज्या से कहीं तेज़ी से बढ़ता है", id: "Waktu satu putaran, yang bertambah jauh lebih cepat daripada jari-jari", pt: "O tempo de uma volta, que cresce muito mais depressa que o raio" }
     domain: gravitation
     level: upper
     curricula: [kr, ib, ngss, uk]
@@ -1093,7 +1093,7 @@ topics:
     sim: aperi21:weightlessness
   - id: geostationary-orbit
     name: 정지 궤도
-    desc: { ko: "자전 주기와 같은 궤도", en: "An orbit as long as one turn of Earth", ja: "地球の自転一回と同じ長さの軌道", zh: "周期与地球自转一圈相同的轨道", ar: "مدار يستغرق ما تستغرقه دورة واحدة للأرض حول نفسها", es: "Una órbita que dura lo mismo que una vuelta de la Tierra", fr: "Une orbite qui dure autant qu’un tour de la Terre", hi: "पृथ्वी के एक घूर्णन जितनी लंबी कक्षा", id: "Orbit yang lamanya sama dengan satu putaran Bumi", pt: "Uma órbita que dura o mesmo que uma volta da Terra" }
+    desc: { ko: "적도 위에서 지구 자전과 같은 주기로 도는 궤도", en: "An orbit above the equator with the same period as Earth's rotation", ja: "赤道の上空で地球の自転と同じ周期で回る軌道", zh: "在赤道上空、周期与地球自转相同的轨道", ar: "مدار فوق خط الاستواء دوره مساوٍ لدوران الأرض", es: "Una órbita sobre el ecuador con el mismo periodo que la rotación de la Tierra", fr: "Une orbite au-dessus de l’équateur de même période que la rotation de la Terre", hi: "भूमध्य रेखा के ऊपर की वह कक्षा जिसका आवर्तकाल पृथ्वी के घूर्णन के बराबर है", id: "Orbit di atas khatulistiwa dengan periode yang sama dengan rotasi Bumi", pt: "Uma órbita sobre o equador com o mesmo período que a rotação da Terra" }
     domain: gravitation
     level: upper
     curricula: [uk]
@@ -1246,7 +1246,7 @@ topics:
     sim: aperi21:stellar-luminosity
   - id: hr-diagram
     name: HR 도
-    desc: { ko: "온도와 광도로 별을 늘어놓은 그림", en: "A chart that lays out stars by temperature and luminosity", ja: "温度と光度で星を並べた図", zh: "按温度和光度排列恒星的图", ar: "مخطط يرتب النجوم بحسب درجة الحرارة والضياء", es: "Un diagrama que ordena las estrellas por temperatura y luminosidad", fr: "Un diagramme qui range les étoiles selon leur température et leur luminosité", hi: "तापमान और ज्योति के आधार पर तारों को सजाने वाला आरेख", id: "Diagram yang menata bintang menurut suhu dan luminositas", pt: "Um diagrama que dispõe as estrelas por temperatura e luminosidade" }
+    desc: { ko: "나이 들수록 무거운 별부터 주계열을 떠나는 성단의 온도-광도 그림", en: "A cluster's temperature–luminosity chart, where the heaviest stars leave the main sequence first as it ages", ja: "年を経るほど重い星から主系列を離れていく、星団の温度-光度図", zh: "星团的温度-光度图，随着年龄增长最重的恒星先离开主序", ar: "مخطط درجة الحرارة والضياء لعنقود نجمي، تغادر فيه أثقل النجوم النسق الأساسي أولًا مع تقدّم عمره", es: "El diagrama temperatura–luminosidad de un cúmulo, donde las estrellas más pesadas dejan primero la secuencia principal al envejecer", fr: "Le diagramme température–luminosité d’un amas, où les étoiles les plus lourdes quittent la séquence principale en premier avec l’âge", hi: "किसी तारागुच्छ का ताप–दीप्ति चित्र, जिसमें उम्र बढ़ने पर सबसे भारी तारे पहले मुख्य अनुक्रम छोड़ते हैं", id: "Diagram suhu–luminositas sebuah gugus, tempat bintang terberat meninggalkan deret utama lebih dulu seiring bertambahnya usia", pt: "O diagrama temperatura–luminosidade de um aglomerado, em que as estrelas mais pesadas deixam primeiro a sequência principal com a idade" }
     domain: gravitation
     level: upper
     curricula: [ib, uk]
@@ -1278,7 +1278,7 @@ topics:
     sim: aperi21:inverse-square-law
   - id: stellar-nucleosynthesis
     name: 별의 원소 합성
-    desc: { ko: "무거운 원소가 별에서 만들어지는 것", en: "How heavier elements are made inside stars", ja: "重い元素が星の内部でつくられるしくみ", zh: "较重的元素如何在恒星内部形成", ar: "كيف تتكوّن العناصر الأثقل داخل النجوم", es: "Cómo se forman los elementos más pesados dentro de las estrellas", fr: "Comment les éléments plus lourds se forment à l’intérieur des étoiles", hi: "भारी तत्व तारों के भीतर कैसे बनते हैं", id: "Bagaimana unsur yang lebih berat terbentuk di dalam bintang", pt: "Como elementos mais pesados se formam dentro das estrelas" }
+    desc: { ko: "별 중심의 핵융합이 철까지 차례로 무거운 원소를 쌓는 것", en: "Fusion in a star's core building heavier elements step by step up to iron", ja: "星の中心の核融合が、鉄まで順に重い元素を積み上げること", zh: "恒星核心的核聚变逐级造出更重的元素，直到铁", ar: "اندماج نووي في لبّ النجم يبني عناصر أثقل خطوةً خطوة حتى الحديد", es: "La fusión en el núcleo de una estrella, que forma elementos más pesados paso a paso hasta el hierro", fr: "La fusion au cœur d’une étoile, qui bâtit des éléments plus lourds pas à pas jusqu’au fer", hi: "तारे के क्रोड में संलयन, जो लोहे तक क्रम से भारी तत्व बनाता है", id: "Fusi di inti bintang yang membentuk unsur lebih berat selangkah demi selangkah hingga besi", pt: "A fusão no núcleo de uma estrela, que forma elementos mais pesados passo a passo até o ferro" }
     domain: gravitation
     level: lower
     curricula: [ngss, uk]
@@ -1463,7 +1463,7 @@ topics:
     sim: aperi21:poiseuille-flow
   - id: stokes-drag
     name: 스토크스 항력
-    desc: { ko: "느린 흐름에서 크기가 가라앉는 빠르기를 정하는 것", en: "What sets how fast a size sinks in slow flow", ja: "遅い流れの中で、大きさが沈む速さを決めるもの", zh: "在缓慢流动中由大小决定下沉快慢的因素", ar: "ما يحدد سرعة غوص الجسم بحسب حجمه في تدفق بطيء", es: "Lo que, en un flujo lento, fija con qué rapidez se hunde un tamaño", fr: "Ce qui fixe, dans un écoulement lent, la vitesse à laquelle une taille s’enfonce", hi: "धीमे प्रवाह में आकार के अनुसार डूबने की चाल क्या तय करता है", id: "Hal yang menentukan seberapa cepat suatu ukuran tenggelam dalam aliran lambat", pt: "O que determina, num escoamento lento, a velocidade com que um tamanho afunda" }
+    desc: { ko: "느린 흐름에서 반지름이 두 배면 네 배 빨리 가라앉는 구", en: "In slow flow, a sphere with twice the radius sinks four times as fast", ja: "遅い流れの中で、半径が2倍の球は4倍速く沈む", zh: "在缓慢的流动中，半径加倍的球下沉速率变为四倍", ar: "في التدفق البطيء تغوص الكرة ذات نصف القطر المضاعف أسرع بأربع مرات", es: "En un flujo lento, una esfera con el doble de radio se hunde cuatro veces más rápido", fr: "Dans un écoulement lent, une sphère de rayon double coule quatre fois plus vite", hi: "धीमे प्रवाह में दोगुनी त्रिज्या वाला गोला चार गुना तेज़ी से डूबता है", id: "Dalam aliran lambat, bola berjari-jari dua kali tenggelam empat kali lebih cepat", pt: "Num escoamento lento, uma esfera com o dobro do raio afunda quatro vezes mais depressa" }
     domain: fluids
     level: upper
     curricula: []
@@ -1584,7 +1584,7 @@ topics:
     sim: aperi21:triple-point
   - id: thermal-conduction
     name: 열전도
-    desc: { ko: "접촉을 통한 전달", en: "Transfer through contact", ja: "接触による伝達", zh: "通过接触的传递", ar: "انتقال عبر التلامس", es: "Transferencia por contacto", fr: "Transfert par contact", hi: "संपर्क के माध्यम से स्थानांतरण", id: "Perpindahan melalui sentuhan", pt: "Transferência por contato" }
+    desc: { ko: "쇠에서는 빨리, 나무에서는 느리게 물질을 타고 번지는 열", en: "Heat spreading through a material, quickly in steel and slowly in wood", ja: "鋼では速く、木では遅く、物質を伝わって広がる熱", zh: "沿物质传开的热，在钢中快、在木头中慢", ar: "حرارة تنتشر عبر المادة، بسرعة في الفولاذ وببطء في الخشب", es: "Calor que se propaga por un material, deprisa en el acero y despacio en la madera", fr: "La chaleur qui se propage dans un matériau, vite dans l’acier et lentement dans le bois", hi: "पदार्थ में फैलती ऊष्मा — इस्पात में तेज़ी से, लकड़ी में धीरे", id: "Kalor yang merambat melalui bahan, cepat pada baja dan lambat pada kayu", pt: "Calor que se propaga por um material, depressa no aço e devagar na madeira" }
     domain: thermodynamics
     level: primary
     curricula: [kr, ib, ngss, ap, uk]
@@ -1666,7 +1666,7 @@ topics:
     batch: 01-broad
   - id: pressure-from-collisions
     name: 충돌이 만드는 압력
-    desc: { ko: "벽에 부딪는 분자의 운동량", en: "The momentum molecules bring to the wall", ja: "分子が壁にもたらす運動量", zh: "分子带给器壁的动量", ar: "الزخم الذي تحمله الجزيئات إلى الجدار", es: "El momento lineal que las moléculas llevan a la pared", fr: "La quantité de mouvement que les molécules apportent à la paroi", hi: "अणुओं द्वारा दीवार तक लाया गया संवेग", id: "Momentum yang dibawa molekul ke dinding", pt: "A quantidade de movimento que as moléculas levam à parede" }
+    desc: { ko: "더 세게, 더 자주 — 분자 속력의 제곱으로 커지는 벽의 압력", en: "Harder and more often: wall pressure growing with the square of molecular speed", ja: "より強く、より頻繁に — 分子の速さの2乗で大きくなる壁の圧力", zh: "更猛、更频繁——随分子速率平方增大的器壁压强", ar: "أقوى وأكثر تكرارًا: ضغط على الجدار يزداد مع مربع سرعة الجزيئات", es: "Más fuerte y más a menudo: la presión en la pared crece con el cuadrado de la rapidez molecular", fr: "Plus fort et plus souvent : la pression sur la paroi croît comme le carré de la vitesse des molécules", hi: "अधिक ज़ोर से, अधिक बार — अणुओं की चाल के वर्ग के साथ बढ़ता दीवार का दाब", id: "Lebih keras dan lebih sering: tekanan dinding yang bertambah sebanding kuadrat kelajuan molekul", pt: "Com mais força e mais vezes: a pressão na parede cresce com o quadrado da velocidade das moléculas" }
     domain: thermodynamics
     level: lower
     curricula: [kr, ib, uk]
@@ -1754,7 +1754,7 @@ topics:
     sim: aperi21:irreversibility
   - id: heat-engine
     name: 열기관
-    desc: { ko: "열을 일로 바꾸는 순환", en: "A cycle that turns heat into work", ja: "熱を仕事に変えるサイクル", zh: "把热转化为功的循环", ar: "دورة تحوّل الحرارة إلى شغل", es: "Un ciclo que convierte calor en trabajo", fr: "Un cycle qui transforme la chaleur en travail", hi: "ऊष्मा को कार्य में बदलने वाला चक्र", id: "Siklus yang mengubah kalor menjadi usaha", pt: "Um ciclo que transforma calor em trabalho" }
+    desc: { ko: "받은 열의 일부만 일로 바꾸고 나머지는 찬 쪽에 버리는 순환", en: "A cycle that turns only part of its heat into work and passes the rest to the cold side", ja: "受け取った熱の一部だけを仕事に変え、残りを低温側に捨てるサイクル", zh: "只把吸收的热的一部分变成功、其余排给冷端的循环", ar: "دورة لا تحوّل إلا جزءًا من الحرارة إلى شغل وتطرح الباقي إلى الجانب البارد", es: "Un ciclo que convierte solo parte de su calor en trabajo y cede el resto al lado frío", fr: "Un cycle qui ne change qu’une partie de sa chaleur en travail et cède le reste au côté froid", hi: "वह चक्र जो ली गई ऊष्मा का केवल एक भाग कार्य में बदलता है और बाकी ठंडे पक्ष को दे देता है", id: "Siklus yang hanya mengubah sebagian kalornya menjadi usaha dan membuang sisanya ke sisi dingin", pt: "Um ciclo que converte só parte do seu calor em trabalho e cede o resto ao lado frio" }
     domain: thermodynamics
     level: upper
     curricula: [kr, ib, ap]
@@ -1794,7 +1794,7 @@ topics:
     sim: aperi21:diffusion
   - id: random-walk
     name: 무작위 걸음
-    desc: { ko: "제곱근에 비례하는 이동 거리", en: "Distance that grows as a square root", ja: "平方根で増える距離", zh: "按平方根增长的距离", ar: "مسافة تنمو كجذر تربيعي", es: "Una distancia que crece como una raíz cuadrada", fr: "Une distance qui croît comme une racine carrée", hi: "वर्गमूल की तरह बढ़ने वाली दूरी", id: "Jarak yang tumbuh seperti akar kuadrat", pt: "Uma distância que cresce como raiz quadrada" }
+    desc: { ko: "걸음 수의 제곱근으로만 느는, 처음 자리에서 퍼진 폭", en: "The spread from the start, growing only as the square root of the steps", ja: "歩数の平方根でしか増えない、出発点からの広がり", zh: "离起点散开的宽度只按步数的平方根增长", ar: "الانتشار عن نقطة البداية الذي لا يزداد إلا بالجذر التربيعي لعدد الخطوات", es: "La dispersión en torno al punto de partida, que solo crece como la raíz cuadrada del número de pasos", fr: "L’étalement autour du point de départ, qui ne croît que comme la racine carrée du nombre de pas", hi: "आरंभ बिंदु से फैलाव, जो कदमों की संख्या के वर्गमूल जितना ही बढ़ता है", id: "Sebaran dari titik awal yang hanya bertambah sebesar akar kuadrat jumlah langkah", pt: "O espalhamento em torno do ponto de partida, que só cresce com a raiz quadrada do número de passos" }
     domain: thermodynamics
     level: upper
     curricula: []
@@ -1997,7 +1997,7 @@ topics:
     sim: aperi21:shock-wave
   - id: sound-intensity
     name: 음의 세기
-    desc: { ko: "거리 제곱에 반비례하는 감쇠", en: "Falling off with the square of distance", ja: "距離の2乗に反比例する減衰", zh: "随距离平方衰减", ar: "التناقص مع مربع المسافة", es: "Disminución con el cuadrado de la distancia", fr: "Décroissance avec le carré de la distance", hi: "दूरी के वर्ग के साथ घटना", id: "Melemah sebanding kuadrat jarak", pt: "Queda com o quadrado da distância" }
+    desc: { ko: "거리 제곱에 반비례해 꺼지는 세기와 조금씩만 낮아지는 데시벨", en: "Intensity falling with the square of distance while the decibel level dips only a little", ja: "距離の2乗に反比例して弱まる強さと、少しずつしか下がらないデシベル", zh: "声强与距离平方成反比地减弱，而分贝只下降一点", ar: "شدة تتناقص مع مربع المسافة بينما لا ينخفض مستوى الديسيبل إلا قليلًا", es: "La intensidad cae con el cuadrado de la distancia mientras el nivel en decibelios baja solo un poco", fr: "L’intensité chute avec le carré de la distance tandis que le niveau en décibels baisse à peine", hi: "दूरी के वर्ग के साथ घटती तीव्रता, जबकि डेसिबल स्तर थोड़ा ही गिरता है", id: "Intensitas yang turun berbanding terbalik dengan kuadrat jarak, sementara taraf desibel hanya turun sedikit", pt: "A intensidade cai com o quadrado da distância enquanto o nível em decibéis baixa só um pouco" }
     domain: waves-acoustics
     level: upper
     curricula: [ap]
@@ -2093,7 +2093,7 @@ topics:
     sim: aperi21:digital-vs-analog-signal
   - id: seismic-waves
     name: 지진파
-    desc: { ko: "지구 속을 지나는 P파와 S파", en: "P and S waves travelling through the Earth", ja: "地球内部を伝わるP波とS波", zh: "在地球内部传播的P波和S波", ar: "موجات P وS تنتقل عبر باطن الأرض", es: "Ondas P y S que atraviesan la Tierra", fr: "Ondes P et S qui traversent la Terre", hi: "पृथ्वी के भीतर से गुज़रती P और S तरंगें", id: "Gelombang P dan S yang merambat melalui Bumi", pt: "Ondas P e S atravessando a Terra" }
+    desc: { ko: "액체 외핵이 S파를 막고 P파를 꺾어 만드는 그림자대", en: "The shadow zones made as the liquid outer core blocks S waves and bends P waves", ja: "液体の外核がS波をさえぎりP波を曲げてできるシャドーゾーン", zh: "液态外核挡住S波、折弯P波而形成的影区", ar: "مناطق الظل التي تنشأ حين يحجب اللب الخارجي السائل موجات S ويحني موجات P", es: "Las zonas de sombra que crea el núcleo externo líquido al bloquear las ondas S y desviar las ondas P", fr: "Les zones d’ombre créées quand le noyau externe liquide arrête les ondes S et courbe les ondes P", hi: "छाया क्षेत्र, जो तब बनते हैं जब द्रव बाह्य क्रोड S तरंगों को रोकता है और P तरंगों को मोड़ता है", id: "Zona bayangan yang terbentuk saat inti luar cair menahan gelombang S dan membelokkan gelombang P", pt: "As zonas de sombra criadas quando o núcleo externo líquido barra as ondas S e desvia as ondas P" }
     domain: waves-acoustics
     level: lower
     curricula: [uk]
@@ -2158,7 +2158,7 @@ topics:
     sim: aperi21:multiple-mirror-images
   - id: concave-mirror
     name: 오목거울
-    desc: { ko: "초점과 실상", en: "The focal point and the real image", ja: "焦点と実像", zh: "焦点与实像", ar: "البؤرة والصورة الحقيقية", es: "El foco y la imagen real", fr: "Le foyer et l’image réelle", hi: "फोकस और वास्तविक प्रतिबिंब", id: "Titik fokus dan bayangan nyata", pt: "O foco e a imagem real" }
+    desc: { ko: "물체가 초점 밖이면 실상, 안이면 허상", en: "A real image while the object is outside the focal point, a virtual one once inside", ja: "物体が焦点の外なら実像、内なら虚像", zh: "物体在焦点外成实像，在焦点内成虚像", ar: "صورة حقيقية ما دام الجسم خارج البؤرة، ووهمية حين يدخلها", es: "Imagen real mientras el objeto está fuera del foco, virtual cuando está dentro", fr: "Une image réelle tant que l’objet est au-delà du foyer, virtuelle une fois en deçà", hi: "वस्तु फोकस के बाहर हो तो वास्तविक प्रतिबिंब, भीतर हो तो आभासी", id: "Bayangan nyata selama benda di luar titik fokus, bayangan maya begitu di dalamnya", pt: "Imagem real enquanto o objeto está fora do foco, virtual quando está dentro" }
     domain: optics
     level: lower
     curricula: [kr, ap]
@@ -2166,7 +2166,7 @@ topics:
     sim: aperi21:concave-mirror
   - id: convex-mirror
     name: 볼록거울
-    desc: { ko: "확대된 시야와 허상", en: "A wider view and a virtual image", ja: "広い視野と虚像", zh: "更宽的视野与虚像", ar: "مجال رؤية أوسع وصورة وهمية", es: "Un campo de visión más amplio y una imagen virtual", fr: "Un champ de vision plus large et une image virtuelle", hi: "अधिक चौड़ा दृष्टि-क्षेत्र और आभासी प्रतिबिंब", id: "Bidang pandang lebih luas dan bayangan maya", pt: "Um campo de visão mais amplo e uma imagem virtual" }
+    desc: { ko: "넓은 시야와 작고 바로 선 허상", en: "A wider view and a small, upright virtual image", ja: "広い視野と、小さく正立した虚像", zh: "更宽的视野与缩小、正立的虚像", ar: "مجال رؤية أوسع وصورة وهمية صغيرة معتدلة", es: "Un campo de visión más amplio y una imagen virtual pequeña y derecha", fr: "Un champ de vision plus large et une image virtuelle petite et droite", hi: "अधिक चौड़ा दृष्टि-क्षेत्र और छोटा, सीधा आभासी प्रतिबिंब", id: "Bidang pandang lebih luas dan bayangan maya yang kecil dan tegak", pt: "Um campo de visão mais amplo e uma imagem virtual pequena e direita" }
     domain: optics
     level: lower
     curricula: [kr, ap]
@@ -2318,7 +2318,7 @@ topics:
     sim: aperi21:myopia-hyperopia
   - id: magnifying-glass
     name: 돋보기
-    desc: { ko: "가까운 초점 안의 물체", en: "An object inside the near focal point", ja: "近い焦点の内側にある物体", zh: "近侧焦点以内的物体", ar: "جسم داخل البؤرة القريبة", es: "Un objeto dentro del foco cercano", fr: "Un objet en deçà du foyer proche", hi: "निकट फोकस बिंदु के भीतर रखी वस्तु", id: "Benda di dalam titik fokus dekat", pt: "Um objeto dentro do foco próximo" }
+    desc: { ko: "초점 안의 물체가 크고 바로 선 허상으로 보이는 것", en: "An object inside the focal point seen as a large, upright virtual image", ja: "焦点の内側の物体が、大きく正立した虚像として見えること", zh: "焦点以内的物体被看成放大、正立的虚像", ar: "جسم داخل البؤرة يُرى صورةً وهميةً كبيرة معتدلة", es: "Un objeto dentro del foco que se ve como una imagen virtual grande y derecha", fr: "Un objet en deçà du foyer vu comme une image virtuelle grande et droite", hi: "फोकस के भीतर रखी वस्तु, जो बड़े और सीधे आभासी प्रतिबिंब के रूप में दिखती है", id: "Benda di dalam titik fokus yang terlihat sebagai bayangan maya yang besar dan tegak", pt: "Um objeto dentro do foco visto como uma imagem virtual grande e direita" }
     domain: optics
     level: primary
     curricula: [kr]
@@ -2350,7 +2350,7 @@ topics:
     sim: aperi21:youngs-double-slit
   - id: single-slit-diffraction
     name: 단일 슬릿 회절
-    desc: { ko: "폭이 만드는 무늬", en: "The pattern a width makes", ja: "幅がつくる模様", zh: "缝宽形成的图样", ar: "النمط الذي يصنعه العرض", es: "El patrón que crea un ancho", fr: "Le motif que crée une largeur", hi: "चौड़ाई से बनने वाला प्रतिरूप", id: "Pola yang dibentuk oleh lebar", pt: "O padrão que uma largura forma" }
+    desc: { ko: "틈이 좁을수록 넓어지는 가운데 밝은 띠", en: "The central bright band that widens as the slit narrows", ja: "スリットが狭いほど広がる中央の明るい帯", zh: "狭缝越窄就越宽的中央亮带", ar: "الشريط المضيء المركزي الذي يتسع كلما ضاق الشق", es: "La banda brillante central, que se ensancha cuando la rendija se estrecha", fr: "La bande brillante centrale, qui s’élargit quand la fente se rétrécit", hi: "बीच की चमकीली पट्टी, जो झिरी के सँकरी होने पर चौड़ी होती है", id: "Pita terang tengah yang melebar saat celah menyempit", pt: "A faixa clara central, que se alarga quando a fenda se estreita" }
     domain: optics
     level: upper
     curricula: [ib, ap, uk]
@@ -2414,7 +2414,7 @@ topics:
     sim: aperi21:brewster-angle
   - id: birefringence
     name: 복굴절
-    desc: { ko: "방향에 따라 다른 굴절률", en: "Refractive index that depends on direction", ja: "方向によって異なる屈折率", zh: "随方向而变的折射率", ar: "معامل انكسار يتوقف على الاتجاه", es: "Índice de refracción que depende de la dirección", fr: "Indice de réfraction qui dépend de la direction", hi: "दिशा पर निर्भर अपवर्तनांक", id: "Indeks bias yang bergantung pada arah", pt: "Índice de refração que depende da direção" }
+    desc: { ko: "떨림이 직각인 두 줄기로 갈라져 상이 두 겹으로 보이는 빛", en: "Light split into two beams vibrating at right angles, so the image is seen double", ja: "振動が直交する2本の光束に分かれ、像が二重に見える光", zh: "分成振动方向互相垂直的两束光，使像看起来成双", ar: "ضوء ينقسم إلى حزمتين تهتزان بزاوية قائمة فتُرى الصورة مزدوجة", es: "Luz que se divide en dos haces que vibran en ángulo recto, de modo que la imagen se ve doble", fr: "La lumière séparée en deux faisceaux vibrant à angle droit, si bien que l’image paraît double", hi: "समकोण पर कंपन करते दो किरण-पुंजों में बँटा प्रकाश, जिससे प्रतिबिंब दोहरा दिखता है", id: "Cahaya yang terpecah menjadi dua berkas yang bergetar tegak lurus sehingga bayangan tampak ganda", pt: "Luz dividida em dois feixes que vibram em ângulo reto, de modo que a imagem se vê dupla" }
     domain: optics
     level: upper
     curricula: []
@@ -2735,7 +2735,7 @@ topics:
     sim: aperi21:magnetic-field-lines
   - id: lorentz-force
     name: 로런츠 힘
-    desc: { ko: "자기장 속 전하가 받는 힘", en: "The force on a charge moving in a magnetic field", ja: "磁場中を動く電荷が受ける力", zh: "在磁场中运动的电荷所受的力", ar: "القوة المؤثرة في شحنة تتحرك في مجال مغناطيسي", es: "La fuerza sobre una carga que se mueve en un campo magnético", fr: "La force sur une charge en mouvement dans un champ magnétique", hi: "चुंबकीय क्षेत्र में गतिमान आवेश पर बल", id: "Gaya pada muatan yang bergerak dalam medan magnet", pt: "A força sobre uma carga que se move em um campo magnético" }
+    desc: { ko: "자기장 속에서 움직이는 전하가 받는 힘", en: "The force on a charge moving in a magnetic field", ja: "磁場中を動く電荷が受ける力", zh: "在磁场中运动的电荷所受的力", ar: "القوة المؤثرة في شحنة تتحرك في مجال مغناطيسي", es: "La fuerza sobre una carga que se mueve en un campo magnético", fr: "La force sur une charge en mouvement dans un champ magnétique", hi: "चुंबकीय क्षेत्र में गतिमान आवेश पर बल", id: "Gaya pada muatan yang bergerak dalam medan magnet", pt: "A força sobre uma carga que se move em um campo magnético" }
     domain: electromagnetism
     level: upper
     curricula: [kr, ib, ap, uk]
@@ -2792,7 +2792,7 @@ topics:
     batch: 01-broad
   - id: field-of-loop-and-solenoid
     name: 고리와 솔레노이드
-    desc: { ko: "축 위의 자기장", en: "The magnetic field along the axis", ja: "軸上の磁場", zh: "轴线上的磁场", ar: "المجال المغناطيسي على امتداد المحور", es: "El campo magnético a lo largo del eje", fr: "Le champ magnétique le long de l’axe", hi: "अक्ष के अनुदिश चुंबकीय क्षेत्र", id: "Medan magnet di sepanjang sumbu", pt: "O campo magnético ao longo do eixo" }
+    desc: { ko: "고리를 겹칠수록 안은 고르고 세지고 바깥은 약해지는 자기장", en: "A magnetic field that stacked loops make even and strong inside and weak outside", ja: "コイルを重ねるほど内側は一様で強く、外側は弱くなる磁場", zh: "线圈叠得越多，内部越均匀越强、外部越弱的磁场", ar: "مجال مغناطيسي تجعله الحلقات المتراصة منتظمًا وقويًا في الداخل وضعيفًا في الخارج", es: "Un campo magnético que las espiras apiladas vuelven uniforme y fuerte dentro y débil fuera", fr: "Un champ magnétique que les spires empilées rendent uniforme et intense à l’intérieur, faible à l’extérieur", hi: "वह चुंबकीय क्षेत्र जिसे एक के ऊपर एक रखे लूप भीतर समान और प्रबल, बाहर कमज़ोर बनाते हैं", id: "Medan magnet yang dibuat kawat melingkar bertumpuk seragam dan kuat di dalam serta lemah di luar", pt: "Um campo magnético que as espiras empilhadas tornam uniforme e forte por dentro e fraco por fora" }
     domain: electromagnetism
     level: primary
     curricula: [kr, ib, ap, uk]
@@ -2865,7 +2865,7 @@ topics:
     sim: aperi21:eddy-current
   - id: self-inductance
     name: 자체 인덕턴스
-    desc: { ko: "자기 자신의 자속 변화", en: "A coil opposing changes in its own flux", ja: "自らの磁束の変化に逆らうコイル", zh: "线圈阻碍自身磁通量的变化", ar: "ملف يقاوم التغيّر في تدفقه الذاتي", es: "Una bobina que se opone a los cambios de su propio flujo", fr: "Une bobine qui s’oppose aux variations de son propre flux", hi: "अपने ही फ्लक्स में परिवर्तन का विरोध करती कुंडली", id: "Kumparan yang melawan perubahan fluksnya sendiri", pt: "Uma bobina que se opõe às variações do seu próprio fluxo" }
+    desc: { ko: "자기 전류가 바뀌면 그에 맞서는 전압을 내는 코일", en: "A coil that pushes back with a voltage of its own when its current changes", ja: "自分の電流が変わると、それに逆らう電圧を生じるコイル", zh: "自身电流变化时产生反抗电压的线圈", ar: "ملف يُولّد جهدًا يعاكس التغيّر حين يتغيّر تياره", es: "Una bobina que se opone con un voltaje propio cuando cambia su corriente", fr: "Une bobine qui s’oppose par sa propre tension quand son courant change", hi: "वह कुंडली जो अपनी धारा बदलने पर उसका विरोध करने वाली अपनी वोल्टता पैदा करती है", id: "Kumparan yang melawan dengan tegangannya sendiri ketika arusnya berubah", pt: "Uma bobina que se opõe com uma tensão própria quando a sua corrente muda" }
     domain: electromagnetism
     level: upper
     curricula: [kr, ap]
@@ -2913,7 +2913,7 @@ topics:
     sim: aperi21:ac-generation
   - id: reactance
     name: 리액턴스
-    desc: { ko: "주파수에 의존하는 저항", en: "A resistance that depends on frequency", ja: "周波数に依存する抵抗", zh: "依赖频率的阻抗", ar: "مقاومة تعتمد على التردد", es: "Una resistencia que depende de la frecuencia", fr: "Une résistance qui dépend de la fréquence", hi: "आवृत्ति पर निर्भर प्रतिरोध", id: "Hambatan yang bergantung pada frekuensi", pt: "Uma resistência que depende da frequência" }
+    desc: { ko: "진동수가 오르면 코일은 교류를 더 막고 축전기는 덜 막는 것", en: "How a coil opposes AC more and a capacitor less as the frequency rises", ja: "周波数が上がるとコイルは交流をより妨げ、コンデンサーはより妨げなくなること", zh: "频率升高时线圈对交流电的阻碍变大、电容器变小", ar: "كيف يعيق الملف التيار المتردد أكثر ويعيقه المكثف أقل كلما ارتفع التردد", es: "Cómo una bobina se opone más a la corriente alterna y un condensador menos al subir la frecuencia", fr: "Comment une bobine s’oppose davantage au courant alternatif et un condensateur moins quand la fréquence monte", hi: "आवृत्ति बढ़ने पर कुंडली प्रत्यावर्ती धारा को अधिक और संधारित्र कम रोकता है", id: "Bagaimana kumparan makin menghambat arus bolak-balik dan kapasitor makin sedikit saat frekuensi naik", pt: "Como uma bobina se opõe mais à corrente alternada e um capacitor menos à medida que a frequência sobe" }
     domain: electromagnetism
     level: upper
     curricula: []
@@ -3001,7 +3001,7 @@ topics:
     sim: aperi21:radiation-pressure
   - id: antenna-radiation
     name: 안테나의 복사
-    desc: { ko: "가속하는 전하가 내는 파동", en: "The waves an accelerating charge sends out", ja: "加速する電荷が出す波", zh: "加速电荷发出的波", ar: "الموجات التي تبعثها شحنة متسارعة", es: "Las ondas que emite una carga acelerada", fr: "Les ondes qu’émet une charge accélérée", hi: "त्वरित आवेश द्वारा भेजी गई तरंगें", id: "Gelombang yang dipancarkan muatan yang dipercepat", pt: "As ondas que uma carga acelerada emite" }
+    desc: { ko: "옆으로 가장 세고 축 방향으로는 내보내지 않는 안테나의 파동", en: "The waves an antenna sends strongest to its sides and not at all along its axis", ja: "横方向に最も強く、軸の方向にはまったく出さないアンテナの波", zh: "天线向两侧发射最强、沿自身轴线完全不发射的波", ar: "الموجات التي يرسلها الهوائي أقوى ما تكون نحو جانبيه ولا يرسل شيئًا على امتداد محوره", es: "Las ondas que una antena emite con más fuerza hacia los lados y nada a lo largo de su eje", fr: "Les ondes qu’une antenne émet le plus fort sur ses côtés et pas du tout le long de son axe", hi: "वे तरंगें जिन्हें ऐंटेना बगल की ओर सबसे प्रबल भेजता है और अपने अक्ष की दिशा में बिल्कुल नहीं", id: "Gelombang yang dipancarkan antena paling kuat ke samping dan sama sekali tidak searah sumbunya", pt: "As ondas que uma antena emite com mais força para os lados e nada ao longo do seu eixo" }
     domain: electromagnetism
     level: upper
     curricula: [ngss]
@@ -3170,7 +3170,7 @@ topics:
     sim: aperi21:light-cone
   - id: relativistic-momentum
     name: 상대론적 운동량
-    desc: { ko: "속도가 커질 때의 발산", en: "Momentum diverges as speed grows", ja: "速さが増すと運動量が発散する", zh: "速率增大时动量发散", ar: "يتزايد الزخم بلا حدّ مع ازدياد السرعة", es: "El momento lineal diverge al crecer la rapidez", fr: "La quantité de mouvement diverge quand la vitesse augmente", hi: "चाल बढ़ने पर संवेग असीमित रूप से बढ़ता है", id: "Momentum divergen saat kelajuan bertambah", pt: "A quantidade de movimento diverge à medida que a velocidade cresce" }
+    desc: { ko: "광속에 다가갈수록 끝없이 커지는 운동량", en: "Momentum growing without bound as the speed approaches the speed of light", ja: "光速に近づくほど限りなく大きくなる運動量", zh: "速率越接近光速就无限增大的动量", ar: "زخم يتزايد بلا حدّ كلما اقتربت السرعة من سرعة الضوء", es: "Un momento lineal que crece sin límite cuando la rapidez se acerca a la velocidad de la luz", fr: "Une quantité de mouvement qui croît sans limite quand la vitesse approche celle de la lumière", hi: "संवेग जो चाल के प्रकाश की चाल के पास पहुँचने पर असीमित रूप से बढ़ता है", id: "Momentum yang bertambah tanpa batas saat kelajuan mendekati kecepatan cahaya", pt: "Uma quantidade de movimento que cresce sem limite quando a velocidade se aproxima da velocidade da luz" }
     domain: modern-physics
     level: upper
     curricula: []
@@ -3330,7 +3330,7 @@ topics:
     sim: aperi21:particle-in-a-box
   - id: finite-well
     name: 유한 우물
-    desc: { ko: "벽 바깥으로 새는 파동 함수", en: "A wave function that leaks past the walls", ja: "壁の外へしみ出す波動関数", zh: "渗出势壁的波函数", ar: "دالة موجة تتسرب عبر الجدران", es: "Una función de onda que se filtra más allá de las paredes", fr: "Une fonction d’onde qui fuit au-delà des parois", hi: "दीवारों के पार रिसता तरंग फलन", id: "Fungsi gelombang yang merembes melewati dinding", pt: "Uma função de onda que vaza além das paredes" }
+    desc: { ko: "파동 함수가 벽 속으로 스며든 만큼 낮아지는 에너지 준위", en: "Energy levels that sit lower because the wave function seeps into the walls", ja: "波動関数が壁の中へしみ込む分だけ低くなるエネルギー準位", zh: "波函数渗入势壁，因而更低的能级", ar: "مستويات طاقة أدنى لأن دالة الموجة تتسرّب داخل الجدران", es: "Niveles de energía más bajos porque la función de onda penetra en las paredes", fr: "Des niveaux d’énergie plus bas parce que la fonction d’onde pénètre dans les parois", hi: "ऊर्जा स्तर जो नीचे बैठते हैं क्योंकि तरंग फलन दीवारों के भीतर रिसता है", id: "Tingkat energi yang lebih rendah karena fungsi gelombang merembes ke dalam dinding", pt: "Níveis de energia mais baixos porque a função de onda penetra nas paredes" }
     domain: modern-physics
     level: upper
     curricula: []
@@ -3434,7 +3434,7 @@ topics:
     sim: aperi21:laser-and-stimulated-emission
   - id: nuclear-structure
     name: 원자핵의 구성
-    desc: { ko: "양성자와 중성자", en: "Protons and neutrons", ja: "陽子と中性子", zh: "质子和中子", ar: "البروتونات والنيوترونات", es: "Protones y neutrones", fr: "Protons et neutrons", hi: "प्रोटॉन और न्यूट्रॉन", id: "Proton dan neutron", pt: "Prótons e nêutrons" }
+    desc: { ko: "양성자 수는 원소를, 중성자 수는 동위원소를 정한다", en: "The proton count fixes the element; the neutron count, the isotope", ja: "陽子の数が元素を、中性子の数が同位体を決める", zh: "质子数决定元素，中子数决定同位素", ar: "عدد البروتونات يحدد العنصر، وعدد النيوترونات يحدد النظير", es: "El número de protones fija el elemento; el de neutrones, el isótopo", fr: "Le nombre de protons fixe l’élément ; celui de neutrons, l’isotope", hi: "प्रोटॉनों की संख्या तत्व तय करती है, न्यूट्रॉनों की संख्या समस्थानिक", id: "Jumlah proton menentukan unsur; jumlah neutron menentukan isotop", pt: "O número de prótons fixa o elemento; o de nêutrons, o isótopo" }
     domain: modern-physics
     level: lower
     curricula: [ib, uk]
@@ -3498,7 +3498,7 @@ topics:
     sim: aperi21:nuclear-fusion
   - id: antimatter
     name: 반물질
-    desc: { ko: "부호가 반대인 짝", en: "A partner with the opposite charge", ja: "電荷が逆の相棒", zh: "电荷相反的伙伴", ar: "شريك بشحنة معاكسة", es: "Una pareja con la carga opuesta", fr: "Un partenaire de charge opposée", hi: "विपरीत आवेश वाला साथी", id: "Pasangan dengan muatan berlawanan", pt: "Um par com a carga oposta" }
+    desc: { ko: "전자와 만나 함께 사라지며 광자 둘을 정반대로 내놓는 짝", en: "The electron's partner, which vanishes with it and sends two photons out in opposite directions", ja: "電子と出会うとともに消え、光子2個を正反対の向きに放つパートナー", zh: "电子的伙伴，与它相遇时一同消失，向正相反方向放出两个光子", ar: "قرين الإلكترون الذي يفنى معه ويطلق فوتونين في اتجاهين متعاكسين", es: "La pareja del electrón, que desaparece con él y emite dos fotones en direcciones opuestas", fr: "Le partenaire de l’électron, qui disparaît avec lui en émettant deux photons en sens opposés", hi: "इलेक्ट्रॉन का साथी, जो उससे मिलकर साथ मिट जाता है और दो फोटॉन ठीक उलटी दिशाओं में भेजता है", id: "Pasangan elektron yang lenyap bersamanya dan memancarkan dua foton ke arah berlawanan", pt: "O parceiro do elétron, que desaparece com ele e emite dois fótons em sentidos opostos" }
     domain: modern-physics
     level: upper
     curricula: [uk]

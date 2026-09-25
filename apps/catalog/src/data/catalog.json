@@ -31,14 +31,14 @@
         {
           "id": "average-acceleration",
           "name": "평균 가속도",
-          "desc": "속도 변화의 비율",
+          "desc": "구간의 처음과 끝 속도만으로 정해지는 속도 변화의 비율",
           "simId": "aperi21:average-acceleration",
           "labUrl": "piece-lab/average-acceleration/index.html"
         },
         {
           "id": "direction-of-acceleration",
           "name": "가속도의 방향",
-          "desc": "속도와 같은 방향인지 반대인지가 정하는 것",
+          "desc": "속도와 같은 쪽이면 빨라지고 반대쪽이면 느려진다",
           "simId": "aperi21:direction-of-acceleration",
           "labUrl": "piece-lab/direction-of-acceleration/index.html"
         },
@@ -80,7 +80,7 @@
         {
           "id": "free-fall",
           "name": "자유 낙하",
-          "desc": "중력만 받는 연직 운동",
+          "desc": "무게와 상관없이 나란히 떨어지는, 중력만 받는 운동",
           "simId": "aperi21:free-fall",
           "labUrl": "piece-lab/free-fall/index.html"
         },
@@ -294,7 +294,7 @@
         {
           "id": "pulley-system",
           "name": "도르래",
-          "desc": "힘의 방향과 크기를 바꾸는 장치",
+          "desc": "줄 가닥이 늘수록 드는 힘은 줄고 당길 줄은 길어지는 장치",
           "simId": "aperi21:pulley-system",
           "labUrl": "piece-lab/pulley-system/index.html"
         },
@@ -406,7 +406,7 @@
         {
           "id": "mechanical-advantage",
           "name": "힘의 이득",
-          "desc": "지레와 빗면이 드는 힘을 줄이는 방식",
+          "desc": "지레와 빗면이 힘을 줄이는 대신 더 먼 거리를 밀게 하는 맞바꿈",
           "simId": "aperi21:mechanical-advantage",
           "labUrl": "piece-lab/mechanical-advantage/index.html"
         },
@@ -500,7 +500,7 @@
         {
           "id": "efficiency",
           "name": "효율",
-          "desc": "넣은 것과 얻은 것의 비",
+          "desc": "넣은 것 가운데 쓸모로 나오는 몫",
           "simId": "aperi21:efficiency"
         },
         {
@@ -720,7 +720,7 @@
         {
           "id": "quality-factor",
           "name": "Q 인자",
-          "desc": "공명의 날카로움",
+          "desc": "공명이 날카로울수록 오래 울린다",
           "simId": "aperi21:quality-factor"
         },
         {
@@ -758,7 +758,7 @@
         {
           "id": "gears",
           "name": "기어",
-          "desc": "톱니 수가 바꾸는 회전과 힘",
+          "desc": "톱니 수가 맞바꾸는 회전 빠르기와 돌림힘",
           "simId": "aperi21:gears"
         }
       ]
@@ -830,7 +830,7 @@
         {
           "id": "keplers-first-law",
           "name": "케플러 제1법칙",
-          "desc": "궤도는 타원이다",
+          "desc": "태양이 한 초점에 놓인 타원 궤도",
           "simId": "aperi21:keplers-first-law"
         },
         {
@@ -843,7 +843,7 @@
         {
           "id": "keplers-third-law",
           "name": "케플러 제3법칙",
-          "desc": "궤도 반지름과 한 바퀴 시간의 관계",
+          "desc": "반지름보다 훨씬 빨리 길어지는 한 바퀴 시간",
           "simId": "aperi21:keplers-third-law"
         },
         {
@@ -874,7 +874,7 @@
         {
           "id": "geostationary-orbit",
           "name": "정지 궤도",
-          "desc": "자전 주기와 같은 궤도",
+          "desc": "적도 위에서 지구 자전과 같은 주기로 도는 궤도",
           "simId": "aperi21:geostationary-orbit"
         },
         {
@@ -991,7 +991,7 @@
         {
           "id": "hr-diagram",
           "name": "HR 도",
-          "desc": "온도와 광도로 별을 늘어놓은 그림",
+          "desc": "나이 들수록 무거운 별부터 주계열을 떠나는 성단의 온도-광도 그림",
           "simId": "aperi21:hr-diagram",
           "labUrl": "piece-lab/hr-diagram/index.html"
         },
@@ -1016,7 +1016,7 @@
         {
           "id": "stellar-nucleosynthesis",
           "name": "별의 원소 합성",
-          "desc": "무거운 원소가 별에서 만들어지는 것",
+          "desc": "별 중심의 핵융합이 철까지 차례로 무거운 원소를 쌓는 것",
           "simId": "aperi21:stellar-nucleosynthesis"
         },
         {
@@ -1171,7 +1171,7 @@
         {
           "id": "stokes-drag",
           "name": "스토크스 항력",
-          "desc": "느린 흐름에서 크기가 가라앉는 빠르기를 정하는 것",
+          "desc": "느린 흐름에서 반지름이 두 배면 네 배 빨리 가라앉는 구",
           "simId": "aperi21:stokes-drag"
         },
         {
@@ -1270,7 +1270,7 @@
         {
           "id": "thermal-conduction",
           "name": "열전도",
-          "desc": "접촉을 통한 전달",
+          "desc": "쇠에서는 빨리, 나무에서는 느리게 물질을 타고 번지는 열",
           "simId": "aperi21:thermal-conduction"
         },
         {
@@ -1332,7 +1332,7 @@
         {
           "id": "pressure-from-collisions",
           "name": "충돌이 만드는 압력",
-          "desc": "벽에 부딪는 분자의 운동량",
+          "desc": "더 세게, 더 자주 — 분자 속력의 제곱으로 커지는 벽의 압력",
           "simId": "aperi21:pressure-from-collisions"
         },
         {
@@ -1399,7 +1399,7 @@
         {
           "id": "heat-engine",
           "name": "열기관",
-          "desc": "열을 일로 바꾸는 순환",
+          "desc": "받은 열의 일부만 일로 바꾸고 나머지는 찬 쪽에 버리는 순환",
           "simId": "aperi21:heat-engine"
         },
         {
@@ -1430,7 +1430,7 @@
         {
           "id": "random-walk",
           "name": "무작위 걸음",
-          "desc": "제곱근에 비례하는 이동 거리",
+          "desc": "걸음 수의 제곱근으로만 느는, 처음 자리에서 퍼진 폭",
           "simId": "aperi21:random-walk"
         },
         {
@@ -1592,7 +1592,7 @@
         {
           "id": "sound-intensity",
           "name": "음의 세기",
-          "desc": "거리 제곱에 반비례하는 감쇠",
+          "desc": "거리 제곱에 반비례해 꺼지는 세기와 조금씩만 낮아지는 데시벨",
           "simId": "aperi21:sound-intensity"
         },
         {
@@ -1665,7 +1665,7 @@
         {
           "id": "seismic-waves",
           "name": "지진파",
-          "desc": "지구 속을 지나는 P파와 S파",
+          "desc": "액체 외핵이 S파를 막고 P파를 꺾어 만드는 그림자대",
           "simId": "aperi21:seismic-waves"
         }
       ]
@@ -1719,13 +1719,13 @@
         {
           "id": "concave-mirror",
           "name": "오목거울",
-          "desc": "초점과 실상",
+          "desc": "물체가 초점 밖이면 실상, 안이면 허상",
           "simId": "aperi21:concave-mirror"
         },
         {
           "id": "convex-mirror",
           "name": "볼록거울",
-          "desc": "확대된 시야와 허상",
+          "desc": "넓은 시야와 작고 바로 선 허상",
           "simId": "aperi21:convex-mirror"
         },
         {
@@ -1840,7 +1840,7 @@
         {
           "id": "magnifying-glass",
           "name": "돋보기",
-          "desc": "가까운 초점 안의 물체",
+          "desc": "초점 안의 물체가 크고 바로 선 허상으로 보이는 것",
           "simId": "aperi21:magnifying-glass"
         },
         {
@@ -1865,7 +1865,7 @@
         {
           "id": "single-slit-diffraction",
           "name": "단일 슬릿 회절",
-          "desc": "폭이 만드는 무늬",
+          "desc": "틈이 좁을수록 넓어지는 가운데 밝은 띠",
           "simId": "aperi21:single-slit-diffraction"
         },
         {
@@ -1915,7 +1915,7 @@
         {
           "id": "birefringence",
           "name": "복굴절",
-          "desc": "방향에 따라 다른 굴절률",
+          "desc": "떨림이 직각인 두 줄기로 갈라져 상이 두 겹으로 보이는 빛",
           "simId": "aperi21:birefringence"
         },
         {
@@ -2165,7 +2165,7 @@
         {
           "id": "lorentz-force",
           "name": "로런츠 힘",
-          "desc": "자기장 속 전하가 받는 힘",
+          "desc": "자기장 속에서 움직이는 전하가 받는 힘",
           "simId": "aperi21:lorentz-force"
         },
         {
@@ -2208,7 +2208,7 @@
         {
           "id": "field-of-loop-and-solenoid",
           "name": "고리와 솔레노이드",
-          "desc": "축 위의 자기장",
+          "desc": "고리를 겹칠수록 안은 고르고 세지고 바깥은 약해지는 자기장",
           "simId": "aperi21:field-of-loop-and-solenoid"
         },
         {
@@ -2262,7 +2262,7 @@
         {
           "id": "self-inductance",
           "name": "자체 인덕턴스",
-          "desc": "자기 자신의 자속 변화",
+          "desc": "자기 전류가 바뀌면 그에 맞서는 전압을 내는 코일",
           "simId": "aperi21:self-inductance"
         },
         {
@@ -2298,7 +2298,7 @@
         {
           "id": "reactance",
           "name": "리액턴스",
-          "desc": "주파수에 의존하는 저항",
+          "desc": "진동수가 오르면 코일은 교류를 더 막고 축전기는 덜 막는 것",
           "simId": "aperi21:reactance"
         },
         {
@@ -2365,7 +2365,7 @@
         {
           "id": "antenna-radiation",
           "name": "안테나의 복사",
-          "desc": "가속하는 전하가 내는 파동",
+          "desc": "옆으로 가장 세고 축 방향으로는 내보내지 않는 안테나의 파동",
           "simId": "aperi21:antenna-radiation"
         },
         {
@@ -2498,7 +2498,7 @@
         {
           "id": "relativistic-momentum",
           "name": "상대론적 운동량",
-          "desc": "속도가 커질 때의 발산",
+          "desc": "광속에 다가갈수록 끝없이 커지는 운동량",
           "simId": "aperi21:relativistic-momentum"
         },
         {
@@ -2619,7 +2619,7 @@
         {
           "id": "finite-well",
           "name": "유한 우물",
-          "desc": "벽 바깥으로 새는 파동 함수",
+          "desc": "파동 함수가 벽 속으로 스며든 만큼 낮아지는 에너지 준위",
           "simId": "aperi21:finite-well"
         },
         {
@@ -2699,7 +2699,7 @@
         {
           "id": "nuclear-structure",
           "name": "원자핵의 구성",
-          "desc": "양성자와 중성자",
+          "desc": "양성자 수는 원소를, 중성자 수는 동위원소를 정한다",
           "simId": "aperi21:nuclear-structure"
         },
         {
@@ -2748,7 +2748,7 @@
         {
           "id": "antimatter",
           "name": "반물질",
-          "desc": "부호가 반대인 짝",
+          "desc": "전자와 만나 함께 사라지며 광자 둘을 정반대로 내놓는 짝",
           "simId": "aperi21:antimatter"
         },
         {

@@ -86,7 +86,7 @@ export const lorentzForceMessages = Object.freeze({
   },
   /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
   'label.description': {
-    ko: '자기장 속 전하가 받는 힘',
+    ko: '자기장 속에서 움직이는 전하가 받는 힘',
     en: 'The force on a charge moving in a magnetic field',
     ja: '磁場中を動く電荷が受ける力',
     zh: '在磁场中运动的电荷所受的力',

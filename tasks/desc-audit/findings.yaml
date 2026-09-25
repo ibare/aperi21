@@ -6,7 +6,7 @@
 # 후속 작업의 입력이다. 양식과 분류는 PLAN.md 「분류」「결과지」. 순서는 분류(A · B오독 · B누락 · E · D · X),
 # 같은 분류 안에서는 topics.yaml 순서.
 # kind (B 만) — 오독: desc 가 틀린 쪽으로 읽힌다 · 누락: 정의로는 맞고 조각의 핵심 주장만 빠졌다.
-# suggest 는 ko 초안이다. 채택하면 topics.yaml desc 10개 언어를 함께 고치고 `pnpm description:gen`.
+# A · B 는 모두 적용했다(최종 문구는 topics.yaml). suggest 는 ko 초안이다. 채택하면 topics.yaml desc 10개 언어를 함께 고치고 `pnpm description:gen`.
 # seed-findings.yaml 의 11건은 그 판정을 그대로 옮겼다(OK 2건은 싣지 않는다).
 
 - id: boundary-layer

@@ -199,7 +199,7 @@
 - 조각 — `aperi21:stokes-drag` · `sims/fluids/stokes-drag`
 - 문안 11건
   - `label.title` — 스토크스 항력
-  - `label.description` — 느린 흐름에서 크기가 가라앉는 빠르기를 정하는 것
+  - `label.description` — 느린 흐름에서 반지름이 두 배면 네 배 빨리 가라앉는 구
   - `label.stage` — 끈적한 액체
   - `label.view` — 두 관
   - `label.radiusSmall` — r
@@ -548,7 +548,7 @@
 - 조각 — `aperi21:pulley-system` · `sims/mechanics/pulley-system`
 - 문안 13건
   - `label.title` — 도르래
-  - `label.description` — 힘의 방향과 크기를 바꾸는 장치
+  - `label.description` — 줄 가닥이 늘수록 드는 힘은 줄고 당길 줄은 길어지는 장치
   - `label.stage` — 기본
   - `label.view` — 기본
   - `label.weight` — {w} N
@@ -933,7 +933,7 @@
 - 조각 — `aperi21:keplers-third-law` · `sims/astro/keplers-third-law`
 - 문안 17건
   - `label.title` — 케플러 제3법칙
-  - `label.description` — 궤도 반지름과 한 바퀴 시간의 관계
+  - `label.description` — 반지름보다 훨씬 빨리 길어지는 한 바퀴 시간
   - `label.stage` — 반지름이 다른 두 궤도
   - `label.view` — 두 행성
   - `label.strip` — 한 바퀴에 걸린 시간
@@ -1585,7 +1585,7 @@
 - 조각 — `aperi21:birefringence` · `sims/optics/birefringence`
 - 문안 23건
   - `label.title` — 복굴절
-  - `label.description` — 방향에 따라 다른 굴절률
+  - `label.description` — 떨림이 직각인 두 줄기로 갈라져 상이 두 겹으로 보이는 빛
   - `label.stage` — 기본
   - `label.view` — 기본
   - `label.side` — 옆에서 본 단면
@@ -1865,7 +1865,7 @@
 - 조각 — `aperi21:reactance` · `sims/em/reactance`
 - 문안 18건
   - `label.title` — 리액턴스와 임피던스
-  - `label.description` — 주파수에 의존하는 저항
+  - `label.description` — 진동수가 오르면 코일은 교류를 더 막고 축전기는 덜 막는 것
   - `label.stage` — 코일 하나 · 축전기 하나
   - `label.view` — 두 회로와 X–f 평면
   - `label.inductor` — L
