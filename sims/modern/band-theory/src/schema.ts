@@ -81,7 +81,8 @@ export const SCENE_BOUNDS = { minX: -4.0, maxX: 4.3, minY: -0.5, maxY: 3.62 } as
 
 export const bandTheoryMessages = Object.freeze({
   'label.title': { ko: '띠 이론', en: 'Band theory', ja: 'バンド理論', zh: '能带理论', ar: 'نظرية النطاقات', es: 'Teoría de bandas', fr: 'Théorie des bandes', hi: 'बैंड सिद्धांत', id: 'Teori pita', pt: 'Teoria de bandas' },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '도체·부도체·반도체의 구분',
     en: 'What separates conductors, insulators and semiconductors',
     ja: '導体・絶縁体・半導体を分けるもの',
@@ -175,7 +176,7 @@ export const bandTheorySchema: BundleSchema = {
   id: BAND_THEORY_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

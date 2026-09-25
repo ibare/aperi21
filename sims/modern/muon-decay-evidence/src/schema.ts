@@ -109,7 +109,19 @@ export const SCENE_BOUNDS = { minX: -13.8, maxX: 13.8, minY: -2.4, maxY: 12.4 } 
 
 export const muonDecayEvidenceMessages = Object.freeze({
   'label.title': { ko: '뮤온의 도달', en: 'Muons reaching the ground', ja: '地表に届くミューオン', zh: '到达地面的μ子', ar: 'ميونات تصل إلى الأرض', es: 'Muones que llegan al suelo', fr: 'Des muons qui atteignent le sol', hi: 'ज़मीन तक पहुँचते म्यूऑन', id: 'Muon yang mencapai tanah', pt: 'Múons que chegam ao solo' },
-  'label.operation': { ko: '시간 지연의 관측 증거', en: 'Observational evidence for time dilation', ja: '時間の遅れの観測的証拠', zh: '时间膨胀的观测证据', ar: 'دليل رصدي على تمدد الزمن', es: 'Prueba observacional de la dilatación del tiempo', fr: 'Preuve observationnelle de la dilatation du temps', hi: 'काल विस्तारण का प्रेक्षणात्मक प्रमाण', id: 'Bukti pengamatan dilatasi waktu', pt: 'Evidência observacional da dilatação do tempo' },
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '시간 지연의 관측 증거',
+    en: 'Observational evidence for time dilation',
+    ja: '時間の遅れの観測的証拠',
+    zh: '时间膨胀的观测证据',
+    ar: 'دليل رصدي على تمدد الزمن',
+    es: 'Prueba observacional de la dilatación del tiempo',
+    fr: 'Preuve observationnelle de la dilatation du temps',
+    hi: 'काल विस्तारण का प्रेक्षणात्मक प्रमाण',
+    id: 'Bukti pengamatan dilatasi waktu',
+    pt: 'Evidência observacional da dilatação do tempo',
+  },
   'label.stage': { ko: '10 km 에서 0.98c 로 내려오는 뮤온', en: 'Muons falling from 10 km at 0.98c', ja: '10 km から 0.98c で降ってくるミューオン', zh: '以 0.98c 从 10 km 高处落下的μ子', ar: 'ميونات تهبط من 10 km بسرعة 0.98c', es: 'Muones que caen desde 10 km a 0.98c', fr: 'Des muons qui tombent de 10 km à 0.98c', hi: '10 km से 0.98c पर नीचे आते म्यूऑन', id: 'Muon yang turun dari 10 km dengan 0.98c', pt: 'Múons caindo de 10 km a 0.98c' },
   'label.view': { ko: '지상에서 본 틀', en: 'Ground frame', ja: '地上の座標系', zh: '地面参考系', ar: 'إطار الأرض المرجعي', es: 'Sistema de referencia del suelo', fr: 'Référentiel du sol', hi: 'ज़मीन का निर्देश तंत्र', id: 'Kerangka acuan tanah', pt: 'Referencial do solo' },
   'label.classical': { ko: '시간이 그대로 흐른다면', en: 'If time ran normally', ja: '時間が普通に流れるなら', zh: '如果时间照常流逝', ar: 'لو جرى الزمن كالمعتاد', es: 'Si el tiempo corriera normalmente', fr: 'Si le temps s’écoulait normalement', hi: 'यदि समय सामान्य रूप से बीतता', id: 'Jika waktu berjalan biasa', pt: 'Se o tempo corresse normalmente' },
@@ -179,7 +191,7 @@ export const muonDecayEvidenceSchema: BundleSchema = {
   id: MUON_DECAY_EVIDENCE_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 뮤온이 내려오고, 붕괴하고, 닿은 것이 쌓이고, 다시 온다.

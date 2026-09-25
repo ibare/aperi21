@@ -111,7 +111,8 @@ export const stefanBoltzmannLawMessages = Object.freeze({
     id: 'Hukum Stefan–Boltzmann',
     pt: 'Lei de Stefan–Boltzmann',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '온도 4제곱에 비례하는 복사',
     en: 'Radiation that grows as the fourth power of temperature',
     ja: '温度の4乗に比例して増える放射',
@@ -278,7 +279,7 @@ export const stefanBoltzmannLawSchema: BundleSchema = {
   id: STEFAN_BOLTZMANN_LAW_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 온도 막대가 서고, 복사 막대가 가파르게 서고, 다시 처음으로.

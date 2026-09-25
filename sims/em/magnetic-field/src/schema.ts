@@ -94,7 +94,8 @@ export const magneticFieldMessages = Object.freeze({
     id: 'Medan magnet',
     pt: 'Campo magnético',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '자기력의 분포',
     en: 'How magnetic force is spread around a magnet',
     ja: '磁石のまわりに磁気力がどう広がっているか',
@@ -223,7 +224,7 @@ export const magneticFieldSchema: BundleSchema = {
   id: MAGNETIC_FIELD_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흩어진 쇳가루 위에 자석이 놓이고, 무늬가 드러나고, 다시 털린다.

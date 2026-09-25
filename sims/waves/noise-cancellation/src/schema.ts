@@ -92,7 +92,8 @@ export const noiseCancellationMessages = Object.freeze({
     id: 'Peredam bising aktif',
     pt: 'Cancelamento ativo de ruído',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '역위상 파동의 중첩',
     en: 'Superposing an inverted wave',
     ja: '逆位相の波の重ね合わせ',
@@ -232,7 +233,7 @@ export const noiseCancellationSchema: BundleSchema = {
   id: NOISE_CANCELLATION_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 소음이 흐르고, 뒤집히고, 지워지고, 늦어지면 남는다.

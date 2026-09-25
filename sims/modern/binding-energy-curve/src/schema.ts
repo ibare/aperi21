@@ -26,7 +26,19 @@ export const BINDING_ENERGY_CURVE_ID = 'binding-energy-curve';
 
 export const bindingEnergyCurveMessages = Object.freeze({
   'label.title': { ko: '결합 에너지 곡선', en: 'Binding energy curve', ja: '結合エネルギー曲線', zh: '结合能曲线', ar: 'منحنى طاقة الربط', es: 'Curva de energía de enlace', fr: 'Courbe de l’énergie de liaison', hi: 'बंधन ऊर्जा वक्र', id: 'Kurva energi ikat', pt: 'Curva da energia de ligação' },
-  'label.operation': { ko: '철에서 최대가 되는 이유', en: 'Why it peaks at iron', ja: '鉄で最大になる理由', zh: '为什么在铁处达到最高', ar: 'لماذا تبلغ ذروتها عند الحديد', es: 'Por qué alcanza su máximo en el hierro', fr: 'Pourquoi elle culmine au fer', hi: 'यह लोहे पर शिखर पर क्यों पहुँचता है', id: 'Mengapa puncaknya di besi', pt: 'Por que o pico está no ferro' },
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '철에서 최대가 되는 이유',
+    en: 'Why it peaks at iron',
+    ja: '鉄で最大になる理由',
+    zh: '为什么在铁处达到最高',
+    ar: 'لماذا تبلغ ذروتها عند الحديد',
+    es: 'Por qué alcanza su máximo en el hierro',
+    fr: 'Pourquoi elle culmine au fer',
+    hi: 'यह लोहे पर शिखर पर क्यों पहुँचता है',
+    id: 'Mengapa puncaknya di besi',
+    pt: 'Por que o pico está no ferro',
+  },
   'label.stage': { ko: '안정한 핵종', en: 'Stable nuclides', ja: '安定な核種', zh: '稳定核素', ar: 'النويدات المستقرة', es: 'Núclidos estables', fr: 'Nucléides stables', hi: 'स्थायी न्यूक्लाइड', id: 'Nuklida stabil', pt: 'Nuclídeos estáveis' },
   'label.view': { ko: '융합과 분열', en: 'Fusion and fission', ja: '核融合と核分裂', zh: '聚变与裂变', ar: 'الاندماج والانشطار', es: 'Fusión y fisión', fr: 'Fusion et fission', hi: 'संलयन और विखंडन', id: 'Fusi dan fisi', pt: 'Fusão e fissão' },
 
@@ -243,7 +255,7 @@ export const bindingEnergyCurveSchema: BundleSchema = {
   id: BINDING_ENERGY_CURVE_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 곡선은 자연이 정한 것이라 끌어 바꾸면 거짓 곡선이 된다.

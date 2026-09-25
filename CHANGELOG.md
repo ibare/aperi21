@@ -60,6 +60,11 @@ lockstep 으로 같은 버전을 쓴다. 0.x 동안은 minor 를 breaking 허용
 
   `data-aperi21` 표지와 비어 있지 않은 `data-aperi21-id` 가 둘 다 있어야 노드로 읽힌다.
   인라인 코드와 코드 펜스 안의 토큰은 바꾸지 않는 것이 맞다.
+- **`BundleSchema.operation` 을 `description` 으로 바꿨다.** 호스트 카탈로그의 한 줄 설명
+  (`entries[].description`)이 이 필드에서 나온다. `BundleSchema` 는 `@aperi21/host` 의 `.d.ts`
+  에 실리므로 조각을 직접 선언하는 소비자에게는 필드 이름이 바뀐다. 카탈로그 항목의 모양은
+  그대로다. 한 줄 설명의 원본은 주제 목록(`docs/topics/topics.yaml` 의 `desc`)이고 조각은 그
+  파생값을 가진다 — 카탈로그 설명 444개의 문구가 주제 설명으로 맞춰졌다.
 
 ### 추가
 
@@ -75,6 +80,9 @@ lockstep 으로 같은 버전을 쓴다. 0.x 동안은 minor 를 breaking 허용
   (`surface` 는 임베딩 재료, `briefing` 은 선택 이후 writer 에게 넘길 재료). 의존 0.
 
 ### 고침
+
+- 개념 메타의 `briefing.screen.labels` 에서 조각 제목과 한 줄 설명을 뺐다. 이 목록은 「화면에
+  그려지는 글자」인데 둘은 카탈로그에만 쓰이고 임베드에는 그려지지 않는다.
 
 - 0.1.0 의 `.d.ts` 가 발행되지 않은 private 패키지를 import 해 소비자 쪽 타입이 전부
   끊겨 있었다. 타입을 발행본 안에 인라인한다.

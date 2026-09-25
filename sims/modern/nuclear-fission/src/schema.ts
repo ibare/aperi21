@@ -108,7 +108,19 @@ export const SCENE_BOUNDS = { minX: -6.2, maxX: 6.2, minY: -3.1, maxY: 2.7 } as 
 
 export const nuclearFissionMessages = Object.freeze({
   'label.title': { ko: '핵분열', en: 'Nuclear fission', ja: '核分裂', zh: '核裂变', ar: 'الانشطار النووي', es: 'Fisión nuclear', fr: 'Fission nucléaire', hi: 'नाभिकीय विखंडन', id: 'Fisi nuklir', pt: 'Fissão nuclear' },
-  'label.operation': { ko: '무거운 핵이 갈라지며 내는 에너지', en: 'The energy released when a heavy nucleus splits', ja: '重い原子核が分裂するときに放出されるエネルギー', zh: '重核裂开时释放的能量', ar: 'الطاقة المنطلقة عند انشطار نواة ثقيلة', es: 'La energía liberada cuando un núcleo pesado se divide', fr: 'L’énergie libérée quand un noyau lourd se scinde', hi: 'भारी नाभिक के टूटने पर मुक्त होने वाली ऊर्जा', id: 'Energi yang dilepaskan saat inti berat membelah', pt: 'A energia liberada quando um núcleo pesado se divide' },
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '무거운 핵이 갈라지며 내는 에너지',
+    en: 'The energy released when a heavy nucleus splits',
+    ja: '重い原子核が分裂するときに放出されるエネルギー',
+    zh: '重核裂开时释放的能量',
+    ar: 'الطاقة المنطلقة عند انشطار نواة ثقيلة',
+    es: 'La energía liberada cuando un núcleo pesado se divide',
+    fr: 'L’énergie libérée quand un noyau lourd se scinde',
+    hi: 'भारी नाभिक के टूटने पर मुक्त होने वाली ऊर्जा',
+    id: 'Energi yang dilepaskan saat inti berat membelah',
+    pt: 'A energia liberada quando um núcleo pesado se divide',
+  },
   'label.stage': { ko: '우라늄-235', en: 'Uranium-235', ja: 'ウラン235', zh: '铀-235', ar: 'اليورانيوم-235', es: 'Uranio-235', fr: 'Uranium 235', hi: 'यूरेनियम-235', id: 'Uranium-235', pt: 'Urânio-235' },
   'label.view': { ko: '한 번의 분열', en: 'One fission', ja: '一回の核分裂', zh: '一次裂变', ar: 'انشطار واحد', es: 'Una fisión', fr: 'Une fission', hi: 'एक विखंडन', id: 'Satu fisi', pt: 'Uma fissão' },
 
@@ -198,7 +210,7 @@ export const nuclearFissionSchema: BundleSchema = {
   id: NUCLEAR_FISSION_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 한 번의 분열이 자동으로 일어나며 주장이 끝난다.

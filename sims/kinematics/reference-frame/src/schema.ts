@@ -96,7 +96,8 @@ export const referenceFrameMessages = Object.freeze({
     id: 'Kerangka acuan',
     pt: 'Referencial',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '관찰자에 따라 달라지는 운동 기술',
     en: 'How the description of motion depends on the observer',
     ja: '観測者によって変わる運動の記述',
@@ -188,7 +189,7 @@ export const referenceFrameSchema: BundleSchema = {
   id: REFERENCE_FRAME_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 속력을 바꾸게 하면 "곡률이 속력에 따른다" 는 두 번째 주장이 생긴다.

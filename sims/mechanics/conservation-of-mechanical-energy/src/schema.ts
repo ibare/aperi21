@@ -108,17 +108,18 @@ export const conservationOfMechanicalEnergyMessages = Object.freeze({
     id: 'Kekekalan energi mekanik',
     pt: 'Conservação da energia mecânica',
   },
-  'label.operation': {
-    ko: '위치와 운동이 자리를 바꾸는 동안 변하지 않는 합',
-    en: 'The sum that holds while height and motion trade places',
-    ja: '高さと運動が入れかわる間も変わらない和',
-    zh: '高度与运动互换位置时保持不变的总和',
-    ar: 'المجموع الذي يثبت بينما يتبادل الارتفاع والحركة موضعيهما',
-    es: 'La suma que se mantiene mientras altura y movimiento intercambian lugares',
-    fr: 'La somme qui tient pendant que hauteur et mouvement échangent leurs places',
-    hi: 'वह योग जो ऊँचाई और गति के स्थान बदलते समय भी बना रहता है',
-    id: 'Jumlah yang tetap sementara ketinggian dan gerak bertukar tempat',
-    pt: 'A soma que se mantém enquanto altura e movimento trocam de lugar',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '위치에 담긴 몫과 운동에 담긴 몫이 자리를 바꾸는 동안 둘의 합이 그대로임',
+    en: 'The share held in position and the share held in motion trade places while their sum stays the same',
+    ja: '位置に蓄えられた分と運動に蓄えられた分が入れ替わるあいだ、その和は変わらない',
+    zh: '位置中的部分与运动中的部分相互转换时，两者之和保持不变',
+    ar: 'الحصة المختزنة في الموضع والحصة المختزنة في الحركة تتبادلان المكان بينما يبقى مجموعهما ثابتًا',
+    es: 'La parte guardada en la posición y la parte guardada en el movimiento intercambian lugares mientras su suma se mantiene',
+    fr: 'La part stockée dans la position et celle stockée dans le mouvement échangent leurs places tandis que leur somme reste la même',
+    hi: 'स्थिति में रखा अंश और गति में रखा अंश आपस में स्थान बदलते हैं, पर उनका योग वही रहता है',
+    id: 'Bagian yang tersimpan dalam posisi dan bagian yang tersimpan dalam gerak bertukar tempat sementara jumlahnya tetap',
+    pt: 'A parte guardada na posição e a parte guardada no movimento trocam de lugar enquanto a soma se mantém',
   },
   'label.stage': {
     ko: '골짜기 궤도',
@@ -227,7 +228,7 @@ export const conservationOfMechanicalEnergySchema: BundleSchema = {
   id: CONSERVATION_OF_MECHANICAL_ENERGY_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 (controllers.ts 에 이유를 적었다).

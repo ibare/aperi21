@@ -124,7 +124,8 @@ export const uniformFieldMessages = Object.freeze({
     id: 'Medan listrik homogen',
     pt: 'Campo elétrico uniforme',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '평행판 사이의 장',
     en: 'The field between parallel plates',
     ja: '平行板のあいだの電場',
@@ -263,7 +264,7 @@ export const uniformFieldSchema: BundleSchema = {
   id: UNIFORM_FIELD_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 장선이 있고, 전하가 놓이고, 옮겨 가고, 하나가 밖으로 나간다.

@@ -85,7 +85,8 @@ export const transverseWaveMessages = Object.freeze({
     id: 'Gelombang transversal',
     pt: 'Onda transversal',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '진동 방향이 진행 방향과 수직',
     en: 'The medium shakes at right angles to the direction the wave travels',
     ja: '媒質は波の進む向きと直角に揺れる',
@@ -165,7 +166,7 @@ export const transverseWaveSchema: BundleSchema = {
   id: TRANSVERSE_WAVE_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 손잡이를 두지 않는다 — 파장 · 진폭 · 진동수를 바꿔도 「세로로 흔들리고 가로로 나아간다」 에

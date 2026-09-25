@@ -87,7 +87,8 @@ export const coupledOscillatorsMessages = Object.freeze({
     id: 'Osilator tergandeng',
     pt: 'Osciladores acoplados',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '에너지가 오가는 두 진동자',
     en: 'Two oscillators trading energy',
     ja: 'エネルギーをやりとりする二つの振動子',
@@ -182,7 +183,7 @@ export const coupledOscillatorsSchema: BundleSchema = {
   id: COUPLED_OSCILLATORS_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

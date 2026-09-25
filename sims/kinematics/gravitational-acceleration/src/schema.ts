@@ -85,7 +85,8 @@ export const gravitationalAccelerationMessages = Object.freeze({
     id: 'Percepatan gravitasi',
     pt: 'Aceleração da gravidade',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '속도가 0인 순간에도 멈추지 않는 가속',
     en: 'Acceleration that does not stop even when the velocity is zero',
     ja: '速度が0になる瞬間にも止まらない加速度',
@@ -192,7 +193,7 @@ export const gravitationalAccelerationSchema: BundleSchema = {
   id: GRAVITATIONAL_ACCELERATION_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   // 조작기 없음 — 던지는 속력을 바꾸면 꼭대기 자리만 옮겨지고 주장(조각 길이 불변)은 같다.
   parameters: [],

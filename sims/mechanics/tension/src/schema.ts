@@ -133,7 +133,8 @@ export const tensionMessages = Object.freeze({
     id: 'Tegangan tali',
     pt: 'Tração',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '줄이 당기는 힘과 그 전달',
     en: 'How a rope carries a pull',
     ja: 'ロープが引く力を伝えるしくみ',
@@ -214,7 +215,7 @@ export const tensionSchema: BundleSchema = {
   id: TENSION_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
 

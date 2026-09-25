@@ -153,7 +153,8 @@ export const dopplerSourceVsObserverMessages = Object.freeze({
     id: 'Sumber bergerak vs. pengamat bergerak',
     pt: 'Fonte em movimento vs. observador em movimento',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '누가 움직이냐에 따른 비대칭',
     en: 'The asymmetry of who is moving',
     ja: '動くのがどちらかで生じる非対称',
@@ -359,7 +360,7 @@ export const dopplerSourceVsObserverSchema: BundleSchema = {
   id: DOPPLER_SOURCE_VS_OBSERVER_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 파라미터 · 조작기를 두지 않는다. 이 조각의 비교는 「같은 빠르기」 라는 조건

@@ -119,7 +119,8 @@ export const gravitationalPotentialEnergyMessages = Object.freeze({
     id: 'Energi potensial gravitasi',
     pt: 'Energia potencial gravitacional',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '높이에 저장된 에너지',
     en: 'Energy stored in height',
     ja: '高さに蓄えられたエネルギー',
@@ -285,7 +286,7 @@ export const gravitationalPotentialEnergySchema: BundleSchema = {
   id: GRAVITATIONAL_POTENTIAL_ENERGY_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 들어 올리는 중이고, 놓고, 박히고, 다시 올린다.

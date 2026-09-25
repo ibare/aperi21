@@ -107,17 +107,18 @@ export const beatsMessages = Object.freeze({
     id: 'Pelayangan',
     pt: 'Batimentos',
   },
-  'label.operation': {
-    ko: '두 음이 어긋나는 만큼 합이 지워진다',
-    en: 'The sum cancels as the two drift apart',
-    ja: '2つの音がずれるほど和が打ち消される',
-    zh: '两个音错开多少，合成就抵消多少',
-    ar: 'يُلغى المجموع كلما انزاحت النغمتان إحداهما عن الأخرى',
-    es: 'La suma se anula a medida que los dos se desfasan',
-    fr: 'La somme s’annule à mesure que les deux se décalent',
-    hi: 'दोनों के खिसकने के साथ योग मिटता जाता है',
-    id: 'Jumlahnya saling meniadakan saat keduanya bergeser',
-    pt: 'A soma se anula à medida que os dois se defasam',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '가까운 두 진동수의 합',
+    en: 'The sum of two close frequencies',
+    ja: '近い二つの振動数の和',
+    zh: '两个相近频率的叠加',
+    ar: 'مجموع ترددين متقاربين',
+    es: 'La suma de dos frecuencias cercanas',
+    fr: 'La somme de deux fréquences voisines',
+    hi: 'दो निकट आवृत्तियों का योग',
+    id: 'Jumlah dua frekuensi yang berdekatan',
+    pt: 'A soma de duas frequências próximas',
   },
   'label.stage': {
     ko: '두 음',
@@ -251,7 +252,7 @@ export const beatsSchema: BundleSchema = {
   id: BEATS_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'linear',
 
   /**

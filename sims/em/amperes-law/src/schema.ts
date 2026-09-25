@@ -110,7 +110,8 @@ export const amperesLawMessages = Object.freeze({
     id: 'Hukum Ampère',
     pt: 'Lei de Ampère',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '전류와 자기장의 순환',
     en: 'Circulation of the magnetic field around a current',
     ja: '電流のまわりの磁場の循環',
@@ -299,7 +300,7 @@ export const amperesLawSchema: BundleSchema = {
   id: AMPERES_LAW_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 세 길을 차례로 걸으며 막대가 쌓이고, 나란히 읽고, 다시 시작한다.

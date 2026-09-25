@@ -93,7 +93,19 @@ export const RETURN = 3;
 
 export const michelsonMorleyMessages = Object.freeze({
   'label.title': { ko: '마이컬슨-몰리 실험', en: 'Michelson–Morley experiment', ja: 'マイケルソン・モーリーの実験', zh: '迈克耳孙-莫雷实验', ar: 'تجربة ميكلسون ومورلي', es: 'Experimento de Michelson y Morley', fr: 'Expérience de Michelson et Morley', hi: 'माइकलसन–मॉर्ले प्रयोग', id: 'Eksperimen Michelson–Morley', pt: 'Experimento de Michelson–Morley' },
-  'label.operation': { ko: '에테르가 없다는 증거', en: 'Evidence that there is no ether', ja: 'エーテルが存在しない証拠', zh: '以太不存在的证据', ar: 'دليل على عدم وجود الأثير', es: 'Prueba de que no existe el éter', fr: 'La preuve qu’il n’y a pas d’éther', hi: 'ईथर के न होने का प्रमाण', id: 'Bukti bahwa eter tidak ada', pt: 'Evidência de que não há éter' },
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '에테르가 없다는 증거',
+    en: 'Evidence that there is no ether',
+    ja: 'エーテルが存在しない証拠',
+    zh: '以太不存在的证据',
+    ar: 'دليل على عدم وجود الأثير',
+    es: 'Prueba de que no existe el éter',
+    fr: 'La preuve qu’il n’y a pas d’éther',
+    hi: 'ईथर के न होने का प्रमाण',
+    id: 'Bukti bahwa eter tidak ada',
+    pt: 'Evidência de que não há éter',
+  },
   'label.stage': { ko: '1887 년 간섭계', en: 'The 1887 interferometer', ja: '1887年の干渉計', zh: '1887 年的干涉仪', ar: 'مقياس التداخل عام 1887', es: 'El interferómetro de 1887', fr: 'L’interféromètre de 1887', hi: '1887 का व्यतिकरणमापी', id: 'Interferometer tahun 1887', pt: 'O interferômetro de 1887' },
   'label.view': { ko: '돌리는 간섭계', en: 'Rotating interferometer', ja: '回転させる干渉計', zh: '转动的干涉仪', ar: 'مقياس التداخل الدوّار', es: 'Interferómetro giratorio', fr: 'Interféromètre en rotation', hi: 'घूमता व्यतिकरणमापी', id: 'Interferometer yang diputar', pt: 'Interferômetro giratório' },
 
@@ -181,7 +193,7 @@ export const michelsonMorleySchema: BundleSchema = {
   id: MICHELSON_MORLEY_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 돌리는 일은 자동 진행이 한다. 독자가 각을 고르게 해도 주장은

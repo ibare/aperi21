@@ -95,7 +95,8 @@ export const laserAndStimulatedEmissionMessages = Object.freeze({
     id: 'Laser dan emisi terstimulasi',
     pt: 'Lasers e emissão estimulada',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '결이 맞는 빛의 증폭',
     en: 'Amplifying light in step',
     ja: '足並みのそろった光の増幅',
@@ -285,7 +286,7 @@ export const laserAndStimulatedEmissionSchema: BundleSchema = {
   id: LASER_AND_STIMULATED_EMISSION_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 광자 하나가 빔이 되며 할 말을 마친다.

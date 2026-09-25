@@ -34,17 +34,18 @@ export const uniformlyAcceleratedMotionMessages = Object.freeze({
     id: 'Gerak lurus berubah beraturan',
     pt: 'Movimento uniformemente acelerado',
   },
-  'label.operation': {
-    ko: '같은 시간 동안 간 거리가 같은 만큼씩 늘어난다',
-    en: 'Distance in equal times grows by equal amounts',
-    ja: '等しい時間に進む距離が、同じだけずつ増えていく',
-    zh: '相等时间内通过的距离，每次增加相同的量',
-    ar: 'تزداد المسافة المقطوعة في أزمنة متساوية بمقادير متساوية',
-    es: 'La distancia recorrida en tiempos iguales crece en cantidades iguales',
-    fr: 'La distance parcourue en des durées égales augmente de quantités égales',
-    hi: 'समान समय में तय दूरी हर बार समान मात्रा से बढ़ती है',
-    id: 'Jarak dalam selang waktu yang sama bertambah dengan jumlah yang sama',
-    pt: 'A distância em tempos iguais aumenta em quantidades iguais',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '같은 시간마다 나아간 거리가 일정한 몫씩 길어지는 운동',
+    en: 'Motion in which the distance covered in each equal interval grows by a fixed amount',
+    ja: '同じ時間ごとに進む距離が一定の分ずつ長くなる運動',
+    zh: '每段相同时间内走过的距离按固定的量增加的运动',
+    ar: 'حركة تزداد فيها المسافة المقطوعة في كل فترة متساوية بمقدار ثابت',
+    es: 'Movimiento en que la distancia recorrida en cada intervalo igual crece en una cantidad fija',
+    fr: 'Mouvement où la distance parcourue à chaque intervalle égal s’allonge d’une quantité fixe',
+    hi: 'ऐसी गति जिसमें हर समान अंतराल में तय दूरी एक निश्चित मात्रा से बढ़ती है',
+    id: 'Gerak yang jarak tempuhnya pada setiap selang waktu yang sama bertambah dengan jumlah tetap',
+    pt: 'Movimento em que a distância percorrida em cada intervalo igual cresce de uma quantidade fixa',
   },
   'label.stage': {
     ko: '선로',
@@ -117,7 +118,7 @@ export const uniformlyAcceleratedMotionSchema: BundleSchema = {
   id: UNIFORMLY_ACCELERATED_MOTION_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 자동 진행만으로 주장이 끝난다 (원본 NOTES (c)).

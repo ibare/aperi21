@@ -82,7 +82,8 @@ export const workByVariableForceMessages = Object.freeze({
     id: 'Usaha oleh gaya yang berubah',
     pt: 'Trabalho realizado por uma força variável',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '힘-변위 그래프의 넓이',
     en: 'The area under the force–displacement graph',
     ja: '力–変位グラフの下の面積',
@@ -223,7 +224,7 @@ export const workByVariableForceSchema: BundleSchema = {
   id: WORK_BY_VARIABLE_FORCE_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 상자가 밀려 가고 그 아래 넓이가 쌓인다.

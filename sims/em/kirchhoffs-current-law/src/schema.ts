@@ -111,7 +111,8 @@ export const kirchhoffsCurrentLawMessages = Object.freeze({
     id: 'Hukum arus Kirchhoff',
     pt: 'Lei das correntes de Kirchhoff',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '마디에서의 전하 보존',
     en: 'Conservation of charge at a junction',
     ja: '分岐点での電荷の保存',
@@ -295,7 +296,7 @@ export const kirchhoffsCurrentLawSchema: BundleSchema = {
   id: KIRCHHOFFS_CURRENT_LAW_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흐르고, 세고, 포개고, 저항을 바꿔 다시 센다.

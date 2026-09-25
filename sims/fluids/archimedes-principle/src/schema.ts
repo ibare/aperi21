@@ -39,17 +39,18 @@ export const archimedesPrincipleMessages = defineMessages({
     id: 'Prinsip Archimedes — besarnya gaya apung',
     pt: 'Princípio de Arquimedes — a intensidade do empuxo',
   },
-  'label.operation': {
-    ko: '2.0 kg · 1.0 L 물체를 주둥이까지 가득 찬 물에 천천히 담근다. 밀려난 물이 주둥이로 넘쳐 컵에 모이고, 물체 쪽 저울이 줄어드는 만큼 넘친 물 쪽 저울이 늘어난다.',
-    en: 'A 2.0 kg, 1.0 L object is lowered into a can filled to its spout. The displaced water pours into the cup, and the scale holding the water gains exactly what the scale holding the object loses.',
-    ja: '2.0 kg・1.0 L の物体を、注ぎ口まで水を満たした容器に下ろす。押しのけられた水は注ぎ口からカップに流れ込み、物体側のはかりが減った分だけ水側のはかりが増える。',
-    zh: '把 2.0 kg、1.0 L 的物体放入盛满水直到溢水口的溢水杯中。被排开的水流进小杯，物体一侧的秤减少多少，水一侧的秤就增加多少。',
-    ar: 'يُنزَل جسم كتلته 2.0 kg وحجمه 1.0 L في وعاء مملوء بالماء حتى فوهته. يتدفق الماء المُزاح إلى الكوب، ويزداد الميزان الحامل للماء بالمقدار نفسه الذي ينقصه الميزان الحامل للجسم.',
-    es: 'Un objeto de 2.0 kg y 1.0 L se baja dentro de un recipiente lleno hasta el pico. El agua desalojada cae en el vaso, y la balanza del agua gana exactamente lo que pierde la balanza del objeto.',
-    fr: 'Un objet de 2.0 kg et 1.0 L est descendu dans un vase rempli jusqu’au bec. L’eau déplacée s’écoule dans le gobelet, et la balance qui reçoit l’eau gagne exactement ce que perd la balance qui tient l’objet.',
-    hi: '2.0 kg और 1.0 L की एक वस्तु को टोंटी तक भरे बर्तन में उतारा जाता है। विस्थापित पानी टोंटी से कप में गिरता है, और पानी वाले तराज़ू पर ठीक उतना बढ़ता है जितना वस्तु वाले तराज़ू पर घटता है।',
-    id: 'Benda 2.0 kg dan 1.0 L diturunkan ke dalam bejana yang terisi penuh sampai corotnya. Air yang dipindahkan tumpah ke gelas, dan timbangan air bertambah tepat sebesar berkurangnya timbangan benda.',
-    pt: 'Um objeto de 2.0 kg e 1.0 L é baixado dentro de um recipiente cheio até o bico. A água deslocada escorre para o copo, e a balança da água ganha exatamente o que a balança do objeto perde.',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '받는 힘은 밀려난 유체의 무게와 같다',
+    en: 'The force received equals the weight of the fluid pushed aside',
+    ja: '受ける力は押しのけた流体の重さに等しい',
+    zh: '所受的力等于被排开流体的重量',
+    ar: 'القوة المؤثرة تساوي وزن المائع المُزاح',
+    es: 'La fuerza recibida es igual al peso del fluido desplazado',
+    fr: 'La force reçue est égale au poids du fluide déplacé',
+    hi: 'मिलने वाला बल हटाए गए तरल के भार के बराबर है',
+    id: 'Gaya yang diterima sama dengan berat fluida yang dipindahkan',
+    pt: 'A força recebida é igual ao peso do fluido deslocado',
   },
   'label.stage': {
     ko: '실험대',
@@ -184,7 +185,7 @@ export const archimedesPrincipleSchema: BundleSchema = {
   id: ARCHIMEDES_PRINCIPLE_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'linear',
 
   // 조각이다. 읽는 사람이 고를 것은 없다.

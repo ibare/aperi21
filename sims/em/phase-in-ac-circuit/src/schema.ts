@@ -70,7 +70,19 @@ export const SCENE_BOUNDS = { minX: -8.6, maxX: 8.6, minY: -4.4, maxY: 4.25 } as
 
 export const phaseInAcCircuitMessages = Object.freeze({
   'label.title': { ko: '교류의 위상차', en: 'Phase difference in AC circuits', ja: '交流回路の位相差', zh: '交流电路中的相位差', ar: 'فرق الطور في دوائر التيار المتردد', es: 'Diferencia de fase en circuitos de CA', fr: 'Déphasage dans les circuits en courant alternatif', hi: 'प्रत्यावर्ती धारा परिपथों में कलांतर', id: 'Beda fase pada rangkaian AC', pt: 'Diferença de fase em circuitos CA' },
-  'label.operation': { ko: '전압과 전류가 어긋나는 것', en: 'Voltage and current falling out of step', ja: '電圧と電流のずれ', zh: '电压与电流步调错开', ar: 'خروج الجهد والتيار عن التوافق', es: 'Voltaje y corriente que se desfasan', fr: 'Tension et courant qui se décalent', hi: 'वोल्टता और धारा का एक-दूसरे से आगे-पीछे होना', id: 'Tegangan dan arus yang tidak lagi seirama', pt: 'Tensão e corrente saindo de fase' },
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '전압과 전류가 어긋나는 것',
+    en: 'Voltage and current falling out of step',
+    ja: '電圧と電流のずれ',
+    zh: '电压与电流步调错开',
+    ar: 'خروج الجهد والتيار عن التوافق',
+    es: 'Voltaje y corriente que se desfasan',
+    fr: 'Tension et courant qui se décalent',
+    hi: 'वोल्टता और धारा का एक-दूसरे से आगे-पीछे होना',
+    id: 'Tegangan dan arus yang tidak lagi seirama',
+    pt: 'Tensão e corrente saindo de fase',
+  },
   'label.stage': { ko: '저항 · 축전기 · 코일', en: 'Resistor, capacitor, coil', ja: '抵抗、コンデンサー、コイル', zh: '电阻、电容器、线圈', ar: 'مقاومة ومكثف وملف', es: 'Resistencia, condensador, bobina', fr: 'Résistance, condensateur, bobine', hi: 'प्रतिरोध, संधारित्र, कुंडली', id: 'Hambatan, kapasitor, kumparan', pt: 'Resistor, capacitor, bobina' },
   'label.view': { ko: '세 기록지와 회전 화살표', en: 'Three traces and phasors', ja: '三つの波形とフェーザー', zh: '三条波形与相量', ar: 'ثلاثة منحنيات ومتجهات طورية', es: 'Tres trazas y fasores', fr: 'Trois tracés et vecteurs de Fresnel', hi: 'तीन अनुरेख और फेज़र', id: 'Tiga jejak dan fasor', pt: 'Três traços e fasores' },
   /** 도식 표식 — 소자 · 물리량 기호라 번역하지 않는다 (C1 판정 3). */
@@ -159,7 +171,7 @@ export const phaseInAcCircuitSchema: BundleSchema = {
   id: PHASE_IN_AC_CIRCUIT_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 커서가 세 기록지를 차례로 쓸고, 마루가 오는 순서가 보인다.

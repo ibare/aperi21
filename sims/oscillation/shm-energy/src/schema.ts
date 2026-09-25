@@ -87,7 +87,8 @@ export const shmEnergyMessages = Object.freeze({
     id: 'Energi pada gerak harmonik sederhana',
     pt: 'Energia no movimento harmônico simples',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '운동 에너지와 퍼텐셜의 교환',
     en: 'Kinetic and potential energy trade places',
     ja: '運動エネルギーと位置エネルギーの入れ替わり',
@@ -258,7 +259,7 @@ export const shmEnergySchema: BundleSchema = {
   id: SHM_ENERGY_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 오가고, 막대의 경계가 오르내린다.

@@ -153,17 +153,18 @@ export const projectileInWindMessages = Object.freeze({
     id: 'Angin dan jangkauan',
     pt: 'Vento e alcance',
   },
-  'label.operation': {
-    ko: '같은 발사, 다른 바람',
-    en: 'Same launch, different wind',
-    ja: '同じ発射、違う風',
-    zh: '同样的发射，不同的风',
-    ar: 'إطلاق واحد ورياح مختلفة',
-    es: 'Mismo lanzamiento, distinto viento',
-    fr: 'Même lancer, vent différent',
-    hi: 'एक-सा प्रक्षेपण, अलग हवा',
-    id: 'Peluncuran sama, angin berbeda',
-    pt: 'Mesmo lançamento, vento diferente',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '같은 발사라도 바람이 착지점을 옮기는 것',
+    en: 'How wind moves the landing point of the same launch',
+    ja: '同じ発射でも風が着地点を動かすこと',
+    zh: '同样的发射，风会改变落点',
+    ar: 'كيف تُزيح الريح نقطة الهبوط للإطلاق نفسه',
+    es: 'Cómo el viento desplaza el punto de caída de un mismo lanzamiento',
+    fr: 'Comment le vent déplace le point d’impact d’un même lancer',
+    hi: 'एक ही प्रक्षेपण में हवा कैसे गिरने का स्थान खिसका देती है',
+    id: 'Bagaimana angin menggeser titik jatuh dari peluncuran yang sama',
+    pt: 'Como o vento desloca o ponto de queda de um mesmo lançamento',
   },
   'label.stage': {
     ko: '바람 부는 벌판',
@@ -331,7 +332,7 @@ export const projectileInWindSchema: BundleSchema = {
   id: PROJECTILE_IN_WIND_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   parameters: [],

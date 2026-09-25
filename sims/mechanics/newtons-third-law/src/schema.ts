@@ -35,7 +35,8 @@ export const newtonsThirdLawMessages = Object.freeze({
     id: 'Aksi dan reaksi',
     pt: 'Ação e reação',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '힘의 쌍과 서로 다른 작용점',
     en: 'A force pair acting on different bodies',
     ja: '異なる物体にはたらく力の対',
@@ -152,7 +153,7 @@ export const newtonsThirdLawSchema: BundleSchema = {
   id: NEWTONS_THIRD_LAW_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 주장에 더하는 것이 없다 (원본 NOTES (c)).

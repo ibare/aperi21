@@ -45,7 +45,8 @@ export const directionOfAccelerationMessages = Object.freeze({
     id: 'Arah percepatan',
     pt: 'Direção da aceleração',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '속도와 같은 방향인지 반대인지가 정하는 것',
     en: 'Whether it points with or against the velocity',
     ja: '速度と同じ向きか逆向きか',
@@ -163,7 +164,7 @@ export const directionOfAccelerationSchema: BundleSchema = {
   id: DIRECTION_OF_ACCELERATION_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 가속도 방향을 뒤집게 하면 같은 대조를 독자에게 한 번 더 시키는 것뿐이다.

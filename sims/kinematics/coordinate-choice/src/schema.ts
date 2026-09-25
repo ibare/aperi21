@@ -129,7 +129,8 @@ export const coordinateChoiceMessages = Object.freeze({
     id: 'Memilih sumbu',
     pt: 'Escolha dos eixos',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '축을 어디에 두느냐가 식을 바꾸는 방식',
     en: 'How the choice of axes changes the equations',
     ja: '軸の置き方で式が変わるしくみ',
@@ -246,7 +247,7 @@ export const coordinateChoiceSchema: BundleSchema = {
   id: COORDINATE_CHOICE_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 어떤 각이든 y′ 는 멈추므로 각을 바꿔 볼 필요가 주장에 들지 않는다.

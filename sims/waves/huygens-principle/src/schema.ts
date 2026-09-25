@@ -80,17 +80,18 @@ export const huygensPrincipleMessages = Object.freeze({
     id: 'Prinsip Huygens',
     pt: 'Princípio de Huygens',
   },
-  'label.operation': {
-    ko: '파면 위 점마다 나간 동그란 파가 겹쳐 곧게 펴진다',
-    en: 'Circular wavelets from points on a wavefront overlap into a straight front',
-    ja: '波面上の各点から出た円形の素元波が重なり、まっすぐな波面になる',
-    zh: '波前上各点发出的圆形子波叠加成一条直的波前',
-    ar: 'تتراكب موجات دائرية صغيرة من نقاط على جبهة الموجة لتكوّن جبهة مستقيمة',
-    es: 'Las ondículas circulares de los puntos de un frente de onda se superponen en un frente recto',
-    fr: 'Les ondelettes circulaires issues des points d’un front d’onde se superposent en un front rectiligne',
-    hi: 'तरंगाग्र के बिंदुओं से निकली वृत्ताकार द्वितीयक तरंगिकाएँ मिलकर एक सीधा तरंगाग्र बनाती हैं',
-    id: 'Gelombang-gelombang kecil melingkar dari titik-titik pada muka gelombang bertumpuk menjadi muka gelombang lurus',
-    pt: 'Ondas secundárias circulares vindas dos pontos de uma frente de onda se sobrepõem numa frente reta',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '파면의 각 점이 새 파원이 되는 것',
+    en: 'Every point on a wavefront becoming a new source',
+    ja: '波面の各点が新しい波源になること',
+    zh: '波面上的每一点都成为新的波源',
+    ar: 'كل نقطة على جبهة الموجة تصبح مصدرًا جديدًا',
+    es: 'Cada punto de un frente de onda se convierte en una nueva fuente',
+    fr: 'Chaque point d’un front d’onde devient une nouvelle source',
+    hi: 'तरंगाग्र का हर बिंदु एक नया स्रोत बन जाना',
+    id: 'Setiap titik pada muka gelombang menjadi sumber baru',
+    pt: 'Cada ponto de uma frente de onda torna-se uma nova fonte',
   },
   'label.stage': {
     ko: '물결',
@@ -220,7 +221,7 @@ export const huygensPrincipleSchema: BundleSchema = {
   id: HUYGENS_PRINCIPLE_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 자동 진행으로 점 수가 늘며 주장이 끝난다.

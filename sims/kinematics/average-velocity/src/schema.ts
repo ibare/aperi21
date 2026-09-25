@@ -64,7 +64,8 @@ export const averageVelocityMessages = Object.freeze({
     id: 'Kecepatan rata-rata',
     pt: 'Velocidade média',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '구간 전체를 대표하는 속도',
     en: 'One velocity standing for a whole interval',
     ja: '区間全体を代表する一つの速度',
@@ -218,7 +219,7 @@ export const averageVelocitySchema: BundleSchema = {
   id: AVERAGE_VELOCITY_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 구간이 알아서 움직이고 직선이 알아서 기운다.

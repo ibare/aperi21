@@ -125,7 +125,8 @@ export const insulationMessages = Object.freeze({
     id: 'Insulasi termal',
     pt: 'Isolamento térmico',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '열의 이동을 늦추는 것',
     en: 'Slowing the flow of heat',
     ja: '熱の移動を遅くする',
@@ -316,7 +317,7 @@ export const insulationSchema: BundleSchema = {
   id: INSULATION_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 세 감쌈이 이미 나란히 식고 있다. 견줄 것은 「같은 시간 뒤」 하나다.

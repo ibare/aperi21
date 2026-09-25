@@ -86,7 +86,19 @@ export const SCENE_BOUNDS = { minX: -4.3, maxX: 4.3, minY: -2.2, maxY: 1.62 } as
 
 export const nuclearStructureMessages = Object.freeze({
   'label.title': { ko: '원자핵의 구성', en: 'What a nucleus is made of', ja: '原子核は何でできているか', zh: '原子核由什么构成', ar: 'مِمَّ تتكوّن النواة', es: 'De qué está hecho un núcleo', fr: 'De quoi est fait un noyau', hi: 'नाभिक किससे बना है', id: 'Terbuat dari apa inti atom', pt: 'Do que é feito um núcleo' },
-  'label.operation': { ko: '양성자와 중성자', en: 'Protons and neutrons', ja: '陽子と中性子', zh: '质子和中子', ar: 'البروتونات والنيوترونات', es: 'Protones y neutrones', fr: 'Protons et neutrons', hi: 'प्रोटॉन और न्यूट्रॉन', id: 'Proton dan neutron', pt: 'Prótons e nêutrons' },
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '양성자와 중성자',
+    en: 'Protons and neutrons',
+    ja: '陽子と中性子',
+    zh: '质子和中子',
+    ar: 'البروتونات والنيوترونات',
+    es: 'Protones y neutrones',
+    fr: 'Protons et neutrons',
+    hi: 'प्रोटॉन और न्यूट्रॉन',
+    id: 'Proton dan neutron',
+    pt: 'Prótons e nêutrons',
+  },
   'label.stage': { ko: '탄소와 질소', en: 'Carbon and nitrogen', ja: '炭素と窒素', zh: '碳和氮', ar: 'الكربون والنيتروجين', es: 'Carbono y nitrógeno', fr: 'Carbone et azote', hi: 'कार्बन और नाइट्रोजन', id: 'Karbon dan nitrogen', pt: 'Carbono e nitrogênio' },
   'label.view': { ko: '세 핵', en: 'Three nuclei', ja: '三つの原子核', zh: '三个原子核', ar: 'ثلاث نوى', es: 'Tres núcleos', fr: 'Trois noyaux', hi: 'तीन नाभिक', id: 'Tiga inti', pt: 'Três núcleos' },
 
@@ -187,7 +199,7 @@ export const nuclearStructureSchema: BundleSchema = {
   id: NUCLEAR_STRUCTURE_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 세 핵이 차례로 지어지는 자동 진행만으로 주장이 끝난다.

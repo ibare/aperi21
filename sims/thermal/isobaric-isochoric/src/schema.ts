@@ -31,7 +31,8 @@ export const isobaricIsochoricMessages = Object.freeze({
     id: 'Proses isobarik dan isokhorik',
     pt: 'Processos isobárico e isocórico',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '압력 또는 부피를 고정한 변화',
     en: 'Changes at fixed pressure or fixed volume',
     ja: '圧力または体積を一定にした変化',
@@ -161,7 +162,7 @@ export const isobaricIsochoricSchema: BundleSchema = {
   id: ISOBARIC_ISOCHORIC_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
 

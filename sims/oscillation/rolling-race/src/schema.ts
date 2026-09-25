@@ -104,7 +104,8 @@ export const rollingRaceMessages = Object.freeze({
     id: 'Balapan benda menggelinding',
     pt: 'Corrida de objetos rolando',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '질량 분포가 정하는 도착 순서',
     en: 'Arrival order set by mass distribution',
     ja: '質量分布が決める到着順',
@@ -284,7 +285,7 @@ export const rollingRaceSchema: BundleSchema = {
   id: ROLLING_RACE_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 굴러 내려가는 중이고, 닿고, 다시 놓인다.

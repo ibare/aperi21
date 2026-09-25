@@ -127,17 +127,18 @@ export const stoppingDistanceMessages = Object.freeze({
     id: 'Jarak henti',
     pt: 'Distância de parada',
   },
-  'label.operation': {
-    ko: '반응 거리는 비례로, 제동 거리는 제곱으로 늘어난다',
-    en: 'Reaction grows linearly, braking as the square',
-    ja: '空走距離は比例で、制動距離は2乗で伸びる',
-    zh: '反应距离按正比增长，制动距离按平方增长',
-    ar: 'تزداد مسافة رد الفعل خطيًّا، ومسافة الكبح مع المربع',
-    es: 'La reacción crece linealmente; el frenado, con el cuadrado',
-    fr: 'La réaction croît linéairement, le freinage comme le carré',
-    hi: 'प्रतिक्रिया दूरी रैखिक रूप से बढ़ती है, ब्रेकिंग दूरी वर्ग के अनुसार',
-    id: 'Jarak reaksi bertambah linear, jarak pengereman sebanding kuadrat',
-    pt: 'A reação cresce linearmente; a frenagem, com o quadrado',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '반응 거리와 제동 거리의 합',
+    en: 'The sum of reaction distance and braking distance',
+    ja: '反応距離と制動距離の和',
+    zh: '反应距离与制动距离之和',
+    ar: 'مجموع مسافة رد الفعل ومسافة الكبح',
+    es: 'La suma de la distancia de reacción y la distancia de frenado',
+    fr: 'La somme de la distance de réaction et de la distance de freinage',
+    hi: 'प्रतिक्रिया दूरी और ब्रेकिंग दूरी का योग',
+    id: 'Jumlah jarak reaksi dan jarak pengereman',
+    pt: 'A soma da distância de reação e da distância de frenagem',
   },
   'label.stage': {
     ko: '도로',
@@ -283,7 +284,7 @@ export const stoppingDistanceSchema: BundleSchema = {
   id: STOPPING_DISTANCE_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 세 결과가 동시에 화면에 있어야 주장이 성립한다.

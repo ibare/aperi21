@@ -85,7 +85,8 @@ export const diffusionMessages = Object.freeze({
     id: 'Difusi',
     pt: 'Difusão',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '농도 차이가 만드는 흐름',
     en: 'Flow driven by a difference in concentration',
     ja: '濃度の差が生む流れ',
@@ -189,7 +190,7 @@ export const diffusionSchema: BundleSchema = {
   id: DIFFUSION_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 무리가 퍼지고, 고르게 되고, 다시 떨어뜨린다.

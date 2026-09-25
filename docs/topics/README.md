@@ -151,7 +151,7 @@ aperi21 은 글로벌 서비스가 임베딩하는 모듈이라, 최소 보장�
 ```yaml
 - id: free-fall              # kebab-case. **주제의** id — 조각 id 와 같을 필요는 없다
   name: 자유 낙하             # 사람이 읽는 이름
-  desc: 중력만 받는 연직 운동   # 무엇을 다루는가, 한 줄
+  desc: { ko: 중력만 받는 연직 운동, en: "Vertical motion under gravity alone", ja: …, zh: …, ar: …, es: …, fr: …, hi: …, id: …, pt: … }   # 무엇을 다루는가, 한 줄 — 열 언어
   domain: kinematics         # 출처 분과 (비계)
   level: lower               # primary | lower | upper — 가장 낮은 수준
   curricula: [kr, ib, ngss, uk]   # 어느 교육과정에서 다루는가. 비어 있어도 된다
@@ -161,6 +161,13 @@ aperi21 은 글로벌 서비스가 임베딩하는 모듈이라, 최소 보장�
 ```
 
 **필수는 `id` · `name` · `desc` · `domain` · `level` · `curricula` 이다.**
+
+- **`desc` 는 조각 한 줄 설명의 원본이다.** 조각이 생기면 그 선언의 `description`(호스트
+  카탈로그의 한 줄 설명)이 여기서 파생된다 — `pnpm description:gen` 이 조각의 `schema.ts` 에
+  써 넣고 `gen:check` 가 어긋남을 막는다. 그래서 **열 언어를 모두 채운다**(`domains[].name` 과
+  같은 모양, C1). 설명을 고칠 곳은 언제나 여기이고, 조각 쪽을 고치지 않는다.
+  사이트(`catalog.json`)는 `ko` 를 쓴다.
+
 나머지는 해당할 때만 적는다.
 
 - `curricula` 값: `kr` · `ib` · `ngss` · `ap` · `uk` (NGSS 와 AP 를 가르는 것은 AP 가

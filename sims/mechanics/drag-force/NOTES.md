@@ -42,5 +42,6 @@
   (`terminal-velocity` 와 같은 코드 모양). 엔진 대조표도 sim step 으로 판정했으니 부족이라기보다 기록이다.
 - **움직이는 막대에서 여백으로 끌어낸 이름표**는 `trajectory` + `readout` 두 인스턴스를 좌표 계산으로
   맞췄다. 이름표 두 개가 20 px 이상 떨어지게 미는 계산도 scene 에 있다.
-- 카탈로그 페이지 부제는 생성물(`catalog.json`)이 옛 `label.operation` 을 들고 있어 아직 옛 문구다 —
-  이 작업 범위 밖(메인이 `catalog:gen` 으로 갱신).
+- (당시) 카탈로그 페이지 부제는 생성물(`catalog.json`)이 옛 `label.operation` 을 들고 있어 옛 문구였다.
+  지금은 한 줄 설명의 원본이 `topics.yaml` 의 `desc` 이고 조각의 `description` 은 그 파생값이다
+  (`description:gen`).

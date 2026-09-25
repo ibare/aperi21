@@ -110,7 +110,8 @@ export const seriesRlcResonanceMessages = Object.freeze({
     id: 'Resonansi RLC',
     pt: 'Ressonância RLC',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '임피던스가 최소가 되는 주파수',
     en: 'The frequency where impedance is smallest',
     ja: 'インピーダンスが最小になる周波数',
@@ -417,7 +418,7 @@ export const seriesRlcResonanceSchema: BundleSchema = {
   id: SERIES_RLC_RESONANCE_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 진동수가 스스로 쓸리고 저항 둘의 봉우리가 차례로 그려진다.

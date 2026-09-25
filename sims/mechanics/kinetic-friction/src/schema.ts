@@ -130,7 +130,8 @@ export const kineticFrictionMessages = Object.freeze({
     id: 'Gaya gesek kinetis',
     pt: 'Atrito cinético',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '미끄러지는 동안의 마찰',
     en: 'Friction while sliding',
     ja: '滑っている間の摩擦',
@@ -270,7 +271,7 @@ export const kineticFrictionSchema: BundleSchema = {
   id: KINETIC_FRICTION_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 두 빠르기를 나란히 두는 것이 이미 비교다.

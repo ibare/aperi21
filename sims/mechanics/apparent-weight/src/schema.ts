@@ -61,7 +61,8 @@ export const apparentWeightMessages = Object.freeze({
     id: 'Berat semu',
     pt: 'Peso aparente',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '가속하는 엘리베이터 안의 저울',
     en: 'A scale in an accelerating elevator',
     ja: '加速するエレベーターの中のはかり',
@@ -240,7 +241,7 @@ export const apparentWeightSchema: BundleSchema = {
   id: APPARENT_WEIGHT_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 주장은 자동 진행 한 주기로 끝난다 (원본 NOTES (c)).

@@ -33,7 +33,8 @@ export const supernovaAndNeutronStarMessages = Object.freeze({
     id: 'Supernova dan bintang neutron',
     pt: 'Supernova e estrela de nêutrons',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '무너지고 튕겨 나가는 최후',
     en: 'A final collapse and rebound',
     ja: '崩れて跳ね返る最期',
@@ -286,7 +287,7 @@ export const supernovaAndNeutronStarSchema: BundleSchema = {
   id: SUPERNOVA_AND_NEUTRON_STAR_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 핵이 무너지고, 튕기고, 중성자별이 남고, 다시 처음부터.

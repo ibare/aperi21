@@ -13,8 +13,8 @@
  * C1 이 화면 문안을 모두 선언의 LocalizedText 로 두게 하므로 이것으로 빠짐이 없다.
  * 같은 문자열은 한 번만 싣는다. `{name}` 자리표시자는 그대로 둔다 — 소비자가 알린다.
  *
- * 빼는 것: **조각의 제목(`schema.label`)**. 카탈로그의 제목일 뿐 임베드 화면에는
- * 그려지지 않는다 (크롬 없음 — S-piece). writer 는 이 표를 「독자가 화면에서 찾을 수
+ * 빼는 것: **조각의 제목(`schema.label`)과 한 줄 설명(`schema.description`)**. 둘 다
+ * 카탈로그에만 쓰이고 임베드 화면에는 그려지지 않는다 (크롬 없음 — S-piece). writer 는 이 표를 「독자가 화면에서 찾을 수
  * 있는 글자」로 믿고 인용하므로, 제목이 섞이면 독자가 없는 글자를 찾게 된다. 이름이
  * 필요하면 개념 선언의 `label` 이 있다. 글자가 아니라 **객체로** 뺀다 — 제목과 글자가
  * 같은 문구가 화면에 따로 그려지는 조각이 있고(roche-limit 의 한계선 이름 등), 그
@@ -62,10 +62,15 @@ async function main(): Promise<void> {
   for (const leaf of [...schemaByLeaf.keys()].sort()) {
     const schema = schemaByLeaf.get(leaf)!;
     const texts: TextMap[] = [];
-    // 제목 객체를 본 것으로 두어 건너뛴다. `text('label.title')` 은 messages 와 같은
-    // 객체를 돌려주지만, 제목을 선언에 직접 적은 조각도 있어 둘 다 넣는다.
-    const title = [schema.label, schema.messages?.['label.title']].filter((t) => t !== undefined);
-    collect(schema, texts, new Set<unknown>(title));
+    // 제목과 한 줄 설명 객체를 본 것으로 두어 건너뛴다. `text(key)` 는 messages 와 같은
+    // 객체를 돌려주지만, 선언에 직접 적은 조각도 있어 둘 다 넣는다.
+    const skip = [
+      schema.label,
+      schema.messages?.['label.title'],
+      schema.description,
+      schema.messages?.['label.description'],
+    ].filter((t) => t !== undefined);
+    collect(schema, texts, new Set<unknown>(skip));
     const byLocale: Record<string, string[]> = {};
     for (const locale of locales) {
       if (!texts.every((t) => typeof t[locale] === 'string')) continue;

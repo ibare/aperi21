@@ -205,8 +205,14 @@ curl -s -X POST http://localhost:3800/api/events \
 (`en.json` 은 산출물이다) 이다. 원본을 고쳤으면
 **`pnpm gen:all`** 로 전부 다시 만들고 생성물을 같은 커밋에 담는다.
 
+**조각 선언 안에도 생성물이 하나 있다.** `schema.ts` 의 `description`(카탈로그 한 줄 설명)은
+`topics.yaml` 의 그 주제 `desc` 에서 오는 파생값이다 — 작업 순서가 주제 → 조각이라 원본은
+주제 쪽이다. 한 줄 설명을 고치려면 `desc` 를 고치고 `description:gen` 을 돌린다. `schema.ts`
+의 그 블록을 손으로 고치면 `gen:check` 가 되돌린다.
+
 | 생성기 | 원본 → 산출물 |
 | --- | --- |
+| `description:gen` | `topics.yaml` 의 `desc` → 각 `schema.ts` 의 `description` 블록 (제자리) |
 | `registry:gen` | `sims/**` → `bootstrap/src/bundles.generated.ts` · bootstrap 의 sim 의존 |
 | `gen:capabilities` | sim 선언 → `bootstrap/src/capabilities/**` |
 | `catalog:gen` | bootstrap → 언어별 카탈로그 · loader 표 · `authoring/src/sim-domains.generated.ts` |
@@ -215,12 +221,12 @@ curl -s -X POST http://localhost:3800/api/events \
 | `messages:gen` | 호출부 en 리터럴 → `messages/en.json` |
 | `catalog:topics` | `topics.yaml` + 조각 → `apps/catalog/src/data/catalog.json` |
 | `gap:ledger` | `tasks/topic-gaps/entries/` → `LEDGER.md` |
-| `pairs:gen` | `topics.yaml` + sim 선언 → `PAIRS.md` · `PAIRS.html` (주제 한 줄 ↔ 조각 한 줄) |
 | `surface:gen` | `LEDGER.md` + sim 선언 → `SURFACE.md` (장부의 주장을 맞댈 사실) |
 
-**순서가 있다.** `catalog:gen` 은 bootstrap 을 import 하므로 그전에 등록부와 능력 파일이
-있어야 한다. 위 표의 순서가 그 순서이고, 목록의 원본은 `scripts/gen-check.mts` 하나다
-(`gen:all` 과 `gen:check` 가 같은 목록을 쓴다).
+**순서가 있다.** `description:gen` 은 다른 생성기가 조각 선언을 읽기 전에 돌아야 하고,
+`catalog:gen` 은 bootstrap 을 import 하므로 그전에 등록부와 능력 파일이 있어야 한다.
+위 표의 순서가 그 순서이고, 목록의 원본은 `scripts/gen-check.mts` 하나다 (`gen:all` 과
+`gen:check` 가 같은 목록을 쓴다).
 
 조각을 **새로 더했다면** `registry:gen` 이 bootstrap 의 의존을 바꾸므로 그 뒤에
 `pnpm install` 이 한 번 필요하다 (`catalog:gen` 이 새 조각을 모듈로 해석해야 한다).

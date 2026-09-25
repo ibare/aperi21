@@ -35,7 +35,8 @@ export const radiometricDatingMessages = Object.freeze({
     id: 'Penanggalan radiometrik',
     pt: 'Datação radiométrica',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '남은 비율로 재는 시간',
     en: 'Telling time by what remains',
     ja: '残った割合で時間を測る',
@@ -301,7 +302,7 @@ export const radiometricDatingSchema: BundleSchema = {
   id: RADIOMETRIC_DATING_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 읽는 동작은 한 번 보면 되고, 비율을 끌어 바꾸게 하면 연대 글자를

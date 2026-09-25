@@ -90,7 +90,8 @@ export const magneticFieldLinesMessages = Object.freeze({
     id: 'Garis medan magnet',
     pt: 'Linhas de campo magnético',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '끊기지 않고 닫히는 선',
     en: 'Lines that never break and always close',
     ja: '途切れず、必ず閉じる線',
@@ -257,7 +258,7 @@ export const magneticFieldLinesSchema: BundleSchema = {
   id: MAGNETIC_FIELD_LINES_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 점이 선을 따라 돌고, 자석이 잘리고, 다시 붙는다.

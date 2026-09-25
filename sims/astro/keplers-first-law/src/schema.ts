@@ -82,7 +82,8 @@ export const keplersFirstLawMessages = Object.freeze({
     id: 'Hukum Pertama Kepler',
     pt: 'Primeira lei de Kepler',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '궤도는 타원이다',
     en: 'Orbits are ellipses',
     ja: '軌道は楕円である',
@@ -222,7 +223,7 @@ export const keplersFirstLawSchema: BundleSchema = {
   id: KEPLERS_FIRST_LAW_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 이심률을 바꿔 보는 것은 이웃 조각(elliptical-orbit)의 질문이다.

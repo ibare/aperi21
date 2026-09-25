@@ -44,7 +44,8 @@ export const newtonsSecondLawMessages = Object.freeze({
     id: 'Hukum II Newton',
     pt: 'Segunda lei de Newton',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '알짜힘·질량·가속도의 관계',
     en: 'Net force, mass and acceleration',
     ja: '合力・質量・加速度',
@@ -150,7 +151,7 @@ export const newtonsSecondLawSchema: BundleSchema = {
   id: NEWTONS_SECOND_LAW_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 자동 진행만으로 1:2:3 이 드러난다.

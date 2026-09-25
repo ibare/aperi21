@@ -114,7 +114,8 @@ export const lightThroughMaterialsMessages = Object.freeze({
     id: 'Cahaya dan bahan',
     pt: 'A luz e os materiais',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '재료에 따라 갈리는 빛의 통과',
     en: 'How light gets through depends on the material',
     ja: '素材によって変わる光の通り方',
@@ -254,7 +255,7 @@ export const lightThroughMaterialsSchema: BundleSchema = {
   id: LIGHT_THROUGH_MATERIALS_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 판이 들어가고, 갈리고, 다시 빠진다.

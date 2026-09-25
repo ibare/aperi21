@@ -87,7 +87,8 @@ export const chargeOnConductorSurfaceMessages = Object.freeze({
     id: 'Muatan di permukaan konduktor',
     pt: 'Carga na superfície de um condutor',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '뾰족한 곳에 몰리는 전하',
     en: 'Charge crowds at the sharp end',
     ja: '尖った所に集まる電荷',
@@ -230,7 +231,7 @@ export const chargeOnConductorSurfaceSchema: BundleSchema = {
   id: CHARGE_ON_CONDUCTOR_SURFACE_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

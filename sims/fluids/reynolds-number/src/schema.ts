@@ -103,17 +103,18 @@ export const reynoldsNumberMessages = Object.freeze({
     id: 'Bilangan Reynolds',
     pt: 'Número de Reynolds',
   },
-  'label.operation': {
-    ko: '전이를 가르는 무차원 수',
-    en: 'The dimensionless number that decides the transition',
-    ja: '遷移を分ける無次元数',
-    zh: '决定转捩的无量纲数',
-    ar: 'العدد اللابعدي الذي يحسم الانتقال',
-    es: 'El número adimensional que decide la transición',
-    fr: 'Le nombre sans dimension qui décide de la transition',
-    hi: 'वह विमाहीन संख्या जो संक्रमण तय करती है',
-    id: 'Bilangan tak berdimensi yang menentukan transisi',
-    pt: 'O número adimensional que decide a transição',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '흐름의 결을 정하는 무차원 수',
+    en: 'The dimensionless number that sets the character of a flow',
+    ja: '流れの性質を決める無次元数',
+    zh: '决定流动特性的无量纲数',
+    ar: 'العدد اللابُعدي الذي يحدد طابع التدفق',
+    es: 'El número adimensional que fija el carácter de un flujo',
+    fr: 'Le nombre sans dimension qui fixe la nature d’un écoulement',
+    hi: 'प्रवाह का स्वरूप तय करने वाली विमाहीन संख्या',
+    id: 'Bilangan tak berdimensi yang menentukan corak aliran',
+    pt: 'O número adimensional que define o caráter de um escoamento',
   },
   'label.stage': {
     ko: '세 관',
@@ -257,7 +258,7 @@ export const reynoldsNumberSchema: BundleSchema = {
   id: REYNOLDS_NUMBER_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 세 관이 흐르고, 함께 빨라지고, 둘이 함께 흐트러진다.

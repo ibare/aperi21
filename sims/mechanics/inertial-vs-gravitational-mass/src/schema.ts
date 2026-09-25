@@ -160,7 +160,8 @@ export const inertialVsGravitationalMassMessages = Object.freeze({
     id: 'Massa inersia dan massa gravitasi',
     pt: 'Massa inercial e massa gravitacional',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '서로 다른 정의가 같은 값을 주는 것',
     en: 'Two different definitions give the same value',
     ja: '異なる二つの定義が同じ値を与える',
@@ -347,7 +348,7 @@ export const inertialVsGravitationalMassSchema: BundleSchema = {
   id: INERTIAL_VS_GRAVITATIONAL_MASS_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

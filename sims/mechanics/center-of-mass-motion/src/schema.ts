@@ -82,7 +82,8 @@ export const centerOfMassMotionMessages = Object.freeze({
     id: 'Gerak pusat massa',
     pt: 'Movimento do centro de massa',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '내부 힘에 영향받지 않는 운동',
     en: 'The motion that internal forces cannot change',
     ja: '内力が変えられない運動',
@@ -264,7 +265,7 @@ export const centerOfMassMotionSchema: BundleSchema = {
   id: CENTER_OF_MASS_MOTION_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

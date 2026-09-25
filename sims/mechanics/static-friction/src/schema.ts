@@ -115,7 +115,8 @@ export const staticFrictionMessages = Object.freeze({
     id: 'Gaya gesek statis',
     pt: 'Atrito estático',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '움직이기 전까지 버티는 힘',
     en: 'The force that holds until the object moves',
     ja: '物体が動き出すまで持ちこたえる力',
@@ -208,7 +209,7 @@ export const staticFrictionSchema: BundleSchema = {
   id: STATIC_FRICTION_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 당기는 힘이 스스로 커져야 문턱의 순간이 끊기지 않는다.

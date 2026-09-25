@@ -106,17 +106,18 @@ export const conservativeForceMessages = Object.freeze({
     id: 'Gaya konservatif',
     pt: 'Força conservativa',
   },
-  'label.operation': {
-    ko: '경로에 무관한 힘과 퍼텐셜의 존재',
-    en: 'A force whose work ignores the path — and the potential it allows',
-    ja: '仕事が経路によらない力 — そしてそれが許すポテンシャル',
-    zh: '做功与路径无关的力 — 以及它所允许的势',
-    ar: 'قوة لا يتوقف شغلها على المسار — وطاقة الوضع التي تتيحها',
-    es: 'Una fuerza cuyo trabajo no depende de la trayectoria — y el potencial que permite',
-    fr: 'Une force dont le travail ne dépend pas du chemin — et le potentiel qu’elle permet',
-    hi: 'ऐसा बल जिसका कार्य पथ पर निर्भर नहीं करता — और वह स्थितिज ऊर्जा जिसे यह संभव बनाता है',
-    id: 'Gaya yang usahanya tidak bergantung pada lintasan — dan potensial yang dimungkinkannya',
-    pt: 'Uma força cujo trabalho não depende do caminho — e o potencial que ela permite',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '어느 길로 가든 한 일이 같은 힘',
+    en: 'A force that does the same work whichever path is taken',
+    ja: 'どの道を通っても仕事が同じになる力',
+    zh: '无论走哪条路径做功都相同的力',
+    ar: 'قوة تبذل الشغل نفسه أيًّا كان المسار',
+    es: 'Una fuerza que realiza el mismo trabajo sea cual sea el camino',
+    fr: 'Une force qui fournit le même travail quel que soit le chemin',
+    hi: 'ऐसा बल जो किसी भी पथ से जाने पर समान कार्य करता है',
+    id: 'Gaya yang melakukan usaha sama lewat jalur mana pun',
+    pt: 'Uma força que realiza o mesmo trabalho qualquer que seja o caminho',
   },
   'label.stage': {
     ko: '두 길',
@@ -297,7 +298,7 @@ export const conservativeForceSchema: BundleSchema = {
   id: CONSERVATIVE_FORCE_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 두 상자가 이미 옮겨지고 있고, 같은 높이에서 멈추고, 다시 떠난다.

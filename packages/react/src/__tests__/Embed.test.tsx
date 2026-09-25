@@ -22,7 +22,7 @@ function bundleOf(schema: Partial<BundleSchema> = {}): Bundle {
       id: 'test-bundle',
       label: { ko: '테스트', en: 'Test' },
       category: 'mechanics',
-      operation: { ko: '테스트 조작', en: 'Test operation' },
+      description: { ko: '테스트 설명', en: 'Test description' },
       timeModel: 'linear',
       parameters: [],
       stages: [EARTH],

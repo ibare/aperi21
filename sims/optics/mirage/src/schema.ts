@@ -81,7 +81,8 @@ export const mirageMessages = Object.freeze({
     id: 'Fatamorgana',
     pt: 'Miragem',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '밀도 기울기가 휘게 하는 빛',
     en: 'Light bent by a density gradient',
     ja: '密度の勾配に曲げられる光',
@@ -295,7 +296,7 @@ export const mirageSchema: BundleSchema = {
   id: MIRAGE_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

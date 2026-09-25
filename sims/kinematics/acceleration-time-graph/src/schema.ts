@@ -86,7 +86,8 @@ export const accelerationTimeGraphMessages = Object.freeze({
     id: 'Grafik percepatan-waktu',
     pt: 'Gráfico aceleração-tempo',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '넓이가 속도 변화인 표현',
     en: 'The area under the graph is the change in velocity',
     ja: 'グラフの下の面積は速度の変化',
@@ -281,7 +282,7 @@ export const accelerationTimeGraphSchema: BundleSchema = {
   id: ACCELERATION_TIME_GRAPH_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 한 바퀴(11 초)에 주장이 끝난다.

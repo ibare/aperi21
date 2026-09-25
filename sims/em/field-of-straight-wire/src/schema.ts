@@ -155,17 +155,18 @@ export const fieldOfStraightWireMessages = Object.freeze({
     id: 'Medan magnet yang dihasilkan arus',
     pt: 'O campo magnético de uma corrente',
   },
-  'label.operation': {
-    ko: '전선을 감아 도는 쪽으로 돌아서고, 멀수록 덜 돌아선다',
-    en: 'Needles turn along the loop, and less so farther out',
-    ja: '針は輪の向きに回り、遠いほど回りが小さい',
-    zh: '磁针沿环的方向转动，越远转得越少',
-    ar: 'تدور الإبر مع الحلقة، ويقلّ دورانها كلما ابتعدت',
-    es: 'Las agujas giran siguiendo el lazo, y menos cuanto más lejos',
-    fr: 'Les aiguilles tournent le long de la boucle, et moins loin du fil',
-    hi: 'सुइयाँ लूप की दिशा में घूमती हैं, और दूर जाने पर कम',
-    id: 'Jarum berputar mengikuti lingkaran, makin jauh makin sedikit',
-    pt: 'As agulhas giram ao longo do laço, e menos quanto mais longe',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '거리가 멀수록 주는 세기',
+    en: 'A strength that falls off with distance',
+    ja: '距離が遠いほど弱まる強さ',
+    zh: '距离越远越弱的强度',
+    ar: 'شدة تتناقص كلما زادت المسافة',
+    es: 'Una intensidad que disminuye con la distancia',
+    fr: 'Une intensité qui diminue avec la distance',
+    hi: 'दूरी बढ़ने पर घटने वाली तीव्रता',
+    id: 'Kuat medan yang melemah makin jauh jaraknya',
+    pt: 'Uma intensidade que diminui com a distância',
   },
   'label.stage': {
     ko: '전선 둘레',
@@ -249,7 +250,7 @@ export const fieldOfStraightWireSchema: BundleSchema = {
   id: FIELD_OF_STRAIGHT_WIRE_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'linear',
 
   // 조작기도 파라미터도 없다. 독자가 손으로 확인하고 싶은 셋(끄면? 거꾸로 흘리면?

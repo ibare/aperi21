@@ -119,7 +119,8 @@ export const kineticEnergyMessages = Object.freeze({
     id: 'Energi kinetik',
     pt: 'Energia cinética',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '속력이 담고 있는 에너지',
     en: 'The energy that speed carries',
     ja: '速さがもつエネルギー',
@@ -317,7 +318,7 @@ export const kineticEnergySchema: BundleSchema = {
   id: KINETIC_ENERGY_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 미끄러지고, 멈추고, 다시 들어온다.

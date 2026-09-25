@@ -96,7 +96,8 @@ export const verticalThrowMessages = Object.freeze({
     id: 'Gerak vertikal ke atas',
     pt: 'Lançamento vertical',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '올라갔다 내려오는 운동의 대칭',
     en: 'The symmetry of going up and coming down',
     ja: '上がって下りる運動の対称性',
@@ -163,7 +164,7 @@ export const verticalThrowSchema: BundleSchema = {
   id: VERTICAL_THROW_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   // 조작기 없음 — 던지는 속력을 바꿔도 주장이 달라지지 않고, 섬광이 어긋나면 짝이 안 맞는다.
   parameters: [],

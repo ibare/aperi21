@@ -138,7 +138,8 @@ export const potentialVsFieldMessages = Object.freeze({
     id: 'Potensial dan medan listrik',
     pt: 'Potencial e campo elétrico',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '기울기 관계',
     en: 'The slope relation',
     ja: '傾きの関係',
@@ -291,7 +292,7 @@ export const potentialVsFieldSchema: BundleSchema = {
   id: POTENTIAL_VS_FIELD_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 탐침이 이미 곡선을 훑고 있다.

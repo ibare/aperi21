@@ -107,7 +107,8 @@ export const rollingWithoutSlippingMessages = Object.freeze({
     id: 'Menggelinding tanpa slip',
     pt: 'Rolamento sem deslizamento',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '병진과 회전의 구속 조건',
     en: 'The constraint that ties translation to rotation',
     ja: '並進と回転を結びつける拘束条件',
@@ -321,7 +322,7 @@ export const rollingWithoutSlippingSchema: BundleSchema = {
   id: ROLLING_WITHOUT_SLIPPING_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 굴러가고, 닿는 순간 멈춰 보이고, 다시 굴러간다.

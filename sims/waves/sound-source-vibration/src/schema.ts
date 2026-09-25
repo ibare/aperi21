@@ -103,7 +103,8 @@ export const soundSourceVibrationMessages = Object.freeze({
     id: 'Bunyi dan getaran',
     pt: 'Som e vibração',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '소리 나는 물체는 떨리고, 떨림이 멎으면 소리도 멎는다',
     en: 'A sounding object vibrates, and when the vibration stops, so does the sound',
     ja: '音を出す物体は振動していて、振動が止まると音も止まる',
@@ -221,7 +222,7 @@ export const soundSourceVibrationSchema: BundleSchema = {
   id: SOUND_SOURCE_VIBRATION_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 손잡이를 두지 않는다 — 「떨림과 소리는 함께 멎는다」 는 보기만 해도 일어난다.

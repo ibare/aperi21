@@ -78,7 +78,8 @@ export const angularMomentumVectorMessages = Object.freeze({
     id: 'Arah momentum sudut',
     pt: 'Direção do momento angular',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '오른손 규칙과 회전축',
     en: 'The right-hand rule and the axis of rotation',
     ja: '右手の法則と回転軸',
@@ -210,7 +211,7 @@ export const angularMomentumVectorSchema: BundleSchema = {
   id: ANGULAR_MOMENTUM_VECTOR_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

@@ -117,7 +117,8 @@ export const fieldOfChargedSphereMessages = Object.freeze({
     id: 'Medan bola bermuatan',
     pt: 'Campo de uma esfera carregada',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '안과 밖이 다른 이유',
     en: 'Why inside and outside differ',
     ja: '内側と外側が違う理由',
@@ -306,7 +307,7 @@ export const fieldOfChargedSphereSchema: BundleSchema = {
   id: FIELD_OF_CHARGED_SPHERE_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 장이 적혀 있고, 시험 전하가 들어오고, 전하가 한 점으로 모인다.

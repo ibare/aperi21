@@ -110,17 +110,18 @@ export const angularMomentumMessages = Object.freeze({
     id: 'Momentum sudut',
     pt: 'Momento angular',
   },
-  'label.operation': {
-    ko: '회전에서 운동량에 해당하는 양',
-    en: 'The rotational counterpart of momentum',
-    ja: '回転において運動量に相当する量',
-    zh: '转动中与动量相对应的量',
-    ar: 'المقدار المقابل للزخم في الدوران',
-    es: 'El equivalente del momento lineal en la rotación',
-    fr: 'L’équivalent de la quantité de mouvement pour la rotation',
-    hi: 'घूर्णन में संवेग के समतुल्य राशि',
-    id: 'Besaran rotasi yang setara dengan momentum',
-    pt: 'O equivalente da quantidade de movimento na rotação',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '돌고 있는 것이 축을 지키게 하는 양',
+    en: 'The quantity that makes a spinning thing hold its axis',
+    ja: '回っているものに軸を保たせる量',
+    zh: '让旋转的物体保持转轴的量',
+    ar: 'الكمية التي تجعل الجسم الدوّار يحافظ على محوره',
+    es: 'La magnitud que hace que lo que gira mantenga su eje',
+    fr: 'La grandeur qui fait qu’un objet en rotation garde son axe',
+    hi: 'वह राशि जो घूमती वस्तु को अपनी धुरी बनाए रखने देती है',
+    id: 'Besaran yang membuat benda berputar mempertahankan porosnya',
+    pt: 'A grandeza que faz o que gira manter o seu eixo',
   },
   'label.stage': {
     ko: '바닥 위 팽이 셋',
@@ -250,7 +251,7 @@ export const angularMomentumSchema: BundleSchema = {
   id: ANGULAR_MOMENTUM_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 셋이 돌고 있고, 곧 같은 충격을 받는다.

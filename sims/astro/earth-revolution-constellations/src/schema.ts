@@ -146,7 +146,8 @@ export const earthRevolutionConstellationsMessages = Object.freeze({
     id: 'Orbit Bumi dan rasi bintang',
     pt: 'A órbita da Terra e as constelações',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '계절마다 보이는 별자리가 달라지는 이유',
     en: 'Why the constellations we see change with the seasons',
     ja: '季節によって見える星座が変わる理由',
@@ -503,7 +504,7 @@ export const earthRevolutionConstellationsSchema: BundleSchema = {
   id: EARTH_REVOLUTION_CONSTELLATIONS_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 지구가 돌고 있고, 한 해 동안 한밤의 별자리가 한 바퀴 바뀐다.

@@ -64,7 +64,8 @@ export const inverseSquareLawMessages = Object.freeze({
     id: 'Hukum kuadrat terbalik',
     pt: 'Lei do inverso do quadrado',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '퍼지는 만큼 옅어지는 것',
     en: 'Thinning out as it spreads',
     ja: '広がるほど薄まる',
@@ -230,7 +231,7 @@ export const inverseSquareLawSchema: BundleSchema = {
   id: INVERSE_SQUARE_LAW_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 퍼지는 중이고, r · 2r · 3r 에서 차례로 멈춘다.

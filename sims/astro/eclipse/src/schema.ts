@@ -110,7 +110,8 @@ export const eclipseMessages = Object.freeze({
     id: 'Gerhana Matahari dan gerhana Bulan',
     pt: 'Eclipses solares e lunares',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '해와 지구와 달이 한 줄에 설 때',
     en: 'When the Sun, Earth and Moon line up',
     ja: '太陽と地球と月が一直線に並ぶとき',
@@ -394,7 +395,7 @@ export const eclipseSchema: BundleSchema = {
   id: ECLIPSE_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 식 계절 · 비껴가는 달 · 다음 식 계절을 자동으로 차례로 보여 견주기까지 마친다.

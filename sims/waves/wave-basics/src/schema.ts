@@ -107,7 +107,8 @@ export const waveBasicsMessages = Object.freeze({
     id: 'Besaran dasar gelombang',
     pt: 'Grandezas básicas de uma onda',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '파장·진동수·속력·진폭',
     en: 'Wavelength, frequency, speed and amplitude',
     ja: '波長・振動数・速さ・振幅',
@@ -218,7 +219,7 @@ export const waveBasicsSchema: BundleSchema = {
   id: WAVE_BASICS_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   parameters: [],

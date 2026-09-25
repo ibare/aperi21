@@ -82,7 +82,8 @@ export const torqueMessages = Object.freeze({
     id: 'Torsi',
     pt: 'Torque',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '회전을 일으키는 양과 팔 길이',
     en: 'What makes things turn, and the length of the lever arm',
     ja: '物を回すものと、腕の長さ',
@@ -194,7 +195,7 @@ export const torqueSchema: BundleSchema = {
   id: TORQUE_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

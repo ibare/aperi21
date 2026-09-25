@@ -119,17 +119,18 @@ export const apparentBrightnessMessages = Object.freeze({
     id: 'Kecerahan semu',
     pt: 'Brilho aparente',
   },
-  'label.operation': {
-    ko: '같은 빛이 넓은 면에 나뉜다',
-    en: 'The same light divides over a wider area',
-    ja: '同じ光がより広い面に分かれる',
-    zh: '同样的光分散到更大的面积上',
-    ar: 'الضوء نفسه يتوزع على مساحة أوسع',
-    es: 'La misma luz se reparte sobre un área mayor',
-    fr: 'La même lumière se répartit sur une surface plus grande',
-    hi: 'वही प्रकाश अधिक बड़े क्षेत्र पर बँट जाता है',
-    id: 'Cahaya yang sama terbagi ke bidang yang lebih luas',
-    pt: 'A mesma luz se divide por uma área maior',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '같은 별도 거리에 따라 다르게 밝아 보이는 것',
+    en: 'How the same star looks brighter or fainter with distance',
+    ja: '同じ星でも距離によって違った明るさに見えること',
+    zh: '同一颗星因距离不同而显得亮度不同',
+    ar: 'كيف يبدو النجم نفسه أكثر سطوعًا أو خفوتًا بحسب بعده',
+    es: 'Cómo una misma estrella parece más o menos brillante según la distancia',
+    fr: 'Comment une même étoile paraît plus ou moins brillante selon la distance',
+    hi: 'एक ही तारा दूरी के अनुसार अलग-अलग चमकीला कैसे दिखता है',
+    id: 'Bagaimana bintang yang sama tampak berbeda terangnya menurut jaraknya',
+    pt: 'Como uma mesma estrela parece mais ou menos brilhante conforme a distância',
   },
   'label.stage': {
     ko: '밤하늘',
@@ -263,7 +264,7 @@ export const apparentBrightnessSchema: BundleSchema = {
   id: APPARENT_BRIGHTNESS_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'linear',
 
   /**

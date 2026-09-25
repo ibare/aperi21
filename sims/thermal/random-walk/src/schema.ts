@@ -92,7 +92,8 @@ export const randomWalkMessages = Object.freeze({
     id: 'Langkah acak',
     pt: 'Passeio aleatório',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '제곱근에 비례하는 이동 거리',
     en: 'Distance that grows as a square root',
     ja: '平方根で増える距離',
@@ -244,7 +245,7 @@ export const randomWalkSchema: BundleSchema = {
   id: RANDOM_WALK_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 무리가 걷고, 두 번 멈춰 폭을 재고, 다시 모인다.

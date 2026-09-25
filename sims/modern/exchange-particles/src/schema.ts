@@ -94,17 +94,18 @@ export const exchangeParticlesMessages = Object.freeze({
     id: 'Partikel pertukaran',
     pt: 'Partículas de troca',
   },
-  'label.operation': {
-    ko: '힘을 주고받는 입자',
-    en: 'Particles that carry a force',
-    ja: '力を伝える粒子',
-    zh: '传递力的粒子',
-    ar: 'جسيمات تنقل القوة',
-    es: 'Partículas que transmiten una fuerza',
-    fr: 'Particules qui transmettent une force',
-    hi: 'बल वहन करने वाले कण',
-    id: 'Partikel pembawa gaya',
-    pt: 'Partículas que transmitem uma força',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '전자 사이의 광자, 쿼크 사이의 글루온',
+    en: 'Photons between electrons, gluons between quarks',
+    ja: '電子のあいだの光子、クォークのあいだのグルーオン',
+    zh: '电子之间的光子，夸克之间的胶子',
+    ar: 'فوتونات بين الإلكترونات، وغلوونات بين الكواركات',
+    es: 'Fotones entre electrones, gluones entre quarks',
+    fr: 'Des photons entre électrons, des gluons entre quarks',
+    hi: 'इलेक्ट्रॉनों के बीच फोटॉन, क्वार्कों के बीच ग्लूऑन',
+    id: 'Foton di antara elektron, gluon di antara kuark',
+    pt: 'Fótons entre elétrons, glúons entre quarks',
   },
   'label.stage': {
     ko: '전자 둘의 광자 주고받기',
@@ -294,7 +295,7 @@ export const exchangeParticlesSchema: BundleSchema = {
   id: EXCHANGE_PARTICLES_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 시간 조각이 아래서 위로 쓸며 주고받음을 한 번 그리고, 매개 입자를 바꿔 보인다.

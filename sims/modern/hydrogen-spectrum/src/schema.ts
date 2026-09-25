@@ -119,7 +119,8 @@ export const hydrogenSpectrumMessages = Object.freeze({
     id: 'Spektrum hidrogen',
     pt: 'Espectro do hidrogênio',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '불연속한 선 스펙트럼',
     en: 'A discrete line spectrum',
     ja: '不連続な線スペクトル',
@@ -289,7 +290,7 @@ export const hydrogenSpectrumSchema: BundleSchema = {
   id: HYDROGEN_SPECTRUM_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'continuous',
 
   // 조작기가 없다 — 자동 진행만으로 「같은 자리에만 쌓인다」 가 완결된다.

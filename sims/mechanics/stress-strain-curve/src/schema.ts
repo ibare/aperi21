@@ -79,7 +79,8 @@ export const stressStrainCurveMessages = Object.freeze({
     id: 'Kurva tegangan–regangan',
     pt: 'Curva tensão–deformação',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '당길수록 달라지는 재료의 반응',
     en: 'How a material responds as it is pulled',
     ja: '引っ張るにつれて変わる材料の応答',
@@ -271,7 +272,7 @@ export const stressStrainCurveSchema: BundleSchema = {
   id: STRESS_STRAIN_CURVE_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 작은 당김 / 큰 당김의 대조만으로 주장이 끝난다.

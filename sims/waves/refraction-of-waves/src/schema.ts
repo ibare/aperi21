@@ -100,7 +100,8 @@ export const refractionOfWavesMessages = Object.freeze({
     id: 'Pembiasan gelombang',
     pt: 'Refração das ondas',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '속도 변화가 만드는 방향 전환',
     en: 'A change of speed turns the direction',
     ja: '速さの変化が向きを変える',
@@ -252,7 +253,7 @@ export const refractionOfWavesSchema: BundleSchema = {
   id: REFRACTION_OF_WAVES_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작값은 슬라이더가 state 에 직접 쓴다 (controllers.ts).

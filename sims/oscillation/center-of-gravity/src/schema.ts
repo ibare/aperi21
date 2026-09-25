@@ -62,7 +62,8 @@ export const centerOfGravityMessages = Object.freeze({
     id: 'Titik berat',
     pt: 'Centro de gravidade',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '넘어지는 조건을 정하는 점',
     en: 'The point that decides when things tip over',
     ja: '物が倒れるかどうかを決める点',
@@ -217,7 +218,7 @@ export const centerOfGravitySchema: BundleSchema = {
   id: CENTER_OF_GRAVITY_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

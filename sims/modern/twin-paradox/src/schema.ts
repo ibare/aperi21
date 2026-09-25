@@ -82,17 +82,18 @@ export const twinParadoxMessages = Object.freeze({
     id: 'Paradoks kembar',
     pt: 'Paradoxo dos gêmeos',
   },
-  'label.operation': {
-    ko: '비대칭을 만드는 가속',
-    en: 'The acceleration that breaks the symmetry',
-    ja: '対称性を破る加速',
-    zh: '打破对称的加速',
-    ar: 'التسارع الذي يكسر التماثل',
-    es: 'La aceleración que rompe la simetría',
-    fr: 'L’accélération qui brise la symétrie',
-    hi: 'सममिति तोड़ने वाला त्वरण',
-    id: 'Percepatan yang mematahkan simetri',
-    pt: 'A aceleração que quebra a simetria',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '비대칭을 만드는 돌아섬',
+    en: 'The turnaround that makes the asymmetry',
+    ja: '非対称をつくる折り返し',
+    zh: '造成不对称的掉头',
+    ar: 'الاستدارة التي تصنع عدم التماثل',
+    es: 'La media vuelta que crea la asimetría',
+    fr: 'Le demi-tour qui crée l’asymétrie',
+    hi: 'वह वापसी जो असममिति पैदा करती है',
+    id: 'Putar balik yang menciptakan ketidaksimetrisan',
+    pt: 'A inversão de marcha que cria a assimetria',
   },
   'label.stage': {
     ko: '0.6c 로 6 광년 왕복',
@@ -273,7 +274,7 @@ export const twinParadoxSchema: BundleSchema = {
   id: TWIN_PARADOX_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 여행자가 가고, 돌아서고, 돌아와 두 햇수가 갈린다.

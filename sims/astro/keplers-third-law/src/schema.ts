@@ -68,17 +68,18 @@ export const keplersThirdLawMessages = Object.freeze({
     id: 'Hukum Ketiga Kepler',
     pt: 'Terceira lei de Kepler',
   },
-  'label.operation': {
-    ko: '주기와 긴반지름의 관계',
-    en: 'How the period depends on the semi-major axis',
-    ja: '周期は長半径によってどう決まるか',
-    zh: '周期如何取决于半长轴',
-    ar: 'كيف يعتمد الدور المداري على نصف المحور الأكبر',
-    es: 'Cómo depende el periodo del semieje mayor',
-    fr: 'Comment la période dépend du demi-grand axe',
-    hi: 'आवर्तकाल अर्ध-दीर्घ अक्ष पर कैसे निर्भर करता है',
-    id: 'Bagaimana periode bergantung pada sumbu semi-mayor',
-    pt: 'Como o período depende do semieixo maior',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '궤도 반지름과 한 바퀴 시간의 관계',
+    en: 'The relation between orbital radius and the time for one revolution',
+    ja: '軌道半径と一周の時間の関係',
+    zh: '轨道半径与绕行一周时间的关系',
+    ar: 'العلاقة بين نصف قطر المدار وزمن الدورة الواحدة',
+    es: 'La relación entre el radio de la órbita y el tiempo de una vuelta',
+    fr: 'La relation entre le rayon de l’orbite et la durée d’un tour',
+    hi: 'कक्षा की त्रिज्या और एक चक्कर के समय का संबंध',
+    id: 'Hubungan antara jari-jari orbit dan waktu satu putaran',
+    pt: 'A relação entre o raio da órbita e o tempo de uma volta',
   },
   'label.stage': {
     ko: '반지름이 다른 두 궤도',
@@ -283,7 +284,7 @@ export const keplersThirdLawSchema: BundleSchema = {
   id: KEPLERS_THIRD_LAW_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 반지름을 끌게 하면 주기가 변하는 것은 보이지만 「얼마나 빨리」 는

@@ -79,17 +79,18 @@ export const inelasticCollisionMessages = Object.freeze({
     id: 'Tumbukan lenting sebagian',
     pt: 'Colisão inelástica',
   },
-  'label.operation': {
-    ko: '에너지가 사라지는 충돌',
-    en: 'A collision that loses energy',
-    ja: 'エネルギーが失われる衝突',
-    zh: '损失能量的碰撞',
-    ar: 'تصادم تُفقد فيه طاقة',
-    es: 'Un choque que pierde energía',
-    fr: 'Une collision qui perd de l’énergie',
-    hi: 'ऐसी टक्कर जिसमें ऊर्जा खोती है',
-    id: 'Tumbukan yang kehilangan energi',
-    pt: 'Uma colisão que perde energia',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '되돌려 받지 못하는 몫이 생기는 충돌',
+    en: 'A collision in which a share is not given back',
+    ja: '取り戻せない分が生じる衝突',
+    zh: '出现无法收回部分的碰撞',
+    ar: 'تصادم تضيع فيه حصة لا تُستعاد',
+    es: 'Un choque en el que una parte no se recupera',
+    fr: 'Une collision où une part n’est pas restituée',
+    hi: 'ऐसी टक्कर जिसमें एक अंश वापस नहीं मिलता',
+    id: 'Tumbukan yang menyisakan bagian yang tidak kembali',
+    pt: 'Uma colisão em que uma parte não é devolvida',
   },
   'label.stage': {
     ko: '바닥에 떨어뜨린 공',
@@ -308,7 +309,7 @@ export const inelasticCollisionSchema: BundleSchema = {
   id: INELASTIC_COLLISION_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

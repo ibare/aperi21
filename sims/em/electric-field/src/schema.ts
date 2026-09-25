@@ -110,7 +110,8 @@ export const electricFieldMessages = Object.freeze({
     id: 'Medan listrik',
     pt: 'Campo elétrico',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '단위 전하가 받는 힘',
     en: 'The force on a unit charge',
     ja: '単位電荷が受ける力',
@@ -264,7 +265,7 @@ export const electricFieldSchema: BundleSchema = {
   id: ELECTRIC_FIELD_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 화살표가 적혀 있고, 전하가 놓이고, 커지고, 밀려 간다.

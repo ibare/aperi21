@@ -101,7 +101,8 @@ export const boylesLawMessages = Object.freeze({
     id: 'Hukum Boyle',
     pt: 'Lei de Boyle',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '온도가 일정할 때의 압력-부피',
     en: 'Pressure and volume at constant temperature',
     ja: '温度一定での圧力と体積',
@@ -332,7 +333,7 @@ export const boylesLawSchema: BundleSchema = {
   id: BOYLES_LAW_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 피스톤이 눌리고, 점이 곡선을 따라가고, 넓이가 같은 직사각형이 쌓인다.

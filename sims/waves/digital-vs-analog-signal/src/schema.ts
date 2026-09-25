@@ -102,7 +102,8 @@ export const digitalVsAnalogSignalMessages = Object.freeze({
     id: 'Sinyal digital dan analog',
     pt: 'Sinais digitais e analógicos',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '잡음을 견디는 방식의 차이',
     en: 'Two ways of standing up to noise',
     ja: '雑音への二通りの耐え方',
@@ -271,7 +272,7 @@ export const digitalVsAnalogSignalSchema: BundleSchema = {
   id: DIGITAL_VS_ANALOG_SIGNAL_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

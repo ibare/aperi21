@@ -46,7 +46,8 @@ export const averageAccelerationMessages = Object.freeze({
     id: 'Percepatan rata-rata',
     pt: 'Aceleração média',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '속도 변화의 비율',
     en: 'Rate of change of velocity',
     ja: '速度の変化の割合',
@@ -265,7 +266,7 @@ export const averageAccelerationSchema: BundleSchema = {
   id: AVERAGE_ACCELERATION_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 자동 진행으로 두 선이 겹치면 할 말이 끝난다.

@@ -126,17 +126,18 @@ export const generatorMessages = Object.freeze({
     id: 'Generator',
     pt: 'Gerador',
   },
-  'label.operation': {
-    ko: '회전이 만드는 기전력',
-    en: 'The EMF made by turning',
-    ja: '回転がつくる起電力',
-    zh: '转动产生的电动势',
-    ar: 'القوة الدافعة الكهربائية الناتجة عن الدوران',
-    es: 'La fem que produce el giro',
-    fr: 'La f.é.m. produite par la rotation',
-    hi: 'घुमाने से उत्पन्न विद्युत वाहक बल',
-    id: 'GGL yang dihasilkan oleh putaran',
-    pt: 'A fem produzida pelo giro',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '전구를 켜면 손잡이가 무거워진다',
+    en: 'Turn on the bulb and the handle gets heavier',
+    ja: '電球をつけるとハンドルが重くなる',
+    zh: '点亮灯泡，手柄就变沉',
+    ar: 'أشعل المصباح فيثقل المقبض',
+    es: 'Enciende la bombilla y la manivela se vuelve más pesada',
+    fr: 'Allumez l’ampoule et la manivelle devient plus dure',
+    hi: 'बल्ब जलाते ही हत्था भारी हो जाता है',
+    id: 'Nyalakan bohlam dan engkol menjadi lebih berat',
+    pt: 'Acenda a lâmpada e a manivela fica mais pesada',
   },
   'label.stage': {
     ko: '손잡이 발전기',
@@ -223,7 +224,7 @@ export const generatorSchema: BundleSchema = {
   id: GENERATOR_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 돌고 있고, 스위치가 저절로 닫혔다 열린다.

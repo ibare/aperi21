@@ -133,7 +133,8 @@ export const thermistorAndLdrMessages = Object.freeze({
     id: 'Termistor dan LDR',
     pt: 'Termistor e LDR',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '온도와 빛에 따라 변하는 저항',
     en: 'Resistance that changes with temperature and light',
     ja: '温度と光で変わる抵抗',
@@ -382,7 +383,7 @@ export const thermistorAndLdrSchema: BundleSchema = {
   id: THERMISTOR_AND_LDR_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 써미스터를 데웠다 식히고, 이어 광저항에 빛을 쬐었다 거둔다.

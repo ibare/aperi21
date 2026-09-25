@@ -108,7 +108,8 @@ export const brewsterAngleMessages = Object.freeze({
     id: 'Sudut Brewster',
     pt: 'Ângulo de Brewster',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '반사광이 완전 편광되는 각',
     en: 'The angle at which reflected light is fully polarized',
     ja: '反射光が完全に偏光する角',
@@ -357,7 +358,7 @@ export const brewsterAngleSchema: BundleSchema = {
   id: BREWSTER_ANGLE_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 입사각이 스스로 세 자리를 돌며 두 몫을 보인다.

@@ -103,7 +103,8 @@ export const beatsInOscillationMessages = Object.freeze({
     id: 'Pelayangan pada osilasi',
     pt: 'Batimentos na oscilação',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '가까운 두 진동수의 합',
     en: 'The sum of two nearby frequencies',
     ja: '近い二つの振動数の和',
@@ -232,7 +233,7 @@ export const beatsInOscillationSchema: BundleSchema = {
   id: BEATS_IN_OSCILLATION_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 비교할 두 차이가 처음부터 위아래로 나란히 놓여 있다.

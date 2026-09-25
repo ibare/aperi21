@@ -114,7 +114,8 @@ export const impulseMomentumTheoremMessages = Object.freeze({
     id: 'Teorema impuls–momentum',
     pt: 'Teorema do impulso e da quantidade de movimento',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '충격량이 운동량 변화와 같음',
     en: 'Impulse equals the change in momentum',
     ja: '力積は運動量の変化に等しい',
@@ -345,7 +346,7 @@ export const impulseMomentumTheoremSchema: BundleSchema = {
   id: IMPULSE_MOMENTUM_THEOREM_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

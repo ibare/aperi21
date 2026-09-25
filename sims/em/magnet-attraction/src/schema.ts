@@ -95,7 +95,8 @@ export const magnetAttractionMessages = Object.freeze({
     id: 'Yang menempel pada magnet',
     pt: 'O que gruda em um ímã',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '자석이 당기는 물체와 당기지 않는 물체',
     en: 'Things a magnet pulls and things it does not',
     ja: '磁石が引きつけるものと引きつけないもの',
@@ -284,7 +285,7 @@ export const magnetAttractionSchema: BundleSchema = {
   id: MAGNET_ATTRACTION_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 자석이 줄 위를 지나가는 것을 시간표가 보여 준다.

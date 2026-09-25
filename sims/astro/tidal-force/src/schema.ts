@@ -56,7 +56,8 @@ export const tidalForceMessages = Object.freeze({
     id: 'Gaya pasang surut',
     pt: 'Força de maré',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '중력의 차이가 만드는 늘어남',
     en: 'Stretching made by a difference in gravity',
     ja: '重力の差が生む引き伸ばし',
@@ -148,7 +149,7 @@ export const tidalForceSchema: BundleSchema = {
   id: TIDAL_FORCE_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   /**

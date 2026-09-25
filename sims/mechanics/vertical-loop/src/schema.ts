@@ -82,17 +82,18 @@ export const verticalLoopMessages = Object.freeze({
     id: 'Lintasan loop vertikal',
     pt: 'Loop vertical',
   },
-  'label.operation': {
-    ko: '꼭대기에서 떨어지지 않는 최소 속력',
-    en: 'The minimum speed that keeps a ball on the loop at the top',
-    ja: '頂上で球がループから離れないための最小の速さ',
-    zh: '小球在最高点不脱离轨道所需的最小速率',
-    ar: 'أقل سرعة تُبقي الكرة على الحلقة عند القمة',
-    es: 'La rapidez mínima que mantiene una bola en el rizo en lo más alto',
-    fr: 'La vitesse minimale qui maintient une bille sur la boucle au sommet',
-    hi: 'वह न्यूनतम चाल जो शीर्ष पर गेंद को लूप पर बनाए रखती है',
-    id: 'Kelajuan minimum yang menjaga bola tetap di lintasan loop saat di puncak',
-    pt: 'A velocidade mínima que mantém uma bola no loop no topo',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '고리를 돌기에 속력이 모자라면 레일을 떠나는 자리',
+    en: 'The point where a body leaves the rail when it is too slow to go round the loop',
+    ja: '輪を回るには速さが足りないとき、レールを離れる位置',
+    zh: '速度不足以绕过圆环时离开轨道的位置',
+    ar: 'النقطة التي يترك عندها الجسم القضيب حين تكون سرعته غير كافية للدوران في الحلقة',
+    es: 'El punto donde un cuerpo deja el riel cuando no tiene rapidez suficiente para dar la vuelta al rizo',
+    fr: 'L’endroit où un corps quitte le rail quand il est trop lent pour faire le tour de la boucle',
+    hi: 'वह स्थान जहाँ पिंड लूप का चक्कर लगाने लायक चाल न होने पर पटरी छोड़ देता है',
+    id: 'Titik tempat benda meninggalkan rel ketika kelajuannya tidak cukup untuk memutari lingkaran',
+    pt: 'O ponto em que um corpo deixa o trilho quando não tem velocidade suficiente para dar a volta ao loop',
   },
   'label.stage': {
     ko: '기본',
@@ -237,7 +238,7 @@ export const verticalLoopSchema: BundleSchema = {
   id: VERTICAL_LOOP_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 두 속력의 대비로 주장이 끝나고, 속력을 바꿔 보게 하면 주장이

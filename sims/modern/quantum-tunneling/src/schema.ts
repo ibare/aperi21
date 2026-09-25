@@ -78,7 +78,8 @@ export const quantumTunnelingMessages = Object.freeze({
     id: 'Penerowongan kuantum',
     pt: 'Tunelamento quântico',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '장벽을 통과하는 확률',
     en: 'The chance of passing through a barrier',
     ja: '障壁を通り抜ける確率',
@@ -245,7 +246,7 @@ export const quantumTunnelingSchema: BundleSchema = {
   id: QUANTUM_TUNNELING_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 두께를 바꿔 보는 일은 두 레인이 나란히 이미 하고 있다 — 슬라이더로

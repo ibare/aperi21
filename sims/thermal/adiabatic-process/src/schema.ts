@@ -104,7 +104,8 @@ export const adiabaticProcessMessages = Object.freeze({
     id: 'Proses adiabatik',
     pt: 'Processo adiabático',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '열 출입이 없는 변화',
     en: 'A change with no heat in or out',
     ja: '熱の出入りがない変化',
@@ -311,7 +312,7 @@ export const adiabaticProcessSchema: BundleSchema = {
   id: ADIABATIC_PROCESS_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 피스톤이 오르고, 온도계가 내려가고, 두 점이 갈라진다.

@@ -99,7 +99,8 @@ export const ivCharacteristicMessages = Object.freeze({
     id: 'Kurva karakteristik I–V',
     pt: 'Curvas características I–V',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '전압과 전류의 관계가 직선이 아닌 소자',
     en: 'Devices whose current does not follow voltage in a straight line',
     ja: '電流が電圧に対して直線的に変わらない素子',
@@ -270,7 +271,7 @@ export const ivCharacteristicSchema: BundleSchema = {
   id: IV_CHARACTERISTIC_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 점이 곡선을 긋고, 세 곡선이 차례로 쌓인다.

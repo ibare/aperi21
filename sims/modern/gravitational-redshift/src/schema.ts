@@ -93,17 +93,18 @@ export const gravitationalRedshiftMessages = Object.freeze({
     id: 'Pergeseran merah gravitasi',
     pt: 'Desvio para o vermelho gravitacional',
   },
-  'label.operation': {
-    ko: '빠져나오며 잃는 에너지',
-    en: 'Energy lost climbing out of a gravity well',
-    ja: '重力の井戸から抜け出す間に失うエネルギー',
-    zh: '爬出引力阱时损失的能量',
-    ar: 'الطاقة المفقودة أثناء الخروج من بئر الجاذبية',
-    es: 'Energía perdida al salir de un pozo gravitatorio',
-    fr: 'Énergie perdue en sortant d’un puits de gravité',
-    hi: 'गुरुत्व कूप से बाहर चढ़ते हुए खोई ऊर्जा',
-    id: 'Energi yang hilang saat keluar dari sumur gravitasi',
-    pt: 'Energia perdida ao sair de um poço gravitacional',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '빠져나오며 붉어지는 빛',
+    en: 'Light that reddens as it climbs out',
+    ja: '抜け出しながら赤くなる光',
+    zh: '逃离时变红的光',
+    ar: 'ضوء يحمرّ وهو يخرج',
+    es: 'La luz que enrojece al salir',
+    fr: 'La lumière qui rougit en s’échappant',
+    hi: 'बाहर निकलते हुए लाल होता प्रकाश',
+    id: 'Cahaya yang memerah saat keluar',
+    pt: 'A luz que avermelha ao sair',
   },
   'label.stage': {
     ko: '중성자별에서 낸 빛',
@@ -247,7 +248,7 @@ export const gravitationalRedshiftSchema: BundleSchema = {
   id: GRAVITATIONAL_REDSHIFT_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 빛이 우물을 올라오며 늘어나고, 먼 곳에서 떠날 때 모습과 견준다.

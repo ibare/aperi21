@@ -96,7 +96,8 @@ export const barometerMessages = Object.freeze({
     id: 'Barometer',
     pt: 'Barômetro',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '수은 기둥의 높이',
     en: 'The height of a mercury column',
     ja: '水銀柱の高さ',
@@ -250,7 +251,7 @@ export const barometerSchema: BundleSchema = {
   id: BAROMETER_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 기압이 낮아졌다 돌아오고, 기둥이 따라 내려앉았다 올라선다.

@@ -82,7 +82,8 @@ export const scaleOfUniverseMessages = Object.freeze({
     id: 'Skala alam semesta',
     pt: 'A escala do universo',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '원자에서 우주까지 10의 거듭제곱으로 잇는 크기',
     en: 'Sizes from the atom to the universe, joined by powers of ten',
     ja: '原子から宇宙まで、10のべき乗でつなぐ大きさ',
@@ -424,7 +425,7 @@ export const scaleOfUniverseSchema: BundleSchema = {
   id: SCALE_OF_UNIVERSE_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 물러나는 중이고, 원자에서 우주까지 스스로 간다.

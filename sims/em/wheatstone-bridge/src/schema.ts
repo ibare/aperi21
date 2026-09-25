@@ -124,7 +124,8 @@ export const wheatstoneBridgeMessages = Object.freeze({
     id: 'Jembatan Wheatstone',
     pt: 'Ponte de Wheatstone',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '평형으로 재는 저항',
     en: 'Measuring a resistance by balance',
     ja: 'つり合いで抵抗を測る',
@@ -278,7 +279,7 @@ export const wheatstoneBridgeSchema: BundleSchema = {
   id: WHEATSTONE_BRIDGE_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 R₃ 가 처음 자리에서 평형을 지나 끝까지 돌았다가 되돌아온다.

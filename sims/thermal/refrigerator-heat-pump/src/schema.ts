@@ -112,7 +112,8 @@ export const refrigeratorHeatPumpMessages = Object.freeze({
     id: 'Kulkas dan pompa kalor',
     pt: 'Refrigeradores e bombas de calor',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '일을 넣어 열을 옮기는 것',
     en: 'Moving heat by putting in work',
     ja: '仕事を加えて熱を運ぶ',
@@ -315,7 +316,7 @@ export const refrigeratorHeatPumpSchema: BundleSchema = {
   id: REFRIGERATOR_HEAT_PUMP_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흐르고, 합쳐지고, 끊기고, 새어 든다.

@@ -82,7 +82,8 @@ export const reflectionOfWavesMessages = Object.freeze({
     id: 'Pemantulan gelombang',
     pt: 'Reflexão de ondas',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '고정단과 자유단에서의 위상',
     en: 'Phase at a fixed end and at a free end',
     ja: '固定端と自由端での位相',
@@ -236,7 +237,7 @@ export const reflectionOfWavesSchema: BundleSchema = {
   id: REFLECTION_OF_WAVES_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 두 끝을 나란히 두어 자동 진행만으로 비교가 끝난다 — 독자가 고를 것이

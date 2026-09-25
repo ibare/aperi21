@@ -83,7 +83,8 @@ export const starRadiationGravityBalanceMessages = Object.freeze({
     id: 'Keseimbangan tekanan radiasi dan gravitasi',
     pt: 'Equilíbrio entre pressão de radiação e gravidade',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '별이 무너지지도 흩어지지도 않는 이유',
     en: 'Why a star neither collapses nor flies apart',
     ja: '星がつぶれも飛び散りもしない理由',
@@ -249,7 +250,7 @@ export const starRadiationGravityBalanceSchema: BundleSchema = {
   id: STAR_RADIATION_GRAVITY_BALANCE_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 에너지가 늘고, 별이 부풀어 멈추고, 줄고, 오그라들어 멈추고, 돌아간다.

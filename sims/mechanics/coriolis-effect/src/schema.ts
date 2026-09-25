@@ -67,7 +67,8 @@ export const coriolisEffectMessages = Object.freeze({
     id: 'Efek Coriolis',
     pt: 'Efeito Coriolis',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '회전 기준틀에서 휘는 경로',
     en: 'A path that curves in a rotating frame',
     ja: '回転座標系で曲がる経路',
@@ -159,7 +160,7 @@ export const coriolisEffectSchema: BundleSchema = {
   id: CORIOLIS_EFFECT_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 누를 것 없이 되풀이만으로 주장이 끝난다 (원본 NOTES (c)).

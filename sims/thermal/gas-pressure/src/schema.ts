@@ -95,17 +95,18 @@ export const gasPressureMessages = Object.freeze({
     id: 'Molekul dan tekanan',
     pt: 'Moléculas e pressão',
   },
-  'label.operation': {
-    ko: '두드림이 쌓여 압력이 된다',
-    en: 'Pressure is the sum of the knocks',
-    ja: '圧力は衝突の総和',
-    zh: '压强是撞击的总和',
-    ar: 'الضغط هو مجموع الطرقات',
-    es: 'La presión es la suma de los golpes',
-    fr: 'La pression est la somme des chocs',
-    hi: 'दाब टक्करों का योग है',
-    id: 'Tekanan adalah jumlah ketukan',
-    pt: 'A pressão é a soma das batidas',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '온도를 올리면 분자가 벽을 더 자주 더 세게 때려 압력이 오르는 것',
+    en: 'How raising the temperature makes molecules strike the wall more often and harder, so the pressure rises',
+    ja: '温度を上げると分子が壁をより頻繁に、より強く打ち、圧力が上がること',
+    zh: '升高温度时分子更频繁、更猛烈地撞击器壁，压强因此升高',
+    ar: 'كيف يجعل رفع درجة الحرارة الجزيئات تضرب الجدار بتكرار أكبر وقوة أشد فيرتفع الضغط',
+    es: 'Cómo al subir la temperatura las moléculas golpean la pared más a menudo y con más fuerza, y la presión sube',
+    fr: 'Comment, quand la température monte, les molécules frappent la paroi plus souvent et plus fort, et la pression monte',
+    hi: 'तापमान बढ़ाने पर अणु दीवार से अधिक बार और अधिक ज़ोर से कैसे टकराते हैं और दाब बढ़ता है',
+    id: 'Bagaimana menaikkan suhu membuat molekul menumbuk dinding lebih sering dan lebih keras sehingga tekanan naik',
+    pt: 'Como, ao subir a temperatura, as moléculas batem na parede com mais frequência e mais força, e a pressão sobe',
   },
   'label.stage': {
     ko: '상자',
@@ -278,7 +279,7 @@ export const gasPressureSchema: BundleSchema = {
   id: GAS_PRESSURE_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'linear',
 
   // 읽는 사람이 고를 것은 없다. 손잡이는 조작기 하나뿐이다 (controllers.ts).

@@ -115,17 +115,18 @@ export const driftVelocityMessages = Object.freeze({
     id: 'Kecepatan hanyut',
     pt: 'Velocidade de deriva',
   },
-  'label.operation': {
-    ko: '느린 전자와 빠른 신호',
-    en: 'Slow electrons, fast signal',
-    ja: '遅い電子と速い信号',
-    zh: '缓慢的电子与快速的信号',
-    ar: 'إلكترونات بطيئة وإشارة سريعة',
-    es: 'Electrones lentos, señal rápida',
-    fr: 'Électrons lents, signal rapide',
-    hi: 'धीमे इलेक्ट्रॉन, तेज़ संकेत',
-    id: 'Elektron lambat, sinyal cepat',
-    pt: 'Elétrons lentos, sinal rápido',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '도선 속 전자가 기어가는 속도',
+    en: 'The crawling speed of electrons in a wire',
+    ja: '導線の中の電子がはうように進む速さ',
+    zh: '导线中电子缓慢爬行的速率',
+    ar: 'السرعة التي تزحف بها الإلكترونات داخل السلك',
+    es: 'La rapidez con que se arrastran los electrones dentro de un cable',
+    fr: 'La vitesse à laquelle les électrons avancent à pas lents dans un fil',
+    hi: 'तार के भीतर इलेक्ट्रॉनों के रेंगने की चाल',
+    id: 'Kelajuan elektron yang merayap di dalam kawat',
+    pt: 'A velocidade com que os elétrons se arrastam dentro de um fio',
   },
   'label.stage': {
     ko: '작은 회로',
@@ -248,7 +249,7 @@ export const driftVelocitySchema: BundleSchema = {
   id: DRIFT_VELOCITY_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흔들리고, 닫히면 켜지며 밀리고, 표시한 전자를 견주고, 다시 연다.

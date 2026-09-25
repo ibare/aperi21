@@ -100,7 +100,8 @@ export const scanningTunnelingMicroscopeMessages = Object.freeze({
     id: 'Mikroskop penerowongan pemindai',
     pt: 'Microscópio de tunelamento com varredura',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '터널 전류로 그리는 표면',
     en: 'Drawing a surface with tunneling current',
     ja: 'トンネル電流で描く表面',
@@ -246,7 +247,7 @@ export const scanningTunnelingMicroscopeSchema: BundleSchema = {
   id: SCANNING_TUNNELING_MICROSCOPE_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 독자가 손댈 만한 것(틈)은 접근 단계가 세 값으로 이미 보인다 — 슬라이더로

@@ -94,7 +94,8 @@ export const gravitationalSlingshotMessages = Object.freeze({
     id: 'Asistensi gravitasi',
     pt: 'Assistência gravitacional',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '천체를 이용한 속도 변화',
     en: 'Changing speed by passing a planet',
     ja: '惑星のそばを通って速さを変える',
@@ -251,7 +252,7 @@ export const gravitationalSlingshotSchema: BundleSchema = {
   id: GRAVITATIONAL_SLINGSHOT_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 비행 하나를 두 틀로 견주는 것이 전부라, 값을 바꿔 볼 것이 주장에 없다 (NOTES (b)).

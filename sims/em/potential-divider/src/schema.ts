@@ -91,7 +91,19 @@ export const BACK = 2.4;
 
 export const potentialDividerMessages = Object.freeze({
   'label.title': { ko: '분압기', en: 'Potential divider', ja: '分圧器', zh: '分压器', ar: 'مجزئ الجهد', es: 'Divisor de tensión', fr: 'Diviseur de tension', hi: 'विभव विभाजक', id: 'Pembagi tegangan', pt: 'Divisor de tensão' },
-  'label.operation': { ko: '저항으로 전압을 나누어 쓰는 것', en: 'Splitting a voltage with resistors', ja: '抵抗で電圧を分ける', zh: '用电阻分配电压', ar: 'تقسيم الجهد بالمقاومات', es: 'Repartir un voltaje con resistencias', fr: 'Partager une tension avec des résistances', hi: 'प्रतिरोधों से वोल्टता बाँटना', id: 'Membagi tegangan dengan hambatan', pt: 'Dividir uma tensão com resistores' },
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '저항으로 전압을 나누어 쓰는 것',
+    en: 'Splitting a voltage with resistors',
+    ja: '抵抗で電圧を分ける',
+    zh: '用电阻分配电压',
+    ar: 'تقسيم الجهد بالمقاومات',
+    es: 'Repartir un voltaje con resistencias',
+    fr: 'Partager une tension avec des résistances',
+    hi: 'प्रतिरोधों से वोल्टता बाँटना',
+    id: 'Membagi tegangan dengan hambatan',
+    pt: 'Dividir uma tensão com resistores',
+  },
   'label.stage': { ko: '저항선 하나 · 접점 셋', en: 'One resistance wire, three contact points', ja: '抵抗線一本、接点三つ', zh: '一根电阻丝，三个接点', ar: 'سلك مقاومة واحد وثلاث نقاط تماس', es: 'Un hilo resistivo, tres puntos de contacto', fr: 'Un fil résistant, trois points de contact', hi: 'एक प्रतिरोध तार, तीन संपर्क बिंदु', id: 'Satu kawat hambatan, tiga titik kontak', pt: 'Um fio resistivo, três pontos de contato' },
   'label.view': { ko: '저항선', en: 'Slide wire', ja: 'すべり抵抗線', zh: '滑线', ar: 'سلك منزلق', es: 'Hilo con cursor', fr: 'Fil à curseur', hi: 'सर्पी तार', id: 'Kawat geser', pt: 'Fio com cursor' },
   'label.volt': { ko: '{v} V', en: '{v} V', ja: '{v} V', zh: '{v} V', ar: '{v} V', es: '{v} V', fr: '{v} V', hi: '{v} V', id: '{v} V', pt: '{v} V' },
@@ -163,7 +175,7 @@ export const potentialDividerSchema: BundleSchema = {
   id: POTENTIAL_DIVIDER_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 접점이 세 자리를 차례로 옮겨 다니고 처음 자리로 돌아온다.

@@ -126,7 +126,19 @@ export const BOUNDS = { halfWidth: 180, halfHeight: 154 } as const;
 
 export const atomicOrbitalMessages = Object.freeze({
   'label.title': { ko: '원자 궤도', en: 'Atomic orbital', ja: '原子軌道', zh: '原子轨道', ar: 'الفلك الذري', es: 'Orbital atómico', fr: 'Orbitale atomique', hi: 'परमाणु कक्षक', id: 'Orbital atom', pt: 'Orbital atômico' },
-  'label.operation': { ko: '확률 분포로서의 전자', en: 'The electron as a probability distribution', ja: '確率分布としての電子', zh: '作为概率分布的电子', ar: 'الإلكترون بوصفه توزيعًا احتماليًا', es: 'El electrón como distribución de probabilidad', fr: 'L’électron comme distribution de probabilité', hi: 'प्रायिकता बंटन के रूप में इलेक्ट्रॉन', id: 'Elektron sebagai distribusi probabilitas', pt: 'O elétron como distribuição de probabilidade' },
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '확률 분포로서의 전자',
+    en: 'The electron as a probability distribution',
+    ja: '確率分布としての電子',
+    zh: '作为概率分布的电子',
+    ar: 'الإلكترون بوصفه توزيعًا احتماليًا',
+    es: 'El electrón como distribución de probabilidad',
+    fr: 'L’électron comme distribution de probabilité',
+    hi: 'प्रायिकता बंटन के रूप में इलेक्ट्रॉन',
+    id: 'Elektron sebagai distribusi probabilitas',
+    pt: 'O elétron como distribuição de probabilidade',
+  },
   'label.stage': { ko: '수소 원자', en: 'Hydrogen atom', ja: '水素原子', zh: '氢原子', ar: 'ذرة الهيدروجين', es: 'Átomo de hidrógeno', fr: 'Atome d’hydrogène', hi: 'हाइड्रोजन परमाणु', id: 'Atom hidrogen', pt: 'Átomo de hidrogênio' },
   'label.view': { ko: '발견 자리', en: 'Detections', ja: '検出された位置', zh: '探测位置', ar: 'مواضع الرصد', es: 'Detecciones', fr: 'Détections', hi: 'संसूचन', id: 'Deteksi', pt: 'Detecções' },
   /** 궤도 기호 — 분야에서 원어로 통용되는 표식이라 두 언어가 같다. */
@@ -189,7 +201,7 @@ export const atomicOrbitalSchema: BundleSchema = {
   id: ATOMIC_ORBITAL_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'statistical',
   parameters: [],
   stages: [{ id: 'hydrogen', label: text('label.stage'), constants: { ...MEASURE } }],

@@ -96,7 +96,8 @@ export const dielectricMessages = Object.freeze({
     id: 'Dielektrik',
     pt: 'Dielétrico',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '분극과 전기장의 약화',
     en: 'Polarization weakens the field',
     ja: '分極が電場を弱める',
@@ -261,7 +262,7 @@ export const dielectricSchema: BundleSchema = {
   id: DIELECTRIC_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 밀어 넣고, 읽고, 빼는 한 주기로 할 말을 마친다.

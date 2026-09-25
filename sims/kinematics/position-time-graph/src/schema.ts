@@ -74,17 +74,18 @@ export const positionTimeGraphMessages = Object.freeze({
     id: 'Grafik posisi-waktu',
     pt: 'Gráfico posição-tempo',
   },
-  'label.operation': {
-    ko: '빨리 오를수록 남기는 선이 가파르다',
-    en: 'The faster it rises, the steeper the line it leaves',
-    ja: '速く上がるほど、残す線は急になる',
-    zh: '上升得越快，留下的线就越陡',
-    ar: 'كلما ارتفع أسرع، كان الخط الذي يتركه أشد انحدارًا',
-    es: 'Cuanto más rápido sube, más empinada es la línea que deja',
-    fr: 'Plus il monte vite, plus la ligne qu’il laisse est raide',
-    hi: 'जितनी तेज़ी से ऊपर चढ़े, छोड़ी गई रेखा उतनी ही खड़ी',
-    id: 'Makin cepat naik, makin curam garis yang ditinggalkannya',
-    pt: 'Quanto mais rápido sobe, mais íngreme é a linha que deixa',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '기울기가 속도인 표현',
+    en: 'A representation whose slope is the velocity',
+    ja: '傾きが速度になる表し方',
+    zh: '斜率即速度的表示方式',
+    ar: 'تمثيل يكون ميله هو السرعة المتجهة',
+    es: 'Una representación cuya pendiente es la velocidad',
+    fr: 'Une représentation dont la pente est la vitesse',
+    hi: 'ऐसा निरूपण जिसकी ढलान वेग है',
+    id: 'Representasi yang kemiringannya adalah kecepatan',
+    pt: 'Uma representação cuja inclinação é a velocidade',
   },
   'label.stage': {
     ko: '오르는 두 길',
@@ -222,7 +223,7 @@ export const positionTimeGraphSchema: BundleSchema = {
   id: POSITION_TIME_GRAPH_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 빠르기는 손잡이가 state 경로를 직접 쥔다 (`controllers.ts`). 자동 진행이 같은

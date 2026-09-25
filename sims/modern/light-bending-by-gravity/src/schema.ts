@@ -54,7 +54,8 @@ export const lightBendingByGravityMessages = Object.freeze({
     id: 'Pembelokan cahaya',
     pt: 'Curvatura da luz',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '질량 근처에서 휘는 경로',
     en: 'The path of light bends near a mass',
     ja: '質量の近くで光の経路が曲がる',
@@ -256,7 +257,7 @@ export const lightBendingByGravitySchema: BundleSchema = {
   id: LIGHT_BENDING_BY_GRAVITY_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 독자가 바꿔 볼 만한 것은 스치는 거리(멀수록 덜 휜다)인데, 그것은 이 조각의

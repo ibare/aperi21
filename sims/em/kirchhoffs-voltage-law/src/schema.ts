@@ -106,7 +106,8 @@ export const kirchhoffsVoltageLawMessages = Object.freeze({
     id: 'Hukum tegangan Kirchhoff',
     pt: 'Lei das tensões de Kirchhoff',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '고리에서의 에너지 보존',
     en: 'Conservation of energy around a loop',
     ja: '閉回路でのエネルギーの保存',
@@ -379,7 +380,7 @@ export const kirchhoffsVoltageLawSchema: BundleSchema = {
   id: KIRCHHOFFS_VOLTAGE_LAW_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 점이 돌고, 한 바퀴를 마치고, 거꾸로 다시 돈다.

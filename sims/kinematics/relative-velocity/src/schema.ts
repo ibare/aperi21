@@ -226,17 +226,18 @@ export const relativeVelocityMessages = Object.freeze({
     id: 'Kecepatan relatif',
     pt: 'Velocidade relativa',
   },
-  'label.operation': {
-    ko: '보는 사람이 달라지면 배가 지나온 길이 기운다',
-    en: 'Change who is watching and the path the boat left tilts',
-    ja: '見る人が変わると、ボートの通った跡が傾く',
-    zh: '换一个观察者，船走过的路径就倾斜了',
-    ar: 'غيِّر مَن يراقب فيميل المسار الذي تركه القارب',
-    es: 'Cambia quién observa y la trayectoria que dejó el bote se inclina',
-    fr: 'Changez d’observateur et le chemin laissé par le bateau s’incline',
-    hi: 'देखने वाला बदलो तो नाव का छोड़ा हुआ पथ झुक जाता है',
-    id: 'Ganti siapa yang mengamati, dan lintasan yang ditinggalkan perahu jadi miring',
-    pt: 'Mude quem observa e o caminho deixado pelo barco se inclina',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '기준틀 사이의 속도 변환',
+    en: 'Converting velocity between frames of reference',
+    ja: '基準系どうしの速度の変換',
+    zh: '参考系之间的速度变换',
+    ar: 'تحويل السرعة المتجهة بين الأطر المرجعية',
+    es: 'Conversión de la velocidad entre sistemas de referencia',
+    fr: 'Conversion de la vitesse d’un référentiel à l’autre',
+    hi: 'संदर्भ फ्रेमों के बीच वेग का रूपांतरण',
+    id: 'Konversi kecepatan antarkerangka acuan',
+    pt: 'Conversão da velocidade entre referenciais',
   },
   'label.stage': {
     ko: '강',
@@ -365,7 +366,7 @@ export const relativeVelocitySchema: BundleSchema = {
   id: RELATIVE_VELOCITY_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   parameters: [],

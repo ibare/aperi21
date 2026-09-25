@@ -153,17 +153,18 @@ export const thermalConductionMessages = Object.freeze({
     id: 'Konduksi kalor',
     pt: 'Condução de calor',
   },
-  'label.operation': {
-    ko: '쇠에서는 번져 나가고 나무에서는 머문다',
-    en: 'It spreads in steel and stays in wood',
-    ja: '鋼では広がり、木ではとどまる',
-    zh: '在钢中扩散开，在木头中停留',
-    ar: 'ينتشر في الفولاذ ويبقى في الخشب',
-    es: 'Se propaga en el acero y se queda en la madera',
-    fr: 'Elle se propage dans l’acier et reste dans le bois',
-    hi: 'इस्पात में फैलती है, लकड़ी में टिकी रहती है',
-    id: 'Menjalar di baja, tertahan di kayu',
-    pt: 'Espalha-se no aço e fica na madeira',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '접촉을 통한 전달',
+    en: 'Transfer through contact',
+    ja: '接触による伝達',
+    zh: '通过接触的传递',
+    ar: 'انتقال عبر التلامس',
+    es: 'Transferencia por contacto',
+    fr: 'Transfert par contact',
+    hi: 'संपर्क के माध्यम से स्थानांतरण',
+    id: 'Perpindahan melalui sentuhan',
+    pt: 'Transferência por contato',
   },
   'label.stage': {
     ko: '두 막대',
@@ -260,7 +261,7 @@ export const thermalConductionSchema: BundleSchema = {
   id: THERMAL_CONDUCTION_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'linear',
 
   // 조작기도 파라미터도 없다. 조건이 재질 하나뿐이고 그 두 값이 이미 나란히 돌고 있다.

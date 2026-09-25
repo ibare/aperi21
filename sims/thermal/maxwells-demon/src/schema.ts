@@ -83,17 +83,18 @@ export const maxwellsDemonMessages = Object.freeze({
     id: 'Iblis Maxwell',
     pt: 'O demônio de Maxwell',
   },
-  'label.operation': {
-    ko: '정보와 엔트로피의 관계',
-    en: 'Information and entropy',
-    ja: '情報とエントロピー',
-    zh: '信息与熵',
-    ar: 'المعلومات والإنتروبيا',
-    es: 'Información y entropía',
-    fr: 'Information et entropie',
-    hi: 'सूचना और एन्ट्रॉपी',
-    id: 'Informasi dan entropi',
-    pt: 'Informação e entropia',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '살펴본 만큼 갈라지는 기체',
+    en: 'A gas that separates only as far as it is observed',
+    ja: '調べた分だけ分かれていく気体',
+    zh: '观察多少就分开多少的气体',
+    ar: 'غاز ينفصل بقدر ما يُراقَب',
+    es: 'Un gas que se separa solo en la medida en que se observa',
+    fr: 'Un gaz qui se sépare à mesure qu’on l’observe',
+    hi: 'ऐसी गैस जो उतनी ही अलग होती है जितनी उसे देखा जाता है',
+    id: 'Gas yang terpisah sebanyak yang diamati',
+    pt: 'Um gás que se separa na medida em que é observado',
   },
   'label.stage': {
     ko: '문 달린 상자',
@@ -264,7 +265,7 @@ export const maxwellsDemonSchema: BundleSchema = {
   id: MAXWELLS_DEMON_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 섞여 있고, 도깨비가 가르고, 멈춘다.

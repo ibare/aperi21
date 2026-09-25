@@ -115,7 +115,8 @@ export const capacitorsInCircuitMessages = Object.freeze({
     id: 'Rangkaian kapasitor',
     pt: 'Associação de capacitores',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '직렬과 병렬의 합성',
     en: 'Combining in series and in parallel',
     ja: '直列と並列の合成',
@@ -378,7 +379,7 @@ export const capacitorsInCircuitSchema: BundleSchema = {
   id: CAPACITORS_IN_CIRCUIT_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 떨어진 둘 → 합친 하나 → 다시 둘, 한 주기로 할 말을 마친다.

@@ -109,17 +109,18 @@ export const thermalExpansionMessages = Object.freeze({
     id: 'Pemuaian termal',
     pt: 'Dilatação térmica',
   },
-  'label.operation': {
-    ko: '온도에 따른 길이·부피 변화',
-    en: 'How length and volume change with temperature',
-    ja: '温度による長さと体積の変化',
-    zh: '长度和体积随温度的变化',
-    ar: 'كيف يتغير الطول والحجم مع درجة الحرارة',
-    es: 'Cómo cambian la longitud y el volumen con la temperatura',
-    fr: 'Comment la longueur et le volume changent avec la température',
-    hi: 'ताप के साथ लंबाई और आयतन कैसे बदलते हैं',
-    id: 'Bagaimana panjang dan volume berubah terhadap suhu',
-    pt: 'Como o comprimento e o volume mudam com a temperatura',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '온도에 따른 고체의 길이 변화',
+    en: 'The change in a solid’s length with temperature',
+    ja: '温度による固体の長さの変化',
+    zh: '固体长度随温度的变化',
+    ar: 'تغيّر طول الجسم الصلب مع درجة الحرارة',
+    es: 'El cambio de longitud de un sólido con la temperatura',
+    fr: 'La variation de longueur d’un solide avec la température',
+    hi: 'तापमान के साथ ठोस की लंबाई में परिवर्तन',
+    id: 'Perubahan panjang zat padat terhadap suhu',
+    pt: 'A variação do comprimento de um sólido com a temperatura',
   },
   'label.stage': {
     ko: '철로 이음매',
@@ -252,7 +253,7 @@ export const thermalExpansionSchema: BundleSchema = {
   id: THERMAL_EXPANSION_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 두 온도 · 길이 · α · 틈은 스테이지 상수다. 주장은 「여름에 틈이 거의

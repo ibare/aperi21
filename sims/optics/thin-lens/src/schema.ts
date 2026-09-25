@@ -104,17 +104,18 @@ export const thinLensMessages = Object.freeze({
     id: 'Lensa tipis',
     pt: 'Lente delgada',
   },
-  'label.operation': {
-    ko: '세 광선으로 상을 찾는다',
-    en: 'Locating the image with three rays',
-    ja: '三本の光線で像を見つける',
-    zh: '用三条光线找出像',
-    ar: 'تحديد موضع الصورة بثلاثة أشعة',
-    es: 'Localizar la imagen con tres rayos',
-    fr: 'Trouver l’image avec trois rayons',
-    hi: 'तीन किरणों से प्रतिबिंब ढूँढना',
-    id: 'Menemukan bayangan dengan tiga sinar',
-    pt: 'Localizar a imagem com três raios',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '초점과 결상',
+    en: 'Focal points and image formation',
+    ja: '焦点と結像',
+    zh: '焦点与成像',
+    ar: 'البؤر وتكوّن الصورة',
+    es: 'Focos y formación de imágenes',
+    fr: 'Foyers et formation des images',
+    hi: 'फोकस और प्रतिबिंब का बनना',
+    id: 'Titik fokus dan pembentukan bayangan',
+    pt: 'Focos e formação de imagens',
   },
   'label.stage': {
     ko: '볼록 렌즈',
@@ -296,7 +297,7 @@ export const thinLensSchema: BundleSchema = {
   id: THIN_LENS_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 작도가 그어지고, 상이 서고, 다시 처음부터 선다.

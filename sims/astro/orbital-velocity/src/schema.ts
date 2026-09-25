@@ -81,7 +81,8 @@ export const orbitalVelocityMessages = Object.freeze({
     id: 'Kecepatan orbit',
     pt: 'Velocidade orbital',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '원 궤도를 유지하는 속도',
     en: 'The speed that keeps an orbit circular',
     ja: '軌道を円に保つ速さ',
@@ -222,7 +223,7 @@ export const orbitalVelocitySchema: BundleSchema = {
   id: ORBITAL_VELOCITY_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 속도를 바꿔 보는 일은 다섯 샷의 자동 진행이 한다 — 슬라이더를 두면 독자가

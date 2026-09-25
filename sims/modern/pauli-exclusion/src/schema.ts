@@ -87,7 +87,8 @@ export const pauliExclusionMessages = Object.freeze({
     id: 'Prinsip larangan Pauli',
     pt: 'Princípio de exclusão de Pauli',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '같은 상태를 못 가짐',
     en: 'No two in the same state',
     ja: '同じ状態に二つは入れない',
@@ -229,7 +230,7 @@ export const pauliExclusionSchema: BundleSchema = {
   id: PAULI_EXCLUSION_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 전자를 차례로 넣는 한 주기 안에 할 말을 마친다.

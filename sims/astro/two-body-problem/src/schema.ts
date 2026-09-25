@@ -80,7 +80,8 @@ export const twoBodyProblemMessages = Object.freeze({
     id: 'Masalah dua benda',
     pt: 'Problema de dois corpos',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '질량 중심 둘레를 도는 두 천체',
     en: 'Two bodies orbiting their common center of mass',
     ja: '共通の重心のまわりを回る二つの天体',
@@ -234,7 +235,7 @@ export const twoBodyProblemSchema: BundleSchema = {
   id: TWO_BODY_PROBLEM_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 질량비는 시간표가 세 값을 차례로 보인다 — 끌게 하면 「어느 값에서

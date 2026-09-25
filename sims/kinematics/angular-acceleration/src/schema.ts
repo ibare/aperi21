@@ -91,17 +91,18 @@ export const angularAccelerationMessages = Object.freeze({
     id: 'Percepatan sudut',
     pt: 'Aceleração angular',
   },
-  'label.operation': {
-    ko: '같은 0.5초에 도는 각이 매번 더 커진다',
-    en: 'Each half-second sweeps a wider angle than the last',
-    ja: '同じ0.5秒で回る角が、毎回前より大きくなる',
-    zh: '每个0.5秒转过的角都比上一个更大',
-    ar: 'كل نصف ثانية تمسح زاوية أوسع من سابقتها',
-    es: 'Cada medio segundo barre un ángulo mayor que el anterior',
-    fr: 'Chaque demi-seconde balaie un angle plus grand que la précédente',
-    hi: 'हर आधा सेकंड पिछले से बड़ा कोण घूमता है',
-    id: 'Setiap setengah detik menyapu sudut yang lebih lebar daripada sebelumnya',
-    pt: 'Cada meio segundo varre um ângulo maior que o anterior',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '각속도의 변화율',
+    en: 'The rate of change of angular velocity',
+    ja: '角速度の変化率',
+    zh: '角速度的变化率',
+    ar: 'معدل تغيّر السرعة الزاوية',
+    es: 'La tasa de cambio de la velocidad angular',
+    fr: 'Le taux de variation de la vitesse angulaire',
+    hi: 'कोणीय वेग के परिवर्तन की दर',
+    id: 'Laju perubahan kecepatan sudut',
+    pt: 'A taxa de variação da velocidade angular',
   },
   'label.stage': {
     ko: '도는 바퀴',
@@ -186,7 +187,7 @@ export const angularAccelerationSchema: BundleSchema = {
   id: ANGULAR_ACCELERATION_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   /**

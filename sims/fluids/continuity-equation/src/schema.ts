@@ -99,7 +99,8 @@ export const continuityEquationMessages = Object.freeze({
     id: 'Persamaan kontinuitas',
     pt: 'Equação da continuidade',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '단면적과 유속의 반비례',
     en: 'Cross-section and flow speed trade off',
     ja: '断面積と流速は反比例する',
@@ -241,7 +242,7 @@ export const continuityEquationSchema: BundleSchema = {
   id: CONTINUITY_EQUATION_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흐르고, 칠하고, 견주고, 다시 흐른다.

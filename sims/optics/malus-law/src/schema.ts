@@ -94,7 +94,8 @@ export const malusLawMessages = Object.freeze({
     id: 'Hukum Malus',
     pt: 'Lei de Malus',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '편광판을 지난 세기',
     en: 'Intensity through a polarizer',
     ja: '偏光板を通った光の強さ',
@@ -343,7 +344,7 @@ export const malusLawSchema: BundleSchema = {
   id: MALUS_LAW_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 판이 스스로 다섯 각을 차례로 돌며 막대를 세운다.

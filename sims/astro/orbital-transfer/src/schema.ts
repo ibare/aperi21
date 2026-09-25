@@ -76,17 +76,18 @@ export const orbitalTransferMessages = Object.freeze({
     id: 'Transfer orbit',
     pt: 'Transferência orbital',
   },
-  'label.operation': {
-    ko: '호만 전이와 그 비용',
-    en: 'The Hohmann transfer and what it costs',
-    ja: 'ホーマン遷移とそのコスト',
-    zh: '霍曼转移及其代价',
-    ar: 'انتقال هوهمان وكلفته',
-    es: 'La transferencia de Hohmann y lo que cuesta',
-    fr: 'Le transfert de Hohmann et ce qu’il coûte',
-    hi: 'होमान स्थानांतरण और उसकी लागत',
-    id: 'Transfer Hohmann dan biayanya',
-    pt: 'A transferência de Hohmann e o que ela custa',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '낮은 궤도에서 높은 궤도로 옮기는 호만 전이',
+    en: 'The Hohmann transfer from a lower orbit to a higher one',
+    ja: '低い軌道から高い軌道へ移るホーマン遷移',
+    zh: '从低轨道转移到高轨道的霍曼转移',
+    ar: 'انتقال هوهمان من مدار منخفض إلى مدار أعلى',
+    es: 'La transferencia de Hohmann de una órbita baja a una más alta',
+    fr: 'Le transfert de Hohmann d’une orbite basse vers une orbite plus haute',
+    hi: 'निचली कक्षा से ऊँची कक्षा में जाने वाला होमान स्थानांतरण',
+    id: 'Transfer Hohmann dari orbit rendah ke orbit yang lebih tinggi',
+    pt: 'A transferência de Hohmann de uma órbita baixa para uma mais alta',
   },
   'label.stage': {
     ko: '호만 전이',
@@ -229,7 +230,7 @@ export const orbitalTransferSchema: BundleSchema = {
   id: ORBITAL_TRANSFER_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 두 번의 밀기는 정해진 자리 · 정해진 크기에서만 원에서 원으로 옮긴다 —

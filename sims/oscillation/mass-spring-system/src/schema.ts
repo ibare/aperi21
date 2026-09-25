@@ -89,7 +89,8 @@ export const massSpringSystemMessages = Object.freeze({
     id: 'Beban pada pegas',
     pt: 'Massa presa a uma mola',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '질량과 탄성 계수가 정하는 주기',
     en: 'The period set by mass and spring constant',
     ja: '質量とばね定数で決まる周期',
@@ -244,7 +245,7 @@ export const massSpringSystemSchema: BundleSchema = {
   id: MASS_SPRING_SYSTEM_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

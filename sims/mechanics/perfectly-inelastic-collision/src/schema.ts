@@ -76,7 +76,8 @@ export const perfectlyInelasticCollisionMessages = Object.freeze({
     id: 'Tumbukan tidak lenting sama sekali',
     pt: 'Colisão perfeitamente inelástica',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '붙어서 함께 움직이는 경우',
     en: 'When the two move together, stuck',
     ja: '2つがくっついて一緒に動く場合',
@@ -288,7 +289,7 @@ export const perfectlyInelasticCollisionSchema: BundleSchema = {
   id: PERFECTLY_INELASTIC_COLLISION_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 두 경우를 시간표가 차례로 보이므로 독자가 고를 것이 없다.

@@ -89,7 +89,8 @@ export const wettingAndContactAngleMessages = Object.freeze({
     id: 'Pembasahan dan sudut kontak',
     pt: 'Molhamento e ângulo de contato',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '액체가 고체 위에 퍼지는 정도',
     en: 'How far a liquid spreads over a solid',
     ja: '液体が固体の上にどこまで広がるか',
@@ -302,7 +303,7 @@ export const wettingAndContactAngleSchema: BundleSchema = {
   id: WETTING_AND_CONTACT_ANGLE_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 표면이 바뀌고, 가장자리가 밀리고, 다시 맞선다. 아무것도 누르지 않아도 끝난다.

@@ -103,17 +103,18 @@ export const interferenceMessages = Object.freeze({
     id: 'Interferensi',
     pt: 'Interferência',
   },
-  'label.operation': {
-    ko: '두 물결이 서로를 지워 줄지어 잠잠해진다',
-    en: 'Two sets of ripples cancel and leave calm lines',
-    ja: '二つの波紋が打ち消し合い、静かな線が残る',
-    zh: '两组水波相互抵消，留下平静的线',
-    ar: 'مجموعتان من التموجات تلغي إحداهما الأخرى وتتركان خطوطًا ساكنة',
-    es: 'Dos trenes de ondas se anulan y dejan líneas en calma',
-    fr: 'Deux séries de rides s’annulent et laissent des lignes calmes',
-    hi: 'लहरों के दो समूह एक-दूसरे को रद्द कर शांत रेखाएँ छोड़ते हैं',
-    id: 'Dua rangkaian riak saling meniadakan dan menyisakan garis-garis tenang',
-    pt: 'Dois conjuntos de ondulações se anulam e deixam linhas calmas',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '두 파원이 만드는 무늬',
+    en: 'The pattern made by two sources',
+    ja: '二つの波源がつくる模様',
+    zh: '两个波源形成的图样',
+    ar: 'النمط الذي يصنعه مصدران',
+    es: 'El patrón que forman dos fuentes',
+    fr: 'La figure formée par deux sources',
+    hi: 'दो स्रोतों से बनने वाला प्रतिरूप',
+    id: 'Pola yang dibentuk dua sumber',
+    pt: 'O padrão formado por duas fontes',
   },
   'label.stage': {
     ko: '수면',
@@ -207,7 +208,7 @@ export const interferenceSchema: BundleSchema = {
   id: INTERFERENCE_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 파원 거리 · 파장 조절을 두지 않는다 — 「줄 개수가 바뀐다」 는 다른 주장이다.

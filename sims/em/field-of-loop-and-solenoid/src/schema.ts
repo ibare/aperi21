@@ -112,7 +112,8 @@ export const fieldOfLoopAndSolenoidMessages = Object.freeze({
     id: 'Kawat melingkar dan solenoida',
     pt: 'Espira e solenoide',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '축 위의 자기장',
     en: 'The magnetic field along the axis',
     ja: '軸上の磁場',
@@ -240,7 +241,7 @@ export const fieldOfLoopAndSolenoidSchema: BundleSchema = {
   id: FIELD_OF_LOOP_AND_SOLENOID_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 고리가 하나 → 몇 개 → 많이 로 늘었다가 돌아간다.

@@ -91,7 +91,8 @@ export const convergingDivergingLensMessages = Object.freeze({
     id: 'Lensa konvergen dan lensa divergen',
     pt: 'Lentes convergentes e divergentes',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '모으는 렌즈와 퍼뜨리는 렌즈',
     en: 'A lens that gathers light and a lens that spreads it',
     ja: '光を集めるレンズと広げるレンズ',
@@ -247,7 +248,7 @@ export const convergingDivergingLensSchema: BundleSchema = {
   id: CONVERGING_DIVERGING_LENS_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 두 렌즈를 한 화면에 나란히 두어 같은 평행광이 한쪽은 모이고 한쪽은

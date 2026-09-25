@@ -100,17 +100,18 @@ export const waveSpeedInMediumMessages = Object.freeze({
     id: 'Kelajuan gelombang dan medium',
     pt: 'A velocidade da onda e o meio',
   },
-  'label.operation': {
-    ko: '장력과 밀도가 정하는 속도',
-    en: 'Speed set by tension and density',
-    ja: '張力と密度が決める速さ',
-    zh: '由张力和密度决定的速率',
-    ar: 'سرعة تحددها قوة الشد والكثافة',
-    es: 'Rapidez fijada por la tensión y la densidad',
-    fr: 'Vitesse fixée par la tension et la densité',
-    hi: 'तनाव और घनत्व से तय होने वाली चाल',
-    id: 'Kelajuan yang ditentukan oleh tegangan tali dan massa jenis',
-    pt: 'Velocidade definida pela tração e pela densidade',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '장력과 선밀도가 정하는 속도',
+    en: 'The speed set by tension and linear density',
+    ja: '張力と線密度が決める速さ',
+    zh: '由张力和线密度决定的速率',
+    ar: 'السرعة التي تحددها قوة الشد والكثافة الطولية',
+    es: 'La rapidez fijada por la tensión y la densidad lineal',
+    fr: 'La vitesse fixée par la tension et la masse linéique',
+    hi: 'तनाव और रैखिक घनत्व से तय होने वाली चाल',
+    id: 'Kelajuan yang ditentukan oleh tegangan tali dan rapat massa linear',
+    pt: 'A velocidade definida pela tração e pela densidade linear',
   },
   'label.stage': {
     ko: '세 줄 경주',
@@ -217,7 +218,7 @@ export const waveSpeedInMediumSchema: BundleSchema = {
   id: WAVE_SPEED_IN_MEDIUM_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 손잡이를 두지 않는다 — 세 줄이 이미 「장력을 올린 줄」 과 「무거운 줄」 의 대조를 동시에 보인다.

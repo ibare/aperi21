@@ -154,7 +154,8 @@ export const temperatureAndResistanceMessages = Object.freeze({
     id: 'Suhu dan hambatan',
     pt: 'Temperatura e resistência',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '금속과 반도체의 반대 경향',
     en: 'Metals and semiconductors go opposite ways',
     ja: '金属と半導体は逆向きに変わる',
@@ -344,7 +345,7 @@ export const temperatureAndResistanceSchema: BundleSchema = {
   id: TEMPERATURE_AND_RESISTANCE_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흐르고, 데워지고, 흐름 막대가 줄고 는다.

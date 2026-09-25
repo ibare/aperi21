@@ -109,7 +109,8 @@ export const magneticDipoleMessages = Object.freeze({
     id: 'Dipol magnetik',
     pt: 'Dipolo magnético',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '고리 전류와 자석의 동일성',
     en: 'A current loop and a magnet are the same',
     ja: '円電流と磁石は同じもの',
@@ -262,7 +263,7 @@ export const magneticDipoleSchema: BundleSchema = {
   id: MAGNETIC_DIPOLE_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 가까이 → 극 → 겹치기 → 멀리 로 저절로 간다.

@@ -99,7 +99,8 @@ export const radiationPressureMessages = Object.freeze({
     id: 'Tekanan radiasi',
     pt: 'Pressão de radiação',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '빛이 미는 힘',
     en: 'The push of light',
     ja: '光が押す力',
@@ -264,7 +265,7 @@ export const radiationPressureSchema: BundleSchema = {
   id: RADIATION_PRESSURE_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 빛이 두 판을 밀고 있다.

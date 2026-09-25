@@ -54,7 +54,8 @@ export const springForceMessages = Object.freeze({
     id: 'Gaya pegas',
     pt: 'Força elástica',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '변형에 비례하는 복원력',
     en: 'Restoring force proportional to stretch',
     ja: '伸びに比例する復元力',
@@ -277,7 +278,7 @@ export const springForceSchema: BundleSchema = {
   id: SPRING_FORCE_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 자동 진행만으로 늘임과 힘의 비례가 드러난다.

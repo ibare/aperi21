@@ -119,7 +119,8 @@ export const blackbodyRadiationMessages = Object.freeze({
     id: 'Radiasi benda hitam',
     pt: 'Radiação de corpo negro',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '고전 이론의 파탄',
     en: 'Where classical theory breaks down',
     ja: '古典論が破綻するところ',
@@ -359,7 +360,7 @@ export const blackbodyRadiationSchema: BundleSchema = {
   id: BLACKBODY_RADIATION_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 긴 파장에서 짧은 파장 쪽으로 두 곡선이 함께 그려진다.

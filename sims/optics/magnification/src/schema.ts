@@ -79,7 +79,8 @@ export const magnificationMessages = Object.freeze({
     id: 'Perbesaran',
     pt: 'Ampliação',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '상의 크기와 물체의 크기',
     en: 'The size of the image and the size of the object',
     ja: '像の大きさと物体の大きさ',
@@ -259,7 +260,7 @@ export const magnificationSchema: BundleSchema = {
   id: MAGNIFICATION_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 물체를 세 자리로 옮기는 것을 자동 진행으로 보인다 (controllers.ts).

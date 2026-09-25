@@ -94,17 +94,18 @@ export const dragForceMessages = Object.freeze({
     id: 'Hambatan udara',
     pt: 'Resistência do ar',
   },
-  'label.operation': {
-    ko: '빨라질수록 속도 제곱에 비례하는 저항이 가파르게 불어난다',
-    en: 'The faster it goes, the steeper the part of drag proportional to speed squared grows',
-    ja: '速くなるほど、速さの2乗に比例する空気抵抗の部分が急激に増える',
-    zh: '越快，与速率平方成正比的那部分阻力增长得越陡',
-    ar: 'كلما زادت السرعة، ازداد جزء قوة السحب المتناسب مع مربع السرعة بحدة أكبر',
-    es: 'Cuanto más rápido va, más abruptamente crece la parte del arrastre proporcional al cuadrado de la rapidez',
-    fr: 'Plus il va vite, plus la part de la traînée proportionnelle au carré de la vitesse croît fortement',
-    hi: 'चाल जितनी अधिक, कर्षण का चाल के वर्ग के समानुपाती भाग उतनी ही तेज़ी से बढ़ता है',
-    id: 'Makin cepat geraknya, makin curam pertambahan bagian gaya hambat yang sebanding dengan kuadrat kelajuan',
-    pt: 'Quanto mais rápido ele vai, mais abruptamente cresce a parte do arrasto proporcional ao quadrado da velocidade',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '속도의 1차·2차에 비례하는 저항',
+    en: 'Resistance proportional to the first and second powers of speed',
+    ja: '速さの1次と2次に比例する抵抗',
+    zh: '与速率的一次方和二次方成正比的阻力',
+    ar: 'مقاومة تتناسب مع السرعة ومع مربعها',
+    es: 'Una resistencia proporcional a la primera y la segunda potencia de la rapidez',
+    fr: 'Une résistance proportionnelle à la vitesse et à son carré',
+    hi: 'चाल की पहली और दूसरी घात के समानुपाती प्रतिरोध',
+    id: 'Hambatan yang sebanding dengan pangkat satu dan pangkat dua kelajuan',
+    pt: 'Uma resistência proporcional à primeira e à segunda potência da velocidade',
   },
   'label.stage': {
     ko: '미는 힘',
@@ -213,7 +214,7 @@ export const dragForceSchema: BundleSchema = {
   id: DRAG_FORCE_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
 
   /** 달리고 · 붙잡히고 · 되감긴다. 끝난 화면이 남지 않는다. */
   timeModel: 'periodic',

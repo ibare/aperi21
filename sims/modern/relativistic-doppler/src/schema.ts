@@ -93,7 +93,8 @@ export const relativisticDopplerMessages = Object.freeze({
     id: 'Efek Doppler relativistik',
     pt: 'Efeito Doppler relativístico',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '시간 지연이 더해진 진동수 변화',
     en: 'Frequency shift with time dilation added',
     ja: '時間の遅れが加わった振動数の変化',
@@ -223,7 +224,7 @@ export const relativisticDopplerSchema: BundleSchema = {
   id: RELATIVISTIC_DOPPLER_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 광원이 달리며 앞은 푸르고 뒤는 붉은 파면을 낸다. β 슬라이더는 두지

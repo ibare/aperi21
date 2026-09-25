@@ -76,7 +76,8 @@ export const conservationOfAngularMomentumMessages = Object.freeze({
     id: 'Kekekalan momentum sudut',
     pt: 'Conservação do momento angular',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '팔을 오므리면 빨라지는 이유',
     en: 'Why pulling your arms in makes you spin faster',
     ja: '腕を縮めると回転が速くなるわけ',
@@ -235,7 +236,7 @@ export const conservationOfAngularMomentumSchema: BundleSchema = {
   id: CONSERVATION_OF_ANGULAR_MOMENTUM_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

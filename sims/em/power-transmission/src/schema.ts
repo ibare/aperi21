@@ -151,7 +151,8 @@ export const powerTransmissionMessages = Object.freeze({
     id: 'Transmisi daya listrik',
     pt: 'Transmissão de energia elétrica',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '전압을 올려 손실을 줄이는 것',
     en: 'Raising the voltage to cut the loss',
     ja: '電圧を上げて損失を減らす',
@@ -402,7 +403,7 @@ export const powerTransmissionSchema: BundleSchema = {
   id: POWER_TRANSMISSION_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 두 선이 흐르고, 한 주기 안에 손실 차이를 보인다.

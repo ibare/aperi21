@@ -152,21 +152,18 @@ export const pendulumAmplitudeDependenceMessages = Object.freeze({
     id: 'Amplitudo dan periode',
     pt: 'Amplitude e período',
   },
-  /**
-   * 카탈로그의 한 줄 설명이 된다. 다른 조각들처럼 **무엇을 보여 주는가**를 적는다 —
-   * 손잡이 설명이 아니다. 화면이 하는 두 절반(caption.same · caption.lag)을 함께 담는다.
-   */
-  'label.operation': {
-    ko: '작게 흔들면 폭이 달라도 함께 돌아오고, 크게 흔들면 뒤처진다',
-    en: 'Small swings return together whatever their width; wide swings fall behind',
-    ja: '小さく揺らせば振れ幅が違っても一緒に戻り、大きく揺らすと遅れる',
-    zh: '小幅摆动时摆幅不同也一起回来，大幅摆动时就会落后',
-    ar: 'في التأرجحات الصغيرة تعود معًا مهما اختلفت سعاتها، وفي التأرجحات الواسعة تتأخر',
-    es: 'Con balanceos pequeños vuelven juntos aunque difiera su amplitud; con balanceos amplios se quedan atrás',
-    fr: 'Aux petites oscillations, ils reviennent ensemble quelle que soit l’amplitude ; aux grandes, ils prennent du retard',
-    hi: 'छोटे झूलों में आयाम अलग होने पर भी सब साथ लौटते हैं; चौड़े झूलों में पीछे छूट जाते हैं',
-    id: 'Pada ayunan kecil semuanya kembali bersamaan meski amplitudonya berbeda; pada ayunan lebar, tertinggal',
-    pt: 'Em oscilações pequenas voltam juntos mesmo com amplitudes diferentes; nas amplas, ficam para trás',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '큰 진폭에서 깨지는 등시성',
+    en: 'Isochronism that breaks down at large amplitude',
+    ja: '大きな振幅で崩れる等時性',
+    zh: '在大振幅下失效的等时性',
+    ar: 'تساوي الأزمنة الذي ينهار عند السعات الكبيرة',
+    es: 'El isocronismo que se rompe con amplitudes grandes',
+    fr: 'L’isochronisme qui cède aux grandes amplitudes',
+    hi: 'बड़े आयाम पर टूटने वाली समकालिकता',
+    id: 'Isokronisme yang runtuh pada amplitudo besar',
+    pt: 'O isocronismo que se quebra em grandes amplitudes',
   },
   'label.stage': {
     ko: '진자',
@@ -269,7 +266,7 @@ export const pendulumAmplitudeDependenceSchema: BundleSchema = {
   id: PENDULUM_AMPLITUDE_DEPENDENCE_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'linear',
 
   // 진폭은 조작기가 쥔다 (controllers.ts). 파라미터 패널을 띄우지 않는다 —

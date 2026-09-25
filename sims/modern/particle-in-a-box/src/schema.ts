@@ -63,7 +63,19 @@ export const SCENE_BOUNDS = { minX: -3.2, maxX: 30.8, minY: -3.4, maxY: 19.4 } a
 
 export const particleInABoxMessages = Object.freeze({
   'label.title': { ko: '무한 우물', en: 'Infinite square well', ja: '無限井戸型ポテンシャル', zh: '无限深方势阱', ar: 'البئر المربع اللانهائي', es: 'Pozo cuadrado infinito', fr: 'Puits carré infini', hi: 'अनंत वर्ग कूप', id: 'Sumur persegi tak berhingga', pt: 'Poço quadrado infinito' },
-  'label.operation': { ko: '경계가 만드는 에너지 양자화', en: 'Energy quantization made by the walls', ja: '壁がつくるエネルギーの量子化', zh: '势壁造成的能量量子化', ar: 'تكميم الطاقة الذي تفرضه الجدران', es: 'Cuantización de la energía producida por las paredes', fr: 'Quantification de l’énergie imposée par les parois', hi: 'दीवारों से बना ऊर्जा का क्वांटीकरण', id: 'Kuantisasi energi yang dibuat oleh dinding', pt: 'Quantização da energia criada pelas paredes' },
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '경계가 만드는 에너지 양자화',
+    en: 'Energy quantization made by the walls',
+    ja: '壁がつくるエネルギーの量子化',
+    zh: '势壁造成的能量量子化',
+    ar: 'تكميم الطاقة الذي تفرضه الجدران',
+    es: 'Cuantización de la energía producida por las paredes',
+    fr: 'Quantification de l’énergie imposée par les parois',
+    hi: 'दीवारों से बना ऊर्जा का क्वांटीकरण',
+    id: 'Kuantisasi energi yang dibuat oleh dinding',
+    pt: 'Quantização da energia criada pelas paredes',
+  },
   'label.stage': { ko: '무한 우물', en: 'Infinite well', ja: '無限井戸', zh: '无限深势阱', ar: 'البئر اللانهائي', es: 'Pozo infinito', fr: 'Puits infini', hi: 'अनंत कूप', id: 'Sumur tak berhingga', pt: 'Poço infinito' },
   'label.view': { ko: '준위와 파동 함수', en: 'Levels and wave functions', ja: '準位と波動関数', zh: '能级与波函数', ar: 'المستويات ودوال الموجة', es: 'Niveles y funciones de onda', fr: 'Niveaux et fonctions d’onde', hi: 'स्तर और तरंग फलन', id: 'Tingkat energi dan fungsi gelombang', pt: 'Níveis e funções de onda' },
 
@@ -145,7 +157,7 @@ export const particleInABoxSchema: BundleSchema = {
   id: PARTICLE_IN_A_BOX_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 준위를 하나씩 올라가는 자동 진행이 간격 셋을 모두 지나간다 —

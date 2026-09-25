@@ -92,7 +92,8 @@ export const airColumnResonanceMessages = Object.freeze({
     id: 'Resonansi kolom udara',
     pt: 'Ressonância em colunas de ar',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '열린 관과 닫힌 관의 차이',
     en: 'Open pipe versus closed pipe',
     ja: '開管と閉管の違い',
@@ -286,7 +287,7 @@ export const airColumnResonanceSchema: BundleSchema = {
   id: AIR_COLUMN_RESONANCE_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 계단이 자동으로 모든 후보를 지나며 두 관이 번갈아 울리는 것을 보인다 —

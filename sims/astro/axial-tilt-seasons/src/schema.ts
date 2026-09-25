@@ -102,7 +102,8 @@ export const axialTiltSeasonsMessages = Object.freeze({
     id: 'Kemiringan sumbu rotasi dan musim',
     pt: 'A inclinação do eixo e as estações',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '기울어진 채 도는 것이 만드는 계절',
     en: 'The seasons made by an Earth that orbits tilted',
     ja: '傾いたまま公転する地球がつくる季節',
@@ -386,7 +387,7 @@ export const axialTiltSeasonsSchema: BundleSchema = {
   id: AXIAL_TILT_SEASONS_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 기운 해와 기울기 0 인 해를 자동으로 차례로 보여 견주기까지 마친다.

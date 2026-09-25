@@ -114,7 +114,8 @@ export const gausssLawMessages = Object.freeze({
     id: 'Hukum Gauss',
     pt: 'Lei de Gauss',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '닫힌 면을 지나는 전기력선속',
     en: 'Electric flux through a closed surface',
     ja: '閉曲面を貫く電束',
@@ -340,7 +341,7 @@ export const gausssLawSchema: BundleSchema = {
   id: GAUSSS_LAW_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 네 곡선을 차례로 세고, 나란히 읽고, 다시 시작한다.

@@ -114,17 +114,18 @@ export const newtonsFirstLawMessages = Object.freeze({
     id: 'Kerangka acuan inersial',
     pt: 'Referencial inercial',
   },
-  'label.operation': {
-    ko: '버스만 느려지고 승객은 그대로 간다',
-    en: 'Only the bus slows; the passenger keeps going',
-    ja: 'バスだけが減速し、乗客はそのまま進む',
-    zh: '只有公交车减速，乘客照样前进',
-    ar: 'الحافلة وحدها تتباطأ، والراكب يواصل حركته',
-    es: 'Solo el autobús frena; el pasajero sigue adelante',
-    fr: 'Seul le bus ralentit ; le passager continue',
-    hi: 'केवल बस धीमी होती है; यात्री चलता रहता है',
-    id: 'Hanya bus yang melambat; penumpang terus melaju',
-    pt: 'Só o ônibus freia; o passageiro continua em frente',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '알짜힘이 없을 때의 운동 상태',
+    en: 'The state of motion when there is no net force',
+    ja: '合力がないときの運動の状態',
+    zh: '不受合力时的运动状态',
+    ar: 'حالة الحركة عند غياب القوة المحصلة',
+    es: 'El estado de movimiento cuando no hay fuerza neta',
+    fr: 'L’état de mouvement en l’absence de force résultante',
+    hi: 'नेट बल न होने पर गति की अवस्था',
+    id: 'Keadaan gerak saat tidak ada gaya total',
+    pt: 'O estado de movimento quando não há força resultante',
   },
   'label.stage': {
     ko: '도로',
@@ -272,7 +273,7 @@ export const newtonsFirstLawSchema: BundleSchema = {
   id: NEWTONS_FIRST_LAW_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'linear',
 
   /** 조작기는 하나뿐이고 그것은 `controllers` 의 슬라이더다. 파라미터 패널을 띄우지 않는다. */

@@ -159,7 +159,8 @@ export const phaseSpaceMessages = Object.freeze({
     id: 'Ruang fase',
     pt: 'Espaço de fases',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '위치-속도 평면에서 본 운동',
     en: 'Motion seen on the position–velocity plane',
     ja: '位置–速度平面で見た運動',
@@ -333,7 +334,7 @@ export const phaseSpaceSchema: BundleSchema = {
   id: PHASE_SPACE_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 마찰은 조작기가 쥔다 (controllers.ts). 파라미터 상자를 띄우지 않는다.

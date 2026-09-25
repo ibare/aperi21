@@ -83,17 +83,18 @@ export const surfaceTensionMessages = Object.freeze({
     id: 'Tegangan permukaan',
     pt: 'Tensão superficial',
   },
-  'label.operation': {
-    ko: '표면을 줄이려는 힘',
-    en: 'The pull that shrinks a surface',
-    ja: '表面を縮めようとする力',
-    zh: '使表面收缩的拉力',
-    ar: 'الشدّ الذي يقلّص السطح',
-    es: 'El tirón que encoge una superficie',
-    fr: 'La traction qui contracte une surface',
-    hi: 'सतह को सिकोड़ने वाला खिंचाव',
-    id: 'Tarikan yang menyusutkan permukaan',
-    pt: 'A tração que encolhe uma superfície',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '방향을 돌려 짐을 받치는 수면의 당김',
+    en: 'The pull of a water surface that turns its direction to hold up a load',
+    ja: '向きを変えて荷を支える水面の引っぱり',
+    zh: '改变方向以托住重物的水面拉力',
+    ar: 'شدّ سطح الماء الذي يغيّر اتجاهه ليحمل ثقلًا',
+    es: 'La tracción de la superficie del agua que cambia de dirección para sostener una carga',
+    fr: 'La traction de la surface de l’eau qui change de direction pour porter une charge',
+    hi: 'जल-सतह का खिंचाव जो दिशा बदलकर भार को थामता है',
+    id: 'Tarikan permukaan air yang berubah arah untuk menopang beban',
+    pt: 'A tração da superfície da água que muda de direção para sustentar uma carga',
   },
   'label.stage': {
     ko: '물 위의 바늘',
@@ -236,7 +237,7 @@ export const surfaceTensionSchema: BundleSchema = {
   id: SURFACE_TENSION_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 놓이고, 받쳐지고, 눌리고, 뚫린다. 아무것도 누르지 않아도 끝난다.

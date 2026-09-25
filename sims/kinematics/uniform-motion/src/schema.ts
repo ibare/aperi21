@@ -89,17 +89,18 @@ export const uniformMotionMessages = Object.freeze({
     id: 'Gerak lurus beraturan',
     pt: 'Movimento uniforme',
   },
-  'label.operation': {
-    ko: '같은 시간에 같은 간격으로 자리를 옮긴다',
-    en: 'Equal intervals in equal times',
-    ja: '等しい時間に等しい間隔',
-    zh: '相等时间内，相等间隔',
-    ar: 'مسافات متساوية في أزمنة متساوية',
-    es: 'Intervalos iguales en tiempos iguales',
-    fr: 'Des intervalles égaux en des temps égaux',
-    hi: 'समान समय में समान अंतराल',
-    id: 'Jarak sama dalam selang waktu sama',
-    pt: 'Intervalos iguais em tempos iguais',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '속도가 변하지 않는 운동',
+    en: 'Motion whose velocity does not change',
+    ja: '速度が変わらない運動',
+    zh: '速度不变的运动',
+    ar: 'حركة لا تتغير سرعتها المتجهة',
+    es: 'Movimiento cuya velocidad no cambia',
+    fr: 'Mouvement dont la vitesse ne change pas',
+    hi: 'ऐसी गति जिसका वेग नहीं बदलता',
+    id: 'Gerak yang kecepatannya tidak berubah',
+    pt: 'Movimento cuja velocidade não muda',
   },
   'label.stage': {
     ko: '바닥',
@@ -176,7 +177,7 @@ export const uniformMotionSchema: BundleSchema = {
   id: UNIFORM_MOTION_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   /** 빠르기는 조작기가 state 에 직접 쓴다. 파라미터 상자를 띄우지 않는다. */

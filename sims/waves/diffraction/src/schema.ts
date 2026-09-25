@@ -93,7 +93,8 @@ export const diffractionMessages = Object.freeze({
     id: 'Difraksi',
     pt: 'Difração',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '장애물을 돌아가는 파동',
     en: 'Waves bending around obstacles',
     ja: '障害物を回り込む波',
@@ -197,7 +198,7 @@ export const diffractionSchema: BundleSchema = {
   id: DIFFRACTION_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 틈 폭을 바꿔 보는 것은 slit-width-and-diffraction 의 일이다.

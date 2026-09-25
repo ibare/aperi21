@@ -112,7 +112,8 @@ export const bimetalMessages = Object.freeze({
     id: 'Keping bimetal',
     pt: 'Lâmina bimetálica',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '팽창률 차이가 만드는 휨',
     en: 'Bending from unequal expansion',
     ja: '膨張のしかたの違いが生む曲がり',
@@ -303,7 +304,7 @@ export const bimetalSchema: BundleSchema = {
   id: BIMETAL_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — α 둘 · 두께 · 길이 · 세 온도 · 배율은 스테이지 상수다. 자동 진행이

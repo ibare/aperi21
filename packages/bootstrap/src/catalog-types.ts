@@ -4,8 +4,8 @@
  * 시뮬레이션 번들(schema/scene/controllers/step)을 로드하지 않고도 호스트가
  * "추가 가능한 시각화 목록" 을 그릴 수 있도록 추린 경량 메타데이터.
  * 실제 값은 빌드타임 codegen(scripts/gen-aperi21-catalog.mts)이 만든다 —
- * 제목·설명은 각 sim 의 schema(label/operation), 분야와 그 이름은
- * `docs/topics/topics.yaml` 에서 온다.
+ * 제목은 각 sim 의 schema.label, 설명은 schema.description(원본은 `topics.yaml` 의 desc),
+ * 분야와 그 이름은 `docs/topics/topics.yaml` 에서 온다.
  *
  * 한 카탈로그는 **한 언어**다. 문자열은 이미 그 언어로 골라져 있어 호스트가
  * locale 을 다시 해석할 일이 없다. FACET 의 `FacetCatalog` 와 같은 모양이다 —
@@ -18,7 +18,7 @@ export type Aperi21CatalogEntry = {
   id: string;
   /** 사람이 읽을 제목. schema.label 에서 추출. */
   title: string;
-  /** 한 줄 설명. schema.operation 에서 추출. */
+  /** 한 줄 설명. schema.description 에서 추출 — 원본은 topics.yaml 의 그 주제 desc. */
   description?: string;
   /** 분야 id. `Aperi21Catalog.domains[].id` 중 하나. */
   domain: string;

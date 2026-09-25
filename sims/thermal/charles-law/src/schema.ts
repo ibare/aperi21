@@ -93,7 +93,8 @@ export const charlesLawMessages = Object.freeze({
     id: 'Hukum Charles',
     pt: 'Lei de Charles',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '압력이 일정할 때의 부피-온도',
     en: 'Volume and temperature at constant pressure',
     ja: '圧力が一定のときの体積と温度',
@@ -251,7 +252,7 @@ export const charlesLawSchema: BundleSchema = {
   id: CHARLES_LAW_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 데워지고, 점이 찍히고, 선이 이어져 한 점에 모인다.

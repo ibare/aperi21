@@ -127,7 +127,8 @@ export const lcOscillationMessages = Object.freeze({
     id: 'Osilasi LC',
     pt: 'Oscilação LC',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '전기와 자기 에너지의 교환',
     en: 'Electric and magnetic energy trade places',
     ja: '電気エネルギーと磁気エネルギーが入れ替わる',
@@ -310,7 +311,7 @@ export const lcOscillationSchema: BundleSchema = {
   id: LC_OSCILLATION_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 오가고, 두 막대가 서로를 채운다.

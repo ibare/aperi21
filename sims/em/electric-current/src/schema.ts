@@ -121,7 +121,8 @@ export const electricCurrentMessages = Object.freeze({
     id: 'Arus listrik',
     pt: 'Corrente elétrica',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '전하의 흐름과 방향 규약',
     en: 'The flow of charge and its sign convention',
     ja: '電荷の流れと向きの約束',
@@ -222,7 +223,7 @@ export const electricCurrentSchema: BundleSchema = {
   id: ELECTRIC_CURRENT_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흐르고, 세고, 쌓인 것을 보이고, 다시 센다.

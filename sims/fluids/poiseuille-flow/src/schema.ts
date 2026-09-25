@@ -75,7 +75,8 @@ export const poiseuilleFlowMessages = Object.freeze({
     id: 'Aliran laminar dalam pipa',
     pt: 'Escoamento laminar em um tubo',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '반지름 4제곱에 비례하는 유량',
     en: 'Flow rate grows as the fourth power of the radius',
     ja: '流量は半径の4乗に比例して増える',
@@ -149,7 +150,7 @@ export const poiseuilleFlowSchema: BundleSchema = {
   id: POISEUILLE_FLOW_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 반지름을 바꾸면 칸 수가 정수가 아니게 되어 「한 칸 대 열여섯 칸」 셈이 흐려진다.

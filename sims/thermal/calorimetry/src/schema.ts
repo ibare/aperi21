@@ -117,7 +117,8 @@ export const calorimetryMessages = Object.freeze({
     id: 'Kalorimetri',
     pt: 'Calorimetria',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '섞었을 때의 최종 온도',
     en: 'The final temperature of a mixture',
     ja: '混ぜたときの最終温度',
@@ -308,7 +309,7 @@ export const calorimetrySchema: BundleSchema = {
   id: CALORIMETRY_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 질량 · 온도 · 비열은 스테이지 상수다. 「질량을 바꾸면 멈추는 자리가

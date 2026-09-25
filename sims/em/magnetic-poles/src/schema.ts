@@ -81,7 +81,8 @@ export const magneticPolesMessages = Object.freeze({
     id: 'Dua kutub magnet',
     pt: 'Os dois polos de um ímã',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '같은 극은 밀고 다른 극은 당긴다',
     en: 'Like poles repel, unlike poles attract',
     ja: '同じ極は退け合い、異なる極は引き合う',
@@ -236,7 +237,7 @@ export const magneticPolesSchema: BundleSchema = {
   id: MAGNETIC_POLES_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에서 자석이 두 번 돌고, 당김과 밀림이 차례로 일어난다.

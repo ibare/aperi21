@@ -109,7 +109,8 @@ export const photoelectricEffectMessages = Object.freeze({
     id: 'Efek fotolistrik',
     pt: 'Efeito fotoelétrico',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '빛의 입자성 증거',
     en: 'Evidence that light comes in particles',
     ja: '光が粒子としてやってくる証拠',
@@ -251,7 +252,7 @@ export const photoelectricEffectSchema: BundleSchema = {
   id: PHOTOELECTRIC_EFFECT_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 「세게 해도 안 나온다」 와 「약해도 나온다」 가 모두 일어난다.

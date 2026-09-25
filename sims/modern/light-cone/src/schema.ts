@@ -90,7 +90,8 @@ export const lightConeMessages = Object.freeze({
     id: 'Kerucut cahaya',
     pt: 'Cone de luz',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '인과가 닿는 영역',
     en: 'Where a cause can reach',
     ja: '原因が届く範囲',
@@ -328,7 +329,7 @@ export const lightConeSchema: BundleSchema = {
   id: LIGHT_CONE_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 퍼짐 · 판정 · 틀 바꾸기가 한 주기 안에 끝난다.

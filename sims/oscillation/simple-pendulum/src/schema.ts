@@ -86,7 +86,8 @@ export const simplePendulumMessages = Object.freeze({
     id: 'Bandul sederhana',
     pt: 'Pêndulo simples',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '작은 진폭에서의 주기',
     en: 'The period at small amplitude',
     ja: '小さい振幅での周期',
@@ -242,7 +243,7 @@ export const simplePendulumSchema: BundleSchema = {
   id: SIMPLE_PENDULUM_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

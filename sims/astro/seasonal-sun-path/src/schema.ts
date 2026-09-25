@@ -110,7 +110,8 @@ export const seasonalSunPathMessages = Object.freeze({
     id: 'Lintasan Matahari sepanjang musim',
     pt: 'O caminho do Sol ao longo das estações',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '남중 고도와 낮 길이가 함께 달라지는 것',
     en: 'How the noon altitude and the length of day change together',
     ja: '南中高度と昼の長さがいっしょに変わること',
@@ -382,7 +383,7 @@ export const seasonalSunPathSchema: BundleSchema = {
   id: SEASONAL_SUN_PATH_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 시간표가 동지 · 춘추분 · 하지를 차례로 옮기며 견주기까지 마친다.

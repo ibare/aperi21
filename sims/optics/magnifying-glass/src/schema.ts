@@ -93,7 +93,8 @@ export const magnifyingGlassMessages = Object.freeze({
     id: 'Kaca pembesar',
     pt: 'Lupa',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '가까운 초점 안의 물체',
     en: 'An object inside the near focal point',
     ja: '近い焦点の内側にある物体',
@@ -299,7 +300,7 @@ export const magnifyingGlassSchema: BundleSchema = {
   id: MAGNIFYING_GLASS_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 개미를 F 안 두 자리에 두는 것을 자동 진행으로 보인다 (controllers.ts).

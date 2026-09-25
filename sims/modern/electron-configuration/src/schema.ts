@@ -83,7 +83,8 @@ export const electronConfigurationMessages = Object.freeze({
     id: 'Konfigurasi elektron',
     pt: 'Configuração eletrônica',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '주기율표가 나오는 방식',
     en: 'How the periodic table arises',
     ja: '周期表ができるしくみ',
@@ -346,7 +347,7 @@ export const electronConfigurationSchema: BundleSchema = {
   id: ELECTRON_CONFIGURATION_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 표가 다 나온다.

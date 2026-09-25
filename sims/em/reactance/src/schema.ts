@@ -108,17 +108,18 @@ export const reactanceMessages = Object.freeze({
     id: 'Reaktansi dan impedansi',
     pt: 'Reatância e impedância',
   },
-  'label.operation': {
-    ko: '주파수에 따라 달라지는, 전류를 막는 정도',
-    en: 'An opposition to current that depends on frequency',
-    ja: '周波数によって変わる、電流の妨げ',
-    zh: '随频率变化的对电流的阻碍',
-    ar: 'إعاقة للتيار تعتمد على التردد',
-    es: 'Una oposición a la corriente que depende de la frecuencia',
-    fr: 'Une opposition au courant qui dépend de la fréquence',
-    hi: 'आवृत्ति पर निर्भर धारा का विरोध',
-    id: 'Hambatan terhadap arus yang bergantung pada frekuensi',
-    pt: 'Uma oposição à corrente que depende da frequência',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '주파수에 의존하는 저항',
+    en: 'A resistance that depends on frequency',
+    ja: '周波数に依存する抵抗',
+    zh: '依赖频率的阻抗',
+    ar: 'مقاومة تعتمد على التردد',
+    es: 'Una resistencia que depende de la frecuencia',
+    fr: 'Une résistance qui dépend de la fréquence',
+    hi: 'आवृत्ति पर निर्भर प्रतिरोध',
+    id: 'Hambatan yang bergantung pada frekuensi',
+    pt: 'Uma resistência que depende da frequência',
   },
   'label.stage': {
     ko: '코일 하나 · 축전기 하나',
@@ -348,7 +349,7 @@ export const reactanceSchema: BundleSchema = {
   id: REACTANCE_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 진동수가 스스로 오르내리고 두 파형이 서로 반대로 움직인다.

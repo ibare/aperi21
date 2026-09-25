@@ -102,7 +102,8 @@ export const rotationalKineticEnergyMessages = Object.freeze({
     id: 'Energi kinetik rotasi',
     pt: 'Energia cinética de rotação',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '각속도가 담은 에너지',
     en: 'The energy that spin carries',
     ja: '回転が蓄えるエネルギー',
@@ -244,7 +245,7 @@ export const rotationalKineticEnergySchema: BundleSchema = {
   id: ROTATIONAL_KINETIC_ENERGY_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 달려 들어와 오르고, 되돌아 내려오고, 다시 들어온다.

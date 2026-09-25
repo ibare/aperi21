@@ -90,7 +90,8 @@ export const rocheLimitMessages = Object.freeze({
     id: 'Batas Roche',
     pt: 'Limite de Roche',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '조석력이 천체를 부수는 거리',
     en: 'The distance at which tides tear a body apart',
     ja: '潮汐力が天体を引き裂く距離',
@@ -259,7 +260,7 @@ export const rocheLimitSchema: BundleSchema = {
   id: ROCHE_LIMIT_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 다가오는 한 번이 모든 거리를 훑으므로 거리를 끌어 새로 알게 되는 것이

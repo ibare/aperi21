@@ -94,7 +94,8 @@ export const electrostaticShieldingMessages = Object.freeze({
     id: 'Perisai elektrostatik',
     pt: 'Blindagem eletrostática',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '도체 내부의 장이 0인 이유',
     en: 'Why the field inside a conductor is zero',
     ja: '導体内部の場がゼロになる理由',
@@ -247,7 +248,7 @@ export const electrostaticShieldingSchema: BundleSchema = {
   id: ELECTROSTATIC_SHIELDING_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 장이 흐르고, 도체가 놓이고, 안이 비워진다.

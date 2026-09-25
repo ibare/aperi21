@@ -116,17 +116,18 @@ export const rayleighScatteringMessages = Object.freeze({
     id: 'Hamburan Rayleigh',
     pt: 'Espalhamento Rayleigh',
   },
-  'label.operation': {
-    ko: '파장 4제곱에 반비례하는 산란',
-    en: 'Scattering that falls with the fourth power of wavelength',
-    ja: '波長の4乗に反比例する散乱',
-    zh: '与波长四次方成反比的散射',
-    ar: 'تشتت يتناسب عكسيًا مع القوة الرابعة للطول الموجي',
-    es: 'Dispersión que disminuye con la cuarta potencia de la longitud de onda',
-    fr: 'Diffusion qui décroît comme la puissance quatrième de la longueur d’onde',
-    hi: 'तरंगदैर्घ्य की चौथी घात के साथ घटने वाला प्रकीर्णन',
-    id: 'Hamburan yang berkurang menurut pangkat empat panjang gelombang',
-    pt: 'Espalhamento que cai com a quarta potência do comprimento de onda',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '파장이 짧을수록 가파르게 느는 산란',
+    en: 'Scattering that rises steeply as the wavelength gets shorter',
+    ja: '波長が短いほど急に増える散乱',
+    zh: '波长越短增长越陡的散射',
+    ar: 'تشتت يزداد بحدة كلما قصر الطول الموجي',
+    es: 'Una dispersión que crece bruscamente cuanto más corta es la longitud de onda',
+    fr: 'Une diffusion qui croît fortement quand la longueur d’onde raccourcit',
+    hi: 'ऐसा प्रकीर्णन जो तरंगदैर्ध्य छोटा होने पर तेज़ी से बढ़ता है',
+    id: 'Hamburan yang naik tajam makin pendek panjang gelombangnya',
+    pt: 'Um espalhamento que cresce bruscamente quanto menor o comprimento de onda',
   },
   'label.stage': {
     ko: '햇빛과 공기',
@@ -307,7 +308,7 @@ export const rayleighScatteringSchema: BundleSchema = {
   id: RAYLEIGH_SCATTERING_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 막대가 서고, 해가 머리 위에서 지평선으로 내려간다.

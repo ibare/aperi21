@@ -115,7 +115,8 @@ export const radiativeEquilibriumMessages = Object.freeze({
     id: 'Kesetimbangan radiasi',
     pt: 'Equilíbrio radiativo',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '들어온 만큼 내보낼 때 정해지는 온도',
     en: 'The temperature set when what goes out matches what comes in',
     ja: '出ていく量が入ってくる量とつり合うときに決まる温度',
@@ -283,7 +284,7 @@ export const radiativeEquilibriumSchema: BundleSchema = {
   id: RADIATIVE_EQUILIBRIUM_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 두 행성의 온도가 움직여 한 값에 모이고, 다시 처음으로.

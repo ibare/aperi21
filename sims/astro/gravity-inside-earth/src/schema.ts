@@ -88,7 +88,8 @@ export const gravityInsideEarthMessages = Object.freeze({
     id: 'Gravitasi di dalam Bumi',
     pt: 'Gravidade dentro da Terra',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '깊이에 따라 줄어드는 중력',
     en: 'Gravity that weakens with depth',
     ja: '深さとともに弱まる重力',
@@ -276,7 +277,7 @@ export const gravityInsideEarthSchema: BundleSchema = {
   id: GRAVITY_INSIDE_EARTH_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 질량이 다가오고, 굴을 따라 중심까지 내려간다.

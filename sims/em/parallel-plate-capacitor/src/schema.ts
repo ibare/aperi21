@@ -88,7 +88,8 @@ export const NARROW = 1.0;
 
 export const parallelPlateCapacitorMessages = Object.freeze({
   'label.title': { ko: '평행판 축전기', en: 'Parallel-plate capacitor', ja: '平行板コンデンサー', zh: '平行板电容器', ar: 'مكثف ذو لوحين متوازيين', es: 'Condensador de placas paralelas', fr: 'Condensateur plan', hi: 'समांतर प्लेट संधारित्र', id: 'Kapasitor keping sejajar', pt: 'Capacitor de placas paralelas' },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '넓이·간격이 정하는 용량',
     en: 'Capacitance set by area and gap',
     ja: '面積と間隔で決まる電気容量',
@@ -220,7 +221,7 @@ export const parallelPlateCapacitorSchema: BundleSchema = {
   id: PARALLEL_PLATE_CAPACITOR_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 좁히고, 되돌리고, 넓히는 한 주기로 할 말을 마친다.

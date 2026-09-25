@@ -109,7 +109,8 @@ export const acGenerationMessages = Object.freeze({
     id: 'Pembangkitan arus bolak-balik',
     pt: 'Geração de corrente alternada',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '회전하는 코일과 사인파',
     en: 'A turning coil and a sine wave',
     ja: '回転するコイルと正弦波',
@@ -276,7 +277,7 @@ export const acGenerationSchema: BundleSchema = {
   id: AC_GENERATION_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 돌고 있고, 느린 돌림과 빠른 돌림을 저절로 되풀이한다.

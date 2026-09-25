@@ -113,7 +113,8 @@ export const motionalEmfMessages = Object.freeze({
     id: 'GGL gerak',
     pt: 'Fem de movimento',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '도선이 움직여 생기는 전압',
     en: 'The voltage made by a moving wire',
     ja: '動く導線が生む電圧',
@@ -374,7 +375,7 @@ export const motionalEmfSchema: BundleSchema = {
   id: MOTIONAL_EMF_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 막대가 달리고, 멈추고, 두 배 빠르게 다시 달린다.

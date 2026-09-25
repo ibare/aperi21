@@ -88,7 +88,8 @@ export const moonPhasesMessages = Object.freeze({
     id: 'Fase-fase Bulan',
     pt: 'Fases da Lua',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '햇빛을 받는 달의 어느 쪽을 보는가',
     en: 'Which part of the sunlit Moon faces us',
     ja: '日光を受ける月のどの部分がこちらを向いているか',
@@ -215,7 +216,7 @@ export const moonPhasesSchema: BundleSchema = {
   id: MOON_PHASES_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'earth-moon', label: text('label.stage'), constants: {} }],

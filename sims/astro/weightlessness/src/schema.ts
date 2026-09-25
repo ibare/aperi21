@@ -51,7 +51,8 @@ export const weightlessnessMessages = Object.freeze({
     id: 'Keadaan tanpa bobot',
     pt: 'Imponderabilidade',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '자유 낙하 중의 겉보기 무게',
     en: 'Apparent weight in free fall',
     ja: '自由落下中の見かけの重さ',
@@ -269,7 +270,7 @@ export const weightlessnessSchema: BundleSchema = {
   id: WEIGHTLESSNESS_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 독자가 바꿔 볼 값이 주장에 없다 — 높이를 끌게 하면 「높이에 따라

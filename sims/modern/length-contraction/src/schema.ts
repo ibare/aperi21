@@ -105,7 +105,8 @@ export const lengthContractionMessages = Object.freeze({
     id: 'Kontraksi panjang',
     pt: 'Contração do comprimento',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '운동 방향으로의 수축',
     en: 'Contraction along the direction of motion',
     ja: '運動方向に沿った収縮',
@@ -247,7 +248,7 @@ export const lengthContractionSchema: BundleSchema = {
   id: LENGTH_CONTRACTION_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 상자가 지나가고, 기록이 남고, 다시 온다.

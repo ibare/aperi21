@@ -77,7 +77,8 @@ export const ellipticalOrbitMessages = Object.freeze({
     id: 'Orbit elips',
     pt: 'Órbita elíptica',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '초점에 놓인 중심 천체',
     en: 'The central body sits at a focus',
     ja: '中心天体は焦点にある',
@@ -253,7 +254,7 @@ export const ellipticalOrbitSchema: BundleSchema = {
   id: ELLIPTICAL_ORBIT_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 시간표가 원에서 가장 길쭉한 타원까지 정박 이심률을 차례로 훑는다.

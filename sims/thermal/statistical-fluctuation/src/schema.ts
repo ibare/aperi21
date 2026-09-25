@@ -65,7 +65,8 @@ export const statisticalFluctuationMessages = Object.freeze({
     id: 'Fluktuasi statistik',
     pt: 'Flutuação estatística',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '입자 수가 적을 때 커지는 흔들림',
     en: 'The wobble that grows when particles are few',
     ja: '粒子が少ないときに大きくなるゆらぎ',
@@ -221,7 +222,7 @@ export const statisticalFluctuationSchema: BundleSchema = {
   id: STATISTICAL_FLUCTUATION_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 세 상자가 움직이고 곡선 셋이 자란다.

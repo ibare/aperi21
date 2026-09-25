@@ -102,17 +102,18 @@ export const vectorAdditionMessages = Object.freeze({
     id: 'Penjumlahan vektor',
     pt: 'Soma de vetores',
   },
-  'label.operation': {
-    ko: '나를 가의 머리에 옮겨 붙이고 이어 걸으면 그 끝이 합이다',
-    en: 'Slide b onto the head of a, walk both, and the far end is the sum',
-    ja: 'b を a の先端へ移して続けてたどると、その行き着く先が和になる',
-    zh: '把 b 移到 a 的箭头处，沿两者依次走过，最远的终点就是和',
-    ar: 'انقل ب إلى رأس أ، وامشِ على الاثنين، فتكون النهاية البعيدة هي المجموع',
-    es: 'Desliza b hasta la punta de a, recorre ambos y el extremo final es la suma',
-    fr: 'Glissez b jusqu’à la pointe de a, parcourez les deux : l’extrémité finale est la somme',
-    hi: 'b को a के शीर्ष पर खिसकाएँ, दोनों पर चलें — अंतिम सिरा ही योग है',
-    id: 'Geser b ke ujung a, telusuri keduanya, dan ujung terjauh adalah jumlahnya',
-    pt: 'Deslize b até a ponta de a, percorra os dois e a extremidade final é a soma',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '꼬리와 머리를 잇는 덧셈',
+    en: 'Addition that joins tail to head',
+    ja: '尾と頭をつなぐ足し算',
+    zh: '首尾相接的加法',
+    ar: 'جمع يصل ذيل المتجه برأس الآخر',
+    es: 'Una suma que une la cola con la punta',
+    fr: 'Une addition qui relie la queue à la tête',
+    hi: 'पूँछ को सिर से जोड़ने वाला योग',
+    id: 'Penjumlahan yang menyambung ekor ke kepala',
+    pt: 'Uma soma que une a cauda à ponta',
   },
   'label.stage': {
     ko: '두 화살표',
@@ -308,7 +309,7 @@ export const vectorAdditionSchema: BundleSchema = {
   id: VECTOR_ADDITION_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   parameters: [],

@@ -91,7 +91,8 @@ export const conservationOfMomentumMessages = Object.freeze({
     id: 'Kekekalan momentum',
     pt: 'Conservação da quantidade de movimento',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '외력이 없을 때의 총 운동량',
     en: 'Total momentum when no external force acts',
     ja: '外力がはたらかないときの全運動量',
@@ -275,7 +276,7 @@ export const conservationOfMomentumSchema: BundleSchema = {
   id: CONSERVATION_OF_MOMENTUM_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

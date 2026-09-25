@@ -107,7 +107,8 @@ export const rocketEquationMessages = Object.freeze({
     id: 'Persamaan roket',
     pt: 'A equação do foguete',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '연료를 버려 얻는 속도',
     en: 'Speed bought by throwing fuel away',
     ja: '燃料を捨てて得る速さ',
@@ -225,7 +226,7 @@ export const rocketEquationSchema: BundleSchema = {
   id: ROCKET_EQUATION_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 아무것도 누르지 않아도 여덟 칸이 차례로 타며 할 말을 마친다.

@@ -93,17 +93,18 @@ export const solarAltitudeShadowMessages = Object.freeze({
     id: 'Ketinggian Matahari dan bayang-bayang',
     pt: 'Altura do Sol e sombras',
   },
-  'label.operation': {
-    ko: '고도가 바뀌면 그림자 길이와 기온이 함께 바뀐다',
-    en: 'As the Sun’s altitude changes, shadow length and warmth change together',
-    ja: '太陽高度が変わると、影の長さと暖かさがいっしょに変わる',
-    zh: '太阳高度改变时，影子的长短和温暖程度一起改变',
-    ar: 'مع تغيّر ارتفاع الشمس يتغيّر طول الظل والدفء معًا',
-    es: 'Al cambiar la altura del Sol, cambian a la vez la longitud de la sombra y el calor',
-    fr: 'Quand la hauteur du Soleil change, la longueur de l’ombre et la chaleur changent ensemble',
-    hi: 'सूर्य की ऊँचाई बदलने पर छाया की लंबाई और गर्माहट साथ-साथ बदलती हैं',
-    id: 'Saat ketinggian Matahari berubah, panjang bayang-bayang dan kehangatan ikut berubah bersama',
-    pt: 'Quando a altura do Sol muda, o comprimento da sombra e o calor mudam juntos',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '고도가 바뀌면 그림자 길이와 햇빛이 퍼지는 넓이가 함께 바뀐다',
+    en: 'As the altitude changes, the shadow’s length and the area the sunlight spreads over change together',
+    ja: '高度が変わると、影の長さと日差しが広がる面積がいっしょに変わる',
+    zh: '高度改变时，影子的长度和阳光铺开的面积一起改变',
+    ar: 'حين يتغير الارتفاع يتغير طول الظل والمساحة التي ينتشر عليها ضوء الشمس معًا',
+    es: 'Cuando cambia la altura, la longitud de la sombra y el área sobre la que se reparte la luz solar cambian juntas',
+    fr: 'Quand la hauteur change, la longueur de l’ombre et la surface sur laquelle s’étale la lumière du Soleil changent ensemble',
+    hi: 'ऊँचाई बदलने पर छाया की लंबाई और धूप के फैलने का क्षेत्रफल साथ-साथ बदलते हैं',
+    id: 'Ketika ketinggian berubah, panjang bayangan dan luas sebaran sinar matahari berubah bersama',
+    pt: 'Quando a altura muda, o comprimento da sombra e a área sobre a qual a luz do Sol se espalha mudam juntos',
   },
   'label.stage': {
     ko: '땅 위의 막대',
@@ -293,7 +294,7 @@ export const solarAltitudeShadowSchema: BundleSchema = {
   id: SOLAR_ALTITUDE_SHADOW_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 시간표가 고도를 낮게 → 중간 → 높게 → 다시 낮게 옮기며 견주기까지 마친다.

@@ -102,17 +102,18 @@ export const poyntingVectorMessages = Object.freeze({
     id: 'Vektor Poynting',
     pt: 'Vetor de Poynting',
   },
-  'label.operation': {
-    ko: '전자기파가 나르는 에너지 흐름',
-    en: 'The energy flow carried by electromagnetic waves',
-    ja: '電磁波が運ぶエネルギーの流れ',
-    zh: '电磁波携带的能量流',
-    ar: 'تدفق الطاقة الذي تحمله الموجات الكهرومغناطيسية',
-    es: 'El flujo de energía que transportan las ondas electromagnéticas',
-    fr: 'Le flux d’énergie transporté par les ondes électromagnétiques',
-    hi: 'विद्युत चुंबकीय तरंगों द्वारा ले जाया गया ऊर्जा प्रवाह',
-    id: 'Aliran energi yang dibawa gelombang elektromagnetik',
-    pt: 'O fluxo de energia transportado pelas ondas eletromagnéticas',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '도선 둘레 공간을 지나는 에너지',
+    en: 'Energy passing through the space around a wire',
+    ja: '導線のまわりの空間を通るエネルギー',
+    zh: '穿过导线周围空间的能量',
+    ar: 'الطاقة المارّة عبر الفضاء المحيط بالسلك',
+    es: 'La energía que atraviesa el espacio alrededor de un cable',
+    fr: 'L’énergie qui traverse l’espace autour d’un fil',
+    hi: 'तार के चारों ओर के स्थान से गुज़रने वाली ऊर्जा',
+    id: 'Energi yang melintasi ruang di sekitar kawat',
+    pt: 'A energia que atravessa o espaço em torno de um fio',
   },
   'label.stage': {
     ko: '전지와 저항',
@@ -279,7 +280,7 @@ export const poyntingVectorSchema: BundleSchema = {
   id: POYNTING_VECTOR_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 장이 서고, S 가 서고, 에너지가 흐른다.

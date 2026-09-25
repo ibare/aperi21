@@ -142,7 +142,8 @@ export const emfAndInternalResistanceMessages = Object.freeze({
     id: 'GGL dan hambatan dalam',
     pt: 'Fem e resistência interna',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '단자 전압이 낮아지는 이유',
     en: 'Why the terminal voltage drops',
     ja: '端子電圧が下がる理由',
@@ -287,7 +288,7 @@ export const emfAndInternalResistanceSchema: BundleSchema = {
   id: EMF_AND_INTERNAL_RESISTANCE_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 스위치가 닫히고, 바깥 저항이 한 단계씩 줄고, 점이 한 직선에 놓인다.

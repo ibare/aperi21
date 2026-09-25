@@ -99,7 +99,8 @@ export const multipleMirrorImagesMessages = Object.freeze({
     id: 'Bayangan pada dua cermin',
     pt: 'Imagens em dois espelhos',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '각도가 정하는 상의 개수',
     en: 'How the angle between two mirrors sets the number of images',
     ja: '二枚の鏡のなす角が像の数を決めるしくみ',
@@ -278,7 +279,7 @@ export const multipleMirrorImagesSchema: BundleSchema = {
   id: MULTIPLE_MIRROR_IMAGES_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 각을 끌게 하면 멈춘 각이 선언값이 아니게 되어 각도 · 개수 글자를 띄울 수

@@ -140,7 +140,8 @@ export const jouleHeatingMessages = Object.freeze({
     id: 'Pemanasan Joule',
     pt: 'Efeito Joule',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '저항이 만드는 열',
     en: 'Heat made by resistance',
     ja: '抵抗が生む熱',
@@ -275,7 +276,7 @@ export const jouleHeatingSchema: BundleSchema = {
   id: JOULE_HEATING_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흐르고, 큰 저항 쪽이 먼저 달아오른다.

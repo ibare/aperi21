@@ -70,7 +70,8 @@ export const buoyantForceAsForceMessages = Object.freeze({
     id: 'Gaya apung sebagai gaya',
     pt: 'O empuxo como força',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '유체가 위로 미는 힘',
     en: 'The upward push of a fluid',
     ja: '流体が上へ押す力',
@@ -199,7 +200,7 @@ export const buoyantForceAsForceSchema: BundleSchema = {
   id: BUOYANT_FORCE_AS_FORCE_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 한 주기가 물 밖 · 일부 잠김 · 다 잠김 세 상태를 모두 지나며 주장을 마친다.

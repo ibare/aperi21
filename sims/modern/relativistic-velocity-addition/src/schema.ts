@@ -105,7 +105,8 @@ export const relativisticVelocityAdditionMessages = Object.freeze({
     id: 'Penjumlahan kecepatan relativistik',
     pt: 'Adição relativística de velocidades',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '광속을 넘지 못하는 합성',
     en: 'Composition that never exceeds light speed',
     ja: '光速を決して超えない合成',
@@ -346,7 +347,7 @@ export const relativisticVelocityAdditionSchema: BundleSchema = {
   id: RELATIVISTIC_VELOCITY_ADDITION_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 배가 오고, 쏘고, 멈춘 자리를 읽고, 다시 온다.

@@ -109,7 +109,8 @@ export const nonConservativeForceMessages = Object.freeze({
     id: 'Gaya nonkonservatif',
     pt: 'Força não conservativa',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '경로에 따라 달라지는 일',
     en: 'Work that depends on the path',
     ja: '経路によって変わる仕事',
@@ -312,7 +313,7 @@ export const nonConservativeForceSchema: BundleSchema = {
   id: NON_CONSERVATIVE_FORCE_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 밀려 가고, 지나치고, 돌아오고, 막대가 한 칸과 두 칸으로 남는다.

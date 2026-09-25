@@ -199,7 +199,8 @@ export const freeBodyDiagramMessages = Object.freeze({
     id: 'Diagram benda bebas',
     pt: 'Diagrama de corpo livre',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '한 물체에 작용하는 힘만 분리하기',
     en: 'Isolating the forces on a single body',
     ja: '一つの物体にはたらく力だけを取り出す',
@@ -438,7 +439,7 @@ export const freeBodyDiagramSchema: BundleSchema = {
   id: FREE_BODY_DIAGRAM_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 숫자·질량 조절은 두지 않는다 — 주장은 크기가 아니라 소속이다 (원본 inventory 「hidden」).

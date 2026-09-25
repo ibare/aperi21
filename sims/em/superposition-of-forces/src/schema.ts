@@ -76,7 +76,8 @@ export const superpositionOfForcesMessages = Object.freeze({
     id: 'Superposisi gaya listrik',
     pt: 'Superposição de forças elétricas',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '여러 전하가 주는 힘의 합',
     en: 'Adding the forces from several charges',
     ja: '複数の電荷から受ける力を足し合わせる',
@@ -304,7 +305,7 @@ export const superpositionOfForcesSchema: BundleSchema = {
   id: SUPERPOSITION_OF_FORCES_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 화살표가 이어 붙고, 원천 하나가 옮겨 가는 것까지 한 주기에 끝난다.

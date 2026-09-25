@@ -81,7 +81,8 @@ export const SCENE_BOUNDS = { minX: -0.2, maxX: 6.75, minY: -0.72, maxY: 3.42 } 
 
 export const energyInCollisionMessages = Object.freeze({
   'label.title': { ko: '충돌에서의 에너지', en: 'Energy in collisions', ja: '衝突とエネルギー', zh: '碰撞中的能量', ar: 'الطاقة في التصادمات', es: 'La energía en los choques', fr: 'L’énergie dans les collisions', hi: 'टक्कर में ऊर्जा', id: 'Energi dalam tumbukan', pt: 'Energia nas colisões' },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '보존되는 것과 안 되는 것의 구분',
     en: 'Telling what is conserved from what is not',
     ja: '保存されるものとされないものを見分ける',
@@ -184,7 +185,7 @@ export const energyInCollisionSchema: BundleSchema = {
   id: ENERGY_IN_COLLISION_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

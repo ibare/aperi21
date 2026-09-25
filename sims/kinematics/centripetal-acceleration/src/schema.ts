@@ -70,17 +70,18 @@ export const centripetalAccelerationMessages = Object.freeze({
     id: 'Percepatan sentripetal',
     pt: 'Aceleração centrípeta',
   },
-  'label.operation': {
-    ko: '속도의 변화는 늘 중심 쪽으로 꺾인다',
-    en: 'The change in velocity always turns toward the center',
-    ja: '速度の変化はいつも中心の方を向く',
-    zh: '速度的变化总是指向圆心',
-    ar: 'تغيُّر السرعة يتجه دائمًا نحو المركز',
-    es: 'El cambio de velocidad siempre apunta hacia el centro',
-    fr: 'La variation de vitesse est toujours tournée vers le centre',
-    hi: 'वेग में परिवर्तन सदा केंद्र की ओर मुड़ता है',
-    id: 'Perubahan kecepatan selalu mengarah ke pusat',
-    pt: 'A variação da velocidade sempre aponta para o centro',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '속력이 그대로인 운동에서 속도 변화가 향하는 곳',
+    en: 'Where the change in velocity points when the speed stays the same',
+    ja: '速さが変わらない運動で、速度の変化が向かう先',
+    zh: '速率不变的运动中速度变化所指的方向',
+    ar: 'الاتجاه الذي يشير إليه تغيّر السرعة المتجهة في حركة لا يتغير مقدار سرعتها',
+    es: 'Hacia dónde apunta el cambio de velocidad cuando la rapidez no cambia',
+    fr: 'Là où pointe la variation de vitesse quand la vitesse scalaire ne change pas',
+    hi: 'चाल स्थिर रहने वाली गति में वेग का परिवर्तन किस ओर होता है',
+    id: 'Ke mana perubahan kecepatan mengarah ketika kelajuannya tetap',
+    pt: 'Para onde aponta a variação da velocidade quando a velocidade não muda',
   },
   'label.stage': {
     ko: '등속 원운동',
@@ -189,7 +190,7 @@ export const centripetalAccelerationSchema: BundleSchema = {
   id: CENTRIPETAL_ACCELERATION_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'linear',
 
   // 조작기가 없다. 비교 간격이 결과를 바꾸지 않는다는 것은 이어지는 여러 Δv 가

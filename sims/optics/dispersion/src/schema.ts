@@ -89,7 +89,8 @@ export const dispersionMessages = Object.freeze({
     id: 'Dispersi',
     pt: 'Dispersão',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '파장에 따른 굴절률 차이',
     en: 'Refractive index that depends on wavelength',
     ja: '波長によって異なる屈折率',
@@ -308,7 +309,7 @@ export const dispersionSchema: BundleSchema = {
   id: DISPERSION_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

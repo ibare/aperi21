@@ -79,7 +79,8 @@ export const constructiveDestructiveMessages = Object.freeze({
     id: 'Interferensi konstruktif dan destruktif',
     pt: 'Interferência construtiva e destrutiva',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '위상차가 정하는 합의 크기',
     en: 'How phase difference sets the size of the sum',
     ja: '位相差が合成波の大きさを決めるしくみ',
@@ -233,7 +234,7 @@ export const constructiveDestructiveSchema: BundleSchema = {
   id: CONSTRUCTIVE_DESTRUCTIVE_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 위상차가 벌어지는 중이고, 0 과 π 에서 한 번씩 머문다.

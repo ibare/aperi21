@@ -135,7 +135,8 @@ export const transformerMessages = Object.freeze({
     id: 'Transformator',
     pt: 'Transformador',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '감은 수와 전압비',
     en: 'Turns and the voltage ratio',
     ja: '巻き数と電圧の比',
@@ -373,7 +374,7 @@ export const transformerSchema: BundleSchema = {
   id: TRANSFORMER_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 1 : 2 로 감은 변압기가 돌고 있고, 다음에 2 : 1 로 바뀐다.

@@ -84,7 +84,8 @@ export const resolvingPowerMessages = Object.freeze({
     id: 'Daya urai',
     pt: 'Poder de resolução',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '두 점을 가르는 한계',
     en: 'The limit of telling two points apart',
     ja: '2点を見分ける限界',
@@ -249,7 +250,7 @@ export const resolvingPowerSchema: BundleSchema = {
   id: RESOLVING_POWER_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 다가가기 → 레일리 기준 → 뭉침 → 구멍 키우기가 저절로 돈다.

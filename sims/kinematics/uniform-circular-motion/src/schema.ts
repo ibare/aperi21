@@ -71,17 +71,18 @@ export const uniformCircularMotionMessages = Object.freeze({
     id: 'Gerak melingkar beraturan',
     pt: 'Movimento circular uniforme',
   },
-  'label.operation': {
-    ko: '속도 화살표는 길이가 그대로인 채 방향만 바뀐다',
-    en: 'The velocity arrow keeps its length and only turns',
-    ja: '速度の矢印は長さを保ったまま向きだけが変わる',
-    zh: '速度箭头长度不变，只改变方向',
-    ar: 'يحافظ سهم السرعة على طوله ويدور فقط',
-    es: 'La flecha de velocidad conserva su longitud y solo gira',
-    fr: 'La flèche de vitesse garde sa longueur et ne fait que tourner',
-    hi: 'वेग-तीर की लंबाई वही रहती है, वह केवल मुड़ता है',
-    id: 'Panah kecepatan tetap panjangnya dan hanya berbelok',
-    pt: 'A seta de velocidade mantém o comprimento e só gira',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '속력이 일정한 원 궤도',
+    en: 'A circular path at constant speed',
+    ja: '速さが一定の円軌道',
+    zh: '速率恒定的圆周轨道',
+    ar: 'مسار دائري بسرعة ثابتة المقدار',
+    es: 'Una trayectoria circular con rapidez constante',
+    fr: 'Une trajectoire circulaire à vitesse constante',
+    hi: 'स्थिर चाल वाला वृत्तीय पथ',
+    id: 'Lintasan melingkar dengan kelajuan tetap',
+    pt: 'Uma trajetória circular com velocidade constante',
   },
   'label.stage': {
     ko: '기본',
@@ -151,7 +152,7 @@ export const uniformCircularMotionSchema: BundleSchema = {
   id: UNIFORM_CIRCULAR_MOTION_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 주장을 마치는 데 필요하지 않다 (원본 NOTES).

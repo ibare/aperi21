@@ -103,7 +103,8 @@ export const timeDilationMessages = Object.freeze({
     id: 'Dilatasi waktu',
     pt: 'Dilatação do tempo',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '운동하는 시계가 느려짐',
     en: 'A moving clock runs slow',
     ja: '運動する時計は遅れる',
@@ -257,7 +258,7 @@ export const timeDilationSchema: BundleSchema = {
   id: TIME_DILATION_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 시계가 지나가고, 기록이 남고, 다시 온다.

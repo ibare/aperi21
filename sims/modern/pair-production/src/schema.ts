@@ -95,7 +95,19 @@ export const PHASE_FADE = 1;
 
 export const pairProductionMessages = Object.freeze({
   'label.title': { ko: '쌍생성', en: 'Pair production', ja: '対生成', zh: '电子对产生', ar: 'إنتاج الأزواج', es: 'Producción de pares', fr: 'Création de paires', hi: 'युग्म उत्पादन', id: 'Produksi pasangan', pt: 'Produção de pares' },
-  'label.operation': { ko: '에너지가 물질이 되는 것', en: 'Energy turning into matter', ja: 'エネルギーが物質になる', zh: '能量变成物质', ar: 'طاقة تتحول إلى مادة', es: 'Energía que se convierte en materia', fr: 'De l’énergie qui devient matière', hi: 'ऊर्जा का द्रव्य में बदलना', id: 'Energi yang berubah menjadi materi', pt: 'Energia virando matéria' },
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '에너지가 물질이 되는 것',
+    en: 'Energy turning into matter',
+    ja: 'エネルギーが物質になる',
+    zh: '能量变成物质',
+    ar: 'طاقة تتحول إلى مادة',
+    es: 'Energía que se convierte en materia',
+    fr: 'De l’énergie qui devient matière',
+    hi: 'ऊर्जा का द्रव्य में बदलना',
+    id: 'Energi yang berubah menjadi materi',
+    pt: 'Energia virando matéria',
+  },
   'label.stage': { ko: '거품 상자 속 감마선', en: 'Gamma rays in a bubble chamber', ja: '泡箱の中のガンマ線', zh: '气泡室中的伽马射线', ar: 'أشعة غاما في غرفة فقاعات', es: 'Rayos gamma en una cámara de burbujas', fr: 'Rayons gamma dans une chambre à bulles', hi: 'बुलबुला कक्ष में गामा किरणें', id: 'Sinar gamma dalam kamar gelembung', pt: 'Raios gama em uma câmara de bolhas' },
   'label.view': { ko: '기본', en: 'Default', ja: '標準', zh: '默认', ar: 'افتراضي', es: 'Predeterminada', fr: 'Par défaut', hi: 'डिफ़ॉल्ट', id: 'Bawaan', pt: 'Padrão' },
   /** 날아가는 광자. 값은 선언한 광자 에너지를 끼운다 (C1 · S-piece 유효숫자). */
@@ -199,7 +211,7 @@ export const pairProductionSchema: BundleSchema = {
   id: PAIR_PRODUCTION_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 문턱 아래 · 위 · 더 위 세 광자가 차례로 나와 할 말을 마친다.

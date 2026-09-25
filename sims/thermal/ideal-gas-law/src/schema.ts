@@ -100,7 +100,8 @@ export const idealGasLawMessages = Object.freeze({
     id: 'Hukum gas ideal',
     pt: 'Lei dos gases ideais',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '압력·부피·온도의 관계',
     en: 'How pressure, volume and temperature relate',
     ja: '圧力・体積・温度の関係',
@@ -374,7 +375,7 @@ export const idealGasLawSchema: BundleSchema = {
   id: IDEAL_GAS_LAW_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 자물쇠가 걸리고, 하나가 바뀌고, 하나가 따라간다.

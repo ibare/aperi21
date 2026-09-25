@@ -124,7 +124,8 @@ export const faradaysLawMessages = Object.freeze({
     id: 'Hukum Faraday',
     pt: 'Lei de Faraday',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '자속 변화가 만드는 기전력',
     en: 'The EMF made by a changing flux',
     ja: '磁束の変化が生む起電力',
@@ -402,7 +403,7 @@ export const faradaysLawSchema: BundleSchema = {
   id: FARADAYS_LAW_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 밀어 넣고, 멈추고, 더 빠르게 다시 민다.

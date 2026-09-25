@@ -94,7 +94,8 @@ export const waveVsParticleTransportMessages = Object.freeze({
     id: 'Apa yang dibawa gelombang',
     pt: 'O que uma onda transporta',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '매질은 제자리, 에너지는 이동',
     en: 'The medium stays put, the energy moves on',
     ja: '媒質はその場に、エネルギーは先へ',
@@ -187,7 +188,7 @@ export const waveVsParticleTransportSchema: BundleSchema = {
   id: WAVE_VS_PARTICLE_TRANSPORT_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 펄스가 건너가고, 추가 흔들리고, 다음 펄스가 나간다.

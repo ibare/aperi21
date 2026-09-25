@@ -94,7 +94,8 @@ export const wienDisplacementLawMessages = Object.freeze({
     id: 'Hukum pergeseran Wien',
     pt: 'Lei do deslocamento de Wien',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '온도와 최대 파장',
     en: 'Temperature and peak wavelength',
     ja: '温度とピーク波長',
@@ -296,7 +297,7 @@ export const wienDisplacementLawSchema: BundleSchema = {
   id: WIEN_DISPLACEMENT_LAW_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 온도가 두 배씩 오르고 막대가 이어 붙는다.

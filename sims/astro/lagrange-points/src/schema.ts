@@ -121,17 +121,18 @@ export const lagrangePointsMessages = Object.freeze({
     id: 'Titik Lagrange',
     pt: 'Pontos de Lagrange',
   },
-  'label.operation': {
-    ko: '안장에서는 흘러나가고 꼭대기에서는 맴돈다',
-    en: 'Drifting off the saddles, circling the peaks',
-    ja: '鞍点からは流れ出し、頂上ではまわりを回る',
-    zh: '在鞍点漂离，在山顶打转',
-    ar: 'الانجراف بعيدًا عن السروج والدوران حول القمم',
-    es: 'Alejarse de las sillas, girar en torno a las cimas',
-    fr: 'S’éloigner des cols, tourner autour des sommets',
-    hi: 'काठियों से दूर बहना, शिखरों के चारों ओर घूमना',
-    id: 'Hanyut menjauhi pelana, mengitari puncak',
-    pt: 'Afastando-se das selas, circulando os picos',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '함께 도는 두 천체와 보조를 맞추는 다섯 자리',
+    en: 'Five places that keep pace with two bodies orbiting together',
+    ja: 'ともに回る二つの天体と歩調を合わせる五つの位置',
+    zh: '与一同运转的两个天体保持同步的五个位置',
+    ar: 'خمسة مواضع تُجاري جرمين يدوران معًا',
+    es: 'Cinco lugares que siguen el paso de dos cuerpos que orbitan juntos',
+    fr: 'Cinq positions qui suivent le pas de deux corps en orbite commune',
+    hi: 'साथ घूमते दो पिंडों के साथ कदम मिलाने वाले पाँच स्थान',
+    id: 'Lima tempat yang mengikuti langkah dua benda langit yang mengorbit bersama',
+    pt: 'Cinco lugares que acompanham o passo de dois corpos que orbitam juntos',
   },
   'label.stage': {
     ko: '지구와 달',
@@ -226,7 +227,7 @@ export const lagrangePointsSchema: BundleSchema = {
   id: LAGRANGE_POINTS_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'continuous',
 
   // 조작기가 없다. 질량비를 바꾸면 L4·L5 도 불안정해지지만 그것은 다른 주장이다 (원본 NOTES (c)).

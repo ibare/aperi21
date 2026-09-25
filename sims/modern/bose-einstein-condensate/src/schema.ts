@@ -119,7 +119,8 @@ export const boseEinsteinCondensateMessages = Object.freeze({
     id: 'Kondensasi Bose–Einstein',
     pt: 'Condensação de Bose–Einstein',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '같은 상태로 몰리는 저온의 입자',
     en: 'Cold particles crowding into one state',
     ja: '一つの状態に押し寄せる冷たい粒子',
@@ -323,7 +324,7 @@ export const boseEinsteinCondensateSchema: BundleSchema = {
   id: BOSE_EINSTEIN_CONDENSATE_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 식고 있고, 봉우리가 서고, 다시 데워져 처음부터 식는다.

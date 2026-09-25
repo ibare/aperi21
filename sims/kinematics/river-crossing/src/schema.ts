@@ -144,17 +144,18 @@ export const riverCrossingMessages = Object.freeze({
     id: 'Menyeberangi sungai',
     pt: 'Atravessar um rio',
   },
-  'label.operation': {
-    ko: '뱃머리를 맞은편에 두어도 물살에 떠밀려 하류에 닿는다',
-    en: 'Aimed straight across, the boat is pushed downstream by the current',
-    ja: 'まっすぐ対岸に向けても、ボートは流れに押されて下流へ運ばれる',
-    zh: '船头正对对岸，船仍被水流推向下游',
-    ar: 'مع توجيهه مباشرةً نحو الضفة المقابلة، يدفع التيار القارب نحو أسفل النهر',
-    es: 'Aunque apunta recto a la otra orilla, la corriente empuja el bote aguas abajo',
-    fr: 'Pointé droit vers l’autre rive, le bateau est poussé vers l’aval par le courant',
-    hi: 'सीधे उस पार साधी गई नाव को भी धारा बहाव की दिशा में धकेल देती है',
-    id: 'Meski diarahkan lurus ke seberang, perahu terdorong arus ke hilir',
-    pt: 'Apontado direto para a outra margem, o barco é empurrado rio abaixo pela correnteza',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '두 속도의 합성이 만드는 경로',
+    en: 'The path made by combining two velocities',
+    ja: '二つの速度の合成が生む経路',
+    zh: '两个速度合成所形成的路径',
+    ar: 'المسار الناتج عن تركيب سرعتين متجهتين',
+    es: 'La trayectoria que resulta de combinar dos velocidades',
+    fr: 'Le trajet qui naît de la composition de deux vitesses',
+    hi: 'दो वेगों के संयोजन से बनने वाला पथ',
+    id: 'Lintasan yang terbentuk dari perpaduan dua kecepatan',
+    pt: 'O trajeto formado pela composição de duas velocidades',
   },
   'label.stage': {
     ko: '강',
@@ -290,7 +291,7 @@ export const riverCrossingSchema: BundleSchema = {
   id: RIVER_CROSSING_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   parameters: [],

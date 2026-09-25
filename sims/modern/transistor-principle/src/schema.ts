@@ -98,7 +98,8 @@ export const transistorPrincipleMessages = Object.freeze({
     id: 'Transistor',
     pt: 'Transistor',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '작은 신호가 큰 전류를 제어',
     en: 'A small signal controls a large current',
     ja: '小さな信号が大きな電流を制御する',
@@ -330,7 +331,7 @@ export const transistorPrincipleSchema: BundleSchema = {
   id: TRANSISTOR_PRINCIPLE_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

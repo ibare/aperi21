@@ -98,7 +98,8 @@ export const polarizationMessages = Object.freeze({
     id: 'Polarisasi',
     pt: 'Polarização',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '진동면의 선택',
     en: 'Selecting the plane of vibration',
     ja: '振動面を選ぶ',
@@ -311,7 +312,7 @@ export const polarizationSchema: BundleSchema = {
   id: POLARIZATION_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'default', label: text('label.stage'), constants: {} }],

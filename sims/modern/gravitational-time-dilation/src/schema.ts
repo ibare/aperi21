@@ -98,7 +98,8 @@ export const gravitationalTimeDilationMessages = Object.freeze({
     id: 'Dilatasi waktu gravitasi',
     pt: 'Dilatação gravitacional do tempo',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '퍼텐셜에 따른 시계의 차이',
     en: 'Clocks run at different rates at different potentials',
     ja: '時計の進み方はポテンシャルによって異なる',
@@ -303,7 +304,7 @@ export const gravitationalTimeDilationSchema: BundleSchema = {
   id: GRAVITATIONAL_TIME_DILATION_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 B 가 올라가 있고, 내려와 앞서 있고, 다시 맞춰진다.

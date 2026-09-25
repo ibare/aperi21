@@ -72,17 +72,18 @@ export const electricChargeMessages = Object.freeze({
     id: 'Muatan listrik',
     pt: 'Carga elétrica',
   },
-  'label.operation': {
-    ko: '두 종류의 전하와 보존',
-    en: 'Two kinds of charge and their conservation',
-    ja: '二種類の電荷とその保存',
-    zh: '两种电荷及其守恒',
-    ar: 'نوعا الشحنة وحفظها',
-    es: 'Dos tipos de carga y su conservación',
-    fr: 'Deux sortes de charge et leur conservation',
-    hi: 'दो प्रकार के आवेश और उनका संरक्षण',
-    id: 'Dua jenis muatan dan kekekalannya',
-    pt: 'Dois tipos de carga e sua conservação',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '두 종류뿐인 전하',
+    en: 'Charge that comes in only two kinds',
+    ja: '二種類しかない電荷',
+    zh: '只有两种的电荷',
+    ar: 'شحنة لها نوعان فقط',
+    es: 'La carga, que solo es de dos clases',
+    fr: 'La charge, qui n’existe qu’en deux sortes',
+    hi: 'केवल दो प्रकार का आवेश',
+    id: 'Muatan yang hanya ada dua jenis',
+    pt: 'A carga, que só existe em dois tipos',
   },
   'label.stage': {
     ko: '실에 매단 공',
@@ -202,7 +203,7 @@ export const electricChargeSchema: BundleSchema = {
   id: ELECTRIC_CHARGE_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

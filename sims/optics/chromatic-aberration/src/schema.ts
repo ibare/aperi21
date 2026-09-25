@@ -95,7 +95,8 @@ export const chromaticAberrationMessages = Object.freeze({
     id: 'Aberasi kromatik',
     pt: 'Aberração cromática',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '파장마다 다른 초점',
     en: 'A different focus for each wavelength',
     ja: '波長ごとに異なる焦点',
@@ -299,7 +300,7 @@ export const chromaticAberrationSchema: BundleSchema = {
   id: CHROMATIC_ABERRATION_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 스크린이 두 초점 사이를 옮겨 가는 것까지 자동 진행으로 보인다.

@@ -103,7 +103,8 @@ export const stellarLuminosityMessages = Object.freeze({
     id: 'Luminositas',
     pt: 'Luminosidade',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '별이 실제로 내는 빛의 양',
     en: 'How much light a star actually gives off',
     ja: '星が実際に放つ光の量',
@@ -305,7 +306,7 @@ export const stellarLuminositySchema: BundleSchema = {
   id: STELLAR_LUMINOSITY_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 받은 빛을 공에 깔고, 되모으고, 다시 처음으로 돌아간다.

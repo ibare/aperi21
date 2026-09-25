@@ -84,17 +84,18 @@ export const hrDiagramMessages = Object.freeze({
     id: 'Diagram HR',
     pt: 'Diagrama HR',
   },
-  'label.operation': {
-    ko: '무거운 별부터 주계열 띠를 떠난다',
-    en: 'The heaviest stars leave the main sequence first',
-    ja: '最も重い星から主系列を離れる',
-    zh: '最重的恒星最先离开主序',
-    ar: 'النجوم الأثقل تغادر النسق الأساسي أولًا',
-    es: 'Las estrellas más pesadas dejan primero la secuencia principal',
-    fr: 'Les étoiles les plus lourdes quittent la séquence principale en premier',
-    hi: 'सबसे भारी तारे सबसे पहले मुख्य अनुक्रम छोड़ते हैं',
-    id: 'Bintang terberat meninggalkan deret utama lebih dulu',
-    pt: 'As estrelas mais pesadas deixam a sequência principal primeiro',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '온도와 광도로 별을 늘어놓은 그림',
+    en: 'A chart that lays out stars by temperature and luminosity',
+    ja: '温度と光度で星を並べた図',
+    zh: '按温度和光度排列恒星的图',
+    ar: 'مخطط يرتب النجوم بحسب درجة الحرارة والضياء',
+    es: 'Un diagrama que ordena las estrellas por temperatura y luminosidad',
+    fr: 'Un diagramme qui range les étoiles selon leur température et leur luminosité',
+    hi: 'तापमान और ज्योति के आधार पर तारों को सजाने वाला आरेख',
+    id: 'Diagram yang menata bintang menurut suhu dan luminositas',
+    pt: 'Um diagrama que dispõe as estrelas por temperatura e luminosidade',
   },
   'label.stage': {
     ko: '성단',
@@ -291,7 +292,7 @@ export const hrDiagramSchema: BundleSchema = {
   id: HR_DIAGRAM_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 나이는 저절로 흐르고 주장은 누르지 않아도 끝난다.

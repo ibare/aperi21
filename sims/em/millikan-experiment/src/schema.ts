@@ -147,7 +147,8 @@ export const millikanExperimentMessages = Object.freeze({
     id: 'Percobaan tetes minyak Millikan',
     pt: 'Experimento da gota de óleo de Millikan',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '전하가 띄엄띄엄하다는 증거',
     en: 'Evidence that charge comes in lumps',
     ja: '電荷がとびとびの値をとる証拠',
@@ -412,7 +413,7 @@ export const millikanExperimentSchema: BundleSchema = {
   id: MILLIKAN_EXPERIMENT_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 방울이 떨어지고, 멈추고, 점이 쌓인다.

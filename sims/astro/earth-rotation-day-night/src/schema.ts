@@ -107,7 +107,8 @@ export const earthRotationDayNightMessages = Object.freeze({
     id: 'Rotasi Bumi, siang dan malam',
     pt: 'A rotação da Terra, o dia e a noite',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '도는 지구 위에서 낮과 밤이 갈리는 이유',
     en: 'Why day and night alternate on a turning Earth',
     ja: '回る地球の上で昼と夜が入れ替わる理由',
@@ -319,7 +320,7 @@ export const earthRotationDayNightSchema: BundleSchema = {
   id: EARTH_ROTATION_DAY_NIGHT_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 지구가 돌고 있고, 한 바퀴마다 낮과 밤이 한 번씩 지나간다.

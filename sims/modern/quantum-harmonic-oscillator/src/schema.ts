@@ -80,7 +80,8 @@ export const quantumHarmonicOscillatorMessages = Object.freeze({
     id: 'Osilator harmonik kuantum',
     pt: 'Oscilador harmônico quântico',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '등간격 준위와 영점 에너지',
     en: 'Evenly spaced levels and zero-point energy',
     ja: '等間隔の準位と零点エネルギー',
@@ -249,7 +250,7 @@ export const quantumHarmonicOscillatorSchema: BundleSchema = {
   id: QUANTUM_HARMONIC_OSCILLATOR_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 독자가 고를 만한 것(용수철 세기 · 입자 질량)은 ħω 의 크기만 바꾸고

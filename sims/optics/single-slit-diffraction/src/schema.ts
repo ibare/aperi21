@@ -88,7 +88,8 @@ export const singleSlitDiffractionMessages = Object.freeze({
     id: 'Difraksi celah tunggal',
     pt: 'Difração em fenda única',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '폭이 만드는 무늬',
     en: 'The pattern a width makes',
     ja: '幅がつくる模様',
@@ -289,7 +290,7 @@ export const singleSlitDiffractionSchema: BundleSchema = {
   id: SINGLE_SLIT_DIFFRACTION_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 넓은 틈의 작도 → 좁히기 → 좁은 틈의 작도가 저절로 돈다.

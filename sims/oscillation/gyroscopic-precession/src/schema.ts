@@ -79,7 +79,8 @@ export const gyroscopicPrecessionMessages = Object.freeze({
     id: 'Presesi giroskopik',
     pt: 'Precessão giroscópica',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '돌림힘이 각운동량 방향을 돌리는 것',
     en: 'Torque turning the direction of angular momentum',
     ja: 'トルクが角運動量の向きを回す',
@@ -209,7 +210,7 @@ export const gyroscopicPrecessionSchema: BundleSchema = {
   id: GYROSCOPIC_PRECESSION_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'continuous',
   parameters: [],
   stages: [{ id: 'default', label: text('label.stage'), constants: {} }],

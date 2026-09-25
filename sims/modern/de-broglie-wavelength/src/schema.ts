@@ -111,17 +111,18 @@ export const deBroglieWavelengthMessages = Object.freeze({
     id: 'Panjang gelombang de Broglie',
     pt: 'Comprimento de onda de de Broglie',
   },
-  'label.operation': {
-    ko: '물질의 파동성',
-    en: 'The wave nature of matter',
-    ja: '物質の波動性',
-    zh: '物质的波动性',
-    ar: 'الطبيعة الموجية للمادة',
-    es: 'La naturaleza ondulatoria de la materia',
-    fr: 'La nature ondulatoire de la matière',
-    hi: 'द्रव्य की तरंग प्रकृति',
-    id: 'Sifat gelombang materi',
-    pt: 'A natureza ondulatória da matéria',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '빠르기가 정하는 물질의 파장',
+    en: 'The wavelength of matter, set by how fast it moves',
+    ja: '速さが決める物質の波長',
+    zh: '由快慢决定的物质的波长',
+    ar: 'الطول الموجي للمادة كما تحدده سرعتها',
+    es: 'La longitud de onda de la materia, fijada por su rapidez',
+    fr: 'La longueur d’onde de la matière, fixée par sa vitesse',
+    hi: 'चाल से तय होने वाली पदार्थ की तरंगदैर्ध्य',
+    id: 'Panjang gelombang materi yang ditentukan oleh kelajuannya',
+    pt: 'O comprimento de onda da matéria, definido pela sua velocidade',
   },
   'label.stage': {
     ko: '전자 두 개',
@@ -265,7 +266,7 @@ export const deBroglieWavelengthSchema: BundleSchema = {
   id: DE_BROGLIE_WAVELENGTH_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 날고, 빨라지고, 재어 본다.

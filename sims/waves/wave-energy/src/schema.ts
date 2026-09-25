@@ -99,7 +99,8 @@ export const waveEnergyMessages = Object.freeze({
     id: 'Energi gelombang',
     pt: 'Energia de uma onda',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '진폭 제곱에 비례하는 에너지',
     en: 'Energy grows with the square of the amplitude',
     ja: 'エネルギーは振幅の2乗に比例して増える',
@@ -241,7 +242,7 @@ export const waveEnergySchema: BundleSchema = {
   id: WAVE_ENERGY_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 두 줄이 흔들리고, 막대가 차고, 다시 비워진다.

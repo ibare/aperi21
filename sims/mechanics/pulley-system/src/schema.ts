@@ -94,7 +94,8 @@ export const pulleySystemMessages = Object.freeze({
     id: 'Katrol',
     pt: 'Polias',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '힘의 방향과 크기를 바꾸는 장치',
     en: 'A device that changes the direction and size of a force',
     ja: '力の向きと大きさを変える装置',
@@ -260,7 +261,7 @@ export const pulleySystemSchema: BundleSchema = {
   id: PULLEY_SYSTEM_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 가닥 수를 바꾸는 조작기보다 셋을 같은 순간 나란히 보는 것이 주장이다.

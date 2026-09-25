@@ -106,17 +106,18 @@ export const workFunctionAndThresholdMessages = Object.freeze({
     id: 'Fungsi kerja dan frekuensi ambang',
     pt: 'Função trabalho e frequência limiar',
   },
-  'label.operation': {
-    ko: '세기가 아니라 진동수가 정하는 것',
-    en: 'Set by frequency, not by intensity',
-    ja: '強さではなく振動数が決める',
-    zh: '由频率而非强度决定',
-    ar: 'يحدده التردد لا الشدة',
-    es: 'Lo fija la frecuencia, no la intensidad',
-    fr: 'Fixé par la fréquence, pas par l’intensité',
-    hi: 'तीव्रता नहीं, आवृत्ति तय करती है',
-    id: 'Ditentukan oleh frekuensi, bukan intensitas',
-    pt: 'Definido pela frequência, não pela intensidade',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '금속마다 다른 문턱, 모두 같은 기울기',
+    en: 'A threshold that differs for each metal, with the same slope for all',
+    ja: '金属ごとに違う閾、すべて同じ傾き',
+    zh: '各金属阈值不同，斜率却都相同',
+    ar: 'عتبة تختلف من فلز إلى آخر، وميل واحد للجميع',
+    es: 'Un umbral distinto para cada metal, con la misma pendiente para todos',
+    fr: 'Un seuil propre à chaque métal, la même pente pour tous',
+    hi: 'हर धातु की अलग देहली, पर सबकी ढलान समान',
+    id: 'Ambang yang berbeda untuk tiap logam, dengan kemiringan yang sama untuk semuanya',
+    pt: 'Um limiar diferente para cada metal, com a mesma inclinação para todos',
   },
   'label.stage': {
     ko: '나트륨과 구리',
@@ -336,7 +337,7 @@ export const workFunctionAndThresholdSchema: BundleSchema = {
   id: WORK_FUNCTION_AND_THRESHOLD_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 두 금속을 훑고 두 직선을 겹쳐 본다 (controllers.ts).

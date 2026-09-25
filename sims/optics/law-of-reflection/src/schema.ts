@@ -77,7 +77,8 @@ export const lawOfReflectionMessages = Object.freeze({
     id: 'Hukum pemantulan',
     pt: 'Lei da reflexão',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '입사각과 반사각',
     en: 'Angle of incidence and angle of reflection',
     ja: '入射角と反射角',
@@ -268,7 +269,7 @@ export const lawOfReflectionSchema: BundleSchema = {
   id: LAW_OF_REFLECTION_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 세 입사각을 차례로 멈춰 보여 주는 것으로 비교가 끝난다 — 각을 끌게

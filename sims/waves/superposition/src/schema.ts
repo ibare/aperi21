@@ -93,7 +93,8 @@ export const superpositionMessages = Object.freeze({
     id: 'Superposisi',
     pt: 'Superposição',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '파동이 겹칠 때의 합',
     en: 'What happens when waves overlap',
     ja: '波が重なるとき何が起こるか',
@@ -188,7 +189,7 @@ export const superpositionSchema: BundleSchema = {
   id: SUPERPOSITION_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 펄스가 달려오고, 겹치고, 빠져나간다.

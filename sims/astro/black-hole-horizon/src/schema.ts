@@ -98,7 +98,8 @@ export const blackHoleHorizonMessages = Object.freeze({
     id: 'Horizon peristiwa',
     pt: 'Horizonte de eventos',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '탈출 속도가 광속이 되는 반지름',
     en: 'The radius where escape speed reaches light speed',
     ja: '脱出速度が光速になる半径',
@@ -276,7 +277,7 @@ export const blackHoleHorizonSchema: BundleSchema = {
   id: BLACK_HOLE_HORIZON_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 반지름을 줄여 가는 일은 자동 진행이 한다 — 슬라이더를 주면 지평선 근처

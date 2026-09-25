@@ -90,7 +90,19 @@ export const NAME_FADE_IN = 0.5;
 
 export const equilibriumPointsMessages = Object.freeze({
   'label.title': { ko: '평형점', en: 'Equilibrium points', ja: '平衡点', zh: '平衡点', ar: 'نقاط الاتزان', es: 'Puntos de equilibrio', fr: 'Points d’équilibre', hi: 'संतुलन बिंदु', id: 'Titik kesetimbangan', pt: 'Pontos de equilíbrio' },
-  'label.operation': { ko: '안정·불안정·중립 평형', en: 'Stable, unstable and neutral equilibrium', ja: '安定・不安定・中立の平衡', zh: '稳定、不稳定与随遇平衡', ar: 'الاتزان المستقر وغير المستقر والمحايد', es: 'Equilibrio estable, inestable e indiferente', fr: 'Équilibre stable, instable et indifférent', hi: 'स्थायी, अस्थायी और उदासीन संतुलन', id: 'Kesetimbangan stabil, labil, dan netral', pt: 'Equilíbrio estável, instável e indiferente' },
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '안정·불안정·중립 평형',
+    en: 'Stable, unstable and neutral equilibrium',
+    ja: '安定・不安定・中立の平衡',
+    zh: '稳定、不稳定与随遇平衡',
+    ar: 'الاتزان المستقر وغير المستقر والمحايد',
+    es: 'Equilibrio estable, inestable e indiferente',
+    fr: 'Équilibre stable, instable et indifférent',
+    hi: 'स्थायी, अस्थायी और उदासीन संतुलन',
+    id: 'Kesetimbangan stabil, labil, dan netral',
+    pt: 'Equilíbrio estável, instável e indiferente',
+  },
   'label.stage': { ko: '세 바닥', en: 'Three grounds', ja: '3つの地面', zh: '三种地面', ar: 'ثلاث أرضيات', es: 'Tres suelos', fr: 'Trois sols', hi: 'तीन धरातल', id: 'Tiga permukaan', pt: 'Três terrenos' },
   'label.view': { ko: '나란히', en: 'Side by side', ja: '並べて', zh: '并排', ar: 'جنبًا إلى جنب', es: 'Lado a lado', fr: 'Côte à côte', hi: 'साथ-साथ', id: 'Berdampingan', pt: 'Lado a lado' },
   'label.stable': { ko: '안정', en: 'stable', ja: '安定', zh: '稳定', ar: 'مستقر', es: 'estable', fr: 'stable', hi: 'स्थायी', id: 'stabil', pt: 'estável' },
@@ -164,7 +176,7 @@ export const equilibriumPointsSchema: BundleSchema = {
   id: EQUILIBRIUM_POINTS_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 셋이 옮겨지고, 놓이고, 갈린다.

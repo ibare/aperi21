@@ -98,7 +98,8 @@ export const newtonsRingsMessages = Object.freeze({
     id: 'Cincin Newton',
     pt: 'Anéis de Newton',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '곡면과 평면 사이의 간섭',
     en: 'Interference between a curved and a flat surface',
     ja: '曲面と平面のあいだの干渉',
@@ -324,7 +325,7 @@ export const newtonsRingsSchema: BundleSchema = {
   id: NEWTONS_RINGS_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 두 그림이 있고, 계단이 하나씩 그어지고, 다시 처음으로.

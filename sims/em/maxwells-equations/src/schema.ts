@@ -82,17 +82,18 @@ export const maxwellsEquationsMessages = Object.freeze({
     id: 'Persamaan Maxwell',
     pt: 'Equações de Maxwell',
   },
-  'label.operation': {
-    ko: '전자기를 묶는 네 식',
-    en: 'Four equations that bind electromagnetism',
-    ja: '電磁気をまとめる四つの式',
-    zh: '统一电磁学的四个方程',
-    ar: 'أربع معادلات تجمع الكهرومغناطيسية',
-    es: 'Cuatro ecuaciones que unen el electromagnetismo',
-    fr: 'Quatre équations qui unissent l’électromagnétisme',
-    hi: 'विद्युत चुंबकत्व को बाँधने वाले चार समीकरण',
-    id: 'Empat persamaan yang mengikat elektromagnetisme',
-    pt: 'Quatro equações que unem o eletromagnetismo',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '전기와 자기가 서로를 낳는 사슬',
+    en: 'The chain in which electricity and magnetism give rise to each other',
+    ja: '電気と磁気が互いを生む連鎖',
+    zh: '电与磁相互产生的链条',
+    ar: 'السلسلة التي يولّد فيها الكهرباء والمغناطيس أحدهما الآخر',
+    es: 'La cadena en la que la electricidad y el magnetismo se generan mutuamente',
+    fr: 'La chaîne où l’électricité et le magnétisme s’engendrent l’un l’autre',
+    hi: 'वह शृंखला जिसमें विद्युत और चुंबकत्व एक-दूसरे को जन्म देते हैं',
+    id: 'Rantai tempat listrik dan magnet saling membangkitkan',
+    pt: 'A cadeia em que a eletricidade e o magnetismo se geram um ao outro',
   },
   'label.stage': {
     ko: '고리 사슬',
@@ -211,7 +212,7 @@ export const maxwellsEquationsSchema: BundleSchema = {
   id: MAXWELLS_EQUATIONS_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 사슬이 번지는 중이다. 독자가 직접 해 볼 것이 없다.

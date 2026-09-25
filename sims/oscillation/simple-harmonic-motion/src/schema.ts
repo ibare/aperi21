@@ -100,7 +100,8 @@ export const simpleHarmonicMotionMessages = Object.freeze({
     id: 'Gerak harmonik sederhana',
     pt: 'Movimento harmônico simples',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '복원력이 변위에 비례하는 운동',
     en: 'Motion under a restoring force proportional to displacement',
     ja: '変位に比例する復元力による運動',
@@ -229,7 +230,7 @@ export const simpleHarmonicMotionSchema: BundleSchema = {
   id: SIMPLE_HARMONIC_MOTION_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 추가 오르내리고, 펜이 곡선을 펼친다.

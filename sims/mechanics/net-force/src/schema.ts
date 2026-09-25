@@ -86,7 +86,8 @@ export const netForceMessages = Object.freeze({
     id: 'Gaya total',
     pt: 'Força resultante',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '여러 힘의 벡터 합',
     en: 'Vector sum of several forces',
     ja: '複数の力のベクトル和',
@@ -178,7 +179,7 @@ export const netForceSchema: BundleSchema = {
   id: NET_FORCE_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 조합 셋을 돌아가며 보이는 것으로 "특정 경우가 아니다" 가 전해진다.

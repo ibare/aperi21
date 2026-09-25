@@ -92,7 +92,8 @@ export const chainReactionMessages = Object.freeze({
     id: 'Reaksi berantai',
     pt: 'Reação em cadeia',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '중성자가 이어가는 분열',
     en: 'Fission carried on by neutrons',
     ja: '中性子がつないでいく核分裂',
@@ -259,7 +260,7 @@ export const chainReactionSchema: BundleSchema = {
   id: CHAIN_REACTION_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 세 판이 k 만 다르게 나란히 번지며 주장이 끝난다.

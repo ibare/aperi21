@@ -101,7 +101,8 @@ export const gravitationalPotentialEnergyGeneralMessages = Object.freeze({
     id: 'Energi potensial gravitasi (umum)',
     pt: 'Energia potencial gravitacional (geral)',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '무한대를 기준으로 한 음의 에너지',
     en: 'A negative energy measured from infinity',
     ja: '無限遠を基準にした負のエネルギー',
@@ -269,7 +270,7 @@ export const gravitationalPotentialEnergyGeneralSchema: BundleSchema = {
   id: GRAVITATIONAL_POTENTIAL_ENERGY_GENERAL_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 선을 올려 보는 일은 세 샷의 자동 진행이 한다 — NOTES (b).

@@ -86,7 +86,8 @@ export const birefringenceMessages = Object.freeze({
     id: 'Birefringensi',
     pt: 'Birrefringência',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '방향에 따라 다른 굴절률',
     en: 'Refractive index that depends on direction',
     ja: '方向によって異なる屈折率',
@@ -373,7 +374,7 @@ export const birefringenceSchema: BundleSchema = {
   id: BIREFRINGENCE_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 결정이 스스로 한 바퀴 돌고, 편광판이 스스로 얹혀 돈다.

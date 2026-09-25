@@ -123,17 +123,18 @@ export const magneticMaterialsMessages = Object.freeze({
     id: 'Bahan magnetik',
     pt: 'Materiais magnéticos',
   },
-  'label.operation': {
-    ko: '강자성 · 상자성 · 반자성',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '강자성·상자성·반자성',
     en: 'Ferromagnetic, paramagnetic and diamagnetic',
     ja: '強磁性・常磁性・反磁性',
-    zh: '铁磁性、顺磁性与抗磁性',
-    ar: 'حديدي المغناطيسية ومسايِر المغناطيسية ومعاكس المغناطيسية',
-    es: 'Ferromagnético, paramagnético y diamagnético',
-    fr: 'Ferromagnétique, paramagnétique et diamagnétique',
+    zh: '铁磁性、顺磁性、抗磁性',
+    ar: 'الحديدية المغناطيسية والبارامغناطيسية والديامغناطيسية',
+    es: 'Ferromagnetismo, paramagnetismo y diamagnetismo',
+    fr: 'Ferromagnétisme, paramagnétisme et diamagnétisme',
     hi: 'लौहचुंबकीय, अनुचुंबकीय और प्रतिचुंबकीय',
     id: 'Feromagnetik, paramagnetik, dan diamagnetik',
-    pt: 'Ferromagnético, paramagnético e diamagnético',
+    pt: 'Ferromagnetismo, paramagnetismo e diamagnetismo',
   },
   'label.stage': {
     ko: '센 자석 옆에 매단 세 막대',
@@ -324,7 +325,7 @@ export const magneticMaterialsSchema: BundleSchema = {
   id: MAGNETIC_MATERIALS_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 자석이 다가오는 것을 시간표가 보여 준다.

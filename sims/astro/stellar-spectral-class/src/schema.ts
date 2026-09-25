@@ -224,7 +224,8 @@ export const stellarSpectralClassMessages = Object.freeze({
     id: 'Kelas spektrum bintang',
     pt: 'Classes espectrais estelares',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '온도가 정하는 흡수선 무늬',
     en: 'Absorption-line patterns set by temperature',
     ja: '温度が決める吸収線の模様',
@@ -655,7 +656,7 @@ export const stellarSpectralClassSchema: BundleSchema = {
   id: STELLAR_SPECTRAL_CLASS_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 별이 O 에서 M 까지 식어 가며 무늬가 바뀌고, 다시 뜨거워진다.

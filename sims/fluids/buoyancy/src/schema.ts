@@ -93,17 +93,18 @@ export const buoyancyMessages = Object.freeze({
     id: 'Gaya apung',
     pt: 'Empuxo',
   },
-  'label.operation': {
-    ko: '밀려난 유체의 무게만큼',
-    en: 'As much as the weight of the fluid pushed aside',
-    ja: '押しのけた流体の重さの分だけ',
-    zh: '等于被排开流体的重量',
-    ar: 'بقدر وزن المائع المُزاح',
-    es: 'Tanto como el peso del fluido desplazado',
-    fr: 'Autant que le poids du fluide déplacé',
-    hi: 'हटाए गए तरल के भार जितना',
-    id: 'Sebesar berat fluida yang dipindahkan',
-    pt: 'Tanto quanto o peso do fluido deslocado',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '아랫면이 더 세게 밀리는 만큼 남는 위쪽 힘',
+    en: 'The upward force left over as the bottom face is pushed harder',
+    ja: '下の面がより強く押される分だけ残る上向きの力',
+    zh: '下表面被推得更用力，由此剩下的向上的力',
+    ar: 'القوة المتجهة إلى الأعلى التي تبقى لأن الوجه السفلي يُدفع بقوة أكبر',
+    es: 'La fuerza hacia arriba que queda porque la cara inferior es empujada con más fuerza',
+    fr: 'La force vers le haut qui reste parce que la face inférieure est poussée plus fort',
+    hi: 'निचली सतह पर अधिक ज़ोर पड़ने से बचा रहने वाला ऊपर की ओर बल',
+    id: 'Gaya ke atas yang tersisa karena permukaan bawah terdorong lebih kuat',
+    pt: 'A força para cima que sobra porque a face de baixo é empurrada com mais força',
   },
   'label.stage': {
     ko: '물통',
@@ -222,7 +223,7 @@ export const buoyancySchema: BundleSchema = {
   id: BUOYANCY_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기가 잠겨 드는 구간과 더 깊이 가는 구간을 모두 지나며 주장을 마친다.

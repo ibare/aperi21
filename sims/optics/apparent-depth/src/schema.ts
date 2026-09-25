@@ -92,7 +92,8 @@ export const apparentDepthMessages = Object.freeze({
     id: 'Kedalaman semu',
     pt: 'Profundidade aparente',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '물속 물체가 떠 보이는 이유',
     en: 'Why things under water look raised',
     ja: '水中の物体が浮き上がって見えるわけ',
@@ -102,7 +103,7 @@ export const apparentDepthMessages = Object.freeze({
     fr: 'Pourquoi les objets sous l’eau semblent surélevés',
     hi: 'पानी के नीचे की वस्तुएँ ऊपर उठी हुई क्यों दिखती हैं',
     id: 'Mengapa benda di bawah air tampak terangkat',
-    pt: "Por que objetos debaixo d'água parecem elevados",
+    pt: 'Por que objetos debaixo d\'água parecem elevados',
   },
   'label.stage': {
     ko: '동전을 바로 위에서',
@@ -272,7 +273,7 @@ export const apparentDepthSchema: BundleSchema = {
   id: APPARENT_DEPTH_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

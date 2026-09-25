@@ -114,7 +114,19 @@ export const MIDDLE_COUNT = 5;
 
 export const equilibriumOfForcesMessages = Object.freeze({
   'label.title': { ko: '힘의 평형', en: 'Equilibrium of forces', ja: '力のつり合い', zh: '力的平衡', ar: 'اتزان القوى', es: 'Equilibrio de fuerzas', fr: 'Équilibre des forces', hi: 'बलों का संतुलन', id: 'Kesetimbangan gaya', pt: 'Equilíbrio de forças' },
-  'label.operation': { ko: '알짜힘이 0인 상태', en: 'Zero net force', ja: '合力が0の状態', zh: '合力为零', ar: 'محصلة القوى صفر', es: 'Fuerza neta nula', fr: 'Force résultante nulle', hi: 'शून्य परिणामी बल', id: 'Gaya total nol', pt: 'Força resultante nula' },
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '알짜힘이 0인 상태',
+    en: 'Zero net force',
+    ja: '合力が0の状態',
+    zh: '合力为零',
+    ar: 'محصلة القوى صفر',
+    es: 'Fuerza neta nula',
+    fr: 'Force résultante nulle',
+    hi: 'शून्य परिणामी बल',
+    id: 'Gaya total nol',
+    pt: 'Força resultante nula',
+  },
   'label.stage': { ko: '기본', en: 'Default', ja: '標準', zh: '默认', ar: 'افتراضي', es: 'Predeterminada', fr: 'Par défaut', hi: 'डिफ़ॉल्ट', id: 'Bawaan', pt: 'Padrão' },
   'label.view': { ko: '기본', en: 'Default', ja: '標準', zh: '默认', ar: 'افتراضي', es: 'Predeterminada', fr: 'Par défaut', hi: 'डिफ़ॉल्ट', id: 'Bawaan', pt: 'Padrão' },
   'caption.closed': {
@@ -173,7 +185,7 @@ export const equilibriumOfForcesSchema: BundleSchema = {
   id: EQUILIBRIUM_OF_FORCES_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
 

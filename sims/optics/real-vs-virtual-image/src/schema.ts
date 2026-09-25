@@ -89,7 +89,8 @@ export const realVsVirtualImageMessages = Object.freeze({
     id: 'Bayangan nyata dan maya',
     pt: 'Imagens reais e virtuais',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '빛이 실제로 모이는가',
     en: 'Does the light really meet?',
     ja: '光は本当に集まるのか？',
@@ -304,7 +305,7 @@ export const realVsVirtualImageSchema: BundleSchema = {
   id: REAL_VS_VIRTUAL_IMAGE_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 물체를 초점 밖 → 안으로 옮기는 것을 자동 진행으로 보인다 (controllers.ts).

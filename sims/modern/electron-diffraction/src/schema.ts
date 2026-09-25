@@ -130,7 +130,8 @@ export const electronDiffractionMessages = Object.freeze({
     id: 'Difraksi elektron',
     pt: 'Difração de elétrons',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '물질파의 관측 증거',
     en: 'Seeing matter waves',
     ja: '物質波を見る',
@@ -283,7 +284,7 @@ export const electronDiffractionSchema: BundleSchema = {
   id: ELECTRON_DIFFRACTION_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 고리가 있고, 전압이 오르고, 고리가 좁아진다.

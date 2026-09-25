@@ -114,7 +114,8 @@ export const sternGerlachMessages = Object.freeze({
     id: 'Eksperimen Stern–Gerlach',
     pt: 'Experimento de Stern–Gerlach',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '갈라지는 원자 빔',
     en: 'An atomic beam that splits',
     ja: '分かれる原子ビーム',
@@ -315,7 +316,7 @@ export const sternGerlachSchema: BundleSchema = {
   id: STERN_GERLACH_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 예상한 띠와 실제 두 점을 차례로 보이며 할 말을 마친다.

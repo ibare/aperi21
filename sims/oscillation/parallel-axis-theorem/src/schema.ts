@@ -95,7 +95,8 @@ export const parallelAxisTheoremMessages = Object.freeze({
     id: 'Teorema sumbu sejajar',
     pt: 'Teorema dos eixos paralelos',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '축을 옮길 때의 관성 모멘트',
     en: 'Moment of inertia when the axis is moved',
     ja: '軸をずらしたときの慣性モーメント',
@@ -314,7 +315,7 @@ export const parallelAxisTheoremSchema: BundleSchema = {
   id: PARALLEL_AXIS_THEOREM_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

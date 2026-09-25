@@ -82,7 +82,8 @@ export const forceOnCurrentWireMessages = Object.freeze({
     id: 'Gaya pada kawat berarus',
     pt: 'Força sobre um fio percorrido por corrente',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '도선에 작용하는 자기력',
     en: 'The magnetic force on a wire carrying a current',
     ja: '電流が流れる導線にはたらく磁気力',
@@ -286,7 +287,7 @@ export const forceOnCurrentWireSchema: BundleSchema = {
   id: FORCE_ON_CURRENT_WIRE_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

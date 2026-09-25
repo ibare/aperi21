@@ -70,7 +70,8 @@ export const boundaryLayerMessages = Object.freeze({
     id: 'Lapisan batas',
     pt: 'Camada limite',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '벽 근처에서 속도가 0이 되는 층',
     en: 'The layer near a wall where the flow slows to zero',
     ja: '壁の近くで流れがゼロまで遅くなる層',
@@ -163,7 +164,7 @@ export const boundaryLayerSchema: BundleSchema = {
   id: BOUNDARY_LAYER_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 자동 진행 한 번으로 「얇은 층 안에서만 · 내려갈수록 두꺼워진다」 가 끝난다.

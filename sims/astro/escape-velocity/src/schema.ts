@@ -92,7 +92,8 @@ export const escapeVelocityMessages = Object.freeze({
     id: 'Kecepatan lepas',
     pt: 'Velocidade de escape',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '중력을 벗어나는 최소 속도',
     en: 'The least speed that breaks free of gravity',
     ja: '重力を振り切る最小の速さ',
@@ -246,7 +247,7 @@ export const escapeVelocitySchema: BundleSchema = {
   id: ESCAPE_VELOCITY_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 속도를 조금씩 올려 보는 일은 다섯 샷의 자동 진행이 한다 — 슬라이더를 두면

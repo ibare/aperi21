@@ -103,7 +103,8 @@ export const fieldOfDipoleMessages = Object.freeze({
     id: 'Medan listrik dipol',
     pt: 'Campo elétrico de um dipolo',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '가까운 두 반대 전하',
     en: 'Two nearby opposite charges',
     ja: '近くにある二つの反対符号の電荷',
@@ -315,7 +316,7 @@ export const fieldOfDipoleSchema: BundleSchema = {
   id: FIELD_OF_DIPOLE_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 전하를 끄는 그림은 이웃 `field-lines` 의 몫이다.

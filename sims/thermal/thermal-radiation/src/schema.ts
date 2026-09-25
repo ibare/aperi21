@@ -118,7 +118,8 @@ export const thermalRadiationMessages = Object.freeze({
     id: 'Radiasi termal',
     pt: 'Radiação térmica',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '매질 없이 전달되는 열',
     en: 'Heat that travels without a medium',
     ja: '媒質なしに伝わる熱',
@@ -343,7 +344,7 @@ export const thermalRadiationSchema: BundleSchema = {
   id: THERMAL_RADIATION_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 공기가 빠지고, 가리개가 걷히고, 판이 데워지고, 다시 막힌다.

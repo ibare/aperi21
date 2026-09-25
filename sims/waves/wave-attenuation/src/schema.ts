@@ -99,17 +99,18 @@ export const waveAttenuationMessages = Object.freeze({
     id: 'Atenuasi gelombang',
     pt: 'Atenuação de uma onda',
   },
-  'label.operation': {
-    ko: '매질이 흡수하는 에너지',
-    en: 'Energy absorbed by the medium',
-    ja: '媒質に吸収されるエネルギー',
-    zh: '被介质吸收的能量',
-    ar: 'الطاقة التي يمتصها الوسط',
-    es: 'Energía absorbida por el medio',
-    fr: 'Énergie absorbée par le milieu',
-    hi: 'माध्यम द्वारा अवशोषित ऊर्जा',
-    id: 'Energi yang diserap medium',
-    pt: 'Energia absorvida pelo meio',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '같은 거리마다 같은 비율로 낮아지는 진폭',
+    en: 'An amplitude that falls by the same ratio over each equal distance',
+    ja: '同じ距離ごとに同じ割合で小さくなる振幅',
+    zh: '每经过相同距离就按相同比例减小的振幅',
+    ar: 'سعة تنخفض بالنسبة نفسها عبر كل مسافة متساوية',
+    es: 'Una amplitud que baja en la misma proporción en cada distancia igual',
+    fr: 'Une amplitude qui baisse dans la même proportion à chaque distance égale',
+    hi: 'ऐसा आयाम जो हर समान दूरी पर समान अनुपात में घटता है',
+    id: 'Amplitudo yang turun dengan rasio sama pada setiap jarak yang sama',
+    pt: 'Uma amplitude que diminui na mesma proporção a cada distância igual',
   },
   'label.stage': {
     ko: '흡수하는 줄',
@@ -205,7 +206,7 @@ export const waveAttenuationSchema: BundleSchema = {
   id: WAVE_ATTENUATION_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 마루가 건너가며 막대를 남기고, 다 선 그림을 보인 뒤 다시 시작한다.

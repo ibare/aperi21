@@ -67,7 +67,8 @@ export const expandingUniverseMessages = Object.freeze({
     id: 'Alam semesta yang mengembang',
     pt: 'O universo em expansão',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '모든 방향으로 멀어지는 은하들',
     en: 'Galaxies receding in every direction',
     ja: 'あらゆる方向へ遠ざかる銀河',
@@ -245,7 +246,7 @@ export const expandingUniverseSchema: BundleSchema = {
   id: EXPANDING_UNIVERSE_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 늘어나는 중이고, 관찰 은하를 옮겨 한 번 더 늘인다.

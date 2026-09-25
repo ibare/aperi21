@@ -130,7 +130,8 @@ export const eddyCurrentMessages = Object.freeze({
     id: 'Arus pusar',
     pt: 'Correntes de Foucault',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '덩어리 도체 속의 유도 전류',
     en: 'Induced currents inside a solid conductor',
     ja: '塊状の導体の中の誘導電流',
@@ -277,7 +278,7 @@ export const eddyCurrentSchema: BundleSchema = {
   id: EDDY_CURRENT_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 두 자석이 이미 떨어지고 있다.

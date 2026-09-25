@@ -92,7 +92,8 @@ export const lightClockMessages = Object.freeze({
     id: 'Jam cahaya',
     pt: 'Relógio de luz',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '시간 지연을 유도하는 사고 실험',
     en: 'The thought experiment behind time dilation',
     ja: '時間の遅れを導く思考実験',
@@ -294,7 +295,7 @@ export const lightClockSchema: BundleSchema = {
   id: LIGHT_CLOCK_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 빛이 떠나고, 늦게 닿고, 그 길 위에 삼각형이 선다.

@@ -142,7 +142,8 @@ export const selfInductanceMessages = Object.freeze({
     id: 'Induktansi diri',
     pt: 'Autoindutância',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '자기 자신의 자속 변화',
     en: 'A coil opposing changes in its own flux',
     ja: '自らの磁束の変化に逆らうコイル',
@@ -344,7 +345,7 @@ export const selfInductanceSchema: BundleSchema = {
   id: SELF_INDUCTANCE_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 전류가 흐르고 있고, 스위치를 끊고, 다시 닫는다.

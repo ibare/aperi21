@@ -110,7 +110,8 @@ export const elasticPotentialEnergyMessages = Object.freeze({
     id: 'Energi potensial elastis',
     pt: 'Energia potencial elástica',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '변형에 저장된 에너지',
     en: 'The energy stored in a deformation',
     ja: '変形にたくわえられたエネルギー',
@@ -295,7 +296,7 @@ export const elasticPotentialEnergySchema: BundleSchema = {
   id: ELASTIC_POTENTIAL_ENERGY_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 눌리고, 튀어 오르고, 다시 눌린다.

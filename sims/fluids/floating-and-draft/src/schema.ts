@@ -94,7 +94,8 @@ export const floatingAndDraftMessages = Object.freeze({
     id: 'Seberapa dalam benda terapung tenggelam',
     pt: 'Quanto afunda um corpo que flutua',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '잠기는 부피가 정해지는 방식',
     en: 'What sets the submerged volume',
     ja: '沈んだ部分の体積を決めるもの',
@@ -285,7 +286,7 @@ export const floatingAndDraftSchema: BundleSchema = {
   id: FLOATING_AND_DRAFT_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기가 세 밀도(물체 쪽)와 두 밀도(물 쪽)를 모두 지나며 주장을 마친다.

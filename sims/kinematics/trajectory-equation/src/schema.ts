@@ -77,17 +77,18 @@ export const trajectoryEquationMessages = Object.freeze({
     id: 'Persamaan lintasan',
     pt: 'Equação da trajetória',
   },
-  'label.operation': {
-    ko: '시간을 소거해 얻은 경로의 식',
-    en: 'The path left when time is eliminated',
-    ja: '時間を消去したあとに残る経路',
-    zh: '消去时间后留下的路径',
-    ar: 'المسار المتبقي عند حذف الزمن',
-    es: 'La trayectoria que queda al eliminar el tiempo',
-    fr: 'La trajectoire qui reste quand on élimine le temps',
-    hi: 'समय को विलोपित करने पर बचा पथ',
-    id: 'Lintasan yang tersisa ketika waktu dieliminasi',
-    pt: 'A trajetória que resta quando o tempo é eliminado',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '시각을 걷어 내도 남는 가로와 높이 사이의 관계',
+    en: 'The relation between horizontal distance and height that remains once time is removed',
+    ja: '時間を取り除いても残る、横の距離と高さの関係',
+    zh: '消去时间后仍留下的水平距离与高度之间的关系',
+    ar: 'العلاقة بين المسافة الأفقية والارتفاع التي تبقى بعد إزالة الزمن',
+    es: 'La relación entre distancia horizontal y altura que queda al eliminar el tiempo',
+    fr: 'La relation entre distance horizontale et hauteur qui reste une fois le temps éliminé',
+    hi: 'समय को हटाने के बाद भी बचा रहने वाला क्षैतिज दूरी और ऊँचाई का संबंध',
+    id: 'Hubungan antara jarak mendatar dan ketinggian yang tersisa setelah waktu dihilangkan',
+    pt: 'A relação entre distância horizontal e altura que resta quando o tempo é eliminado',
   },
   'label.stage': {
     ko: '기본',
@@ -199,7 +200,7 @@ export const trajectoryEquationSchema: BundleSchema = {
   id: TRAJECTORY_EQUATION_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 발사각 슬라이더는 "각에 따라 경로가 달라진다" 는 다른 주장이다.

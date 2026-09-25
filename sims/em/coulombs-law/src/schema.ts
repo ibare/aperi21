@@ -77,17 +77,18 @@ export const coulombsLawMessages = Object.freeze({
     id: 'Hukum Coulomb',
     pt: 'Lei de Coulomb',
   },
-  'label.operation': {
-    ko: '전하 사이의 힘',
-    en: 'The force between charges',
-    ja: '電荷の間にはたらく力',
-    zh: '电荷之间的力',
-    ar: 'القوة بين الشحنات',
-    es: 'La fuerza entre cargas',
-    fr: 'La force entre des charges',
-    hi: 'आवेशों के बीच बल',
-    id: 'Gaya antarmuatan',
-    pt: 'A força entre cargas',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '벌린 배수의 제곱만큼 약해지는 전하 사이의 힘',
+    en: 'The force between charges, weakening as the square of how many times farther apart they are',
+    ja: '離した倍数の二乗だけ弱くなる電荷どうしの力',
+    zh: '电荷之间的力，随拉开倍数的平方减弱',
+    ar: 'القوة بين الشحنات، تضعف بمربع عدد مرات تباعدها',
+    es: 'La fuerza entre cargas, que se debilita con el cuadrado de cuántas veces se alejan',
+    fr: 'La force entre charges, qui faiblit comme le carré du nombre de fois qu’on les écarte',
+    hi: 'आवेशों के बीच का बल, जो दूरी जितने गुना बढ़े उसके वर्ग के अनुपात में घटता है',
+    id: 'Gaya antarmuatan yang melemah sebesar kuadrat kelipatan jaraknya',
+    pt: 'A força entre cargas, que enfraquece com o quadrado de quantas vezes se afastam',
   },
   'label.stage': {
     ko: '벌어지는 세 쌍',
@@ -257,7 +258,7 @@ export const coulombsLawSchema: BundleSchema = {
   id: COULOMBS_LAW_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 두 쌍이 차례로 벌어지고, 멈춘 그림을 보인 뒤 다시 모인다.

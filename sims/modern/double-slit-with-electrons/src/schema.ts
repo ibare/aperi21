@@ -46,7 +46,8 @@ export const doubleSlitWithElectronsMessages = Object.freeze({
     id: 'Celah ganda dengan elektron',
     pt: 'Fenda dupla com elétrons',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '하나씩 보내도 생기는 무늬',
     en: 'A pattern that forms one electron at a time',
     ja: '電子一個ずつでできていく模様',
@@ -188,7 +189,7 @@ export const doubleSlitWithElectronsSchema: BundleSchema = {
   id: DOUBLE_SLIT_WITH_ELECTRONS_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 누르지 않아도 점이 쌓여 무늬가 된다.

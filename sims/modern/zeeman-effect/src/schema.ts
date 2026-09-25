@@ -125,7 +125,8 @@ export const zeemanEffectMessages = Object.freeze({
     id: 'Efek Zeeman',
     pt: 'Efeito Zeeman',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '자기장이 가르는 준위',
     en: 'Energy levels split by a magnetic field',
     ja: '磁場で分裂するエネルギー準位',
@@ -315,7 +316,7 @@ export const zeemanEffectSchema: BundleSchema = {
   id: ZEEMAN_EFFECT_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 자기장을 켜고 키우고 끄며 할 말을 마친다.

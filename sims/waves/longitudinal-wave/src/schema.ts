@@ -113,17 +113,18 @@ export const longitudinalWaveMessages = Object.freeze({
     id: 'Gelombang longitudinal',
     pt: 'Onda longitudinal',
   },
-  'label.operation': {
-    ko: '입자는 제자리에서 흔들리고, 빽빽한 자리가 나아간다',
-    en: 'Particles sway in place while the crowded places travel on',
-    ja: '粒子はその場で揺れ、密な場所が進んでいく',
-    zh: '粒子在原地摆动，密集之处向前推进',
-    ar: 'تتأرجح الجسيمات في مكانها بينما تمضي المواضع المزدحمة قُدُمًا',
-    es: 'Las partículas oscilan en su sitio mientras las zonas apretadas avanzan',
-    fr: 'Les particules oscillent sur place tandis que les zones serrées avancent',
-    hi: 'कण अपनी जगह डोलते हैं, जबकि घने स्थान आगे बढ़ते जाते हैं',
-    id: 'Partikel bergoyang di tempat sementara bagian yang rapat terus bergerak maju',
-    pt: 'As partículas oscilam no lugar enquanto as regiões apertadas avançam',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '진동 방향이 진행 방향과 나란함',
+    en: 'Vibration parallel to the direction of travel',
+    ja: '振動の向きが進む向きと平行',
+    zh: '振动方向与传播方向平行',
+    ar: 'اهتزاز موازٍ لاتجاه الانتشار',
+    es: 'Vibración paralela a la dirección de propagación',
+    fr: 'Une vibration parallèle à la direction de propagation',
+    hi: 'संचरण की दिशा के समांतर कंपन',
+    id: 'Getaran yang sejajar dengan arah rambat',
+    pt: 'Vibração paralela à direção de propagação',
   },
   'label.stage': {
     ko: '공기',
@@ -193,7 +194,7 @@ export const longitudinalWaveSchema: BundleSchema = {
   id: LONGITUDINAL_WAVE_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 진폭 · 파장 손잡이를 두지 않는다 — 「무엇이 나아가는가」 에 답을 더하지 않는다.

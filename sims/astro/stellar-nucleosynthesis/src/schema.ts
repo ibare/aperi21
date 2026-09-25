@@ -34,7 +34,8 @@ export const stellarNucleosynthesisMessages = Object.freeze({
     id: 'Nukleosintesis bintang',
     pt: 'Nucleossíntese estelar',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '무거운 원소가 별에서 만들어지는 것',
     en: 'How heavier elements are made inside stars',
     ja: '重い元素が星の内部でつくられるしくみ',
@@ -464,7 +465,7 @@ export const stellarNucleosynthesisSchema: BundleSchema = {
   id: STELLAR_NUCLEOSYNTHESIS_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 한 겹씩 쌓이고, 철에서 멈추고, 다시 처음부터.

@@ -133,7 +133,8 @@ export const objectColorMessages = Object.freeze({
     id: 'Warna suatu benda',
     pt: 'A cor de um objeto',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '물체가 되쏘는 빛이 정하는 색',
     en: 'The colour set by the light an object sends back',
     ja: '物体がはね返す光が決める色',
@@ -261,7 +262,7 @@ export const objectColorSchema: BundleSchema = {
   id: OBJECT_COLOR_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흰빛 · 빨간빛 · 파란빛이 차례로 사과를 비춘다.

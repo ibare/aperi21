@@ -116,7 +116,19 @@ export const FADE = 0.6;
 
 export const ohmsLawMessages = Object.freeze({
   'label.title': { ko: '옴 법칙', en: "Ohm's law", ja: 'オームの法則', zh: '欧姆定律', ar: 'قانون أوم', es: 'Ley de Ohm', fr: 'Loi d’Ohm', hi: 'ओम का नियम', id: 'Hukum Ohm', pt: 'Lei de Ohm' },
-  'label.operation': { ko: '전압·전류·저항', en: 'Voltage, current and resistance', ja: '電圧、電流、抵抗', zh: '电压、电流与电阻', ar: 'الجهد والتيار والمقاومة', es: 'Voltaje, corriente y resistencia', fr: 'Tension, courant et résistance', hi: 'वोल्टता, धारा और प्रतिरोध', id: 'Tegangan, arus, dan hambatan', pt: 'Tensão, corrente e resistência' },
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '전압·전류·저항',
+    en: 'Voltage, current and resistance',
+    ja: '電圧、電流、抵抗',
+    zh: '电压、电流与电阻',
+    ar: 'الجهد والتيار والمقاومة',
+    es: 'Voltaje, corriente y resistencia',
+    fr: 'Tension, courant et résistance',
+    hi: 'वोल्टता, धारा और प्रतिरोध',
+    id: 'Tegangan, arus, dan hambatan',
+    pt: 'Tensão, corrente e resistência',
+  },
   'label.stage': { ko: '두 저항', en: 'Two resistors', ja: '二つの抵抗', zh: '两个电阻', ar: 'مقاومتان', es: 'Dos resistencias', fr: 'Deux résistances', hi: 'दो प्रतिरोध', id: 'Dua hambatan', pt: 'Dois resistores' },
   'label.view': { ko: '회로와 I–V 평면', en: 'Circuits and the I–V plane', ja: '回路と I–V 平面', zh: '电路与 I–V 平面', ar: 'الدوائر ومستوى I–V', es: 'Circuitos y el plano I–V', fr: 'Les circuits et le plan I–V', hi: 'परिपथ और I–V तल', id: 'Rangkaian dan bidang I–V', pt: 'Circuitos e o plano I–V' },
   /** 값이 끼는 이름표 — 단위 기호는 표식이지만 값이 끼므로 문안 키로 둔다 (C1). */
@@ -208,7 +220,7 @@ export const ohmsLawSchema: BundleSchema = {
   id: OHMS_LAW_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흐르고, 전압이 한 칸씩 오르고, 점이 한 직선에 놓인다.

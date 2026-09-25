@@ -99,7 +99,8 @@ export const comptonScatteringMessages = Object.freeze({
     id: 'Hamburan Compton',
     pt: 'Espalhamento Compton',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '광자가 운동량을 가진다는 증거',
     en: 'Evidence that a photon carries momentum',
     ja: '光子が運動量をもつ証拠',
@@ -254,7 +255,7 @@ export const comptonScatteringSchema: BundleSchema = {
   id: COMPTON_SCATTERING_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 다섯 각이 차례로 쌓여 부채꼴에서 한눈에 견줘진다.

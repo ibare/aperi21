@@ -109,7 +109,8 @@ export const slitWidthAndDiffractionMessages = Object.freeze({
     id: 'Lebar Celah dan Difraksi',
     pt: 'Largura da Fenda e Difração',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '파장과 폭의 비가 정하는 퍼짐',
     en: 'How the gap-to-wavelength ratio sets the spread',
     ja: 'すき間と波長の比が広がりを決める',
@@ -214,7 +215,7 @@ export const slitWidthAndDiffractionSchema: BundleSchema = {
   id: SLIT_WIDTH_AND_DIFFRACTION_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 두 폭을 나란히 두어 자동 진행만으로 견줌이 끝난다.

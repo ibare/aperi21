@@ -100,17 +100,18 @@ export const lenzLawMessages = Object.freeze({
     id: 'Hukum Lenz',
     pt: 'Lei de Lenz',
   },
-  'label.operation': {
-    ko: '전류는 뒤집혀도 힘은 늘 움직임을 거스른다',
-    en: 'The current flips, the force never does',
-    ja: '電流は反転しても、力は決して反転しない',
-    zh: '电流会反向，力却从不反向',
-    ar: 'ينقلب التيار، أما القوة فلا تنقلب أبدًا',
-    es: 'La corriente se invierte, la fuerza nunca',
-    fr: 'Le courant s’inverse, la force jamais',
-    hi: 'धारा पलटती है, बल कभी नहीं',
-    id: 'Arus berbalik, gayanya tidak pernah',
-    pt: 'A corrente se inverte, a força nunca',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '변화를 방해하는 유도 전류',
+    en: 'An induced current that opposes the change',
+    ja: '変化を妨げる誘導電流',
+    zh: '阻碍变化的感应电流',
+    ar: 'تيار مستحث يعاكس التغيّر',
+    es: 'Una corriente inducida que se opone al cambio',
+    fr: 'Un courant induit qui s’oppose au changement',
+    hi: 'परिवर्तन का विरोध करने वाली प्रेरित धारा',
+    id: 'Arus induksi yang melawan perubahan',
+    pt: 'Uma corrente induzida que se opõe à mudança',
   },
   'label.stage': {
     ko: '코일과 자석',
@@ -259,7 +260,7 @@ export const lenzLawSchema: BundleSchema = {
   id: LENZ_LAW_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'linear',
 
   // 자동 진행만으로 주장은 끝난다. 그와 별개로 자석을 직접 끌 수 있다

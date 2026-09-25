@@ -47,7 +47,8 @@ export const connectedBodiesMessages = Object.freeze({
     id: 'Benda-benda terhubung',
     pt: 'Corpos ligados',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '함께 움직이는 계의 가속도',
     en: 'Acceleration of bodies moving together',
     ja: '一緒に動く物体の加速度',
@@ -142,7 +143,7 @@ export const connectedBodiesSchema: BundleSchema = {
   id: CONNECTED_BODIES_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 세 줄이 가능한 나눔(통째 / 가벼운 앞 / 무거운 앞)을 이미 다 보여 준다.

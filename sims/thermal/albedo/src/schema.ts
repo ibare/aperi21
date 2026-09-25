@@ -103,7 +103,8 @@ export const albedoMessages = Object.freeze({
     id: 'Albedo',
     pt: 'Albedo',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '되돌아가는 빛의 몫',
     en: 'The share of light sent back',
     ja: '送り返される光の割合',
@@ -304,7 +305,7 @@ export const albedoSchema: BundleSchema = {
   id: ALBEDO_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 햇빛이 네 표면에 떨어지고, 눈이 녹고, 막대가 갈린다.

@@ -36,7 +36,8 @@ export const keplersSecondLawMessages = Object.freeze({
     id: 'Hukum Kedua Kepler',
     pt: 'Segunda lei de Kepler',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '같은 시간에 같은 넓이',
     en: 'Equal areas in equal times',
     ja: '等しい時間に等しい面積',
@@ -162,7 +163,7 @@ export const keplersSecondLawSchema: BundleSchema = {
   id: KEPLERS_SECOND_LAW_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 이심률 조작기를 두지 않는다 — 궤도 모양 바꾸기는 다른 질문이다 (NOTES.md).

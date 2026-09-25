@@ -31,7 +31,8 @@ export const pvDiagramMessages = Object.freeze({
     id: 'Diagram PV',
     pt: 'Diagrama PV',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '넓이가 일인 표현',
     en: 'Where area is work',
     ja: '面積が仕事になる図',
@@ -197,7 +198,7 @@ export const pvDiagramSchema: BundleSchema = {
   id: PV_DIAGRAM_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
 

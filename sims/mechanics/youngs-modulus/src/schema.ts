@@ -79,17 +79,18 @@ export const youngsModulusMessages = Object.freeze({
     id: 'Modulus Young',
     pt: 'Módulo de Young',
   },
-  'label.operation': {
-    ko: '늘어나는 정도는 선의 길이가 아니라 재료가 정한다',
-    en: 'How much a wire stretches is set by its material, not its length',
-    ja: '線がどれだけ伸びるかは、線の長さではなく材料で決まる',
-    zh: '金属丝伸长的程度由材料决定，而不是由长度决定',
-    ar: 'مقدار استطالة السلك تحدده مادته لا طوله',
-    es: 'Cuánto se estira un alambre lo determina su material, no su longitud',
-    fr: 'L’allongement d’un fil dépend de son matériau, pas de sa longueur',
-    hi: 'तार कितना खिंचता है, यह उसकी लंबाई नहीं बल्कि उसका पदार्थ तय करता है',
-    id: 'Seberapa jauh kawat meregang ditentukan oleh bahannya, bukan panjangnya',
-    pt: 'O quanto um fio estica é definido pelo material, não pelo comprimento',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '한 가닥이 아니라 재료에 속하는 뻣뻣함',
+    en: 'A stiffness that belongs to the material, not to one strand',
+    ja: '一本の線ではなく材料に属する硬さ',
+    zh: '属于材料而非某一根线的刚度',
+    ar: 'صلابة تخص المادة لا خيطًا بعينه',
+    es: 'Una rigidez que pertenece al material, no a un solo hilo',
+    fr: 'Une raideur propre au matériau, et non à un seul fil',
+    hi: 'ऐसी कठोरता जो किसी एक तार की नहीं, पदार्थ की होती है',
+    id: 'Kekakuan yang dimiliki bahan, bukan oleh satu helai kawat',
+    pt: 'Uma rigidez que pertence ao material, não a um só fio',
   },
   'label.stage': {
     ko: '기본',
@@ -211,7 +212,7 @@ export const youngsModulusSchema: BundleSchema = {
   id: YOUNGS_MODULUS_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 받침대가 알아서 오르내리며 주장이 끝난다.

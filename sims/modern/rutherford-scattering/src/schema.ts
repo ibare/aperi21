@@ -118,7 +118,8 @@ export const rutherfordScatteringMessages = Object.freeze({
     id: 'Hamburan Rutherford',
     pt: 'Espalhamento de Rutherford',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '대부분 지나가고 일부가 튕겨 나온 실험',
     en: 'The experiment where most passed through and a few bounced back',
     ja: 'ほとんどが通り抜け、わずかが跳ね返った実験',
@@ -247,7 +248,7 @@ export const rutherfordScatteringSchema: BundleSchema = {
   id: RUTHERFORD_SCATTERING_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 여러 입자가 지나가고 하나가 되튀며 할 말을 마친다.

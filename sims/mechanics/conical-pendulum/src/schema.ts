@@ -77,7 +77,8 @@ export const conicalPendulumMessages = Object.freeze({
     id: 'Bandul kerucut',
     pt: 'Pêndulo cônico',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '장력과 중력이 만드는 원운동',
     en: 'Circular motion from tension and gravity',
     ja: '張力と重力がつくる円運動',
@@ -158,7 +159,7 @@ export const conicalPendulumSchema: BundleSchema = {
   id: CONICAL_PENDULUM_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

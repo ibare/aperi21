@@ -144,7 +144,8 @@ export const latentHeatMessages = Object.freeze({
     id: 'Kalor laten',
     pt: 'Calor latente',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '상변화 중 온도가 멈추는 이유',
     en: 'Why the temperature stops during a change of state',
     ja: '状態変化の間に温度が止まる理由',
@@ -360,7 +361,7 @@ export const latentHeatSchema: BundleSchema = {
   id: LATENT_HEAT_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 주장은 「같은 세기로 데우는데 멈춘다」 이고, 그것은 누르지 않아도

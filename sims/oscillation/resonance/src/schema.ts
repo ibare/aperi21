@@ -152,7 +152,8 @@ export const resonanceMessages = Object.freeze({
     id: 'Resonansi',
     pt: 'Ressonância',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '구동 진동수가 고유 진동수에 맞을 때',
     en: 'When the driving frequency matches the natural frequency',
     ja: '駆動振動数が固有振動数に一致するとき',
@@ -269,7 +270,7 @@ export const resonanceSchema: BundleSchema = {
   id: RESONANCE_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'continuous',
   parameters: [],
   stages: [{ id: 'default', label: text('label.stage'), constants: {} }],

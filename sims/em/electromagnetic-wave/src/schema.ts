@@ -80,7 +80,8 @@ export const electromagneticWaveMessages = Object.freeze({
     id: 'Gelombang elektromagnetik',
     pt: 'Ondas eletromagnéticas',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '전기장과 자기장의 자기 전파',
     en: 'Self-propagating electric and magnetic fields',
     ja: '自ら伝わっていく電場と磁場',
@@ -160,7 +161,7 @@ export const electromagneticWaveSchema: BundleSchema = {
   id: ELECTROMAGNETIC_WAVE_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기 없음. 흔드는 시간을 바꾸는 조작은 질문을 흐린다 (원본 NOTES (c)).

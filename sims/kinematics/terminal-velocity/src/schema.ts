@@ -117,17 +117,18 @@ export const terminalVelocityMessages = Object.freeze({
     id: 'Kecepatan terminal',
     pt: 'Velocidade terminal',
   },
-  'label.operation': {
-    ko: '공기 저항이 중력을 따라잡는 순간부터 더 빨라지지 않는다',
-    en: 'It stops speeding up the moment drag catches gravity',
-    ja: '空気抵抗が重力に追いついた瞬間から、それ以上速くならない',
-    zh: '从空气阻力追上重力的那一刻起，它就不再加速',
-    ar: 'يكفّ عن التسارع لحظة تلحق مقاومة الهواء بالجاذبية',
-    es: 'Deja de acelerar en el instante en que la resistencia del aire alcanza a la gravedad',
-    fr: 'Il cesse d’accélérer dès que la résistance de l’air rattrape la pesanteur',
-    hi: 'जिस क्षण वायु प्रतिरोध गुरुत्व के बराबर पहुँचता है, उसी क्षण से यह और तेज़ नहीं होता',
-    id: 'Benda berhenti bertambah cepat begitu hambatan udara menyusul gravitasi',
-    pt: 'Ela para de acelerar no instante em que a resistência do ar alcança a gravidade',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '저항과 중력이 균형에 이르는 속도',
+    en: 'The speed at which drag and gravity come into balance',
+    ja: '抗力と重力がつり合うときの速さ',
+    zh: '阻力与重力达到平衡时的速率',
+    ar: 'السرعة التي تتوازن عندها قوة السحب مع الجاذبية',
+    es: 'La rapidez a la que el arrastre y la gravedad se equilibran',
+    fr: 'La vitesse à laquelle la traînée et la pesanteur s’équilibrent',
+    hi: 'वह चाल जिस पर कर्षण और गुरुत्व संतुलन में आ जाते हैं',
+    id: 'Kelajuan saat gaya hambat dan gravitasi mencapai keseimbangan',
+    pt: 'A velocidade em que o arrasto e a gravidade se equilibram',
   },
   'label.stage': {
     ko: '낙하',
@@ -253,7 +254,7 @@ export const terminalVelocitySchema: BundleSchema = {
   id: TERMINAL_VELOCITY_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
 
   /** 떨어지고 · 붙잡히고 · 되감긴다. 끝난 화면이 남지 않는다. */
   timeModel: 'periodic',

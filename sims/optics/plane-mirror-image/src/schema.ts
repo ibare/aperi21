@@ -97,17 +97,18 @@ export const planeMirrorImageMessages = Object.freeze({
     id: 'Bayangan pada cermin datar',
     pt: 'Imagem em um espelho plano',
   },
-  'label.operation': {
-    ko: '허상의 위치와 좌우 반전',
-    en: 'Where the virtual image stands, and why it looks reversed',
-    ja: '虚像はどこにでき、なぜ反転して見えるのか',
-    zh: '虚像在哪里，为何看起来是反的',
-    ar: 'أين تقع الصورة الوهمية، ولماذا تبدو معكوسة',
-    es: 'Dónde se forma la imagen virtual y por qué se ve invertida',
-    fr: 'Où se forme l’image virtuelle, et pourquoi elle paraît inversée',
-    hi: 'आभासी प्रतिबिंब कहाँ बनता है, और वह उलटा क्यों दिखता है',
-    id: 'Di mana bayangan maya berada, dan mengapa tampak terbalik',
-    pt: 'Onde fica a imagem virtual e por que ela parece invertida',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '되짚은 빛이 만나는 거울 뒤의 허상',
+    en: 'The virtual image behind the mirror where traced-back light meets',
+    ja: 'たどり返した光が交わる、鏡の奥の虚像',
+    zh: '反向延长的光线交会在镜后的虚像',
+    ar: 'الصورة التقديرية خلف المرآة حيث يلتقي الضوء المتتبَّع إلى الخلف',
+    es: 'La imagen virtual detrás del espejo, donde se cruza la luz prolongada hacia atrás',
+    fr: 'L’image virtuelle derrière le miroir, là où se croise la lumière prolongée vers l’arrière',
+    hi: 'दर्पण के पीछे का आभासी प्रतिबिंब, जहाँ पीछे की ओर बढ़ाई गई किरणें मिलती हैं',
+    id: 'Bayangan maya di balik cermin, tempat cahaya yang ditelusuri balik bertemu',
+    pt: 'A imagem virtual atrás do espelho, onde se cruza a luz prolongada para trás',
   },
   'label.stage': {
     ko: '평면거울',
@@ -265,7 +266,7 @@ export const planeMirrorImageSchema: BundleSchema = {
   id: PLANE_MIRROR_IMAGE_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 물체를 끌게 하면 멈춘 거리가 선언값이 아니게 되어 치수선 글자를 띄울 수

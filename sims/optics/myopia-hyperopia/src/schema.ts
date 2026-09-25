@@ -121,7 +121,8 @@ export const myopiaHyperopiaMessages = Object.freeze({
     id: 'Rabun jauh dan rabun dekat',
     pt: 'Miopia e hipermetropia',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '상이 맺히는 위치와 교정',
     en: 'Where the image forms, and how glasses correct it',
     ja: '像ができる位置と、眼鏡による矯正',
@@ -396,7 +397,7 @@ export const myopiaHyperopiaSchema: BundleSchema = {
   id: MYOPIA_HYPEROPIA_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 근시 눈 → 오목 렌즈 → 원시 눈 → 볼록 렌즈를 자동 진행으로 보인다 —

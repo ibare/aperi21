@@ -108,7 +108,8 @@ export const gearsMessages = Object.freeze({
     id: 'Roda gigi',
     pt: 'Engrenagens',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '톱니 수가 바꾸는 회전과 힘',
     en: 'How tooth counts trade turning for force',
     ja: '歯数が回転を力に引き換えるしくみ',
@@ -328,7 +329,7 @@ export const gearsSchema: BundleSchema = {
   id: GEARS_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

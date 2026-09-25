@@ -89,7 +89,8 @@ export const orbitalDecayMessages = Object.freeze({
     id: 'Peluruhan orbit',
     pt: 'Decaimento orbital',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '옅은 대기가 끄는 궤도',
     en: 'An orbit dragged by thin air',
     ja: '希薄な大気に引きずられる軌道',
@@ -265,7 +266,7 @@ export const orbitalDecaySchema: BundleSchema = {
   id: ORBITAL_DECAY_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 항력 · 대기를 바꾸게 하면 추락 시각이 시간표를 벗어나고(장부 G13), 「얼마나

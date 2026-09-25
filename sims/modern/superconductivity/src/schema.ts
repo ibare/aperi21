@@ -94,7 +94,8 @@ export const superconductivityMessages = Object.freeze({
     id: 'Superkonduktivitas',
     pt: 'Supercondutividade',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '저항이 사라지는 상태',
     en: 'The state in which resistance vanishes',
     ja: '抵抗が消える状態',
@@ -312,7 +313,7 @@ export const superconductivitySchema: BundleSchema = {
   id: SUPERCONDUCTIVITY_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 식고 있고, 수은이 떨어지고, 다시 데워져 처음부터 식는다.

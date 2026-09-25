@@ -84,7 +84,8 @@ export const lorentzForceMessages = Object.freeze({
     id: 'Gaya Lorentz',
     pt: 'Força de Lorentz',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '자기장 속 전하가 받는 힘',
     en: 'The force on a charge moving in a magnetic field',
     ja: '磁場中を動く電荷が受ける力',
@@ -264,7 +265,7 @@ export const lorentzForceSchema: BundleSchema = {
   id: LORENTZ_FORCE_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

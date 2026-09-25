@@ -84,17 +84,18 @@ export const fieldLinesMessages = Object.freeze({
     id: 'Garis medan listrik',
     pt: 'Linhas de campo elétrico',
   },
-  'label.operation': {
-    ko: '선이 촘촘한 곳이 장이 센 곳이다',
-    en: 'Where the lines crowd, the field is strong',
-    ja: '線が密集するところでは電場が強い',
-    zh: '线密集的地方，电场强',
-    ar: 'حيث تتزاحم الخطوط يكون المجال قويًا',
-    es: 'Donde las líneas se aprietan, el campo es intenso',
-    fr: 'Là où les lignes se resserrent, le champ est intense',
-    hi: 'जहाँ रेखाएँ घनी होती हैं, वहाँ क्षेत्र प्रबल होता है',
-    id: 'Di tempat garis-garis rapat, medannya kuat',
-    pt: 'Onde as linhas se aglomeram, o campo é intenso',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '장을 그리는 규약과 그 뜻',
+    en: 'The convention for drawing a field, and what it means',
+    ja: '場を描く約束ごととその意味',
+    zh: '描绘场的约定及其含义',
+    ar: 'اصطلاح رسم المجال ومعناه',
+    es: 'La convención para dibujar un campo y su significado',
+    fr: 'La convention pour dessiner un champ, et ce qu’elle signifie',
+    hi: 'क्षेत्र को खींचने की परिपाटी और उसका अर्थ',
+    id: 'Konvensi menggambar medan dan maknanya',
+    pt: 'A convenção para desenhar um campo, e o que ela significa',
   },
   'label.stage': {
     ko: '두 전하',
@@ -152,7 +153,7 @@ export const fieldLinesSchema: BundleSchema = {
   id: FIELD_LINES_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'continuous',
 
   // 고를 값이 없다. 손잡이는 음전하 끌기 하나뿐이다 (controllers.ts).

@@ -130,7 +130,8 @@ export const seeingRequiresLightMessages = Object.freeze({
     id: 'Melihat butuh cahaya',
     pt: 'Para ver é preciso luz',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '빛이 없으면 물체가 보이지 않는다',
     en: 'Without light, an object cannot be seen',
     ja: '光がなければ物体は見えない',
@@ -246,7 +247,7 @@ export const seeingRequiresLightSchema: BundleSchema = {
   id: SEEING_REQUIRES_LIGHT_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 줄기가 흐르고, 등이 꺼지고, 다시 켜진다.

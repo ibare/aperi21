@@ -128,7 +128,8 @@ export const ionizingRadiationMessages = Object.freeze({
     id: 'Radiasi pengion',
     pt: 'Radiação ionizante',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '결합을 끊을 만큼 큰 광자 에너지',
     en: 'Photon energy large enough to break bonds',
     ja: '結合を切るほど大きな光子のエネルギー',
@@ -415,7 +416,7 @@ export const ionizingRadiationSchema: BundleSchema = {
   id: IONIZING_RADIATION_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 스펙트럼 전체를 훑어 문턱의 양쪽을 모두 보인다.

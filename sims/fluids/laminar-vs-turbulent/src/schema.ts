@@ -90,17 +90,18 @@ export const laminarVsTurbulentMessages = Object.freeze({
     id: 'Aliran laminar dan turbulen',
     pt: 'Escoamento laminar e turbulento',
   },
-  'label.operation': {
-    ko: '흐름이 갑자기 흐트러지는 지점',
-    en: 'Where flow suddenly breaks up',
-    ja: '流れが急に乱れる地点',
-    zh: '流动突然变乱的地方',
-    ar: 'حيث يضطرب الجريان فجأة',
-    es: 'Dónde el flujo se desordena de repente',
-    fr: 'Là où l’écoulement se désorganise soudain',
-    hi: 'जहाँ प्रवाह अचानक बिखर जाता है',
-    id: 'Tempat aliran tiba-tiba menjadi kacau',
-    pt: 'Onde o escoamento se desfaz de repente',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '흐름의 두 양상',
+    en: 'Two regimes of flow',
+    ja: '流れの二つのようす',
+    zh: '流动的两种状态',
+    ar: 'نمطان للتدفق',
+    es: 'Dos regímenes de flujo',
+    fr: 'Deux régimes d’écoulement',
+    hi: 'प्रवाह के दो रूप',
+    id: 'Dua pola aliran',
+    pt: 'Dois regimes de escoamento',
   },
   'label.stage': {
     ko: '관',
@@ -242,7 +243,7 @@ export const laminarVsTurbulentSchema: BundleSchema = {
   id: LAMINAR_VS_TURBULENT_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'linear',
 
   // 아무것도 누르지 않아도 여섯 값을 훑으며 할 말을 마친다. 그와 별개로 눈금을 직접

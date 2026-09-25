@@ -99,7 +99,8 @@ export const shadowUmbraPenumbraMessages = Object.freeze({
     id: 'Umbra dan penumbra',
     pt: 'Umbra e penumbra',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '광원의 크기가 만드는 경계',
     en: 'How the size of a light source shapes a shadow’s edge',
     ja: '光源の大きさが影の縁をどう形づくるか',
@@ -323,7 +324,7 @@ export const shadowUmbraPenumbraSchema: BundleSchema = {
   id: SHADOW_UMBRA_PENUMBRA_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 광원이 작다 → 중간 → 크다로 자랐다가 돌아온다.

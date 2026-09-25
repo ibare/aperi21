@@ -101,7 +101,8 @@ export const chargeInUniformFieldMessages = Object.freeze({
     id: 'Muatan dalam medan homogen',
     pt: 'Uma carga em um campo uniforme',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '포물선 운동과의 대응',
     en: 'Just like a projectile',
     ja: '放物運動と同じ',
@@ -267,7 +268,7 @@ export const chargeInUniformFieldSchema: BundleSchema = {
   id: CHARGE_IN_UNIFORM_FIELD_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 전하가 날고 있고, 두 번째 전하가 이어서 난다.

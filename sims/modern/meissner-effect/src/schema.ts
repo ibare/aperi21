@@ -72,7 +72,19 @@ export const START_AT = 1.0;
 
 export const meissnerEffectMessages = Object.freeze({
   'label.title': { ko: '마이스너 효과', en: 'Meissner effect', ja: 'マイスナー効果', zh: '迈斯纳效应', ar: 'تأثير مايسنر', es: 'Efecto Meissner', fr: 'Effet Meissner', hi: 'माइस्नर प्रभाव', id: 'Efek Meissner', pt: 'Efeito Meissner' },
-  'label.operation': { ko: '자기장을 밀어내는 초전도체', en: 'A superconductor pushes out the magnetic field', ja: '超伝導体が磁場を押し出す', zh: '超导体把磁场排斥出去', ar: 'الموصل الفائق يطرد المجال المغناطيسي', es: 'Un superconductor expulsa el campo magnético', fr: 'Un supraconducteur expulse le champ magnétique', hi: 'अतिचालक चुंबकीय क्षेत्र को बाहर धकेल देता है', id: 'Superkonduktor mendorong keluar medan magnet', pt: 'Um supercondutor expulsa o campo magnético' },
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '자기장을 밀어내는 초전도체',
+    en: 'A superconductor pushes out the magnetic field',
+    ja: '超伝導体が磁場を押し出す',
+    zh: '超导体把磁场排斥出去',
+    ar: 'الموصل الفائق يطرد المجال المغناطيسي',
+    es: 'Un superconductor expulsa el campo magnético',
+    fr: 'Un supraconducteur expulse le champ magnétique',
+    hi: 'अतिचालक चुंबकीय क्षेत्र को बाहर धकेल देता है',
+    id: 'Superkonduktor mendorong keluar medan magnet',
+    pt: 'Um supercondutor expulsa o campo magnético',
+  },
   'label.stage': { ko: '시료 위의 자석', en: 'A magnet on the sample', ja: '試料の上の磁石', zh: '样品上的磁铁', ar: 'مغناطيس فوق العيّنة', es: 'Un imán sobre la muestra', fr: 'Un aimant sur l’échantillon', hi: 'नमूने पर रखा चुंबक', id: 'Magnet di atas sampel', pt: 'Um ímã sobre a amostra' },
   'label.view': { ko: '옆모습', en: 'Side view', ja: '側面図', zh: '侧视图', ar: 'منظر جانبي', es: 'Vista lateral', fr: 'Vue de côté', hi: 'पार्श्व दृश्य', id: 'Tampak samping', pt: 'Vista lateral' },
   /** 시료 이름. 온도와 무관하게 같은 물질이다. */
@@ -175,7 +187,7 @@ export const meissnerEffectSchema: BundleSchema = {
   id: MEISSNER_EFFECT_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 자기력선이 시료를 지나가고 있고, 식으면 밀려나며 자석이 뜨고,

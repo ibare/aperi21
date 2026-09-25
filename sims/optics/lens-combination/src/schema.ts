@@ -124,7 +124,8 @@ export const lensCombinationMessages = Object.freeze({
     id: 'Kombinasi lensa',
     pt: 'Combinação de lentes',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '두 렌즈가 만드는 합성 초점',
     en: 'The combined focus of two lenses',
     ja: '二枚のレンズの合成焦点',
@@ -377,7 +378,7 @@ export const lensCombinationSchema: BundleSchema = {
   id: LENS_COMBINATION_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 붙이는 렌즈를 자동 진행으로 바꿔 끼워 초점이 다가오고 멀어지는 것을

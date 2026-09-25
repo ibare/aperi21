@@ -75,7 +75,8 @@ export const staticEquilibriumMessages = Object.freeze({
     id: 'Kesetimbangan statis',
     pt: 'Equilíbrio estático',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '힘과 돌림힘이 모두 0',
     en: 'Both the net force and the net torque are zero',
     ja: '合力もトルクの和もともに0',
@@ -194,7 +195,7 @@ export const staticEquilibriumSchema: BundleSchema = {
   id: STATIC_EQUILIBRIUM_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

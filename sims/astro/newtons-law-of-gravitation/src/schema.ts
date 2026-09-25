@@ -60,7 +60,8 @@ export const newtonsLawOfGravitationMessages = Object.freeze({
     id: 'Hukum gravitasi Newton',
     pt: 'Lei da gravitação universal de Newton',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '거리 제곱에 반비례하는 힘',
     en: 'A force that falls with the square of distance',
     ja: '距離の2乗に反比例して弱まる力',
@@ -264,7 +265,7 @@ export const newtonsLawOfGravitationSchema: BundleSchema = {
   id: NEWTONS_LAW_OF_GRAVITATION_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 벌어지고, 줄고, 다시 가까워진다 (controllers.ts).

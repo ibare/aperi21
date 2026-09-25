@@ -101,7 +101,8 @@ export const inclinedPlaneMessages = Object.freeze({
     id: 'Bidang miring',
     pt: 'Plano inclinado',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '중력을 면에 나란한 성분과 수직 성분으로',
     en: 'Splitting gravity along and into the slope',
     ja: '重力を斜面に沿う向きと斜面に垂直な向きに分ける',
@@ -242,7 +243,7 @@ export const inclinedPlaneSchema: BundleSchema = {
   id: INCLINED_PLANE_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'default', label: text('label.stage'), constants: {} }],

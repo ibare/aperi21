@@ -31,7 +31,8 @@ export const cyclicProcessMessages = Object.freeze({
     id: 'Proses siklus',
     pt: 'Processo cíclico',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '제자리로 돌아오는 변화',
     en: 'A change that comes back to where it began',
     ja: '始まった状態に戻ってくる変化',
@@ -221,7 +222,7 @@ export const cyclicProcessSchema: BundleSchema = {
   id: CYCLIC_PROCESS_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
 

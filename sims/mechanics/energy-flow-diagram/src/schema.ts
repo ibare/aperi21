@@ -84,7 +84,8 @@ export const MIX_RATE = 1.6;
 
 export const energyFlowDiagramMessages = Object.freeze({
   'label.title': { ko: '에너지 흐름도', en: 'Energy flow diagram', ja: 'エネルギーの流れ図', zh: '能量流图', ar: 'مخطط تدفق الطاقة', es: 'Diagrama de flujo de energía', fr: 'Diagramme des flux d’énergie', hi: 'ऊर्जा प्रवाह आरेख', id: 'Diagram aliran energi', pt: 'Diagrama de fluxo de energia' },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '갈래의 굵기로 나타낸 에너지의 행방',
     en: 'Where the energy goes, shown by branch thickness',
     ja: 'エネルギーの行き先を枝の太さで示す',
@@ -139,7 +140,7 @@ export const energyFlowDiagramSchema: BundleSchema = {
   id: ENERGY_FLOW_DIAGRAM_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'coal-to-bulb', label: text('label.stage'), constants: { ...FLOWS } }],

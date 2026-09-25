@@ -87,7 +87,8 @@ export const normalForceMessages = Object.freeze({
     id: 'Gaya normal',
     pt: 'Força normal',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '접촉면이 수직으로 미는 힘',
     en: 'The perpendicular push of a contact surface',
     ja: '接触面が垂直に押す力',
@@ -278,7 +279,7 @@ export const normalForceSchema: BundleSchema = {
   id: NORMAL_FORCE_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 자동 진행 한 바퀴가 당김 · 뜸 · 0 · 누름을 모두 보여 준다 (원본 NOTES (c)).

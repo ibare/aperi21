@@ -79,7 +79,8 @@ export const forceBetweenWiresMessages = Object.freeze({
     id: 'Gaya antara kawat sejajar',
     pt: 'Força entre fios paralelos',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '나란한 두 전류의 인력·척력',
     en: 'Two parallel currents attract or repel',
     ja: '平行な二つの電流は引き合うか反発し合う',
@@ -210,7 +211,7 @@ export const forceBetweenWiresSchema: BundleSchema = {
   id: FORCE_BETWEEN_WIRES_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

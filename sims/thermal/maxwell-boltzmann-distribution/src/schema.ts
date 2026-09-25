@@ -72,17 +72,18 @@ export const maxwellBoltzmannDistributionMessages = Object.freeze({
     id: 'Distribusi Maxwell–Boltzmann',
     pt: 'Distribuição de Maxwell–Boltzmann',
   },
-  'label.operation': {
-    ko: '데우면 분자 속력 분포가 퍼지며 내려앉는다',
-    en: 'Heating spreads the speed distribution and lowers its peak',
-    ja: '温めると速さの分布が広がり、ピークが下がる',
-    zh: '加热使速率分布展宽，峰值降低',
-    ar: 'التسخين يوسّع توزيع السرعات ويخفض قمّته',
-    es: 'Al calentar, la distribución de rapideces se ensancha y su pico baja',
-    fr: 'Chauffer étale la distribution des vitesses et abaisse son pic',
-    hi: 'गर्म करने पर चाल वितरण फैलता है और उसका शिखर नीचे आता है',
-    id: 'Pemanasan melebarkan distribusi kelajuan dan menurunkan puncaknya',
-    pt: 'O aquecimento alarga a distribuição de velocidades e abaixa seu pico',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '분자 속력의 분포',
+    en: 'The distribution of molecular speeds',
+    ja: '分子の速さの分布',
+    zh: '分子速率的分布',
+    ar: 'توزيع سرعات الجزيئات',
+    es: 'La distribución de las rapideces moleculares',
+    fr: 'La distribution des vitesses moléculaires',
+    hi: 'आण्विक चालों का वितरण',
+    id: 'Sebaran kelajuan molekul',
+    pt: 'A distribuição das velocidades moleculares',
   },
   'label.stage': {
     ko: '질소 기체',
@@ -214,7 +215,7 @@ export const maxwellBoltzmannDistributionSchema: BundleSchema = {
   id: MAXWELL_BOLTZMANN_DISTRIBUTION_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
 

@@ -119,7 +119,8 @@ export const equipotentialSurfaceMessages = Object.freeze({
     id: 'Permukaan ekuipotensial',
     pt: 'Superfícies equipotenciais',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '전기장과 수직인 면',
     en: 'Surfaces perpendicular to the field',
     ja: '電場に垂直な面',
@@ -187,7 +188,7 @@ export const equipotentialSurfaceSchema: BundleSchema = {
   id: EQUIPOTENTIAL_SURFACE_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'continuous',
 
   // 고를 값이 없다. 손잡이는 지도 위 원천 전하 끌기 둘이다 (controllers.ts).

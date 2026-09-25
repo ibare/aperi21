@@ -86,7 +86,8 @@ export const capillaryActionMessages = Object.freeze({
     id: 'Kapilaritas',
     pt: 'Capilaridade',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '좁은 관에서의 상승과 하강',
     en: 'Rise and fall in narrow tubes',
     ja: '細い管の中での上昇と下降',
@@ -298,7 +299,7 @@ export const capillaryActionSchema: BundleSchema = {
   id: CAPILLARY_ACTION_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   // 멈춘 상태가 결론이라 되감지 않는다 — 시간표도 주기도 없다.
   timeModel: 'continuous',
 

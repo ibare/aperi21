@@ -80,7 +80,8 @@ export const seismicWavesMessages = Object.freeze({
     id: 'Gelombang seismik',
     pt: 'Ondas sísmicas',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '지구 속을 지나는 P파와 S파',
     en: 'P and S waves travelling through the Earth',
     ja: '地球内部を伝わるP波とS波',
@@ -257,7 +258,7 @@ export const seismicWavesSchema: BundleSchema = {
   id: SEISMIC_WAVES_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 퍼지고 있고, 멈추고, 그림자대가 드러난다.

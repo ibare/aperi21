@@ -123,7 +123,8 @@ export const diodeAndLedMessages = Object.freeze({
     id: 'Dioda dan LED',
     pt: 'Diodos e LEDs',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '한 방향 전류와 빛의 방출',
     en: 'One-way current and the emission of light',
     ja: '一方向の電流と光の放出',
@@ -474,7 +475,7 @@ export const diodeAndLedSchema: BundleSchema = {
   id: DIODE_AND_LED_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

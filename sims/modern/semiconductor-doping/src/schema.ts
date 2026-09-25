@@ -96,7 +96,8 @@ export const semiconductorDopingMessages = Object.freeze({
     id: 'Doping',
     pt: 'Dopagem',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '불순물이 만드는 n형과 p형',
     en: 'How impurities make n-type and p-type',
     ja: '不純物がつくるn型とp型',
@@ -325,7 +326,7 @@ export const semiconductorDopingSchema: BundleSchema = {
   id: SEMICONDUCTOR_DOPING_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

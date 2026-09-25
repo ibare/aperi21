@@ -95,7 +95,8 @@ export const efficiencyMessages = Object.freeze({
     id: 'Efisiensi',
     pt: 'Eficiência',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '넣은 것과 얻은 것의 비',
     en: 'The ratio of what comes out to what goes in',
     ja: '入れたものに対する出てくるものの比',
@@ -249,7 +250,7 @@ export const efficiencySchema: BundleSchema = {
   id: EFFICIENCY_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흐르고, 입구가 맞춰지고, 되돌아간다.

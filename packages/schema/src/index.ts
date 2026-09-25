@@ -1308,7 +1308,14 @@ export interface BundleSchema {
   id: string;
   label: LocalizedText;
   category: string;
-  operation: LocalizedText;
+  /**
+   * 한 줄 설명 — 호스트 카탈로그(`getAperi21Catalog`)의 `description`. 화면에는 그리지 않는다.
+   *
+   * **원본은 `docs/topics/topics.yaml` 의 그 주제 `desc` 다.** 조각은 주제에서 태어나므로
+   * 여기 있는 값은 파생값이고, `pnpm description:gen` 이 써 넣는다. 손으로 고치지 않는다 —
+   * 고치면 `gen:check` 가 되돌린다.
+   */
+  description: LocalizedText;
   timeModel:
     | 'linear' | 'periodic' | 'orbit'
     | 'continuous' | 'steady_state' | 'static'

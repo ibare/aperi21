@@ -92,17 +92,18 @@ export const projectileMotionMessages = Object.freeze({
     id: 'Gerak parabola',
     pt: 'Movimento de projéteis',
   },
-  'label.operation': {
-    ko: '수평과 연직이 서로를 건드리지 않고 따로 간다',
-    en: 'Horizontal and vertical go on untouched',
-    ja: '水平と鉛直は互いに影響せずに進む',
-    zh: '水平与竖直互不影响，各自进行',
-    ar: 'الأفقي والرأسي يمضيان دون أن يؤثر أحدهما في الآخر',
-    es: 'Lo horizontal y lo vertical siguen sin afectarse',
-    fr: 'L’horizontal et le vertical avancent sans s’influencer',
-    hi: 'क्षैतिज और ऊर्ध्वाधर एक-दूसरे को प्रभावित किए बिना चलते हैं',
-    id: 'Horizontal dan vertikal berjalan tanpa saling memengaruhi',
-    pt: 'Horizontal e vertical seguem sem se afetar',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '수평·연직 성분의 독립',
+    en: 'The independence of the horizontal and vertical components',
+    ja: '水平成分と鉛直成分の独立',
+    zh: '水平分量与竖直分量的独立',
+    ar: 'استقلال المركبتين الأفقية والرأسية',
+    es: 'La independencia de las componentes horizontal y vertical',
+    fr: 'L’indépendance des composantes horizontale et verticale',
+    hi: 'क्षैतिज और ऊर्ध्वाधर घटकों की स्वतंत्रता',
+    id: 'Kebebasan komponen horizontal dan vertikal',
+    pt: 'A independência das componentes horizontal e vertical',
   },
   'label.stage': {
     ko: '포물선 운동',
@@ -190,7 +191,7 @@ export const projectileMotionSchema: BundleSchema = {
   id: PROJECTILE_MOTION_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 빠르기는 파라미터가 아니라 **조작기가 미는 상태**다. 슬라이더가 state 의

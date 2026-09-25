@@ -110,7 +110,8 @@ export const bohrModelMessages = Object.freeze({
     id: 'Model atom Bohr',
     pt: 'Modelo de Bohr',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '궤도의 양자화',
     en: 'Quantized orbits',
     ja: '量子化された軌道',
@@ -277,7 +278,7 @@ export const bohrModelSchema: BundleSchema = {
   id: BOHR_MODEL_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 두 번 건너뛰고 빛 둘을 내며 할 말을 마친다.

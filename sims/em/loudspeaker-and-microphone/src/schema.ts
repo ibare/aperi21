@@ -97,7 +97,8 @@ export const loudspeakerAndMicrophoneMessages = Object.freeze({
     id: 'Pengeras suara dan mikrofon',
     pt: 'Alto-falante e microfone',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '전류와 진동을 오가는 변환',
     en: 'Turning current into vibration and back',
     ja: '電流を振動に変え、また電流に戻す',
@@ -350,7 +351,7 @@ export const loudspeakerAndMicrophoneSchema: BundleSchema = {
   id: LOUDSPEAKER_AND_MICROPHONE_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

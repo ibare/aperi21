@@ -71,7 +71,8 @@ export const explosionAndRecoilMessages = Object.freeze({
     id: 'Ledakan dan tolakan',
     pt: 'Explosão e recuo',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '정지한 계가 갈라질 때',
     en: 'When a system at rest splits apart',
     ja: '静止した系が分裂するとき',
@@ -250,7 +251,7 @@ export const explosionAndRecoilSchema: BundleSchema = {
   id: EXPLOSION_AND_RECOIL_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

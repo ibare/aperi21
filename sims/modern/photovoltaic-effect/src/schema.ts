@@ -107,7 +107,8 @@ export const photovoltaicEffectMessages = Object.freeze({
     id: 'Efek fotovoltaik',
     pt: 'Efeito fotovoltaico',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '빛이 만드는 전위차',
     en: 'A voltage made by light',
     ja: '光がつくる電圧',
@@ -359,7 +360,7 @@ export const photovoltaicEffectSchema: BundleSchema = {
   id: PHOTOVOLTAIC_EFFECT_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 「적외선은 안 된다」 와 「초록빛은 전압을 만든다」 가 모두 일어난다.

@@ -84,7 +84,8 @@ export const harmonicsMessages = Object.freeze({
     id: 'Harmonik',
     pt: 'Harmônicos',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '경계 조건이 정하는 진동수',
     en: 'Frequencies set by the boundary',
     ja: '境界が決める振動数',
@@ -252,7 +253,7 @@ export const harmonicsSchema: BundleSchema = {
   id: HARMONICS_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 진동수 훑기가 자동으로 모든 후보를 지나가며 거르는 것을 보여 준다 —

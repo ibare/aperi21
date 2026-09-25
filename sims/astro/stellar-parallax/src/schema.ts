@@ -99,7 +99,8 @@ export const stellarParallaxMessages = Object.freeze({
     id: 'Paralaks bintang',
     pt: 'Paralaxe estelar',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '지구가 공전하며 가까운 별이 어긋나 보이는 각',
     en: 'The angle by which a nearby star shifts as Earth orbits the Sun',
     ja: '地球の公転につれて近くの星がずれて見える角度',
@@ -239,7 +240,7 @@ export const stellarParallaxSchema: BundleSchema = {
   id: STELLAR_PARALLAX_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 지구가 돌고 있고, 두 별이 배경 사이를 오가는 폭이 한 해 동안 드러난다.

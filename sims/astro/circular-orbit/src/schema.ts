@@ -62,7 +62,8 @@ export const circularOrbitMessages = Object.freeze({
     id: 'Orbit melingkar',
     pt: 'Órbita circular',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '구심력이 중력인 운동',
     en: 'Motion in which gravity is the centripetal force',
     ja: '重力が向心力となる運動',
@@ -203,7 +204,7 @@ export const circularOrbitSchema: BundleSchema = {
   id: CIRCULAR_ORBIT_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 이 조각이 답하는 것은 「왜 떨어지지 않는가」 하나이고, 속도를 끌게

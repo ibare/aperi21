@@ -110,7 +110,8 @@ export const dampedOscillationMessages = Object.freeze({
     id: 'Osilasi teredam',
     pt: 'Oscilação amortecida',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '에너지가 빠져나가는 진동',
     en: 'An oscillation that loses energy',
     ja: 'エネルギーを失っていく振動',
@@ -240,7 +241,7 @@ export const dampedOscillationSchema: BundleSchema = {
   id: DAMPED_OSCILLATION_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 추가 잦아들며 오르내리고, 펜이 물결을 펼친다.

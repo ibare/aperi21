@@ -118,17 +118,18 @@ export const relativityOfSimultaneityMessages = Object.freeze({
     id: 'Relativitas keserempakan',
     pt: 'Relatividade da simultaneidade',
   },
-  'label.operation': {
-    ko: '기준틀마다 다른 「동시」',
-    en: 'Each frame has its own “at the same time”',
-    ja: '座標系ごとに異なる「同時」',
-    zh: '每个参考系各有自己的“同时”',
-    ar: 'لكل إطار مرجعي «في الوقت نفسه» الخاص به',
-    es: 'Cada sistema de referencia tiene su propio «al mismo tiempo»',
-    fr: 'Chaque référentiel a son propre « en même temps »',
-    hi: 'हर निर्देश तंत्र का अपना “एक ही समय”',
-    id: 'Tiap kerangka acuan punya “pada saat yang sama” sendiri',
-    pt: 'Cada referencial tem seu próprio “ao mesmo tempo”',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '기준틀마다 다른 \'동시\'',
+    en: 'A ‘same time’ that differs from frame to frame',
+    ja: '基準系ごとに違う「同時」',
+    zh: '因参考系而异的“同时”',
+    ar: '«تزامن» يختلف من إطار مرجعي إلى آخر',
+    es: 'Un «al mismo tiempo» que cambia de un sistema de referencia a otro',
+    fr: 'Un « en même temps » qui diffère d’un référentiel à l’autre',
+    hi: 'हर संदर्भ फ्रेम में अलग ‘एक साथ’',
+    id: '‘Serentak’ yang berbeda di tiap kerangka acuan',
+    pt: 'Um «ao mesmo tempo» que difere de um referencial para outro',
   },
   'label.stage': {
     ko: '달리는 기차',
@@ -295,7 +296,7 @@ export const relativityOfSimultaneitySchema: BundleSchema = {
   id: RELATIVITY_OF_SIMULTANEITY_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 기차가 오고, 번쩍이고, 두 판의 도착 순서가 남는다.

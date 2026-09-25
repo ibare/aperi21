@@ -86,7 +86,8 @@ export const laplacePressureMessages = Object.freeze({
     id: 'Tekanan Laplace',
     pt: 'Pressão de Laplace',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '곡률이 만드는 안팎 압력차',
     en: 'The pressure jump a curved surface makes',
     ja: '曲がった面がつくる内外の圧力差',
@@ -191,7 +192,7 @@ export const laplacePressureSchema: BundleSchema = {
   id: LAPLACE_PRESSURE_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 닫힌 채 견주고, 열리고, 쪼그라들고, 멈춘다.

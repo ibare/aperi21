@@ -112,7 +112,8 @@ export const specificHeatMessages = Object.freeze({
     id: 'Kalor jenis',
     pt: 'Calor específico',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '물질마다 다른 온도 변화',
     en: 'How much the temperature changes, material by material',
     ja: '物質ごとに異なる温度変化',
@@ -317,7 +318,7 @@ export const specificHeatSchema: BundleSchema = {
   id: SPECIFIC_HEAT_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 비열 · 질량 · 열 · 처음 온도는 스테이지 상수다. 주장은 「같은 열에

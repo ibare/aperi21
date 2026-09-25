@@ -110,7 +110,8 @@ export const qualityFactorMessages = Object.freeze({
     id: 'Faktor kualitas',
     pt: 'Fator de qualidade',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '공명의 날카로움',
     en: 'How sharp a resonance is',
     ja: '共振の鋭さ',
@@ -276,7 +277,7 @@ export const qualityFactorSchema: BundleSchema = {
   id: QUALITY_FACTOR_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 훑고, 맞추고, 멈추고, 울리는 것이 아무것도 누르지 않아도 한 주기 안에 끝난다.

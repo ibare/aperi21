@@ -68,17 +68,18 @@ export const elasticCollisionMessages = Object.freeze({
     id: 'Tumbukan lenting sempurna',
     pt: 'Colisão elástica',
   },
-  'label.operation': {
-    ko: '운동 에너지까지 보존되는 충돌',
-    en: 'A collision that keeps even the kinetic energy',
-    ja: '運動エネルギーまで保存される衝突',
-    zh: '连动能也守恒的碰撞',
-    ar: 'تصادم يحفظ حتى الطاقة الحركية',
-    es: 'Un choque que conserva incluso la energía cinética',
-    fr: 'Une collision qui conserve même l’énergie cinétique',
-    hi: 'ऐसी टक्कर जिसमें गतिज ऊर्जा भी संरक्षित रहती है',
-    id: 'Tumbukan yang bahkan energi kinetiknya tetap kekal',
-    pt: 'Uma colisão que conserva até a energia cinética',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '부딪힌 뒤에도 빠르기를 잃지 않는 충돌',
+    en: 'A collision in which nothing loses speed after the impact',
+    ja: 'ぶつかった後も速さを失わない衝突',
+    zh: '碰撞后也不损失速率的碰撞',
+    ar: 'تصادم لا يُفقد بعده شيء من السرعة',
+    es: 'Un choque tras el cual nada pierde rapidez',
+    fr: 'Une collision après laquelle rien ne perd de sa vitesse',
+    hi: 'ऐसी टक्कर जिसके बाद भी चाल नहीं घटती',
+    id: 'Tumbukan yang setelahnya tidak ada kelajuan yang hilang',
+    pt: 'Uma colisão depois da qual nada perde velocidade',
   },
   'label.stage': {
     ko: '레일 위 같은 공 둘',
@@ -302,7 +303,7 @@ export const elasticCollisionSchema: BundleSchema = {
   id: ELASTIC_COLLISION_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 두 경우를 시간표가 차례로 보이므로 독자가 고를 것이 없다.

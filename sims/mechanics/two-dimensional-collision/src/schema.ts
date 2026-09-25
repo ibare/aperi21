@@ -79,7 +79,8 @@ export const twoDimensionalCollisionMessages = Object.freeze({
     id: 'Tumbukan dua dimensi',
     pt: 'Colisão bidimensional',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '성분마다 따로 성립하는 보존',
     en: 'Conservation that holds separately for each component',
     ja: '成分ごとに別々に成り立つ保存',
@@ -287,7 +288,7 @@ export const twoDimensionalCollisionSchema: BundleSchema = {
   id: TWO_DIMENSIONAL_COLLISION_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

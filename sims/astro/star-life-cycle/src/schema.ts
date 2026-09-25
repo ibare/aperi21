@@ -79,7 +79,8 @@ export const starLifeCycleMessages = Object.freeze({
     id: 'Siklus hidup bintang',
     pt: 'Ciclo de vida de uma estrela',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '질량이 가르는 별의 경로',
     en: 'How mass decides a star’s path',
     ja: '質量が決める恒星の道筋',
@@ -533,7 +534,7 @@ export const starLifeCycleSchema: BundleSchema = {
   id: STAR_LIFE_CYCLE_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 시계가 저절로 흐르고 두 별이 차례로 끝난다.

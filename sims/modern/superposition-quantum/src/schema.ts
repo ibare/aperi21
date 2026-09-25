@@ -98,7 +98,8 @@ export const superpositionQuantumMessages = Object.freeze({
     id: 'Superposisi kuantum',
     pt: 'Superposição quântica',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '여러 상태의 합으로 있는 것',
     en: 'Being a sum of several states',
     ja: 'いくつかの状態の和であること',
@@ -231,7 +232,7 @@ export const superpositionQuantumSchema: BundleSchema = {
   id: SUPERPOSITION_QUANTUM_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 성분 비를 바꾸면 출렁임의 폭만 달라지고 「둘이 함께 있어야 출렁인다」 에

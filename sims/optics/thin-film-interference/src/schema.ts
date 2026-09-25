@@ -77,7 +77,8 @@ export const thinFilmInterferenceMessages = Object.freeze({
     id: 'Interferensi lapisan tipis',
     pt: 'Interferência em películas finas',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '두께가 만드는 색',
     en: 'Colour made by thickness',
     ja: '厚さがつくる色',
@@ -217,7 +218,7 @@ export const thinFilmInterferenceSchema: BundleSchema = {
   id: THIN_FILM_INTERFERENCE_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 굴절률 · 입사각 조절을 두지 않는다 — 원본 「hidden」. 비스듬히 보는 색은 다른 질문이다.

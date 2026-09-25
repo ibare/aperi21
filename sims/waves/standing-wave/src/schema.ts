@@ -84,17 +84,18 @@ export const standingWaveMessages = Object.freeze({
     id: 'Gelombang stasioner',
     pt: 'Onda estacionária',
   },
-  'label.operation': {
-    ko: '반대로 달리는 두 파동이 겹치면 마디가 제자리에 고정된다',
-    en: 'Two waves running in opposite directions pin the nodes in place',
-    ja: '逆向きに進む2つの波が重なると、節がその場に固定される',
-    zh: '两列反向传播的波叠加，把波节固定在原处',
-    ar: 'موجتان تسيران في اتجاهين متعاكسين تثبّتان العُقد في مكانها',
-    es: 'Dos ondas que viajan en sentidos opuestos fijan los nodos en su lugar',
-    fr: 'Deux ondes allant en sens opposés figent les nœuds sur place',
-    hi: 'विपरीत दिशाओं में चलती दो तरंगें निस्पंदों को अपनी जगह स्थिर कर देती हैं',
-    id: 'Dua gelombang yang merambat berlawanan arah menahan simpul di tempatnya',
-    pt: 'Duas ondas em sentidos opostos fixam os nós no lugar',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '마디와 배가 고정되는 파동',
+    en: 'A wave whose nodes and antinodes stay fixed',
+    ja: '節と腹が固定される波',
+    zh: '波节和波腹固定不动的波',
+    ar: 'موجة تبقى عُقدها وبطونها ثابتة',
+    es: 'Una onda cuyos nodos y vientres quedan fijos',
+    fr: 'Une onde dont les nœuds et les ventres restent fixes',
+    hi: 'ऐसी तरंग जिसके निस्पंद और प्रस्पंद स्थिर रहते हैं',
+    id: 'Gelombang yang simpul dan perutnya tetap',
+    pt: 'Uma onda cujos nós e ventres ficam fixos',
   },
   'label.stage': {
     ko: '줄',
@@ -214,7 +215,7 @@ export const standingWaveSchema: BundleSchema = {
   id: STANDING_WAVE_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 자동 진행으로 사선 → 세로 빈 줄 전환을 보여 주는 것으로 주장이 끝난다.

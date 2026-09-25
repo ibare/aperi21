@@ -75,7 +75,8 @@ export const carnotCycleMessages = Object.freeze({
     id: 'Siklus Carnot',
     pt: 'Ciclo de Carnot',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '이론적 최대 효율',
     en: 'The theoretical maximum efficiency',
     ja: '理論上の最大効率',
@@ -287,7 +288,7 @@ export const carnotCycleSchema: BundleSchema = {
   id: CARNOT_CYCLE_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
 

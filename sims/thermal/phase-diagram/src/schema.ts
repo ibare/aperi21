@@ -47,17 +47,18 @@ export const phaseDiagramMessages = Object.freeze({
     id: 'Diagram fase',
     pt: 'Diagrama de fases',
   },
-  'label.operation': {
-    ko: '삼중점보다 낮은 압력에서는 액체 구간을 건너뛴다',
-    en: 'Below the triple point, the liquid range is skipped',
-    ja: '三重点より低い圧力では、液体の範囲を飛ばす',
-    zh: '压强低于三相点时，会跳过液态区间',
-    ar: 'تحت النقطة الثلاثية يُتخطّى نطاق السائل',
-    es: 'Por debajo del punto triple, se salta la zona líquida',
-    fr: 'Sous le point triple, le domaine liquide est sauté',
-    hi: 'त्रिक बिंदु से नीचे, द्रव का क्षेत्र छूट जाता है',
-    id: 'Di bawah titik tripel, rentang cair terlewati',
-    pt: 'Abaixo do ponto triplo, a faixa líquida é pulada',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '압력과 온도가 정하는 상',
+    en: 'The phase set by pressure and temperature',
+    ja: '圧力と温度が決める相',
+    zh: '由压强和温度决定的相',
+    ar: 'الطور الذي يحدده الضغط ودرجة الحرارة',
+    es: 'La fase que fijan la presión y la temperatura',
+    fr: 'La phase fixée par la pression et la température',
+    hi: 'दाब और तापमान से तय होने वाली प्रावस्था',
+    id: 'Fase yang ditentukan oleh tekanan dan suhu',
+    pt: 'A fase definida pela pressão e pela temperatura',
   },
   'label.stage': {
     ko: '기본',
@@ -375,7 +376,7 @@ export const phaseDiagramSchema: BundleSchema = {
   id: PHASE_DIAGRAM_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   parameters: [],

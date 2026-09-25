@@ -134,7 +134,8 @@ export const mutualInductanceMessages = Object.freeze({
     id: 'Induktansi bersama',
     pt: 'Indutância mútua',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '이웃 회로에 유도되는 기전력',
     en: 'An EMF induced in a neighbouring circuit',
     ja: '隣の回路に誘導される起電力',
@@ -359,7 +360,7 @@ export const mutualInductanceSchema: BundleSchema = {
   id: MUTUAL_INDUCTANCE_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 1차 전류가 오르고 있고, 일정해지고, 내려간다.

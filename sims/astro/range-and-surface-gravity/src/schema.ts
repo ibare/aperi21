@@ -112,17 +112,18 @@ export const rangeAndSurfaceGravityMessages = Object.freeze({
     id: 'Gravitasi dan jangkauan',
     pt: 'Gravidade e alcance',
   },
-  'label.operation': {
-    ko: '같은 발사, 다른 중력',
-    en: 'Same launch, different gravity',
-    ja: '同じ発射、違う重力',
-    zh: '相同的发射，不同的重力',
-    ar: 'الإطلاق نفسه، وجاذبية مختلفة',
-    es: 'Mismo lanzamiento, distinta gravedad',
-    fr: 'Même lancer, gravité différente',
-    hi: 'एक जैसा प्रक्षेपण, अलग गुरुत्व',
-    id: 'Peluncuran sama, gravitasi berbeda',
-    pt: 'Mesmo lançamento, gravidade diferente',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '같은 발사가 중력이 약한 곳에서 더 멀리 가는 것',
+    en: 'How the same launch goes farther where gravity is weaker',
+    ja: '同じ発射が重力の弱いところでより遠くまで届くこと',
+    zh: '同样的发射在重力较弱处飞得更远',
+    ar: 'كيف يبلغ الإطلاق نفسه مدى أبعد حيث تكون الجاذبية أضعف',
+    es: 'Cómo un mismo lanzamiento llega más lejos donde la gravedad es más débil',
+    fr: 'Comment un même lancer va plus loin là où la pesanteur est plus faible',
+    hi: 'कमज़ोर गुरुत्व वाली जगह एक ही प्रक्षेपण कैसे अधिक दूर जाता है',
+    id: 'Bagaimana peluncuran yang sama melaju lebih jauh di tempat gravitasi lebih lemah',
+    pt: 'Como um mesmo lançamento vai mais longe onde a gravidade é mais fraca',
   },
   'label.stage': {
     ko: '지구와 달',
@@ -339,7 +340,7 @@ export const rangeAndSurfaceGravitySchema: BundleSchema = {
   id: RANGE_AND_SURFACE_GRAVITY_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 두 공이 이미 날고 있고, 떨어지고, 다시 떠난다.

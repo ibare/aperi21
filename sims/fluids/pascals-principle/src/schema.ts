@@ -100,7 +100,8 @@ export const pascalsPrincipleMessages = Object.freeze({
     id: 'Hukum Pascal',
     pt: 'Princípio de Pascal',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '압력의 전달과 유압 장치',
     en: 'Transmitted pressure and the hydraulic press',
     ja: '伝わる圧力と水圧機',
@@ -256,7 +257,7 @@ export const pascalsPrincipleSchema: BundleSchema = {
   id: PASCALS_PRINCIPLE_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 손이 누르고, 두 피스톤이 움직이고, 멈추고, 돌아간다.

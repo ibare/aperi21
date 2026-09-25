@@ -90,7 +90,8 @@ export const rainbowMessages = Object.freeze({
     id: 'Pelangi',
     pt: 'Arco-íris',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '물방울 속 굴절과 반사',
     en: 'Refraction and reflection inside raindrops',
     ja: '雨粒の中の屈折と反射',
@@ -330,7 +331,7 @@ export const rainbowSchema: BundleSchema = {
   id: RAINBOW_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

@@ -90,7 +90,8 @@ export const biotSavartLawMessages = Object.freeze({
     id: 'Hukum Biot–Savart',
     pt: 'Lei de Biot–Savart',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '전류 요소가 만드는 자기장',
     en: 'The magnetic field of current elements',
     ja: '電流素片がつくる磁場',
@@ -243,7 +244,7 @@ export const biotSavartLawSchema: BundleSchema = {
   id: BIOT_SAVART_LAW_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 조각이 하나씩 켜지며 사슬이 자라고, 합이 서고, 다시 시작한다.

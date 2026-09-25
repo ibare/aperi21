@@ -108,17 +108,18 @@ export const workEnergyTheoremMessages = Object.freeze({
     id: 'Teorema usaha-energi',
     pt: 'Teorema do trabalho-energia',
   },
-  'label.operation': {
-    ko: '알짜일이 운동 에너지 변화와 같음',
-    en: 'Net work equals the change in kinetic energy',
-    ja: '正味の仕事は運動エネルギーの変化に等しい',
-    zh: '合外力做的功等于动能的变化',
-    ar: 'الشغل المحصّل يساوي التغير في الطاقة الحركية',
-    es: 'El trabajo neto es igual al cambio de energía cinética',
-    fr: 'Le travail total est égal à la variation d’énergie cinétique',
-    hi: 'कुल कार्य गतिज ऊर्जा में परिवर्तन के बराबर होता है',
-    id: 'Usaha total sama dengan perubahan energi kinetik',
-    pt: 'O trabalho total é igual à variação da energia cinética',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '힘과 거리를 어떻게 나누든 해 준 일이 같으면 끝 속력도 같음',
+    en: 'However force and distance are split, the same work done gives the same final speed',
+    ja: '力と距離をどう分けても、した仕事が同じなら最後の速さも同じ',
+    zh: '无论力和距离如何分配，做的功相同，末速率就相同',
+    ar: 'مهما قُسِّمت القوة والمسافة، يعطي الشغل نفسه السرعة النهائية نفسها',
+    es: 'Se repartan como se repartan la fuerza y la distancia, el mismo trabajo da la misma rapidez final',
+    fr: 'Quelle que soit la répartition entre force et distance, un même travail donne la même vitesse finale',
+    hi: 'बल और दूरी को कैसे भी बाँटें, समान कार्य करने पर अंतिम चाल समान रहती है',
+    id: 'Bagaimanapun gaya dan jarak dibagi, usaha yang sama menghasilkan kelajuan akhir yang sama',
+    pt: 'Como quer que se dividam força e distância, o mesmo trabalho dá a mesma velocidade final',
   },
   'label.stage': {
     ko: '마찰 없는 바닥',
@@ -287,7 +288,7 @@ export const workEnergyTheoremSchema: BundleSchema = {
   id: WORK_ENERGY_THEOREM_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 밀리고, 같은 속력으로 달리고, 다시 선다.

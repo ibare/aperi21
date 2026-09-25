@@ -137,7 +137,8 @@ export const seriesParallelResistorsMessages = Object.freeze({
     id: 'Hambatan seri dan paralel',
     pt: 'Resistores em série e em paralelo',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '연결을 바꾸면 같은 전지가 내주는 전류가 달라지는 것',
     en: 'How the connection changes the current one battery delivers',
     ja: '接続を変えると一つの電池が流す電流がどう変わるか',
@@ -275,7 +276,7 @@ export const seriesParallelResistorsSchema: BundleSchema = {
   id: SERIES_PARALLEL_RESISTORS_ID,
   label: text('label.title'),
   category: 'electronics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 세 배치가 한 화면에 함께 있어 누를 것이 없다.

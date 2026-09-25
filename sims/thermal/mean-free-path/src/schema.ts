@@ -98,7 +98,8 @@ export const meanFreePathMessages = Object.freeze({
     id: 'Jalan bebas rata-rata',
     pt: 'Livre caminho médio',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '충돌과 충돌 사이의 거리',
     en: 'The distance between collisions',
     ja: '衝突と衝突のあいだの距離',
@@ -250,7 +251,7 @@ export const meanFreePathSchema: BundleSchema = {
   id: MEAN_FREE_PATH_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 두 분자가 부딪히며 가고, 평균 막대가 자라 멈춘다.

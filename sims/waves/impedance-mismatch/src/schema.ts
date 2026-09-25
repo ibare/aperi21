@@ -78,7 +78,8 @@ export const impedanceMismatchMessages = Object.freeze({
     id: 'Ketidakcocokan impedansi',
     pt: 'Descasamento de impedância',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '경계에서 반사되는 비율',
     en: 'How much reflects at a boundary',
     ja: '境界でどれだけ反射するか',
@@ -282,7 +283,7 @@ export const impedanceMismatchSchema: BundleSchema = {
   id: IMPEDANCE_MISMATCH_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 세 비를 나란히 두어 자동 진행만으로 비교가 끝난다.

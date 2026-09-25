@@ -122,7 +122,8 @@ export const atmosphericPressureMessages = Object.freeze({
     id: 'Tekanan atmosfer',
     pt: 'Pressão atmosférica',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '공기 기둥의 무게',
     en: 'The weight of the air column',
     ja: '空気の柱の重さ',
@@ -239,7 +240,7 @@ export const atmosphericPressureSchema: BundleSchema = {
   id: ATMOSPHERIC_PRESSURE_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 센서가 산을 오르고, 정상에서 멈추고, 다시 기슭에서 시작한다.

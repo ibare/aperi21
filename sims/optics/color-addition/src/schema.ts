@@ -118,7 +118,8 @@ export const colorAdditionMessages = Object.freeze({
     id: 'Penjumlahan cahaya',
     pt: 'Adição de luzes',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '세 색의 빛이 겹쳐 만드는 색',
     en: 'The colour three lights make where they overlap',
     ja: '三つの光が重なるところにできる色',
@@ -374,7 +375,7 @@ export const colorAdditionSchema: BundleSchema = {
   id: COLOR_ADDITION_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'screen', label: text('label.stage'), constants: {} }],

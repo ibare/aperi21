@@ -96,7 +96,8 @@ export const starColorTemperatureMessages = Object.freeze({
     id: 'Warna bintang dan suhu permukaan',
     pt: 'Cor das estrelas e temperatura da superfície',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '표면 온도가 정하는 별빛의 색',
     en: 'How surface temperature sets the color of starlight',
     ja: '表面温度が星の光の色を決める',
@@ -311,7 +312,7 @@ export const starColorTemperatureSchema: BundleSchema = {
   id: STAR_COLOR_TEMPERATURE_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 온도가 오르고, 머물고, 다시 식는다.

@@ -110,7 +110,8 @@ export const normalModesMessages = Object.freeze({
     id: 'Mode normal',
     pt: 'Modos normais',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '계가 가진 고유 진동 형태',
     en: 'The natural shapes a system vibrates in',
     ja: '系が持つ固有の振動の形',
@@ -275,7 +276,7 @@ export const normalModesSchema: BundleSchema = {
   id: NORMAL_MODES_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'continuous',
   parameters: [],
   stages: [{ id: 'chain', label: text('label.stage'), constants: {} }],

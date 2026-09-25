@@ -80,17 +80,18 @@ export const focalLengthMessages = Object.freeze({
     id: 'Jarak fokus',
     pt: 'Distância focal',
   },
-  'label.operation': {
-    ko: '상이 맺히는 자리를 정하는 것',
-    en: 'What decides where the image forms',
-    ja: '像ができる位置を決めるもの',
-    zh: '决定成像位置的因素',
-    ar: 'ما يحدد موضع تكوّن الصورة',
-    es: 'Lo que decide dónde se forma la imagen',
-    fr: 'Ce qui décide où se forme l’image',
-    hi: 'जो तय करता है कि प्रतिबिंब कहाँ बनता है',
-    id: 'Yang menentukan letak terbentuknya bayangan',
-    pt: 'O que decide onde a imagem se forma',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '초점 거리가 상이 맺히는 자리를 정하는 것',
+    en: 'How the focal length decides where the image forms',
+    ja: '焦点距離が像の結ぶ位置を決めること',
+    zh: '焦距决定像形成的位置',
+    ar: 'كيف يحدد البعد البؤري موضع تكوّن الصورة',
+    es: 'Cómo la distancia focal decide dónde se forma la imagen',
+    fr: 'Comment la distance focale décide de l’endroit où se forme l’image',
+    hi: 'फोकस दूरी कैसे तय करती है कि प्रतिबिंब कहाँ बनेगा',
+    id: 'Bagaimana jarak fokus menentukan tempat bayangan terbentuk',
+    pt: 'Como a distância focal decide onde a imagem se forma',
   },
   'label.stage': {
     ko: '초점 거리가 오가는 볼록 렌즈',
@@ -249,7 +250,7 @@ export const focalLengthSchema: BundleSchema = {
   id: FOCAL_LENGTH_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 시간표가 초점 거리를 두 정박값 사이로 오가게 한다 (controllers.ts).

@@ -90,7 +90,8 @@ export const diffractionGratingMessages = Object.freeze({
     id: 'Kisi difraksi',
     pt: 'Rede de difração',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '여러 슬릿이 만드는 날카로운 극대',
     en: 'Sharp maxima made by many slits',
     ja: '多数のスリットがつくる鋭い極大',
@@ -242,7 +243,7 @@ export const diffractionGratingSchema: BundleSchema = {
   id: DIFFRACTION_GRATING_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 틈 수를 늘리는 순서와 흰빛 단계가 저절로 돈다.

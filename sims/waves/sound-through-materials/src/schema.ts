@@ -120,17 +120,18 @@ export const soundThroughMaterialsMessages = Object.freeze({
     id: 'Bunyi melalui berbagai bahan',
     pt: 'O som através dos materiais',
   },
-  'label.operation': {
-    ko: '매질에 따라 달라지는 소리의 전달',
-    en: 'How sound travels differently through different materials',
-    ja: '物質によって音の伝わり方が変わる',
-    zh: '声音在不同物质中传播得不同',
-    ar: 'كيف ينتقل الصوت بشكل مختلف عبر مواد مختلفة',
-    es: 'Cómo el sonido viaja de forma distinta por distintos materiales',
-    fr: 'Comment le son se propage différemment selon les matériaux',
-    hi: 'ध्वनि अलग-अलग पदार्थों में अलग ढंग से कैसे चलती है',
-    id: 'Bagaimana bunyi merambat berbeda melalui bahan yang berbeda',
-    pt: 'Como o som se propaga de forma diferente em materiais diferentes',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '매질이 정하는 소리의 빠르기와 건너감',
+    en: 'The speed of sound and its passage across, set by the medium',
+    ja: '媒質が決める音の速さと伝わり方',
+    zh: '由介质决定的声速与传递',
+    ar: 'سرعة الصوت وعبوره كما يحددهما الوسط',
+    es: 'La rapidez del sonido y su paso, fijados por el medio',
+    fr: 'La vitesse du son et son passage, fixés par le milieu',
+    hi: 'माध्यम से तय होने वाली ध्वनि की चाल और उसका पार होना',
+    id: 'Kelajuan bunyi dan perambatannya yang ditentukan oleh medium',
+    pt: 'A velocidade do som e a sua passagem, definidas pelo meio',
   },
   'label.stage': {
     ko: '네 통',
@@ -273,7 +274,7 @@ export const soundThroughMaterialsSchema: BundleSchema = {
   id: SOUND_THROUGH_MATERIALS_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 손잡이를 두지 않는다 — 네 통이 이미 네 물질을 같은 순간 나란히 견준다.

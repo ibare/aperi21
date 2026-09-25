@@ -31,7 +31,8 @@ export const firstLawOfThermodynamicsMessages = Object.freeze({
     id: 'Hukum pertama termodinamika',
     pt: 'Primeira lei da termodinâmica',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '내부 에너지·일·열의 관계',
     en: 'How internal energy, work and heat relate',
     ja: '内部エネルギー・仕事・熱の関係',
@@ -249,7 +250,7 @@ export const firstLawOfThermodynamicsSchema: BundleSchema = {
   id: FIRST_LAW_OF_THERMODYNAMICS_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
 

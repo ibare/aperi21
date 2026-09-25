@@ -111,7 +111,8 @@ export const totalInternalReflectionMessages = Object.freeze({
     id: 'Pemantulan sempurna',
     pt: 'Reflexão interna total',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '임계각과 그 조건',
     en: 'The critical angle and its condition',
     ja: '臨界角とその条件',
@@ -362,7 +363,7 @@ export const totalInternalReflectionSchema: BundleSchema = {
   id: TOTAL_INTERNAL_REFLECTION_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'default', label: text('label.stage'), constants: {} }],

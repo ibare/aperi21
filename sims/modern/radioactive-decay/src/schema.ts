@@ -80,7 +80,8 @@ export const radioactiveDecayMessages = Object.freeze({
     id: 'Peluruhan radioaktif',
     pt: 'Decaimento radioativo',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '반감기와 지수 감소',
     en: 'Half-life and exponential decay',
     ja: '半減期と指数関数的な減少',
@@ -200,7 +201,7 @@ export const radioactiveDecaySchema: BundleSchema = {
   id: RADIOACTIVE_DECAY_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 자동 진행만으로 주장이 끝난다.

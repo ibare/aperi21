@@ -112,17 +112,18 @@ export const dragInFluidMessages = Object.freeze({
     id: 'Gaya hambat dalam fluida',
     pt: 'Arrasto em um fluido',
   },
-  'label.operation': {
-    ko: '형상과 속도가 정하는 저항',
-    en: 'Drag set by shape and speed',
-    ja: '形と速さで決まる抗力',
-    zh: '由形状和速率决定的阻力',
-    ar: 'قوة سحب يحددها الشكل والسرعة',
-    es: 'Arrastre determinado por la forma y la rapidez',
-    fr: 'Traînée fixée par la forme et la vitesse',
-    hi: 'आकार और चाल से तय होने वाला कर्षण',
-    id: 'Gaya hambat yang ditentukan bentuk dan kelajuan',
-    pt: 'Arrasto definido pela forma e pela velocidade',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '빠른 흐름에서 뒤 모양이 정하는 저항',
+    en: 'Resistance in fast flow set by the shape at the back',
+    ja: '速い流れの中で、後ろの形が決める抵抗',
+    zh: '快速流动中由后部形状决定的阻力',
+    ar: 'مقاومة في التدفق السريع يحددها شكل المؤخرة',
+    es: 'La resistencia en un flujo rápido que fija la forma de la parte trasera',
+    fr: 'La résistance, en écoulement rapide, fixée par la forme de l’arrière',
+    hi: 'तेज़ प्रवाह में पिछले हिस्से के आकार से तय होने वाला प्रतिरोध',
+    id: 'Hambatan dalam aliran cepat yang ditentukan oleh bentuk bagian belakang',
+    pt: 'A resistência num escoamento rápido definida pela forma da parte de trás',
   },
   'label.stage': {
     ko: '같은 흐름',
@@ -240,7 +241,7 @@ export const dragInFluidSchema: BundleSchema = {
   id: DRAG_IN_FLUID_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 자동 진행으로 주장이 끝난다 (controllers.ts).

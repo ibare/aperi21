@@ -80,7 +80,8 @@ export const relativisticMomentumMessages = Object.freeze({
     id: 'Momentum relativistik',
     pt: 'Quantidade de movimento relativística',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '속도가 커질 때의 발산',
     en: 'Momentum diverges as speed grows',
     ja: '速さが増すと運動量が発散する',
@@ -258,7 +259,7 @@ export const relativisticMomentumSchema: BundleSchema = {
   id: RELATIVISTIC_MOMENTUM_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 밀기 시작하고, 곡선을 오르고, c 앞에서 멈칫한 채 다시 온다.

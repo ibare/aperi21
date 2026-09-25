@@ -105,7 +105,8 @@ export const simpleCircuitMessages = Object.freeze({
     id: 'Merangkai rangkaian listrik',
     pt: 'Montando um circuito elétrico',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '이어져야 흐르고 끊기면 꺼진다',
     en: 'It flows only when joined; break it and the bulb goes out',
     ja: 'つながっているときだけ流れ、切ると電球が消える',
@@ -294,7 +295,7 @@ export const simpleCircuitSchema: BundleSchema = {
   id: SIMPLE_CIRCUIT_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 흐르고, 세 자리를 차례로 끊었다 잇는다.

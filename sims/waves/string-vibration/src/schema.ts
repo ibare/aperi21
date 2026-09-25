@@ -85,17 +85,18 @@ export const stringVibrationMessages = Object.freeze({
     id: 'Tali yang bergetar',
     pt: 'Corda vibrante',
   },
-  'label.operation': {
-    ko: '양끝이 고정된 줄의 모드',
-    en: 'Modes of a string fixed at both ends',
-    ja: '両端を固定した弦のモード',
-    zh: '两端固定的弦的模式',
-    ar: 'أنماط وتر مثبَّت من طرفيه',
-    es: 'Modos de una cuerda fija en ambos extremos',
-    fr: 'Modes d’une corde fixée aux deux extrémités',
-    hi: 'दोनों सिरों पर बँधी डोरी की विधाएँ',
-    id: 'Mode tali yang terikat di kedua ujung',
-    pt: 'Modos de uma corda fixa nas duas pontas',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '흔들리는 길이가 정하는 음높이',
+    en: 'The pitch set by the vibrating length',
+    ja: '揺れる長さが決める音の高さ',
+    zh: '由振动长度决定的音高',
+    ar: 'حدّة الصوت التي يحددها الطول المهتز',
+    es: 'La altura del sonido fijada por la longitud que vibra',
+    fr: 'La hauteur du son fixée par la longueur qui vibre',
+    hi: 'कंपन करने वाली लंबाई से तय होने वाला स्वर का तारत्व',
+    id: 'Tinggi nada yang ditentukan oleh panjang yang bergetar',
+    pt: 'A altura do som definida pelo comprimento que vibra',
   },
   'label.stage': {
     ko: '손가락으로 누르는 줄',
@@ -303,7 +304,7 @@ export const stringVibrationSchema: BundleSchema = {
   id: STRING_VIBRATION_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 손가락이 정해진 자리(개방 → 2/3 → 1/2)를 차례로 누르며 주장을 마친다 —

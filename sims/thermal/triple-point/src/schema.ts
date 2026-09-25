@@ -91,7 +91,8 @@ export const triplePointMessages = Object.freeze({
     id: 'Titik tripel',
     pt: 'Ponto triplo',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '세 상이 공존하는 조건',
     en: 'The condition where three phases coexist',
     ja: '三つの相が共存する条件',
@@ -493,7 +494,7 @@ export const triplePointSchema: BundleSchema = {
   id: TRIPLE_POINT_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 네 번의 벗어남이 아무것도 누르지 않아도 한 주기 안에 끝난다.

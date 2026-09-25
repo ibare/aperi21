@@ -135,7 +135,8 @@ export const liftForceMessages = Object.freeze({
     id: 'Gaya angkat',
     pt: 'Sustentação',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '날개 위아래의 흐름 차이',
     en: 'How air flows over and under a wing',
     ja: '翼の上と下を流れる空気',
@@ -227,7 +228,7 @@ export const liftForceSchema: BundleSchema = {
   id: LIFT_FORCE_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'continuous',
   parameters: [],
   stages: [{ id: 'default', label: text('label.stage'), constants: {} }],

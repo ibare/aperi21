@@ -99,7 +99,8 @@ export const pressureFromCollisionsMessages = Object.freeze({
     id: 'Tekanan dari tumbukan',
     pt: 'Pressão devida às colisões',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '벽에 부딪는 분자의 운동량',
     en: 'The momentum molecules bring to the wall',
     ja: '分子が壁にもたらす運動量',
@@ -343,7 +344,7 @@ export const pressureFromCollisionsSchema: BundleSchema = {
   id: PRESSURE_FROM_COLLISIONS_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 분자가 움직이고, 세기가 서고, 횟수가 쌓이고, 막대가 선다.

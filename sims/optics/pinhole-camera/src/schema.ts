@@ -109,7 +109,8 @@ export const pinholeCameraMessages = Object.freeze({
     id: 'Kamera lubang jarum',
     pt: 'Câmara escura de orifício',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '구멍 하나가 만드는 상',
     en: 'The image made by a single hole',
     ja: '一つの穴がつくる像',
@@ -297,7 +298,7 @@ export const pinholeCameraSchema: BundleSchema = {
   id: PINHOLE_CAMERA_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 구멍이 작은 → 중간 → 큰 폭으로 넓어졌다가 돌아온다.

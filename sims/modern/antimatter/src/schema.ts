@@ -89,7 +89,19 @@ export const SCENE_BOUNDS = {
 
 export const antimatterMessages = Object.freeze({
   'label.title': { ko: '반물질', en: 'Antimatter', ja: '反物質', zh: '反物质', ar: 'المادة المضادة', es: 'Antimateria', fr: 'Antimatière', hi: 'प्रतिद्रव्य', id: 'Antimateri', pt: 'Antimatéria' },
-  'label.operation': { ko: '부호가 반대인 짝', en: 'A partner with the opposite charge', ja: '電荷が逆の相棒', zh: '电荷相反的伙伴', ar: 'شريك بشحنة معاكسة', es: 'Una pareja con la carga opuesta', fr: 'Un partenaire de charge opposée', hi: 'विपरीत आवेश वाला साथी', id: 'Pasangan dengan muatan berlawanan', pt: 'Um par com a carga oposta' },
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '부호가 반대인 짝',
+    en: 'A partner with the opposite charge',
+    ja: '電荷が逆の相棒',
+    zh: '电荷相反的伙伴',
+    ar: 'شريك بشحنة معاكسة',
+    es: 'Una pareja con la carga opuesta',
+    fr: 'Un partenaire de charge opposée',
+    hi: 'विपरीत आवेश वाला साथी',
+    id: 'Pasangan dengan muatan berlawanan',
+    pt: 'Um par com a carga oposta',
+  },
   'label.stage': { ko: '양전자 소멸과 PET', en: 'Positron annihilation and PET', ja: '陽電子の消滅と PET', zh: '正电子湮灭与 PET', ar: 'فناء البوزيترون و PET', es: 'Aniquilación de positrones y PET', fr: 'Annihilation du positon et PET', hi: 'पॉज़िट्रॉन विलोपन और PET', id: 'Anihilasi positron dan PET', pt: 'Aniquilação de pósitrons e PET' },
   'label.view': { ko: '기본', en: 'Default', ja: '標準', zh: '默认', ar: 'افتراضي', es: 'Predeterminada', fr: 'Par défaut', hi: 'डिफ़ॉल्ट', id: 'Bawaan', pt: 'Padrão' },
   /** 입자의 정지 에너지. 값은 선언한 정박값을 끼운다 (C1 · S-piece 유효숫자). */
@@ -191,7 +203,7 @@ export const antimatterSchema: BundleSchema = {
   id: ANTIMATTER_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 한 주기 안에 소멸 하나를 천천히, 이어 여러 번을 빠르게 보여 할 말을 마친다.

@@ -98,17 +98,18 @@ export const atwoodMachineMessages = Object.freeze({
     id: 'Mesin Atwood',
     pt: 'Máquina de Atwood',
   },
-  'label.operation': {
-    ko: '두 추의 합이 같으면 차이가 가속도를 정한다',
-    en: 'With the same total mass, the difference sets the acceleration',
-    ja: '質量の合計が同じなら、差が加速度を決める',
-    zh: '总质量相同时，质量差决定加速度',
-    ar: 'عند تساوي الكتلة الكلية، يحدد الفرق التسارع',
-    es: 'Con la misma masa total, la diferencia fija la aceleración',
-    fr: 'À masse totale égale, c’est la différence qui fixe l’accélération',
-    hi: 'कुल द्रव्यमान समान हो तो अंतर त्वरण तय करता है',
-    id: 'Dengan massa total yang sama, selisihnya menentukan percepatan',
-    pt: 'Com a mesma massa total, a diferença define a aceleração',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '두 추가 도르래로 연결된 계',
+    en: 'A system of two weights joined over a pulley',
+    ja: '二つのおもりを滑車でつないだ系',
+    zh: '用滑轮连接两个重物的系统',
+    ar: 'نظام من ثقلين موصولين عبر بكرة',
+    es: 'Un sistema de dos pesas unidas por una polea',
+    fr: 'Un système de deux masses reliées par une poulie',
+    hi: 'घिरनी से जुड़े दो भारों का तंत्र',
+    id: 'Sistem dua beban yang dihubungkan melalui katrol',
+    pt: 'Um sistema de dois pesos ligados por uma roldana',
   },
   'label.stage': {
     ko: '두 기계',
@@ -265,7 +266,7 @@ export const atwoodMachineSchema: BundleSchema = {
   id: ATWOOD_MACHINE_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

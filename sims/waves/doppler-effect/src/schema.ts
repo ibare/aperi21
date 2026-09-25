@@ -160,17 +160,18 @@ export const dopplerEffectMessages = Object.freeze({
     id: 'Efek Doppler',
     pt: 'Efeito Doppler',
   },
-  'label.operation': {
-    ko: '원천이 방출점을 밀고 가 앞쪽 간격이 좁아진다',
-    en: 'The source drags its emission points, crowding the front',
-    ja: '波源が放出点を引きずって進み、前方が詰まる',
-    zh: '波源带着发射点前移，前方变得密集',
-    ar: 'يجرّ المصدر نقاط الانبعاث معه فتزدحم الجهة الأمامية',
-    es: 'La fuente arrastra sus puntos de emisión y apiña la parte de adelante',
-    fr: 'La source entraîne ses points d’émission et resserre l’avant',
-    hi: 'स्रोत अपने उत्सर्जन बिंदुओं को साथ खींचता है, जिससे आगे का भाग घना हो जाता है',
-    id: 'Sumber menyeret titik-titik pancarnya sehingga bagian depan merapat',
-    pt: 'A fonte arrasta seus pontos de emissão e adensa a parte da frente',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '움직이는 원천이 앞뒤 파면 간격을 갈라 놓는 것',
+    en: 'How a moving source splits the spacing of the wavefronts ahead and behind',
+    ja: '動く波源が前後の波面の間隔を分けること',
+    zh: '运动的波源让前后波面的间距分开',
+    ar: 'كيف يفرّق المصدر المتحرك المسافات بين جبهات الموجة أمامه وخلفه',
+    es: 'Cómo una fuente en movimiento separa el espaciado de los frentes de onda por delante y por detrás',
+    fr: 'Comment une source en mouvement sépare l’écartement des fronts d’onde devant et derrière',
+    hi: 'गतिशील स्रोत आगे और पीछे के तरंगाग्रों के अंतराल को कैसे अलग कर देता है',
+    id: 'Bagaimana sumber yang bergerak memisahkan jarak antarmuka gelombang di depan dan di belakang',
+    pt: 'Como uma fonte em movimento separa o espaçamento das frentes de onda à frente e atrás',
   },
   'label.stage': {
     ko: '매질',
@@ -267,7 +268,7 @@ export const dopplerEffectSchema: BundleSchema = {
   id: DOPPLER_EFFECT_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'linear',
 
   // 파라미터를 두지 않는다. 독자가 손대는 것은 원천 속도 하나이고 그것은

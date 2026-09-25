@@ -101,17 +101,18 @@ export const energyInCapacitorMessages = Object.freeze({
     id: 'Energi pada kapasitor',
     pt: 'Energia em um capacitor',
   },
-  'label.operation': {
-    ko: '전기장에 저장된 에너지',
-    en: 'Energy stored in the electric field',
-    ja: '電場に蓄えられたエネルギー',
-    zh: '储存在电场中的能量',
-    ar: 'الطاقة المخزنة في المجال الكهربائي',
-    es: 'Energía almacenada en el campo eléctrico',
-    fr: 'Énergie stockée dans le champ électrique',
-    hi: 'विद्युत क्षेत्र में संचित ऊर्जा',
-    id: 'Energi yang tersimpan dalam medan listrik',
-    pt: 'Energia armazenada no campo elétrico',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '전하를 옮기는 데 든 일',
+    en: 'The work spent moving the charge',
+    ja: '電荷を運ぶのに要した仕事',
+    zh: '搬运电荷所做的功',
+    ar: 'الشغل المبذول لنقل الشحنة',
+    es: 'El trabajo invertido en mover la carga',
+    fr: 'Le travail dépensé pour déplacer la charge',
+    hi: 'आवेश को ले जाने में लगा कार्य',
+    id: 'Usaha yang dikeluarkan untuk memindahkan muatan',
+    pt: 'O trabalho gasto para mover a carga',
   },
   'label.stage': {
     ko: '한 몫씩 옮겨 충전',
@@ -303,7 +304,7 @@ export const energyInCapacitorSchema: BundleSchema = {
   id: ENERGY_IN_CAPACITOR_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 옮기고, 채우고, 직사각형과 견주는 한 주기로 할 말을 마친다.

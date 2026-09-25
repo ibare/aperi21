@@ -85,7 +85,8 @@ export const specularDiffuseReflectionMessages = Object.freeze({
     id: 'Pemantulan teratur dan pemantulan baur',
     pt: 'Reflexão especular e difusa',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '표면 거칠기가 정하는 반사',
     en: 'Reflection set by surface roughness',
     ja: '表面の粗さが決める反射',
@@ -228,7 +229,7 @@ export const specularDiffuseReflectionSchema: BundleSchema = {
   id: SPECULAR_DIFFUSE_REFLECTION_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 한 주기로 「나란히 → 흩어짐 → 법선이 제각각」 이 끝난다.

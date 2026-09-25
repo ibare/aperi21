@@ -101,7 +101,8 @@ export const gravitationalFieldMessages = Object.freeze({
     id: 'Medan gravitasi',
     pt: 'Campo gravitacional',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '공간에 분포한 중력의 세기',
     en: 'The strength of gravity spread through space',
     ja: '空間に広がる重力の強さ',
@@ -205,7 +206,7 @@ export const gravitationalFieldSchema: BundleSchema = {
   id: GRAVITATIONAL_FIELD_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 장이 깔려 있고, 질량이 놓이고, 끌려간다.

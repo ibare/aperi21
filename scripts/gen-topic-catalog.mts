@@ -43,7 +43,8 @@ const LAB_DEST = resolve(ROOT, 'apps/catalog/public/piece-lab');
 interface SourceTopic {
   id: string;
   name: string;
-  desc: string;
+  /** 언어별 한 줄. 조각 description 의 원본이다 (`description:gen`). 사이트는 ko 를 쓴다. */
+  desc: Record<string, string>;
   domain: string;
   /** 'primary' | 'lower' | 'upper'. 교육과정 대조 전에는 null */
   level: string | null;
@@ -102,7 +103,7 @@ for (const t of source.topics) {
 
 const byDomain = new Map<string, Topic[]>(source.domains.map((d) => [d.id, []]));
 for (const t of source.topics) {
-  const topic: Topic = { id: t.id, name: t.name, desc: t.desc };
+  const topic: Topic = { id: t.id, name: t.name, desc: t.desc.ko ?? '' };
   if (t.sim) topic.simId = t.sim;
   if (existsSync(resolve(LAB_SRC, t.id, 'index.html'))) {
     topic.labUrl = `piece-lab/${t.id}/index.html`;

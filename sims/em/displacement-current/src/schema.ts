@@ -111,7 +111,8 @@ export const displacementCurrentMessages = Object.freeze({
     id: 'Arus perpindahan',
     pt: 'Corrente de deslocamento',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '축전기 사이를 잇는 항',
     en: 'The term that bridges the capacitor gap',
     ja: 'コンデンサーのすき間をつなぐ項',
@@ -264,7 +265,7 @@ export const displacementCurrentSchema: BundleSchema = {
   id: DISPLACEMENT_CURRENT_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 차는 중이고, 멎고, 비우고, 다시 찬다.

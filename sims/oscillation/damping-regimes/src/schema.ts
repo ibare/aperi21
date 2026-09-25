@@ -93,7 +93,8 @@ export const dampingRegimesMessages = Object.freeze({
     id: 'Tiga rezim redaman',
     pt: 'Três regimes de amortecimento',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '부족·임계·과도 감쇠',
     en: 'Underdamped, critically damped and overdamped motion',
     ja: '不足減衰・臨界減衰・過減衰の運動',
@@ -249,7 +250,7 @@ export const dampingRegimesSchema: BundleSchema = {
   id: DAMPING_REGIMES_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

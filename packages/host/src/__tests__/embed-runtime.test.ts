@@ -31,7 +31,7 @@ const SCHEMA: BundleSchema = {
   id: 'test',
   label: { en: 'Test' },
   category: 'test',
-  operation: { en: 'Test' },
+  description: { en: 'Test' },
   timeModel: 'linear',
   parameters: [],
   stages: [STAGE],

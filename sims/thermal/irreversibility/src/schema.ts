@@ -45,7 +45,8 @@ export const irreversibilityMessages = Object.freeze({
     id: 'Entropi dan ketakterbalikan',
     pt: 'Entropia e irreversibilidade',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '되돌릴 수 없는 이유',
     en: 'Why it cannot be undone',
     ja: '元に戻せない理由',
@@ -236,7 +237,7 @@ export const irreversibilitySchema: BundleSchema = {
   id: IRREVERSIBILITY_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 공이 떨어져 튀다 멈추고, 같은 장면이 거꾸로 돈다.

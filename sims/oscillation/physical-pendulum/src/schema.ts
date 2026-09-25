@@ -78,7 +78,8 @@ export const physicalPendulumMessages = Object.freeze({
     id: 'Bandul fisis',
     pt: 'Pêndulo físico',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '크기가 있는 물체의 진동',
     en: 'Oscillation of an extended body',
     ja: '大きさのある物体の振動',
@@ -227,7 +228,7 @@ export const physicalPendulumSchema: BundleSchema = {
   id: PHYSICAL_PENDULUM_ID,
   label: text('label.title'),
   category: 'oscillation',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

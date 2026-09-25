@@ -118,7 +118,8 @@ export const chargingMethodsMessages = Object.freeze({
     id: 'Cara memberi muatan listrik',
     pt: 'Processos de eletrização',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '마찰·접촉·유도',
     en: 'Friction, contact and induction',
     ja: '摩擦・接触・誘導',
@@ -421,7 +422,7 @@ export const chargingMethodsSchema: BundleSchema = {
   id: CHARGING_METHODS_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

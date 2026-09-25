@@ -81,7 +81,8 @@ export const viscosityMessages = Object.freeze({
     id: 'Viskositas',
     pt: 'Viscosidade',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '층 사이의 마찰',
     en: 'Friction between layers',
     ja: '層と層の間の摩擦',
@@ -250,7 +251,7 @@ export const viscositySchema: BundleSchema = {
   id: VISCOSITY_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 자동 진행 한 번으로 「모양은 같고 힘만 다르다」 가 끝난다.

@@ -86,7 +86,8 @@ export const measurementCollapseMessages = Object.freeze({
     id: 'Pengukuran dan keruntuhan',
     pt: 'Medição e colapso',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '관측이 상태를 정하는 것',
     en: 'How observing settles the state',
     ja: '観測が状態を定めること',
@@ -242,7 +243,7 @@ export const measurementCollapseSchema: BundleSchema = {
   id: MEASUREMENT_COLLAPSE_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 자동 진행이 측정 · 붕괴 · 다시 재기를 모두 지나가고, 주기마다 새 결과가

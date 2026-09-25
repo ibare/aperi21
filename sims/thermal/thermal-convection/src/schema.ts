@@ -102,7 +102,8 @@ export const thermalConvectionMessages = Object.freeze({
     id: 'Konveksi',
     pt: 'Convecção',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '유체의 이동이 나르는 열',
     en: 'Heat carried by moving fluid',
     ja: '流体の移動が運ぶ熱',
@@ -218,7 +219,7 @@ export const thermalConvectionSchema: BundleSchema = {
   id: THERMAL_CONVECTION_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'continuous',
   parameters: [],
   stages: [{ id: 'default', label: text('label.stage'), constants: {} }],

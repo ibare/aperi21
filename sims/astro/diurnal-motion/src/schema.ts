@@ -128,17 +128,18 @@ export const diurnalMotionMessages = Object.freeze({
     id: 'Gerak harian',
     pt: 'Movimento diurno',
   },
-  'label.operation': {
-    ko: '하루 동안 태양과 별이 하늘을 가로지르는 길',
-    en: 'The paths the Sun and stars trace across the sky in a day',
-    ja: '1日のあいだに太陽と星が空に描く道筋',
-    zh: '一天中太阳和星星在天空中划过的路径',
-    ar: 'المسارات التي ترسمها الشمس والنجوم عبر السماء في يوم واحد',
-    es: 'Las trayectorias que el Sol y las estrellas trazan en el cielo en un día',
-    fr: 'Les trajectoires que le Soleil et les étoiles tracent dans le ciel en une journée',
-    hi: 'एक दिन में सूर्य और तारे आकाश में जो पथ बनाते हैं',
-    id: 'Lintasan yang ditempuh Matahari dan bintang-bintang melintasi langit dalam sehari',
-    pt: 'Os caminhos que o Sol e as estrelas traçam no céu em um dia',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '하루 동안 밤하늘 전체가 한 점을 두고 도는 길',
+    en: 'The path along which the whole night sky turns about one point in a day',
+    ja: '一日のあいだに夜空全体が一点のまわりを回る道',
+    zh: '一天之中整个夜空绕一点转动的路径',
+    ar: 'المسار الذي تدور فيه السماء الليلية كلها حول نقطة واحدة في يوم',
+    es: 'El camino por el que todo el cielo nocturno gira en torno a un punto a lo largo del día',
+    fr: 'Le chemin que suit tout le ciel nocturne en tournant autour d’un point en un jour',
+    hi: 'वह पथ जिस पर पूरा रात्रि आकाश एक दिन में एक बिंदु के चारों ओर घूमता है',
+    id: 'Lintasan seluruh langit malam yang berputar mengelilingi satu titik dalam sehari',
+    pt: 'O caminho pelo qual todo o céu noturno gira em torno de um ponto ao longo de um dia',
   },
   'label.stage': {
     ko: '북쪽 하늘',
@@ -376,7 +377,7 @@ export const diurnalMotionSchema: BundleSchema = {
   id: DIURNAL_MOTION_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 하늘이 돌고 있고, 하루를 다 감으면 할 말이 끝난다.

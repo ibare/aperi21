@@ -182,7 +182,8 @@ export const electromagnetMessages = Object.freeze({
     id: 'Elektromagnet',
     pt: 'Eletroímã',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '전류가 흐를 때만 자석이 되는 것',
     en: 'A magnet only while current flows',
     ja: '電流が流れているときだけ磁石になるもの',
@@ -423,7 +424,7 @@ export const electromagnetSchema: BundleSchema = {
   id: ELECTROMAGNET_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 독자가 손으로 해 보고 싶은 셋(닫으면? 열면? 더 감거나 전류를

@@ -138,7 +138,8 @@ export const projectileRangeMessages = Object.freeze({
     id: 'Jangkauan dan sudut lemparan',
     pt: 'Alcance e ângulo de lançamento',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '던지는 각도가 날아가는 거리를 바꾸는 방식',
     en: 'How the launch angle changes how far it flies',
     ja: '投射角が飛ぶ距離をどう変えるか',
@@ -328,7 +329,7 @@ export const projectileRangeSchema: BundleSchema = {
   id: PROJECTILE_RANGE_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 바로 쏘고, 내려앉고, 다시 겨눈다.

@@ -107,17 +107,18 @@ export const stokesDragMessages = Object.freeze({
     id: 'Gaya hambat Stokes',
     pt: 'Arrasto de Stokes',
   },
-  'label.operation': {
-    ko: '느린 흐름에서의 저항',
-    en: 'Drag in slow, viscous flow',
-    ja: '遅い粘性流れでの抗力',
-    zh: '缓慢黏性流动中的阻力',
-    ar: 'السحب في جريان لزج بطيء',
-    es: 'Arrastre en un flujo lento y viscoso',
-    fr: 'Traînée dans un écoulement lent et visqueux',
-    hi: 'धीमे, श्यान प्रवाह में कर्षण',
-    id: 'Gaya hambat dalam aliran lambat dan kental',
-    pt: 'Arrasto em escoamento lento e viscoso',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '느린 흐름에서 크기가 가라앉는 빠르기를 정하는 것',
+    en: 'What sets how fast a size sinks in slow flow',
+    ja: '遅い流れの中で、大きさが沈む速さを決めるもの',
+    zh: '在缓慢流动中由大小决定下沉快慢的因素',
+    ar: 'ما يحدد سرعة غوص الجسم بحسب حجمه في تدفق بطيء',
+    es: 'Lo que, en un flujo lento, fija con qué rapidez se hunde un tamaño',
+    fr: 'Ce qui fixe, dans un écoulement lent, la vitesse à laquelle une taille s’enfonce',
+    hi: 'धीमे प्रवाह में आकार के अनुसार डूबने की चाल क्या तय करता है',
+    id: 'Hal yang menentukan seberapa cepat suatu ukuran tenggelam dalam aliran lambat',
+    pt: 'O que determina, num escoamento lento, a velocidade com que um tamanho afunda',
   },
   'label.stage': {
     ko: '끈적한 액체',
@@ -248,7 +249,7 @@ export const stokesDragSchema: BundleSchema = {
   id: STOKES_DRAG_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 이미 가라앉고 있고, 큰 구가 닿으면 다시 놓는다 (controllers.ts).

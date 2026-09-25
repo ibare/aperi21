@@ -86,17 +86,18 @@ export const scatteringMessages = Object.freeze({
     id: 'Hamburan',
     pt: 'Espalhamento',
   },
-  'label.operation': {
-    ko: '하늘과 노을의 색',
-    en: 'The colours of the sky and the sunset',
-    ja: '空と夕焼けの色',
-    zh: '天空与晚霞的颜色',
-    ar: 'ألوان السماء والغروب',
-    es: 'Los colores del cielo y del atardecer',
-    fr: 'Les couleurs du ciel et du coucher de soleil',
-    hi: 'आकाश और सूर्यास्त के रंग',
-    id: 'Warna langit dan senja',
-    pt: 'As cores do céu e do pôr do sol',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '파란 하늘과 흰 구름을 가르는 입자 크기',
+    en: 'The particle size that separates a blue sky from white clouds',
+    ja: '青い空と白い雲を分ける粒の大きさ',
+    zh: '区分蓝天与白云的粒子大小',
+    ar: 'حجم الجسيمات الذي يفرّق بين السماء الزرقاء والغيوم البيضاء',
+    es: 'El tamaño de partícula que separa el cielo azul de las nubes blancas',
+    fr: 'La taille des particules qui sépare le ciel bleu des nuages blancs',
+    hi: 'वह कण-आकार जो नीले आकाश और सफ़ेद बादलों को अलग करता है',
+    id: 'Ukuran partikel yang membedakan langit biru dari awan putih',
+    pt: 'O tamanho das partículas que separa o céu azul das nuvens brancas',
   },
   'label.stage': {
     ko: '공기 분자와 구름 물방울',
@@ -263,7 +264,7 @@ export const scatteringSchema: BundleSchema = {
   id: SCATTERING_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 위 레인이 이미 흩고 있고, 아래 레인이 뒤따른다 (controllers.ts).

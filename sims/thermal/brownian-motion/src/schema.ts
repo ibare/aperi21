@@ -106,7 +106,8 @@ export const brownianMotionMessages = Object.freeze({
     id: 'Gerak Brown',
     pt: 'Movimento browniano',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '분자 충돌이 만드는 무작위 운동',
     en: 'Random motion driven by molecular collisions',
     ja: '分子の衝突が引き起こす不規則な運動',
@@ -258,7 +259,7 @@ export const brownianMotionSchema: BundleSchema = {
   id: BROWNIAN_MOTION_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 알갱이가 비틀거리고, 창이 열려 까닭을 보이고, 다시 닫힌다.

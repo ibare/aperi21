@@ -90,7 +90,8 @@ export const wavefrontAndRayMessages = Object.freeze({
     id: 'Muka gelombang dan sinar',
     pt: 'Frentes de onda e raios',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '같은 위상의 면과 그 수직선',
     en: 'Surfaces of equal phase and the lines normal to them',
     ja: '位相の等しい面とそれに垂直な線',
@@ -194,7 +195,7 @@ export const wavefrontAndRaySchema: BundleSchema = {
   id: WAVEFRONT_AND_RAY_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 자동 진행으로 파원 곁에서 먼 곳까지 옮겨 가며 주장이 끝난다.

@@ -129,7 +129,8 @@ export const shockWaveMessages = Object.freeze({
     id: 'Gelombang kejut',
     pt: 'Onda de choque',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '음속을 넘을 때 생기는 원뿔',
     en: 'The cone that forms past the speed of sound',
     ja: '音速を超えるとできる円錐',
@@ -297,7 +298,7 @@ export const shockWaveSchema: BundleSchema = {
   id: SHOCK_WAVE_ID,
   label: text('label.title'),
   category: 'waves',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 파라미터 · 조작기를 두지 않는다. 주장은 「넘으면 원뿔」 하나이고, 자동 진행이

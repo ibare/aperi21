@@ -83,7 +83,8 @@ export const finiteWellMessages = Object.freeze({
     id: 'Sumur potensial persegi berhingga',
     pt: 'Poço quadrado finito',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '벽 바깥으로 새는 파동 함수',
     en: 'A wave function that leaks past the walls',
     ja: '壁の外へしみ出す波動関数',
@@ -228,7 +229,7 @@ export const finiteWellSchema: BundleSchema = {
   id: FINITE_WELL_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 독자가 해 볼 만한 것(벽 높이)은 자동 진행이 끝없는 높이에서 V₀ 까지

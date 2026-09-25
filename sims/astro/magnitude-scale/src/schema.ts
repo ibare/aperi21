@@ -90,7 +90,8 @@ export const magnitudeScaleMessages = Object.freeze({
     id: 'Magnitudo bintang',
     pt: 'Magnitude estelar',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '밝기를 등급으로 나타내는 방식',
     en: 'How brightness is written as magnitude',
     ja: '明るさを等級で表す方法',
@@ -258,7 +259,7 @@ export const magnitudeScaleSchema: BundleSchema = {
   id: MAGNITUDE_SCALE_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   /**

@@ -100,7 +100,8 @@ export const exoplanetDetectionMessages = Object.freeze({
     id: 'Mendeteksi eksoplanet',
     pt: 'Detectando exoplanetas',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '행성이 남기는 흔적',
     en: 'The traces a planet leaves',
     ja: '惑星が残す痕跡',
@@ -327,7 +328,7 @@ export const exoplanetDetectionSchema: BundleSchema = {
   id: EXOPLANET_DETECTION_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 두 흔적이 같은 주기로 묶여 있다는 것은 자동 진행만으로 두 바퀴 안에 드러난다.

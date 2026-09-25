@@ -99,7 +99,8 @@ export const energyDissipationMessages = Object.freeze({
     id: 'Disipasi energi',
     pt: 'Dissipação de energia',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '마찰이 가져가는 몫과 그 행방',
     en: 'The share friction takes, and where it goes',
     ja: '摩擦が持っていく分と、その行き先',
@@ -231,7 +232,7 @@ export const energyDissipationSchema: BundleSchema = {
   id: ENERGY_DISSIPATION_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [{ id: 'rough-floor', label: text('label.stage'), constants: {} }],

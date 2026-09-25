@@ -87,7 +87,8 @@ export const waveFunctionMessages = Object.freeze({
     id: 'Fungsi gelombang',
     pt: 'Função de onda',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '확률 진폭과 그 해석',
     en: 'Probability amplitude and what it means',
     ja: '確率振幅とその意味',
@@ -231,7 +232,7 @@ export const waveFunctionSchema: BundleSchema = {
   id: WAVE_FUNCTION_ID,
   label: text('label.title'),
   category: 'modern',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 자동 진행이 제곱 · 한 번씩 측정 · 거듭 측정을 모두 지나간다. 모양을

@@ -98,7 +98,8 @@ export const fictitiousForceMessages = Object.freeze({
     id: 'Gaya fiktif',
     pt: 'Força fictícia',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '비관성계에서 도입하는 겉보기 힘',
     en: 'The apparent force of a non-inertial frame',
     ja: '非慣性系で現れる見かけの力',
@@ -226,7 +227,7 @@ export const fictitiousForceSchema: BundleSchema = {
   id: FICTITIOUS_FORCE_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 각도 · ω · 장력은 두지 않는다 (원본 inventory 「hidden」). 오른쪽 추 질량만 조작기로 둔다.

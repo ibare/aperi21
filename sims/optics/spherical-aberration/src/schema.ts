@@ -90,7 +90,8 @@ export const sphericalAberrationMessages = Object.freeze({
     id: 'Aberasi sferis',
     pt: 'Aberração esférica',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '가장자리 광선이 다른 곳에 모임',
     en: 'Edge rays come to focus at a different place',
     ja: '縁の光線は別の場所に集まる',
@@ -221,7 +222,7 @@ export const sphericalAberrationSchema: BundleSchema = {
   id: SPHERICAL_ABERRATION_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 조리개를 닫는 것까지 자동 진행으로 보인다 — 조리개 크기를 끌게 해도

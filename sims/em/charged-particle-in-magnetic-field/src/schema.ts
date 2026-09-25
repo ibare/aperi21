@@ -67,17 +67,18 @@ export const chargedParticleInMagneticFieldMessages = Object.freeze({
     id: 'Muatan yang berputar dalam medan magnet',
     pt: 'Cargas girando em um campo magnético',
   },
-  'label.operation': {
-    ko: '빠른 전하도 한 바퀴 시간은 같다',
-    en: 'A faster charge takes the same time per turn',
-    ja: '速い電荷も一周の時間は同じ',
-    zh: '更快的电荷转一圈的时间也相同',
-    ar: 'الشحنة الأسرع تستغرق الزمن نفسه في كل دورة',
-    es: 'Una carga más rápida tarda lo mismo por vuelta',
-    fr: 'Une charge plus rapide met le même temps par tour',
-    hi: 'तेज़ आवेश भी एक चक्कर में उतना ही समय लेता है',
-    id: 'Muatan yang lebih cepat pun butuh waktu sama per putaran',
-    pt: 'Uma carga mais rápida leva o mesmo tempo por volta',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '속력이 달라도 같은 한 바퀴 시간',
+    en: 'The same time per turn whatever the speed',
+    ja: '速さが違っても同じ一周の時間',
+    zh: '速率不同，绕一圈的时间却相同',
+    ar: 'زمن الدورة نفسه مهما اختلفت السرعة',
+    es: 'El mismo tiempo por vuelta sea cual sea la rapidez',
+    fr: 'Le même temps par tour quelle que soit la vitesse',
+    hi: 'चाल अलग होने पर भी एक चक्कर का समय वही',
+    id: 'Waktu satu putaran yang sama berapa pun kelajuannya',
+    pt: 'O mesmo tempo por volta qualquer que seja a velocidade',
   },
   'label.stage': {
     ko: '기본',
@@ -159,7 +160,7 @@ export const chargedParticleInMagneticFieldSchema: BundleSchema = {
   id: CHARGED_PARTICLE_IN_MAGNETIC_FIELD_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기 없음. 자기장 세기를 바꾸면 주기가 바뀌어 두 번째 주장이 된다 (원본 NOTES (c)).

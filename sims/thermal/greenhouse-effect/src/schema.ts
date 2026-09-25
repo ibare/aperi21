@@ -136,7 +136,8 @@ export const greenhouseEffectMessages = Object.freeze({
     id: 'Efek rumah kaca',
     pt: 'Efeito estufa',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '적외선을 되돌리는 층이 지표를 덥히는 것',
     en: 'A layer that sends infrared back down warms the ground',
     ja: '赤外線を下へ送り返す層が地表を温める',
@@ -365,7 +366,7 @@ export const greenhouseEffectSchema: BundleSchema = {
   id: GREENHOUSE_EFFECT_ID,
   label: text('label.title'),
   category: 'thermal',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 층이 들어오고 지표가 데워져 새 온도에 서고, 다시 처음으로.

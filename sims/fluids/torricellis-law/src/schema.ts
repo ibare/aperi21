@@ -64,17 +64,18 @@ export const torricellisLawMessages = Object.freeze({
     id: 'Hukum Torricelli',
     pt: 'Lei de Torricelli',
   },
-  'label.operation': {
-    ko: '깊은 구멍일수록 더 빠르게 뿜는다',
-    en: 'The deeper the hole, the faster the jet',
-    ja: '穴が深いほど、噴き出しは速い',
-    zh: '孔越深，射流越快',
-    ar: 'كلما كان الثقب أعمق، كان النفث أسرع',
-    es: 'Cuanto más hondo el orificio, más rápido el chorro',
-    fr: 'Plus le trou est profond, plus le jet est rapide',
-    hi: 'छेद जितना गहरा, धार उतनी तेज़',
-    id: 'Makin dalam lubangnya, makin cepat pancarannya',
-    pt: 'Quanto mais fundo o furo, mais rápido o jato',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '구멍에서 나오는 유속',
+    en: 'The speed of the flow out of a hole',
+    ja: '穴から出る流速',
+    zh: '从孔中流出的流速',
+    ar: 'سرعة التدفق الخارج من ثقب',
+    es: 'La rapidez del flujo que sale por un orificio',
+    fr: 'La vitesse de l’écoulement qui sort d’un trou',
+    hi: 'छेद से निकलने वाले प्रवाह की चाल',
+    id: 'Kelajuan aliran yang keluar dari lubang',
+    pt: 'A velocidade do escoamento que sai por um orifício',
   },
   'label.stage': {
     ko: '물통',
@@ -185,7 +186,7 @@ export const torricellisLawSchema: BundleSchema = {
   id: TORRICELLIS_LAW_ID,
   label: text('label.title'),
   category: 'fluids',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'linear',
 
   // 조작기가 없다. 열면 바로 뿜고, 계속 뿜고, 표지가 알아서 돌아온다.

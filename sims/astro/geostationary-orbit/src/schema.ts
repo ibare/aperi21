@@ -94,7 +94,8 @@ export const geostationaryOrbitMessages = Object.freeze({
     id: 'Orbit geostasioner',
     pt: 'Órbita geoestacionária',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '자전 주기와 같은 궤도',
     en: 'An orbit as long as one turn of Earth',
     ja: '地球の自転一回と同じ長さの軌道',
@@ -306,7 +307,7 @@ export const geostationaryOrbitSchema: BundleSchema = {
   id: GEOSTATIONARY_ORBIT_ID,
   label: text('label.title'),
   category: 'astro',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다 — 열면 지구가 돌고 있고, 세 위성이 제 빠르기로 돈다.

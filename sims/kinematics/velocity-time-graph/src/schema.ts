@@ -64,17 +64,18 @@ export const velocityTimeGraphMessages = Object.freeze({
     id: 'Grafik kecepatan-waktu',
     pt: 'Gráfico velocidade-tempo',
   },
-  'label.operation': {
-    ko: '그래프 아래 넓이가 간 거리다',
-    en: 'The area under the graph is the distance travelled',
-    ja: 'グラフの下の面積が進んだ距離だ',
-    zh: '图像下方的面积就是通过的距离',
-    ar: 'المساحة تحت المنحنى هي المسافة المقطوعة',
-    es: 'El área bajo la gráfica es la distancia recorrida',
-    fr: 'L’aire sous le graphique est la distance parcourue',
-    hi: 'ग्राफ़ के नीचे का क्षेत्रफल ही तय की गई दूरी है',
-    id: 'Luas di bawah grafik adalah jarak yang ditempuh',
-    pt: 'A área sob o gráfico é a distância percorrida',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '곡선 아래 넓이가 나아간 거리로 읽히는 표현',
+    en: 'A representation in which the area under the curve reads as the distance travelled',
+    ja: '曲線の下の面積が進んだ距離として読める表し方',
+    zh: '曲线下的面积可读作走过距离的表示方式',
+    ar: 'تمثيل تُقرأ فيه المساحة تحت المنحنى على أنها المسافة المقطوعة',
+    es: 'Una representación en la que el área bajo la curva se lee como la distancia recorrida',
+    fr: 'Une représentation où l’aire sous la courbe se lit comme la distance parcourue',
+    hi: 'ऐसा निरूपण जिसमें वक्र के नीचे का क्षेत्रफल तय दूरी के रूप में पढ़ा जाता है',
+    id: 'Representasi yang luas di bawah kurvanya terbaca sebagai jarak tempuh',
+    pt: 'Uma representação em que a área sob a curva se lê como a distância percorrida',
   },
   'label.stage': {
     ko: '직선 길',
@@ -160,7 +161,7 @@ export const velocityTimeGraphSchema: BundleSchema = {
   id: VELOCITY_TIME_GRAPH_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'linear',
 
   // 조작기가 없다. 운동 하나를 끝까지 보여 주면 할 말이 끝난다.

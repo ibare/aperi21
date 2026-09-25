@@ -94,7 +94,8 @@ export const microscopeMessages = Object.freeze({
     id: 'Mikroskop',
     pt: 'Microscópio',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '대물과 접안의 배율 곱',
     en: 'Objective and eyepiece magnifications multiply',
     ja: '対物レンズと接眼レンズの倍率をかけ合わせる',
@@ -408,7 +409,7 @@ export const microscopeSchema: BundleSchema = {
   id: MICROSCOPE_ID,
   label: text('label.title'),
   category: 'optics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 조작기가 없다. 두 번의 확대를 자동 진행으로 차례로 보인다 (controllers.ts).

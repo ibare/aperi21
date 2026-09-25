@@ -112,7 +112,8 @@ export const potentialEnergyCurveMessages = Object.freeze({
     id: 'Kurva energi potensial',
     pt: 'Curva de energia potencial',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '곡선의 모양이 운동을 정하는 방식',
     en: 'How the shape of the curve decides the motion',
     ja: '曲線の形が運動を決めるしくみ',
@@ -245,7 +246,7 @@ export const potentialEnergyCurveSchema: BundleSchema = {
   id: POTENTIAL_ENERGY_CURVE_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

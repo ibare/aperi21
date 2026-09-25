@@ -106,17 +106,18 @@ export const freeFallMessages = Object.freeze({
     id: 'Jatuh bebas',
     pt: 'Queda livre',
   },
-  'label.operation': {
-    ko: '무게가 달라도 두 공은 나란히 내려가 함께 닿는다',
-    en: 'However different their weights, the two balls fall together and land together',
-    ja: '重さがどれほど違っても、二つのボールはいっしょに落ちて、いっしょに着地する',
-    zh: '无论重量相差多少，两个球都一起下落、一起落地',
-    ar: 'مهما اختلف وزناهما، تسقط الكرتان معًا وتصلان إلى الأرض معًا',
-    es: 'Por distintos que sean sus pesos, las dos bolas caen juntas y llegan juntas al suelo',
-    fr: 'Quel que soit l’écart de poids, les deux balles tombent ensemble et touchent le sol ensemble',
-    hi: 'भार कितना भी अलग हो, दोनों गेंदें साथ-साथ गिरती हैं और साथ-साथ ज़मीन पर पहुँचती हैं',
-    id: 'Seberapa pun beda beratnya, kedua bola jatuh bersama dan mendarat bersama',
-    pt: 'Por mais diferentes que sejam seus pesos, as duas bolas caem juntas e chegam juntas ao chão',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '중력만 받는 연직 운동',
+    en: 'Vertical motion under gravity alone',
+    ja: '重力だけを受ける鉛直方向の運動',
+    zh: '只受重力作用的竖直运动',
+    ar: 'حركة رأسية تحت تأثير الجاذبية وحدها',
+    es: 'Movimiento vertical bajo la sola acción de la gravedad',
+    fr: 'Mouvement vertical sous l’effet de la seule pesanteur',
+    hi: 'केवल गुरुत्व के अधीन ऊर्ध्वाधर गति',
+    id: 'Gerak vertikal yang hanya dipengaruhi gravitasi',
+    pt: 'Movimento vertical sob a ação apenas da gravidade',
   },
   'label.stage': {
     ko: '낙하',
@@ -305,7 +306,7 @@ export const freeFallSchema: BundleSchema = {
   id: FREE_FALL_ID,
   label: text('label.title'),
   category: 'kinematics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   /**

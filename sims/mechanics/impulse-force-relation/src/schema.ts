@@ -107,7 +107,8 @@ export const impulseForceRelationMessages = Object.freeze({
     id: 'Gaya dan impuls',
     pt: 'Força e impulso',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '짧고 큰 힘과 길고 작은 힘',
     en: 'A short, large force and a long, small one',
     ja: '短く大きな力と、長く小さな力',
@@ -296,7 +297,7 @@ export const impulseForceRelationSchema: BundleSchema = {
   id: IMPULSE_FORCE_RELATION_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

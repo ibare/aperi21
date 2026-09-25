@@ -102,17 +102,18 @@ export const centripetalForceMessages = Object.freeze({
     id: 'Gaya sentripetal',
     pt: 'Força centrípeta',
   },
-  'label.operation': {
-    ko: '원운동을 유지시키는 힘의 정체',
-    en: 'What keeps a body moving in a circle',
-    ja: '物体を円運動させ続けるもの',
-    zh: '让物体保持圆周运动的是什么',
-    ar: 'ما الذي يُبقي جسمًا يتحرك في دائرة',
-    es: 'Lo que mantiene a un cuerpo moviéndose en círculo',
-    fr: 'Ce qui maintient un corps sur un cercle',
-    hi: 'किसी वस्तु को वृत्त में घुमाए रखने वाली चीज़',
-    id: 'Yang membuat benda tetap bergerak melingkar',
-    pt: 'O que mantém um corpo em movimento circular',
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
+    ko: '원운동을 붙드는 안쪽 힘과 그것이 사라졌을 때의 진로',
+    en: 'The inward force that holds circular motion, and the path taken when it disappears',
+    ja: '円運動をつなぎ止める内向きの力と、それが消えたときの進路',
+    zh: '维持圆周运动的向内的力，以及它消失时的去向',
+    ar: 'القوة المتجهة إلى الداخل التي تُبقي الحركة دائرية، والمسار حين تزول',
+    es: 'La fuerza hacia dentro que sostiene el movimiento circular, y el camino que se toma cuando desaparece',
+    fr: 'La force dirigée vers l’intérieur qui maintient le mouvement circulaire, et la trajectoire quand elle disparaît',
+    hi: 'वृत्तीय गति को थामे रखने वाला भीतर की ओर बल, और उसके हटने पर बनने वाला मार्ग',
+    id: 'Gaya ke arah dalam yang menahan gerak melingkar, dan lintasan saat gaya itu hilang',
+    pt: 'A força para dentro que sustenta o movimento circular, e o caminho tomado quando ela desaparece',
   },
   'label.stage': {
     ko: '기본',
@@ -194,7 +195,7 @@ export const centripetalForceSchema: BundleSchema = {
   id: CENTRIPETAL_FORCE_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 각속도·반지름 조절은 주장을 바꾸지 않아 두지 않는다 (원본 inventory 「hidden」).

@@ -78,7 +78,8 @@ export const massSpectrometerMessages = Object.freeze({
     id: 'Spektrometer massa',
     pt: 'Espectrômetro de massa',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '반지름으로 가르는 질량',
     en: 'Sorting masses by radius',
     ja: '半径で質量を分ける',
@@ -200,7 +201,7 @@ export const massSpectrometerSchema: BundleSchema = {
   id: MASS_SPECTROMETER_ID,
   label: text('label.title'),
   category: 'em',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
   parameters: [],
   stages: [

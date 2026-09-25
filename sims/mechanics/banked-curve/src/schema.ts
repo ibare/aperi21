@@ -124,7 +124,8 @@ export const bankedCurveMessages = Object.freeze({
     id: 'Tikungan miring',
     pt: 'Curva sobrelevada',
   },
-  'label.operation': {
+  /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
+  'label.description': {
     ko: '마찰 없이도 도는 각도',
     en: 'The bank angle that turns a car without friction',
     ja: '摩擦なしで車を曲がらせる傾斜角',
@@ -348,7 +349,7 @@ export const bankedCurveSchema: BundleSchema = {
   id: BANKED_CURVE_ID,
   label: text('label.title'),
   category: 'mechanics',
-  operation: text('label.operation'),
+  description: text('label.description'),
   timeModel: 'periodic',
 
   // 빠르기·반지름은 주장이 아니다 (원본 inventory 「hidden」). 경사각만 조작기로 둔다.
