@@ -71,7 +71,7 @@
 | band / band gap / conduction band | 에너지 띠 · 띠 간격 | バンド / バンドギャップ / 伝導帯 / 価電子帯 | 能带 | نطاق | banda · banda prohibida · banda de conducción · banda de valencia | bande (d’énergie) · bande interdite · bande de conduction · bande de valence | बैंड | pita (celah pita, pita konduksi, pita valensi) | banda · banda proibida · banda de condução · banda de valência |
 | band gap | 띠 간격 | バンドギャップ | 带隙 | فجوة النطاق | banda prohibida | bande interdite | बैंड अंतराल | celah pita | banda proibida |
 | bar magnet | 막대자석 | 棒磁石 | 条形磁铁 | مغناطيس قضيبي | imán de barra | aimant droit | छड़ चुंबक | magnet batang | ímã em barra |
-| beam / beams | 빛줄기 (광선 다발) | 光線 | 光线 / 光束 | حزمة | haz | faisceau | किरणपुंज | berkas | feixe |
+| beam / beams | 빛줄기 (광선 다발) | 光束 | 光束 | حزمة | haz | faisceau | किरण-पुंज | berkas | feixe |
 | beat / beats | 맥놀이 | うなり | 拍 | الضربات | pulsaciones | battements | विस्पंद | pelayangan | batimento(s) |
 | binding energy | 결합 에너지 | 結合エネルギー | 结合能 | طاقة الربط | energía de enlace | énergie de liaison | बंधन ऊर्जा | energi ikat | energia de ligação |
 | black hole | 블랙홀 | ブラックホール | 黑洞 | ثقب أسود | agujero negro | trou noir | कृष्ण विवर | lubang hitam | buraco negro |
