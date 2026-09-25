@@ -7,7 +7,7 @@
 // 거리 d = m · r (m 은 기준 거리 r 의 몇 배인가) 에서
 //
 //   세기      I(m) / I(r) = 1 / m²                 같은 출력이 넓이 4π d² 에 나뉜다
-//   소리 크기 L(m) = L(r) − 20 · log₁₀ m   [dB]    10 · log₁₀(I/I₀) 에 위를 넣은 것
+//   세기 준위 L(m) = L(r) − 20 · log₁₀ m   [dB]    10 · log₁₀(I/I₀) 에 위를 넣은 것
 //
 // 막대 높이는 이 식으로 계산한다. 화면 글자는 계산값이 아니라 스테이지 정박값이다.
 // ========================================================================
@@ -62,7 +62,7 @@ export function relativeIntensity(m: number): number {
   return 1 / (k * k);
 }
 
-/** 거리 배수 m 에서의 소리 크기(dB). */
+/** 거리 배수 m 에서의 세기 준위(dB). */
 export function levelAt(m: number, level1: number): number {
   return level1 - 20 * Math.log10(Math.max(1, m));
 }

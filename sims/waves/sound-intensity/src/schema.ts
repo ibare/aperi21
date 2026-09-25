@@ -5,12 +5,12 @@
 //
 // 음원에서 퍼져 나가는 소리 고리는 멀어질수록 같은 에너지를 더 넓은 구면에 나눠
 // 옅어진다 — 세기는 거리의 제곱에 반비례한다. 귀가 r → 2r → 4r 로 물러나며 멈출
-// 때마다 그 자리의 **세기 막대**와 **소리 크기(dB) 막대**를 한 쌍씩 남긴다. 세기는
+// 때마다 그 자리의 **세기 막대**와 **세기 준위(dB) 막대**를 한 쌍씩 남긴다. 세기는
 // 1 → 1/4 → 1/16 로 꺼지는데 dB 는 80 → 74 → 68 로 조금씩만 낮아진다.
 //
 // 이웃 `inverse-square-law` 가 「같은 알갱이가 넓어지는 구면에 퍼진다」 를 이미 보였다.
-// 이 조각은 구면 조각 · 창 안 알갱이 수를 되풀이하지 않고 **소리의 세기와 귀가 느끼는
-// 크기의 차이** 에 머문다.
+// 이 조각은 구면 조각 · 창 안 알갱이 수를 되풀이하지 않고 **소리의 세기와 세기 준위(dB)
+// 의 차이** 에 머문다.
 //
 // 엔진 위에서 바로 만든 조각이다 — 자유 구현 원본이 없다.
 // ========================================================================
@@ -36,12 +36,12 @@ export const MULTIPLE_3 = 4;
 export const INTENSITY_RATIO_2 = 4;
 export const INTENSITY_RATIO_3 = 16;
 /**
- * 세 자리의 소리 크기(dB) 정박값. 화면의 `80 dB` · `74 dB` · `68 dB` 가 이 값 그대로다.
+ * 세 자리의 세기 준위(dB) 정박값. 화면의 `80 dB` · `74 dB` · `68 dB` 가 이 값 그대로다.
  * 거리 두 배마다 20·log₁₀2 ≈ 6.02 dB 씩 준다 — 막대 높이는 그 식으로 계산하고, 글자는
  * 계산값을 반올림하지 않고 이 정박값을 쓴다 (S-piece 유효숫자).
  *
  * 음원 출력과 기준 세기(10⁻¹² W/m²)는 따로 두지 않는다. 화면에 나오는 것은 둘의 비 —
- * r 에서의 소리 크기(`level1`) — 하나뿐이라, 셋을 함께 두면 같은 수의 출처가 둘이 된다.
+ * r 에서의 세기 준위(`level1`) — 하나뿐이라, 셋을 함께 두면 같은 수의 출처가 둘이 된다.
  */
 export const LEVEL_1 = 80;
 export const LEVEL_2 = 74;
@@ -53,7 +53,7 @@ export const SOUND_SPEED = 2.2;
 
 /**
  * 막대 판의 배치. 고리가 퍼지는 띠(가운데 y = 0) 아래에 막대가 선다.
- * 막대 높이 `BAR_HEIGHT` 가 세기 1 · 소리 크기 `level1` 이다 — 두 막대는 r 에서 같은
+ * 막대 높이 `BAR_HEIGHT` 가 세기 1 · 세기 준위 `level1` 이다 — 두 막대는 r 에서 같은
  * 높이로 출발해 멀어질수록 갈라진다.
  */
 export const BAND_HALF = 1.25;
@@ -161,15 +161,15 @@ export const soundIntensityMessages = Object.freeze({
     pt: 'Intensidade',
   },
   'label.level': {
-    ko: '소리 크기',
-    en: 'Loudness',
-    ja: '音の大きさ',
-    zh: '响度',
-    ar: 'علو الصوت',
+    ko: '세기 준위',
+    en: 'Sound level',
+    ja: '音の強さのレベル',
+    zh: '声强级',
+    ar: 'مستوى شدة الصوت',
     es: 'Nivel sonoro',
     fr: 'Niveau sonore',
-    hi: 'प्रबलता',
-    id: 'Kenyaringan',
+    hi: 'ध्वनि-तीव्रता स्तर',
+    id: 'Taraf intensitas',
     pt: 'Nível sonoro',
   },
   /** 거리 이름표. 수식 표기라 번역 대상이 아니다 (C1 판정 3). */
@@ -222,7 +222,7 @@ export const soundIntensityMessages = Object.freeze({
     id: '1/{n}',
     pt: '1/{n}',
   },
-  /** 소리 크기 — 값 + 단위 표식. 값은 스테이지 정박값 그대로 끼운다. */
+  /** 세기 준위 — 값 + 단위 표식. 값은 스테이지 정박값 그대로 끼운다. */
   'label.level.value': {
     ko: '{db} dB',
     en: '{db} dB',
@@ -236,15 +236,15 @@ export const soundIntensityMessages = Object.freeze({
     pt: '{db} dB',
   },
   'caption.base': {
-    ko: '음원에서 r 떨어진 귀 — 이 자리의 세기를 1 로 두면 소리 크기는 {db1} dB',
-    en: 'An ear at distance r from the source — call the intensity here 1; the loudness is {db1} dB',
-    ja: '音源から r 離れた耳 — ここでの強さを1とすると、音の大きさは{db1} dB',
-    zh: '距声源 r 处的耳朵——把这里的强度记为 1，响度为 {db1} dB',
-    ar: 'أذن على بعد r من المصدر — لنعتبر الشدة هنا 1؛ فيكون علو الصوت {db1} dB',
+    ko: '음원에서 r 떨어진 귀 — 이 자리의 세기를 1 로 두면 세기 준위는 {db1} dB',
+    en: 'An ear at distance r from the source — call the intensity here 1; the sound level is {db1} dB',
+    ja: '音源から r 離れた耳 — ここでの強さを1とすると、音の強さのレベルは{db1} dB',
+    zh: '距声源 r 处的耳朵——把这里的强度记为 1，声强级为 {db1} dB',
+    ar: 'أذن على بعد r من المصدر — لنعتبر الشدة هنا 1؛ فيكون مستوى شدة الصوت {db1} dB',
     es: 'Un oído a una distancia r de la fuente — llamemos 1 a la intensidad aquí; el nivel sonoro es {db1} dB',
     fr: 'Une oreille à la distance r de la source — prenons l’intensité ici égale à 1 ; le niveau sonore est de {db1} dB',
-    hi: 'स्रोत से r दूरी पर एक कान — यहाँ की तीव्रता को 1 मानें; प्रबलता {db1} dB है',
-    id: 'Telinga pada jarak r dari sumber — anggap intensitas di sini 1; kenyaringannya {db1} dB',
+    hi: 'स्रोत से r दूरी पर एक कान — यहाँ की तीव्रता को 1 मानें; ध्वनि-तीव्रता स्तर {db1} dB है',
+    id: 'Telinga pada jarak r dari sumber — anggap intensitas di sini 1; taraf intensitasnya {db1} dB',
     pt: 'Um ouvido à distância r da fonte — chame de 1 a intensidade aqui; o nível sonoro é {db1} dB',
   },
   'caption.moving': {
@@ -260,28 +260,28 @@ export const soundIntensityMessages = Object.freeze({
     pt: 'Ao se afastar, o mesmo som se espalha mais e os anéis ficam fracos',
   },
   'caption.far2': {
-    ko: '거리 {m2}배 — 세기는 1/{i2} 로 줄었는데, 소리 크기는 {db1} dB 에서 {db2} dB 로 조금 낮아졌을 뿐이다',
-    en: 'At {m2}× the distance — the intensity is down to 1/{i2}, yet the loudness only dips from {db1} dB to {db2} dB',
-    ja: '距離 {m2}× — 強さは1/{i2}に減ったのに、音の大きさは{db1} dBから{db2} dBへ少し下がっただけ',
-    zh: '距离为 {m2}×——强度降到 1/{i2}，响度却只从 {db1} dB 略降到 {db2} dB',
-    ar: 'عند {m2}× المسافة — انخفضت الشدة إلى 1/{i2}، لكن علو الصوت هبط قليلًا فقط من {db1} dB إلى {db2} dB',
+    ko: '거리 {m2}배 — 세기는 1/{i2} 로 줄었는데, 세기 준위는 {db1} dB 에서 {db2} dB 로 조금 낮아졌을 뿐이다',
+    en: 'At {m2}× the distance — the intensity is down to 1/{i2}, yet the sound level only dips from {db1} dB to {db2} dB',
+    ja: '距離 {m2}× — 強さは1/{i2}に減ったのに、音の強さのレベルは{db1} dBから{db2} dBへ少し下がっただけ',
+    zh: '距离为 {m2}×——强度降到 1/{i2}，声强级却只从 {db1} dB 略降到 {db2} dB',
+    ar: 'عند {m2}× المسافة — انخفضت الشدة إلى 1/{i2}، لكن مستوى شدة الصوت هبط قليلًا فقط من {db1} dB إلى {db2} dB',
     es: 'A {m2}× la distancia — la intensidad baja a 1/{i2}, pero el nivel sonoro solo baja de {db1} dB a {db2} dB',
     fr: 'À {m2}× la distance — l’intensité tombe à 1/{i2}, mais le niveau sonore ne baisse que de {db1} dB à {db2} dB',
-    hi: '{m2}× दूरी पर — तीव्रता घटकर 1/{i2} रह गई, फिर भी प्रबलता {db1} dB से केवल {db2} dB तक गिरी',
-    id: 'Pada {m2}× jarak — intensitas turun menjadi 1/{i2}, tetapi kenyaringan hanya turun dari {db1} dB ke {db2} dB',
+    hi: '{m2}× दूरी पर — तीव्रता घटकर 1/{i2} रह गई, फिर भी ध्वनि-तीव्रता स्तर {db1} dB से केवल {db2} dB तक गिरा',
+    id: 'Pada {m2}× jarak — intensitas turun menjadi 1/{i2}, tetapi taraf intensitas hanya turun dari {db1} dB ke {db2} dB',
     pt: 'A {m2}× a distância — a intensidade cai para 1/{i2}, mas o nível sonoro só desce de {db1} dB para {db2} dB',
   },
   'caption.far3': {
-    ko: '거리 {m3}배 — 고리는 거의 보이지 않을 만큼 옅어져 세기가 1/{i3} 인데, 귀에는 아직 {db3} dB 다',
-    en: 'At {m3}× the distance — the rings are barely visible and the intensity is 1/{i3}, yet the ear still hears {db3} dB',
-    ja: '距離 {m3}× — 輪はほとんど見えず強さは1/{i3}なのに、耳にはまだ{db3} dB',
-    zh: '距离为 {m3}×——圆环几乎看不见，强度只有 1/{i3}，耳朵却仍听到 {db3} dB',
-    ar: 'عند {m3}× المسافة — بالكاد تُرى الحلقات والشدة 1/{i3}، ومع ذلك ما زالت الأذن تسمع {db3} dB',
-    es: 'A {m3}× la distancia — los anillos apenas se ven y la intensidad es 1/{i3}, pero el oído aún oye {db3} dB',
-    fr: 'À {m3}× la distance — les anneaux se voient à peine et l’intensité vaut 1/{i3}, mais l’oreille entend encore {db3} dB',
-    hi: '{m3}× दूरी पर — वलय मुश्किल से दिखते हैं और तीव्रता 1/{i3} है, फिर भी कान अब भी {db3} dB सुनता है',
-    id: 'Pada {m3}× jarak — cincin nyaris tak terlihat dan intensitasnya 1/{i3}, tetapi telinga masih mendengar {db3} dB',
-    pt: 'A {m3}× a distância — os anéis mal aparecem e a intensidade é 1/{i3}, mas o ouvido ainda ouve {db3} dB',
+    ko: '거리 {m3}배 — 고리는 거의 보이지 않을 만큼 옅어져 세기가 1/{i3} 인데, 세기 준위는 아직 {db3} dB 다',
+    en: 'At {m3}× the distance — the rings are barely visible and the intensity is 1/{i3}, yet the sound level is still {db3} dB',
+    ja: '距離 {m3}× — 輪はほとんど見えず強さは1/{i3}なのに、音の強さのレベルはまだ{db3} dB',
+    zh: '距离为 {m3}×——圆环几乎看不见，强度只有 1/{i3}，声强级却仍有 {db3} dB',
+    ar: 'عند {m3}× المسافة — بالكاد تُرى الحلقات والشدة 1/{i3}، ومع ذلك ما زال مستوى شدة الصوت {db3} dB',
+    es: 'A {m3}× la distancia — los anillos apenas se ven y la intensidad es 1/{i3}, pero el nivel sonoro aún es de {db3} dB',
+    fr: 'À {m3}× la distance — les anneaux se voient à peine et l’intensité vaut 1/{i3}, mais le niveau sonore vaut encore {db3} dB',
+    hi: '{m3}× दूरी पर — वलय मुश्किल से दिखते हैं और तीव्रता 1/{i3} है, फिर भी ध्वनि-तीव्रता स्तर अब भी {db3} dB है',
+    id: 'Pada {m3}× jarak — cincin nyaris tak terlihat dan intensitasnya 1/{i3}, tetapi taraf intensitasnya masih {db3} dB',
+    pt: 'A {m3}× a distância — os anéis mal aparecem e a intensidade é 1/{i3}, mas o nível sonoro ainda é de {db3} dB',
   },
 } satisfies Record<string, LocalizedText>);
 

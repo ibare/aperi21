@@ -5,8 +5,8 @@
 //
 // 원형 구멍을 지난 점 하나의 빛은 스크린에 점이 아니라 가운데 밝은 원반과 첫 어두운 고리를 가진
 // 무늬를 남긴다. 두 점의 무늬를 겹쳐 두고(세기의 합) 두 점을 다가가게 하면, 한쪽 봉우리가 다른
-// 쪽의 첫 어두운 자리에 닿을 때 합 곡선의 가운데 골이 얕아지고, 그보다 안으로 들어오면 골이
-// 사라져 하나로 뭉친다. 같은 간격에서 구멍 지름을 키우면 무늬가 좁아져 다시 둘로 갈린다.
+// 쪽의 첫 어두운 자리에 닿을 때 합 곡선의 가운데 골이 얕아지지만 아직 둘이고, 그보다 한참 안으로
+// 들어오면 골이 사라져 하나로 뭉친다. 같은 간격에서 구멍 지름을 키우면 무늬가 좁아져 다시 둘로 갈린다.
 //
 // 각도 단위는 μrad 다 — 파장(nm) / 지름(mm) 이 곧 μrad 이다. 엔진 위에서 바로 만든 조각이다.
 // ========================================================================
@@ -183,16 +183,16 @@ export const resolvingPowerMessages = Object.freeze({
     pt: 'Os dois pontos se aproximam ainda mais',
   },
   'caption.merged': {
-    ko: '봉우리가 첫 어두운 자리보다 안으로 들어오자 골이 사라졌다 — 하나로 뭉쳐 보인다',
-    en: "With each peak inside the other's first dark spot, the dip is gone — they blur into one",
-    ja: 'それぞれの山が相手の最初の暗い所より内側に入ると、谷が消えた — 1つにぼやけて見える',
-    zh: '每个峰都进入另一个的第一暗处以内，谷消失了 — 模糊成一个',
-    ar: 'حين تدخل كل قمة داخل أول بقعة مظلمة للأخرى يختفي الانخفاض — فتندمجان في واحدة',
-    es: 'Con cada pico dentro de la primera zona oscura del otro, el valle desaparece — se funden en uno',
-    fr: 'Chaque pic étant à l’intérieur de la première zone sombre de l’autre, le creux disparaît — ils se fondent en un seul',
-    hi: 'हर शिखर के दूसरे के पहले अँधेरे स्थान के भीतर आते ही घाटी मिट जाती है — दोनों धुँधलाकर एक हो जाते हैं',
-    id: 'Dengan tiap puncak di dalam titik gelap pertama milik yang lain, lembahnya hilang — keduanya melebur menjadi satu',
-    pt: 'Com cada pico dentro da primeira região escura do outro, o vale some — eles se fundem em um só',
+    ko: '봉우리가 첫 어두운 자리보다 한참 안으로 들어오자 골이 사라졌다 — 하나로 뭉쳐 보인다',
+    en: "With each peak well inside the other's first dark spot, the dip is gone — they blur into one",
+    ja: 'それぞれの山が相手の最初の暗い所よりずっと内側に入ると、谷が消えた — 1つにぼやけて見える',
+    zh: '每个峰都深入另一个的第一暗处以内，谷消失了 — 模糊成一个',
+    ar: 'حين تتوغل كل قمة عميقًا داخل أول بقعة مظلمة للأخرى يختفي الانخفاض — فتندمجان في واحدة',
+    es: 'Con cada pico bien dentro de la primera zona oscura del otro, el valle desaparece — se funden en uno',
+    fr: 'Chaque pic étant bien à l’intérieur de la première zone sombre de l’autre, le creux disparaît — ils se fondent en un seul',
+    hi: 'हर शिखर के दूसरे के पहले अँधेरे स्थान के काफ़ी भीतर आते ही घाटी मिट जाती है — दोनों धुँधलाकर एक हो जाते हैं',
+    id: 'Dengan tiap puncak jauh di dalam titik gelap pertama milik yang lain, lembahnya hilang — keduanya melebur menjadi satu',
+    pt: 'Com cada pico bem dentro da primeira região escura do outro, o vale some — eles se fundem em um só',
   },
   'caption.widen': {
     ko: '간격은 그대로 두고 구멍 지름을 {dSmall} mm 에서 {dLarge} mm 로 키운다',

@@ -39,10 +39,10 @@ export const equipotentialSurfaceConcept: Aperi21ConceptSource = {
       'Closed rings are drawn on that landscape at a set of evenly spaced heights, and they break wherever the surface in front hides them.',
       'On the right the same potential is seen from directly above as a field of light and dark, brightest where the potential is highest, with the same set of rings drawn on it as closed curves.',
       'Small circles carrying a plus and a minus sit at the source places on both pictures, the two sources being of different sizes and not placed symmetrically.',
-      'Six test charges are let go from a ring around the positive source, each starting at a different moment, and each runs down the steepest slope available to it.',
+      'Six test charges are carried out from a ring around the positive source, each starting at a different moment, and each is moved along the electric field line through its start — the steepest slope available to it.',
       'On the landscape each shows as a dot with a trail that follows the surface and disappears where the surface hides it; on the map each leaves a trail as well.',
       'Wherever a trail crosses one of the rings on the map, a small square corner is left at that crossing, and these accumulate all the way along the trail.',
-      'A trail ends when its charge reaches the negative source, fades after a pause, and another sets off, so that at any moment some are starting and some are arriving.',
+      'A trail ends where its charge reaches the negative source or runs off the edge of the picture — the positive source is twice as strong, so not every line can end on the negative one — fades after a pause, and another sets off, so that at any moment some are starting and some are arriving.',
       'Either source circle on the map can be taken hold of and dragged; the landscape, the rings and all six trails are rebuilt while it moves, and the square corners go on appearing along the quite different trails that result.',
       'A source dragged too close to the other one simply does not move.',
       'Nothing on either picture bears a number: no potential value, no ring value, no unit, and a single fixed line of text beneath them.',
@@ -71,7 +71,7 @@ export const equipotentialSurfaceConcept: Aperi21ConceptSource = {
       'Potential values, voltages, or the spacing of the rings read as a measure of strength are wanted. Nothing bears a number, and the heights are squashed before drawing.',
       'The article works along a single line and wants a strength read off as a slope. What is drawn here is a two-dimensional pattern with no axis to read a slope against.',
       'The subject is conductors and the fact that their surfaces are equipotentials. Only two point-like sources appear here; there is no conductor.',
-      'Field lines themselves are wanted, drawn as a family from one source to the other. What is drawn are the paths that released charges actually take, and they stop where a charge arrives.',
+      'Field lines themselves are wanted, drawn as a family from one source to the other. Only six paths are drawn, each following the steepest slope from the positive source, and each stops where it arrives. They are field lines followed at an even pace, not the paths a released charge with inertia would take — such a charge would swing wide of a curving line.',
     ],
 
     contrastWith: [
@@ -93,7 +93,7 @@ export const equipotentialSurfaceConcept: Aperi21ConceptSource = {
       },
       {
         concept: 'electric-field',
-        note: 'One never draws an arrow anywhere and lets the path a released charge takes stand for the direction; the other gives every place its own arrow and releases nothing.',
+        note: 'One never draws an arrow anywhere and lets a path of steepest descent stand for the direction; the other gives every place its own arrow and moves nothing.',
       },
     ],
   },

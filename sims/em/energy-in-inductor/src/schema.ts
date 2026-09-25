@@ -203,7 +203,7 @@ export const energyInInductorMessages = Object.freeze({
     pt: 'Enquanto a corrente sobe, a bobina se opõe (ε) — o trabalho feito contra ela acrescenta linhas de campo e preenche a área sob a reta',
   },
   'caption.hold': {
-    ko: '전류가 멈춰 ε 화살표가 사라졌다 — 자기력선과 다 찬 삼각형이 그대로 남아 있다',
+    ko: '전류가 일정해져 ε 화살표가 사라졌다 — 자기력선과 다 찬 삼각형이 그대로 남아 있다',
     en: 'The current holds and the ε arrow is gone — the field lines and the full triangle stay',
     ja: '電流が一定になり、ε の矢印は消えた — 磁力線と満ちた三角形はそのまま残る',
     zh: '电流保持不变，ε 箭头消失了 — 磁感线和填满的三角形依然留着',

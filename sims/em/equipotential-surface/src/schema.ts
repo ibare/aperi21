@@ -4,7 +4,7 @@
 // 질문: 전기장은 왜 등전위면과 **늘** 수직인가.
 //
 // 전위를 높이로 세운 지형(왼쪽)과 같은 전위를 위에서 본 지도(오른쪽)를 나란히 둔다.
-// 양전하에서 풀려난 시험 전하가 가장 가파른 내리막(= 전기장)을 따라 내려가며, 지도에서
+// 양전하에서 전기력선을 따라 옮기는 시험 전하가 가장 가파른 내리막(= 전기장)을 따라 내려가며, 지도에서
 // 등전위선을 지날 때마다 그 자리에 직각 표시를 남긴다.
 //
 // 원본: tasks/piece-lab/equipotential-surface. 상수는 원본 그대로다. 화면 좌표는 원본
@@ -157,16 +157,16 @@ export const equipotentialSurfaceMessages = Object.freeze({
     pt: 'Relevo e mapa',
   },
   'caption.main': {
-    ko: '양전하에서 풀려난 시험 전하가 전위 지형의 가장 가파른 내리막을 따라 내려가며, 등전위선을 만날 때마다 직각으로 가로지른다.',
-    en: 'Released from the positive charge, a test charge runs down the steepest slope of the potential terrain and crosses every equipotential line at a right angle.',
-    ja: '正電荷から放たれた試験電荷が、電位の地形のいちばん急な下り坂に沿って下り、等電位線に出会うたびに直角に横切る。',
-    zh: '从正电荷处释放的试探电荷沿电势地形最陡的下坡而下，每遇到一条等势线都垂直穿过。',
-    ar: 'شحنة اختبار تنطلق من الشحنة الموجبة فتنحدر على أشد منحدرات تضاريس الجهد، وتقطع كل خط تساوي جهد بزاوية قائمة.',
-    es: 'Liberada desde la carga positiva, una carga de prueba baja por la pendiente más pronunciada del relieve de potencial y cruza cada línea equipotencial en ángulo recto.',
-    fr: 'Lâchée depuis la charge positive, une charge d’essai descend la plus forte pente du relief du potentiel et coupe chaque ligne équipotentielle à angle droit.',
-    hi: 'धनावेश से छोड़ा गया परीक्षण आवेश विभव की भू-आकृति की सबसे तीखी ढलान पर नीचे जाता है और हर समविभव रेखा को समकोण पर काटता है।',
-    id: 'Dilepas dari muatan positif, sebuah muatan uji menuruni lereng paling curam pada topografi potensial dan memotong setiap garis ekuipotensial dengan sudut siku-siku.',
-    pt: 'Solta a partir da carga positiva, uma carga de prova desce pela encosta mais íngreme do relevo do potencial e cruza cada linha equipotencial em ângulo reto.',
+    ko: '시험 전하를 양전하에서 전기력선을 따라 옮기면, 전위 지형의 가장 가파른 내리막을 따라 내려가며 등전위선을 만날 때마다 직각으로 가로지른다.',
+    en: 'Moved from the positive charge along an electric field line, a test charge follows the steepest slope of the potential terrain and crosses every equipotential line at a right angle.',
+    ja: '試験電荷を正電荷から電気力線に沿って動かすと、電位の地形のいちばん急な下り坂に沿って下り、等電位線に出会うたびに直角に横切る。',
+    zh: '把试探电荷从正电荷处沿电场线移动，它沿电势地形最陡的下坡而下，每遇到一条等势线都垂直穿过。',
+    ar: 'إذا نُقلت شحنة اختبار من الشحنة الموجبة على طول خط المجال الكهربائي، فإنها تنحدر على أشد منحدرات تضاريس الجهد وتقطع كل خط تساوي جهد بزاوية قائمة.',
+    es: 'Llevada desde la carga positiva a lo largo de una línea de campo eléctrico, una carga de prueba baja por la pendiente más pronunciada del relieve de potencial y cruza cada línea equipotencial en ángulo recto.',
+    fr: 'Déplacée depuis la charge positive le long d’une ligne de champ électrique, une charge d’essai descend la plus forte pente du relief du potentiel et coupe chaque ligne équipotentielle à angle droit.',
+    hi: 'धनावेश से परीक्षण आवेश को विद्युत क्षेत्र रेखा के साथ-साथ ले जाने पर वह विभव की भू-आकृति की सबसे तीखी ढलान पर नीचे जाता है और हर समविभव रेखा को समकोण पर काटता है।',
+    id: 'Jika dipindahkan dari muatan positif menyusuri garis medan listrik, sebuah muatan uji menuruni lereng paling curam pada topografi potensial dan memotong setiap garis ekuipotensial dengan sudut siku-siku.',
+    pt: 'Levada a partir da carga positiva ao longo de uma linha de campo elétrico, uma carga de prova desce pela encosta mais íngreme do relevo do potencial e cruza cada linha equipotencial em ângulo reto.',
   },
 } satisfies Record<string, LocalizedText>);
 

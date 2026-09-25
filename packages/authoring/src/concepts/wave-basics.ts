@@ -45,7 +45,7 @@ export const waveBasicsConcept: Aperi21ConceptSource = {
       'The two measures finish in the same instant: the trace has drawn exactly one rise and fall as it reaches `T`, and at that same moment the bar has filled the `λ` line to its end and the crest marker has arrived at `P`.',
       'The picture then holds still, and the closing line says that in the time `T` the point took to rise and fall once, the crest moved exactly one wavelength.',
       'A second dimension line marked `A` stands outside the left end of the rope, from the flat line up to crest height, so amplitude is read where nothing is moving.',
-      'Lengthening the wavelength makes the crest travel visibly faster, yet the bar still fills exactly as the trace completes one rise and fall — the coincidence survives.',
+      'Setting a longer wavelength with the period held fixed makes the crest travel visibly faster — as it would on a tighter rope — yet the bar still fills exactly as the trace completes one rise and fall; the coincidence survives.',
       'Raising the amplitude changes only how high the rope goes; the bar fills over the same distance in the same time.',
       'Only symbols are written on the picture — `λ`, `A`, `T`, `t`, `P`. No speed and no wavelength value appears there.',
     ],
@@ -62,13 +62,13 @@ export const waveBasicsConcept: Aperi21ConceptSource = {
 
     useWhen: [
       'The article has stated that a wave’s speed is its wavelength divided by its period, and the reader has taken it as arithmetic between three letters. Watching the trace finish one rise and fall at the same instant the bar fills the wavelength is what turns the equation into a single event.',
-      'The reader is being asked to hold the time picture and the space picture of one wave at once, and the sliders let them check that stretching the wavelength speeds the crest up without breaking the match.',
+      'The reader is being asked to hold the time picture and the space picture of one wave at once, and the sliders let them check that, at the same period, a longer wavelength goes with a faster crest without breaking the match.',
     ],
 
     avoidWhen: [
       'The point is that changing the frequency changes something. The rate of the bobbing is fixed here; the sliders reach wavelength and height only.',
       'The article turns on which way the medium moves relative to the travel — across it or along it. Only a single point of the rope is marked, and its span says nothing about a second kind of wave.',
-      'The subject is what decides how fast a wave goes. There is one rope and it never changes; the speed follows from the wavelength that was set.',
+      'The subject is what decides how fast a wave goes. On a given rope the speed is set by the rope, not by the wave; here the period is held fixed, so a longer wavelength stands for a faster wave — a different or tighter rope — and what fixes that speed is left to the medium.',
       'The claim is that a wave carries energy while the medium stays put. Nothing sits at the far end here and nothing arrives anywhere.',
       'Numbers are wanted — a speed in metres per second, a frequency in hertz. The picture carries symbols only, and the sliders show just their own settings.',
     ],

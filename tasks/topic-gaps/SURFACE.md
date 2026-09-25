@@ -363,7 +363,7 @@
   - `label.description` — 전기장과 수직인 면
   - `label.stage` — 두 전하
   - `label.view` — 지형과 지도
-  - `caption.main` — 양전하에서 풀려난 시험 전하가 전위 지형의 가장 가파른 내리막을 따라 내려가며, 등전위선을 만날 때마다 직각으로 가로지른다.
+  - `caption.main` — 시험 전하를 양전하에서 전기력선을 따라 옮기면, 전위 지형의 가장 가파른 내리막을 따라 내려가며 등전위선을 만날 때마다 직각으로 가로지른다.
 - 조작기 — plus-drag(point-drag) · minus-drag(point-drag)
 - 스테이지 — default
 - 뷰 — default

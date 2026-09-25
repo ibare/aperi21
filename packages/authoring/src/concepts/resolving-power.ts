@@ -20,7 +20,7 @@ export const resolvingPowerConcept: Aperi21ConceptSource = {
 
   surface: {
     definition:
-      'The limit at which two separate points stop being seen as two: the dip between their patterns disappears once each peak has closed inside the other’s first dark ring, and a wider opening parts them again.',
+      'The limit at which two separate points stop being seen as two: the dip between their patterns still survives, shallow, when each peak sits on the other’s first dark ring, and disappears only once the peaks have closed well inside it, and a wider opening parts them again.',
     exemplarKeywords: [
       'resolving power',
       'Rayleigh criterion',

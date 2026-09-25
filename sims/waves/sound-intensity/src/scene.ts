@@ -6,7 +6,7 @@
 //
 // 색은 뜻마다 하나다. **강조색은 「소리의 세기」 한 뜻에만** 쓴다 — 퍼지는 고리와 세기
 // 막대가 같은 색이라 「고리가 옅어지는 만큼 세기 막대가 준다」 가 한 대상으로 읽힌다.
-// 소리 크기(dB) 막대는 먹색 — 같은 소리를 귀가 느끼는 눈금이라 다른 대상이다.
+// 세기 준위(dB) 막대는 먹색 — 같은 소리를 로그 눈금으로 잰 값이라 다른 대상이다.
 // 음원 · 귀는 먹색, 선 · 이름표는 배경 정보라 muted.
 // ========================================================================
 
@@ -48,7 +48,7 @@ const TICK_HALF = 0.1;
 /** 음원 · 귀의 크기(월드 반지름). */
 const SOURCE_SIZE = 0.17;
 const EAR_SIZE = 0.15;
-/** 막대 채움 불투명도 — 세기(강조색)와 소리 크기(먹색). */
+/** 막대 채움 불투명도 — 세기(강조색)와 세기 준위(먹색). */
 const INTENSITY_FILL = 0.85;
 const LEVEL_FILL = 0.5;
 /** 이름표 글자 크기(화면 px). */
@@ -210,7 +210,7 @@ export function scene(params: {
     style: muted,
   });
 
-  /** 거리 배수 mm 자리에 막대 한 쌍. 세기는 왼쪽, 소리 크기는 오른쪽. */
+  /** 거리 배수 mm 자리에 막대 한 쌍. 세기는 왼쪽, 세기 준위는 오른쪽. */
   const pair = (id: string, mm: number, opacity: number): { iTop: number; lTop: number; iX: number; lX: number } => {
     const x = r * mm;
     const iTop = BAR_BASE_Y + BAR_HEIGHT * relativeIntensity(mm);
@@ -271,7 +271,7 @@ export function scene(params: {
       opacity: op,
       style: ink,
     });
-    // 막대 이름은 첫 쌍 아래에만 — 나머지 쌍도 같은 순서(왼쪽 세기, 오른쪽 소리 크기)다.
+    // 막대 이름은 첫 쌍 아래에만 — 나머지 쌍도 같은 순서(왼쪽 세기, 오른쪽 세기 준위)다.
     if (k === 0) {
       g.push({
         type: 'readout',

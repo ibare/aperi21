@@ -333,6 +333,7 @@
 | solar mass / solar masses | 태양 질량 | 太陽質量 (n solar masses → 太陽質量の{n}倍) | 太阳质量 | كتلة شمسية | masa solar | masse solaire | सौर द्रव्यमान | massa Matahari | massa solar |
 | solid | 고체 | 固体 | 固体 | صلب | sólido | solide | ठोस | padatan (상태 형용사 padat) | sólido |
 | sound | 소리 (음파) | 音 (speed of sound → 音速) | 声音 (sound intensity 声强, speed of sound 声速) | الصوت | sonido | son | ध्वनि | bunyi | som |
+| sound level / sound intensity level (dB) | 세기 준위 (소리 크기 · loudness 와 다른 양) | 音の強さのレベル | 声强级 | مستوى شدة الصوت | nivel sonoro | niveau sonore | ध्वनि-तीव्रता स्तर | taraf intensitas | nível sonoro |
 | source | 음원 | 音源 | 声源 | المصدر | fuente | source | स्रोत | sumber bunyi | fonte (sonora) |
 | source / light source | 광원 | 光源 | 光源 | مصدر الضوء | fuente (de luz) | source lumineuse | प्रकाश स्रोत | sumber cahaya | fonte de luz |
 | spacetime | 시공간 | 時空 | 时空 | الزمكان | espaciotemporal (diagrama espaciotemporal) | espace-temps | दिक्काल | ruang-waktu | espaço-tempo |
