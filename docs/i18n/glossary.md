@@ -204,6 +204,7 @@
 | intensity | 세기 (빛·소리) | 強さ | 强度 (sound intensity 声强) | الشدة | intensidad | intensité | तीव्रता | intensitas | intensidade |
 | interference / interferes | 간섭 | 干渉 | 干涉 | التداخل | interferencia | interférences | व्यतिकरण | interferensi | interferência |
 | ion / ions | 이온 | イオン | 离子 | أيون | ion | ion | आयन | ion | íon |
+| ionize / ionization / ionizing | 이온화 (이온화하다) | 電離 (電離する · 電離放射線) | 电离 | تأيين (مؤيِّن) | ionizar · ionización · ionizante | ioniser · ionisation · ionisant | आयनन (आयनकारी) | mengionisasi · ionisasi · pengion | ionizar · ionização · ionizante |
 | isobaric / constant pressure | 등압 | 定圧(과정 이름) / 圧力一定(서술) | 等压 (constant pressure 压强不变) | متساوي الضغط / عند ضغط ثابت | isobárico / a presión constante | isobare · à pression constante (en fixed pressure 는 pression fixe) | समदाबी (constant pressure = स्थिर दाब) | isobarik (constant pressure = tekanan tetap) | isobárico / a pressão constante |
 | isochoric / fixed volume | 등적 | 定積(과정 이름) / 体積一定(서술) | 等容 (fixed volume 体积不变) | متساوي الحجم / عند حجم ثابت | isocórico / a volumen fijo | isochore · à volume fixe | समआयतनी (fixed volume = स्थिर आयतन) | isokhorik (fixed volume = volume tetap) | isocórico / a volume fixo |
 | isothermal | 등온 | 等温 | 等温 | متساوي الحرارة / تساوي الحرارة | isotérmico | isotherme | समतापी | isotermal | isotérmico |

@@ -194,6 +194,7 @@
     "@aperi21/sim-insulation": "workspace:*",
     "@aperi21/sim-interference": "workspace:*",
     "@aperi21/sim-inverse-square-law": "workspace:*",
+    "@aperi21/sim-ionizing-radiation": "workspace:*",
     "@aperi21/sim-irreversibility": "workspace:*",
     "@aperi21/sim-isobaric-isochoric": "workspace:*",
     "@aperi21/sim-isothermal-process": "workspace:*",

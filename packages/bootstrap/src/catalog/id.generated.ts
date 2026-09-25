@@ -466,6 +466,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:scale-of-universe","title":"Skala alam semesta","description":"Ukuran dari atom hingga alam semesta, dihubungkan oleh pangkat sepuluh","domain":"modern-physics"},
     {"id":"aperi21:rutherford-scattering","title":"Hamburan Rutherford","description":"Eksperimen ketika sebagian besar lewat dan sedikit terpantul balik","domain":"modern-physics"},
     {"id":"aperi21:photon-bond-threshold","title":"Foton yang memutus ikatan","description":"Ambang ultraungu tempat satu foton mulai memutus satu ikatan","domain":"modern-physics"},
+    {"id":"aperi21:ionizing-radiation","title":"Radiasi pengion","description":"Radiasi berenergi cukup besar untuk melepaskan elektron dari atom","domain":"modern-physics"},
     {"id":"aperi21:exchange-particles","title":"Partikel pertukaran","description":"Foton di antara elektron, gluon di antara kuark","domain":"modern-physics"},
   ],
 };

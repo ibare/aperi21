@@ -466,6 +466,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:scale-of-universe","title":"مقياس الكون","description":"أحجام من الذرة إلى الكون، تربطها قوى العشرة","domain":"modern-physics"},
     {"id":"aperi21:rutherford-scattering","title":"تشتت رذرفورد","description":"التجربة التي نفذت فيها معظم الجسيمات وارتدّ القليل منها","domain":"modern-physics"},
     {"id":"aperi21:photon-bond-threshold","title":"الفوتون الذي يكسر الرابطة","description":"عتبة الأشعة فوق البنفسجية التي يبدأ عندها فوتون واحد بكسر رابطة واحدة","domain":"modern-physics"},
+    {"id":"aperi21:ionizing-radiation","title":"الإشعاع المؤيِّن","description":"إشعاع يحمل طاقة تكفي لانتزاع الإلكترونات من الذرات","domain":"modern-physics"},
     {"id":"aperi21:exchange-particles","title":"جسيمات التبادل","description":"فوتونات بين الإلكترونات، وغلوونات بين الكواركات","domain":"modern-physics"},
   ],
 };

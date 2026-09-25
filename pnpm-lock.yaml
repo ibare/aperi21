@@ -684,6 +684,9 @@ importers:
       '@aperi21/sim-inverse-square-law':
         specifier: workspace:*
         version: link:../../sims/astro/inverse-square-law
+      '@aperi21/sim-ionizing-radiation':
+        specifier: workspace:*
+        version: link:../../sims/modern/ionizing-radiation
       '@aperi21/sim-irreversibility':
         specifier: workspace:*
         version: link:../../sims/thermal/irreversibility
@@ -4070,6 +4073,15 @@ importers:
       '@aperi21/plugin-optics':
         specifier: workspace:*
         version: link:../../../packages/plugin-optics
+      '@aperi21/schema':
+        specifier: workspace:*
+        version: link:../../../packages/schema
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+
+  sims/modern/ionizing-radiation:
+    devDependencies:
       '@aperi21/schema':
         specifier: workspace:*
         version: link:../../../packages/schema

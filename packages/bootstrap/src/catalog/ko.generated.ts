@@ -466,6 +466,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:scale-of-universe","title":"우주의 규모","description":"원자에서 우주까지 10의 거듭제곱으로 잇는 크기","domain":"modern-physics"},
     {"id":"aperi21:rutherford-scattering","title":"러더퍼드 산란","description":"대부분 지나가고 일부가 튕겨 나온 실험","domain":"modern-physics"},
     {"id":"aperi21:photon-bond-threshold","title":"결합을 끊는 광자","description":"광자 하나가 결합 하나를 끊기 시작하는 자외선의 문턱","domain":"modern-physics"},
+    {"id":"aperi21:ionizing-radiation","title":"이온화 복사","description":"원자에서 전자를 떼어 낼 만큼 큰 에너지의 복사","domain":"modern-physics"},
     {"id":"aperi21:exchange-particles","title":"교환 입자","description":"전자 사이의 광자, 쿼크 사이의 글루온","domain":"modern-physics"},
   ],
 };

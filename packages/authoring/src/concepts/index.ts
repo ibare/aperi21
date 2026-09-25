@@ -186,6 +186,7 @@ import { inertialVsGravitationalMassConcept } from './inertial-vs-gravitational-
 import { insulationConcept } from './insulation.js';
 import { interferenceConcept } from './interference.js';
 import { inverseSquareLawConcept } from './inverse-square-law.js';
+import { ionizingRadiationConcept } from './ionizing-radiation.js';
 import { irreversibilityConcept } from './irreversibility.js';
 import { isobaricIsochoricConcept } from './isobaric-isochoric.js';
 import { isothermalProcessConcept } from './isothermal-process.js';
@@ -632,6 +633,7 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   insulationConcept,
   interferenceConcept,
   inverseSquareLawConcept,
+  ionizingRadiationConcept,
   irreversibilityConcept,
   isobaricIsochoricConcept,
   isothermalProcessConcept,

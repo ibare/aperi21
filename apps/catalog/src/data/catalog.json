@@ -2832,7 +2832,8 @@
         {
           "id": "ionizing-radiation",
           "name": "이온화 복사",
-          "desc": "원자에서 전자를 떼어 낼 만큼 큰 에너지의 복사"
+          "desc": "원자에서 전자를 떼어 낼 만큼 큰 에너지의 복사",
+          "simId": "aperi21:ionizing-radiation"
         },
         {
           "id": "exchange-particles",
@@ -2845,7 +2846,7 @@
   ],
   "summary": {
     "topics": 445,
-    "implemented": 444,
+    "implemented": 445,
     "labs": 104
   }
 }

@@ -466,6 +466,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:scale-of-universe","title":"宇宙のスケール","description":"原子から宇宙まで、10のべき乗でつなぐ大きさ","domain":"modern-physics"},
     {"id":"aperi21:rutherford-scattering","title":"ラザフォード散乱","description":"ほとんどが通り抜け、わずかが跳ね返った実験","domain":"modern-physics"},
     {"id":"aperi21:photon-bond-threshold","title":"結合を切る光子","description":"光子1個が結合を1本切り始める紫外線のしきい値","domain":"modern-physics"},
+    {"id":"aperi21:ionizing-radiation","title":"電離放射線","description":"原子から電子をはぎ取れるほど大きなエネルギーの放射","domain":"modern-physics"},
     {"id":"aperi21:exchange-particles","title":"交換粒子","description":"電子のあいだの光子、クォークのあいだのグルーオン","domain":"modern-physics"},
   ],
 };

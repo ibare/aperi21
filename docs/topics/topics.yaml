@@ -3618,6 +3618,7 @@ topics:
     level: lower
     curricula: [ngss, uk]
     visualNote: 광자 하나가 떼어 낸 전자가 제 길을 따라 이온을 줄줄이 남긴다
+    sim: aperi21:ionizing-radiation
 
   - id: exchange-particles
     name: 교환 입자

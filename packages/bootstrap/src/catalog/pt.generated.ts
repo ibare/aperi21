@@ -466,6 +466,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:scale-of-universe","title":"A escala do universo","description":"Tamanhos do átomo ao universo, ligados por potências de dez","domain":"modern-physics"},
     {"id":"aperi21:rutherford-scattering","title":"Espalhamento de Rutherford","description":"O experimento em que a maioria atravessou e algumas ricochetearam","domain":"modern-physics"},
     {"id":"aperi21:photon-bond-threshold","title":"O fóton que rompe uma ligação","description":"O limiar ultravioleta a partir do qual um fóton rompe uma ligação","domain":"modern-physics"},
+    {"id":"aperi21:ionizing-radiation","title":"Radiação ionizante","description":"Radiação com energia suficiente para arrancar elétrons dos átomos","domain":"modern-physics"},
     {"id":"aperi21:exchange-particles","title":"Partículas de troca","description":"Fótons entre elétrons, glúons entre quarks","domain":"modern-physics"},
   ],
 };

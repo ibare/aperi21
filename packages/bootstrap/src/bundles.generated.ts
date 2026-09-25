@@ -15,7 +15,7 @@
 import { registerBundle, registerBundleLoader } from '@aperi21/host';
 
 /** 등록된 조각 수. 검사가 기대값으로 쓴다. */
-export const BUNDLE_COUNT = 444;
+export const BUNDLE_COUNT = 445;
 
 /**
  * 조각 loader 를 모두 등록한다. **멱등 가드는 여기 두지 않는다** — 호출자
@@ -2060,6 +2060,14 @@ export function registerGeneratedBundles(): void {
       import("./capabilities/modern/hydrogen-spectrum.generated.js"),
     ]);
     return registerBundle("aperi21:hydrogen-spectrum", m.hydrogenSpectrumBundle, caps.capabilities);
+  });
+
+  registerBundleLoader("aperi21:ionizing-radiation", async () => {
+    const [m, caps] = await Promise.all([
+      import("@aperi21/sim-ionizing-radiation"),
+      import("./capabilities/modern/ionizing-radiation.generated.js"),
+    ]);
+    return registerBundle("aperi21:ionizing-radiation", m.ionizingRadiationBundle, caps.capabilities);
   });
 
   registerBundleLoader("aperi21:laser-and-stimulated-emission", async () => {
