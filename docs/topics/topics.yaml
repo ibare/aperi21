@@ -3612,8 +3612,8 @@ topics:
     sim: aperi21:photon-bond-threshold
 
   - id: ionizing-radiation
-    name: 이온화 복사
-    desc: { ko: "원자에서 전자를 떼어 낼 만큼 큰 에너지의 복사", en: "Radiation energetic enough to strip electrons from atoms", ja: "原子から電子をはぎ取れるほど大きなエネルギーの放射", zh: "能量大到足以从原子中剥离电子的辐射", ar: "إشعاع يحمل طاقة تكفي لانتزاع الإلكترونات من الذرات", es: "Radiación con energía suficiente para arrancar electrones de los átomos", fr: "Un rayonnement assez énergétique pour arracher des électrons aux atomes", hi: "इतनी ऊर्जा वाला विकिरण जो परमाणुओं से इलेक्ट्रॉन छीन ले", id: "Radiasi berenergi cukup besar untuk melepaskan elektron dari atom", pt: "Radiação com energia suficiente para arrancar elétrons dos átomos" }
+    name: 이온화 방사선
+    desc: { ko: "원자에서 전자를 떼어 낼 만큼 큰 에너지의 방사선", en: "Radiation energetic enough to strip electrons from atoms", ja: "原子から電子をはぎ取れるほど大きなエネルギーの放射", zh: "能量大到足以从原子中剥离电子的辐射", ar: "إشعاع يحمل طاقة تكفي لانتزاع الإلكترونات من الذرات", es: "Radiación con energía suficiente para arrancar electrones de los átomos", fr: "Un rayonnement assez énergétique pour arracher des électrons aux atomes", hi: "इतनी ऊर्जा वाला विकिरण जो परमाणुओं से इलेक्ट्रॉन छीन ले", id: "Radiasi berenergi cukup besar untuk melepaskan elektron dari atom", pt: "Radiação com energia suficiente para arrancar elétrons dos átomos" }
     domain: modern-physics
     level: lower
     curricula: [ngss, uk]

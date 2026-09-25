@@ -2831,8 +2831,8 @@
         },
         {
           "id": "ionizing-radiation",
-          "name": "이온화 복사",
-          "desc": "원자에서 전자를 떼어 낼 만큼 큰 에너지의 복사",
+          "name": "이온화 방사선",
+          "desc": "원자에서 전자를 떼어 낼 만큼 큰 에너지의 방사선",
           "simId": "aperi21:ionizing-radiation"
         },
         {

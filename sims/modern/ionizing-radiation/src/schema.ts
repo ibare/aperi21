@@ -1,7 +1,7 @@
 // ========================================================================
 // ionizing-radiation — 선언
 // ========================================================================
-// 질문: 이온화 복사는 왜 따로 이름을 얻을 만큼 해로운가.
+// 질문: 이온화 방사선은 왜 따로 이름을 얻을 만큼 해로운가.
 //
 // 물 분자 하나에서 전자를 떼어 내려면 12.6 eV 가 든다. 그 아래 자외선 광자는 물 분자에 닿아도
 // 이온을 하나도 만들지 못한다. X선 광자(1 keV)는 문턱의 수십 배라, 하나가 전자 하나를 떼어 내고
@@ -106,7 +106,7 @@ export const PHASE_FADE = 0.7;
 
 export const ionizingRadiationMessages = Object.freeze({
   'label.title': {
-    ko: '이온화 복사',
+    ko: '이온화 방사선',
     en: 'Ionizing radiation',
     ja: '電離放射線',
     zh: '电离辐射',
@@ -119,7 +119,7 @@ export const ionizingRadiationMessages = Object.freeze({
   },
   /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
   'label.description': {
-    ko: '원자에서 전자를 떼어 낼 만큼 큰 에너지의 복사',
+    ko: '원자에서 전자를 떼어 낼 만큼 큰 에너지의 방사선',
     en: 'Radiation energetic enough to strip electrons from atoms',
     ja: '原子から電子をはぎ取れるほど大きなエネルギーの放射',
     zh: '能量大到足以从原子中剥离电子的辐射',
