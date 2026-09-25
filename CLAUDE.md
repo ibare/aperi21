@@ -194,6 +194,10 @@ curl -s -X POST http://localhost:3800/api/events \
    ```
    `prepack` 이 빌드를 자동 수행한다.
 7. `git push && git push --tags`
+   이어서 GitHub Release 를 만든다 — 본문은 루트 `CHANGELOG.md` 의 그 버전 절이다.
+   ```sh
+   gh release create v<ver> --title "aperi21 <ver>" --notes-file <그 버전 절을 옮긴 파일> --latest
+   ```
 8. `npm view @aperi21/host version` / `npm view @aperi21/host-tiptap-bundle version` 확인.
    신규 publish 직후 GET(읽기) 전파는 최대 ~2분 지연될 수 있다(쓰기는 즉시).
    조회 404여도 `E403 (cannot publish over previously published)` 이면 배포는 성공한 것.
