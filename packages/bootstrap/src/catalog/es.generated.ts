@@ -123,7 +123,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:mass-spring-system","title":"Masa en un resorte","description":"El periodo que fijan la masa y la constante del resorte","domain":"rotation-oscillation"},
     {"id":"aperi21:simple-pendulum","title":"Péndulo simple","description":"El periodo con amplitud pequeña","domain":"rotation-oscillation"},
     {"id":"aperi21:physical-pendulum","title":"Péndulo físico","description":"Oscilación de un cuerpo extenso","domain":"rotation-oscillation"},
-    {"id":"aperi21:pendulum-amplitude-dependence","title":"Isocronismo del péndulo","description":"Arrastra el tamaño del balanceo para ampliar los cinco a la vez","domain":"rotation-oscillation"},
+    {"id":"aperi21:pendulum-amplitude-dependence","title":"Amplitud y periodo","description":"Con balanceos pequeños vuelven juntos aunque difiera su amplitud; con balanceos amplios se quedan atrás","domain":"rotation-oscillation"},
     {"id":"aperi21:damped-oscillation","title":"Oscilación amortiguada","description":"Una oscilación que pierde energía","domain":"rotation-oscillation"},
     {"id":"aperi21:damping-regimes","title":"Tres regímenes de amortiguamiento","description":"Movimiento subamortiguado, críticamente amortiguado y sobreamortiguado","domain":"rotation-oscillation"},
     {"id":"aperi21:driven-oscillation","title":"Oscilación forzada","description":"La respuesta a un forzamiento externo","domain":"rotation-oscillation"},

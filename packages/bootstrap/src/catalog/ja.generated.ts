@@ -123,7 +123,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:mass-spring-system","title":"ばね振り子","description":"質量とばね定数で決まる周期","domain":"rotation-oscillation"},
     {"id":"aperi21:simple-pendulum","title":"単振り子","description":"小さい振幅での周期","domain":"rotation-oscillation"},
     {"id":"aperi21:physical-pendulum","title":"実体振り子","description":"大きさのある物体の振動","domain":"rotation-oscillation"},
-    {"id":"aperi21:pendulum-amplitude-dependence","title":"振り子の等時性","description":"揺れの大きさをドラッグして、五つの振り子の振れ幅をいっしょに広げる","domain":"rotation-oscillation"},
+    {"id":"aperi21:pendulum-amplitude-dependence","title":"振幅と周期","description":"小さく揺らせば振れ幅が違っても一緒に戻り、大きく揺らすと遅れる","domain":"rotation-oscillation"},
     {"id":"aperi21:damped-oscillation","title":"減衰振動","description":"エネルギーを失っていく振動","domain":"rotation-oscillation"},
     {"id":"aperi21:damping-regimes","title":"減衰の三つの状態","description":"不足減衰・臨界減衰・過減衰の運動","domain":"rotation-oscillation"},
     {"id":"aperi21:driven-oscillation","title":"強制振動","description":"外部からの駆動への応答","domain":"rotation-oscillation"},

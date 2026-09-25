@@ -123,7 +123,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:mass-spring-system","title":"स्प्रिंग से लटका पिंड","description":"द्रव्यमान और स्प्रिंग नियतांक से तय होने वाला आवर्तकाल","domain":"rotation-oscillation"},
     {"id":"aperi21:simple-pendulum","title":"सरल लोलक","description":"छोटे आयाम पर आवर्तकाल","domain":"rotation-oscillation"},
     {"id":"aperi21:physical-pendulum","title":"भौतिक लोलक","description":"विस्तारित पिंड का दोलन","domain":"rotation-oscillation"},
-    {"id":"aperi21:pendulum-amplitude-dependence","title":"लोलक की समकालिकता","description":"झूले का आकार खींचकर पाँचों को एक साथ चौड़ा करें","domain":"rotation-oscillation"},
+    {"id":"aperi21:pendulum-amplitude-dependence","title":"आयाम और आवर्तकाल","description":"छोटे झूलों में आयाम अलग होने पर भी सब साथ लौटते हैं; चौड़े झूलों में पीछे छूट जाते हैं","domain":"rotation-oscillation"},
     {"id":"aperi21:damped-oscillation","title":"अवमंदित दोलन","description":"ऊर्जा खोता दोलन","domain":"rotation-oscillation"},
     {"id":"aperi21:damping-regimes","title":"अवमंदन की तीन अवस्थाएँ","description":"अल्प-अवमंदित, क्रांतिक अवमंदित और अति-अवमंदित गति","domain":"rotation-oscillation"},
     {"id":"aperi21:driven-oscillation","title":"प्रणोदित दोलन","description":"बाहरी प्रणोदन के प्रति अनुक्रिया","domain":"rotation-oscillation"},

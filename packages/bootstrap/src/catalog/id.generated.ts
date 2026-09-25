@@ -123,7 +123,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:mass-spring-system","title":"Beban pada pegas","description":"Periode yang ditentukan oleh massa dan konstanta pegas","domain":"rotation-oscillation"},
     {"id":"aperi21:simple-pendulum","title":"Bandul sederhana","description":"Periode pada amplitudo kecil","domain":"rotation-oscillation"},
     {"id":"aperi21:physical-pendulum","title":"Bandul fisis","description":"Osilasi benda berukuran","domain":"rotation-oscillation"},
-    {"id":"aperi21:pendulum-amplitude-dependence","title":"Isokronisme bandul","description":"Seret besar ayunan untuk melebarkan kelimanya sekaligus","domain":"rotation-oscillation"},
+    {"id":"aperi21:pendulum-amplitude-dependence","title":"Amplitudo dan periode","description":"Pada ayunan kecil semuanya kembali bersamaan meski amplitudonya berbeda; pada ayunan lebar, tertinggal","domain":"rotation-oscillation"},
     {"id":"aperi21:damped-oscillation","title":"Osilasi teredam","description":"Osilasi yang kehilangan energi","domain":"rotation-oscillation"},
     {"id":"aperi21:damping-regimes","title":"Tiga rezim redaman","description":"Gerak teredam kurang, teredam kritis, dan teredam lebih","domain":"rotation-oscillation"},
     {"id":"aperi21:driven-oscillation","title":"Osilasi paksa","description":"Tanggapan terhadap penggerak luar","domain":"rotation-oscillation"},

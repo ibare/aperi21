@@ -15,33 +15,81 @@ import { useHost } from '@aperi21/react';
  * 검증 시나리오:
  *  - 페이지 로드 시 마크다운을 HTML 로 변환 후 Tiptap content 로 주입.
  *  - BundleExtension 의 NodeView 가 placeholder span 을 검출해 runBundle 호출.
- *  - aperi21:projectile / aperi21:ray-tracing / aperi21:dc-circuit 3종이 동시에 떠야 함.
+ *  - 11분과에서 하나씩 고른 조각 11종이 한 문서에 동시에 떠야 함.
  *
  * 핵심: EngineProvider 가 optics/circuit plugin 을 설치한 host 를 useHost 로 꺼내
  * BundleExtension 에 주입한다. 이 host 가 NodeView→runBundle 까지 닿아야
- * plugin 의존 번들(ray-tracing/dc-circuit)의 renderer 가 채워진다. 주입하지 않으면
- * runBundle 이 plugin 없는 host 를 새로 만들어 두 번들이 빈 화면으로 뜬다.
+ * plugin 의존 번들(thin-lens/series-parallel-resistors)의 renderer 가 채워진다.
+ * 주입하지 않으면 runBundle 이 plugin 없는 host 를 새로 만들어 두 번들이 빈 화면으로 뜬다.
  * (외부 호스트는 동일 효과를 host-tiptap-bundle 의 createAperi21Extension 으로 얻는다.)
  */
 const DEFAULT_MARKDOWN = `# 시뮬레이션 인라인 데모
 
-## 포물선 운동 (Projectile)
+## 운동학 — 사거리와 발사각
 
-각도와 초속을 조절하면서 공의 궤적을 보자.
+던지는 각도가 날아가는 거리를 바꾸는 방식.
 
-{aperi21:projectile}
+{aperi21:projectile-range}
 
-## 광선 추적 (Ray Tracing)
+## 뉴턴 역학 — 빗면
 
-거울/렌즈에 광선이 부딪히는 경로를 따라가 보자.
+중력을 면에 나란한 성분과 수직 성분으로 나눈다.
 
-{aperi21:ray-tracing}
+{aperi21:inclined-plane}
 
-## DC 회로 (DC Circuit)
+## 일·에너지·운동량 — 탄성 충돌
 
-저항을 이리저리 바꾸며 분압비가 어떻게 변하는지 관찰.
+운동 에너지까지 보존되는 충돌.
 
-{aperi21:dc-circuit}
+{aperi21:elastic-collision}
+
+## 회전과 진동 — 단진자
+
+작은 진폭에서의 주기.
+
+{aperi21:simple-pendulum}
+
+## 중력과 천체 — 케플러 제2법칙
+
+같은 시간에 같은 넓이를 쓸고 지나간다.
+
+{aperi21:keplers-second-law}
+
+## 유체 — 베르누이 원리
+
+빨라진 만큼 압력이 내려간다.
+
+{aperi21:bernoullis-principle}
+
+## 열과 통계 — 이상 기체 법칙
+
+압력·부피·온도의 관계.
+
+{aperi21:ideal-gas-law}
+
+## 파동과 음향 — 도플러 효과
+
+원천이 방출점을 밀고 가 앞쪽 간격이 좁아진다.
+
+{aperi21:doppler-effect}
+
+## 광학 — 얇은 렌즈
+
+세 광선으로 상을 찾는다.
+
+{aperi21:thin-lens}
+
+## 전자기 — 저항의 직렬과 병렬
+
+연결을 바꾸면 같은 전지가 내주는 전류가 달라진다.
+
+{aperi21:series-parallel-resistors}
+
+## 현대물리 — 광전 효과
+
+빛의 입자성 증거.
+
+{aperi21:photoelectric-effect}
 `;
 
 export function EditorDemoPage() {

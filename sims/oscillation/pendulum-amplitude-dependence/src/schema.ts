@@ -141,28 +141,32 @@ export const SCENE_BOUNDS = {
 
 export const pendulumAmplitudeDependenceMessages = Object.freeze({
   'label.title': {
-    ko: '진자의 등시성',
-    en: 'Isochronism of the pendulum',
-    ja: '振り子の等時性',
-    zh: '单摆的等时性',
-    ar: 'تساوي أزمنة اهتزاز البندول',
-    es: 'Isocronismo del péndulo',
-    fr: 'Isochronisme du pendule',
-    hi: 'लोलक की समकालिकता',
-    id: 'Isokronisme bandul',
-    pt: 'Isocronismo do pêndulo',
+    ko: '진폭과 주기',
+    en: 'Amplitude and period',
+    ja: '振幅と周期',
+    zh: '振幅与周期',
+    ar: 'السعة والدور',
+    es: 'Amplitud y periodo',
+    fr: 'Amplitude et période',
+    hi: 'आयाम और आवर्तकाल',
+    id: 'Amplitudo dan periode',
+    pt: 'Amplitude e período',
   },
+  /**
+   * 카탈로그의 한 줄 설명이 된다. 다른 조각들처럼 **무엇을 보여 주는가**를 적는다 —
+   * 손잡이 설명이 아니다. 화면이 하는 두 절반(caption.same · caption.lag)을 함께 담는다.
+   */
   'label.operation': {
-    ko: '흔들림 크기를 끌어 다섯 진자의 폭을 함께 키운다',
-    en: 'Drag the swing size to widen all five together',
-    ja: '揺れの大きさをドラッグして、五つの振り子の振れ幅をいっしょに広げる',
-    zh: '拖动摆动幅度，让五个摆的摆幅一起变大',
-    ar: 'اسحب حجم التأرجح لتوسيع الخمسة معًا',
-    es: 'Arrastra el tamaño del balanceo para ampliar los cinco a la vez',
-    fr: 'Faites glisser l’ampleur du balancement pour élargir les cinq ensemble',
-    hi: 'झूले का आकार खींचकर पाँचों को एक साथ चौड़ा करें',
-    id: 'Seret besar ayunan untuk melebarkan kelimanya sekaligus',
-    pt: 'Arraste o tamanho da oscilação para ampliar os cinco juntos',
+    ko: '작게 흔들면 폭이 달라도 함께 돌아오고, 크게 흔들면 뒤처진다',
+    en: 'Small swings return together whatever their width; wide swings fall behind',
+    ja: '小さく揺らせば振れ幅が違っても一緒に戻り、大きく揺らすと遅れる',
+    zh: '小幅摆动时摆幅不同也一起回来，大幅摆动时就会落后',
+    ar: 'في التأرجحات الصغيرة تعود معًا مهما اختلفت سعاتها، وفي التأرجحات الواسعة تتأخر',
+    es: 'Con balanceos pequeños vuelven juntos aunque difiera su amplitud; con balanceos amplios se quedan atrás',
+    fr: 'Aux petites oscillations, ils reviennent ensemble quelle que soit l’amplitude ; aux grandes, ils prennent du retard',
+    hi: 'छोटे झूलों में आयाम अलग होने पर भी सब साथ लौटते हैं; चौड़े झूलों में पीछे छूट जाते हैं',
+    id: 'Pada ayunan kecil semuanya kembali bersamaan meski amplitudonya berbeda; pada ayunan lebar, tertinggal',
+    pt: 'Em oscilações pequenas voltam juntos mesmo com amplitudes diferentes; nas amplas, ficam para trás',
   },
   'label.stage': {
     ko: '진자',

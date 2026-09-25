@@ -123,7 +123,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:mass-spring-system","title":"Massa presa a uma mola","description":"O período definido pela massa e pela constante elástica","domain":"rotation-oscillation"},
     {"id":"aperi21:simple-pendulum","title":"Pêndulo simples","description":"O período em pequena amplitude","domain":"rotation-oscillation"},
     {"id":"aperi21:physical-pendulum","title":"Pêndulo físico","description":"Oscilação de um corpo extenso","domain":"rotation-oscillation"},
-    {"id":"aperi21:pendulum-amplitude-dependence","title":"Isocronismo do pêndulo","description":"Arraste o tamanho da oscilação para ampliar os cinco juntos","domain":"rotation-oscillation"},
+    {"id":"aperi21:pendulum-amplitude-dependence","title":"Amplitude e período","description":"Em oscilações pequenas voltam juntos mesmo com amplitudes diferentes; nas amplas, ficam para trás","domain":"rotation-oscillation"},
     {"id":"aperi21:damped-oscillation","title":"Oscilação amortecida","description":"Uma oscilação que perde energia","domain":"rotation-oscillation"},
     {"id":"aperi21:damping-regimes","title":"Três regimes de amortecimento","description":"Movimento subamortecido, criticamente amortecido e superamortecido","domain":"rotation-oscillation"},
     {"id":"aperi21:driven-oscillation","title":"Oscilação forçada","description":"A resposta a uma excitação externa","domain":"rotation-oscillation"},

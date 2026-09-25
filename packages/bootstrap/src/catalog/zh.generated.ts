@@ -123,7 +123,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:mass-spring-system","title":"弹簧振子","description":"由质量和劲度系数决定的周期","domain":"rotation-oscillation"},
     {"id":"aperi21:simple-pendulum","title":"单摆","description":"小振幅下的周期","domain":"rotation-oscillation"},
     {"id":"aperi21:physical-pendulum","title":"复摆","description":"有一定大小的物体的振动","domain":"rotation-oscillation"},
-    {"id":"aperi21:pendulum-amplitude-dependence","title":"单摆的等时性","description":"拖动摆动幅度，让五个摆的摆幅一起变大","domain":"rotation-oscillation"},
+    {"id":"aperi21:pendulum-amplitude-dependence","title":"振幅与周期","description":"小幅摆动时摆幅不同也一起回来，大幅摆动时就会落后","domain":"rotation-oscillation"},
     {"id":"aperi21:damped-oscillation","title":"阻尼振动","description":"不断损失能量的振动","domain":"rotation-oscillation"},
     {"id":"aperi21:damping-regimes","title":"阻尼的三种情形","description":"欠阻尼、临界阻尼与过阻尼运动","domain":"rotation-oscillation"},
     {"id":"aperi21:driven-oscillation","title":"受迫振动","description":"对外部驱动的响应","domain":"rotation-oscillation"},

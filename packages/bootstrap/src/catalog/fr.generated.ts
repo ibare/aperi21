@@ -123,7 +123,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:mass-spring-system","title":"Masse suspendue à un ressort","description":"La période fixée par la masse et la raideur du ressort","domain":"rotation-oscillation"},
     {"id":"aperi21:simple-pendulum","title":"Pendule simple","description":"La période aux petites amplitudes","domain":"rotation-oscillation"},
     {"id":"aperi21:physical-pendulum","title":"Pendule pesant","description":"Oscillation d’un corps étendu","domain":"rotation-oscillation"},
-    {"id":"aperi21:pendulum-amplitude-dependence","title":"Isochronisme du pendule","description":"Faites glisser l’ampleur du balancement pour élargir les cinq ensemble","domain":"rotation-oscillation"},
+    {"id":"aperi21:pendulum-amplitude-dependence","title":"Amplitude et période","description":"Aux petites oscillations, ils reviennent ensemble quelle que soit l’amplitude ; aux grandes, ils prennent du retard","domain":"rotation-oscillation"},
     {"id":"aperi21:damped-oscillation","title":"Oscillation amortie","description":"Une oscillation qui perd de l’énergie","domain":"rotation-oscillation"},
     {"id":"aperi21:damping-regimes","title":"Trois régimes d’amortissement","description":"Mouvement sous-amorti, à amortissement critique et suramorti","domain":"rotation-oscillation"},
     {"id":"aperi21:driven-oscillation","title":"Oscillations forcées","description":"La réponse à une excitation extérieure","domain":"rotation-oscillation"},

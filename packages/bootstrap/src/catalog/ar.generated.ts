@@ -123,7 +123,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:mass-spring-system","title":"كتلة معلّقة بنابض","description":"الدور الذي تحدده الكتلة وثابت النابض","domain":"rotation-oscillation"},
     {"id":"aperi21:simple-pendulum","title":"البندول البسيط","description":"الدور عند سعة صغيرة","domain":"rotation-oscillation"},
     {"id":"aperi21:physical-pendulum","title":"البندول الفيزيائي","description":"تذبذب جسم ممتد","domain":"rotation-oscillation"},
-    {"id":"aperi21:pendulum-amplitude-dependence","title":"تساوي أزمنة اهتزاز البندول","description":"اسحب حجم التأرجح لتوسيع الخمسة معًا","domain":"rotation-oscillation"},
+    {"id":"aperi21:pendulum-amplitude-dependence","title":"السعة والدور","description":"في التأرجحات الصغيرة تعود معًا مهما اختلفت سعاتها، وفي التأرجحات الواسعة تتأخر","domain":"rotation-oscillation"},
     {"id":"aperi21:damped-oscillation","title":"التذبذب المُخمَّد","description":"تذبذب يفقد الطاقة","domain":"rotation-oscillation"},
     {"id":"aperi21:damping-regimes","title":"ثلاثة أنظمة للتخميد","description":"الحركة المخمَّدة تخميدًا ناقصًا وحرجًا ومفرطًا","domain":"rotation-oscillation"},
     {"id":"aperi21:driven-oscillation","title":"التذبذب القسري","description":"الاستجابة لقوة دافعة خارجية","domain":"rotation-oscillation"},

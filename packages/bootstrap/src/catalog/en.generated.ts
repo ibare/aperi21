@@ -123,7 +123,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:mass-spring-system","title":"Mass on a spring","description":"The period set by mass and spring constant","domain":"rotation-oscillation"},
     {"id":"aperi21:simple-pendulum","title":"Simple pendulum","description":"The period at small amplitude","domain":"rotation-oscillation"},
     {"id":"aperi21:physical-pendulum","title":"Physical pendulum","description":"Oscillation of an extended body","domain":"rotation-oscillation"},
-    {"id":"aperi21:pendulum-amplitude-dependence","title":"Isochronism of the pendulum","description":"Drag the swing size to widen all five together","domain":"rotation-oscillation"},
+    {"id":"aperi21:pendulum-amplitude-dependence","title":"Amplitude and period","description":"Small swings return together whatever their width; wide swings fall behind","domain":"rotation-oscillation"},
     {"id":"aperi21:damped-oscillation","title":"Damped oscillation","description":"An oscillation that loses energy","domain":"rotation-oscillation"},
     {"id":"aperi21:damping-regimes","title":"Three regimes of damping","description":"Underdamped, critically damped and overdamped motion","domain":"rotation-oscillation"},
     {"id":"aperi21:driven-oscillation","title":"Driven oscillation","description":"The response to an external drive","domain":"rotation-oscillation"},
