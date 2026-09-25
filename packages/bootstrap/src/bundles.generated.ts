@@ -2062,14 +2062,6 @@ export function registerGeneratedBundles(): void {
     return registerBundle("aperi21:hydrogen-spectrum", m.hydrogenSpectrumBundle, caps.capabilities);
   });
 
-  registerBundleLoader("aperi21:ionizing-radiation", async () => {
-    const [m, caps] = await Promise.all([
-      import("@aperi21/sim-ionizing-radiation"),
-      import("./capabilities/modern/ionizing-radiation.generated.js"),
-    ]);
-    return registerBundle("aperi21:ionizing-radiation", m.ionizingRadiationBundle, caps.capabilities);
-  });
-
   registerBundleLoader("aperi21:laser-and-stimulated-emission", async () => {
     const [m, caps] = await Promise.all([
       import("@aperi21/sim-laser-and-stimulated-emission"),
@@ -2196,6 +2188,14 @@ export function registerGeneratedBundles(): void {
       import("./capabilities/modern/photoelectric-effect.generated.js"),
     ]);
     return registerBundle("aperi21:photoelectric-effect", m.photoelectricEffectBundle, caps.capabilities);
+  });
+
+  registerBundleLoader("aperi21:photon-bond-threshold", async () => {
+    const [m, caps] = await Promise.all([
+      import("@aperi21/sim-photon-bond-threshold"),
+      import("./capabilities/modern/photon-bond-threshold.generated.js"),
+    ]);
+    return registerBundle("aperi21:photon-bond-threshold", m.photonBondThresholdBundle, caps.capabilities);
   });
 
   registerBundleLoader("aperi21:photovoltaic-effect", async () => {

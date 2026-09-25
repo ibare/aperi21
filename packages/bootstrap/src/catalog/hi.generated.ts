@@ -465,7 +465,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:bose-einstein-condensate","title":"बोस–आइंस्टाइन संघनन","description":"एक ही अवस्था में सिमटते ठंडे कण","domain":"modern-physics"},
     {"id":"aperi21:scale-of-universe","title":"ब्रह्मांड का पैमाना","description":"परमाणु से ब्रह्मांड तक के आकार, दस की घातों से जुड़े","domain":"modern-physics"},
     {"id":"aperi21:rutherford-scattering","title":"रदरफ़ोर्ड प्रकीर्णन","description":"वह प्रयोग जिसमें अधिकांश पार निकल गए और कुछ वापस उछल आए","domain":"modern-physics"},
-    {"id":"aperi21:ionizing-radiation","title":"आयनकारी विकिरण","description":"बंधों को तोड़ने लायक बड़ी फोटॉन ऊर्जा","domain":"modern-physics"},
+    {"id":"aperi21:photon-bond-threshold","title":"बंध तोड़ने वाला फोटॉन","description":"पराबैंगनी की वह देहली जहाँ से एक फोटॉन एक बंध तोड़ने लगता है","domain":"modern-physics"},
     {"id":"aperi21:exchange-particles","title":"विनिमय कण","description":"इलेक्ट्रॉनों के बीच फोटॉन, क्वार्कों के बीच ग्लूऑन","domain":"modern-physics"},
   ],
 };

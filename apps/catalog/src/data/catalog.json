@@ -2824,10 +2824,15 @@
           "simId": "aperi21:rutherford-scattering"
         },
         {
+          "id": "photon-bond-threshold",
+          "name": "결합을 끊는 광자",
+          "desc": "광자 하나가 결합 하나를 끊기 시작하는 자외선의 문턱",
+          "simId": "aperi21:photon-bond-threshold"
+        },
+        {
           "id": "ionizing-radiation",
           "name": "이온화 복사",
-          "desc": "결합을 끊을 만큼 큰 광자 에너지",
-          "simId": "aperi21:ionizing-radiation"
+          "desc": "원자에서 전자를 떼어 낼 만큼 큰 에너지의 복사"
         },
         {
           "id": "exchange-particles",
@@ -2839,7 +2844,7 @@
     }
   ],
   "summary": {
-    "topics": 444,
+    "topics": 445,
     "implemented": 444,
     "labs": 104
   }

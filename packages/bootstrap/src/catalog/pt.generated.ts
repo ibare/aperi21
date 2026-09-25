@@ -465,7 +465,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:bose-einstein-condensate","title":"Condensação de Bose–Einstein","description":"Partículas frias que se amontoam num só estado","domain":"modern-physics"},
     {"id":"aperi21:scale-of-universe","title":"A escala do universo","description":"Tamanhos do átomo ao universo, ligados por potências de dez","domain":"modern-physics"},
     {"id":"aperi21:rutherford-scattering","title":"Espalhamento de Rutherford","description":"O experimento em que a maioria atravessou e algumas ricochetearam","domain":"modern-physics"},
-    {"id":"aperi21:ionizing-radiation","title":"Radiação ionizante","description":"Energia de fóton grande o bastante para romper ligações","domain":"modern-physics"},
+    {"id":"aperi21:photon-bond-threshold","title":"O fóton que rompe uma ligação","description":"O limiar ultravioleta a partir do qual um fóton rompe uma ligação","domain":"modern-physics"},
     {"id":"aperi21:exchange-particles","title":"Partículas de troca","description":"Fótons entre elétrons, glúons entre quarks","domain":"modern-physics"},
   ],
 };

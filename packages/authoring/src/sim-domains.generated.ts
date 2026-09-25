@@ -452,6 +452,6 @@ export const SIM_DOMAINS: Record<string, string> = {
   "aperi21:bose-einstein-condensate": "modern-physics",
   "aperi21:scale-of-universe": "modern-physics",
   "aperi21:rutherford-scattering": "modern-physics",
-  "aperi21:ionizing-radiation": "modern-physics",
+  "aperi21:photon-bond-threshold": "modern-physics",
   "aperi21:exchange-particles": "modern-physics",
 };

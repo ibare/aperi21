@@ -1,5 +1,5 @@
 // ========================================================================
-// ionizing-radiation — Scene Graph 선언
+// photon-bond-threshold — Scene Graph 선언
 // ========================================================================
 // 그리지 않는다, 선언한다. 겹침은 scene 에 쓴 순서(`drawOrder: 'scene'`) — 문턱 띠 · 가시광 조각 ·
 // 축 · 눈금 · 문턱선 · 이름표 · 표지 · 광원 · 광자 · 결합선 · 원자.
@@ -38,10 +38,10 @@ import {
   snapshot,
   waveSpacing,
   type FlyingPhoton,
-  type IonizingConstants,
+  type BondConstants,
 } from './physics';
-import { AXIS, SCENE_BOUNDS, SOURCE, text, type IonizingRadiationMessageKey } from './schema';
-import type { IonizingRadiationState } from './state';
+import { AXIS, SCENE_BOUNDS, SOURCE, text, type PhotonBondThresholdMessageKey } from './schema';
+import type { PhotonBondThresholdState } from './state';
 
 /** 광자 물결 뭉치의 길이 · 흔들림 폭(월드) · 표본 수. 모든 광자가 같은 길이라 물결 수가 파장을 말한다. */
 const PACKET_LENGTH = 0.75;
@@ -61,8 +61,8 @@ const THRESHOLD_BELOW = 0.14;
 const THRESHOLD_ABOVE = 0.42;
 const THRESHOLD_WIDTH_PX = 2;
 /** 문턱 너머 띠의 반높이(월드) · 채움 짙기. */
-const IONIZING_BAND_HALF = 0.1;
-const IONIZING_BAND_FILL = 0.28;
+const BREAKING_BAND_HALF = 0.1;
+const BREAKING_BAND_FILL = 0.28;
 /** 가시광 조각의 반높이(월드) · 칸 수. */
 const VISIBLE_HALF = 0.1;
 const VISIBLE_COLS = 24;
@@ -91,7 +91,7 @@ const BROKEN_OPACITY = 0.7;
 const ATOM_PX = 7;
 
 /** 로그 눈금 이름표 — 보일 문자열을 문안 키로 둔다(지수 조립 금지). 목록이 코드에 남는다 (NOTES (c) G105). */
-const TICK_LABELS: readonly { ev: number; key: IonizingRadiationMessageKey }[] = [
+const TICK_LABELS: readonly { ev: number; key: PhotonBondThresholdMessageKey }[] = [
   { ev: 1e-3, key: 'tick.milliEv' },
   { ev: 1, key: 'tick.ev' },
   { ev: 1e3, key: 'tick.kiloEv' },
@@ -99,9 +99,9 @@ const TICK_LABELS: readonly { ev: number; key: IonizingRadiationMessageKey }[] =
 
 /** 대역 이름과 그 대역의 두 끝(스테이지 상수 이름). 이름은 두 끝의 로그 가운데에 놓인다. */
 const BANDS: readonly {
-  key: IonizingRadiationMessageKey;
-  from: keyof IonizingConstants;
-  to: keyof IonizingConstants;
+  key: PhotonBondThresholdMessageKey;
+  from: keyof BondConstants;
+  to: keyof BondConstants;
 }[] = [
   { key: 'band.radio', from: 'axisMinEv', to: 'microwaveMinEv' },
   { key: 'band.microwave', from: 'microwaveMinEv', to: 'infraredMinEv' },
@@ -155,14 +155,14 @@ function label(
 }
 
 export function scene(params: {
-  state: IonizingRadiationState;
+  state: PhotonBondThresholdState;
   view: ViewDef;
   stage: StageDef;
   environments: EnvironmentDef[];
   timeline?: TimelineFrame;
 }): SceneGraph {
   const { stage, timeline: tl } = params;
-  if (!tl) throw new Error('ionizing-radiation: schema.timeline 이 선언되어야 한다');
+  if (!tl) throw new Error('photon-bond-threshold: schema.timeline 이 선언되어야 한다');
   const c = readConstants(stage);
   const fade = fadeAlpha(tl);
   const molAlpha = moleculeAlpha(tl);
@@ -175,14 +175,14 @@ export function scene(params: {
   const xt = X(c.thresholdEv);
   out.push({
     type: 'region',
-    id: 'ionizing-band',
+    id: 'breaking-band',
     points: [
-      [xt, y - IONIZING_BAND_HALF],
-      [AXIS.x1, y - IONIZING_BAND_HALF],
-      [AXIS.x1, y + IONIZING_BAND_HALF],
-      [xt, y + IONIZING_BAND_HALF],
+      [xt, y - BREAKING_BAND_HALF],
+      [AXIS.x1, y - BREAKING_BAND_HALF],
+      [AXIS.x1, y + BREAKING_BAND_HALF],
+      [xt, y + BREAKING_BAND_HALF],
     ],
-    fillOpacity: IONIZING_BAND_FILL,
+    fillOpacity: BREAKING_BAND_FILL,
     style: { colorRole: 'accent', emphasis: 'strong' },
   } satisfies Region);
 

@@ -465,7 +465,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:bose-einstein-condensate","title":"Bose–Einstein condensation","description":"Cold particles crowding into one state","domain":"modern-physics"},
     {"id":"aperi21:scale-of-universe","title":"The scale of the universe","description":"Sizes from the atom to the universe, joined by powers of ten","domain":"modern-physics"},
     {"id":"aperi21:rutherford-scattering","title":"Rutherford scattering","description":"The experiment where most passed through and a few bounced back","domain":"modern-physics"},
-    {"id":"aperi21:ionizing-radiation","title":"Ionizing radiation","description":"Photon energy large enough to break bonds","domain":"modern-physics"},
+    {"id":"aperi21:photon-bond-threshold","title":"A photon that breaks a bond","description":"The ultraviolet threshold where one photon begins to break one bond","domain":"modern-physics"},
     {"id":"aperi21:exchange-particles","title":"Exchange particles","description":"Photons between electrons, gluons between quarks","domain":"modern-physics"},
   ],
 };

@@ -465,7 +465,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:bose-einstein-condensate","title":"玻色-爱因斯坦凝聚","description":"挤进同一状态的低温粒子","domain":"modern-physics"},
     {"id":"aperi21:scale-of-universe","title":"宇宙的尺度","description":"从原子到宇宙，以10的幂相连的尺寸","domain":"modern-physics"},
     {"id":"aperi21:rutherford-scattering","title":"卢瑟福散射","description":"大多数穿过、少数被弹回的实验","domain":"modern-physics"},
-    {"id":"aperi21:ionizing-radiation","title":"电离辐射","description":"大到足以打断化学键的光子能量","domain":"modern-physics"},
+    {"id":"aperi21:photon-bond-threshold","title":"打断键的光子","description":"一个光子开始打断一个键的紫外线阈值","domain":"modern-physics"},
     {"id":"aperi21:exchange-particles","title":"交换粒子","description":"电子之间的光子，夸克之间的胶子","domain":"modern-physics"},
   ],
 };

@@ -465,7 +465,7 @@ export const CATALOG: Aperi21Catalog = {
     {"id":"aperi21:bose-einstein-condensate","title":"Condensation de Bose–Einstein","description":"Des particules froides qui s’entassent dans un seul état","domain":"modern-physics"},
     {"id":"aperi21:scale-of-universe","title":"L’échelle de l’univers","description":"Des tailles de l’atome à l’univers, reliées par des puissances de dix","domain":"modern-physics"},
     {"id":"aperi21:rutherford-scattering","title":"Diffusion de Rutherford","description":"L’expérience où la plupart sont passées et quelques-unes ont rebondi","domain":"modern-physics"},
-    {"id":"aperi21:ionizing-radiation","title":"Rayonnement ionisant","description":"Une énergie de photon assez grande pour rompre des liaisons","domain":"modern-physics"},
+    {"id":"aperi21:photon-bond-threshold","title":"Le photon qui rompt une liaison","description":"Le seuil ultraviolet à partir duquel un photon rompt une liaison","domain":"modern-physics"},
     {"id":"aperi21:exchange-particles","title":"Particules d’échange","description":"Des photons entre électrons, des gluons entre quarks","domain":"modern-physics"},
   ],
 };

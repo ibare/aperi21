@@ -186,7 +186,6 @@ import { inertialVsGravitationalMassConcept } from './inertial-vs-gravitational-
 import { insulationConcept } from './insulation.js';
 import { interferenceConcept } from './interference.js';
 import { inverseSquareLawConcept } from './inverse-square-law.js';
-import { ionizingRadiationConcept } from './ionizing-radiation.js';
 import { irreversibilityConcept } from './irreversibility.js';
 import { isobaricIsochoricConcept } from './isobaric-isochoric.js';
 import { isothermalProcessConcept } from './isothermal-process.js';
@@ -282,6 +281,7 @@ import { phaseDiagramConcept } from './phase-diagram.js';
 import { phaseInAcCircuitConcept } from './phase-in-ac-circuit.js';
 import { phaseSpaceConcept } from './phase-space.js';
 import { photoelectricEffectConcept } from './photoelectric-effect.js';
+import { photonBondThresholdConcept } from './photon-bond-threshold.js';
 import { photovoltaicEffectConcept } from './photovoltaic-effect.js';
 import { physicalPendulumConcept } from './physical-pendulum.js';
 import { pinholeCameraConcept } from './pinhole-camera.js';
@@ -632,7 +632,6 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   insulationConcept,
   interferenceConcept,
   inverseSquareLawConcept,
-  ionizingRadiationConcept,
   irreversibilityConcept,
   isobaricIsochoricConcept,
   isothermalProcessConcept,
@@ -728,6 +727,7 @@ export const CONCEPT_SOURCES: readonly Aperi21ConceptSource[] = [
   phaseInAcCircuitConcept,
   phaseSpaceConcept,
   photoelectricEffectConcept,
+  photonBondThresholdConcept,
   photovoltaicEffectConcept,
   physicalPendulumConcept,
   pinholeCameraConcept,

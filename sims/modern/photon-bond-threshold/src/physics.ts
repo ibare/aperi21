@@ -1,14 +1,14 @@
 // ========================================================================
-// ionizing-radiation — 순수 계산
+// photon-bond-threshold — 순수 계산
 // ========================================================================
 // 광자 하나는 분자 하나에게 제 에너지 E 를 통째로 준다. 몫은 광자마다 따로다.
 //
-//   E < 문턱 — 결합이 E / 문턱 에 비례한 폭으로 늘었다 줄었다 흔들리다 잦아든다. 몫은
-//              흩어지므로 다음 광자가 와도 쌓이지 않는다 — 흔들림은 마지막 광자의 것뿐이다.
+//   E < 문턱 — 결합은 그대로다. 광자가 닿고 사라질 뿐 몫이 쌓이지 않는다 — 다음 광자가 와도
+//              앞 광자의 몫에 더해지지 않는다.
 //   E ≥ 문턱 — 결합이 끊어지고 두 원자가 벌어진다. 광자 하나에 결합 하나.
 //
-// 흔들림 폭은 E 에 **선형**이다. 전파 광자(1e-9 eV 무렵)는 문턱의 10⁻¹⁰ 배라 흔들림이 보이지
-// 않는 것이 참이고, 조각이 그 작은 몫을 키우지 않는다.
+// 문턱 아래 광자가 분자를 E 에 비례해 흔든다고 그리지 않는다 — 광자 하나의 흡수는 그런 연속량이
+// 아니다. 옛 판(ionizing-radiation)이 그렇게 그렸던 것을 지웠다 (NOTES).
 //
 // 모든 것이 (시드, 주기 번호, 주기 안 시각)의 함수다. 쌓는 상태가 없다.
 // ========================================================================
@@ -27,15 +27,12 @@ import {
   MOLECULES,
   PHOTON_SPEED,
   RATE_INFRARED,
-  RATE_IONIZING,
+  RATE_BREAKING,
   RATE_MICROWAVE,
   RATE_RADIO,
   RATE_ULTRAVIOLET,
   RATE_VISIBLE,
   SEED,
-  SHAKE_AT_THRESHOLD,
-  SHAKE_DECAY,
-  SHAKE_HZ,
   SOURCE,
   THRESHOLD_EV,
   ULTRAVIOLET_MIN_EV,
@@ -44,13 +41,13 @@ import {
   WAVE_SPACING_AT_THRESHOLD,
   XRAY_MIN_EV,
 } from './schema';
-import type { IonizingRadiationState } from './state';
+import type { PhotonBondThresholdState } from './state';
 
 // ------------------------------------------------------------------------
 // 스테이지 상수
 // ------------------------------------------------------------------------
 
-export interface IonizingConstants {
+export interface BondConstants {
   /** 결합을 끊는 문턱(eV). */
   thresholdEv: number;
   /** 에너지 축 양 끝(eV). */
@@ -70,17 +67,12 @@ export interface IonizingConstants {
   rateInfrared: number;
   rateVisible: number;
   rateUltraviolet: number;
-  rateIonizing: number;
+  rateBreaking: number;
   /** 광자가 나는 빠르기(월드/초). */
   photonSpeed: number;
   /** 문턱 광자의 물결 간격(월드) · 압축 지수. */
   waveSpacingAtThreshold: number;
   waveCompression: number;
-  /** 문턱 에너지를 받은 결합이 늘어나는 폭(월드). */
-  shakeAtThreshold: number;
-  /** 흔들림이 잦아드는 시간 상수(초) · 진동수(Hz). */
-  shakeDecay: number;
-  shakeHz: number;
   /** 끊어진 원자가 벌어지는 거리(월드) · 시간 상수(초). */
   fragmentGap: number;
   fragmentSettle: number;
@@ -88,7 +80,7 @@ export interface IonizingConstants {
   seed: number;
 }
 
-export function readConstants(stage: StageDef): IonizingConstants {
+export function readConstants(stage: StageDef): BondConstants {
   const c = (stage.constants ?? {}) as Record<string, number>;
   return {
     thresholdEv: c.thresholdEv ?? THRESHOLD_EV,
@@ -105,13 +97,10 @@ export function readConstants(stage: StageDef): IonizingConstants {
     rateInfrared: c.rateInfrared ?? RATE_INFRARED,
     rateVisible: c.rateVisible ?? RATE_VISIBLE,
     rateUltraviolet: c.rateUltraviolet ?? RATE_ULTRAVIOLET,
-    rateIonizing: c.rateIonizing ?? RATE_IONIZING,
+    rateBreaking: c.rateBreaking ?? RATE_BREAKING,
     photonSpeed: c.photonSpeed ?? PHOTON_SPEED,
     waveSpacingAtThreshold: c.waveSpacingAtThreshold ?? WAVE_SPACING_AT_THRESHOLD,
     waveCompression: c.waveCompression ?? WAVE_COMPRESSION,
-    shakeAtThreshold: c.shakeAtThreshold ?? SHAKE_AT_THRESHOLD,
-    shakeDecay: c.shakeDecay ?? SHAKE_DECAY,
-    shakeHz: c.shakeHz ?? SHAKE_HZ,
     fragmentGap: c.fragmentGap ?? FRAGMENT_GAP,
     fragmentSettle: c.fragmentSettle ?? FRAGMENT_SETTLE,
     seed: c.seed ?? SEED,
@@ -123,7 +112,7 @@ export function readConstants(stage: StageDef): IonizingConstants {
 // ------------------------------------------------------------------------
 
 /** 에너지 E(eV) 의 축 위 x(월드). 축은 로그 눈금이다 — 한 자릿수가 같은 너비. */
-export function axisX(ev: number, c: IonizingConstants, x0: number, x1: number): number {
+export function axisX(ev: number, c: BondConstants, x0: number, x1: number): number {
   const lo = Math.log10(c.axisMinEv);
   const hi = Math.log10(c.axisMaxEv);
   const f = (Math.log10(ev) - lo) / (hi - lo);
@@ -131,14 +120,14 @@ export function axisX(ev: number, c: IonizingConstants, x0: number, x1: number):
 }
 
 /** 가시광 경계 에너지의 빛 색(선형광) — 파장 = hc / E. 가시광 안에서만 쓴다. */
-export const lightOfEv = (ev: number, c: IonizingConstants): LinearRgb => wavelengthToLinearRgb(c.hcEvNm / ev);
+export const lightOfEv = (ev: number, c: BondConstants): LinearRgb => wavelengthToLinearRgb(c.hcEvNm / ev);
 
 // ------------------------------------------------------------------------
 // 단계 → 대역
 // ------------------------------------------------------------------------
 
 type EdgeKey = 'axisMinEv' | 'microwaveMinEv' | 'infraredMinEv' | 'visibleMinEv' | 'ultravioletMinEv' | 'thresholdEv' | 'xrayMinEv' | 'axisMaxEv';
-type RateKey = 'rateRadio' | 'rateMicrowave' | 'rateInfrared' | 'rateVisible' | 'rateUltraviolet' | 'rateIonizing';
+type RateKey = 'rateRadio' | 'rateMicrowave' | 'rateInfrared' | 'rateVisible' | 'rateUltraviolet' | 'rateBreaking';
 
 /**
  * 훑는 단계와 그 단계의 에너지 구간 · 광자 수. 시간표 단계에 값을 실을 자리가 없어 (장부 G13)
@@ -151,15 +140,15 @@ export const SWEEP: readonly { phase: string; from: EdgeKey; to: EdgeKey; rate: 
   { phase: 'infrared', from: 'infraredMinEv', to: 'visibleMinEv', rate: 'rateInfrared' },
   { phase: 'visible', from: 'visibleMinEv', to: 'ultravioletMinEv', rate: 'rateVisible' },
   { phase: 'ultraviolet', from: 'ultravioletMinEv', to: 'thresholdEv', rate: 'rateUltraviolet' },
-  { phase: 'ionizing', from: 'thresholdEv', to: 'xrayMinEv', rate: 'rateIonizing' },
-  { phase: 'xray', from: 'xrayMinEv', to: 'axisMaxEv', rate: 'rateIonizing' },
+  { phase: 'breaking', from: 'thresholdEv', to: 'xrayMinEv', rate: 'rateBreaking' },
+  { phase: 'xray', from: 'xrayMinEv', to: 'axisMaxEv', rate: 'rateBreaking' },
 ];
 
 /**
  * 주기 안 시각 `u` 에 광원이 내는 광자 하나의 에너지(eV). 훑는 단계 안에서는 두 경계 사이를
  * 로그로 고르게 오르고, 첫 단계 전에는 축 왼쪽 끝, 마지막 단계 뒤에는 오른쪽 끝에 머문다.
  */
-export function energyAt(tl: TimelineFrame, u: number, c: IonizingConstants): number {
+export function energyAt(tl: TimelineFrame, u: number, c: BondConstants): number {
   const first = SWEEP[0]!;
   if (u < tl.start(first.phase)) return c[first.from];
   for (const s of SWEEP) {
@@ -176,7 +165,7 @@ export function energyAt(tl: TimelineFrame, u: number, c: IonizingConstants): nu
 }
 
 /** 물결 간격(월드) — 문턱 광자의 간격에서 (문턱 / E)^지수 로 눌러 편다. */
-export const waveSpacing = (ev: number, c: IonizingConstants): number =>
+export const waveSpacing = (ev: number, c: BondConstants): number =>
   c.waveSpacingAtThreshold * Math.pow(c.thresholdEv / ev, c.waveCompression);
 
 // ------------------------------------------------------------------------
@@ -209,7 +198,7 @@ export function moleculeCenter(i: number): Vec2 {
 }
 
 /** 분자 i 의 결합 방향(단위). 시드로 기울기를 뽑아 줄지어 선 무늬로 읽히지 않게 한다 — 주기와 무관. */
-export function moleculeAxis(i: number, c: IonizingConstants): Vec2 {
+export function moleculeAxis(i: number, c: BondConstants): Vec2 {
   const a = Math.PI * hash01(c.seed, 0, i, 9);
   return [Math.cos(a), Math.sin(a)];
 }
@@ -241,7 +230,7 @@ export interface PhotonEvent {
  * 아무 분자나 겨냥하고, 문턱을 넘은 광자는 아직 끊기지 않은 분자를 겨냥한다 — 광자 하나 ·
  * 결합 하나. 끊을 분자가 남지 않았으면 아무 분자나 겨냥한다(이미 끊긴 조각은 그대로다).
  */
-export function schedule(tl: TimelineFrame, c: IonizingConstants): PhotonEvent[] {
+export function schedule(tl: TimelineFrame, c: BondConstants): PhotonEvent[] {
   const events: PhotonEvent[] = [];
   const intact = new Set<number>();
   for (let i = 0; i < MOLECULE_COUNT; i++) intact.add(i);
@@ -287,12 +276,10 @@ export interface Snapshot {
 }
 
 /**
- * 주기 안 시각 `u` 의 광자 · 분자. 분자마다 가장 늦게 닿은 광자 하나만 본다 — 끊는 광자가 한 번
- * 닿았으면 그 뒤로는 끊긴 채다.
+ * 주기 안 시각 `u` 의 광자 · 분자. 끊는 광자가 한 번 닿은 분자는 그 뒤로 끊긴 채다.
  */
-export function snapshot(events: readonly PhotonEvent[], u: number, c: IonizingConstants): Snapshot {
+export function snapshot(events: readonly PhotonEvent[], u: number, c: BondConstants): Snapshot {
   const photons: FlyingPhoton[] = [];
-  const last = new Array<PhotonEvent | undefined>(MOLECULE_COUNT).fill(undefined);
   const breaker = new Array<PhotonEvent | undefined>(MOLECULE_COUNT).fill(undefined);
 
   for (const e of events) {
@@ -303,11 +290,7 @@ export function snapshot(events: readonly PhotonEvent[], u: number, c: IonizingC
       const s = (u - e.emit) * c.photonSpeed;
       photons.push({ pos: [SOURCE.x + dir[0] * s, SOURCE.y + dir[1] * s], dir, ev: e.ev });
     }
-    if (u >= e.hit) {
-      const prev = last[e.target];
-      if (!prev || e.hit >= prev.hit) last[e.target] = e;
-      if (e.breaks && !breaker[e.target]) breaker[e.target] = e;
-    }
+    if (u >= e.hit && e.breaks && !breaker[e.target]) breaker[e.target] = e;
   }
 
   const molecules: MoleculeNow[] = [];
@@ -316,16 +299,7 @@ export function snapshot(events: readonly PhotonEvent[], u: number, c: IonizingC
     const [ax, ay] = moleculeAxis(i, c);
     let half = BOND_LENGTH / 2;
     const b = breaker[i];
-    if (b) {
-      half += (c.fragmentGap / 2) * (1 - Math.exp(-(u - b.hit) / c.fragmentSettle));
-    } else {
-      const e = last[i];
-      if (e) {
-        const tau = u - e.hit;
-        const amp = c.shakeAtThreshold * (e.ev / c.thresholdEv);
-        half += (amp / 2) * Math.exp(-tau / c.shakeDecay) * Math.sin(2 * Math.PI * c.shakeHz * tau);
-      }
-    }
+    if (b) half += (c.fragmentGap / 2) * (1 - Math.exp(-(u - b.hit) / c.fragmentSettle));
     molecules.push({
       atoms: [
         [cx - ax * half, cy - ay * half],
@@ -344,6 +318,6 @@ export const moleculeAlpha = (tl: TimelineFrame): number => tl.at('appear') * (1
 export const fadeAlpha = (tl: TimelineFrame): number => 1 - tl.at('fade');
 
 /** 쌓는 상태가 없다 — 모든 것이 시각의 함수다. */
-export function step(params: { state: IonizingRadiationState }): IonizingRadiationState {
+export function step(params: { state: PhotonBondThresholdState }): PhotonBondThresholdState {
   return params.state;
 }
