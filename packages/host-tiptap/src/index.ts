@@ -6,12 +6,15 @@
  * id 는 host runtime 의 bundle 레지스트리(getBundleById) 에서 조회된다.
  *
  * 사용:
- *   import { BundleExtension, renderBundleMarkdown } from '@aperi21/host-tiptap';
- *   const html = renderBundleMarkdown(md);
+ *   import { BundleExtension } from '@aperi21/host-tiptap';
  *   const editor = new Editor({
  *     extensions: [StarterKit, BundleExtension.configure({ locale: 'ko', theme: 'light' })],
  *     content: html,
  *   });
+ *
+ * `html` 은 호스트가 만든다. 호스트의 마크다운 파이프라인이 `{aperi21:<id>}` 토큰을
+ * `<span data-aperi21="true" data-aperi21-id="aperi21:<id>"></span>` 로 바꿔 두면
+ * `parseHTML` 이 그 자리를 노드로 읽는다. 마크다운 변환은 어댑터의 일이 아니다.
  */
 
 import { Node, mergeAttributes, InputRule, PasteRule } from '@tiptap/core';
@@ -122,4 +125,3 @@ export const BundleExtension = Node.create<BundleExtensionOptions>({
 });
 
 export { createBundleNodeView } from './node-view.js';
-export { renderBundleMarkdown } from './markdown.js';

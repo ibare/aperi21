@@ -49,6 +49,18 @@ lockstep 으로 같은 버전을 쓴다. 0.x 동안은 minor 를 breaking 허용
   `rotation-oscillation` · `gravitation` · `fluids` · `thermodynamics` · `waves-acoustics` ·
   `optics` · `electromagnetism` · `modern-physics`. 이름표는 `catalog.domains` 에 있다.
 
+- **`renderBundleMarkdown` 을 뺐다.** 마크다운 → HTML 변환 편의 함수였는데, 실제
+  호스트는 제 마크다운 파이프라인에서 토큰을 바꾸므로 쓰지 않았고, 번들 첫 로딩에
+  marked(gzip 약 18KB)를 싣고 있었다. 마크다운 변환은 호스트의 몫이다 — 토큰
+  `{aperi21:<id>}` 을 아래 자리표시로 바꿔 에디터에 넘기면 된다.
+
+  ```html
+  <span data-aperi21="true" data-aperi21-id="aperi21:free-fall"></span>
+  ```
+
+  `data-aperi21` 표지와 비어 있지 않은 `data-aperi21-id` 가 둘 다 있어야 노드로 읽힌다.
+  인라인 코드와 코드 펜스 안의 토큰은 바꾸지 않는 것이 맞다.
+
 ### 추가
 
 - 조각 3개 → 444개. 주제 하나에 조각 하나이고, 조각 id 가 주제 id 다.

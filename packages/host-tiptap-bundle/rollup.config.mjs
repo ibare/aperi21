@@ -48,7 +48,7 @@ const external = [/^@aperi21\/host$/, /^@tiptap\/core/, /^@tiptap\/pm(\/.*)?$/];
  *    메타데이터 기반 lazy 매칭 도입 시 chunk 분리가 전제 조건이 된다.
  *
  * vendor 를 패키지별로 분리한 이유:
- *  - marked, three 같은 큰 deps 가 일부 sim 에서만 쓰이는 경우, 다른 호스트
+ *  - 큰 deps 가 일부 sim 에서만 쓰이는 경우, 다른 호스트
  *    경로에서 불필요하게 로드되지 않도록.
  *
  * id 는 절대 파일 경로로 들어옴 (workspace 패키지명이 아님).

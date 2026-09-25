@@ -100,13 +100,12 @@ import {
   bootstrapAperi21,
   BundleExtension,
   parseBundleRaw,
-  renderBundleMarkdown,
 } from '@aperi21/host-tiptap-bundle';
 ```
 
 ## 0.1.0 에서 옮겨 오기
 
-0.2.0 은 breaking 이다. 넷을 고친다. 전체 변경은
+0.2.0 은 breaking 이다. 다섯을 고친다. 전체 변경은
 [CHANGELOG](https://github.com/ibare/aperi21/blob/main/CHANGELOG.md) 에 있다.
 
 1. **`@aperi21/host` 를 함께 설치한다.** 0.1.0 은 런타임을 번들 안에 품었고, 이제는
@@ -124,6 +123,10 @@ import {
    그 언어의 문자열이다.
 4. **`domain` 값을 11분과 id 로.** 옛 `mechanics` 같은 값은 없다. 이름표는
    `catalog.domains` 에서 찾는다.
+5. **`renderBundleMarkdown` 이 없어졌다.** 마크다운 변환은 호스트의 몫이다. 호스트의
+   마크다운 파이프라인에서 `{aperi21:<id>}` 토큰을
+   `<span data-aperi21="true" data-aperi21-id="aperi21:<id>"></span>` 로 바꿔 에디터에
+   넘기면 확장이 그 자리를 시각화로 읽는다. 코드 안의 토큰은 바꾸지 않는다.
 
 ## 라이선스
 

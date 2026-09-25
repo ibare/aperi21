@@ -2,11 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import {
-  BundleExtension,
-  renderBundleMarkdown,
-} from '@aperi21/host-tiptap';
+import { BundleExtension } from '@aperi21/host-tiptap';
 import { useHost } from '@aperi21/react';
+import { renderBundleMarkdown } from './editor-demo-markdown';
 
 /**
  * Phase 5 검증 페이지 — Tiptap 에디터 본문에 {aperi21:<id>} 토큰을 박아

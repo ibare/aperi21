@@ -15,8 +15,7 @@
   },
   "dependencies": {
     "@aperi21/host": "workspace:*",
-    "@aperi21/schema": "workspace:*",
-    "marked": "^14.1.3"
+    "@aperi21/schema": "workspace:*"
   },
   "peerDependencies": {
     "@tiptap/core": "^3.0.0",

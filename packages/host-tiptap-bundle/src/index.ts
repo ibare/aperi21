@@ -6,7 +6,7 @@
  *  - createAperi21Extension — 권장 진입점. host 생성 + plugin/번들 부팅 + 설정된
  *    BundleExtension 반환을 한 호출로 끝낸다.
  *  - @aperi21/host-tiptap 의 공개 표면 재노출
- *    (BundleExtension, parseBundleRaw, createBundleNodeView, renderBundleMarkdown).
+ *    (BundleExtension, parseBundleRaw, createBundleNodeView).
  *  - @aperi21/bootstrap 의 bootstrap 함수 · getAperi21Catalog(locale) ·
  *    loadFrameworkMessages(locale) 재노출.
  *  - @aperi21/host 에서 외부 호스트가 필요로 할 만한 진입점(createHost, runBundle,
@@ -72,7 +72,6 @@ export {
   BundleExtension,
   parseBundleRaw,
   createBundleNodeView,
-  renderBundleMarkdown,
   type BundleExtensionOptions,
 } from '@aperi21/host-tiptap';
 
