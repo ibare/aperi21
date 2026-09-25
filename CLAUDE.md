@@ -156,9 +156,10 @@ curl -s -X POST http://localhost:3800/api/events \
 0. **`pnpm gen:check`** — 생성물이 원본과 맞는지 (아래 「생성물」 참조)
 1. `pnpm -r typecheck`
 2. `pnpm test`
-3. **`pnpm release:check`** — 위 넷을 자동으로 검사한다 (`src` 누출 0 · `workspace:` 잔존 0 ·
-   `publishConfig` 오버라이드 적용 · **발행본 `.d.ts` 가 미발행 private 패키지를
-   참조하지 않을 것**). CI 가 push·PR 마다 같은 스크립트를 돌린다.
+3. **`pnpm release:check`** — tarball 을 풀어 여섯을 자동으로 검사한다 (`src` 누출 0 ·
+   `workspace:` 잔존 0 · `publishConfig` 오버라이드 적용 · **발행본 `.d.ts` 가 미발행
+   private 패키지를 참조하지 않을 것** · 소스맵 0 · LICENSE 동봉). CI 가 push·PR 마다
+   같은 스크립트를 돌린다.
 4. rule-guard 감사 (S-host 의존 일방향 · lazy 보존 · 단일 인스턴스)
 
 0번이 없으면 **낡은 생성물끼리 맞물려 전부 통과한다.** 다른 검사는 모두 생성물끼리
@@ -173,7 +174,10 @@ curl -s -X POST http://localhost:3800/api/events \
 ### 절차
 
 1. 게이트 0~4 통과
-2. semver 결정 — 0.x 동안 minor 를 breaking 허용 구간으로 본다
+2. semver 결정 — 0.x 동안 minor 를 breaking 허용 구간으로 본다.
+   루트 `CHANGELOG.md` 의 「미발행」 절을 그 버전과 날짜로 닫는다. breaking 이면
+   `packages/host-tiptap-bundle/README.md` 의 「옮겨 오기」 절도 함께 고친다 — npm
+   tarball 에는 루트 CHANGELOG 가 실리지 않아 소비자가 npm 에서 보는 것은 README 뿐이다.
 3. 세 패키지를 같은 버전으로 올린다
    ```sh
    cd packages/host && npm version <type> --no-git-tag-version

@@ -1,11 +1,14 @@
 # @aperi21/host-tiptap-bundle
 
-외부 호스트 앱(예: 노트 에디터)이 **단일 의존**으로 소비하는 self-contained ESM 번들이다.
+외부 호스트 앱(예: 노트 에디터)이 소비하는 ESM 번들이다.
 [Tiptap](https://tiptap.dev) 확장 하나로, LLM이 생성한 설명문 안에 `{aperi21:<id>}` 토큰으로
-끼어드는 인터랙티브 시각화(물리·전자·광학 sim)를 에디터에 렌더링한다.
+끼어드는 인터랙티브 물리 시각화를 에디터에 렌더링한다.
 
 `@aperi21/host-tiptap` + `@aperi21/bootstrap` + 모든 `sim-*` / `plugin-*`을 하나의 번들로
 묶었으며, sim과 plugin은 동적 import 청크로 분리되어 **사용하는 시각화만 lazy 로드**된다.
+런타임 `@aperi21/host` 는 묶지 않는다 — 호스트가 peer 로 함께 설치한다 (아래).
+
+0.1.0 에서 올린다면 먼저 [0.1.0 에서 옮겨 오기](#010-에서-옮겨-오기)를 본다.
 
 ## 설치
 
@@ -52,7 +55,7 @@ new Editor({
 | 옵션      | 타입                  | 설명                                     |
 | --------- | --------------------- | ---------------------------------------- |
 | `locale`  | `string`              | `runBundle` 및 host의 언어 (예: `'ko'`). 조작기 문구 번들도 이 언어로 불러온다. |
-| `theme`   | `'light' \| 'dark'`   | 시각화 테마.                             |
+| `theme`   | `'light' \| 'dark' \| HostTheme` | 시각화 테마. 모드 이름이거나, 호스트의 색·치수로 갈아 끼울 완성된 한 벌(`HostTheme`, `@aperi21/host`). |
 
 ## 조작기 문구
 
@@ -100,6 +103,27 @@ import {
   renderBundleMarkdown,
 } from '@aperi21/host-tiptap-bundle';
 ```
+
+## 0.1.0 에서 옮겨 오기
+
+0.2.0 은 breaking 이다. 넷을 고친다. 전체 변경은
+[CHANGELOG](https://github.com/ibare/aperi21/blob/main/CHANGELOG.md) 에 있다.
+
+1. **`@aperi21/host` 를 함께 설치한다.** 0.1.0 은 런타임을 번들 안에 품었고, 이제는
+   peer 다 (위 「peerDependencies」).
+2. **옛 조각 id 셋을 바꿔 쓴다.** 별칭이 없어 저장된 글의 옛 토큰은 오류 표시로 뜬다.
+
+   | 0.1.0 | 0.2.0 에서 가까운 조각 |
+   | --- | --- |
+   | `{aperi21:projectile}` | `projectile-range` · `range-and-surface-gravity` · `projectile-in-wind` |
+   | `{aperi21:ray-tracing}` | `thin-lens` · `focal-length` |
+   | `{aperi21:dc-circuit}` | `series-parallel-resistors` |
+
+3. **`getAperi21Catalog()` 를 `await getAperi21Catalog(locale)` 로.** 배열 대신
+   `{ locale, domains, entries }` 가 오고, `title` · `description` 은 `{ ko, en }` 이 아니라
+   그 언어의 문자열이다.
+4. **`domain` 값을 11분과 id 로.** 옛 `mechanics` 같은 값은 없다. 이름표는
+   `catalog.domains` 에서 찾는다.
 
 ## 라이선스
 

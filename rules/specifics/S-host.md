@@ -62,8 +62,9 @@ last_verified: 2026-09-23
 1. `pnpm -r typecheck`
 2. `pnpm test`
 3. **`pnpm release:check`** — `scripts/release-check.mts` 가 세 발행 패키지(host · host-tiptap-bundle · authoring)를 pack 해
-   tarball 을 풀고 넷을 검사한다: `src` 누출 0 · `workspace:` 잔존 0 · publishConfig
-   오버라이드 적용 · **발행본 `.d.ts` 가 발행 대상 밖 패키지를 참조하지 않을 것**.
+   tarball 을 풀고 여섯을 검사한다: `src` 누출 0 · `workspace:` 잔존 0 · publishConfig
+   오버라이드 적용 · **발행본 `.d.ts` 가 발행 대상 밖 패키지를 참조하지 않을 것** ·
+   소스맵 0 · LICENSE 동봉.
    CI(`ci.yml`)가 push·PR 마다 같은 스크립트를 돌린다.
 4. 규칙 감사 (본 문서의 의존 일방향 · lazy 보존 · 단일 인스턴스)
 

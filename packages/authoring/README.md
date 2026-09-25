@@ -2,7 +2,7 @@
 
 aperi21 개념(concept)의 authoring 메타데이터. 호스트의 글 작성 파이프라인이
 **글에 넣을 시각화를 고르고**, 고른 시각화의 내용을 **writer 에게 전달**하는 데
-쓰는 단일 출처다. 공개 표면은 `@ffacet/authoring` 과 같은 모양이다.
+쓰는 단일 출처다.
 
 ```sh
 pnpm add @aperi21/authoring
@@ -40,4 +40,4 @@ const one = getAperi21Concept('free-fall', 'ko');   // 하나
 
 ## 라이선스
 
-MIT
+[MIT](./LICENSE) © Mintae Kim

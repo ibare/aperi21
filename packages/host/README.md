@@ -46,4 +46,4 @@ handle.destroy();
 
 ## 라이선스
 
-MIT
+[MIT](./LICENSE) © Mintae Kim

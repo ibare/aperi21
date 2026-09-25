@@ -12,6 +12,7 @@
  *    (런타임 export 0건) 이라 JS 에는 흔적이 남지 않고, .d.ts 에는 rollup-plugin-dts
  *    가 인라인한다. 그래서 schema 는 private 로 남는다.
  *  - .d.ts 는 별도 패스로 단일 dist/index.d.ts 생성.
+ *  - sourcemap: false — 맵이 가리킬 src 가 tarball 에 없다 (authoring · 번들과 같은 방침).
  */
 
 import { nodeResolve } from '@rollup/plugin-node-resolve';
@@ -23,14 +24,14 @@ const jsBundle = {
   output: {
     file: 'dist/index.js',
     format: 'es',
-    sourcemap: true,
+    sourcemap: false,
     generatedCode: 'es2015',
   },
   plugins: [
     nodeResolve({ extensions: ['.ts', '.mjs', '.js'], preferBuiltins: false }),
     esbuild({
       target: 'es2022',
-      sourceMap: true,
+      sourceMap: false,
       tsconfig: '../../tsconfig.base.json',
       // 타입체크는 pnpm typecheck (tsc --noEmit) 담당. 여기는 transpile only.
     }),

@@ -14,7 +14,7 @@
 
 /** 카탈로그 항목 하나 — 시각화 하나. */
 export type Aperi21CatalogEntry = {
-  /** 번들 식별자 (예: aperi21:projectile). 호스트 DSL `{aperi21:<id>}` 의 id 와 동일. */
+  /** 번들 식별자 (예: aperi21:projectile-range). 호스트 DSL `{aperi21:<id>}` 의 id 와 동일. */
   id: string;
   /** 사람이 읽을 제목. schema.label 에서 추출. */
   title: string;

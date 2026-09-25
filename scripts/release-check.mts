@@ -6,11 +6,15 @@
  * 배포됐다. 워크스페이스에서는 멀쩡하고 발행본에서만 죽는 종류라 사람 눈으로는
  * 잡히지 않는다.
  *
- * 검사 넷:
+ * 검사 여섯:
  *   1. src 누출         — 발행본에 .ts 소스가 들어가지 않았는지
  *   2. workspace: 잔존  — pnpm 이 semver 로 변환했는지 (npm publish 를 쓰면 실패한다)
  *   3. publishConfig    — main/types/exports 가 dist 로 오버라이드됐는지
  *   4. d.ts 참조        — 발행본 타입이 **발행 대상 밖** 패키지를 import 하지 않는지
+ *   5. 소스맵           — 발행본에 .map 이 없는지. 맵이 가리킬 src 가 tarball 에 없고,
+ *                         번들은 맵만으로 발행본이 세 배로 불었다
+ *   6. LICENSE          — 패키지 폴더에 LICENSE 가 있어 tarball 에 실렸는지. npm 은
+ *                         루트의 LICENSE 를 가져오지 않는다
  *
  * 사용: pnpm release:check
  *       typecheck 와 test 는 CI 가 이미 돌리므로 여기서는 tarball 만 본다.
@@ -119,6 +123,15 @@ try {
     } else {
       pass(pkg, 'd.ts 참조', `${dtsFiles.length}개 파일, 미발행 참조 0건`);
     }
+
+    // ── 5. 소스맵
+    const maps = files.filter((f) => f.endsWith('.map'));
+    if (maps.length > 0) fail(pkg, '소스맵', `${maps.length}건 — ${maps.slice(0, 3).join(', ')}`);
+    else pass(pkg, '소스맵', '0건');
+
+    // ── 6. LICENSE
+    if (files.includes('LICENSE')) pass(pkg, 'LICENSE', '있음');
+    else fail(pkg, 'LICENSE', 'tarball 에 없다 — 패키지 폴더에 LICENSE 를 둔다');
   }
 } finally {
   rmSync(work, { recursive: true, force: true });

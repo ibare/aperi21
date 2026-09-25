@@ -8,7 +8,9 @@
  *  - external: @aperi21/host, @tiptap/core, @tiptap/pm — 단일 인스턴스 보장.
  *  - chunkFileNames 는 함수형 — sims/<category>/, plugins/, runtime/, vendor/ 디렉터리 분리.
  *  - manualChunks: sim 별/runtime 공용 분리.
- *  - sourcemap: true.
+ *  - sourcemap: false — 발행본에 맵을 넣지 않는다. 맵이 가리킬 src 가 tarball 에 없고,
+ *    소스를 품은 맵 470개가 발행본의 70%(unpacked 37MB 중 27MB)를 차지했다.
+ *    워크스페이스는 src 를 직참조하므로 dist 맵이 필요 없다 (authoring 과 같은 방침).
  *  - VISUALIZE=1 환경변수일 때만 stats.html 생성.
  *  - .d.ts 는 별도 빌드 패스 (rollup-plugin-dts, respectExternal) 로 단일 파일 생성.
  *    private 패키지 타입은 인라인하고 external 만 import 로 남긴다.
@@ -120,7 +122,7 @@ const jsBundle = {
     entryFileNames: 'host-tiptap-bundle.js',
     chunkFileNames: chunkFileName,
     inlineDynamicImports: false,
-    sourcemap: true,
+    sourcemap: false,
     generatedCode: 'es2015',
     manualChunks,
   },
@@ -134,7 +136,7 @@ const jsBundle = {
     json(),
     esbuild({
       target: 'es2022',
-      sourceMap: true,
+      sourceMap: false,
       tsconfig: '../../tsconfig.base.json',
       // 비 ASCII 문자열을 \uXXXX 로 풀지 않는다 — 풀면 언어별 카탈로그와 열 언어를 담은
       // 조각 chunk 가 부푼다 (FACET `0782fa6`: 한국어 카탈로그 76KB → 110KB).

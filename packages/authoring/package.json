@@ -24,7 +24,8 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
   },
   "publishConfig": {
     "access": "public",
@@ -34,7 +35,8 @@
       ".": {
         "types": "./dist/index.d.ts",
         "import": "./dist/index.js"
-      }
+      },
+      "./package.json": "./package.json"
     }
   },
   "engines": {
