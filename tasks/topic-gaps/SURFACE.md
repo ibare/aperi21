@@ -735,7 +735,7 @@
 - 조각 — `aperi21:elastic-collision` · `sims/mechanics/elastic-collision`
 - 문안 12건
   - `label.title` — 탄성 충돌
-  - `label.description` — 부딪힌 뒤에도 빠르기를 잃지 않는 충돌
+  - `label.description` — 부딪치면 빠르기를 서로 주고받는 충돌
   - `label.stage` — 레일 위 같은 공 둘
   - `label.view` — 속도 화살표
   - `label.mass` — m

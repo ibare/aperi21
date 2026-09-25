@@ -1,6 +1,6 @@
 # 조각 설명 전수 대조 — 판정 (2026-09-25)
 #
-# 대조 444 · 이상 없음 400 · A 4 · B 33 (오독 21 · 누락 12) · D 1 · E 2 · X 5
+# 대조 444 · 이상 없음 400 · A 3 · B 34 (오독 21 · 누락 13) · D 1 · E 2 · X 5
 # (sound-intensity 는 B 와 X 두 건 — 판정 45건 · 조각 44개)
 #
 # 후속 작업의 입력이다. 양식과 분류는 PLAN.md 「분류」「결과지」. 순서는 분류(A · B오독 · B누락 · E · D · X),
@@ -14,7 +14,7 @@
   problem: desc 「벽 근처에서 속도가 0이 되는 층」 — 0 인 곳은 벽면뿐이고, 층은 0 에서 바깥 속도까지 회복하는 곳이다. 캡션도 그렇게 말한다 (seed 판정 그대로)
   evidence: docs/topics/topics.yaml:1490 · sims/fluids/boundary-layer/src/schema.ts:123 (caption.profile 「속도가 0 에서 바깥 빠르기로 오르는 일은 벽에 붙은 얇은 층 안에서만」) · sims/fluids/boundary-layer/src/schema.ts:111 (caption.flow 「판에 닿은 흐름은 멈춰 있고」) · sims/fluids/boundary-layer/src/physics.ts:43 (두께 ∝ √x, 맞음)
   fix_at: docs/topics/topics.yaml desc
-  suggest: 벽의 0 에서 바깥 흐름 속도까지 회복하는 얇은 층
+  suggest: 벽의 0에서 바깥 흐름 속력까지 회복하는 얇은 층 (적용함)
   confidence: high
 
 - id: elastic-collision
@@ -22,15 +22,7 @@
   problem: desc 「부딪힌 뒤에도 빠르기를 잃지 않는」이 캡션 「부딪친 공은 그 자리에 멈추고」와 모순. 보존되는 것은 운동 에너지의 합이다
   evidence: docs/topics/topics.yaml:645 · sims/mechanics/elastic-collision/src/schema.ts:171 (caption.afterRest) · sims/mechanics/elastic-collision/src/physics.ts:70 (afterVelocities, 일반식 맞음)
   fix_at: docs/topics/topics.yaml desc
-  suggest: 운동 에너지의 합까지 보존되는 충돌
-  confidence: high
-
-- id: concave-mirror
-  class: A
-  problem: 조각의 핵심 주장은 「초점 안으로 들어가면 실상이 허상으로 뒤바뀐다」인데 desc 「초점과 실상」은 그 절반만 말한다 (seed 판정)
-  evidence: docs/topics/topics.yaml:2161 · sims/optics/concave-mirror/NOTES.md:13 ((a) 주장) · sims/optics/concave-mirror/src/schema.ts:232 (caption.traceBack) · sims/optics/concave-mirror/src/schema.ts:244 (caption.near)
-  fix_at: docs/topics/topics.yaml desc
-  suggest: 초점 밖에서는 실상, 안에서는 허상
+  suggest: 부딪치면 빠르기를 서로 주고받는 충돌 (적용함 — 「운동 에너지」는 T22 결정에 따라 넣지 않는다)
   confidence: high
 
 - id: wien-displacement-law
@@ -38,7 +30,7 @@
   problem: ko desc 「온도와 최대 파장」은 「가장 긴 파장」으로 읽힌다. 화면은 세기가 가장 큰 자리(봉우리)의 파장을 재고 캡션도 「봉우리 파장」이라 말한다. en 「peak wavelength」 는 맞다
   evidence: docs/topics/topics.yaml:3229 · sims/modern/wien-displacement-law/src/schema.ts:221 (caption.first 「봉우리 파장을 잰다」) · sims/modern/wien-displacement-law/src/schema.ts:245 (caption.half) · sims/modern/wien-displacement-law/src/physics.ts:54 (peakNm = b/T, 맞음)
   fix_at: docs/topics/topics.yaml desc (ko)
-  suggest: 온도와 봉우리 파장
+  suggest: 온도와 봉우리 파장 (적용함)
   langs: [ko]
   confidence: high
 
@@ -341,6 +333,15 @@
   evidence: docs/topics/topics.yaml:3501 · sims/modern/antimatter/NOTES.md:14 (주장 — 둘 다 사라지고 511 keV 광자 둘이 정반대로) · sims/modern/antimatter/src/schema.ts:105 (label.stage 「양전자 소멸과 PET」) · sims/modern/antimatter/src/schema.ts:115 (caption.approach — desc 와 같은 말) · sims/modern/antimatter/src/schema.ts:139 (caption.fly)
   fix_at: docs/topics/topics.yaml desc
   suggest: 전자와 만나 함께 사라지며 광자 둘을 정반대로 내놓는 짝
+  confidence: high
+
+- id: concave-mirror
+  class: B
+  kind: 누락
+  problem: 조각의 핵심 주장은 「초점 안으로 들어가면 실상이 허상으로 뒤바뀐다」인데 desc 「초점과 실상」은 그 절반만 말한다. 틀린 문장은 없어 A 에서 B 누락으로 옮겼다 (2026-09-25 사용자 결정)
+  evidence: docs/topics/topics.yaml:2161 · sims/optics/concave-mirror/NOTES.md:13 ((a) 주장) · sims/optics/concave-mirror/src/schema.ts:232 (caption.traceBack) · sims/optics/concave-mirror/src/schema.ts:244 (caption.near)
+  fix_at: docs/topics/topics.yaml desc
+  suggest: 초점 밖에서는 실상, 안에서는 허상
   confidence: high
 
 - id: newtons-first-law

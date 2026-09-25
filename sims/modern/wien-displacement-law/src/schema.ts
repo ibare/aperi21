@@ -96,7 +96,7 @@ export const wienDisplacementLawMessages = Object.freeze({
   },
   /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
   'label.description': {
-    ko: '온도와 최대 파장',
+    ko: '온도와 봉우리 파장',
     en: 'Temperature and peak wavelength',
     ja: '温度とピーク波長',
     zh: '温度与峰值波长',

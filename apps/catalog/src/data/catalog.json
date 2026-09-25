@@ -518,7 +518,7 @@
         {
           "id": "elastic-collision",
           "name": "탄성 충돌",
-          "desc": "부딪힌 뒤에도 빠르기를 잃지 않는 충돌",
+          "desc": "부딪치면 빠르기를 서로 주고받는 충돌",
           "simId": "aperi21:elastic-collision"
         },
         {
@@ -1190,7 +1190,7 @@
         {
           "id": "boundary-layer",
           "name": "경계층",
-          "desc": "벽 근처에서 속도가 0이 되는 층",
+          "desc": "벽의 0에서 바깥 흐름 속력까지 회복하는 얇은 층",
           "simId": "aperi21:boundary-layer"
         },
         {
@@ -2540,7 +2540,7 @@
         {
           "id": "wien-displacement-law",
           "name": "빈 변위 법칙",
-          "desc": "온도와 최대 파장",
+          "desc": "온도와 봉우리 파장",
           "simId": "aperi21:wien-displacement-law"
         },
         {
