@@ -3,7 +3,7 @@
 발행 대상 세 패키지(`@aperi21/host` · `@aperi21/host-tiptap-bundle` · `@aperi21/authoring`)는
 lockstep 으로 같은 버전을 쓴다. 0.x 동안은 minor 를 breaking 허용 구간으로 본다.
 
-## 0.2.0 — 미발행
+## 0.2.0 — 2026-09-25
 
 ### Breaking
 
