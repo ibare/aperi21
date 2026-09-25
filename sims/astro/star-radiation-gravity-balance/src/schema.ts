@@ -72,16 +72,16 @@ export const RETURN = 4.5;
 
 export const starRadiationGravityBalanceMessages = Object.freeze({
   'label.title': {
-    ko: '복사압과 중력의 평형',
-    en: 'Radiation pressure and gravity in balance',
-    ja: '放射圧と重力のつり合い',
-    zh: '辐射压与引力的平衡',
-    ar: 'توازن ضغط الإشعاع والجاذبية',
-    es: 'Equilibrio entre presión de radiación y gravedad',
-    fr: 'Équilibre entre pression de radiation et gravité',
-    hi: 'विकिरण दाब और गुरुत्व का संतुलन',
-    id: 'Keseimbangan tekanan radiasi dan gravitasi',
-    pt: 'Equilíbrio entre pressão de radiação e gravidade',
+    ko: '압력과 중력의 평형',
+    en: 'Pressure and gravity in balance',
+    ja: '圧力と重力のつり合い',
+    zh: '压强与引力的平衡',
+    ar: 'توازن الضغط والجاذبية',
+    es: 'Equilibrio entre presión y gravedad',
+    fr: 'Équilibre entre pression et gravité',
+    hi: 'दाब और गुरुत्व का संतुलन',
+    id: 'Keseimbangan tekanan dan gravitasi',
+    pt: 'Equilíbrio entre pressão e gravidade',
   },
   /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
   'label.description': {

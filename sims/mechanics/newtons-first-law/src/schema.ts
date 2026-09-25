@@ -103,16 +103,16 @@ export const CYCLE = 8.0;
 
 export const newtonsFirstLawMessages = Object.freeze({
   'label.title': {
-    ko: '관성 기준계',
-    en: 'Inertial frame',
-    ja: '慣性系',
-    zh: '惯性参考系',
-    ar: 'الإطار المرجعي القصوري',
-    es: 'Sistema de referencia inercial',
-    fr: 'Référentiel inertiel',
-    hi: 'जड़त्वीय निर्देश तंत्र',
-    id: 'Kerangka acuan inersial',
-    pt: 'Referencial inercial',
+    ko: '관성 법칙',
+    en: "Newton's first law",
+    ja: 'ニュートンの運動の第1法則',
+    zh: '牛顿第一定律',
+    ar: 'قانون نيوتن الأول',
+    es: 'Primera ley de Newton',
+    fr: 'Première loi de Newton',
+    hi: 'न्यूटन का गति का पहला नियम',
+    id: 'Hukum I Newton',
+    pt: 'Primeira lei de Newton',
   },
   /** 원본 docs/topics/topics.yaml 의 desc — `pnpm description:gen` 이 쓴다. 손으로 고치지 않는다. */
   'label.description': {

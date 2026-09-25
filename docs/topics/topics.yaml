@@ -1253,7 +1253,7 @@ topics:
     visualNote: 두 축에 별을 놓으면 주계열이라는 띠가 드러난다
     sim: aperi21:hr-diagram
   - id: star-radiation-gravity-balance
-    name: 복사압과 중력의 평형
+    name: 압력과 중력의 평형
     desc: { ko: "별이 무너지지도 흩어지지도 않는 이유", en: "Why a star neither collapses nor flies apart", ja: "星がつぶれも飛び散りもしない理由", zh: "恒星为何既不坍缩也不飞散", ar: "لماذا لا ينهار النجم ولا يتناثر", es: "Por qué una estrella ni colapsa ni se dispersa", fr: "Pourquoi une étoile ne s’effondre ni ne se disperse", hi: "तारा क्यों न ढहता है, न बिखरता है", id: "Mengapa bintang tidak runtuh dan tidak tercerai-berai", pt: "Por que uma estrela nem colapsa nem se desfaz" }
     domain: gravitation
     level: upper

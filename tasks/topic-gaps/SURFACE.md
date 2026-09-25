@@ -475,7 +475,7 @@
 
 - 조각 — `aperi21:newtons-first-law` · `sims/mechanics/newtons-first-law`
 - 문안 12건
-  - `label.title` — 관성 기준계
+  - `label.title` — 관성 법칙
   - `label.description` — 알짜힘이 없을 때의 운동 상태
   - `label.stage` — 도로
   - `label.view` — 땅에서 본 장면
@@ -1055,7 +1055,7 @@
 
 - 조각 — `aperi21:star-radiation-gravity-balance` · `sims/astro/star-radiation-gravity-balance`
 - 문안 13건
-  - `label.title` — 복사압과 중력의 평형
+  - `label.title` — 압력과 중력의 평형
   - `label.description` — 별이 무너지지도 흩어지지도 않는 이유
   - `label.stage` — 별 하나
   - `label.view` — 별의 단면

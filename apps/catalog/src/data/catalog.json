@@ -997,7 +997,7 @@
         },
         {
           "id": "star-radiation-gravity-balance",
-          "name": "복사압과 중력의 평형",
+          "name": "압력과 중력의 평형",
           "desc": "별이 무너지지도 흩어지지도 않는 이유",
           "simId": "aperi21:star-radiation-gravity-balance"
         },
