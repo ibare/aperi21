@@ -14,7 +14,7 @@
   },
   "scripts": {
     "typecheck": "tsc -p . --noEmit",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run"
   },
   "peerDependencies": {
     "@aperi21/schema": "workspace:*"

@@ -9,7 +9,9 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@aperi21/host": "workspace:*",
@@ -23,6 +25,8 @@
   "devDependencies": {
     "@tiptap/core": "^3.22.3",
     "@tiptap/pm": "^3.22.3",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "jsdom": "^25.0.1",
+    "vitest": "^2.1.9"
   }
 }

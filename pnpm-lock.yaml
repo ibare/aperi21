@@ -1538,9 +1538,15 @@ importers:
       '@tiptap/pm':
         specifier: ^3.22.3
         version: 3.22.5
+      jsdom:
+        specifier: ^25.0.1
+        version: 25.0.1
       typescript:
         specifier: ^5.6.3
         version: 5.9.3
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(jsdom@25.0.1)
 
   packages/host-tiptap-bundle:
     devDependencies:
@@ -2855,9 +2861,6 @@ importers:
       typescript:
         specifier: ^5.6.3
         version: 5.9.3
-      vitest:
-        specifier: ^2.1.9
-        version: 2.1.9(jsdom@25.0.1)
 
   sims/fluids/atmospheric-pressure:
     devDependencies:

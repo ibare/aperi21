@@ -10,16 +10,13 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run --passWithNoTests",
-    "test:watch": "vitest"
+    "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
     "@aperi21/schema": "workspace:*"
   },
   "devDependencies": {
     "@aperi21/schema": "workspace:*",
-    "typescript": "^5.6.3",
-    "vitest": "^2.1.9"
+    "typescript": "^5.6.3"
   }
 }
