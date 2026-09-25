@@ -1,3 +1,7 @@
 # @aperi21/react
 
-aperi21 엔진의 React 통합 계층. `HostProvider` 로 `@aperi21/host` 인스턴스를 주입받아 내부 훅(`useHost`, `useTheme`, `useI18n`)이 동작하며, `Embed` 컴포넌트가 Bundle 을 받아 렌더한다. Phase 1 의 `Embed` 는 실제 Canvas 렌더러가 없으므로 Bundle 메타 정보를 표시하는 플레이스홀더만 제공하고, Phase 2 에서 Scene Graph 드로잉이 얹히게 된다.
+카탈로그 앱이 쓰는 React 통합 계층(private). `HostProvider` 로 `@aperi21/host` 인스턴스를 주입하고, `Embed` 가 조각 하나를
+React 트리에 붙인다.
+
+`Embed` 에는 시각화 코드가 없다 — 그리기 · 조작기 · 카메라 · 시간은 모두 `runBundle` 이 하고, `Embed` 는 붙일 자리를 만들고
+라이프사이클을 잇는다. 외부 호스트와 카탈로그가 같은 조각을 같은 화면으로 여는 것은 이 덕분이다.

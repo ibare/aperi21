@@ -151,13 +151,13 @@ aperi21 은 글로벌 서비스가 임베딩하는 모듈이라, 최소 보장�
 ```yaml
 - id: free-fall              # kebab-case. **주제의** id — 조각 id 와 같을 필요는 없다
   name: 자유 낙하             # 사람이 읽는 이름
-  desc: { ko: 중력만 받는 연직 운동, en: "Vertical motion under gravity alone", ja: …, zh: …, ar: …, es: …, fr: …, hi: …, id: …, pt: … }   # 무엇을 다루는가, 한 줄 — 열 언어
+  desc: { ko: "무게와 상관없이 나란히 떨어지는, 중력만 받는 운동", en: "Motion under gravity alone, in which heavy and light bodies fall side by side", ja: …, zh: …, ar: …, es: …, fr: …, hi: …, id: …, pt: … }   # 무엇을 다루는가, 한 줄 — 열 언어
   domain: kinematics         # 출처 분과 (비계)
-  level: lower               # primary | lower | upper — 가장 낮은 수준
-  curricula: [kr, ib, ngss, uk]   # 어느 교육과정에서 다루는가. 비어 있어도 된다
-  visualNote: 낙하 속도의 변화를 시간에 따라 본다   # 넣은 근거 — 화면에서 일어나는 것
+  level: primary             # primary | lower | upper — 가장 낮은 수준
+  curricula: [kr, ib, ngss, ap, uk]   # 어느 교육과정에서 다루는가. 비어 있어도 된다
+  visualNote: 질량이 달라도 나란히 떨어진다   # 넣은 근거 — 화면에서 일어나는 것
   sim: aperi21:free-fall     # 구현됐을 때만. 레지스트리 등록 키 **전체**
-  batch: 01-broad            # 어느 배치에서 구현됐나
+  batch: 01-broad            # 어느 배치에서 구현됐나 — 배치 기록이 있는 것만
 ```
 
 **필수는 `id` · `name` · `desc` · `domain` · `level` · `curricula` 이다.**

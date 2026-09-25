@@ -1,26 +1,37 @@
 # packages/
 
-이 디렉토리는 aperi21 엔진 패키지를 담으며, Phase 1부터 실제 코드가 추가된다.
+aperi21 의 엔진 패키지다. 조각(시각화 하나)은 여기가 아니라 저장소 루트의 `sims/<category>/<id>/` 에 있다.
 
-## 코어
-- `@aperi21/schema` (Phase 1) — Scene Graph 타입 정의, Bundle/Primitive 인터페이스
-- `@aperi21/host` (Phase 1) — 플러그인 매니저, 렌더러·컨트롤러 레지스트리, Camera/TimeEngine, Bundle 레지스트리, runBundle 진입점
-- `@aperi21/react` (Phase 1) — React 통합 레이어 (Embed, HostProvider, useBundleRuntime)
+의존은 한 방향이다 — **런타임(host) → 조각(sim) → 선언 타입(schema)**. 런타임은 특정 조각을 알지 않고, 조각은 렌더러를 알지
+않는다. 자세한 규칙은 `rules/principles.md`.
 
-## 시각화 (sims/)
-저장소 루트의 `sims/<category>/<name>/` 에 위치 (workspace 패턴: `sims/*/*`). 카테고리별로 그룹화되며, 호스트 측 dynamic import 로 lazy chunk 가 된다.
+## 발행 (npm)
 
-- `@aperi21/sim-projectile` (Phase 2) — 발사체 운동 — `sims/physics/projectile/`
-- `@aperi21/sim-ray-tracing` (Phase 3) — 광선 추적 — `sims/optics/ray-tracing/`
-- `@aperi21/sim-dc-circuit` (Phase 4) — DC 회로 — `sims/electronics/dc-circuit/`
+세 패키지를 같은 버전으로 함께 발행한다. 나머지는 `private` 이고 발행본 안에 inline 된다.
 
-## 도메인 플러그인
-- `@aperi21/plugin-optics` (Phase 3) — Ray/OpticalElement Primitive 렌더러 + traceRay/findImage 유틸
-- `@aperi21/plugin-circuit` (Phase 4) — CircuitElement/Wire/Terminal 렌더러 + solveMna/manhattanRoute 유틸
+| 패키지 | 역할 |
+| --- | --- |
+| `@aperi21/host` | 시각화 런타임 — Scene Graph 전처리 · Canvas 렌더러 · 시간 엔진 · 카메라 · 조작기 · 테마 · i18n · Plugin Manager, 그리고 **번들 레지스트리**. 레지스트리가 모듈 레벨 상태라 호스트가 하나를 설치해 공유한다 |
+| `@aperi21/host-tiptap-bundle` | 외부 호스트가 쓰는 Tiptap 확장 번들. host-tiptap · bootstrap · 조각 445개 · plugin 을 묶고, 조각마다 lazy chunk 로 가른다. `@aperi21/host` 는 external + peer |
+| `@aperi21/authoring` | 호스트의 LLM 글쓰기 파이프라인용 개념 메타 445개(`surface` = 고르는 재료, `briefing` = 고른 뒤 writer 에게 넘길 재료). 의존 0 |
 
-## 호스트 결합
-- `@aperi21/bootstrap` — sim loader + plugin 설치의 단일 출처. 카탈로그 앱과 외부 호스트가 동일한 부팅 진입점을 공유.
-- `@aperi21/host-tiptap` — Tiptap NodeView 어댑터. DSL `{aperi21:<id>}` 인라인 마운트.
-- `@aperi21/host-tiptap-bundle` — 외부 호스트(예: 노트 에디터)가 단일 의존으로 소비하는 ESM 번들. Rollup 으로 host + sim + plugin 을 chunk 분리해 패키징.
+## 내부 (private)
 
-MVP 스코프와 Phase 구분은 `docs/08-mvp-scope.md`를 참고.
+| 패키지 | 역할 |
+| --- | --- |
+| `@aperi21/schema` | 선언 타입 — `BundleSchema` · `SceneGraph` · 프리미티브 26종 · Plugin 인터페이스. 런타임 코드 0, 타입은 발행본 `.d.ts` 에 인라인된다 |
+| `@aperi21/bootstrap` | 부팅의 단일 출처 — 조각 loader 등록부(생성물) · 조각별 능력(렌더러) 배선(생성물) · 언어별 카탈로그(생성물) · 조작기 문구. 카탈로그 앱과 외부 호스트가 같은 진입점을 쓴다 |
+| `@aperi21/host-tiptap` | Tiptap NodeView 어댑터. `<span data-aperi21 data-aperi21-id>` 자리에 조각을 마운트한다 |
+| `@aperi21/react` | 카탈로그 앱용 React 통합 — `HostProvider` · `Embed`(마운트 자리와 라이프사이클만, 그리기는 `runBundle`) |
+| `@aperi21/plugin-optics` | 광선 · 광학 소자 렌더러 + 순수 계산(`traceRay` · `findImage` · `refract` · `wavelengthToLinearRgb` …) |
+| `@aperi21/plugin-circuit` | 회로 소자 · 도선 · 단자 렌더러 + 순수 계산(`solveMna` · `manhattanRoute`) |
+| `@aperi21/plugin-em` | 전자기 순수 계산(직선 도선 자기장 · 각도 도우미) |
+| `@aperi21/plugin-mechanics` | 역학 순수 계산(경로 위 진행 · 곡률 경로 · 관찰자 기준계 …) |
+
+조각은 plugin 에서 **순수 계산 함수와 타입만** import 한다. 렌더러 배선은 생성기(`pnpm gen:capabilities`)가 bootstrap 쪽에 만든다.
+
+## 조각 (`sims/`)
+
+`sims/<category>/<id>/` 하나가 패키지 하나(`@aperi21/sim-<id>`)이고, `src/` 의 여섯 파일(`schema` · `state` · `physics` · `scene` ·
+`controllers` · `index`)과 제작 기록 `NOTES.md` 로 이루어진다. 조각 id 는 `docs/topics/topics.yaml` 의 주제 id 와 같고, 등록 키는
+`aperi21:<id>` 다. 규칙은 `rules/specifics/S-sim.md` · `S-piece.md`.

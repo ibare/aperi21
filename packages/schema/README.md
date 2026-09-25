@@ -1,3 +1,6 @@
 # @aperi21/schema
 
-aperi21 엔진의 Scene Graph 타입 정의 패키지. 순수 TypeScript 타입과 discriminated union만 담으며 런타임 코드는 없다. 25개 프리미티브, Bundle 인터페이스, Plugin 인터페이스 정의가 여기 모여 있고 `@aperi21/host`·`@aperi21/react`·Bundle·Plugin 패키지 모두 이 패키지를 의존한다.
+aperi21 의 선언 타입(private). `BundleSchema` · `SceneGraph` · 프리미티브 26종 · 시간표 · 캡션 슬롯 · Plugin 인터페이스를 담고,
+런타임 코드는 없다. 조각 · 런타임 · plugin 이 모두 이 타입을 쓴다.
+
+발행하지 않는다 — 타입은 발행 패키지(`@aperi21/host` 등)의 `.d.ts` 에 빌드 때 인라인된다.
